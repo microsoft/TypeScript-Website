@@ -1,4 +1,4 @@
-//// { order: 3 }
+//// { "order": 3 }
 
 // Deno is a work-in-progress JavaScript and TypeScript
 // runtime based on v8 with a focus on security.

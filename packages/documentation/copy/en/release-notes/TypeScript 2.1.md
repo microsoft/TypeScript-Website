@@ -190,7 +190,7 @@ TypeScript 2.1 brings the capability to ES3 and ES5 run-times, meaning you'll be
 
 > Note: first, we need to make sure our run-time has an ECMAScript-compliant `Promise` available globally.
 > That might involve grabbing [a polyfill](https://github.com/stefanpenner/es6-promise) for `Promise`, or relying on one that you might have in the run-time that you're targeting.
-> We also need to make sure that TypeScript knows `Promise` exists by setting your `lib` flag to something like `"dom", "es2015"` or `"dom", "es2015.promise", "es5"`
+> We also need to make sure that TypeScript knows `Promise` exists by setting your [`lib`](/tsconfig#lib) option to something like `"dom", "es2015"` or `"dom", "es2015.promise", "es5"`
 
 ##### Example
 
@@ -236,7 +236,7 @@ TypeScript injects a handful of helper functions such as `__extends` for inherit
 Previously there were two options:
 
 1.  inject helpers in _every_ file that needs them, or
-2.  no helpers at all with `--noEmitHelpers`.
+2.  no helpers at all with [`noEmitHelpers`](/tsconfig#noEmitHelpers).
 
 The two options left more to be desired;
 bundling the helpers in every file was a pain point for customers trying to keep their package size small.
@@ -250,7 +250,7 @@ First, install the [`tslib`](https://github.com/Microsoft/tslib) utility library
 npm install tslib
 ```
 
-Second, compile your files using `--importHelpers`:
+Second, compile your files using [`importHelpers`](/tsconfig#importHelpers):
 
 ```sh
 tsc --module commonjs --importHelpers a.ts
@@ -282,7 +282,7 @@ Starting with TypeScript 2.1 this is now much easier.
 With TypeScript 2.1, you can import a JavaScript module without needing a type declaration.
 A type declaration (such as `declare module "foo" { ... }` or `node_modules/@types/foo`) still takes priority if it exists.
 
-An import to a module with no declaration file will still be flagged as an error under `--noImplicitAny`.
+An import to a module with no declaration file will still be flagged as an error under [`noImplicitAny`](/tsconfig#noImplicitAny).
 
 ##### Example
 
@@ -314,7 +314,7 @@ let z: any; // explicitly 'any'.
 
 With TypeScript 2.1, instead of just choosing `any`, TypeScript will infer types based on what you end up assigning later on.
 
-This is only enabled if `--noImplicitAny` is set.
+This is only enabled if [`noImplicitAny`](/tsconfig#noImplicitAny) is set.
 
 ##### Example
 
@@ -367,7 +367,7 @@ function f2() {
 
 ## Implicit any errors
 
-One great benefit of this is that you'll see _way fewer_ implicit `any` errors when running with `--noImplicitAny`.
+One great benefit of this is that you'll see _way fewer_ implicit `any` errors when running with [`noImplicitAny`](/tsconfig#noImplicitAny).
 Implicit `any` errors are only reported when the compiler is unable to know the type of a variable without a type annotation.
 
 ##### Example
@@ -471,11 +471,11 @@ Just a few configuration options change between these two targets, and maintaini
 
 TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
-- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, `files`, `include`, and `exclude`).
+- `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, [`files`](/tsconfig#files), [`include`](/tsconfig#include), and [`exclude`](/tsconfig#exclude)).
 - The value of `extends` must be a string containing a path to another configuration file to inherit from.
 - The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
 - Circularity between configuration files is not allowed.
-- `files`, `include` and `exclude` from the inheriting config file _overwrite_ those from the base config file.
+- [`files`](/tsconfig#files), [`include`](/tsconfig#include), and [`exclude`](/tsconfig#exclude) from the inheriting config file _overwrite_ those from the base config file.
 - All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
 
 ##### Example
@@ -513,7 +513,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 ## New `--alwaysStrict`
 
-Invoking the compiler with `--alwaysStrict` causes:
+Invoking the compiler with [`alwaysStrict`](/tsconfig#alwaysStrict) causes:
 
 1. Parses all the code in strict mode.
 2. Writes `"use strict";` directive atop every generated file.

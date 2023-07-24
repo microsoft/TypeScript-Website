@@ -3,10 +3,28 @@
 // A script which uses Facebook's watchman to run `yarn build` in different modules
 // in a standard monorepo.
 
+const { spawnSync } = require("child_process")
+
+const help = spawnSync("watchman", ["--help"])
+const hasWatchman = !help.error
+
+if (!hasWatchman) {
+  const showError = process.env.DEBUG
+  const suffix = !showError ? "Run with DEBUG=* to see the error logs." : ""
+  // prettier-ignore
+  console.log(`Watchman failed to load, this is _OK_ but you will not get automatic builds of sub-projects like the tsconfig reference or playground. ` + suffix)
+
+  if (showError) {
+    console.error(help.error)
+  }
+
+  process.exit(0)
+}
+
 const watchman = require("fb-watchman")
 const client = new watchman.Client({})
 const chalk = require("chalk")
-const { spawn } = require("child_process")
+const { spawn, exec } = require("child_process")
 const { join } = require("path")
 const { existsSync, readFileSync } = require("fs")
 
@@ -40,7 +58,7 @@ let currentProcess = null
 // for the project which looks only at .ts and .md files in the repo.
 
 // Startup watchman
-client.command(["watch-project", process.cwd()], function (error, resp) {
+function watcher(error, resp) {
   if (error) {
     console.error("Error initiating watch:", error)
     return
@@ -103,8 +121,8 @@ client.command(["watch-project", process.cwd()], function (error, resp) {
       const packageJSON = JSON.parse(readFileSync(packageJSONPath, "utf8"))
       if (!packageJSON.scripts || !packageJSON.scripts.build) return
 
-      const buildCommand = `workspace ${packageJSON.name} run build`
-      return buildCommand
+      if (packageJSON.scripts["build-fast"]) return `workspace ${packageJSON.name} run build-fast`
+      return `workspace ${packageJSON.name} run build`
     })
 
     if (commandToRun[0]) {
@@ -115,7 +133,7 @@ client.command(["watch-project", process.cwd()], function (error, resp) {
       }
     }
   })
-})
+}
 
 // @ts-ignore
 client.on("end", function () {
@@ -153,6 +171,11 @@ const runCommand = argString => {
   build.on("close", code => {
     const codeString = code === 0 ? chalk.green("" + code) : chalk.bold.red("" + code)
     log(`[${codeString}] --------- `)
+
+    if (process.platform === "darwin") {
+      exec(playCommand(".vscode/done.aiff", "0.05"))
+    }
+
     currentProcess = null
     if (upcomingCommand === argString || !upcomingCommand) {
       // NOOP if you've tried running the same thing a few times
@@ -167,3 +190,6 @@ const runCommand = argString => {
 
   currentProcess = build
 }
+
+const playCommand = (path, volume) => `afplay \"${path}\" -v ${volume}`
+client.command(["watch-project", process.cwd()], watcher)

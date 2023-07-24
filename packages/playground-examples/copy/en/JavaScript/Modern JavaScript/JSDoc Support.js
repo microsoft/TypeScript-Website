@@ -1,4 +1,4 @@
-//// { order: 3, isJavaScript: true }
+//// { "order": 3, "isJavaScript": true }
 
 // TypeScript has very rich JSDoc support, for a lot of cases
 // you can even skip making your files .ts and just use JSDoc

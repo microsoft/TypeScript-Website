@@ -1,4 +1,4 @@
-//// { order: 3, compiler: { strictNullChecks: false } }
+//// { "order": 3, "compiler": { "strictNullChecks": false } }
 
 // JavaScript has two ways to declare values which don't
 // exist, and TypeScript adds extra syntax which allows even
@@ -47,7 +47,7 @@ const searchResults = {
 type PotentialString = string | undefined | null;
 
 // The PotentialString discards the undefined and null. If
-// you go up to the settings and turn on strict mode and come
+// you open the "TS Config" menu, enable strictNullChecks, and come
 // back, you'll see that hovering on PotentialString now shows
 // the full union.
 
@@ -77,7 +77,7 @@ if (userID) {
 // Void is the return type of a function which does not
 // return a value.
 
-const voidFunction = () => {};
+const voidFunction = () => { };
 const resultOfVoidFunction = voidFunction();
 
 // This is usually an accident, and TypeScript keeps the void

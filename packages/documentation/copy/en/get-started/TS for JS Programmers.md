@@ -8,7 +8,7 @@ oneline: Learn how TypeScript extends JavaScript
 
 TypeScript stands in an unusual relationship to JavaScript. TypeScript offers all of JavaScript's features, and an additional layer on top of these: TypeScript's type system.
 
-For example, JavaScript provides language primitives like `string`, `number`, and `object`, but it doesn't check that you've consistently assigned these. TypeScript does.
+For example, JavaScript provides language primitives like `string` and `number`, but it doesn't check that you've consistently assigned these. TypeScript does.
 
 This means that your existing working JavaScript code is also TypeScript code. The main benefit of TypeScript is that it can highlight unexpected behavior in your code, lowering the chance of bugs.
 
@@ -109,22 +109,22 @@ interface User {
   id: number;
 }
 // ---cut---
-function getAdminUser(): User {
-  //...
-}
-
 function deleteUser(user: User) {
   // ...
 }
+
+function getAdminUser(): User {
+  //...
+}
 ```
 
-There are already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, `object`, and `undefined`, which you can use in an interface. TypeScript extends this list with a few more, such as `any` (allow anything), [`unknown`](/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/play#example/unknown-and-never) (it's not possible that this type could happen), and `void` (a function which returns `undefined` or has no return value).
+There is already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, and `undefined`, which you can use in an interface. TypeScript extends this list with a few more, such as `any` (allow anything), [`unknown`](/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/play#example/unknown-and-never) (it's not possible that this type could happen), and `void` (a function which returns `undefined` or has no return value).
 
 You'll see that there are two syntaxes for building types: [Interfaces and Types](/play/?e=83#example/types-vs-interfaces). You should prefer `interface`. Use `type` when you need specific features.
 
 ## Composing Types
 
-With TypeScript, you can create complex types by combining simple ones. There are two popular ways to do so: with Unions, and with Generics.
+With TypeScript, you can create complex types by combining simple ones. There are two popular ways to do so: with unions, and with generics.
 
 ### Unions
 
@@ -136,12 +136,12 @@ type MyBool = true | false;
 
 _Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean`. That's a property of the Structural Type System. More on this below.
 
-A popular use-case for union types is to describe the set of `string`s or `number`s [literal](/docs/handbook/literal-types.html) that a value is allowed to be:
+A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/2/everyday-types.html#literal-types) that a value is allowed to be:
 
 ```ts twoslash
 type WindowStates = "open" | "closed" | "minimized";
 type LockStates = "locked" | "unlocked";
-type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
+type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 ```
 
 Unions provide a way to handle different types too. For example, you may have a function that takes an `array` or a `string`:
@@ -171,9 +171,8 @@ function wrapInArray(obj: string | string[]) {
   if (typeof obj === "string") {
     return [obj];
 //          ^?
-  } else {
-    return obj;
   }
+  return obj;
 }
 ```
 
@@ -286,5 +285,5 @@ If the object or class has all the required properties, TypeScript will say they
 
 This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
 
-- Read the full Handbook [from start to finish](/docs/handbook/intro.html) (30m)
-- Explore the [Playground examples](/play#show-examples).
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html)
+- Explore the [Playground examples](/play#show-examples)

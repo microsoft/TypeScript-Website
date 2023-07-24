@@ -49,10 +49,13 @@ exports.onRouteUpdate = ({ location, prevLocation }) => {
     aisdk.trackPageView({
       uri: locationWithoutPlaygroundCode,
       refUri: referrerWithoutPlaygroundCode,
-      prev: previousLocationWithoutPlaygroundCode,
-      lang: document.documentElement.lang,
-      visitedPlayground:
-        hasLocalStorage && localStorage.getItem("sandbox-history") !== null,
+      properties: {
+        uri: locationWithoutPlaygroundCode,
+        prev: previousLocationWithoutPlaygroundCode,
+        lang: document.documentElement.lang,
+        visitedPlayground:
+          hasLocalStorage && localStorage.getItem("sandbox-history") !== null,
+      },
     })
   } catch (error) {
     console.error("Error with Application Insights")

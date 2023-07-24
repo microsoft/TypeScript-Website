@@ -1,4 +1,4 @@
-//// { order: 0, isJavaScript: true }
+//// { "order": 0, "isJavaScript": true }
 
 // The DOM (Document Object Model) is the underlying API for
 // working with a webpage, and TypeScript has great support
@@ -57,6 +57,7 @@ closeButton.style.position = "absolute";
 closeButton.style.top = "3px";
 closeButton.style.right = "8px";
 closeButton.style.color = "white";
+closeButton.style.cursor = "pointer";
 
 closeButton.onclick = () => {
   removePopover();

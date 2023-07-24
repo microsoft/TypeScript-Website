@@ -3,7 +3,6 @@ title: Type Declarations
 layout: docs
 permalink: /docs/handbook/2/type-declarations.html
 oneline: "How TypeScript provides types for un-typed JavaScript."
-beta: true
 ---
 
 Throughout the sections you've read so far, we've been demonstrating basic TypeScript concepts using the built-in functions present in all JavaScript runtimes.
@@ -51,15 +50,15 @@ The methods, properties, and functions available to you actually vary based on t
 For example, the `startsWith` method of strings is available only starting with the version of JavaScript referred as _ECMAScript 6_.
 
 Being aware of what version of JavaScript your code ultimately runs on is important because you don't want to use APIs that are from a newer version than the platform you deploy to.
-This is one function of the `target` compiler setting.
+This is one function of the [`target`](/tsconfig#target) compiler setting.
 
-TypeScript helps with this problem by varying which `lib` files are included by default based on your `target` setting.
-For example, if `target` is `ES5`, you will see an error if trying to use the `startsWith` method, because that method is only available in `ES6` or later.
+TypeScript helps with this problem by varying which `lib` files are included by default based on your [`target`](/tsconfig#target) setting.
+For example, if [`target`](/tsconfig#target) is `ES5`, you will see an error if trying to use the `startsWith` method, because that method is only available in `ES6` or later.
 
 ### `lib` setting
 
-The `lib` setting allows more fine-grained control of which built-in declaration files are considered available in your program.
-See the documentation page on [[lib]] for more information.
+The [`lib`](/tsconfig#lib) setting allows more fine-grained control of which built-in declaration files are considered available in your program.
+See the documentation page on [`lib`](/tsconfig#lib) for more information.
 
 ## External Definitions
 
@@ -71,7 +70,7 @@ How you do this depends on exactly which library you're getting types for.
 If a library you're using is published as an npm package, it may include type declaration files as part of its distribution already.
 You can read the project's documentation to find out, or simply try importing the package and see if TypeScript is able to automatically resolve the types for you.
 
-If you're a package author considering bundling type definitions with your package, you can read our guide on [[bundling type definitions]].
+If you're a package author considering bundling type definitions with your package, you can read our guide on [bundling type definitions](/docs/handbook/declaration-files/publishing.html#including-declarations-in-your-npm-package).
 
 ### DefinitelyTyped / `@types`
 
@@ -91,7 +90,7 @@ TypeScript automatically finds type definitions under `node_modules/@types`, so 
 ### Your Own Definitions
 
 In the uncommon event that a library didn't bundle its own types and didn't have a definition on DefinitelyTyped, you can write a declaration file yourself.
-See the appendix [[Writing Declaration Files]] for a guide.
+See the appendix [Writing Declaration Files](/docs/handbook/declaration-files/introduction.html) for a guide.
 
 If you want to silence warnings about a particular module without writing a declaration file, you can also quick declare the module as type `any` by putting an empty declaration for it in a `.d.ts` file in your project.
 For example, if you wanted to use a module named `some-untyped-module` without having definitions for it, you would write:

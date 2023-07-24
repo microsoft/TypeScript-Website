@@ -2,8 +2,7 @@
 title: Conditional Types
 layout: docs
 permalink: /docs/handbook/2/conditional-types.html
-oneline: "Create types which act like if statements."
-beta: true
+oneline: "Create types which act like if statements in the type system."
 ---
 
 At the heart of most useful programs, we have to make decisions based on input.
@@ -18,10 +17,10 @@ interface Dog extends Animal {
   woof(): void;
 }
 
-type Foo = Dog extends Animal ? number : string;
+type Example1 = Dog extends Animal ? number : string;
 //   ^?
 
-type Bar = RegExp extends Animal ? number : string;
+type Example2 = RegExp extends Animal ? number : string;
 //   ^?
 ```
 
@@ -80,7 +79,7 @@ type NameOrId<T extends number | string> = T extends number
   : NameLabel;
 ```
 
-We can then use that conditional type to simplify out overloads down to a single function with no overloads.
+We can then use that conditional type to simplify our overloads down to a single function with no overloads.
 
 ```ts twoslash
 interface IdLabel {
@@ -110,7 +109,7 @@ let c = createLabel(Math.random() ? "hello" : 42);
 ### Conditional Type Constraints
 
 Often, the checks in a conditional type will provide us with some new information.
-Just like with narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constraint generics by the type we check against.
+Just like narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constrain generics by the type we check against.
 
 For example, let's take the following:
 
@@ -127,10 +126,6 @@ type MessageOf<T extends { message: unknown }> = T["message"];
 
 interface Email {
   message: string;
-}
-
-interface Dog {
-  bark(): void;
 }
 
 type EmailMessageContents = MessageOf<Email>;
@@ -186,25 +181,38 @@ Conditional types provide us with a way to infer from types we compare against i
 For example, we could have inferred the element type in `Flatten` instead of fetching it out "manually" with an indexed access type:
 
 ```ts twoslash
-type Flatten<T> = T extends Array<infer U> ? U : T;
+type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
-Here, we used the `infer` keyword declaratively introduced a new generic type variable named `U` instead of specifying how to retrieve the element type of `T` within the true branch.
-This frees us from having to think about how to dig through and probing apart the structure of the types we're interested.
+Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `Type` within the true branch.
+This frees us from having to think about how to dig through and probing apart the structure of the types we're interested in.
 
 We can write some useful helper type aliases using the `infer` keyword.
 For example, for simple cases, we can extract the return type out from function types:
 
 ```ts twoslash
-type GetReturnType<T> = T extends (...args: never[]) => infer U ? U : never;
+type GetReturnType<Type> = Type extends (...args: never[]) => infer Return
+  ? Return
+  : never;
 
-type Foo = GetReturnType<() => number>;
+type Num = GetReturnType<() => number>;
 //   ^?
 
-type Bar = GetReturnType<(x: string) => string>;
+type Str = GetReturnType<(x: string) => string>;
 //   ^?
 
-type Baz = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
+type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
+//   ^?
+```
+
+When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the _last_ signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
+
+```ts twoslash
+declare function stringOrNum(x: string): number;
+declare function stringOrNum(x: number): string;
+declare function stringOrNum(x: string | number): string | number;
+
+type T1 = ReturnType<typeof stringOrNum>;
 //   ^?
 ```
 
@@ -214,22 +222,22 @@ When conditional types act on a generic type, they become _distributive_ when gi
 For example, take the following:
 
 ```ts twoslash
-type Foo<T> = T extends any ? T[] : never;
+type ToArray<Type> = Type extends any ? Type[] : never;
 ```
 
-If we plug a union type into `Foo`, then the conditional type will be applied to each member of that union.
+If we plug a union type into `ToArray`, then the conditional type will be applied to each member of that union.
 
 ```ts twoslash
-type Foo<T> = T extends any ? T[] : never;
+type ToArray<Type> = Type extends any ? Type[] : never;
 
-type Bar = Foo<string | number>;
+type StrArrOrNumArr = ToArray<string | number>;
 //   ^?
 ```
 
-What happens here is that `Foo` distributes on:
+What happens here is that `ToArray` distributes on:
 
 ```ts twoslash
-type Blah =
+type StrArrOrNumArr =
   // ---cut---
   string | number;
 ```
@@ -237,16 +245,16 @@ type Blah =
 and maps over each member type of the union, to what is effectively:
 
 ```ts twoslash
-type Foo<T> = T extends any ? T[] : never;
-type Blah =
+type ToArray<Type> = Type extends any ? Type[] : never;
+type StrArrOrNumArr =
   // ---cut---
-  Foo<string> | Foo<number>;
+  ToArray<string> | ToArray<number>;
 ```
 
 which leaves us with:
 
 ```ts twoslash
-type Blah =
+type StrArrOrNumArr =
   // ---cut---
   string[] | number[];
 ```
@@ -255,9 +263,9 @@ Typically, distributivity is the desired behavior.
 To avoid that behavior, you can surround each side of the `extends` keyword with square brackets.
 
 ```ts twoslash
-type Foo<T> = [T] extends [any] ? T[] : never;
+type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 
-// 'Bar' is no longer a union.
-type Bar = Foo<string | number>;
+// 'StrArrOrNumArr' is no longer a union.
+type StrArrOrNumArr = ToArrayNonDist<string | number>;
 //   ^?
 ```

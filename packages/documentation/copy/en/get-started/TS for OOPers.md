@@ -186,6 +186,9 @@ Because TypeScript's type system is fully erased, information about e.g. the ins
 JavaScript does have some limited primitives like `typeof` and `instanceof`, but remember that these operators are still working on the values as they exist in the type-erased output code.
 For example, `typeof (new Car())` will be `"object"`, not `Car` or `"Car"`.
 
----
+## Next Steps
 
-This is an overview, from here you should read [through the handbook](/docs/handbook/intro.html) or explore the [Playground examples](/play#show-examples)
+This was a brief overview of the syntax and tools used in everyday TypeScript. From here, you can:
+
+- Read the full Handbook [from start to finish](/docs/handbook/intro.html)
+- Explore the [Playground examples](/play#show-examples)

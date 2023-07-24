@@ -4,6 +4,7 @@ layout: docs
 permalink: /docs/handbook/generics.html
 oneline: Introduction to TypeScript and Generics
 handbook: "true"
+deprecated_by: /docs/handbook/2/generics.html
 ---
 
 A major part of software engineering is building components that not only have well-defined and consistent APIs, but are also reusable.
@@ -314,7 +315,7 @@ function loggingIdentity<T extends Lengthwise>(arg: T): T {
 loggingIdentity({ length: 10, value: 3 });
 ```
 
-## Using Type Parameters in Generic Constraints
+### Using Type Parameters in Generic Constraints
 
 You can declare a type parameter that is constrained by another type parameter.
 For example, here we'd like to get a property from an object given its name.
@@ -332,7 +333,7 @@ getProperty(x, "a");
 getProperty(x, "m");
 ```
 
-## Using Class Types in Generics
+### Using Class Types in Generics
 
 When creating factories in TypeScript using generics, it is necessary to refer to class types by their constructor functions. For example,
 

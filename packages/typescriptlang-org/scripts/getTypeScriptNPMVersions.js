@@ -1,8 +1,10 @@
 // @ts-check
 
+// yarn workspace typescriptlang-org update-versions
+
 const nodeFetch = require("node-fetch").default
-const { writeFileSync } = require("fs")
-const { join } = require("path")
+const { writeFileSync, existsSync } = require("fs")
+const { join, dirname } = require("path")
 const semver = require("semver")
 const axios = require("axios").default
 const { format } = require("prettier")
@@ -14,7 +16,7 @@ const get = async url => {
 }
 
 /**
- * Queries the VS markplace for typescript extensions, returns
+ * Queries the VS marketplace for typescript extensions, returns
  * only official extensions
  */
 const getLatestVSExtensions = async latest => {
@@ -109,11 +111,25 @@ const getTypeScriptNPMVersions = async () => {
   const isBeta = semver.gt(beta, stable)
 
   // prettier-ignore
-  let releaseNotesURL = `/docs/handbook/release-notes/typescript-${semver.major(stable)}-${semver.minor(stable)}.html`
+  let siteReleaseNotesURL = `/docs/handbook/release-notes/typescript-${semver.major(stable)}-${semver.minor(stable)}.html`
+  // prettier-ignore
+  let releasePostURL = `https://devblogs.microsoft.com/typescript/announcing-typescript-${semver.major(rc)}-${semver.minor(rc)}/`
+  // prettier-ignore
+  let releaseNotesMDPath = `../../documentation/copy/en/release-notes/TypeScript ${semver.major(stable)}.${semver.minor(stable)}.md`
   // prettier-ignore
   let betaPostURL = `https://devblogs.microsoft.com/typescript/announcing-typescript-${semver.major(beta)}-${semver.minor(beta)}-beta/`
   // prettier-ignore
   let rcPostURL = `https://devblogs.microsoft.com/typescript/announcing-typescript-${semver.major(rc)}-${semver.minor(rc)}-rc/`
+
+  // Incase the MD hasn't been ported yet
+  const releaseNotesURL = existsSync(join(__dirname, releaseNotesMDPath))
+    ? siteReleaseNotesURL
+    : releasePostURL
+
+  const next =
+    semver.minor(stable) == 9
+      ? `${semver.major(stable) + 1}.${semver.minor(stable)}`
+      : `${semver.major(stable)}.${semver.minor(stable) + 1}`
 
   return {
     tags: {
@@ -123,6 +139,7 @@ const getTypeScriptNPMVersions = async () => {
       beta,
       rc,
       rcMajMin: `${semver.major(rc)}.${semver.minor(rc)}`,
+      next,
     },
     isRC,
     isBeta,

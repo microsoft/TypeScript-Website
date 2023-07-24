@@ -1,4 +1,4 @@
-import ts = require("typescript");
+import ts from "typescript";
 
 // These are all copy-pasta'd from the TS codebase
 

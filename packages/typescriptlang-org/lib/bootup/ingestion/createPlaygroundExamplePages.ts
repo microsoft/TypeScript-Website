@@ -90,7 +90,7 @@ const hrefForExample = (
   lang: string
 ) => {
   const isJS = example.name.indexOf(".js") !== -1
-  const prefix = isJS ? "useJavaScript=true" : ""
+  const prefix = isJS ? "filetype=js" : ""
   const hash = "example/" + example.id
   const params = example.compilerSettings || {}
   const queryParams = Object.keys(params)
@@ -112,10 +112,10 @@ const getCompilerDetailsFromCode = (contents: string) => {
       .split("//// {")[1]
       .split("}\n")[0]
     contents = contents.split("\n").slice(1).join("\n")
-    const code = "({" + preJSON + "})"
+    const code = "{" + preJSON + "}"
 
     try {
-      const obj = eval(code)
+      const obj = JSON.parse(code)
       if (obj.title) {
         inlineTitle = obj.title
         delete obj.title

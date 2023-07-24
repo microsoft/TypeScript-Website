@@ -33,6 +33,7 @@ const Play = (props: Props) => {
   return (
     <Layout title={"TSConfig Option: " + props.pageContext.title} description="How this setting affects your build." lang={props.pageContext.lang}>
       <div className="raised main-content-block markdown">
+        <h1 style={{ display: "none" }}>TSConfig</h1>
         <h2>{props.pageContext.title}</h2>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "80px" }}>
           <p dangerouslySetInnerHTML={{ __html: props.pageContext.html! }} />

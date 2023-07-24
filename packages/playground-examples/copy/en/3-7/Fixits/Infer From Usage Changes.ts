@@ -1,4 +1,4 @@
-//// { compiler: {  noImplicitAny: false }, order: 2 }
+//// { "compiler": {  "noImplicitAny": false }, "order": 2 }
 
 // With 3.7 TypeScript's existing 'infer from usage'
 // code fix became smarter. It will now use a list of
@@ -22,7 +22,7 @@ function awaitPromise(promise) {
   promise.then((value) => console.log(value));
 }
 
-// Infer the function, and it's return type:
+// Infer the function, and its return type:
 
 function inferAny(app) {
   const result = app.use("hi");

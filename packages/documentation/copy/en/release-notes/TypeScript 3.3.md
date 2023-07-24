@@ -54,7 +54,7 @@ Each of those impossible intersections reduces to `never`, and we're left with `
 This new behavior only kicks in when at most one type in the union has multiple overloads, and at most one type in the union has a generic signature.
 That means methods on `number[] | string[]` like `map` (which is generic) still won't be callable.
 
-On the other hand, methods like `forEach` will now be callable, but under `noImplicitAny` there may be some issues.
+On the other hand, methods like `forEach` will now be callable, but under [`noImplicitAny`](/tsconfig#noImplicitAny) there may be some issues.
 
 ```ts
 interface Dog {
@@ -113,6 +113,6 @@ Prior to 3.3, building composite projects using `--build --watch` actually didn'
 An update in one project under `--build --watch` mode would force a full build of that project, rather than determining which files within that project were affected.
 
 In TypeScript 3.3, `--build` mode's `--watch` flag _does_ leverage incremental file watching as well.
-That can mean signficantly faster builds under `--build --watch`.
+That can mean significantly faster builds under `--build --watch`.
 In our testing, this functionality has resulted in **a reduction of 50% to 75% in build times** of the original `--build --watch` times.
 [You can read more on the original pull request for the change](https://github.com/Microsoft/TypeScript/pull/29161) to see specific numbers, but we believe most composite project users will see significant wins here.

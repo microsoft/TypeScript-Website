@@ -35,14 +35,14 @@ const go = async () => {
     host + "/js/playground/ds/createDesignSystem.d.ts",
     join(ds, "createDesignSystem.d.ts"),
     text => {
-      const renameImport = text.replace("typescriptlang-org/static/js/sandbox", "../sandbox")
+      const renameImport = text.replace("@typescript/sandbox", "../sandbox")
       return renameImport
     }
   )
 
   // Util funcs
   await getFileAndStoreLocally(host + "/js/playground/pluginUtils.d.ts", join(vendor, "pluginUtils.d.ts"), text => {
-    const renameImport = text.replace('from "typescript-sandbox"', 'from "./sandbox"')
+    const renameImport = text.replace('from "@typescript/sandbox"', 'from "./sandbox"')
     return renameImport
   })
 
@@ -71,7 +71,7 @@ const go = async () => {
 
   // Playground
   await getFileAndStoreLocally(host + "/js/playground/index.d.ts", join(vendor, "/playground.d.ts"), text => {
-    const replaceSandbox = text.replace(/typescript-sandbox/g, "./sandbox")
+    const replaceSandbox = text.replace('"@typescript/sandbox"', '"./sandbox"')
     const replaceTSVFS = replaceSandbox.replace(
       /typescriptlang-org\/static\/js\/sandbox\/vendor\/typescript-vfs/g,
       "./typescript-vfs"

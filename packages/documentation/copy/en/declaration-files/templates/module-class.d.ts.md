@@ -50,15 +50,15 @@ To handle both importing via UMD and modules:
  *~ loaded outside a module loader environment, declare that global here.
  *~ Otherwise, delete this declaration.
  */
-export as namespace myClassLib;
+export as namespace "super-greeter";
 
 /*~ This declaration specifies that the class constructor function
  *~ is the exported object from the file
  */
-export = MyClass;
+export = Greeter;
 
 /*~ Write your module's methods and properties in this class */
-declare class MyClass {
+declare class Greeter {
   constructor(customGreeting?: string);
 
   greet: void;

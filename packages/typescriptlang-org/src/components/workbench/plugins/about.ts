@@ -1,4 +1,4 @@
-type Sandbox = import("../../../../static/js/sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type Factory = import("../../../../static/js/playground").PluginFactory
 type PluginUtils = import("../../../../static/js/playground").PluginUtils
 
@@ -9,13 +9,12 @@ show the files the TypeScript compiler creates.
 `.trim()
 
 const why = `
-The bug workbench lets make reproductions of bugs which are trivial to verify against many different versions of TypeScript over time.
+The bug workbench lets you make reproductions of bugs which are trivial to verify against many different versions of TypeScript over time.
 `.trim()
 
 const how = `
 A repro can highlight an issue in a few ways:
 <ul>
-  <li>Does this code sample fail to compile?</li>
   <li>Does this code sample fail to compile?</li>
   <li>Is a type wrong at a position in the file?</li>
   <li>Is the .js/.d.ts/.map file wrong?</li>

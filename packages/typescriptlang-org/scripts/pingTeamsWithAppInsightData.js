@@ -4,7 +4,7 @@
  * run with:
     APP_INSIGHTS_ID="X" APP_INSIGHTS_API_KEY="Y" node packages/typescriptlang-org/scripts/pingTeamsWithAppInsightData.js
 
-   if process.env.STATS_WEBHOOK_INCOMING_URL is set, then the message will go into teams 
+   if process.env.STATS_WEBHOOK_INCOMING_URL is set, then the message will go into teams
   */
 
 const nodeFetch = require("node-fetch").default
@@ -88,7 +88,7 @@ const go = async () => {
   if (!process.env.STATS_WEBHOOK_INCOMING_URL) {
     console.log(JSON.stringify(card, null, "  "))
   } else {
-    // https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using#send-adaptive-cards-using-an-incoming-webhook
+    // https://learn.microsoft.com/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using#send-adaptive-cards-using-an-incoming-webhook
 
     const outer = {
       type: "message",

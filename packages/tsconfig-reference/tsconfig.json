@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "module": "es2020",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowSyntheticDefaultImports": true,
+    "target": "es2019"
   }
 }

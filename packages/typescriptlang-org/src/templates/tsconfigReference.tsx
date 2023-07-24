@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { graphql } from "gatsby"
 
 import { Layout } from "../components/layout"
@@ -11,11 +11,24 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./tsconfig.scss"
 
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom"
+type Category = { anchor: string, display: string, options: Array<{ anchor: string, name: string }> }
 
-type Props = { pageContext: any, data: GatsbyTypes.TSConfigReferenceTemplateQuery, path: string }
+type Props = {
+  pageContext: {
+    categories: Category[],
+    tsconfigMDPath: string,
+    intro: {
+      html: string
+      header: string
+      preview: string
+    },
+    locale: string
+  },
+  data: GatsbyTypes.TSConfigReferenceTemplateQuery,
+  path: string
+}
 
-const TSConfigReferenceTemplateComponent = (props) => {
+const TSConfigReferenceTemplateComponent = (props: Props) => {
   const i = createInternational<typeof headCopy>(useIntl())
 
   const post = props.data.markdownRemark
@@ -25,73 +38,186 @@ const TSConfigReferenceTemplateComponent = (props) => {
   }
 
   useEffect(() => {
+    const calculateOffset = (
+      target: HTMLElement,
+      subnav: HTMLElement | null
+    ) => {
+      let offset = target.offsetTop
+      if (subnav) {
+        // Subtract height of subnav if "position: sticky" is active
+        const style = window.getComputedStyle(subnav)
+        if (style.position === "sticky") {
+          offset -= subnav.clientHeight
+        }
+      }
+      return offset
+    }
+
+    const scrollToHash = (hash: string) => {
+      if (hash === "#") return
+      const target = document.querySelector<HTMLElement>(hash)
+      if (!target) return
+
+      // Search for subnav if the target is a descendant of <article>
+      let search = target
+      let subnav: HTMLElement | null = null
+      while (search.parentElement) {
+        search = search.parentElement
+        if (search.tagName === "ARTICLE") {
+          subnav = search.querySelector("nav")
+          break
+        }
+      }
+
+      // Smooth scroll to the target
+      const offset = calculateOffset(target, subnav)
+      if (!offset) return
+      window.scrollTo({
+        top: offset,
+        behavior: "smooth",
+      })
+    }
+
     // Overrides the anchor behavior to smooth scroll instead
-    // Came from https://css-tricks.com/sticky-smooth-active-nav/
-    const subnavLinks = document.querySelectorAll<HTMLAnchorElement>(".tsconfig nav li a");
+    const hashLinks = document.querySelectorAll<HTMLAnchorElement>(
+      ".tsconfig a[href^='#']"
+    )
+    hashLinks.forEach(link => {
+      link.addEventListener("click", (event: MouseEvent) => {
+        event.preventDefault()
+        scrollToHash(link.hash)
 
-    subnavLinks.forEach(link => {
-      link.addEventListener("click", event => {
-        event.preventDefault();
-
-        let target = document.querySelector(event.target!["hash"]);
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Update URL without triggering default scroll behavior
+        window.history.pushState(null, "", link.hash)
       })
     })
 
     // Sets the current selection
+    // Based on https://css-tricks.com/sticky-smooth-active-nav/
+    const subnavs = document.querySelectorAll<HTMLElement>(
+      ".tsconfig article nav"
+    )
     const updateSidebar = () => {
-      const fromTop = window.scrollY;
-      let currentPossibleAnchor: HTMLAnchorElement | undefined
+      const fromTop = window.scrollY
 
-      // Scroll down to find the highest anchor on the screen
-      subnavLinks.forEach(link => {
-        const section = document.querySelector<HTMLDivElement>(link.hash);
-        if (!section) { return }
-        const isBelow = section.offsetTop - 100 <= fromTop
-        if (isBelow) currentPossibleAnchor = link
-      });
+      subnavs.forEach(subnav => {
+        const subnavLinks = subnav.querySelectorAll<HTMLAnchorElement>(
+          "a[href^='#']"
+        )
+        let currentPossibleAnchor: HTMLAnchorElement | undefined
 
-      // Then set the active tag
-      subnavLinks.forEach(link => {
-        if (link === currentPossibleAnchor) {
-          link.classList.add("current");
-        } else {
-          link.classList.remove("current");
-        }
+        // Scroll down to find the highest anchor on the screen
+        subnavLinks.forEach(link => {
+          const section = document.querySelector<HTMLElement>(link.hash)
+          if (!section) return
+          const offset = calculateOffset(section, subnav)
+          const isBelow = offset - 100 <= fromTop
+          if (isBelow) currentPossibleAnchor = link
+        })
+
+        // Then set the active tag
+        subnavLinks.forEach(link => {
+          if (link === currentPossibleAnchor) {
+            link.classList.add("current")
+          } else {
+            link.classList.remove("current")
+          }
+        })
       })
     }
 
     // Handles setting the scroll 
     window.addEventListener("scroll", updateSidebar, { passive: true, capture: true });
     updateSidebar()
-    setupTwoslashHovers()
 
     return () => {
       window.removeEventListener("scroll", updateSidebar)
     }
   }, [])
 
+  const joiner = (options: any[], opt: any) => {
+    const index = options.indexOf(opt)
+    if (index === options.length - 1) return null
+    return (index === options.length - 2) ? (<span> and </span>) : <span>, </span>
+  }
+
+  const anchor = (sectionName: string | undefined, anchor: string) => {
+    const prefixes = {
+      "watchOptions": "watch",
+      "typeAcquisition": "type"
+    }
+    if (!sectionName || !prefixes[sectionName]) return "#" + anchor
+    return `#${prefixes[sectionName]}-${anchor}`
+  }
+
+  const showCategories = (categories: Category[], sectionName?: string) => {
+    return <div className={sectionName ? "tsconfig-quick-nav grouped" : "tsconfig-quick-nav"}>
+      {sectionName ? <h4><code><a href={`#${sectionName}`}>"{sectionName}"</a></code></h4> : <div />}
+      {
+        categories.map(c => <div className="tsconfig-quick-nav-category" key={c.display}>
+          <h5 id={`quick-nav-${c.anchor}`}>{c.display}</h5>
+          <ol aria-labelledby={`quick-nav-${c.anchor}`}>
+            {c.options.map(o => <li key={o.name}><code><a href={anchor(sectionName, o.anchor)}>{o.anchor}</a>{joiner(c.options, o)}</code></li>)}
+          </ol>
+        </div>)
+      }
+    </div >
+  }
+  const categories = props.pageContext.categories
+
+  const root = categories.filter(c => c.anchor === "Top Level")
+  const watch = categories.filter(c => c.anchor === "watchOptions")
+  const typeAcq = categories.filter(c => c.anchor === "typeAcquisition")
+  const skip = ["Top Level", "watchOptions", "typeAcquisition"]
+  const compilerOpts = categories.filter(c => !skip.includes(c.anchor))
+
+  const [openInfo, setOpenInfo] = useState(false)
+  const toggleInfoState = () => setOpenInfo(!openInfo)
+
+
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
-      <div className="tsconfig raised main-content-block markdown">
-        <div dangerouslySetInnerHTML={{ __html: post.html! }} />
+
+      <div className={`tsconfig raised main-content-block markdown button ${openInfo ? "open" : "closed"}`} >
+        <a href="#" onClick={toggleInfoState} aria-expanded={openInfo} role="button">
+          <h2>
+            <svg width="22" height="13" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.5 1L11 11.5L21.5 1" stroke="black" />
+            </svg>
+            {props.pageContext.intro.header}</h2>
+          {!openInfo && <div className="preview">{props.pageContext.intro.preview}</div>}
+        </a>
+
+        {openInfo && <div className="content">  <div dangerouslySetInnerHTML={{ __html: props.pageContext.intro.html }} /></div>}
       </div>
-    </Layout>
+
+      <div className="tsconfig main-content-block">
+        <h2>Compiler Options</h2>
+        {showCategories(root)}
+        {showCategories(compilerOpts, "compilerOptions")}
+        {showCategories(watch, "watchOptions")}
+        {showCategories(typeAcq, "typeAcquisition")}
+      </div>
+
+
+      <div dangerouslySetInnerHTML={{ __html: post.html! }} />
+
+    </Layout >
   )
 }
 
 
 export const pageQuery = graphql`
-  query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
+query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
 
-    markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
-      id
-      html
-      frontmatter {
-        permalink
-      }
+  markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
+    id
+    html
+    frontmatter {
+      permalink
     }
   }
+}
 `
 
 

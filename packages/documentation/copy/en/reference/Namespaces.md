@@ -9,7 +9,7 @@ translatable: true
 > **A note about terminology:**
 > It's important to note that in TypeScript 1.5, the nomenclature has changed.
 > "Internal modules" are now "namespaces".
-> "External modules" are now simply "modules", as to align with [ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
+> "External modules" are now simply "modules", as to align with [ECMAScript 2015](https://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
 
 This post outlines the various ways to organize your code using namespaces (previously "internal modules") in TypeScript.
 As we alluded in our note about terminology, "internal modules" are now referred to as "namespaces".
@@ -193,7 +193,7 @@ for (let s of strings) {
 Once there are multiple files involved, we'll need to make sure all of the compiled code gets loaded.
 There are two ways of doing this.
 
-First, we can use concatenated output using the `--outFile` flag to compile all of the input files into a single JavaScript output file:
+First, we can use concatenated output using the [`outFile`](/tsconfig#outFile) option to compile all of the input files into a single JavaScript output file:
 
 ```Shell
 tsc --outFile sample.js Test.ts

@@ -1,37 +1,43 @@
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import "./SiteFooter.scss"
 import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
 import { createIntlLink } from "../IntlLink"
-import { hasLocalStorage } from "../../lib/hasLocalStorage"
 import { whenEscape } from "../../lib/whenEscape"
+import { Customize } from "./SiteFooter-Customize"
 
 export type Props = {
   lang: string
   suppressCustomization?: true
+  suppressDocRecommendations?: true
 }
 
 const popularPages = [
   {
-    title: "Basic Types",
-    url: "/docs/handbook/basic-types.html",
-    description: "JavaScript primitive types inside TypeScript",
+    title: "Everyday Types",
+    url: "/docs/handbook/2/everyday-types.html",
+    description: "All of the common types in TypeScript",
   },
   {
-    title: "Advanced Types",
-    url: "/docs/handbook/advanced-types.html",
-    description: "TypeScript language extensions to JavaScript",
+    title: "Creating Types from Types",
+    url: "/docs/handbook/2/types-from-types.html",
+    description: "Techniques to make more elegant types",
   },
   {
-    title: "Functions",
-    url: "/docs/handbook/functions.html",
+    title: "More on Functions",
+    url: "/docs/handbook/2/functions.html",
     description: "How to provide types to functions in JavaScript",
   },
   {
-    title: "Interfaces",
-    url: "/docs/handbook/interfaces.html",
+    title: "More on Objects",
+    url: "/docs/handbook/2/objects.html",
     description: "How to provide a type shape to JavaScript objects",
+  },
+  {
+    title: "Narrowing",
+    url: "/docs/handbook/2/narrowing.html",
+    description: "How TypeScript infers types based on runtime behavior",
   },
   {
     title: "Variable Declarations",
@@ -50,7 +56,7 @@ const popularPages = [
   },
   {
     title: "Classes",
-    url: "/docs/handbook/classes.html",
+    url: "/docs/handbook/2/classes.html",
     description: "How to provide types to JavaScript ES6 classes",
   },
 ]
@@ -58,7 +64,7 @@ const popularPages = [
 const useTypeScriptLinks = [
   {
     title: "Get Started",
-    url: "/docs/home",
+    url: "/docs",
   },
   {
     title: "Download",
@@ -114,10 +120,6 @@ const communityLinks = [
   {
     title: "Stack Overflow",
     url: "https://stackoverflow.com/questions/tagged/typescript",
-  },
-  {
-    title: "Web Updates",
-    url: "https://github.com/microsoft/TypeScript-Website/issues/130",
   },
   {
     title: "Web Repo",
@@ -206,64 +208,29 @@ export const SiteFooter = (props: Props) => {
   useEffect(() => {
     // Handle escape closing dropdowns etc
     document.onkeydown = whenEscape(() => {
-      document.getElementById("playground-samples-popover")!.style.visibility =
-        "hidden"
+      document.getElementById("playground-samples-popover")!.style.visibility = "hidden"
     })
   }, [])
 
-  const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const customThemeOverride = hasLocalStorage && localStorage.getItem("color-theme")
-  const useDark = !customThemeOverride && systemIsDark ? true : customThemeOverride === "dark-theme"
-  const [isDarkMode, setDarkMode] = useState(useDark)
-
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDarkMode(!event.currentTarget.checked)
-    if (document.location.pathname.includes("/play")) {
-      document.location.reload()
-    }
-  }
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("light-theme")
-      document.documentElement.classList.add("dark-theme")
-      hasLocalStorage && localStorage.setItem("color-theme", "dark-theme")
-
-    } else {
-      document.documentElement.classList.remove("dark-theme")
-      document.documentElement.classList.add("light-theme")
-      hasLocalStorage && localStorage.setItem("color-theme", "light-theme")
-    }
-  }, [isDarkMode])
-
+  const hideDocs = props.suppressDocRecommendations
+  const lang = props.lang
   return (
     <footer id="site-footer" role="contentinfo">
-      { props.suppressCustomization ? null :
-        <section id="switcher">
-          <article>
-            <h3>Customize</h3>
-            <label>
-              <p>Site Colours:</p>
-              <div className="switch-wrap">
-                <input type="checkbox" checked={!isDarkMode} onChange={handleThemeChange} />
-                <div className="switch"></div>
-              </div>
-            </label>
-          </article>
+      {props.suppressCustomization ? null : <Customize />}
+
+      {hideDocs ? null :
+        <section id="popular">
+          <h3>Popular Documentation Pages</h3>
+          <ul>
+            {popularPages.map(page => (
+              <li key={page.url}>
+                <Link to={page.url}>{page.title}</Link>
+                <p>{page.description}</p>
+              </li>
+            ))}
+          </ul>
         </section>
       }
-
-      <section id="popular">
-        <h3>Popular Documentation Pages</h3>
-        <ul>
-          {popularPages.map(page => (
-            <li key={page.url}>
-              <Link to={page.url}>{page.title}</Link>
-              <p>{page.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <section id="community">
         <article id="logos">
@@ -303,7 +270,7 @@ export const SiteFooter = (props: Props) => {
               id="microsoft-logo"
               width={92}
               height={19}
-              src={require("../../assets/microsoft-logo.png")}
+              src={require("../../assets/microsoft-logo.png").default}
               alt="Microsoft Logo"
             />
           </a>
@@ -314,8 +281,17 @@ export const SiteFooter = (props: Props) => {
               href="https://go.microsoft.com/fwlink/?LinkId=521839"
               title="Microsoft Privacy Policy"
             >
-              Privacy
+            { lang === "ko" ? "개인정보처리방침 및 위치정보이용약관" : "Privacy"}
             </a>
+            {lang === "fr" ?
+              <a
+                lang="fr"
+                style={{ paddingLeft: "0.8rem" }}
+                href="https://www.microsoft.com/fr-fr/accessibility/accessibilite/accessibility-statement"
+                title="France Digital Accessibility Requirements"
+              >
+                Accessibilité
+              </a> : null}
           </p>
         </article>
 
@@ -363,6 +339,6 @@ export const SiteFooter = (props: Props) => {
         </article>
       </section>
 
-    </footer>
+    </footer >
   )
 }

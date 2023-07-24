@@ -7,7 +7,7 @@ Downleveling is TypeScript's term for transpiling to an older version of JavaScr
 This flag is to enable support for a more accurate implementation of how modern JavaScript iterates through new concepts in older JavaScript runtimes.
 
 ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (el of arr)`), Array spread (`[a, ...b]`), argument spread (`fn(...args)`), and `Symbol.iterator`.
-`--downlevelIteration` allows for these iteration primitives to be used more accurately in ES5 environments if a `Symbol.iterator` implementation is present.
+`downlevelIteration` allows for these iteration primitives to be used more accurately in ES5 environments if a `Symbol.iterator` implementation is present.
 
 #### Example: Effects on `for / of`
 
@@ -80,18 +80,21 @@ const arr = [1].concat(arr2);
 ```
 
 However, this is observably different in certain rare cases.
-For example, if an array has a "hole" in it, the missing index will create an _own_ property if spreaded, but will not if built using `concat`:
+
+For example, if a source array is missing one or more items (contains a hole), the spread syntax will replace each empty item with `undefined`, whereas `.concat` will leave them intact.
 
 ```js
-// Make an array where the '1' element is missing
-let missing = [0, , 1];
-let spreaded = [...missing];
-let concated = [].concat(missing);
+// Make an array where the element at index 1 is missing
+let arrayWithHole = ['a', , 'c'];
+let spread = [...arrayWithHole];
+let concatenated = [].concat(arrayWithHole);
 
-// true
-"1" in spreaded;
-// false
-"1" in concated;
+console.log(arrayWithHole)
+// [ 'a', <1 empty item>, 'c' ]
+console.log(spread)
+// [ 'a', undefined, 'c' ]
+console.log(concatenated)
+// [ 'a', <1 empty item>, 'c' ]
 ```
 
 Just as with `for / of`, `downlevelIteration` will use `Symbol.iterator` (if present) to more accurately emulate ES 6 behavior.

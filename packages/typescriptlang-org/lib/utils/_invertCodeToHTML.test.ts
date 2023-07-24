@@ -1,7 +1,7 @@
 import { invertCodeToHTML } from "./invertCodeToHTML"
 
 const code = `
-//// { compiler: {  }, order: 2 }
+//// { "compiler": {  }, "order": 2 }
 
 // The nullish coalescing operator is an alternative to ||
 // which returns the right-side expression if the left-side
@@ -63,7 +63,7 @@ it("it to convert to markdown", () => {
 
     <code><pre>
     interface AppConfiguration {
-      // Default: \\"(no name)\\"; empty string IS valid
+      // Default: "(no name)"; empty string IS valid
       name:  string;
 
       // Default: -1; 0 is valid
@@ -75,17 +75,17 @@ it("it to convert to markdown", () => {
 
     function updateApp(config: Partial<AppConfiguration>) {
       // With null-coalescing operator
-      config.name = config.name ?? \\"(no name)\\";
+      config.name = config.name ?? "(no name)";
       config.items = config.items ?? -1;
       config.active = config.active ?? true;
 
       // Current solution
-      config.name = typeof config.name === \\"string\\" ? config.name : \\"(no name)\\";
-      config.items = typeof config.items === \\"number\\" ? config.items : -1;
-      config.active = typeof config.active === \\"boolean\\" ? config.active : true;
+      config.name = typeof config.name === "string" ? config.name : "(no name)";
+      config.items = typeof config.items === "number" ? config.items : -1;
+      config.active = typeof config.active === "boolean" ? config.active : true;
 
       // Using || operator which could give bad data
-      config.name = config.name || \\"(no name)\\"; // does not allow for \\"\\" input
+      config.name = config.name || "(no name)"; // does not allow for "" input
       config.items = config.items || -1; // does not allow for 0 input
       config.active = config.active || true; // really bad, always true
     }

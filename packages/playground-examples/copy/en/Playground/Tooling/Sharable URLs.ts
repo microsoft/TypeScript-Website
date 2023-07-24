@@ -1,4 +1,4 @@
-//// { order: 1 }
+//// { "order": 1 }
 
 // With the new Playground, URLs contain a lot more
 // information about your settings. This makes reproductions

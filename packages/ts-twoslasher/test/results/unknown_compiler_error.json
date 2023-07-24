@@ -1,1 +1,6 @@
-No compiler setting named 'targets' exists!
+
+## Invalid inline compiler flag
+
+There isn't a TypeScript compiler flag called 'targets'.
+
+This is likely a typo, you can check all the compiler flags in the TSConfig reference, or check the additional Twoslash flags in the npm page for @typescript/twoslash.

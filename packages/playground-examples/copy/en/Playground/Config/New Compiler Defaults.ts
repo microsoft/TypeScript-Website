@@ -1,4 +1,4 @@
-//// { order: 1 }
+//// { "order": 1 }
 
 // Yes, we know, the defaults for TypeScript's tsconfig do
 // not have strict turned on. However, at every chance we

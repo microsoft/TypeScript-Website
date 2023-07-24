@@ -2,9 +2,9 @@ export const playCopy = {
   play_subnav_title: "Playground",
   play_subnav_config: "TS Config",
   play_config_language_blurb: "Which language should be used in the editor",
+  play_subnav_handbook: "Help",
   play_subnav_examples: "Examples",
   play_subnav_examples_close: "Close",
-  play_subnav_whatsnew: "What's New",
   play_subnav_settings: "Settings",
   play_settings_tabs_settings: "Sidebar Tabs",
   play_downloading_typescript: "Downloading TypeScript...", // when loading
@@ -38,7 +38,7 @@ export const playCopy = {
   play_sidebar_plugins_plugin_dev_option:
     "Connect to <code>localhost:5000</code>",
   play_sidebar_plugins_plugin_dev_copy:
-    "Automatically try connect to a playground plugin in development mode. You can get started with <a href='/dev/playground-plugins/' title='Link to the page about Playground Plugins'>making a plugin here</a>.",
+    "Automatically try to connect to a playground plugin in development mode. You can get started with <a href='/dev/playground-plugins/' title='Link to the page about Playground Plugins'>making a plugin here</a>.",
   play_export_report_issue: "Report GitHub issue on TypeScript",
   play_export_tweet_md: "Tweet link to Playground",
   play_export_copy_md: "Copy as Markdown Issue",
@@ -46,9 +46,11 @@ export const playCopy = {
   play_export_copy_link_preview: "Copy as Markdown Link with Preview",
   play_export_tsast: "Open in TypeScript AST Viewer",
   play_export_bugworkbench: "Open in Bug Workbench",
+  play_export_vscode_dev_play: "Open in VSCode TS Playground (alpha)",
   play_export_sandbox: "Open in CodeSandbox",
   play_export_stackblitz: "Open in StackBlitz",
   play_export_clipboard: "URL copied to clipboard",
+  play_esm_mode: "Switched to ESM mode",
   play_clear_logs: "Logs cleared",
   play_run_js: "Executed JavaScript",
   play_run_ts: "Executed transpiled TypeScript",
@@ -58,7 +60,7 @@ export const playCopy = {
 
 // You could think of it in three ways:
 //
-//  - A place to learn TypeScript in a place where nothing can break
+//  - A location to learn TypeScript where nothing can break
 //  - A place to experiment with TypeScript syntax, and share the URLs with others
 //  - A sandbox to experiment with different compiler features of TypeScript
 
@@ -89,6 +91,7 @@ console.log(anExampleVariable)
   play_sidebar_ast_title: "[WIP] AST Viewer",
   play_sidebar_ast_blurb: "Inspect the TypeScript AST",
 
+  play_sidebar_tools_filter_placeholder: "Filter",
   // Notes:
   // Compiler flag information is all from the tsconfig reference info
 }

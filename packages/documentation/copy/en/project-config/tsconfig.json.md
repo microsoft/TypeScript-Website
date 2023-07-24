@@ -26,7 +26,7 @@ When input files are specified on the command line, `tsconfig.json` files are ig
 
 Example `tsconfig.json` files:
 
-- Using the `"files"` property
+- Using the [`files`](/tsconfig#files) property
 
   ```json tsconfig
   {
@@ -55,7 +55,7 @@ Example `tsconfig.json` files:
   }
   ```
 
-- Using the `"include"` and `"exclude"` properties
+- Using the [`include`](/tsconfig#include) and [`exclude`](/tsconfig#exclude) properties
 
   ```json  tsconfig
   {
@@ -68,7 +68,7 @@ Example `tsconfig.json` files:
       "sourceMap": true
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "exclude": ["**/*.spec.ts"]
   }
   ```
 
@@ -88,19 +88,11 @@ For example, if you were writing a project which uses Node.js version 12 and abo
   },
 
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["**/*.spec.ts"]
 }
 ```
 
 This lets your `tsconfig.json` focus on the unique choices for your project, and not all of the runtime mechanics. There are a few tsconfig bases already, and we're hoping the community can add more for different environments.
-
-- [Recommended](https://www.npmjs.com/package/@tsconfig/recommended)
-- [Node 10](https://www.npmjs.com/package/@tsconfig/node10)
-- [Node 12](https://www.npmjs.com/package/@tsconfig/node12)
-- [Node 14](https://www.npmjs.com/package/@tsconfig/node14)
-- [Deno](https://www.npmjs.com/package/@tsconfig/deno)
-- [React Native](https://www.npmjs.com/package/@tsconfig/react-native)
-- [Svelte](https://www.npmjs.com/package/@tsconfig/svelte)
 
 ## Details
 

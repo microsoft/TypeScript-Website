@@ -10,12 +10,12 @@ Let's get started by building a simple web application with TypeScript.
 
 ## Installing TypeScript
 
-There are two main ways to get the TypeScript available for your project:
+There are two main ways to add TypeScript to your project:
 
 - Via npm (the Node.js package manager)
 - By installing TypeScript's Visual Studio plugins
 
-Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript by default.
+Visual Studio 2017 and Visual Studio 2015 Update 3 include TypeScript language support by default but does not include the TypeScript compiler, `tsc`.
 If you didn't install TypeScript with Visual Studio, you can still [download it](/download).
 
 For npm users:

@@ -97,6 +97,9 @@ export const workbenchAssertionsPlugin: import("../../../../static/js/playground
       if (errorsAsDiags.length) {
         ds.subtitle("Compiler Errors")
         ds.listDiags(sandbox.getModel(), errorsAsDiags)
+
+        ds.subtitle("If want these errors:")
+        ds.code(`// @errors: ${results.errors.map(e => e.code).join(" ")}`)
       }
 
       if (emitRequested) {

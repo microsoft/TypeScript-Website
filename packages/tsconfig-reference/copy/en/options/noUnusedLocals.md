@@ -1,6 +1,6 @@
 ---
 display: "No Unused Locals"
-oneline: "Enable error reporting when a local variables aren't read."
+oneline: "Enable error reporting when local variables aren't read."
 ---
 
 Report errors on unused local variables.

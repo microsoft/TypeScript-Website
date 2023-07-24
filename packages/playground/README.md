@@ -15,15 +15,15 @@ The playground library sits above the [TypeScript sandbox](../sandbox), and prov
 - The export to Code Sandbox/TS AST Viewer/etc features
 
 When deciding where to add a feature to the TypeScript playground, consider if it would be useful to anyone showing
-TypeScript in a REPL. If yes, add it to the playground and expose a function for this library to use. For example
-Automatic Type Acquisition is a feature which lives in the sandbox and not the playground.
+TypeScript in a REPL. If yes, add it to the sandbox and expose a function for the playground to use. For example
+Automatic Type Acquisition is a feature which lives in the sandbox and not the playground because pretty much anyone showing TypeScript code would want it.
 
 ## Link Syntax
 
 The Playground supports a set of query inputs from the URL. The hash is used to reflect the code:
 
 - `#code/PRA` - A base64 and zipped version of the code which should live in the editor
-- `#src/The%20code` - URLEncoded way to have the code for the editor
+- `#src=The%20code` - URLEncoded way to have the code for the editor
 - `#example/generic-functions` - Grab the code from an example with the id generic-functions
 
 Or to trigger some action by default:
@@ -38,8 +38,7 @@ Then queries tend to be about changing the state of the Playground setup from th
   There are two special cases for the `ts` option:
 
   - `ts=Nightly` where it will switch to most recently the nightly version.
-  - `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/master/scripts/createPlaygroundBuild.js)
+  - `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/main/scripts/createPlaygroundBuild.js)
 
 - `?flag=value` - Any compiler flag referenced in can be set from a query
-- `?useJavaScript=true` - Tells the Playground to treat the editor's code as a JS file instead of a TS one
-- `?install-plugin=npm-module` - Checks to see if there is an installed playground plugin of that name, and if not offers to install it in a modal.
+- `?filetype=js|ts|dts` - Tells the Playground to set the editor's type

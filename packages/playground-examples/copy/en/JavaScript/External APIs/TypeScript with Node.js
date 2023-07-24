@@ -1,4 +1,4 @@
-//// { order: 3, isJavaScript: true }
+//// { "order": 3, "isJavaScript": true }
 
 // Node.js is a very popular JavaScript runtime built on v8,
 // the JavaScript engine which powers Chrome. You can use it

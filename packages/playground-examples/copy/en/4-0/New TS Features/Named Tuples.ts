@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.2" } }
+//// { "compiler": { "ts": "4.0.2" } }
 // Tuples are arrays where the order is important to the type system,
 // you can learn more about them in example:tuples
 
@@ -37,7 +37,7 @@ const firstLong = newLocations[0][1]
 // parameters from a function using the Parameter 
 // utility type:
 
-function centerMap(lng: number, lat: number) {}
+function centerMap(lng: number, lat: number) { }
 
 // In 4.0, this keeps lng and lat
 type CenterMapParams = Parameters<typeof centerMap>

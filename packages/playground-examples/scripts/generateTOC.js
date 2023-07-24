@@ -60,10 +60,10 @@ langs.forEach(lang => {
       const preJSON = contents.replace(/\r\n/g, "\n").split("//// {")[1].split("}\n")[0];
       contents = contents.split("\n").slice(1).join("\n");
 
-      const code = "({" + preJSON + "})";
+      const code = "{" + preJSON + "}";
 
       try {
-        const obj = eval(code);
+        const obj = JSON.parse(code);
         if (obj.order) {
           index = obj.order;
           delete obj.order;

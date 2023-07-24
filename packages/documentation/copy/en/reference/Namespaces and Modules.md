@@ -31,7 +31,7 @@ Thus, for new projects modules would be the recommended code organization mechan
 Namespaces are a TypeScript-specific way to organize code.  
 Namespaces are simply named JavaScript objects in the global namespace.
 This makes namespaces a very simple construct to use.
-Unlike modules, they can span multiple files, and can be concatenated using `--outFile`.
+Unlike modules, they can span multiple files, and can be concatenated using [`outFile`](/tsconfig#outFile).
 Namespaces can be a good way to structure your code in a Web Application, with all dependencies included as `<script>` tags in your HTML page.
 
 Just like all global namespace pollution, it can be hard to identify component dependencies, especially in a large application.
@@ -40,7 +40,7 @@ Just like all global namespace pollution, it can be hard to identify component d
 
 In this section we'll describe various common pitfalls in using namespaces and modules, and how to avoid them.
 
-## `/// <reference>`-ing a module
+### `/// <reference>`-ing a module
 
 A common mistake is to try to use the `/// <reference ... />` syntax to refer to a module file, rather than using an `import` statement.
 To understand the distinction, we first need to understand how the compiler can locate the type information for a module based on the path of an `import` (e.g. the `...` in `import x from "...";`, `import x = require("...");`, etc.) path.
@@ -68,7 +68,7 @@ Recall that these need to be declared in a `.d.ts` file.
 The reference tag here allows us to locate the declaration file that contains the declaration for the ambient module.
 This is how the `node.d.ts` file that several of the TypeScript samples use is consumed.
 
-## Needless Namespacing
+### Needless Namespacing
 
 If you're converting a program from namespaces to modules, it can be easy to end up with a file that looks like this:
 
@@ -85,7 +85,7 @@ If you're converting a program from namespaces to modules, it can be easy to end
   }
   ```
 
-The top-level module here `Shapes` wraps up `Triangle` and `Square` for no reason.
+The top-level namespace here `Shapes` wraps up `Triangle` and `Square` for no reason.
 This is confusing and annoying for consumers of your module:
 
 - `shapeConsumer.ts`
@@ -121,8 +121,8 @@ Here's a revised example:
   let t = new shapes.Triangle();
   ```
 
-## Trade-offs of Modules
+### Trade-offs of Modules
 
 Just as there is a one-to-one correspondence between JS files and modules, TypeScript has a one-to-one correspondence between module source files and their emitted JS files.
 One effect of this is that it's not possible to concatenate multiple module source files depending on the module system you target.
-For instance, you can't use the `outFile` option while targeting `commonjs` or `umd`, but with TypeScript 1.8 and later, [it's possible](./release-notes/typescript-1-8.html#concatenate-amd-and-system-modules-with---outfile) to use `outFile` when targeting `amd` or `system`.
+For instance, you can't use the [`outFile`](/tsconfig#outFile) option while targeting `commonjs` or `umd`, but with TypeScript 1.8 and later, [it's possible](./release-notes/typescript-1-8.html#concatenate-amd-and-system-modules-with---outfile) to use [`outFile`](/tsconfig#outFile) when targeting `amd` or `system`.

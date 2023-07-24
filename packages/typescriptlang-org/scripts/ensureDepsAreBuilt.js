@@ -12,9 +12,8 @@ if (!fs.existsSync(nodeModsPath)) {
 const pkgsRoot = join(__dirname, "..", "..")
 const twoslashDist = join(pkgsRoot, "ts-twoslasher", "dist")
 const vfsDist = join(pkgsRoot, "typescript-vfs", "dist")
-const gatsbyShiki = join(pkgsRoot, "gatsby-remark-shiki-twoslash", "dist")
 
-for (const distDir of [twoslashDist, vfsDist, gatsbyShiki]) {
+for (const distDir of [twoslashDist, vfsDist]) {
   if (!fs.existsSync(distDir)) {
     const readline = require("readline")
     const blank = "\n".repeat(process.stdout.rows)

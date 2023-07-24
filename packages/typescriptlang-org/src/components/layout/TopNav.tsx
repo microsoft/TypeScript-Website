@@ -8,6 +8,7 @@ import { DocSearch } from '../DocSearch';
 
 export type Props = {
   lang: string
+  skipToAnchor?: string
 }
 
 import { navCopy } from "../../copy/en/nav"
@@ -17,7 +18,26 @@ import { OpenInMyLangQuickJump } from "./LanguageRecommendation";
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang)
+  const loadDocSearch = () => {
+    const isDev = document.location.host.includes('localhost')
+    let customHandleSelected;
 
+    if (isDev) {
+      customHandleSelected = (input, event, suggestion, datasetNumber, context) => {
+        const urlToOpen = suggestion.url.replace("www.typescriptlang.org", "localhost:8000").replace("https", "http")
+        window.open(urlToOpen)
+      }
+    }
+
+    // @ts-ignore - this comes from the script above
+    docsearch({
+      appId: "BGCDYOIYZ5",
+      apiKey: '37ee06fa68db6aef451a490df6df7c60',
+      indexName: 'typescriptlang',
+      inputSelector: '.search input',
+      handleSelected: customHandleSelected,
+    });
+  }
   // This extra bit of mis-direction ensures that non-essential code runs after
   // the page is loaded
   useEffect(() => {
@@ -26,7 +46,7 @@ export const SiteNav = (props: Props) => {
 
   return (
     <header dir="ltr">
-      <a className="skip-to-main" href="#site-content" tabIndex={0}>{i("skip_to_content")}</a>
+      <a className="skip-to-main" href={props.skipToAnchor || '#site-content'} tabIndex={0}>{i("skip_to_content")}</a>
 
       <div id="top-menu" className="up">
         <div className="left below-small">
@@ -37,13 +57,13 @@ export const SiteNav = (props: Props) => {
           </IntlLink>
 
           <nav role="navigation">
-            <ul>
-              <li className="nav-item hide-small"><IntlLink to="/download">{i("nav_download")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/docs"><span>{i("nav_documentation_short")}</span></IntlLink></li>
-              <li className="nav-item show-only-large"><IntlLink to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/community">{i("nav_community")}</IntlLink></li>
-              <li className="nav-item show-only-largest"><IntlLink to="/play">{i("nav_playground")}</IntlLink></li>
-              <li className="nav-item"><IntlLink to="/tools">{i("nav_tools")}</IntlLink></li>
+            <ul role="tablist" aria-owns="tab1 tab2 tab3 tab4 tab5 tab6" aria-busy="true">
+            <li className="nav-item hide-small" role="none presentation" ><IntlLink id="tab1" role="tab" to="/download">{i("nav_download")}</IntlLink></li>
+              <li className="nav-item" role="none presentation"><IntlLink id="tab2" role="tab" to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
+              <li className="nav-item show-only-large" role="none presentation"><IntlLink id="tab3" role="tab" to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
+              <li className="nav-item" role="none presentation"><IntlLink id="tab4" role="tab" to="/community">{i("nav_community")}</IntlLink></li>
+              <li className="nav-item show-only-largest" role="none presentation"><IntlLink id="tab5" role="tab" to="/play">{i("nav_playground")}</IntlLink></li>
+              <li className="nav-item" role="none presentation"><IntlLink id="tab6" role="tab" to="/tools">{i("nav_tools")}</IntlLink></li>
             </ul>
           </nav>
 
@@ -52,16 +72,14 @@ export const SiteNav = (props: Props) => {
 
         <div className="right above-small">
           <div className="search-section">
-            <ul>
-              <OpenInMyLangQuickJump />
-              <li className="nav-item">
-                <DocSearch
+            <OpenInMyLangQuickJump />
+            <div className="nav-item">
+              <DocSearch
                   apiKey="3c2db2aef0c7ff26e8911267474a9b2c"
                   indexName="typescriptlang"
                   appId="BH4D9OD16A"
                 />
-              </li>
-            </ul>
+            </div>
           </div>
         </div>
       </div>

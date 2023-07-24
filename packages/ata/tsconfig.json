@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "target": "ES2015",
+        "declaration": false,
+        "noEmit": true
+    }
+}

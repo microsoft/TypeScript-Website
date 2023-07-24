@@ -35,7 +35,7 @@ function concat<A, B>(arr1: [A, B], arr2: []): [A, B];
 function concat<A, B, C>(arr1: [A, B, C], arr2: []): [A, B, C];
 function concat<A, B, C, D>(arr1: [A, B, C, D], arr2: []): [A, B, C, D];
 function concat<A, B, C, D, E>(arr1: [A, B, C, D, E], arr2: []): [A, B, C, D, E];
-function concat<A, B, C, D, E, F>(arr1: [A, B, C, D, E, F], arr2: []): [A, B, C, D, E, F];)
+function concat<A, B, C, D, E, F>(arr1: [A, B, C, D, E, F], arr2: []): [A, B, C, D, E, F];
 ```
 
 Uh...okay, that's...seven overloads for when the second array is always empty.
@@ -272,7 +272,7 @@ To learn more, check out [the pull request](https://github.com/microsoft/TypeScr
 
 ## Class Property Inference from Constructors
 
-TypeScript 4.0 can now use control flow analysis to determine the types of properties in classes when `noImplicitAny` is enabled.
+TypeScript 4.0 can now use control flow analysis to determine the types of properties in classes when [`noImplicitAny`](/tsconfig#noImplicitAny) is enabled.
 
 <!--prettier-ignore -->
 ```ts twoslash
@@ -293,7 +293,7 @@ In cases where not all paths of a constructor assign to an instance member, the 
 
 <!--prettier-ignore -->
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 class Square {
   sideLength;
 // ^?
@@ -310,7 +310,7 @@ class Square {
 }
 ```
 
-In cases where you know better (e.g. you have an `initialize` method of some sort), you'll still need an explicit type annotation along with a definite assignment assertion (`!`) if you're in `strictPropertyInitialization`.
+In cases where you know better (e.g. you have an `initialize` method of some sort), you'll still need an explicit type annotation along with a definite assignment assertion (`!`) if you're in [`strictPropertyInitialization`](/tsconfig#strictPropertyInitialization).
 
 ```ts twoslash
 class Square {
@@ -455,6 +455,7 @@ Since the beginning days of TypeScript, `catch` clause variables have always bee
 This meant that TypeScript allowed you to do anything you wanted with them.
 
 ```ts twoslash
+// @useUnknownInCatchVariables: false
 try {
   // Do some work
 } catch (x) {
@@ -474,7 +475,7 @@ That's why TypeScript 4.0 now lets you specify the type of `catch` clause variab
 
 <!--prettier-ignore -->
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 try {
   // ...
 } catch (e: unknown) {
@@ -488,7 +489,7 @@ try {
 }
 ```
 
-While the types of `catch` variables won't change by default, we might consider a new `--strict` mode flag in the future so that users can opt in to this behavior.
+While the types of `catch` variables won't change by default, we might consider a new [`strict`](/tsconfig#strict) mode flag in the future so that users can opt in to this behavior.
 In the meantime, it should be possible to write a lint rule to force `catch` variables to have an explicit annotation of either `: any` or `: unknown`.
 
 For more details you can [peek at the changes for this feature](https://github.com/microsoft/TypeScript/pull/39015).
@@ -499,7 +500,7 @@ When using JSX, a [_fragment_](https://reactjs.org/docs/fragments.html) is a typ
 When we first implemented fragments in TypeScript, we didn't have a great idea about how other libraries would utilize them.
 Nowadays most other libraries that encourage using JSX and support fragments have a similar API shape.
 
-In TypeScript 4.0, users can customize the fragment factory through the new `jsxFragmentFactory` option.
+In TypeScript 4.0, users can customize the fragment factory through the new [`jsxFragmentFactory`](/tsconfig#jsxFragmentFactory) option.
 
 As an example, the following `tsconfig.json` file tells TypeScript to transform JSX in a way compatible with React, but switches each factory invocation to `h` instead of `React.createElement`, and uses `Fragment` instead of `React.Fragment`.
 
@@ -561,17 +562,17 @@ You can see that [the pull request](https://github.com/microsoft/TypeScript/pull
 
 ## Speed Improvements in `build` mode with `--noEmitOnError`
 
-Previously, compiling a program after a previous compile with errors under `--incremental` would be extremely slow when using the `--noEmitOnError` flag.
-This is because none of the information from the last compilation would be cached in a `.tsbuildinfo` file based on the `--noEmitOnError` flag.
+Previously, compiling a program after a previous compile with errors under [`incremental`](/tsconfig#incremental) would be extremely slow when using the [`noEmitOnError`](/tsconfig#noEmitOnError) flag.
+This is because none of the information from the last compilation would be cached in a `.tsbuildinfo` file based on the [`noEmitOnError`](/tsconfig#noEmitOnError) flag.
 
-TypeScript 4.0 changes this which gives a great speed boost in these scenarios, and in turn improves `--build` mode scenarios (which imply both `--incremental` and `--noEmitOnError`).
+TypeScript 4.0 changes this which gives a great speed boost in these scenarios, and in turn improves `--build` mode scenarios (which imply both [`incremental`](/tsconfig#incremental) and [`noEmitOnError`](/tsconfig#noEmitOnError)).
 
 For details, [read up more on the pull request](https://github.com/microsoft/TypeScript/pull/38853).
 
 ## `--incremental` with `--noEmit`
 
-TypeScript 4.0 allows us to use the `--noEmit` flag when while still leveraging `--incremental` compiles.
-This was previously not allowed, as `--incremental` needs to emit a `.tsbuildinfo` files; however, the use-case to enable faster incremental builds is important enough to enable for all users.
+TypeScript 4.0 allows us to use the [`noEmit`](/tsconfig#noEmit) flag when while still leveraging [`incremental`](/tsconfig#incremental) compiles.
+This was previously not allowed, as [`incremental`](/tsconfig#incremental) needs to emit a `.tsbuildinfo` files; however, the use-case to enable faster incremental builds is important enough to enable for all users.
 
 For more details, you can [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/39122).
 
@@ -601,7 +602,7 @@ For more details, [check out the pull request for this feature](https://github.c
 
 ### `/** @deprecated */` Support
 
-TypeScript's editing support now recognizes when a declaration has been marked with a `/** @deprecated *` JSDoc comment.
+TypeScript's editing support now recognizes when a declaration has been marked with a `/** @deprecated */` JSDoc comment.
 That information is surfaced in completion lists and as a suggestion diagnostic that editors can handle specially.
 In an editor like VS Code, deprecated values are typically displayed a strike-though style ~~like this~~.
 
@@ -678,7 +679,7 @@ MDN recommends moving to [`self.origin`](https://developer.mozilla.org/en-US/doc
 
 ### Properties Overriding Accessors (and vice versa) is an Error
 
-Previously, it was only an error for properties to override accessors, or accessors to override properties, when using `useDefineForClassFields`; however, TypeScript now always issues an error when declaring a property in a derived class that would override a getter or setter in the base class.
+Previously, it was only an error for properties to override accessors, or accessors to override properties, when using [`useDefineForClassFields`](/tsconfig#useDefineForClassFields); however, TypeScript now always issues an error when declaring a property in a derived class that would override a getter or setter in the base class.
 
 ```ts twoslash
 // @errors: 1049 2610
@@ -713,7 +714,7 @@ See more details on [the implementing pull request](https://github.com/microsoft
 
 ### Operands for `delete` must be optional.
 
-When using the `delete` operator in `strictNullChecks`, the operand must now be `any`, `unknown`, `never`, or be optional (in that it contains `undefined` in the type).
+When using the `delete` operator in [`strictNullChecks`](/tsconfig#strictNullChecks), the operand must now be `any`, `unknown`, `never`, or be optional (in that it contains `undefined` in the type).
 Otherwise, use of the `delete` operator is an error.
 
 ```ts twoslash

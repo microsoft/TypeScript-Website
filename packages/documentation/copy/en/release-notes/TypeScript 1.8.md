@@ -37,7 +37,7 @@ Read on to get more details, and check out these errors in action:
 
 Statements guaranteed to not be executed at run time are now correctly flagged as unreachable code errors.
 For instance, statements following unconditional `return`, `throw`, `break` or `continue` statements are considered unreachable.
-Use `--allowUnreachableCode` to disable unreachable code detection and reporting.
+Use [`allowUnreachableCode`](/tsconfig#allowUnreachableCode) to disable unreachable code detection and reporting.
 
 ##### Example
 
@@ -72,7 +72,7 @@ Since JavaScript automatically terminates the `return` statement at the end of t
 
 Unused labels are also flagged.
 Just like unreachable code checks, these are turned on by default;
-use `--allowUnusedLabels` to stop reporting these errors.
+use [`allowUnusedLabels`](/tsconfig#allowUnusedLabels) to stop reporting these errors.
 
 ##### Example
 
@@ -87,7 +87,7 @@ loop: while (x > 0) {
 
 Functions with code paths that do not return a value in JS implicitly return `undefined`.
 These can now be flagged by the compiler as implicit returns.
-The check is turned _off_ by default; use `--noImplicitReturns` to turn it on.
+The check is turned _off_ by default; use [`noImplicitReturns`](/tsconfig#noImplicitReturns) to turn it on.
 
 ##### Example
 
@@ -105,11 +105,11 @@ function f(x) {
 ### Case clause fall-throughs
 
 TypeScript can reports errors for fall-through cases in switch statement where the case clause is non-empty.
-This check is turned _off_ by default, and can be enabled using `--noFallthroughCasesInSwitch`.
+This check is turned _off_ by default, and can be enabled using [`noFallthroughCasesInSwitch`](/tsconfig#noFallthroughCasesInSwitch).
 
 ##### Example
 
-With `--noFallthroughCasesInSwitch`, this example will trigger an error:
+With [`noFallthroughCasesInSwitch`](/tsconfig#noFallthroughCasesInSwitch), this example will trigger an error:
 
 ```ts
 switch (x % 2) {
@@ -309,9 +309,9 @@ function test2(x: Maybe<number>) {
 
 ## Concatenate `AMD` and `System` modules with `--outFile`
 
-Specifying `--outFile` in conjunction with `--module amd` or `--module system` will concatenate all modules in the compilation into a single output file containing multiple module closures.
+Specifying [`outFile`](/tsconfig#outFile) in conjunction with `--module amd` or `--module system` will concatenate all modules in the compilation into a single output file containing multiple module closures.
 
-A module name will be computed for each module based on its relative location to `rootDir`.
+A module name will be computed for each module based on its relative location to [`rootDir`](/tsconfig#rootDir).
 
 ##### Example
 
@@ -353,7 +353,7 @@ define("a", ["require", "exports", "lib/b"], function (require, exports, B) {
 
 Module loaders like SystemJS wrap CommonJS modules and expose then as a `default` ES6 import. This makes it impossible to share the definition files between the SystemJS and CommonJS implementation of the module as the module shape looks different based on the loader.
 
-Setting the new compiler flag `--allowSyntheticDefaultImports` indicates that the module loader performs some kind of synthetic default import member creation not indicated in the imported .ts or .d.ts. The compiler will infer the existence of a `default` export that has the shape of the entire module itself.
+Setting the new compiler flag [`allowSyntheticDefaultImports`](/tsconfig#allowSyntheticDefaultImports) indicates that the module loader performs some kind of synthetic default import member creation not indicated in the imported .ts or .d.ts. The compiler will infer the existence of a `default` export that has the shape of the entire module itself.
 
 System modules have this flag on by default.
 
@@ -429,7 +429,7 @@ Often there are external source files in your project that may not be authored i
 Alternatively, you might be in the middle of converting a JS code base into TS, but still want to bundle all your JS code into a single file with the output of your new TS code.
 
 `.js` files are now allowed as input to `tsc`.
-The TypeScript compiler checks the input `.js` files for syntax errors, and emits valid output based on the `--target` and `--module` flags.
+The TypeScript compiler checks the input `.js` files for syntax errors, and emits valid output based on the [`target`](/tsconfig#target) and [`module`](/tsconfig#module) flags.
 The output can be combined with other `.ts` files as well.
 Source maps are still generated for `.js` files just like with `.ts` files.
 
@@ -466,7 +466,7 @@ var div = jsxFactory_1.jsxFactory.createElement("div", null, "Hello JSX!");
 TypeScript 1.8 extends [user-defined type guard functions](./typescript-1.6.html#user-defined-type-guard-functions) to class and interface methods.
 
 `this is T` is now valid return type annotation for methods in classes and interfaces.
-When used in a type narowing position (e.g. `if` statement), the type of the call expression target object would be narrowed to `T`.
+When used in a type narrowing position (e.g. `if` statement), the type of the call expression target object would be narrowed to `T`.
 
 ##### Example
 
@@ -524,7 +524,7 @@ Also, a nightly NuGet package to match the [nightly npm package](http://blogs.ms
 We understand that a ton of monochrome output can be a little difficult on the eyes.
 Colors can help discern where a message starts and ends, and these visual clues are important when error output gets overwhelming.
 
-By just passing the `--pretty` command line option, TypeScript gives more colorful output with context about where things are going wrong.
+By just passing the [`pretty`](/tsconfig#pretty) command line option, TypeScript gives more colorful output with context about where things are going wrong.
 
 ![Showing off pretty error messages in ConEmu](https://raw.githubusercontent.com/wiki/Microsoft/TypeScript/images/new-in-typescript/pretty01.png)
 
@@ -565,7 +565,7 @@ It's always nice to be able to document your configuration!
 
 ## Support output to IPC-driven files
 
-TypeScript 1.8 allows users to use the `--outFile` argument with special file system entities like named pipes, devices, etc.
+TypeScript 1.8 allows users to use the [`outFile`](/tsconfig#outFile) argument with special file system entities like named pipes, devices, etc.
 
 As an example, on many Unix-like systems, the standard output stream is accessible by the file `/dev/stdout`.
 

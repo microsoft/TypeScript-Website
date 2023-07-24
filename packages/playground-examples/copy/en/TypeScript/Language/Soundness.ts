@@ -1,4 +1,4 @@
-//// {compiler: { strictFunctionTypes: false } }
+//// { "compiler": { "strictFunctionTypes": false } }
 
 // Without a background in type theory, you're unlikely
 // to be familiar with the idea of a type system being "sound".
@@ -51,23 +51,23 @@ interface KeyboardInputEvent extends InputEvent {
   keyCode: number;
 }
 
-function listenForEvent(eventType: "keyboard" | "mouse", handler: (event: InputEvent) => void) {}
+function listenForEvent(eventType: "keyboard" | "mouse", handler: (event: InputEvent) => void) { }
 
 // You can re-declare the parameter type to be a subtype of
 // the declaration. Above, handler expected a type InputEvent
 // but in the below usage examples - TypeScript accepts
 // a type which has additional properties.
 
-listenForEvent("keyboard", (event: KeyboardInputEvent) => {});
-listenForEvent("mouse", (event: MouseInputEvent) => {});
+listenForEvent("keyboard", (event: KeyboardInputEvent) => { });
+listenForEvent("mouse", (event: MouseInputEvent) => { });
 
 // This can go all the way back to the smallest common type:
 
-listenForEvent("mouse", (event: {}) => {});
+listenForEvent("mouse", (event: {}) => { });
 
 // But no further:
 
-listenForEvent("mouse", (event: string) => {});
+listenForEvent("mouse", (event: string) => { });
 
 // This covers the real-world pattern of event listener
 // in JavaScript, at the expense of having being sound.
@@ -90,7 +90,7 @@ listenForEvent("mouse", (event: string) => {});
 // TypeScript will not have a way to enforce the number of
 // parameters available to a callback.
 
-function getRandomNumbers(count: number, callback: (...args: number[]) => void) {}
+function getRandomNumbers(count: number, callback: (...args: number[]) => void) { }
 
 getRandomNumbers(2, (first, second) => console.log([first, second]));
 getRandomNumbers(400, (first) => console.log(first));

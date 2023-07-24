@@ -8,7 +8,7 @@
   height: 3rem;
   position: relative;
 
-  > ul {
+  >ul {
     display: flex;
     padding: 0;
     margin: 0;
@@ -50,18 +50,27 @@
       color: var(--text-color);
     }
 
-    &.dropdown.open ul {
-      display: block;
+    &.dropdown.open {
+
+      ul,
+      .dropdown-dialog {
+        display: block;
+      }
     }
 
-    &.dropdown ul {
-      display: none;
+    &.dropdown {
 
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1;
-      float: left;
+      ul,
+      .dropdown-dialog {
+
+        display: none;
+
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        float: left;
+      }
     }
 
     // Menu items
@@ -120,7 +129,7 @@
     }
 
     // Examples dropdown
-    &.dropdown ul.examples-dropdown {
+    &.dropdown .dropdown-dialog {
       width: 800px;
       overflow-y: scroll;
       padding: 2rem;
@@ -138,11 +147,17 @@
         padding-bottom: 0.2rem;
       }
 
+      #config-container p {
+        margin: 0;
+        margin-bottom: 8px;
+        margin-left: 4px;
+      }
+
       #config-container #boolean-options-container {
         display: flex;
         flex-wrap: wrap;
 
-        > div {
+        >div {
           min-width: 200px;
           max-width: 400px;
 
@@ -176,7 +191,7 @@
               position: absolute;
             }
 
-            > span {
+            >span {
               font-family: $font-code;
               margin-left: 4px;
             }
@@ -199,7 +214,7 @@
 
           span.compiler-flag-blurb {
             display: block;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--body-font);
             font-weight: 400;
           }
         }
@@ -209,19 +224,28 @@
 }
 
 // The subnav which starts with "Playground"
-main > nav {
+main>nav {
   position: relative;
 
-  .examples-dropdown {
+  .dropdown-dialog {
     padding-left: 0;
     background-color: var(--playground-dropdown-bg);
   }
 
-  > ul {
+  >ul {
+    li.disabled {
+      opacity: 0.5;
+    }
+
     li.active {
+
       &:hover,
       &.open {
         background-color: var(--playground-dropdown-bg);
+      }
+
+      &.open .caret {
+        transform: scaleY(-1);
       }
 
       &.name:hover {
@@ -230,34 +254,37 @@ main > nav {
     }
   }
 
-  .examples-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-
   .examples {
     height: auto;
     box-shadow: none;
   }
 }
 
+button.examples-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
 // The toolbar for the editor
 main #editor-toolbar {
+
   // For the main buttons
-  > ul > li {
+  >ul>li {
     margin-left: 0px;
     margin-bottom: 0px;
 
-    > a {
+    >a {
       // Fix their vertical centering
       padding-top: 0.8rem;
+
       &:hover {
         @media (prefers-color-scheme: dark) {
           border-bottom: 1px solid white;
         }
       }
     }
+
     // Ensure menus use this button for
     // their x
     position: relative;
@@ -286,7 +313,7 @@ main #editor-toolbar {
   border-left: 4px solid transparent;
 }
 
-#editor-toolbar > ul > li > a:first-child {
+#editor-toolbar>ul>li>a:first-child {
   padding-left: 1rem;
 }
 
@@ -298,14 +325,235 @@ main #editor-toolbar {
     padding: 0;
   }
 
+  // Used for stories
+  #navigation-container {
+    background-color: var(--blue-tinged-bg);
+    overflow-y: auto;
+
+    h4 {
+      margin-top: 12px;
+      margin-left: 12px;
+    }
+
+    ul {
+      padding: 0;
+
+      li {
+        padding-left: 12px;
+        list-style: none;
+        font-size: 14px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        line-height: 22px;
+        height: 22px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: 0;
+        border-radius: 0px 3px 3px 0px;
+
+        a {
+          display: block;
+          text-decoration: none;
+
+          svg {
+            margin-right: 8px;
+          }
+        }
+
+        &.selectable:hover {
+          background-color: #ffffff50;
+        }
+
+        &.selectable.selected {
+          background-color: var(--blue-tinged-strong);
+
+          // font-weight: bold;
+          a {
+            color: var(--text-color);
+          }
+
+          path {
+            stroke: var(--text-color);
+          }
+        }
+
+        hr {
+          width: 60px;
+          margin-left: 0;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  #story-container {
+    padding: 20px;
+    padding-top: 0;
+    overflow-y: auto;
+    font-size: 0.9rem;
+
+    .highlight pre {
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+      background-color: #f7f7f7;
+      border-radius: 3px;
+    }
+
+    details[open] {
+      padding-left: 1rem;
+      border-left: 2px solid var(--blue-tinged-strong);
+
+      summary {
+        margin-left: -0.5rem;
+      }
+    }
+
+    summary {
+      &:hover {
+        cursor: pointer;
+        background-color: var(--background-minor-highlight-color);
+      }
+    }
+
+    kbd {
+      background-color: #f7f7f7;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+      color: #333;
+      display: inline-block;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      margin: 0 0.1em;
+      padding: 0.1em 0.6em;
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    .highlight {
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .pl-c {
+      color: #969896;
+    }
+
+    .pl-c1,
+    .pl-s .pl-v {
+      color: #0086b3;
+    }
+
+    .pl-e,
+    .pl-en {
+      color: #795da3;
+    }
+
+    .pl-s .pl-s1,
+    .pl-smi {
+      color: #333;
+    }
+
+    .pl-ent {
+      color: #63a35c;
+    }
+
+    .pl-k {
+      color: #a71d5d;
+    }
+
+    .pl-pds,
+    .pl-s,
+    .pl-s .pl-pse .pl-s1,
+    .pl-sr,
+    .pl-sr .pl-cce,
+    .pl-sr .pl-sra,
+    .pl-sr .pl-sre {
+      color: #183691;
+    }
+
+    .pl-v {
+      color: #ed6a43;
+    }
+
+    .pl-id {
+      color: #b52a1d;
+    }
+
+    .pl-ii {
+      background-color: #b52a1d;
+      color: #f8f8f8;
+    }
+
+    .pl-sr .pl-cce {
+      color: #63a35c;
+      font-weight: bold;
+    }
+
+    .pl-ml {
+      color: #693a17;
+    }
+
+    .pl-mh,
+    .pl-mh .pl-en,
+    .pl-ms {
+      color: #1d3e81;
+      font-weight: bold;
+    }
+
+    .pl-mq {
+      color: #008080;
+    }
+
+    .pl-mi {
+      color: #333;
+      font-style: italic;
+    }
+
+    .pl-mb {
+      color: #333;
+      font-weight: bold;
+    }
+
+    .pl-md {
+      background-color: #ffecec;
+      color: #bd2c00;
+    }
+
+    .pl-mi1 {
+      background-color: #eaffea;
+      color: #55a532;
+    }
+
+    .pl-mdr {
+      color: #795da3;
+      font-weight: bold;
+    }
+
+    .pl-mo {
+      color: #1d3e81;
+    }
+  }
+
   #editor-container {
     width: calc(100% - 360px);
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     -webkit-font-smoothing: subpixel-antialiased;
     background-color: var(--playground-dropdown-bg);
+
+    .editor-section {
+      display: flex;
+      flex-direction: column;
+    }
 
     #monaco-editor-embed {
       height: 100%;
@@ -319,10 +567,11 @@ main #editor-toolbar {
       margin-bottom: 10px;
 
       position: relative;
+
       ul.right {
         background-color: var(--playground-dropdown-bg);
 
-        position: absolute;
+        position: relative;
         right: 0;
       }
     }
@@ -335,8 +584,19 @@ main #editor-toolbar {
     border-left: 1px var(--playground-dragbar-border) solid;
     margin-left: 2px;
 
+    &.left {
+      border-left: none;
+      background-color: var(--blue-tinged-bg);
+      border-right: 1px var(--playground-dragbar-border) solid;
+      margin-left: 0;
+    }
+
     &:hover {
-      background-color: lightgrey;
+      background-color: var(--blue-tinged-tinged-strong);
+    }
+
+    &.selected {
+      background-color: var(--blue-tinged-strong);
     }
   }
 
@@ -383,16 +643,17 @@ main #editor-toolbar {
       }
 
       pre {
-        background-color: var(--playground-pre-bg);
+        background-color: var(--pure-background);
         color: var(--text-color);
         border: none;
         overflow-x: auto;
         width: 100%;
+        padding: 0 10px;
 
         code {
           font-family: $font-code;
-          font-size: 0.7rem;
-          line-height: 0.7rem;
+          font-size: 14px;
+          line-height: 19px;
         }
       }
     }
@@ -413,7 +674,7 @@ main #editor-toolbar {
       flex-wrap: wrap;
 
       button {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: var(--body-font);
         cursor: pointer;
         margin: 5px 2px;
         margin-top: 14px;
@@ -424,7 +685,6 @@ main #editor-toolbar {
         color: inherit;
         border: none;
         cursor: pointer;
-        outline: inherit;
         position: relative;
 
         .plugin-tab-notification {
@@ -465,11 +725,31 @@ main #editor-toolbar {
 
 /** Design System Tweaks **/
 .playground-plugin-container {
+  #log-tools {
+    display: flex;
+    border-top: 1px var(--playground-dragbar-border) solid;
+    border-bottom: 1px var(--playground-dragbar-border) solid;
+    margin-top: 1px;
+    padding: 3px;
+    align-items: center;
+
+    svg {
+      stroke: var(--text-color);
+      cursor: pointer;
+      padding-right: 5px;
+    }
+  }
+
   #log-container {
     overflow: auto;
     font-family: $font-code;
     line-height: 1.5rem;
     white-space: pre-wrap;
+    height: 95%;
+
+    #log {
+      margin-top: 1rem;
+    }
 
     .log-warn {
       color: orange;
@@ -516,20 +796,35 @@ main #editor-toolbar {
 
       span.ast-node-number {
         color: blue;
+        .dark-theme & {
+          color: lightskyblue;
+        }
       }
+
       span.ast-node-string {
         color: green;
+        .dark-theme & {
+          color: greenyellow;
+        }
       }
+
       span.ast-node-boolean {
         color: red;
+        .dark-theme & {
+          color: coral;
+        }
       }
+
       span.ast-node-undefined {
         color: brown;
+        .dark-theme & {
+          color: sandybrown;
+        }
       }
     }
 
     // When showing a list of children, always do block so that they are newlined
-    .ast-children > div.ast-tree-start {
+    .ast-children>div.ast-tree-start {
       display: block;
       margin-left: 12px;
       min-height: 1rem;
@@ -547,7 +842,7 @@ main #editor-toolbar {
       }
 
       &.open {
-        > a.node-name {
+        >a.node-name {
           top: 4px;
         }
       }
@@ -559,6 +854,10 @@ main #editor-toolbar {
         font-weight: bold;
         position: relative; // for the + and -
         top: 0px;
+
+        .dark-theme & {
+          color: orchid;
+        }
 
         &:hover {
           text-decoration: underline;
@@ -578,16 +877,17 @@ main #editor-toolbar {
 
     div.ast-tree-start.open {
       display: block;
-      > ul {
+
+      >ul {
         display: block;
       }
     }
 
-    div.ast-tree-start > a:not(:last-child):before {
+    div.ast-tree-start>a:not(:last-child):before {
       content: "+";
     }
 
-    div.ast-tree-start.open > a:not(:last-child):before {
+    div.ast-tree-start.open>a:not(:last-child):before {
       content: "-";
     }
   }
@@ -600,9 +900,11 @@ main #editor-toolbar {
     li.diagnostic {
       margin: 0;
       list-style: none;
-      padding-left: 2rem;
+      padding-left: 1rem;
       margin-bottom: 1rem;
       cursor: pointer;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
     }
 
     .error {
@@ -627,6 +929,7 @@ main #editor-toolbar {
       li {
         margin-bottom: 0.2rem;
       }
+
       span {
         margin-right: 1rem;
       }
@@ -634,9 +937,11 @@ main #editor-toolbar {
 
     li {
       list-style: none;
+
       span {
         font-weight: 600;
       }
+
       margin-bottom: 1rem;
     }
   }
@@ -650,6 +955,7 @@ main #editor-toolbar {
   0% {
     background-color: yellow;
   }
+
   100% {
     background-color: inherit;
   }
@@ -677,6 +983,7 @@ input.good {
 #playground-container .playground-plugins {
   &.featured {
     border: 1px solid lightgrey;
+
     li {
       border-bottom: 1px solid lightgrey;
     }
@@ -704,6 +1011,7 @@ input.good {
   label {
     padding-left: 30px;
     padding-right: 10px;
+
     span {
       font-weight: 600;
     }
@@ -719,6 +1027,7 @@ input.good {
     text-align: center;
     text-decoration: none;
     line-height: 1rem;
+
     &:hover {
       background-color: #fcb7b7;
       color: red;
@@ -743,11 +1052,9 @@ input.good {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.75);
   top: 0;
   left: 0;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
   z-index: 100;
 }
 
@@ -799,13 +1106,11 @@ input.good {
 
     &.warning {
       color: white;
-      background: repeating-linear-gradient(
-        45deg,
-        #d63131,
-        #d63131 10px,
-        #c63131 10px,
-        #c63131 20px
-      );
+      background: repeating-linear-gradient(45deg,
+          #d63131,
+          #d63131 10px,
+          #c63131 10px,
+          #c63131 20px);
     }
   }
 }
@@ -827,6 +1132,7 @@ input.good {
     position: relative;
     width: 80px;
     height: 80px;
+
     div {
       position: absolute;
       width: 16px;
@@ -840,41 +1146,49 @@ input.good {
         left: 8px;
         animation-delay: 0s;
       }
+
       &:nth-child(2) {
         top: 8px;
         left: 32px;
         animation-delay: -0.4s;
       }
+
       &:nth-child(3) {
         top: 8px;
         left: 56px;
         animation-delay: -0.8s;
       }
+
       &:nth-child(4) {
         top: 32px;
         left: 8px;
         animation-delay: -0.4s;
       }
+
       &:nth-child(5) {
         top: 32px;
         left: 32px;
         animation-delay: -0.8s;
       }
+
       &:nth-child(6) {
         top: 32px;
         left: 56px;
         animation-delay: -1.2s;
       }
+
       &:nth-child(7) {
         top: 56px;
         left: 8px;
         animation-delay: -0.8s;
       }
+
       &:nth-child(8) {
         top: 56px;
         left: 32px;
         animation-delay: -1.2s;
       }
+
       &:nth-child(9) {
         top: 56px;
         left: 56px;
@@ -885,10 +1199,12 @@ input.good {
 }
 
 @keyframes lds-grid {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -921,4 +1237,8 @@ input.good {
     /* help Safari with blurred text */
     transform: translateZ(0);
   }
+}
+
+.monaco-list {
+  background-color: var(--background-color);
 }

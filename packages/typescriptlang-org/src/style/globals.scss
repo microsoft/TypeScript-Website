@@ -1,3 +1,5 @@
+// The CSS Vars live in main.scss
+
 $ts-main-blue-color: #3178c6;
 $ts-main-blue-darker-color: #235a97;
 $ts-main-blue-lighter-color: #358ef1;
@@ -11,6 +13,7 @@ $ts-js-yellow-bright-color: #f1dd35;
 $ts-js-yellow-muted-color: #c6bf31;
 
 $ts-light-bg-sandy-color: #faf9f8;
+$ts-light-bg-sandy-color-20: #faf9f820;
 $ts-light-bg-grey: #eeeeee;
 $ts-light-bg-grey-highlight-color: #f2f2f2;
 
@@ -23,13 +26,10 @@ $ts-muted-red: #c63131;
 $ts-muted-green: #086f56;
 $ts-muted-purple: #4e086f;
 
+$ts-sidebar-link: #2866a9;
+
 $screen-xs: 480px;
-
-$font-body: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
-  "Helvetica Neue", sans-serif;
-
-$font-code: "Cascadia Mono-SemiLight", "JetBrains Mono", Menlo, Monaco, Consolas,
-  "Courier New", monospace;
+$font-code: var(--code-font);
 
 // Small screen / tablet
 $screen-sm: 800px;

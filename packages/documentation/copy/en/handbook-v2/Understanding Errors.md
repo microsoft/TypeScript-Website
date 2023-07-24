@@ -3,7 +3,6 @@ title: Understanding Errors
 layout: docs
 permalink: /docs/handbook/2/understanding-errors.html
 oneline: "How to read TypeScript errors."
-beta: true
 ---
 
 # Understanding Errors

@@ -1,4 +1,4 @@
-//// { order: 0, compiler: { target: 1 } }
+//// { "order": 0, "compiler": { "target": 1 } }
 
 // Welcome to the TypeScript playground. This site is a lot
 // like running a TypeScript project inside a web browser.

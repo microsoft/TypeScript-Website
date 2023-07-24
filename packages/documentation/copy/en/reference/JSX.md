@@ -16,7 +16,7 @@ TypeScript supports embedding, type checking, and compiling JSX directly to Java
 In order to use JSX you must do two things.
 
 1. Name your files with a `.tsx` extension
-2. Enable the `jsx` option
+2. Enable the [`jsx`](/tsconfig#jsx) option
 
 TypeScript ships with three JSX modes: `preserve`, `react`, and `react-native`.
 These modes only affect the emit stage - type checking is unaffected.
@@ -33,16 +33,16 @@ The `react-native` mode is the equivalent of `preserve` in that it keeps all JSX
 | `react-jsx`    | `<div />` | `_jsx("div", {}, void 0);`                        | `.js`                 |
 | `react-jsxdev` | `<div />` | `_jsxDEV("div", {}, void 0, false, {...}, this);` | `.js`                 |
 
-You can specify this mode using either the `--jsx` command line flag or the corresponding option [`jsx` in your tsconfig.json](/tsconfig#jsx) file.
+You can specify this mode using either the [`jsx`](/tsconfig#jsx) command line flag or the corresponding option [`jsx` in your tsconfig.json](/tsconfig#jsx) file.
 
-> \*Note: You can specify the JSX factory function to use when targeting react JSX emit with `--jsxFactory` option (defaults to `React.createElement`)
+> \*Note: You can specify the JSX factory function to use when targeting react JSX emit with [`jsxFactory`](/tsconfig#jsxFactory) option (defaults to `React.createElement`)
 
 ## The `as` operator
 
 Recall how to write a type assertion:
 
 ```ts
-var foo = <foo>bar;
+const foo = <foo>bar;
 ```
 
 This asserts the variable `bar` to have the type `foo`.
@@ -52,7 +52,7 @@ Since the above syntax cannot be used in `.tsx` files, an alternate type asserti
 The example can easily be rewritten with the `as` operator.
 
 ```ts
-var foo = bar as foo;
+const foo = bar as foo;
 ```
 
 The `as` operator is available in both `.ts` and `.tsx` files, and is identical in behavior to the angle-bracket type assertion style.
@@ -70,7 +70,7 @@ This is important for two reasons:
 TypeScript uses the [same convention that React does](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) for distinguishing between these.
 An intrinsic element always begins with a lowercase letter, and a value-based element always begins with an uppercase letter.
 
-## Intrinsic elements
+### Intrinsic elements
 
 Intrinsic elements are looked up on the special interface `JSX.IntrinsicElements`.
 By default, if this interface is not specified, then anything goes and intrinsic elements will not be type checked.
@@ -100,7 +100,7 @@ declare namespace JSX {
 }
 ```
 
-## Value-based elements
+### Value-based elements
 
 Value-based elements are simply looked up by identifiers that are in scope.
 
@@ -118,7 +118,7 @@ There are two ways to define a value-based element:
 
 Because these two types of value-based elements are indistinguishable from each other in a JSX expression, first TS tries to resolve the expression as a Function Component using overload resolution. If the process succeeds, then TS finishes resolving the expression to its declaration. If the value fails to resolve as a Function Component, TS will then try to resolve it as a class component. If that fails, TS will report an error.
 
-### Function Component
+#### Function Component
 
 As the name suggests, the component is defined as a JavaScript function where its first argument is a `props` object.
 TS enforces that its return type must be assignable to `JSX.Element`.
@@ -172,7 +172,7 @@ function MainButton(prop: ClickableProps): JSX.Element {
 
 > Note: Function Components were formerly known as Stateless Function Components (SFC). As Function Components can no longer be considered stateless in recent versions of react, the type `SFC` and its alias `StatelessComponent` were deprecated.
 
-### Class Component
+#### Class Component
 
 It is possible to define the type of a class component.
 However, to do so it is best to understand two new terms: the _element class type_ and the _element instance type_.
@@ -190,7 +190,7 @@ class MyComponent {
 }
 
 // use a construct signature
-var myComponent = new MyComponent();
+const myComponent = new MyComponent();
 
 // element class type => MyComponent
 // element instance type => { render: () => void }
@@ -202,7 +202,7 @@ function MyFactoryFunction() {
 }
 
 // use a call signature
-var myComponent = MyFactoryFunction();
+const myComponent = MyFactoryFunction();
 
 // element class type => MyFactoryFunction
 // element instance type => { render: () => void }
@@ -237,7 +237,7 @@ function NotAValidFactoryFunction() {
 <NotAValidFactoryFunction />; // error
 ```
 
-## Attribute type checking
+### Attribute type checking
 
 The first step to type checking attributes is to determine the _element attributes type_.
 This is slightly different between intrinsic and value-based elements.
@@ -305,14 +305,14 @@ Additionally, the `JSX.IntrinsicAttributes` interface can be used to specify ext
 The spread operator also works:
 
 ```ts
-var props = { requiredProp: "bar" };
+const props = { requiredProp: "bar" };
 <foo {...props} />; // ok
 
-var badProps = {};
+const badProps = {};
 <foo {...badProps} />; // error
 ```
 
-## Children Type Checking
+### Children Type Checking
 
 In TypeScript 2.3, TS introduced type checking of _children_. _children_ is a special property in an _element attributes type_ where child *JSXExpression*s are taken to be inserted into the attributes.
 Similar to how TS uses `JSX.ElementAttributesProperty` to determine the name of _props_, TS uses `JSX.ElementChildrenAttribute` to determine the name of _children_ within those props.
@@ -343,7 +343,7 @@ const CustomComp = (props) => <div>{props.children}</div>
 </CustomComp>
 ```
 
-You can specify the type of _children_ like any other attribute. This will override the default type from, eg the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react) if you use them.
+You can specify the type of _children_ like any other attribute. This will override the default type from, e.g. the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react) if you use them.
 
 ```ts
 interface PropsType {
@@ -391,7 +391,7 @@ It is a black box.
 JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
 
 ```ts
-var a = (
+const a = (
   <div>
     {["foo", "bar"].map((i) => (
       <span>{i / 2}</span>
@@ -404,7 +404,7 @@ The above code will result in an error since you cannot divide a string by a num
 The output, when using the `preserve` option, looks like:
 
 ```ts
-var a = (
+const a = (
   <div>
     {["foo", "bar"].map(function (i) {
       return <span>{i / 2}</span>;
@@ -439,6 +439,6 @@ class MyComponent extends React.Component<Props, {}> {
 
 There are multiple compiler flags which can be used to customize your JSX, which work as both a compiler flag and via inline per-file pragmas. To learn more see their tsconfig reference pages:
 
-- [`jsxFactory`](/tsconfig/#jsxFactory)
-- [`jsxFragmentFactory`](/tsconfig/#jsxFragmentFactory)
-- [`jsxImportSource`](/tsconfig/#jsxImportSource)
+- [`jsxFactory`](/tsconfig#jsxFactory)
+- [`jsxFragmentFactory`](/tsconfig#jsxFragmentFactory)
+- [`jsxImportSource`](/tsconfig#jsxImportSource)

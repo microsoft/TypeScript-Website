@@ -1,4 +1,4 @@
-import { PlaygroundConfig } from "."
+import { SandboxConfig } from "."
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -7,10 +7,18 @@ type Monaco = typeof import("monaco-editor")
  * These are the defaults, but they also act as the list of all compiler options
  * which are parsed in the query params.
  */
-export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monaco: Monaco) {
+export function getDefaultSandboxCompilerOptions(
+  config: SandboxConfig,
+  monaco: Monaco,
+  ts: { versionMajorMinor: string }
+) {
+  const [major] = ts.versionMajorMinor.split(".").map(v => parseInt(v)) as [number, number]
+  const useJavaScript = config.filetype === "js"
   const settings: CompilerOptions = {
+    strict: true,
+
     noImplicitAny: true,
-    strictNullChecks: !config.useJavaScript,
+    strictNullChecks: !useJavaScript,
     strictFunctionTypes: true,
     strictPropertyInitialization: true,
     strictBindCallApply: true,
@@ -37,8 +45,8 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     removeComments: false,
     skipLibCheck: false,
 
-    checkJs: config.useJavaScript,
-    allowJs: config.useJavaScript,
+    checkJs: useJavaScript,
+    allowJs: useJavaScript,
     declaration: true,
 
     importHelpers: false,
@@ -52,37 +60,61 @@ export function getDefaultSandboxCompilerOptions(config: PlaygroundConfig, monac
     module: monaco.languages.typescript.ModuleKind.ESNext,
   }
 
-  return { ...settings, ...config.compilerOptions };
+  if (major >= 5) {
+    settings.experimentalDecorators = false
+    settings.emitDecoratorMetadata = false
+  }
+
+  return { ...settings, ...config.compilerOptions }
 }
 
 /**
  * Loop through all of the entries in the existing compiler options then compare them with the
  * query params and return an object which is the changed settings via the query params
  */
-export const getCompilerOptionsFromParams = (options: CompilerOptions, params: URLSearchParams): CompilerOptions => {
-  const urlDefaults = Object.entries(options).reduce((acc: any, [key, value]) => {
-    if (params.has(key)) {
-      const urlValue = params.get(key)!
+export const getCompilerOptionsFromParams = (
+  playgroundDefaults: CompilerOptions,
+  ts: typeof import("typescript"),
+  params: URLSearchParams
+): CompilerOptions => {
+  const returnedOptions: CompilerOptions = {}
 
-      if (urlValue === "true") {
-        acc[key] = true
-      } else if (urlValue === "false") {
-        acc[key] = false
-      } else if (!isNaN(parseInt(urlValue, 10))) {
-        acc[key] = parseInt(urlValue, 10)
+  params.forEach((val, key) => {
+    // First use the defaults object to drop compiler flags which are already set to the default
+    if (playgroundDefaults[key]) {
+      let toSet = undefined
+      if (val === "true" && playgroundDefaults[key] !== true) {
+        toSet = true
+      } else if (val === "false" && playgroundDefaults[key] !== false) {
+        toSet = false
+      } else if (!isNaN(parseInt(val, 10)) && playgroundDefaults[key] !== parseInt(val, 10)) {
+        toSet = parseInt(val, 10)
+      }
+
+      if (toSet !== undefined) returnedOptions[key] = toSet
+    } else {
+      // If that doesn't work, double check that the flag exists and allow it through
+      // @ts-ignore
+      const flagExists = ts.optionDeclarations.find(opt => opt.name === key)
+      if (flagExists) {
+        let realValue: number | boolean = true
+        if (val === "false") realValue = false
+        if (!isNaN(parseInt(val, 10))) realValue = parseInt(val, 10)
+        returnedOptions[key] = realValue
       }
     }
+  })
 
-    return acc
-  }, {})
-
-  return urlDefaults
+  return returnedOptions
 }
 
 // Can't set sandbox to be the right type because the param would contain this function
 
 /** Gets a query string representation (hash + queries) */
-export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?: any): string => {
+export const createURLQueryWithCompilerOptions = (_sandbox: any, paramOverrides?: any): string => {
+  const sandbox = _sandbox as import("./index").Sandbox
+  const initialOptions = new URLSearchParams(document.location.search)
+
   const compilerOptions = sandbox.getCompilerOptions()
   const compilerDefaults = sandbox.compilerDefaults
   const diff = Object.entries(compilerOptions).reduce((acc, [key, value]) => {
@@ -111,13 +143,21 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     }
   }
 
-  // Support sending the selection
+  // Support sending the selection, but only if there is a selection, and it's not the whole thing
   const s = sandbox.editor.getSelection()
-  // TODO: when it's full
-  if (
-    (s && s.selectionStartLineNumber !== s.positionLineNumber) ||
-    (s && s.selectionStartColumn !== s.positionColumn)
-  ) {
+
+  const isNotEmpty =
+    (s && s.selectionStartLineNumber !== s.positionLineNumber) || (s && s.selectionStartColumn !== s.positionColumn)
+
+  const range = sandbox.editor.getModel()!.getFullModelRange()
+  const isFull =
+    s &&
+    s.selectionStartLineNumber === range.startLineNumber &&
+    s.selectionStartColumn === range.startColumn &&
+    s.positionColumn === range.endColumn &&
+    s.positionLineNumber === range.endLineNumber
+
+  if (s && isNotEmpty && !isFull) {
     urlParams["ssl"] = s.selectionStartLineNumber
     urlParams["ssc"] = s.selectionStartColumn
     urlParams["pln"] = s.positionLineNumber
@@ -129,20 +169,37 @@ export const createURLQueryWithCompilerOptions = (sandbox: any, paramOverrides?:
     urlParams["pc"] = undefined
   }
 
-  if (sandbox.config.useJavaScript) urlParams["useJavaScript"] = true
+  if (sandbox.config.filetype !== "ts") urlParams["filetype"] = sandbox.config.filetype
 
   if (paramOverrides) {
     urlParams = { ...urlParams, ...paramOverrides }
   }
 
-  if (Object.keys(urlParams).length > 0) {
-    const queryString = Object.entries(urlParams)
+  // @ts-ignore - this is in MDN but not libdom
+  const hasInitialOpts = initialOptions.keys().length > 0
+
+  if (Object.keys(urlParams).length > 0 || hasInitialOpts) {
+    let queryString = Object.entries(urlParams)
       .filter(([_k, v]) => v !== undefined)
       .filter(([_k, v]) => v !== null)
       .map(([key, value]) => {
         return `${key}=${encodeURIComponent(value as string)}`
       })
       .join("&")
+
+    // We want to keep around custom query variables, which
+    // are usually used by playground plugins, with the exception
+    // being the install-plugin param and any compiler options
+    // which have a default value
+
+    initialOptions.forEach((value, key) => {
+      const skip = ["ssl", "ssc", "pln", "pc"]
+      if (skip.includes(key)) return
+      if (queryString.includes(key)) return
+      if (compilerOptions[key]) return
+
+      queryString += `&${key}=${value}`
+    })
 
     return `?${queryString}#${hash}`
   } else {

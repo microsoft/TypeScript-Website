@@ -11,7 +11,7 @@ type CompilerOptions = import("typescript").CompilerOptions
  * from the source code
  */
 
-export const extractTwoSlashComplierOptions = (ts: TS) => {
+export const extractTwoSlashCompilerOptions = (ts: TS) => {
   let optMap = new Map<string, any>()
 
   if (!("optionDeclarations" in ts)) {
@@ -27,8 +27,9 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
     const codeLines = code.split("\n")
     const options = {} as any
 
-    codeLines.forEach(line => {
+    codeLines.forEach(_line => {
       let match
+      const line = _line.trim()
       if ((match = booleanConfigRegexp.exec(line))) {
         if (optMap.has(match[1].toLowerCase())) {
           options[match[1]] = true
@@ -46,6 +47,7 @@ export const extractTwoSlashComplierOptions = (ts: TS) => {
 
 function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, any>) {
   const opt = optMap.get(name.toLowerCase())
+
   if (!opt) return
   switch (opt.type) {
     case "number":
@@ -55,16 +57,23 @@ function setOption(name: string, value: string, opts: CompilerOptions, optMap: M
       break
 
     case "list":
-      opts[opt.name] = value.split(",").map(v => parsePrimitive(v, opt.element!.type as string))
+      const elementType = opt.element!.type
+      const strings = value.split(",")
+      if (typeof elementType === "string") {
+        opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
+      } else {
+        opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>)!).filter(Boolean)
+      }
       break
 
-    default:
-      opts[opt.name] = opt.type.get(value.toLowerCase())
+    default:          // It's a map!
+      const optMap = opt.type as Map<string, string>
+      opts[opt.name] = getOptionValueFromMap(opt.name, value, optMap)
+  }
 
-      if (opts[opt.name] === undefined) {
-        const keys = Array.from(opt.type.keys() as any)
-        console.log(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
-      }
+  if (opts[opt.name] === undefined) {
+    const keys = Array.from(opt.type.keys() as any)
+    console.log(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
   }
 }
 
@@ -78,6 +87,21 @@ export function parsePrimitive(value: string, type: string): any {
       return value.toLowerCase() === "true" || value.length === 0
   }
   console.log(`Unknown primitive type ${type} with - ${value}`)
+}
+
+
+function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string>) {
+  const result = optMap.get(key.toLowerCase())
+  if (result === undefined) {
+    const keys = Array.from(optMap.keys() as any)
+
+    console.error(
+      `Invalid inline compiler value`,
+      `Got ${key} for ${name} but it is not a supported value by the TS compiler.`,
+      `Allowed values: ${keys.join(",")}`
+    )
+  }
+  return result
 }
 
 // Function to generate autocompletion results
@@ -109,14 +133,14 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
   }
 
   const word = words[1]
-  if (!word.startsWith("-")) {
+  if (word.startsWith("-")) {
     return {
       suggestions: [
         {
           label: "---cut---",
           kind: 14,
           detail: "Twoslash split output",
-          insertText: "---cut---",
+          insertText: "---cut---".replace(word, ""),
         } as any,
       ],
     }

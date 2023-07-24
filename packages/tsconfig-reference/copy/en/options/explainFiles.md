@@ -1,5 +1,5 @@
 ---
-display: "explainFiles"
+display: "Explain Files"
 oneline: "Print files read during the compilation including why it was included."
 ---
 
@@ -46,7 +46,7 @@ index.ts
 
 The output above show:
 
-- The initial lib.d.ts lookup based on [`target`](#include), and the chain of `.d.ts` files which are referenced
+- The initial lib.d.ts lookup based on [`target`](#target), and the chain of `.d.ts` files which are referenced
 - The `index.ts` file located via the default pattern of [`include`](#include)
 
 This option is intended for debugging how a file has become a part of your compile.

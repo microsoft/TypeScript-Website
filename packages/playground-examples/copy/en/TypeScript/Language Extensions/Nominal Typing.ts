@@ -46,7 +46,7 @@ const printName = (name: ValidatedInputString) => {
 // For example, here's some unsafe input from a user, going
 // through the validator and then being allowed to be printed:
 
-const input = "\n<script>alert('bobby tables')</script>";
+const input = "alert('bobby tables')";
 const validatedInput = validateUserInput(input);
 printName(validatedInput);
 

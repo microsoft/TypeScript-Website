@@ -3,7 +3,6 @@ title: Typeof Type Operator
 layout: docs
 permalink: /docs/handbook/2/typeof-types.html
 oneline: "Using the typeof operator in type contexts."
-beta: true
 ---
 
 ## The `typeof` type operator
@@ -63,7 +62,7 @@ This helps avoid the confusing trap of writing code you think is executing, but 
 
 ```ts twoslash
 // @errors: 1005
-declare const msgbox: () => boolean;
+declare const msgbox: (prompt: string) => boolean;
 // type msgbox = any;
 // ---cut---
 // Meant to use = ReturnType<typeof msgbox>

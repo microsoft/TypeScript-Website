@@ -12,7 +12,7 @@ const { readdirSync, readFileSync } = require("fs");
 const { join } = require("path");
 
 const remark = require("remark");
-const remarkTwoSlash = require("gatsby-remark-shiki-twoslash");
+const remarkTwoSlash = require("remark-shiki-twoslash");
 
 const { read } = require("gray-matter");
 
@@ -25,62 +25,65 @@ const filterString = process.argv[2] ? process.argv[2] : "";
 
 const errorReports = [];
 
-languages.forEach((lang) => {
-  console.log("\n\nLanguage: " + chalk.bold(lang) + "\n");
+const go = async () => {
+  for (const lang of languages) {
+    console.log("\n\nLanguage: " + chalk.bold(lang) + "\n");
 
-  const locale = join(__dirname, "..", "copy", lang);
-  let options;
-
-  try {
-    options = readdirSync(join(locale)).filter((f) => !f.startsWith("."));
-  } catch {
-    errorReports.push({
-      path: join(locale, "options"),
-      error: `Options directory ${join(locale, "options")} doesn't exist`,
-    });
-    return;
-  }
-
-  options.forEach((option) => {
-    if (filterString.length && !option.includes(filterString)) return;
-
-    const optionPath = join(locale, option);
-
-    const markdown = readFileSync(optionPath, "utf8");
-    const markdownAST = remark().parse(markdown);
-    let hasError = false;
+    const locale = join(__dirname, "..", "copy", lang);
+    let options;
 
     try {
-      remarkTwoSlash.runTwoSlashAcrossDocument({ markdownAST }, {});
-    } catch (error) {
-      hasError = true;
-      errorReports.push({ path: optionPath, error });
+      options = readdirSync(join(locale)).filter((f) => !f.startsWith("."));
+    } catch {
+      errorReports.push({
+        path: join(locale, "options"),
+        error: `Options directory ${join(locale, "options")} doesn't exist`,
+      });
+      return;
     }
 
-    const optionFile = read(optionPath);
-    if (!optionFile.data.display) {
-      hasError = true;
-      // prettier-ignore
-      errorReports.push({ path: optionPath, error: new Error("Did not have a 'display' property in the YML header") });
+    for (const option of options) {
+      if (filterString.length && !option.includes(filterString)) return;
+
+      const optionPath = join(locale, option);
+
+      const markdown = readFileSync(optionPath, "utf8");
+      const markdownAST = remark().parse(markdown);
+      let hasError = false;
+
+      try {
+        await remarkTwoSlash.default({})(markdownAST);
+      } catch (error) {
+        hasError = true;
+        errorReports.push({ path: optionPath, error });
+      }
+
+      const optionFile = read(optionPath);
+      if (!optionFile.data.display) {
+        hasError = true;
+        // prettier-ignore
+        errorReports.push({ path: optionPath, error: new Error("Did not have a 'display' property in the YML header") });
+      }
+
+      const sigil = hasError ? cross : tick;
+      const name = hasError ? chalk.red(option) : option;
+      process.stdout.write(name + " " + sigil + ", ");
     }
+  }
 
-    const sigil = hasError ? cross : tick;
-    const name = hasError ? chalk.red(option) : option;
-    process.stdout.write(name + " " + sigil + ", ");
-  });
-});
+  if (errorReports.length) {
+    process.exitCode = 1;
 
-if (errorReports.length) {
-  process.exitCode = 1;
+    errorReports.forEach((err) => {
+      console.log(`\n> ${chalk.bold.red(err.path)}\n`);
+      err.error.stack = undefined;
+      console.log(err.error);
+    });
+    console.log("\n\n");
 
-  errorReports.forEach((err) => {
-    console.log(`\n> ${chalk.bold.red(err.path)}\n`);
-    err.error.stack = undefined;
-    console.log(err.error);
-  });
-  console.log("\n\n");
-
-  console.log(
-    "Note: you can add an extra argument to the lint script ( yarn workspace glossary lint [opt] ) to just run one lint."
-  );
-}
+    console.log(
+      "Note: you can add an extra argument to the lint script ( yarn workspace glossary lint [opt] ) to just run one lint."
+    );
+  }
+};
+go();

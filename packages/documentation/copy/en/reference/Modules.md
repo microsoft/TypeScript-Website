@@ -22,7 +22,7 @@ Conversely, a file without any top-level `import` or `export` declarations is tr
 
 ## Export
 
-## Exporting a declaration
+### Exporting a declaration
 
 Any declaration (such as a variable, function, class, type alias, or interface) can be exported by adding the `export` keyword.
 
@@ -48,7 +48,7 @@ export class ZipCodeValidator implements StringValidator {
 }
 ```
 
-## Export statements
+### Export statements
 
 Export statements are handy when exports need to be renamed for consumers, so the above example can be written as:
 
@@ -62,7 +62,7 @@ export { ZipCodeValidator };
 export { ZipCodeValidator as mainValidator };
 ```
 
-## Re-exports
+### Re-exports
 
 Often modules extend other modules, and partially expose some of their features.
 A re-export does not import it locally, or introduce a local variable.
@@ -98,7 +98,7 @@ export * from "./ParseIntBasedZipCodeValidator"; //  exports the 'ParseIntBasedZ
 Importing is just about as easy as exporting from a module.
 Importing an exported declaration is done through using one of the `import` forms below:
 
-## Import a single export from a module
+### Import a single export from a module
 
 ```ts
 import { ZipCodeValidator } from "./ZipCodeValidator";
@@ -113,14 +113,14 @@ import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
 let myValidator = new ZCV();
 ```
 
-## Import the entire module into a single variable, and use it to access the module exports
+### Import the entire module into a single variable, and use it to access the module exports
 
 ```ts
 import * as validator from "./ZipCodeValidator";
 let myValidator = new validator.ZipCodeValidator();
 ```
 
-## Import a module for side-effects only
+### Import a module for side-effects only
 
 Though not recommended practice, some modules set up some global state that can be used by other modules.
 These modules may not have any exports, or the consumer is not interested in any of their exports.
@@ -130,7 +130,7 @@ To import these modules, use:
 import "./my-module.js";
 ```
 
-## Importing Types
+### Importing Types
 
 Prior to TypeScript 3.8, you can import a type using `import`.
 With TypeScript 3.8, you can import a type using the `import` statement, or using `import type`.
@@ -141,10 +141,19 @@ import { APIResponseType } from "./api";
 
 // Explicitly use import type
 import type { APIResponseType } from "./api";
+
+// Explicitly pull out a value (getResponse) and a type (APIResponseType) 
+import { getResponse, type APIResponseType} from "./api";
 ```
 
-`import type` is always guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the `isolatedModules` compiler flag.
+Any explicitly marked `type` import is guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the [`isolatedModules`](/tsconfig#isolatedModules) compiler flag.
 You can read more in the [3.8 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports).
+
+With TypeScript 4.5, you can use a `type` modifier on individual named imports.
+
+```ts
+import { someFunc, type BaseType } from "./some-module.js";
+```
 
 ## Default exports
 
@@ -258,7 +267,6 @@ TypeScript supports `export =` to model the traditional CommonJS and AMD workflo
 The `export =` syntax specifies a single object that is exported from the module.
 This can be a class, interface, namespace, function, or enum.
 
-When exporting a module using `export =`, TypeScript-specific `import module = require("module")` must be used to import the module.
 
 ##### ZipCodeValidator.ts
 
@@ -518,7 +526,7 @@ Typically, these are defined in `.d.ts` files.
 If you're familiar with C/C++, you can think of these as `.h` files.
 Let's look at a few examples.
 
-## Ambient Modules
+### Ambient Modules
 
 In Node.js, most tasks are accomplished by loading one or more modules.
 We could define each module in its own `.d.ts` file with top-level export declarations, but it's more convenient to write them as one larger `.d.ts` file.
@@ -554,10 +562,10 @@ Now we can `/// <reference>` `node.d.ts` and then load the modules using `import
 ```ts
 /// <reference path="node.d.ts"/>
 import * as URL from "url";
-let myUrl = URL.parse("http://www.typescriptlang.org");
+let myUrl = URL.parse("https://www.typescriptlang.org");
 ```
 
-### Shorthand ambient modules
+#### Shorthand ambient modules
 
 If you don't want to take the time to write out declarations before using a new module, you can use a shorthand declaration to get started quickly.
 
@@ -574,7 +582,7 @@ import x, { y } from "hot-new-module";
 x(y);
 ```
 
-### Wildcard module declarations
+#### Wildcard module declarations
 
 Some module loaders such as [SystemJS](https://github.com/systemjs/systemjs/blob/master/docs/module-types.md)
 and [AMD](https://github.com/amdjs/amdjs-api/blob/master/LoaderPlugins.md) allow non-JavaScript content to be imported.
@@ -601,7 +609,7 @@ import data from "json!http://example.com/data.json";
 console.log(data, fileContent);
 ```
 
-### UMD modules
+#### UMD modules
 
 Some libraries are designed to be used in many module loaders, or with no module loading (global variables).
 These are known as [UMD](https://github.com/umdjs/umd) modules.
@@ -632,7 +640,7 @@ mathLib.isPrime(2);
 
 ## Guidance for structuring modules
 
-## Export as close to top-level as possible
+### Export as close to top-level as possible
 
 Consumers of your module should have as little friction as possible when using things that you export.
 Adding too many levels of nesting tends to be cumbersome, so think carefully about how you want to structure things.
@@ -644,14 +652,14 @@ This can quickly become a pain point for users, and is usually unnecessary.
 Static methods on an exported class have a similar problem - the class itself adds a layer of nesting.
 Unless it increases expressivity or intent in a clearly useful way, consider simply exporting a helper function.
 
-### If you're only exporting a single `class` or `function`, use `export default`
+#### If you're only exporting a single `class` or `function`, use `export default`
 
 Just as "exporting near the top-level" reduces friction on your module's consumers, so does introducing a default export.
 If a module's primary purpose is to house one specific export, then you should consider exporting it as a default export.
 This makes both importing and actually using the import a little easier.
 For example:
 
-#### MyClass.ts
+##### MyClass.ts
 
 ```ts
 export default class SomeType {
@@ -659,7 +667,7 @@ export default class SomeType {
 }
 ```
 
-#### MyFunc.ts
+##### MyFunc.ts
 
 ```ts
 export default function getThing() {
@@ -667,7 +675,7 @@ export default function getThing() {
 }
 ```
 
-#### Consumer.ts
+##### Consumer.ts
 
 ```ts
 import t from "./MyClass";
@@ -678,9 +686,9 @@ console.log(f());
 
 This is optimal for consumers. They can name your type whatever they want (`t` in this case) and don't have to do any excessive dotting to find your objects.
 
-### If you're exporting multiple objects, put them all at top-level
+#### If you're exporting multiple objects, put them all at top-level
 
-#### MyThings.ts
+##### MyThings.ts
 
 ```ts
 export class SomeType {
@@ -693,9 +701,9 @@ export function someFunc() {
 
 Conversely when importing:
 
-### Explicitly list imported names
+#### Explicitly list imported names
 
-#### Consumer.ts
+##### Consumer.ts
 
 ```ts
 import { SomeType, someFunc } from "./MyThings";
@@ -703,9 +711,9 @@ let x = new SomeType();
 let y = someFunc();
 ```
 
-### Use the namespace import pattern if you're importing a large number of things
+#### Use the namespace import pattern if you're importing a large number of things
 
-#### MyLargeModule.ts
+##### MyLargeModule.ts
 
 ```ts
 export class Dog { ... }
@@ -714,14 +722,14 @@ export class Tree { ... }
 export class Flower { ... }
 ```
 
-#### Consumer.ts
+##### Consumer.ts
 
 ```ts
 import * as myLargeModule from "./MyLargeModule.ts";
 let x = new myLargeModule.Dog();
 ```
 
-## Re-export to extend
+### Re-export to extend
 
 Often you will need to extend functionality on a module.
 A common JS pattern is to augment the original object with _extensions_, similar to how JQuery extensions work.
@@ -890,7 +898,7 @@ let c = new Calculator(2);
 test(c, "001+010="); // prints 3
 ```
 
-## Do not use namespaces in modules
+### Do not use namespaces in modules
 
 When first moving to a module-based organization, a common tendency is to wrap exports in an additional layer of namespaces.
 Modules have their own scope, and only exported declarations are visible from outside the module.
@@ -911,7 +919,7 @@ From the consumption side, the consumer of any given module gets to pick the nam
 
 > For more discussion about modules and namespaces see [Namespaces and Modules](/docs/handbook/namespaces-and-modules.html).
 
-## Red Flags
+### Red Flags
 
 All of the following are red flags for module structuring. Double-check that you're not trying to namespace your external modules if any of these apply to your files:
 

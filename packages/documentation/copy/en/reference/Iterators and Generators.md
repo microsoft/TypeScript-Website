@@ -8,11 +8,21 @@ translatable: true
 
 ## Iterables
 
-An object is deemed iterable if it has an implementation for the [`Symbol.iterator`](Symbols.html#symboliterator) property.
+An object is deemed iterable if it has an implementation for the [`Symbol.iterator`](symbols.html#symboliterator) property.
 Some built-in types like `Array`, `Map`, `Set`, `String`, `Int32Array`, `Uint32Array`, etc. have their `Symbol.iterator` property already implemented.
 `Symbol.iterator` function on an object is responsible for returning the list of values to iterate on.
 
-## `for..of` statements
+### `Iterable` interface
+
+`Iterable` is a type we can use if we want to take in types listed above which are iterable. Here is an example:
+
+```ts
+function toArray<X>(xs: Iterable<X>): X[] {
+  return [...xs]
+}
+```
+
+### `for..of` statements
 
 `for..of` loops over an iterable object, invoking the `Symbol.iterator` property on the object.
 Here is a simple `for..of` loop on an array:
@@ -87,4 +97,4 @@ for (var _i = 0; _i < numbers.length; _i++) {
 
 #### Targeting ECMAScript 2015 and higher
 
-When targeting an ECMAScipt 2015-compliant engine, the compiler will generate `for..of` loops to target the built-in iterator implementation in the engine.
+When targeting an ECMAScript 2015-compliant engine, the compiler will generate `for..of` loops to target the built-in iterator implementation in the engine.

@@ -4,6 +4,7 @@ layout: docs
 permalink: /docs/handbook/classes.html
 oneline: How classes work in TypeScript
 handbook: "true"
+deprecated_by: /docs/handbook/2/classes.html
 ---
 
 Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes.
@@ -131,7 +132,7 @@ Tommy the Palomino moved 34m.
 
 ## Public, private, and protected modifiers
 
-## Public by default
+### Public by default
 
 In our examples, we've been able to freely access the members that we declared throughout our programs.
 If you're familiar with classes in other languages, you may have noticed in the above examples we haven't had to use the word `public` to accomplish this; for instance, C# requires that each member be explicitly labeled `public` to be visible.
@@ -154,7 +155,7 @@ class Animal {
 }
 ```
 
-## ECMAScript Private Fields
+### ECMAScript Private Fields
 
 With TypeScript 3.8, TypeScript supports the new JavaScript syntax for private fields:
 
@@ -173,7 +174,7 @@ new Animal("Cat").#name;
 This syntax is built into the JavaScript runtime and can have better guarantees about the isolation of each private field.
 Right now, the best documentation for these private fields is in the TypeScript 3.8 [release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#ecmascript-private-fields).
 
-## Understanding TypeScript's `private`
+### Understanding TypeScript's `private`
 
 TypeScript also has its own way to declare a member as being marked `private`, it cannot be accessed from outside of its containing class. For example:
 
@@ -236,7 +237,7 @@ Because `Animal` and `Rhino` share the `private` side of their shape from the sa
 When we try to assign from an `Employee` to `Animal` we get an error that these types are not compatible.
 Even though `Employee` also has a `private` member called `name`, it's not the one we declared in `Animal`.
 
-## Understanding `protected`
+### Understanding `protected`
 
 The `protected` modifier acts much like the `private` modifier with the exception that members declared `protected` can also be accessed within deriving classes. For example,
 

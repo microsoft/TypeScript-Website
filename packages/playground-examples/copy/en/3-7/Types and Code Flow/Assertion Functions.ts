@@ -1,4 +1,4 @@
-//// { compiler: {  }, order: 1 }
+//// { "compiler": {  }, "order": 1 }
 
 // Given JavaScript's flexibility, it can be a good idea to add
 // runtime checks to your code to validate your assumptions.

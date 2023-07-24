@@ -166,7 +166,8 @@ Turns to:
 >       "id": "err-7006-13-1"
 >     }
 >   ],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBcEMCcHMCmkBcoCiBlATABgIwCsAUCBIrLAPawDOaA7LrgGzHEBmArgHYDGkAJZUeoDjwAUtAJSgA3sVCg+I2lQA2iAHTqq8KVtpcARpFgSAzNOnEAvu3ESALNhtA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBcEMCcHMCmkBcoCiBlATABgIwCsAUCBIrLAPawDOaA7LrgGzHEBmArgHYDGkAJZUeoDjwAUtAJSgA3sVCg+I2lQA2iAHTqq8KVtpcARpFgSAzNOnEAvu3ESALNhtA",
+>   "tags": []
 > }
 > ```
 
@@ -205,7 +206,8 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[ 7 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDsHsEkFsAOAbAlgY1QFwIKQJ4BcoAZgIbIDOApgFAgRZkBOA5tVsQKIDKATAAYAjAFZa9MABUAFqkqgA7qmTJQMLKCzTm0BaABG1dGQCuNUNBKbp1NXCRpMuArRInI6LKmiRSkABSUAJSgAN60oKDoPpTQyNQAdMjQrIEJlCb6WMz+AMxBQbQAvuIkAQAsfEEA3LRAA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDsHsEkFsAOAbAlgY1QFwIKQJ4BcoAZgIbIDOApgFAgRZkBOA5tVsQKIDKATAAYAjAFZa9MABUAFqkqgA7qmTJQMLKCzTm0BaABG1dGQCuNUNBKbp1NXCRpMuArRInI6LKmiRSkABSUAJSgAN60oKDoPpTQyNQAdMjQrIEJlCb6WMz+AMxBQbQAvuIkAQAsfEEA3LRAA",
+>   "tags": []
 > }
 > ```
 
@@ -233,136 +235,124 @@ Turns to:
 >     {
 >       "completions": [
 >         {
->           "name": "memory",
->           "kind": "property",
->           "kindModifiers": "declare",
->           "sortText": "1"
->         },
->         {
 >           "name": "assert",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "clear",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "count",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "countReset",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "debug",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "dir",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "dirxml",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "error",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
->         },
->         {
->           "name": "exception",
->           "kind": "method",
->           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "group",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "groupCollapsed",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "groupEnd",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "info",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "log",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "table",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "time",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "timeEnd",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "timeLog",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "timeStamp",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "trace",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         },
 >         {
 >           "name": "warn",
 >           "kind": "method",
 >           "kindModifiers": "declare",
->           "sortText": "1"
+>           "sortText": "11"
 >         }
 >       ],
 >       "kind": "completions",
@@ -375,11 +365,12 @@ Turns to:
 >   ],
 >   "staticQuickInfos": "[ 2 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgziA2CmB00QHMBQB6dACHusD0AfVIA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgziA2CmB00QHMBQB6dACHusD0AfVIA",
+>   "tags": []
 > }
 > ```
 
-#### `cuts_out_unneccessary_code.ts`
+#### `cuts_out_unnecessary_code.ts`
 
 ```ts
 interface IdLabel {
@@ -458,7 +449,8 @@ Turns to:
 >   ],
 >   "staticQuickInfos": "[ 14 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/JYOwLgpgTgZghgYwgAgJIBMAycBGEA2yA3ssOgFzIgCuAtnlADTID0AVMgM4D2tKMwAuk7I2LZAF8AUKEixEKAHJw+2PIRIgVESpzBRQAc2btk3MAAtoyAUJFjJUsAE8ADku0B5KBgA8AFWQIAA9IEGEqOgZkAB8ufSMAPmQAXmRAkLCImnprAH40LFwCZEplVWL8AG4pFnF-C2ARBF4+cC4Lbmp8dCpzZDxSEAR8anQIdCla8QBaOYRqMDmZqRhqYbBgbhBkBCgIOEg1AgCg0IhwkRzouL0DEENEgAoyb3KddIBKMq8fdADkkQpMgQchLFBuAB3ZAAInWwFornwEDakHQMKk0ikyLAyDgqV2+0OEGO+CeMJc7k4e2ArjAMM+NTqIIAenkpjiBgS9gcjpUngAmAB0AA5GdNWezsRBcQhuUS+eongBZQ4WIVQODhXhPT7IAowqz4fDcGGlZAAFgF4uZyDZUiAA",
+>   "tags": []
 > }
 > ```
 
@@ -498,7 +490,51 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[ 0 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBMFMGMBsCGAnRAXAlgewHYC5Q1kBXaAKBAgGcALLAdwFEBbDNCscWhlttaSADEM8aAQw4YADwB0kGWipkKAKhVlQK0AHFoiwjWihROAOZoaoLADNQiUFSITTGreAAOKRM1AA3RPCkdg5OZq7AZNBS7ljIaKDWxDiwmLigpnoAyqGmADLQZhYAFP6BYiHIzgCUoADeGqDIesTIOH4BpDIm5jRkAL5kQA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEBMFMGMBsCGAnRAXAlgewHYC5Q1kBXaAKBAgGcALLAdwFEBbDNCscWhlttaSADEM8aAQw4YADwB0kGWipkKAKhVlQK0AHFoiwjWihROAOZoaoLADNQiUFSITTGreAAOKRM1AA3RPCkdg5OZq7AZNBS7ljIaKDWxDiwmLigpnoAyqGmADLQZhYAFP6BYiHIzgCUoADeGqDIesTIOH4BpDIm5jRkAL5kQA",
+>   "tags": []
+> }
+> ```
+
+#### `errorsWithGenerics.ts`
+
+```ts
+// @errors: 2322
+const a: Record<string, string> = {}
+let b: Record<string, number> = {}
+b = a
+```
+
+Turns to:
+
+> ```ts
+> const a: Record<string, string> = {}
+> let b: Record<string, number> = {}
+> b = a
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [],
+>   "staticQuickInfos": "[ 6 items ]",
+>   "errors": [
+>     {
+>       "category": 1,
+>       "code": 2322,
+>       "length": 1,
+>       "start": 72,
+>       "line": 2,
+>       "character": 0,
+>       "renderedMessage": "Type 'Record<string, string>' is not assignable to type 'Record<string, number>'.\n  'string' index signatures are incompatible.\n    Type 'string' is not assignable to type 'number'.",
+>       "id": "err-2322-72-1"
+>     }
+>   ],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMCdoe2gZwFygEwGY1oFAGM4A7RAF1AENUAlSA6AEwB5ToBLQgcwBpQX2OAfKAC8oAN4BfHABtIZAEbVaCJn049CAVwC28mENGSc8kRRxA",
+>   "tags": []
 > }
 > ```
 
@@ -532,16 +568,18 @@ Turns to:
 >   "highlights": [
 >     {
 >       "kind": "highlight",
->       "position": 134,
+>       "offset": 134,
 >       "length": 10,
->       "description": "",
->       "line": 5
+>       "text": "",
+>       "line": 4,
+>       "start": 18
 >     }
 >   ],
 >   "queries": [],
 >   "staticQuickInfos": "[ 11 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEAemzhfILC4QA9UrLygSA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/GYVwdgxgLglg9mABAcwE4FN1QBQAd2oDOCAXIoVKjGMgDSIAmAhlOmQCIvoCUiA3gChEiCAmIAbdADpxcZNgAGACXTjZiACR98RBAF96UOMwCeiGIU19mrKUc6sAypWrzuegIQLuAbgF6BATRMHAAiAFkmBgYLBFD6MHQAd0QHdGxuXwEAemzhfILC4QA9UrLygSA",
+>   "tags": []
 > }
 > ```
 
@@ -577,7 +615,8 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[ 5 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA",
+>   "tags": []
 > }
 > ```
 
@@ -629,7 +668,8 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[ 10 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAwge1QA66JIAuAdKQM4AeAUNIbgE6mgBK8yAxm5M-lAAiZl15C6deDSKtQkAK6Je0YqAAS8WLFwAKAJSgA3nVChRpBc0Shdps6AA8AE2gA3AHz2HTgBYBGD01tXFAAdRZYZ0dgAK8fGNdPe306AF9JEAgYBBR0LGhEZ2lKKgYmOSMNLR1QNPkBVGFyYDwmEkRSCW5iKlwEch0Ac11gnVSgA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAwge1QA66JIAuAdKQM4AeAUNIbgE6mgBK8yAxm5M-lAAiZl15C6deDSKtQkAK6Je0YqAAS8WLFwAKAJSgA3nVChRpBc0Shdps6AA8AE2gA3AHz2HTgBYBGD01tXFAAdRZYZ0dgAK8fGNdPe306AF9JEAgYBBR0LGhEZ2lKKgYmOSMNLR1QNPkBVGFyYDwmEkRSCW5iKlwEch0Ac11gnVSgA",
+>   "tags": []
 > }
 > ```
 
@@ -666,7 +706,8 @@ Turns to:
 >   ],
 >   "staticQuickInfos": "[ 1 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQA9ORBAHoD8pQA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQA9ORBAHoD8pQA",
+>   "tags": []
 > }
 > ```
 
@@ -712,12 +753,18 @@ Turns to:
 >   }
 > var __spreadArray =
 >   (this && this.__spreadArray) ||
->   function (to, from) {
->     for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) to[j] = from[i]
->     return to
+>   function (to, from, pack) {
+>     if (pack || arguments.length === 2)
+>       for (var i = 0, l = from.length, ar; i < l; i++) {
+>         if (ar || !(i in from)) {
+>           if (!ar) ar = Array.prototype.slice.call(from, 0, i)
+>           ar[i] = from[i]
+>         }
+>       }
+>     return to.concat(ar || Array.prototype.slice.call(from))
 >   }
 > export function fn(arr) {
->   var arr2 = __spreadArray([1], __read(arr))
+>   var arr2 = __spreadArray([1], __read(arr), false)
 > }
 > ```
 
@@ -731,7 +778,8 @@ Turns to:
 >   "queries": [],
 >   "staticQuickInfos": "[ 0 items ]",
 >   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEGcAsHsHcCiBbAlgFwFAgughgE4DmApugFyiIDKArNmOACYIB2ANiQG4nsYkE86VLFaYGoALSTUyAA6wC6ABK85AyKFGVqcgiTxNQ0NQNDxU7dqABGJULIVKSRgGYFYyUAHJ0kPjbe4iQAHk7ooK4ArqwAxsKikawAFIQElKxRyHYEANoAugCUoADemKCgsaKQEWkATKAAvKC5AIwANKAAdD1p+ZgAvphAA"
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEGcAsHsHcCiBbAlgFwFAgughgE4DmApugFyiIDKArNmOACYIB2ANiQG4nsYkE86VLFaYGoALSTUyAA6wC6ABK85AyKFGVqcgiTxNQ0NQNDxU7dqABGJULIVKSRgGYFYyUAHJ0kPjbe4iQAHk7ooK4ArqwAxsKikawAFIQElKxRyHYEANoAugCUoADemKCgsaKQEWkATKAAvKC5AIwANKAAdD1p+ZgAvphAA",
+>   "tags": []
 > }
 > ```
 
@@ -763,6 +811,8 @@ export interface TwoSlashOptions {
   customTransformers?: CustomTransformers
   /** An optional copy of the TypeScript import, if missing it will be require'd. */
   tsModule?: TS
+  /** Absolute path to the directory to look up built-in TypeScript .d.ts files. */
+  tsLibDirectory?: string
   /** An optional copy of the lz-string import, if missing it will be require'd. */
   lzstringModule?: LZ
   /**
@@ -772,6 +822,8 @@ export interface TwoSlashOptions {
   fsMap?: Map<string, string>
   /** The cwd for the folder which the virtual fs should be overlaid on top of when using local fs, opts to process.cwd() if not present */
   vfsRoot?: string
+  /** A set of known `// @[tags]` tags to extract and not treat as a comment */
+  customTags?: string[]
 }
 ```
 
@@ -783,13 +835,19 @@ export interface TwoSlashReturn {
   code: string
   /** The new extension type for the code, potentially changed if they've requested emitted results */
   extension: string
-  /** Sample requests to highlight a particular part of the code */
+  /** Requests to highlight a particular part of the code */
   highlights: {
     kind: "highlight"
-    position: number
-    length: number
-    description: string
+    /** The index of the text in the file */
+    start: number
+    /** What line is the highlighted identifier on? */
     line: number
+    /** At what index in the line does the caret represent  */
+    offset: number
+    /** The text of the token which is highlighted */
+    text?: string
+    /** The length of the token */
+    length: number
   }[]
   /** An array of LSP responses identifiers in the sample  */
   staticQuickInfos: {
@@ -827,6 +885,15 @@ export interface TwoSlashReturn {
     completions?: import("typescript").CompletionEntry[]
     /* Completion prefix e.g. the letters before the cursor in the word so you can filter */
     completionsPrefix?: string
+  }[]
+  /** The extracted twoslash commands for any custom tags passed in via customTags */
+  tags: {
+    /** What was the name of the tag */
+    name: string
+    /** Where was it located in the original source file */
+    line: number
+    /** What was the text after the `// @tag: ` string  (optional because you could do // @tag on it's own line without the ':') */
+    annotation?: string
   }[]
   /** Diagnostic error messages which came up when creating the program */
   errors: {

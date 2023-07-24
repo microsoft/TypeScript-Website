@@ -20,6 +20,7 @@ import { workbenchMarkdownPlugin } from "../../components/workbench/plugins/mark
 import { workbenchReferencePlugin } from "../../components/workbench/plugins/docs"
 import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
+import { getPlaygroundUrls } from "../../lib/playgroundURLs";
 
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 
@@ -54,21 +55,23 @@ const Play: React.FC<Props> = (props) => {
         const nightlyJSON = await nightlyLookup.json()
         tsVersionParam = nightlyJSON.version
       }
+      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      const { sandboxRoot, playgroundRoot, playgroundWorker } = getPlaygroundUrls()
 
       // @ts-ignore
       const re: any = global.require
       re.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/min/vs`,
-          "typescript-sandbox": withPrefix('/js/sandbox'),
-          "typescript-playground": withPrefix('/js/playground'),
+          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/dev/vs`,
+          "typescript-sandbox": sandboxRoot,
+          "typescript-playground": playgroundRoot,
           "unpkg": "https://unpkg.com/",
           "local": "http://localhost:5000"
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("typescript-sandbox"), playground: typeof import("typescript-playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
         const isOK = main && ts && sandbox && playground
@@ -90,9 +93,14 @@ const Play: React.FC<Props> = (props) => {
           text: localStorage.getItem('sandbox-history') || i("play_default_code_sample"),
           compilerOptions: {},
           domID: "monaco-editor-embed",
-          useJavaScript: !!params.get("useJavaScript"),
+          filetype: "ts",
           acquireTypes: !localStorage.getItem("disable-ata"),
-          supportTwoslashCompilerOptions: true
+          supportTwoslashCompilerOptions: true,
+          monacoSettings: {
+            fontFamily: "var(--code-font)",
+            fontLigatures: true
+          },
+          customTypeScriptWorkerPath: document.location.origin + playgroundWorker
         }, main, ts)
 
         const playgroundConfig = {
@@ -117,22 +125,15 @@ const Play: React.FC<Props> = (props) => {
             dtsMap = defaultMap
             runTwoslash()
           })
-
         }
 
         // When the compiler notices a twoslash compiler flag change, this will get triggered and reset the DTS map
         sandboxEnv.setDidUpdateCompilerSettings(updateDTSEnv)
         updateDTSEnv(sandboxEnv.getCompilerOptions())
 
+       
         const debouncedTwoslash = debounce(() => {
           if (dtsMap) runTwoslash()
-
-          const isTSErrorsEnabled = !sandboxEnv.languageServiceDefaults.getDiagnosticsOptions().noSemanticValidation
-          const shouldBeEnabled = !sandboxEnv.getText().includes("// @filename")
-          if (isTSErrorsEnabled !== shouldBeEnabled) {
-            // Turn off the suggestions for multi-file reports
-            sandboxEnv.languageServiceDefaults.setDiagnosticsOptions({ noSemanticValidation: !shouldBeEnabled })
-          }
         }, 1000)
 
         sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
@@ -198,6 +199,8 @@ const Play: React.FC<Props> = (props) => {
 
         sandboxEnv.editor.focus()
         sandboxEnv.editor.layout()
+
+        debouncedTwoslash()
       });
     }
 

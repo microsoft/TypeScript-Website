@@ -1,6 +1,6 @@
 ---
-display: "noPropertyAccessFromIndexSignature"
-oneline: "Enforces using indexed accessors for keys declared using an indexed type"
+display: "No Property Access From Index Signature"
+oneline: "Enforces using indexed accessors for keys declared using an indexed type."
 ---
 
 This setting ensures consistency between accessing a field via the "dot" (`obj.key`) syntax, and "indexed" (`obj["key"]`) and the way which the property is declared in the type.

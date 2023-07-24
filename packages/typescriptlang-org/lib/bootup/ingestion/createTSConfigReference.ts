@@ -1,9 +1,16 @@
 const path = require(`path`)
+const fs = require(`fs`)
 const { green } = require("chalk")
 
+import { read as readMarkdownFile } from "gray-matter"
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
 import { addPathToSite } from "../pathsOnSiteTracker"
 import { isMultiLingual } from "./languageFilter"
+import remark = require("remark")
+import remarkHTML = require("remark-html")
+
+const parseMarkdown = (md: string) =>
+  remark().use(remarkHTML).processSync(md).toString()
 
 export const createTSConfigReference = async (
   graphql: CreatePagesArgs["graphql"],
@@ -36,10 +43,21 @@ export const createTSConfigReference = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(element => {
+    const lang = element.name
+    if (lang.includes("-")) {
+      return
+    }
+
     // prettier-ignore
     const categoriesForLang = path.join( __dirname, "..", "..", "..", "..", "tsconfig-reference", "output", element.name + ".json")
 
-    const lang = element.name
+    // prettier-ignore
+    const localeIntro = path.join( __dirname, "..", "..", "..", "..", "tsconfig-reference", "copy", lang, "intro.md")
+    // prettier-ignore
+    const enIntro = path.join( __dirname, "..", "..", "..", "..", "tsconfig-reference", "copy", "en", "intro.md")
+    const introPath = fs.existsSync(localeIntro) ? localeIntro : enIntro
+    const intro = readMarkdownFile(introPath)
+    const introHTML = parseMarkdown(intro.content)
 
     if (lang.length !== 2) return
     if (!isMultiLingual && lang !== "en") return
@@ -54,7 +72,12 @@ export const createTSConfigReference = async (
       context: {
         locale: element.name,
         tsconfigMDPath: element.absolutePath,
-        categoriesPath: categoriesForLang,
+        intro: {
+          html: introHTML,
+          header: intro.data.header,
+          preview: intro.data.firstLine,
+        },
+        categories: require(categoriesForLang).categories,
       },
     })
   })

@@ -4,10 +4,6 @@
 
 Sometimes, and it's not been tracked down exactly, some dependencies of the site aren't built even though it says they are. In those cases, re-run `yarn bootstrap` and `yarn build` to re-build all the internal site deps.
 
-#### No syntax highlighting
-
-By default the website runs without twoslash code samples being evaluated, this affects the syntax highlighting. To turn it on, use `yarn start-twoslash` instead of `yarn start`.
-
 #### Windows + Watchman
 
 The Windows support for watchman is a bit meh. It's not likely to get better, given how well WSL works now. So, you _could_ use WSL to work around that.

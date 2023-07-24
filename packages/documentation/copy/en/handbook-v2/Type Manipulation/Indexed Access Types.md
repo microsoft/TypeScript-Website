@@ -3,7 +3,6 @@ title: Indexed Access Types
 layout: docs
 permalink: /docs/handbook/2/indexed-access-types.html
 oneline: "Using Type['a'] syntax to access a subset of a type."
-beta: true
 ---
 
 We can use an _indexed access type_ to look up a specific property on another type:
@@ -56,4 +55,23 @@ type Age = typeof MyArray[number]["age"];
 // Or
 type Age2 = Person["age"];
 //   ^?
+```
+
+You can only use types when indexing, meaning you can't use a `const` to make a variable reference:
+
+```ts twoslash
+// @errors: 2538 2749
+type Person = { age: number; name: string; alive: boolean };
+// ---cut---
+const key = "age";
+type Age = Person[key];
+```
+
+However, you can use a type alias for a similar style of refactor:
+
+```ts twoslash
+type Person = { age: number; name: string; alive: boolean };
+// ---cut---
+type key = "age";
+type Age = Person[key];
 ```

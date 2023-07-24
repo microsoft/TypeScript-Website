@@ -24,7 +24,7 @@ interface Iterator<T> {
 This kind of iterator is useful for iterating over synchronously available values, such as the elements of an Array or the keys of a Map.
 An object that supports iteration is said to be "iterable" if it has a `Symbol.iterator` method that returns an `Iterator` object.
 
-The Iterator protocol also defines the target of some of the ES2015 features like `for..of` and spread operator and the array rest in destructuring assignmnets.
+The Iterator protocol also defines the target of some of the ES2015 features like `for..of` and spread operator and the array rest in destructuring assignments.
 
 ##### Generators
 
@@ -43,13 +43,13 @@ function* f() {
 Previously generators were only supported if the target is ES6/ES2015 or later.
 Moreover, constructs that operate on the Iterator protocol, e.g. `for..of` were only supported if they operate on arrays for targets below ES6/ES2015.
 
-TypeScript 2.3 adds full support for generators and the Iterator protocol for ES3 and ES5 targets with `--downlevelIteration` flag.
+TypeScript 2.3 adds full support for generators and the Iterator protocol for ES3 and ES5 targets with [`downlevelIteration`](/tsconfig#downlevelIteration) flag.
 
-With `--downlevelIteration`, the compiler uses new type check and emit behavior that attempts to call a `[Symbol.iterator]()` method on the iterated object if it is found, and creates a synthetic array iterator over the object if it is not.
+With [`downlevelIteration`](/tsconfig#downlevelIteration), the compiler uses new type check and emit behavior that attempts to call a `[Symbol.iterator]()` method on the iterated object if it is found, and creates a synthetic array iterator over the object if it is not.
 
 > Please note that this requires a native `Symbol.iterator` or `Symbol.iterator` shim at runtime for any non-array values.
 
-`for..of` statements, Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using `--downlevelIteration`, but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
+`for..of` statements, Array Destructuring, and Spread elements in Array, Call, and New expressions support `Symbol.iterator` in ES5/E3 if available when using [`downlevelIteration`](/tsconfig#downlevelIteration), but can be used on an Array even if it does not define `Symbol.iterator` at run time or design time.
 
 ## Async Iteration
 
@@ -110,7 +110,7 @@ The `for..await..of` statement is only legal within an Async Function or Async G
 ##### Caveats
 
 - Keep in mind that our support for async iterators relies on support for `Symbol.asyncIterator` to exist at runtime. You may need to polyfill `Symbol.asyncIterator`, which for simple purposes can be as simple as: `(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");`
-- You also need to include `esnext` in your `--lib` option, to get the `AsyncIterator` declaration if you do not already have it.
+- You also need to include `esnext` in your [`lib`](/tsconfig#lib) option, to get the `AsyncIterator` declaration if you do not already have it.
 - Finally, if your target is ES5 or ES3, you'll also need to set the `--downlevelIterators` flag.
 
 ## Generic parameter defaults
@@ -153,16 +153,16 @@ A generic parameter default follows the following rules:
 
 New checks added to TypeScript are often off by default to avoid breaking existing projects.
 While avoiding breakage is a good thing, this strategy has the drawback of making it increasingly complex to choose the highest level of type safety, and doing so requires explicit opt-in action on every TypeScript release.
-With the `--strict` option it becomes possible to choose maximum type safety with the understanding that additional errors might be reported by newer versions of the compiler as improved type checking features are added.
+With the [`strict`](/tsconfig#strict) option it becomes possible to choose maximum type safety with the understanding that additional errors might be reported by newer versions of the compiler as improved type checking features are added.
 
-The new `--strict` compiler option represents the recommended setting of a number of type checking options. Specifically, specifying `--strict` corresponds to specifying all of the following options (and may in the future include more options):
+The new [`strict`](/tsconfig#strict) compiler option represents the recommended setting of a number of type checking options. Specifically, specifying [`strict`](/tsconfig#strict) corresponds to specifying all of the following options (and may in the future include more options):
 
-- `--strictNullChecks`
-- `--noImplicitAny`
-- `--noImplicitThis`
-- `--alwaysStrict`
+- [`strictNullChecks`](/tsconfig#strictNullChecks)
+- [`noImplicitAny`](/tsconfig#noImplicitAny)
+- [`noImplicitThis`](/tsconfig#noImplicitThis)
+- [`alwaysStrict`](/tsconfig#alwaysStrict)
 
-In exact terms, the `--strict` option sets the _default_ value for the compiler options listed above.
+In exact terms, the [`strict`](/tsconfig#strict) option sets the _default_ value for the compiler options listed above.
 This means it is still possible to individually control the options.
 For example,
 
@@ -170,7 +170,7 @@ For example,
 --strict --noImplicitThis false
 ```
 
-has the effect of turning on all strict options _except_ the `--noImplicitThis` option. Using this scheme it is possible to express configurations consisting of _all_ strict options except some explicitly listed options.
+has the effect of turning on all strict options _except_ the [`noImplicitThis`](/tsconfig#noImplicitThis) option. Using this scheme it is possible to express configurations consisting of _all_ strict options except some explicitly listed options.
 In other words, it is now possible to default to the highest level of type safety but opt out of certain checks.
 
 Starting with TypeScript 2.3, the default `tsconfig.json` generated by `tsc --init` includes a `"strict": true` setting in the `"compilerOptions"` section.
@@ -178,15 +178,15 @@ Thus, new projects started with `tsc --init` will by default have the highest le
 
 ## Enhanced `--init` output
 
-Along with setting `--strict` on by default, `tsc --init` has an enhanced output. Default `tsconfig.json` files generated by `tsc --init` now include a set of the common compiler options along with their descriptions commented out.
+Along with setting [`strict`](/tsconfig#strict) on by default, `tsc --init` has an enhanced output. Default `tsconfig.json` files generated by `tsc --init` now include a set of the common compiler options along with their descriptions commented out.
 Just un-comment the configuration you like to set to get the desired behavior; we hope the new output simplifies the setting up new projects and keeps configuration files readable as projects grow.
 
 ## Errors in .js files with `--checkJs`
 
-By default the TypeScript compiler does not report any errors in .js files including using `--allowJs`.
-With TypeScript 2.3 type-checking errors can also be reported in `.js` files with `--checkJs`.
+By default the TypeScript compiler does not report any errors in .js files including using [`allowJs`](/tsconfig#allowJs).
+With TypeScript 2.3 type-checking errors can also be reported in `.js` files with [`checkJs`](/tsconfig#checkJs).
 
-You can skip checking some files by adding `// @ts-nocheck` comment to them; conversely you can choose to check only a few `.js` files by adding `// @ts-check` comment to them without setting `--checkJs`.
+You can skip checking some files by adding `// @ts-nocheck` comment to them; conversely you can choose to check only a few `.js` files by adding `// @ts-check` comment to them without setting [`checkJs`](/tsconfig#checkJs).
 You can also ignore errors on specific lines by adding `// @ts-ignore` on the preceding line.
 
 `.js` files are still checked to ensure that they only include standard ECMAScript features; type annotations are only allowed in `.ts` files and are flagged as errors in `.js` files.

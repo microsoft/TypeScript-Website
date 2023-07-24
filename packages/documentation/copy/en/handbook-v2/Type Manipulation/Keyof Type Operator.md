@@ -3,12 +3,12 @@ title: Keyof Type Operator
 layout: docs
 permalink: /docs/handbook/2/keyof-types.html
 oneline: "Using the keyof operator in type contexts."
-beta: true
 ---
 
 ## The `keyof` type operator
 
-The `keyof` operator takes an object type and produces a string or numeric literal union of its keys:
+The `keyof` operator takes an object type and produces a string or numeric literal union of its keys.
+The following type `P` is the same type as `type P = "x" | "y"`:
 
 ```ts twoslash
 type Point = { x: number; y: number };

@@ -1,6 +1,6 @@
 import { UI } from "./createUI"
 
-type Sandbox = import("typescript-sandbox").Sandbox
+type Sandbox = import("@typescript/sandbox").Sandbox
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 
 export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-editor"), ui: UI) => {
@@ -12,7 +12,7 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     if (option === monaco.languages.typescript.JsxEmit.None) {
       return undefined
     }
-    return monaco.languages.typescript.JsxEmit[option]
+    return monaco.languages.typescript.JsxEmit[option].toLowerCase()
   }
 
   function getModuleKindText(option: any) {
@@ -20,6 +20,10 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
       return undefined
     }
     return monaco.languages.typescript.ModuleKind[option]
+  }
+
+  function getModuleResolutionText(option: any) {
+    return option === monaco.languages.typescript.ModuleResolutionKind.Classic ? "classic" : "node"
   }
 
   // These are the compiler's defaults, and we want a diff from
@@ -41,17 +45,25 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
   }
 
   function getValidCompilerOptions(options: CompilerOptions) {
-    const { target: targetOption, jsx: jsxOption, module: moduleOption, ...restOptions } = options
+    const {
+      target: targetOption,
+      jsx: jsxOption,
+      module: moduleOption,
+      moduleResolution: moduleResolutionOption,
+      ...restOptions
+    } = options
 
     const targetText = getScriptTargetText(targetOption)
     const jsxText = getJsxEmitText(jsxOption)
-    const moduleText = getModuleKindText(moduleOption)
+    const moduleKindText = getModuleKindText(moduleOption)
+    const moduleResolutionText = getModuleResolutionText(moduleResolutionOption)
 
     const opts = {
       ...restOptions,
       ...(targetText && { target: targetText }),
       ...(jsxText && { jsx: jsxText }),
-      ...(moduleText && { module: moduleText }),
+      ...(moduleKindText && { module: moduleKindText }),
+      moduleResolution: moduleResolutionText,
     }
 
     const diffFromTSCDefaults = Object.entries(opts).reduce((acc, [key, value]) => {
@@ -145,6 +157,12 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
     document.location.assign(`https://ts-ast-viewer.com/${hash}`)
   }
 
+  function openInVSCodeDev() {
+    const search = document.location.search
+    const hash = `#code/${sandbox.lzstring.compressToEncodedURIComponent(sandbox.getText())}`
+    document.location.assign(`https://insiders.vscode.dev/tsplay/${search}${hash}`)
+  }
+
   function openProjectInCodeSandbox() {
     const files = {
       "package.json": {
@@ -201,9 +219,10 @@ export const createExporter = (sandbox: Sandbox, monaco: typeof import("monaco-e
   async function makeMarkdown() {
     const query = sandbox.createURLQueryWithCompilerOptions(sandbox)
     const fullURL = `${document.location.protocol}//${document.location.host}${document.location.pathname}${query}`
-    const jsSection = sandbox.config.useJavaScript
-      ? ""
-      : `
+    const jsSection =
+      sandbox.config.filetype === "js"
+        ? ""
+        : `
 <details><summary><b>Output</b></summary>
 
 ${codify(await sandbox.getRunnableJS(), "ts")}
@@ -256,7 +275,9 @@ ${codify(stringifiedCompilerOptions, "json")}
     const ts = sandbox.getText()
     const preview = ts.length > 200 ? ts.substring(0, 200) + "..." : ts.substring(0, 200)
 
-    const code = "```\n" + preview + "\n```\n"
+    const jsx = getJsxEmitText(sandbox.getCompilerOptions().jsx)
+    const codeLanguage = jsx !== undefined ? "tsx" : "ts"
+    const code = "```" + codeLanguage + "\n" + preview + "\n```\n"
     const chat = `${code}\n[Playground Link](${fullURL})`
     ui.showModal(chat, document.getElementById("exports-dropdown")!, "Markdown code", undefined, e)
     return false
@@ -277,6 +298,7 @@ ${codify(stringifiedCompilerOptions, "json")}
     copyForChatWithPreview,
     openInTSAST,
     openInBugWorkbench,
+    openInVSCodeDev,
     exportAsTweet,
   }
 }

@@ -45,7 +45,7 @@ If `isolatedModules` is set, all implementation files must be _modules_ (which m
 function fn() {}
 ```
 
-This restriction doesn't apply to `.d.ts` files
+This restriction doesn't apply to `.d.ts` files.
 
 #### References to `const enum` members
 
@@ -71,5 +71,5 @@ declare const enum Numbers {
 console.log(Numbers.Zero + Numbers.One);
 ```
 
-Without knowledge of the values of these members, other transpilers can't replace the references to `Number`, which would be a runtime error if left alone (since there are no `Numbers` object at runtime).
+Without knowledge of the values of these members, other transpilers can't replace the references to `Numbers`, which would be a runtime error if left alone (since there are no `Numbers` object at runtime).
 Because of this, when `isolatedModules` is set, it is an error to reference an ambient `const enum` member.

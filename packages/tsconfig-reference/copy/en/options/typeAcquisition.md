@@ -35,15 +35,3 @@ If a module should not be automatically acquired, for example if the library is 
   }
 }
 ```
-
-In TypeScript 4.1, we added the ability to disable the special-casing where a filename would trigger type acquisition:
-
-```json
-{
-  "typeAcquisition": {
-    "disableFilenameBasedTypeAcquisition": true
-  }
-}
-```
-
-This means that having a file like `jquery.js` in your project would not automatically download the types for JQuery from DefinitelyTyped.

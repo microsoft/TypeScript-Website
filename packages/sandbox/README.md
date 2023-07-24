@@ -17,10 +17,8 @@ This project is useful to you if:
 
 ## Builds
 
-This library currently ships as an AMD module. This is the same format that vscode/monaco use, and so you can use
-the same runtime loader patterns for importing into your web page. It is not a goal to provide ESM builds so people
-can run JS packagers over the project. If someone can make that work and have tests which validate it doesn't break,
-we'll accept it.
+This library is published to the CDN as an AMD module. This is the same format that vscode/monaco use, and so you can use
+the same runtime loader patterns for importing into your web page. This package is also available as an ESM and CJS module on NPM.
 
 ## Installation
 
@@ -83,16 +81,15 @@ export default async function () {
           return
         }
 
-        // Create a sandbox and embed it into the the div #monaco-editor-embed
+        // Create a sandbox and embed it into the div #monaco-editor-embed
         const sandboxConfig = {
           text: initialCode,
           compilerOptions: {},
           domID: "monaco-editor-embed",
         }
 
-        sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts).then(sandbox => {
-          sandbox.editor.focus()
-        })
+        const sandbox = sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts)
+        sandbox.editor.focus()
       })
     }
 

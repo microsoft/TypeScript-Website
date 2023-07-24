@@ -7,7 +7,7 @@ oneline: TypeScript 3.8 Release Notes
 
 ## Type-Only Imports and Export
 
-This feature is something most users may never have to think about; however, if you've hit issues under `--isolatedModules`, TypeScript's `transpileModule` API, or Babel, this feature might be relevant.
+This feature is something most users may never have to think about; however, if you've hit issues under [`isolatedModules`](/tsconfig#isolatedModules), TypeScript's `transpileModule` API, or Babel, this feature might be relevant.
 
 TypeScript 3.8 adds a new syntax for type-only imports and exports.
 
@@ -50,7 +50,7 @@ import type Foo, { Bar, Baz } from "some-module";
 // error! A type-only import can specify a default import or named bindings, but not both.
 ```
 
-In conjunction with `import type`, TypeScript 3.8 also adds a new compiler flag to control what happens with imports that won't be utilized at runtime: `importsNotUsedAsValues`.
+In conjunction with `import type`, TypeScript 3.8 also adds a new compiler flag to control what happens with imports that won't be utilized at runtime: [`importsNotUsedAsValues`](/tsconfig#importsNotUsedAsValues).
 This flag takes 3 different values:
 
 - `remove`: this is today's behavior of dropping these imports. It's going to continue to be the default, and is a non-breaking change.
@@ -309,20 +309,20 @@ Note there's a subtlety: top-level `await` only works at the top level of a _mod
 In some basic cases, you might need to write out `export {}` as some boilerplate to make sure of this.
 
 Top level `await` may not work in all environments where you might expect at this point.
-Currently, you can only use top level `await` when the `target` compiler option is `es2017` or above, and `module` is `esnext` or `system`.
+Currently, you can only use top level `await` when the [`target`](/tsconfig#target) compiler option is `es2017` or above, and `module` is `esnext` or `system`.
 Support within several environments and bundlers may be limited or may require enabling experimental support.
 
 For more information on our implementation, you can [check out the original pull request](https://github.com/microsoft/TypeScript/pull/35813).
 
 ## `es2020` for `target` and `module`
 
-TypeScript 3.8 supports `es2020` as an option for `module` and `target`.
+TypeScript 3.8 supports `es2020` as an option for `module` and [`target`](/tsconfig#target).
 This will preserve newer ECMAScript 2020 features like optional chaining, nullish coalescing, `export * as ns`, and dynamic `import(...)` syntax.
-It also means `bigint` literals now have a stable `target` below `esnext`.
+It also means `bigint` literals now have a stable [`target`](/tsconfig#target) below `esnext`.
 
 ## JSDoc Property Modifiers
 
-TypeScript 3.8 supports JavaScript files by turning on the `allowJs` flag, and also supports _type-checking_ those JavaScript files via the `checkJs` option or by adding a `// @ts-check` comment to the top of your `.js` files.
+TypeScript 3.8 supports JavaScript files by turning on the [`allowJs`](/tsconfig#allowJs) flag, and also supports _type-checking_ those JavaScript files via the [`checkJs`](/tsconfig#checkJs) option or by adding a `// @ts-check` comment to the top of your `.js` files.
 
 Because JavaScript files don't have dedicated syntax for type-checking, TypeScript leverages JSDoc.
 TypeScript 3.8 understands a few new JSDoc tags for properties.
@@ -381,7 +381,7 @@ new Foo().stuff++;
 TypeScript 3.8 ships a new strategy for watching directories, which is crucial for efficiently picking up changes to `node_modules`.
 
 For some context, on operating systems like Linux, TypeScript installs directory watchers (as opposed to file watchers) on `node_modules` and many of its subdirectories to detect changes in dependencies.
-This is because the number of available file watchers is often eclipsed by the of files in `node_modules`, whereas there are way fewer directories to track.
+This is because the number of available file watchers is often eclipsed by the number of files in `node_modules`, whereas there are way fewer directories to track.
 
 Older versions of TypeScript would _immediately_ install directory watchers on folders, and at startup that would be fine; however, during an npm install, a lot of activity will take place within `node_modules` and that can overwhelm TypeScript, often slowing editor sessions to a crawl.
 To prevent this, TypeScript 3.8 waits slightly before installing directory watchers to give these highly volatile directories some time to stabilize.
@@ -412,7 +412,7 @@ Because every project might work better under different strategies, and this new
 
 `watchOptions` contains 4 new options that can be configured:
 
-- `watchFile`: the strategy for how individual files are watched. This can be set to
+- [`watchFile`](/tsconfig#watchFile): the strategy for how individual files are watched. This can be set to
 
   - `fixedPollingInterval`: Check every file for changes several times a second at a fixed interval.
   - `priorityPollingInterval`: Check every file for changes several times a second, but use heuristics to check certain types of files less frequently than others.
@@ -420,13 +420,13 @@ Because every project might work better under different strategies, and this new
   - `useFsEvents` (the default): Attempt to use the operating system/file system's native events for file changes.
   - `useFsEventsOnParentDirectory`: Attempt to use the operating system/file system's native events to listen for changes on a file's containing directories. This can use fewer file watchers, but might be less accurate.
 
-- `watchDirectory`: the strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality. This can be set to:
+- [`watchDirectory`](/tsconfig#watchDirectory): the strategy for how entire directory trees are watched under systems that lack recursive file-watching functionality. This can be set to:
 
   - `fixedPollingInterval`: Check every directory for changes several times a second at a fixed interval.
   - `dynamicPriorityPolling`: Use a dynamic queue where less-frequently modified directories will be checked less often.
   - `useFsEvents` (the default): Attempt to use the operating system/file system's native events for directory changes.
 
-- `fallbackPolling`: when using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn't support native file watchers. This can be set to
+- [`fallbackPolling`](/tsconfig#fallbackPolling): when using file system events, this option specifies the polling strategy that gets used when the system runs out of native file watchers and/or doesn't support native file watchers. This can be set to
   - `fixedPollingInterval`: _(See above.)_
   - `priorityPollingInterval`: _(See above.)_
   - `dynamicPriorityPolling`: _(See above.)_
@@ -436,7 +436,7 @@ For more information on these changes, [head over to GitHub to see the pull requ
 
 ## "Fast and Loose" Incremental Checking
 
-TypeScript 3.8 introduces a new compiler option called `assumeChangesOnlyAffectDirectDependencies`.
+TypeScript 3.8 introduces a new compiler option called [`assumeChangesOnlyAffectDirectDependencies`](/tsconfig#assumeChangesOnlyAffectDirectDependencies).
 When this option is enabled, TypeScript will avoid rechecking/rebuilding all truly possibly-affected files, and only recheck/rebuild files that have changed as well as files that directly import them.
 
 For example, consider a file `fileD.ts` that imports `fileC.ts` that imports `fileB.ts` that imports `fileA.ts` as follows:
@@ -446,7 +446,7 @@ fileA.ts <- fileB.ts <- fileC.ts <- fileD.ts
 ```
 
 In `--watch` mode, a change in `fileA.ts` would typically mean that TypeScript would need to at least re-check `fileB.ts`, `fileC.ts`, and `fileD.ts`.
-Under `assumeChangesOnlyAffectDirectDependencies`, a change in `fileA.ts` means that only `fileA.ts` and `fileB.ts` need to be re-checked.
+Under [`assumeChangesOnlyAffectDirectDependencies`](/tsconfig#assumeChangesOnlyAffectDirectDependencies), a change in `fileA.ts` means that only `fileA.ts` and `fileB.ts` need to be re-checked.
 
 In a codebase like Visual Studio Code, this reduced rebuild times for changes in certain files from about 14 seconds to about 1 second.
 While we don't necessarily recommend this option for all codebases, you might be interested if you have an extremely large codebase and are willing to defer full project errors until later (e.g. a dedicated build via a `tsconfig.fullbuild.json` or in CI).

@@ -1,4 +1,4 @@
-//// { order: 0 }
+//// { "order": 0 }
 
 // A class is a special type of JavaScript object which
 // is always created via a constructor. These classes

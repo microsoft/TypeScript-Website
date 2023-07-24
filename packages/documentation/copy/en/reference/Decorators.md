@@ -6,15 +6,18 @@ oneline: TypeScript Decorators overview
 translatable: true
 ---
 
+> NOTE&nbsp; This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.
+> See: [Decorators in Typescript 5.0](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators)
+
 ## Introduction
 
 With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
 Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
-Decorators are a [stage 2 proposal](https://github.com/tc39/proposal-decorators) for JavaScript and are available as an experimental feature of TypeScript.
 
-> NOTE&emsp; Decorators are an experimental feature that may change in future releases.
+> Further Reading (stage 2): [A Complete Guide to TypeScript Decorators](https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/)
 
-To enable experimental support for decorators, you must enable the `experimentalDecorators` compiler option either on the command line or in your `tsconfig.json`:
+
+To enable experimental support for decorators, you must enable the [`experimentalDecorators`](/tsconfig#experimentalDecorators) compiler option either on the command line or in your `tsconfig.json`:
 
 **Command Line**:
 
@@ -24,7 +27,7 @@ tsc --target ES5 --experimentalDecorators
 
 **tsconfig.json**:
 
-```json  tsconfig
+```json tsconfig
 {
   "compilerOptions": {
     "target": "ES5",
@@ -46,8 +49,6 @@ function sealed(target) {
 }
 ```
 
-> NOTE&emsp; You can see a more detailed example of a decorator in [Class Decorators](#class-decorators), below.
-
 ## Decorator Factories
 
 If we want to customize how a decorator is applied to a declaration, we can write a decorator factory.
@@ -57,7 +58,8 @@ We can write a decorator factory in the following fashion:
 
 ```ts
 function color(value: string) {
-  // this is the decorator factory
+  // this is the decorator factory, it sets up
+  // the returned decorator function
   return function (target) {
     // this is the decorator
     // do something with 'target' and 'value'...
@@ -65,27 +67,33 @@ function color(value: string) {
 }
 ```
 
-> NOTE&emsp; You can see a more detailed example of a decorator factory in [Method Decorators](#method-decorators), below.
-
 ## Decorator Composition
 
-Multiple decorators can be applied to a declaration, as in the following examples:
+Multiple decorators can be applied to a declaration, for example on a single line:
 
-- On a single line:
+```ts twoslash
+// @experimentalDecorators
+// @noErrors
+function f() {}
+function g() {}
+// ---cut---
+@f @g x
+```
 
-  ```ts
-  @f @g x
-  ```
+On multiple lines:
 
-- On multiple lines:
+```ts twoslash
+// @experimentalDecorators
+// @noErrors
+function f() {}
+function g() {}
+// ---cut---
+@f
+@g
+x
+```
 
-  ```ts
-  @f
-  @g
-  x
-  ```
-
-When multiple decorators apply to a single declaration, their evaluation is similar to [function composition in mathematics](http://wikipedia.org/wiki/Function_composition). In this model, when composing functions _f_ and _g_, the resulting composite (_f_ ∘ _g_)(_x_) is equivalent to _f_(_g_(_x_)).
+When multiple decorators apply to a single declaration, their evaluation is similar to [function composition in mathematics](https://wikipedia.org/wiki/Function_composition). In this model, when composing functions _f_ and _g_, the resulting composite (_f_ ∘ _g_)(_x_) is equivalent to _f_(_g_(_x_)).
 
 As such, the following steps are performed when evaluating multiple decorators on a single declaration in TypeScript:
 
@@ -94,32 +102,26 @@ As such, the following steps are performed when evaluating multiple decorators o
 
 If we were to use [decorator factories](#decorator-factories), we can observe this evaluation order with the following example:
 
-```ts
-function f() {
-  console.log("f(): evaluated");
-  return function (
-    target,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
-  ) {
-    console.log("f(): called");
+<!-- prettier-ignore -->
+```ts twoslash
+// @experimentalDecorators
+function first() {
+  console.log("first(): factory evaluated");
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    console.log("first(): called");
   };
 }
 
-function g() {
-  console.log("g(): evaluated");
-  return function (
-    target,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
-  ) {
-    console.log("g(): called");
+function second() {
+  console.log("second(): factory evaluated");
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    console.log("second(): called");
   };
 }
 
-class C {
-  @f()
-  @g()
+class ExampleClass {
+  @first()
+  @second()
   method() {}
 }
 ```
@@ -127,10 +129,10 @@ class C {
 Which would print this output to the console:
 
 ```shell
-f(): evaluated
-g(): evaluated
-g(): called
-f(): called
+first(): factory evaluated
+second(): factory evaluated
+second(): called
+first(): called
 ```
 
 ## Decorator Evaluation
@@ -155,17 +157,22 @@ If the class decorator returns a value, it will replace the class declaration wi
 > NOTE&nbsp; Should you choose to return a new constructor function, you must take care to maintain the original prototype.
 > The logic that applies decorators at runtime will **not** do this for you.
 
-The following is an example of a class decorator (`@sealed`) applied to the `Greeter` class:
+The following is an example of a class decorator (`@sealed`) applied to a `BugReport` class:
 
-```ts
+```ts twoslash
+// @experimentalDecorators
+function sealed(constructor: Function) {
+  Object.seal(constructor);
+  Object.seal(constructor.prototype);
+}
+// ---cut---
 @sealed
-class Greeter {
-  greeting: string;
-  constructor(message: string) {
-    this.greeting = message;
-  }
-  greet() {
-    return "Hello, " + this.greeting;
+class BugReport {
+  type = "report";
+  title: string;
+
+  constructor(t: string) {
+    this.title = t;
   }
 }
 ```
@@ -179,30 +186,38 @@ function sealed(constructor: Function) {
 }
 ```
 
-When `@sealed` is executed, it will seal both the constructor and its prototype.
+When `@sealed` is executed, it will seal both the constructor and its prototype, and will therefore prevent any further functionality from being added to or removed from this class during runtime by accessing `BugReport.prototype` or by defining properties on `BugReport` itself (note that ES2015 classes are really just syntactic sugar to prototype-based constructor functions). This decorator does **not** prevent classes from sub-classing `BugReport`.
 
-Next we have an example of how to override the constructor.
+Next we have an example of how to override the constructor to set new defaults.
 
-```ts
-function classDecorator<T extends { new (...args: any[]): {} }>(
-  constructor: T
-) {
+<!-- prettier-ignore -->
+```ts twoslash
+// @errors: 2339
+// @experimentalDecorators
+function reportableClassDecorator<T extends { new (...args: any[]): {} }>(constructor: T) {
   return class extends constructor {
-    newProperty = "new property";
-    hello = "override";
+    reportingURL = "http://www...";
   };
 }
 
-@classDecorator
-class Greeter {
-  property = "property";
-  hello: string;
-  constructor(m: string) {
-    this.hello = m;
+@reportableClassDecorator
+class BugReport {
+  type = "report";
+  title: string;
+
+  constructor(t: string) {
+    this.title = t;
   }
 }
 
-console.log(new Greeter("world"));
+const bug = new BugReport("Needs dark mode");
+console.log(bug.title); // Prints "Needs dark mode"
+console.log(bug.type); // Prints "report"
+
+// Note that the decorator _does not_ change the TypeScript type
+// and so the new property `reportingURL` is not known
+// to the type system:
+bug.reportingURL;
 ```
 
 ## Method Decorators
@@ -225,7 +240,15 @@ If the method decorator returns a value, it will be used as the _Property Descri
 
 The following is an example of a method decorator (`@enumerable`) applied to a method on the `Greeter` class:
 
-```ts
+<!-- prettier-ignore -->
+```ts twoslash
+// @experimentalDecorators
+function enumerable(value: boolean) {
+  return function (target: any,propertyKey: string,descriptor: PropertyDescriptor) {
+    descriptor.enumerable = value;
+  };
+}
+// ---cut---
 class Greeter {
   greeting: string;
   constructor(message: string) {
@@ -241,13 +264,10 @@ class Greeter {
 
 We can define the `@enumerable` decorator using the following function declaration:
 
-```ts
+<!-- prettier-ignore -->
+```ts twoslash
 function enumerable(value: boolean) {
-  return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
-  ) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     descriptor.enumerable = value;
   };
 }
@@ -280,7 +300,18 @@ If the accessor decorator returns a value, it will be used as the _Property Desc
 
 The following is an example of an accessor decorator (`@configurable`) applied to a member of the `Point` class:
 
-```ts
+```ts twoslash
+// @experimentalDecorators
+function configurable(value: boolean) {
+  return function (
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor
+  ) {
+    descriptor.configurable = value;
+  };
+}
+// ---cut---
 class Point {
   private _x: number;
   private _y: number;
@@ -303,13 +334,10 @@ class Point {
 
 We can define the `@configurable` decorator using the following function declaration:
 
+<!-- prettier-ignore -->
 ```ts
 function configurable(value: boolean) {
-  return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
-  ) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     descriptor.configurable = value;
   };
 }
@@ -339,6 +367,7 @@ class Greeter {
   constructor(message: string) {
     this.greeting = message;
   }
+
   greet() {
     let formatString = getFormat(this, "greeting");
     return formatString.replace("%s", this.greeting);
@@ -385,76 +414,67 @@ The expression for the parameter decorator will be called as a function at runti
 
 The return value of the parameter decorator is ignored.
 
-The following is an example of a parameter decorator (`@required`) applied to parameter of a member of the `Greeter` class:
+The following is an example of a parameter decorator (`@required`) applied to parameter of a member of the `BugReport` class:
 
-```ts
-class Greeter {
-  greeting: string;
+<!-- prettier-ignore -->
+```ts twoslash
+// @experimentalDecorators
+function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<any>) {}
+function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {}
+// ---cut---
+class BugReport {
+  type = "report";
+  title: string;
 
-  constructor(message: string) {
-    this.greeting = message;
+  constructor(t: string) {
+    this.title = t;
   }
 
   @validate
-  greet(@required name: string) {
-    return "Hello " + name + ", " + this.greeting;
+  print(@required verbose: boolean) {
+    if (verbose) {
+      return `type: ${this.type}\ntitle: ${this.title}`;
+    } else {
+     return this.title; 
+    }
   }
 }
 ```
 
 We can then define the `@required` and `@validate` decorators using the following function declarations:
 
-```ts
+<!-- prettier-ignore -->
+```ts twoslash
+// @experimentalDecorators
+// @emitDecoratorMetadata
 import "reflect-metadata";
-
 const requiredMetadataKey = Symbol("required");
 
-function required(
-  target: Object,
-  propertyKey: string | symbol,
-  parameterIndex: number
-) {
-  let existingRequiredParameters: number[] =
-    Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
+function required(target: Object, propertyKey: string | symbol, parameterIndex: number) {
+  let existingRequiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
   existingRequiredParameters.push(parameterIndex);
-  Reflect.defineMetadata(
-    requiredMetadataKey,
-    existingRequiredParameters,
-    target,
-    propertyKey
-  );
+  Reflect.defineMetadata( requiredMetadataKey, existingRequiredParameters, target, propertyKey);
 }
 
-function validate(
-  target: any,
-  propertyName: string,
-  descriptor: TypedPropertyDescriptor<Function>
-) {
-  let method = descriptor.value;
+function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function>) {
+  let method = descriptor.value!;
+
   descriptor.value = function () {
-    let requiredParameters: number[] = Reflect.getOwnMetadata(
-      requiredMetadataKey,
-      target,
-      propertyName
-    );
+    let requiredParameters: number[] = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyName);
     if (requiredParameters) {
       for (let parameterIndex of requiredParameters) {
-        if (
-          parameterIndex >= arguments.length ||
-          arguments[parameterIndex] === undefined
-        ) {
+        if (parameterIndex >= arguments.length || arguments[parameterIndex] === undefined) {
           throw new Error("Missing required argument.");
         }
       }
     }
-
     return method.apply(this, arguments);
   };
 }
 ```
 
 The `@required` decorator adds a metadata entry that marks the parameter as required.
-The `@validate` decorator then wraps the existing `greet` method in a function that validates the arguments before invoking the original method.
+The `@validate` decorator then wraps the existing `print` method in a function that validates the arguments before invoking the original method.
 
 > NOTE&emsp; This example requires the `reflect-metadata` library.
 > See [Metadata](#metadata) for more information about the `reflect-metadata` library.
@@ -472,7 +492,7 @@ npm i reflect-metadata --save
 ```
 
 TypeScript includes experimental support for emitting certain types of metadata for declarations that have decorators.
-To enable this experimental support, you must set the `emitDecoratorMetadata` compiler option either on the command line or in your `tsconfig.json`:
+To enable this experimental support, you must set the [`emitDecoratorMetadata`](/tsconfig#emitDecoratorMetadata) compiler option either on the command line or in your `tsconfig.json`:
 
 **Command Line**:
 
@@ -496,49 +516,63 @@ When enabled, as long as the `reflect-metadata` library has been imported, addit
 
 We can see this in action in the following example:
 
-```ts
+<!-- prettier-ignore -->
+```ts twoslash
+// @emitDecoratorMetadata
+// @experimentalDecorators
+// @strictPropertyInitialization: false
 import "reflect-metadata";
 
 class Point {
-  x: number;
-  y: number;
+  constructor(public x: number, public y: number) {}
 }
 
 class Line {
-  private _p0: Point;
-  private _p1: Point;
+  private _start: Point;
+  private _end: Point;
 
   @validate
-  set p0(value: Point) {
-    this._p0 = value;
+  set start(value: Point) {
+    this._start = value;
   }
-  get p0() {
-    return this._p0;
+
+  get start() {
+    return this._start;
   }
 
   @validate
-  set p1(value: Point) {
-    this._p1 = value;
+  set end(value: Point) {
+    this._end = value;
   }
-  get p1() {
-    return this._p1;
+
+  get end() {
+    return this._end;
   }
 }
 
-function validate<T>(
-  target: any,
-  propertyKey: string,
-  descriptor: TypedPropertyDescriptor<T>
-) {
-  let set = descriptor.set;
+function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
+  let set = descriptor.set!;
+  
   descriptor.set = function (value: T) {
     let type = Reflect.getMetadata("design:type", target, propertyKey);
+
     if (!(value instanceof type)) {
-      throw new TypeError("Invalid type.");
+      throw new TypeError(`Invalid type, got ${typeof value} not ${type.name}.`);
     }
-    set.call(target, value);
+
+    set.call(this, value);
   };
 }
+
+const line = new Line()
+line.start = new Point(0, 0)
+
+// @ts-ignore
+// line.end = {}
+
+// Fails at runtime with:
+// > Invalid type, got object not Point
+
 ```
 
 The TypeScript compiler will inject design-time type information using the `@Reflect.metadata` decorator.
@@ -546,25 +580,25 @@ You could consider it the equivalent of the following TypeScript:
 
 ```ts
 class Line {
-  private _p0: Point;
-  private _p1: Point;
+  private _start: Point;
+  private _end: Point;
 
   @validate
   @Reflect.metadata("design:type", Point)
-  set p0(value: Point) {
-    this._p0 = value;
+  set start(value: Point) {
+    this._start = value;
   }
-  get p0() {
-    return this._p0;
+  get start() {
+    return this._start;
   }
 
   @validate
   @Reflect.metadata("design:type", Point)
-  set p1(value: Point) {
-    this._p1 = value;
+  set end(value: Point) {
+    this._end = value;
   }
-  get p1() {
-    return this._p1;
+  get end() {
+    return this._end;
   }
 }
 ```

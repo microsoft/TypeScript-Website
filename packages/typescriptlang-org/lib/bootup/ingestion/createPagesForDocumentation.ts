@@ -2,12 +2,12 @@ const path = require(`path`)
 const fs = require(`fs`)
 const { green } = require("chalk")
 import { NodePluginArgs, CreatePagesArgs } from "gatsby"
+import { getDocumentationNavForLanguage } from "../../../src/lib/documentationNavigation"
 import {
-  getDocumentationNavForLanguage,
   getNextPageID,
   getPreviousPageID,
   SidebarNavItem,
-} from "../../../src/lib/documentationNavigation"
+} from "../../../src/lib/documentationNavigationUtils"
 import { addPathToSite } from "../pathsOnSiteTracker"
 import { isMultiLingual } from "./languageFilter"
 
@@ -66,6 +66,10 @@ export const createDocumentationPages = async (
 
   docs.forEach((post: any) => {
     const permalink = post.childMarkdownRemark.frontmatter.permalink
+    if (!permalink)
+      // prettier-ignore
+      throw new Error(`Did not find a permalink for page: ${JSON.stringify(post)}`)
+
     const lang = langs.find(l => permalink.startsWith("/" + l + "/")) || "en"
     if (!isMultiLingual && lang !== "en") return
 

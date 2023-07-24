@@ -1,4 +1,4 @@
-//// { order: 2 }
+//// { "order": 2 }
 
 // When calling a method of a class, you generally expect it
 // to refer to the current instance of the class.

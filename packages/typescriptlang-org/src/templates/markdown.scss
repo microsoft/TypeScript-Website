@@ -1,11 +1,31 @@
 @import "../style/globals.scss";
-
 @import "./markdown-twoslash.scss";
 
 .markdown {
-  h1 {
+  scroll-behavior: smooth;
+
+  h1,
+  h2,
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
     font-weight: 400;
     line-height: 1.3;
+
+    a {
+      padding-right: 10px !important;
+    }
+
+    &[id]::before {
+      content: "";
+      display: block;
+      visibility: hidden;
+      height: 30px;
+      margin-top: -30px;
+    }
+  }
+
+  h1 {
     margin-bottom: 12px;
     font-size: 2rem;
     margin-top: 0;
@@ -14,24 +34,34 @@
   }
 
   h2 {
-    font-weight: 400;
     font-size: 1.75rem;
-    line-height: 1.3;
     margin-bottom: 12px;
     margin-top: 32px;
   }
 
   h3 {
-    font-weight: 400;
     font-size: 1.1875rem;
     margin-top: 30px;
     margin-bottom: 18px;
-    line-height: 1.3;
+  }
+
+  pre {
+    clear: both;
+    top: 10px;
   }
 
   blockquote {
-    margin: 20px;
-    border-left: 1px solid var(--border-color);
+    border-left: 2px solid var(--border-color);
+    background-color: var(--inline-code-background-color);
+    font-size: 0.8rem;
+    margin: auto;
+    padding: 0.1rem 2rem;
+
+    &.bg-reading {
+      float: right;
+      margin-left: 0.5rem;
+      border-left: none;
+    }
   }
 
   .language-id {
@@ -48,6 +78,15 @@
     border-collapse: separate;
     border-spacing: 0;
 
+    &.data {
+      display: table;
+      td,
+      th,
+      tr {
+        text-align: center;
+      }
+    }
+
     td,
     th {
       text-align: left;
@@ -63,9 +102,11 @@
       border-bottom: 0;
       border-style: solid;
     }
+
     tr:nth-child(2n) {
       background-color: var(--background-minor-highlight-color);
     }
+
     th {
       border-top: none;
     }
@@ -75,8 +116,28 @@
     max-width: 100%;
   }
 
+  div.table-container {
+    overflow-x: auto;
+  }
+
   table.full-width-table {
     width: 100%;
     display: table;
+  }
+
+  .blue-tick {
+    color: $ts-main-blue-color;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .black-tick {
+    color: $ts-muted-green;
+    font-size: 1.2rem;
+  }
+
+  .red-cross {
+    color: $ts-muted-red;
+    font-size: 1.2rem;
   }
 }

@@ -7,9 +7,9 @@ oneline: "Recommendations for writing d.ts files"
 
 ## General Types
 
-## `Number`, `String`, `Boolean`, `Symbol` and `Object`
+### `Number`, `String`, `Boolean`, `Symbol` and `Object`
 
-_Don't_ ever use the types `Number`, `String`, `Boolean`, `Symbol`, or `Object`
+❌ **Don't** ever use the types `Number`, `String`, `Boolean`, `Symbol`, or `Object`
 These types refer to non-primitive boxed objects that are almost never used appropriately in JavaScript code.
 
 ```ts
@@ -17,7 +17,7 @@ These types refer to non-primitive boxed objects that are almost never used appr
 function reverse(s: String): String;
 ```
 
-_Do_ use the types `number`, `string`, `boolean`, and `symbol`.
+✅ **Do** use the types `number`, `string`, `boolean`, and `symbol`.
 
 ```ts
 /* OK */
@@ -26,14 +26,14 @@ function reverse(s: string): string;
 
 Instead of `Object`, use the non-primitive `object` type ([added in TypeScript 2.2](../release-notes/typescript-2-2.html#object-type)).
 
-## Generics
+### Generics
 
-_Don't_ ever have a generic type which doesn't use its type parameter.
+❌ **Don't** ever have a generic type which doesn't use its type parameter.
 See more details in [TypeScript FAQ page](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-doesnt-type-inference-work-on-this-interface-interface-foot--).
 
-## any
+### any
 
-_Don't_ use `any` as a type unless you are in the process of migrating a JavaScript project to TypeScript.  The compiler _effectively_ treats `any` as "please turn off type checking for this thing".  It is similar to putting an `@ts-ignore` comment around every usage of the variable.  This can be very helpful when you are first migrating a JavaScript project to TypeScript as you can set the type for stuff you haven't migrated yet as `any`, but in a full TypeScript project you are disabling type checking for any parts of your program that use it.
+❌ **Don't** use `any` as a type unless you are in the process of migrating a JavaScript project to TypeScript. The compiler _effectively_ treats `any` as "please turn off type checking for this thing". It is similar to putting an `@ts-ignore` comment around every usage of the variable. This can be very helpful when you are first migrating a JavaScript project to TypeScript as you can set the type for stuff you haven't migrated yet as `any`, but in a full TypeScript project you are disabling type checking for any parts of your program that use it.
 
 In cases where you don't know what type you want to accept, or when you want to accept anything because you will be blindly passing it through without interacting with it, you can use [`unknown`](/play/#example/unknown-and-never).
 
@@ -41,11 +41,11 @@ In cases where you don't know what type you want to accept, or when you want to 
 
 ## Callback Types
 
-## Return Types of Callbacks
+### Return Types of Callbacks
 
 <!-- TODO: Reword; these examples make no sense in the context of a declaration file -->
 
-_Don't_ use the return type `any` for callbacks whose value will be ignored:
+❌ **Don't** use the return type `any` for callbacks whose value will be ignored:
 
 ```ts
 /* WRONG */
@@ -54,7 +54,7 @@ function fn(x: () => any) {
 }
 ```
 
-_Do_ use the return type `void` for callbacks whose value will be ignored:
+✅ **Do** use the return type `void` for callbacks whose value will be ignored:
 
 ```ts
 /* OK */
@@ -63,7 +63,7 @@ function fn(x: () => void) {
 }
 ```
 
-_Why_: Using `void` is safer because it prevents you from accidentally using the return value of `x` in an unchecked way:
+❔ **Why:** Using `void` is safer because it prevents you from accidentally using the return value of `x` in an unchecked way:
 
 ```ts
 function fn(x: () => void) {
@@ -72,14 +72,14 @@ function fn(x: () => void) {
 }
 ```
 
-## Optional Parameters in Callbacks
+### Optional Parameters in Callbacks
 
-_Don't_ use optional parameters in callbacks unless you really mean it:
+❌ **Don't** use optional parameters in callbacks unless you really mean it:
 
 ```ts
 /* WRONG */
 interface Fetcher {
-  getObject(done: (data: any, elapsedTime?: number) => void): void;
+  getObject(done: (data: unknown, elapsedTime?: number) => void): void;
 }
 ```
 
@@ -88,18 +88,18 @@ The author probably intended to say that the callback might not care about the `
 but there's no need to make the parameter optional to accomplish this --
 it's always legal to provide a callback that accepts fewer arguments.
 
-_Do_ write callback parameters as non-optional:
+✅ **Do** write callback parameters as non-optional:
 
 ```ts
 /* OK */
 interface Fetcher {
-  getObject(done: (data: any, elapsedTime: number) => void): void;
+  getObject(done: (data: unknown, elapsedTime: number) => void): void;
 }
 ```
 
-## Overloads and Callbacks
+### Overloads and Callbacks
 
-_Don't_ write separate overloads that differ only on callback arity:
+❌ **Don't** write separate overloads that differ only on callback arity:
 
 ```ts
 /* WRONG */
@@ -110,7 +110,7 @@ declare function beforeAll(
 ): void;
 ```
 
-_Do_ write a single overload using the maximum arity:
+✅ **Do** write a single overload using the maximum arity:
 
 ```ts
 /* OK */
@@ -120,43 +120,43 @@ declare function beforeAll(
 ): void;
 ```
 
-_Why_: It's always legal for a callback to disregard a parameter, so there's no need for the shorter overload.
+❔ **Why:** It's always legal for a callback to disregard a parameter, so there's no need for the shorter overload.
 Providing a shorter callback first allows incorrectly-typed functions to be passed in because they match the first overload.
 
 ## Function Overloads
 
-## Ordering
+### Ordering
 
-_Don't_ put more general overloads before more specific overloads:
+❌ **Don't** put more general overloads before more specific overloads:
 
 ```ts
 /* WRONG */
-declare function fn(x: any): any;
+declare function fn(x: unknown): unknown;
 declare function fn(x: HTMLElement): number;
 declare function fn(x: HTMLDivElement): string;
 
 var myElem: HTMLDivElement;
-var x = fn(myElem); // x: any, wat?
+var x = fn(myElem); // x: unknown, wat?
 ```
 
-_Do_ sort overloads by putting the more general signatures after more specific signatures:
+✅ **Do** sort overloads by putting the more general signatures after more specific signatures:
 
 ```ts
 /* OK */
 declare function fn(x: HTMLDivElement): string;
 declare function fn(x: HTMLElement): number;
-declare function fn(x: any): any;
+declare function fn(x: unknown): unknown;
 
 var myElem: HTMLDivElement;
 var x = fn(myElem); // x: string, :)
 ```
 
-_Why_: TypeScript chooses the _first matching overload_ when resolving function calls.
+❔ **Why:** TypeScript chooses the _first matching overload_ when resolving function calls.
 When an earlier overload is "more general" than a later one, the later one is effectively hidden and cannot be called.
 
-## Use Optional Parameters
+### Use Optional Parameters
 
-_Don't_ write several overloads that differ only in trailing parameters:
+❌ **Don't** write several overloads that differ only in trailing parameters:
 
 ```ts
 /* WRONG */
@@ -167,7 +167,7 @@ interface Example {
 }
 ```
 
-_Do_ use optional parameters whenever possible:
+✅ **Do** use optional parameters whenever possible:
 
 ```ts
 /* OK */
@@ -178,7 +178,7 @@ interface Example {
 
 Note that this collapsing should only occur when all overloads have the same return type.
 
-_Why_: This is important for two reasons.
+❔ **Why:** This is important for two reasons.
 
 TypeScript resolves signature compatibility by seeing if any signature of the target can be invoked with the arguments of the source,
 _and extraneous arguments are allowed_.
@@ -203,9 +203,9 @@ var x: Example;
 x.diff("something", true ? undefined : "hour");
 ```
 
-## Use Union Types
+### Use Union Types
 
-_Don't_ write overloads that differ by type in only one argument position:
+❌ **Don't** write overloads that differ by type in only one argument position:
 
 ```ts
 /* WRONG */
@@ -216,7 +216,7 @@ interface Moment {
 }
 ```
 
-_Do_ use union types whenever possible:
+✅ **Do** use union types whenever possible:
 
 ```ts
 /* OK */
@@ -228,11 +228,11 @@ interface Moment {
 
 Note that we didn't make `b` optional here because the return types of the signatures differ.
 
-_Why_: This is important for people who are "passing through" a value to your function:
+❔ **Why:** This is important for people who are "passing through" a value to your function:
 
 ```ts
-function fn(x: string): void;
-function fn(x: number): void;
+function fn(x: string): Moment;
+function fn(x: number): Moment;
 function fn(x: number | string) {
   // When written with separate overloads, incorrectly an error
   // When written with union types, correctly OK

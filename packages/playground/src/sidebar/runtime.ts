@@ -1,23 +1,87 @@
-import { Sandbox } from "typescriptlang-org/static/js/sandbox"
 import { PlaygroundPlugin, PluginFactory } from ".."
-import { createUI, UI } from "../createUI"
+import { createUI } from "../createUI"
 import { localize } from "../localizeWithFallback"
 
-const allLogs: string[] = []
-let offset = 0
-let curLog = 0
+let allLogs: string[] = []
 let addedClearAction = false
+const cancelButtonSVG = `
+<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="6" cy="7" r="5" stroke-width="2"/>
+<line x1="0.707107" y1="1.29289" x2="11.7071" y2="12.2929" stroke-width="2"/>
+</svg>
+`
 
 export const runPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
     id: "logs",
     displayName: i("play_sidebar_logs"),
     willMount: (sandbox, container) => {
+      const ui = createUI()
+
+      const clearLogsAction = {
+        id: "clear-logs-play",
+        label: "Clear Playground Logs",
+        keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KeyK],
+
+        contextMenuGroupId: "run",
+        contextMenuOrder: 1.5,
+
+        run: function () {
+          clearLogs()
+          ui.flashInfo(i("play_clear_logs"))
+        },
+      }
+
       if (!addedClearAction) {
-        const ui = createUI()
-        addClearAction(sandbox, ui, i)
+        sandbox.editor.addAction(clearLogsAction)
         addedClearAction = true
       }
+
+      const errorUL = document.createElement("div")
+      errorUL.id = "log-container"
+      container.appendChild(errorUL)
+
+      const logs = document.createElement("div")
+      logs.id = "log"
+      logs.innerHTML = allLogs.join("<hr />")
+      errorUL.appendChild(logs)
+
+      const logToolsContainer = document.createElement("div")
+      logToolsContainer.id = "log-tools"
+      container.appendChild(logToolsContainer)
+
+      const clearLogsButton = document.createElement("div")
+      clearLogsButton.id = "clear-logs-button"
+      clearLogsButton.innerHTML = cancelButtonSVG
+      clearLogsButton.onclick = e => {
+        e.preventDefault()
+        clearLogsAction.run()
+
+        const filterTextBox: any = document.getElementById("filter-logs")
+        filterTextBox!.value = ""
+      }
+      logToolsContainer.appendChild(clearLogsButton)
+
+      const filterTextBox = document.createElement("input")
+      filterTextBox.id = "filter-logs"
+      filterTextBox.placeholder = i("play_sidebar_tools_filter_placeholder")
+      filterTextBox.addEventListener("input", (e: any) => {
+        const inputText = e.target.value
+
+        const eleLog = document.getElementById("log")!
+        eleLog.innerHTML = allLogs
+          .filter(log => {
+            const userLoggedText = log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>"))
+            return userLoggedText.includes(inputText)
+          })
+          .join("<hr />")
+
+        if (inputText === "") {
+          const logContainer = document.getElementById("log-container")!
+          logContainer.scrollTop = logContainer.scrollHeight
+        }
+      })
+      logToolsContainer.appendChild(filterTextBox)
 
       if (allLogs.length === 0) {
         const noErrorsMessage = document.createElement("div")
@@ -28,16 +92,10 @@ export const runPlugin: PluginFactory = (i, utils) => {
         message.textContent = localize("play_sidebar_logs_no_logs", "No logs")
         message.classList.add("empty-plugin-message")
         noErrorsMessage.appendChild(message)
+
+        errorUL.style.display = "none"
+        logToolsContainer.style.display = "none"
       }
-
-      const errorUL = document.createElement("div")
-      errorUL.id = "log-container"
-      container.appendChild(errorUL)
-
-      const logs = document.createElement("div")
-      logs.id = "log"
-      logs.innerHTML = allLogs.join('<hr />')
-      errorUL.appendChild(logs)
     },
   }
 
@@ -45,8 +103,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
 }
 
 export const clearLogs = () => {
-  offset += allLogs.length
-  allLogs.length = 0
+  allLogs = []
   const logs = document.getElementById("log")
   if (logs) {
     logs.textContent = ""
@@ -55,8 +112,12 @@ export const clearLogs = () => {
 
 export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
   const noLogs = document.getElementById("empty-message-container")
+  const logContainer = document.getElementById("log-container")!
+  const logToolsContainer = document.getElementById("log-tools")!
   if (noLogs) {
     noLogs.style.display = "none"
+    logContainer.style.display = "block"
+    logToolsContainer.style.display = "flex"
   }
 
   rewireLoggingToElement(
@@ -77,51 +138,51 @@ function rewireLoggingToElement(
   autoScroll: boolean,
   i: Function
 ) {
-
   const rawConsole = console
 
   closure.then(js => {
+    const replace = {} as any
+    bindLoggingFunc(replace, rawConsole, "log", "LOG")
+    bindLoggingFunc(replace, rawConsole, "debug", "DBG")
+    bindLoggingFunc(replace, rawConsole, "warn", "WRN")
+    bindLoggingFunc(replace, rawConsole, "error", "ERR")
+    replace["clear"] = clearLogs
+    const console = Object.assign({}, rawConsole, replace)
     try {
-      const replace = {} as any
-      bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
-      bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
-      bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
-      bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
-      replace['clear'] = clearLogs
-      const console = Object.assign({}, rawConsole, replace)
-      eval(js)
+      const safeJS = sanitizeJS(js)
+      eval(safeJS)
     } catch (error) {
       console.error(i("play_run_js_fail"))
       console.error(error)
+
+      if (error instanceof SyntaxError && /\bexport\b/u.test(error.message)) {
+        console.warn(
+          'Tip: Change the Module setting to "CommonJS" in TS Config settings to allow top-level exports to work in the Playground'
+        )
+      }
     }
-    curLog++
   })
 
-  function bindLoggingFunc(obj: any, raw: any, name: string, id: string, cur: number) {
+  function bindLoggingFunc(obj: any, raw: any, name: string, id: string) {
     obj[name] = function (...objs: any[]) {
       const output = produceOutput(objs)
       const eleLog = eleLocator()
       const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
-      const index = cur - offset
-      if (index >= 0) {
-        allLogs[index] = (allLogs[index] ?? '') + prefix + output + "<br>"
-      }
+      allLogs.push(`${prefix}${output}<br>`)
       eleLog.innerHTML = allLogs.join("<hr />")
-      const scrollElement = eleContainerLog.parentElement
-      if (autoScroll && scrollElement) {
-        scrollToBottom(scrollElement)
+      if (autoScroll && eleContainerLog) {
+        eleContainerLog.scrollTop = eleContainerLog.scrollHeight
       }
       raw[name](...objs)
     }
   }
 
-  function scrollToBottom(element: Element) {
-    const overflowHeight = element.scrollHeight - element.clientHeight
-    const atBottom = element.scrollTop >= overflowHeight
-    if (!atBottom) {
-      element.scrollTop = overflowHeight
-    }
+  // Inline constants which are switched out at the end of processing
+  const replacers = {
+    "<span class='literal'>null</span>": "1231232131231231423434534534",
+    "<span class='literal'>undefined</span>": "4534534534563567567567",
+    "<span class='comma'>, </span>": "785y8345873485763874568734y535438",
   }
 
   const objectToText = (arg: any): string => {
@@ -129,51 +190,70 @@ function rewireLoggingToElement(
     let textRep = ""
     if (arg && arg.stack && arg.message) {
       // special case for err
-      textRep = arg.message
+      textRep = htmlEscape(arg.message)
     } else if (arg === null) {
-      textRep = "<span class='literal'>null</span>"
+      textRep = replacers["<span class='literal'>null</span>"]
     } else if (arg === undefined) {
-      textRep = "<span class='literal'>undefined</span>"
+      textRep = replacers["<span class='literal'>undefined</span>"]
+    } else if (typeof arg === "symbol") {
+      textRep = `<span class='literal'>${htmlEscape(String(arg))}</span>`
     } else if (Array.isArray(arg)) {
-      textRep = "[" + arg.map(objectToText).join("<span class='comma'>, </span>") + "]"
+      textRep = "[" + arg.map(objectToText).join(replacers["<span class='comma'>, </span>"]) + "]"
+    } else if (arg instanceof Set) {
+      const setIter = [...arg]
+      textRep = `Set (${arg.size}) {` + setIter.map(objectToText).join(replacers["<span class='comma'>, </span>"]) + "}"
+    } else if (arg instanceof Map) {
+      const mapIter = [...arg.entries()]
+      textRep =
+        `Map (${arg.size}) {` +
+        mapIter
+          .map(([k, v]) => `${objectToText(k)} => ${objectToText(v)}`)
+          .join(replacers["<span class='comma'>, </span>"]) +
+        "}"
     } else if (typeof arg === "string") {
-      textRep = '"' + arg + '"'
+      textRep = '"' + htmlEscape(arg) + '"'
     } else if (isObj) {
-      const name = arg.constructor && arg.constructor.name
+      const name = arg.constructor && arg.constructor.name || ""
       // No one needs to know an obj is an obj
-      const nameWithoutObject = name && name === "Object" ? "" : name
+      const nameWithoutObject = name && name === "Object" ? "" : htmlEscape(name)
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
-      textRep = prefix + JSON.stringify(arg, null, 2)
+
+      // JSON.stringify omits any keys with a value of undefined. To get around this, we replace undefined with the text __undefined__ and then do a global replace using regex back to keyword undefined
+      textRep =
+        prefix +
+        JSON.stringify(arg, (_, value) => (value === undefined ? "__undefined__" : value), 2).replace(
+          /"__undefined__"/g,
+          "undefined"
+        )
+
+      textRep = htmlEscape(textRep)
     } else {
-      textRep = arg as any
+      textRep = htmlEscape(String(arg))
     }
     return textRep
   }
 
   function produceOutput(args: any[]) {
-    return args.reduce((output: any, arg: any, index) => {
+    let result: string = args.reduce((output: any, arg: any, index) => {
       const textRep = objectToText(arg)
       const showComma = index !== args.length - 1
       const comma = showComma ? "<span class='comma'>, </span>" : ""
-      return output + textRep + comma + "&nbsp;"
+      return output + textRep + comma + " "
     }, "")
+
+    Object.keys(replacers).forEach(k => {
+      result = result.replace(new RegExp((replacers as any)[k], "g"), k)
+    })
+
+    return result
   }
 }
 
-const addClearAction = (sandbox: Sandbox, ui: UI, i: any) => {
-  const clearLogsAction = {
-    id: "clear-logs-play",
-    label: "Clear Playground Logs",
-    keybindings: [sandbox.monaco.KeyMod.CtrlCmd | sandbox.monaco.KeyCode.KEY_K],
+// The reflect-metadata runtime is available, so allow that to go through
+function sanitizeJS(code: string) {
+  return code.replace(`import "reflect-metadata"`, "").replace(`require("reflect-metadata")`, "")
+}
 
-    contextMenuGroupId: "run",
-    contextMenuOrder: 1.5,
-
-    run: function () {
-      clearLogs()
-      ui.flashInfo(i("play_clear_logs"))
-    },
-  }
-
-  sandbox.editor.addAction(clearLogsAction)
+function htmlEscape(str: string) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
 }

@@ -63,13 +63,13 @@ export const LanguageRecommendations = (props: Props) => {
     //@ts-ignore
     const userLocale = navigator.language || navigator.userLanguage || "en-UK"
     const userLang = userLocale.split("-")[0]
-    const lang = inYourLanguage[userLang] || inYourLanguage["en"]
+    const lang = inYourLanguage[userLang] || inYourLanguage["todo"]
 
     // Show the top nav anchor for in your language
     const quickJump = document.getElementById("my-lang-quick-jump")!
     const quickJumpA = quickJump.firstElementChild as HTMLAnchorElement
 
-    quickJumpA.textContent = lang.shorthand
+    quickJumpA.textContent = lang.shorthand !== "In xx" ? lang.shorthand : `In ${userLang}`
     quickJumpA.href = localePath
     quickJump.title = lang.body
     quickJump.style.display = "inline-block";
@@ -98,10 +98,10 @@ export const LanguageRecommendations = (props: Props) => {
   }, [])
 
   return (
-    <div id="language-recommendation" style={{ display: "none" }}>
+    <div className="page-popup" id="language-recommendation" style={{ display: "none" }}>
       <p id="language-recommendation-p">MSG</p>
       <div>
-        <button id="language-recommendation-open"></button>
+        <button className="first" id="language-recommendation-open"></button>
         <button id="language-recommendation-no-more"></button>
       </div>
     </div>
@@ -109,4 +109,4 @@ export const LanguageRecommendations = (props: Props) => {
 }
 
 export const OpenInMyLangQuickJump = () =>
-  <li id="my-lang-quick-jump" style={{ display: "none" }} className="nav-item"><a href=''>in En</a></li>
+  <div id="my-lang-quick-jump" style={{ display: "none" }} className="nav-item"><a href=''>in En</a></div>

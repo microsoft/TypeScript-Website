@@ -21,9 +21,8 @@ export const CookieBanner = (props: { lang: string }) => {
   const verboseCookieLogging = () => {
     let siteConsent
     // If they ship a bad build of the cookie banner, then even though the script is fully there
-    // the global symbols won't be
+    // the global symbols won't be there
     if (typeof WcpConsent === 'undefined' || !WcpConsent) return
-
     WcpConsent.init("en-US", "cookie-banner", (err, _siteConsent) => {
       if (err) {
         alert(err);
@@ -45,10 +44,11 @@ export const CookieBanner = (props: { lang: string }) => {
     <>
       <Helmet htmlAttributes={{ lang: props.lang }} onChangeClientState={handleChangeClientState}>
         {typeof window !== 'undefined' && typeof WcpConsent === 'undefined'
-          && <script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js" />}
+          && <script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js" async />}
+        <link rel="preconnect" href="https://consentdeliveryfd.azurefd.net/" />
       </Helmet>
 
-      <div id="cookie-banner"></div>
+      <div id="cookie-banner" className="openx"></div>
       {scriptLoaded && verboseCookieLogging()}
     </>
   )

@@ -2,7 +2,7 @@
 // source code.
 
 // In part, a lot of the support is covered in type widening
-// and narrowing ( example:type-widening-narrowing ) and it's
+// and narrowing ( example:type-widening-and-narrowing ) and it's
 // worth covering that first.
 
 // A literal is a more concrete subtype of a collective type.

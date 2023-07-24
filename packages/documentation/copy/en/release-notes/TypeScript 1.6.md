@@ -45,7 +45,7 @@ class MyComponent extends React.Component<Props, {}> {
 <MyComponent name={0} />; // error, `name` is not a number
 ```
 
-#### Using other JSX framworks
+#### Using other JSX frameworks
 
 JSX element names and properties are validated against the `JSX` namespace.
 Please see the [[JSX]] wiki page for defining the `JSX` namespace for your framework.
@@ -395,7 +395,7 @@ npm install -g typescript@next
 Starting from release 1.6 TypeScript compiler will use different set of rules to resolve module names when targeting 'commonjs'.
 These [rules](https://github.com/Microsoft/TypeScript/issues/2338) attempted to model module lookup procedure used by Node.
 This effectively mean that node modules can include information about its typings and TypeScript compiler will be able to find it.
-User however can override module resolution rules picked by the compiler by using `--moduleResolution` command line option. Possible values are:
+User however can override module resolution rules picked by the compiler by using [`moduleResolution`](/tsconfig#moduleResolution) command line option. Possible values are:
 
 - 'classic' - module resolution rules used by pre 1.6 TypeScript compiler
 - 'node' - node-like module resolution
@@ -454,7 +454,7 @@ For example:
 }
 ```
 
-The `exclude` list does not support wilcards. It must simply be a list of files and/or directories.
+The [`exclude`](/tsconfig#exclude) list does not support wildcards. It must simply be a list of files and/or directories.
 
 ## `--init` command line option
 

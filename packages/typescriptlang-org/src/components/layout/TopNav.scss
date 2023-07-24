@@ -109,6 +109,7 @@
 form.search {
   height: 3rem;
   background-color: $ts-main-blue-darker-color;
+  border-radius: 3px 0px 0px 3px;
 
   padding-left: 1rem;
   display: inline-block;
@@ -127,6 +128,12 @@ form.search {
 
   &:focus-within {
     background-color: $ts-main-blue-lighter-color;
+    @media screen and (-ms-high-contrast: black-on-white) {
+      border: 2px solid white;
+    }
+    @media screen and (-ms-high-contrast: white-on-black) {
+      border: 2px solid black;
+    }
   }
 
   input {
@@ -155,7 +162,13 @@ form.search {
   }
 }
 
-#language-recommendation {
+#like-dislike-subnav,
+.page-popup {
+  transition: opacity 0.2s linear;
+}
+
+.page-popup {
+  z-index: 2;
   position: fixed;
   right: 20px;
   bottom: 20px;
@@ -187,10 +200,13 @@ form.search {
         background-color: #104261;
       }
 
-      &#language-recommendation-open {
+      &.first {
         border-right: white 1px solid;
       }
     }
+  }
+  svg {
+    fill: white;
   }
 }
 
@@ -276,7 +292,7 @@ form.search {
     right: 0px;
 
     /* Makes search elements full width */
-    li.nav-item {
+    .nav-item {
       display: block;
     }
 

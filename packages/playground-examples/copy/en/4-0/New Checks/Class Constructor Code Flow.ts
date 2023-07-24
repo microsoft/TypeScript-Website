@@ -1,4 +1,4 @@
-//// { compiler: { ts: "4.0.2" } }
+//// { "compiler": { "ts": "4.0.2" } }
 
 // In 4.0, we use control flow analysis to
 // infer the potential type of a class property based on

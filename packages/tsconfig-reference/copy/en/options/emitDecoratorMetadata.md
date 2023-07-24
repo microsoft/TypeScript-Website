@@ -5,7 +5,7 @@ oneline: "Emit design-type metadata for decorated declarations in source files."
 
 Enables experimental support for emitting type metadata for decorators which works with the module [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata).
 
-For example, here is the JavaScript
+For example, here is the TypeScript
 
 ```ts twoslash
 // @experimentalDecorators
@@ -25,7 +25,7 @@ class Demo {
 const demo = new Demo();
 ```
 
-With `emitDecoratorMetadata` not set to true (default):
+With `emitDecoratorMetadata` not set to true (default) the emitted JavaScript is:
 
 ```ts twoslash
 // @experimentalDecorators
@@ -46,7 +46,7 @@ class Demo {
 const demo = new Demo();
 ```
 
-With `emitDecoratorMetadata` set to true:
+With `emitDecoratorMetadata` set to true the emitted JavaScript is:
 
 ```ts twoslash
 // @experimentalDecorators

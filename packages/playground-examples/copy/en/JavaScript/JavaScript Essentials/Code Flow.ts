@@ -1,4 +1,4 @@
-//// { order: 3, compiler: { strictNullChecks: true } }
+//// { "order": 3, "compiler": { "strictNullChecks": true } }
 
 // How code flows inside our JavaScript files can affect
 // the types throughout our programs.

@@ -1,6 +1,7 @@
 @import "../style/globals.scss";
 
 .tsconfig {
+  margin-bottom: 6rem;
   // Drastically reduce the padding and margins to make it fit phones
   &.raised {
     @media (max-width: $screen-xs) {
@@ -17,16 +18,91 @@
     }
   }
 
+  // The quick jump section
+
+  &.button {
+    margin-bottom: 2rem;
+    > a {
+      display: block;
+    }
+    svg {
+      margin-top: 0.8rem;
+      margin-right: 0.3rem;
+      path {
+        stroke: var(--text-color);
+      }
+    }
+  }
+  &.button.open {
+    svg {
+      transform: rotate(270deg);
+    }
+  }
+  &.button.closed {
+    a {
+      text-decoration: none;
+      color: var(--text-color);
+    }
+  }
+
+  .tsconfig-quick-nav {
+    &.grouped {
+      border-left: 1px solid var(--text-color);
+      margin-bottom: 3rem;
+    }
+    margin-left: -1rem;
+    padding-left: 1rem;
+
+    h4 {
+      font-weight: normal;
+      margin-bottom: 0.1rem;
+      a {
+        color: var(--text-color);
+      }
+    }
+    .tsconfig-quick-nav-category {
+      display: flex;
+      align-items: flex-start;
+
+      @media (max-width: $screen-md) {
+        flex-direction: column;
+      }
+      h5 {
+        width: 160px;
+        flex: 0 0 auto;
+      }
+      ol {
+        max-width: 100%;
+        flex: 1 1 auto;
+      }
+      li {
+        list-style: none;
+        display: inline-block;
+        margin-left: 8px;
+        a {
+          color: var(--text-color);
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        span {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
   article {
     width: 100%;
   }
 
   // Handles hash links with a sticky header
-  a[name]:before {
+  a[id]::before {
     display: block;
     content: "";
-    margin-top: -121px;
-    height: 121px;
+    margin-top: -80px;
+    height: 80px;
     visibility: hidden;
     scroll-margin-top: 121px;
   }
@@ -38,7 +114,6 @@
   div#full-option-list {
     display: flex;
     flex-flow: row wrap;
-    padding: 20px;
 
     div.tsconfig-nav-top {
       flex: auto;
@@ -84,6 +159,8 @@
 
     ul {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       margin: 0;
     }
 
@@ -115,7 +192,7 @@
 
     li {
       display: block;
-      margin: 8px;
+      margin: 6px;
     }
   }
 
@@ -138,18 +215,18 @@
     margin-bottom: 80px;
 
     > h3 {
-      &:before {
-        display: block;
-        content: " ";
-        height: 150px;
-        margin-top: -150px;
-        visibility: hidden;
-      }
-
       margin-bottom: 0;
       overflow-x: hidden;
+      offset-anchor: -30px;
+
+      @media (max-width: $screen-sm) {
+        display: block;
+        overflow-y: hidden;
+      }
 
       > a {
+        scroll-margin-top: 65px;
+
         &:focus {
           outline: none;
           background-color: black;
@@ -190,6 +267,15 @@
         li {
           list-style: none;
           margin-bottom: 12px;
+
+          ul {
+            padding: 0;
+            margin-bottom: 18px;
+          }
+          li {
+            margin: 0;
+            margin-bottom: 12px;
+          }
         }
         tr {
           padding: 10px 0;

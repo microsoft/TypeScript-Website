@@ -6,7 +6,7 @@ oneline: Using TypeScript with Gulp
 deprecated: true
 ---
 
-This quick start guide will teach you how to build TypeScript with [gulp](http://gulpjs.com) and then add [Browserify](http://browserify.org), [uglify](http://lisperator.net/uglifyjs/), or [Watchify](https://github.com/substack/watchify) to the gulp pipeline.
+This quick start guide will teach you how to build TypeScript with [gulp](https://gulpjs.com) and then add [Browserify](https://browserify.org), [terser](https://terser.org), or [Watchify](https://github.com/substack/watchify) to the gulp pipeline.
 This guide also shows how to add [Babel](https://babeljs.io/) functionality using [Babelify](https://github.com/babel/babelify).
 
 We assume that you're already using [Node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/).
@@ -38,7 +38,7 @@ mkdir src
 mkdir dist
 ```
 
-## Initialize the project
+### Initialize the project
 
 Now we'll turn this folder into an npm package.
 
@@ -51,7 +51,7 @@ You can use the defaults except for your entry point.
 For your entry point, use `./dist/main.js`.
 You can always go back and change these in the `package.json` file that's been generated for you.
 
-## Install our dependencies
+### Install our dependencies
 
 Now we can use `npm install` to install packages.
 First install `gulp-cli` globally (if you use a Unix system, you may need to prefix the `npm install` commands in this guide with `sudo`).
@@ -67,7 +67,7 @@ Then install `typescript`, `gulp` and `gulp-typescript` in your project's dev de
 npm install --save-dev typescript gulp@4.0.0 gulp-typescript
 ```
 
-## Write a simple example
+### Write a simple example
 
 Let's write a Hello World program.
 In `src`, create the file `main.ts`:
@@ -91,7 +91,7 @@ In the project root, `proj`, create the file `tsconfig.json`:
 }
 ```
 
-## Create a `gulpfile.js`
+### Create a `gulpfile.js`
 
 In the project root, create the file `gulpfile.js`:
 
@@ -105,7 +105,7 @@ gulp.task("default", function () {
 });
 ```
 
-## Test the resulting app
+### Test the resulting app
 
 ```shell
 gulp
@@ -173,7 +173,7 @@ vinyl-source-stream lets us adapt the file output of Browserify back into a form
 npm install --save-dev browserify tsify vinyl-source-stream
 ```
 
-## Create a page
+### Create a page
 
 Create a file in `src` named `index.html`:
 
@@ -254,7 +254,7 @@ Source maps let you debug your original TypeScript code in the browser instead o
 You can test that source maps are working by opening the debugger for your browser and putting a breakpoint inside `main.ts`.
 When you refresh the page the breakpoint should pause the page and let you debug `greet.ts`.
 
-## Watchify, Babel, and Uglify
+## Watchify, Babel, and Terser
 
 Now that we are bundling our code with Browserify and tsify, we can add various features to our build with browserify plugins.
 
@@ -264,9 +264,9 @@ Now that we are bundling our code with Browserify and tsify, we can add various 
 - Babel is a hugely flexible compiler that converts ES2015 and beyond into ES5 and ES3.
   This lets you add extensive and customized transformations that TypeScript doesn't support.
 
-- Uglify compacts your code so that it takes less time to download.
+- Terser compacts your code so that it takes less time to download.
 
-## Watchify
+### Watchify
 
 We'll start with Watchify to provide background compilation:
 
@@ -340,13 +340,13 @@ proj$ gulp
 [10:35:24] 2808 bytes written (0.05 seconds)
 ```
 
-## Uglify
+### Terser
 
-First install Uglify.
-Since the point of Uglify is to mangle your code, we also need to install vinyl-buffer and gulp-sourcemaps to keep sourcemaps working.
+First install Terser.
+Since the point of Terser is to mangle your code, we also need to install vinyl-buffer and gulp-sourcemaps to keep sourcemaps working.
 
 ```shell
-npm install --save-dev gulp-uglify vinyl-buffer gulp-sourcemaps
+npm install --save-dev gulp-terser vinyl-buffer gulp-sourcemaps
 ```
 
 Now change your gulpfile to the following:
@@ -355,8 +355,8 @@ Now change your gulpfile to the following:
 var gulp = require("gulp");
 var browserify = require("browserify");
 var source = require("vinyl-source-stream");
+var terser = require("gulp-terser");
 var tsify = require("tsify");
-var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var buffer = require("vinyl-buffer");
 var paths = {
@@ -382,14 +382,14 @@ gulp.task(
       .pipe(source("bundle.js"))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(uglify())
+      .pipe(terser())
       .pipe(sourcemaps.write("./"))
       .pipe(gulp.dest("dist"));
   })
 );
 ```
 
-Notice that `uglify` itself has just one call &mdash; the calls to `buffer` and `sourcemaps` exist to make sure sourcemaps keep working.
+Notice that `terser` itself has just one call &mdash; the calls to `buffer` and `sourcemaps` exist to make sure sourcemaps keep working.
 These calls give us a separate sourcemap file instead of using inline sourcemaps like before.
 Now you can run Gulp and check that `bundle.js` does get minified into an unreadable mess:
 
@@ -398,10 +398,10 @@ gulp
 cat dist/bundle.js
 ```
 
-## Babel
+### Babel
 
 First install Babelify and the Babel preset for ES2015.
-Like Uglify, Babelify mangles code, so we'll need vinyl-buffer and gulp-sourcemaps.
+Like Terser, Babelify mangles code, so we'll need vinyl-buffer and gulp-sourcemaps.
 By default Babelify will only process files with extensions of `.js`, `.es`, `.es6` and `.jsx` so we need to add the `.ts` extension as an option to Babelify.
 
 ```shell

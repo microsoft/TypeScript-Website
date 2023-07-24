@@ -1,4 +1,3 @@
-import { detectNewImportsToAcquireTypeFor } from "./typeAcquisition"
 import { sandboxTheme, sandboxThemeDark } from "./theme"
 import { TypeScriptWorker } from "./tsWorker"
 import {
@@ -7,10 +6,11 @@ import {
   createURLQueryWithCompilerOptions,
 } from "./compilerOptions"
 import lzstring from "./vendor/lzstring.min"
-import { supportedReleases } from "./releases"
+import { supportedReleases } from "./release_data"
 import { getInitialCode } from "./getInitialCode"
-import { extractTwoSlashComplierOptions, twoslashCompletions } from "./twoslashSupport"
+import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
+import { setupTypeAcquisition } from "./vendor/ata/index"
 
 type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
 type Monaco = typeof import("monaco-editor")
@@ -19,11 +19,13 @@ type Monaco = typeof import("monaco-editor")
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
  */
-export type PlaygroundConfig = {
+export type SandboxConfig = {
   /** The default source code for the playground */
   text: string
-  /** Should it run the ts or js IDE services */
-  useJavaScript: boolean
+  /** @deprecated */
+  useJavaScript?: boolean
+  /** The default file for the playground  */
+  filetype: "js" | "ts" | "d.ts"
   /** Compiler options which are automatically just forwarded on */
   compilerOptions: CompilerOptions
   /** Optional monaco settings overrides */
@@ -36,6 +38,8 @@ export type PlaygroundConfig = {
   suppressAutomaticallyGettingDefaultText?: true
   /** Suppress setting compiler options from the compiler flags from query params */
   suppressAutomaticallyGettingCompilerFlags?: true
+  /** Optional path to TypeScript worker wrapper class script, see https://github.com/microsoft/monaco-typescript/pull/65  */
+  customTypeScriptWorkerPath?: string
   /** Logging system */
   logger: {
     log: (...args: any[]) => void
@@ -44,11 +48,11 @@ export type PlaygroundConfig = {
     groupEnd: (...args: any[]) => void
   }
 } & (
-  | { /** theID of a dom node to add monaco to */ domID: string }
-  | { /** theID of a dom node to add monaco to */ elementToAppend: HTMLElement }
+  | { /** the ID of a dom node to add monaco to */ domID: string }
+  | { /** the dom node to add monaco to */ elementToAppend: HTMLElement }
 )
 
-const languageType = (config: PlaygroundConfig) => (config.useJavaScript ? "javascript" : "typescript")
+const languageType = (config: SandboxConfig) => (config.filetype === "js" ? "javascript" : "typescript")
 
 // Basically android and monaco is pretty bad, this makes it less bad
 // See https://github.com/microsoft/pxt/pull/7099 for this, and the long
@@ -73,37 +77,39 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   acceptSuggestionOnCommitCharacter: !isAndroid,
   acceptSuggestionOnEnter: !isAndroid ? "on" : "off",
   accessibilitySupport: !isAndroid ? "on" : "off",
+  inlayHints: {
+    enabled: true,
+  },
 }
 
 /** The default settings which we apply a partial over */
 export function defaultPlaygroundSettings() {
-  const config: PlaygroundConfig = {
+  const config: SandboxConfig = {
     text: "",
     domID: "",
     compilerOptions: {},
     acquireTypes: true,
-    useJavaScript: false,
+    filetype: "ts",
     supportTwoslashCompilerOptions: false,
     logger: console,
   }
   return config
 }
 
-function defaultFilePath(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
+function defaultFilePath(config: SandboxConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   const isJSX = compilerOptions.jsx !== monaco.languages.typescript.JsxEmit.None
-  const fileExt = config.useJavaScript ? "js" : "ts"
-  const ext = isJSX ? fileExt + "x" : fileExt
+  const ext = isJSX && config.filetype !== "d.ts" ? config.filetype + "x" : config.filetype
   return "input." + ext
 }
 
 /** Creates a monaco file reference, basically a fancy path */
-function createFileUri(config: PlaygroundConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
+function createFileUri(config: SandboxConfig, compilerOptions: CompilerOptions, monaco: Monaco) {
   return monaco.Uri.file(defaultFilePath(config, compilerOptions, monaco))
 }
 
 /** Creates a sandbox editor, and returns a set of useful functions and the editor */
 export const createTypeScriptSandbox = (
-  partialConfig: Partial<PlaygroundConfig>,
+  partialConfig: Partial<SandboxConfig>,
   monaco: Monaco,
   ts: typeof import("typescript")
 ) => {
@@ -116,13 +122,13 @@ export const createTypeScriptSandbox = (
     : getInitialCode(config.text, document.location)
 
   // Defaults
-  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco)
+  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco, ts)
 
   // Grab the compiler flags via the query params
   let compilerOptions: CompilerOptions
   if (!config.suppressAutomaticallyGettingCompilerFlags) {
     const params = new URLSearchParams(location.search)
-    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, params)
+    let queryParamCompilerOptions = getCompilerOptionsFromParams(compilerDefaults, ts, params)
     if (Object.keys(queryParamCompilerOptions).length)
       config.logger.log("[Compiler] Found compiler options in query params: ", queryParamCompilerOptions)
     compilerOptions = { ...compilerDefaults, ...queryParamCompilerOptions }
@@ -130,8 +136,9 @@ export const createTypeScriptSandbox = (
     compilerOptions = compilerDefaults
   }
 
-  // Don't allow a state like allowJs = false, and useJavascript = true
-  if (config.useJavaScript) {
+  const isJSLang = config.filetype === "js"
+  // Don't allow a state like allowJs = false
+  if (isJSLang) {
     compilerOptions.allowJs = true
   }
 
@@ -147,13 +154,21 @@ export const createTypeScriptSandbox = (
   const monacoSettings = Object.assign({ model }, sharedEditorOptions, config.monacoSettings || {})
   const editor = monaco.editor.create(element, monacoSettings)
 
-  const getWorker = config.useJavaScript
+  const getWorker = isJSLang
     ? monaco.languages.typescript.getJavaScriptWorker
     : monaco.languages.typescript.getTypeScriptWorker
 
-  const defaults = config.useJavaScript
+  const defaults = isJSLang
     ? monaco.languages.typescript.javascriptDefaults
     : monaco.languages.typescript.typescriptDefaults
+
+  // @ts-ignore - these exist
+  if (config.customTypeScriptWorkerPath && defaults.setWorkerOptions) {
+    // @ts-ignore - this func must exist to have got here
+    defaults.setWorkerOptions({
+      customWorkerPath: config.customTypeScriptWorkerPath,
+    })
+  }
 
   defaults.setDiagnosticsOptions({
     ...defaults.getDiagnosticsOptions(),
@@ -163,38 +178,57 @@ export const createTypeScriptSandbox = (
   })
 
   // In the future it'd be good to add support for an 'add many files'
-  const addLibraryToRuntime = (code: string, path: string) => {
+  const addLibraryToRuntime = (code: string, _path: string) => {
+    const path = "file://" + _path
     defaults.addExtraLib(code, path)
     const uri = monaco.Uri.file(path)
     if (monaco.editor.getModel(uri) === null) {
       monaco.editor.createModel(code, "javascript", uri)
     }
-    config.logger.log(`[ATA] Adding ${path} to runtime`)
+    config.logger.log(`[ATA] Adding ${path} to runtime`, { code })
   }
 
-  const getTwoSlashComplierOptions = extractTwoSlashComplierOptions(ts)
+  const getTwoSlashCompilerOptions = extractTwoSlashCompilerOptions(ts)
 
   // Auto-complete twoslash comments
   if (config.supportTwoslashCompilerOptions) {
     const langs = ["javascript", "typescript"]
     langs.forEach(l =>
       monaco.languages.registerCompletionItemProvider(l, {
-        triggerCharacters: ["@", "/"],
+        triggerCharacters: ["@", "/", "-"],
         provideCompletionItems: twoslashCompletions(ts, monaco),
       })
     )
   }
 
+  const ata = setupTypeAcquisition({
+    projectName: "TypeScript Playground",
+    typescript: ts,
+    logger: console,
+    delegate: {
+      receivedFile: addLibraryToRuntime,
+      progress: (downloaded: number, total: number) => {
+        // console.log({ dl, ttl })
+      },
+      started: () => {
+        console.log("ATA start")
+      },
+      finished: f => {
+        console.log("ATA done")
+      },
+    },
+  })
+
   const textUpdated = () => {
     const code = editor.getModel()!.getValue()
 
     if (config.supportTwoslashCompilerOptions) {
-      const configOpts = getTwoSlashComplierOptions(code)
+      const configOpts = getTwoSlashCompilerOptions(code)
       updateCompilerSettings(configOpts)
     }
 
     if (config.acquireTypes) {
-      detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
+      ata(code)
     }
   }
 
@@ -211,13 +245,6 @@ export const createTypeScriptSandbox = (
 
   config.logger.log("[Compiler] Set compiler options: ", compilerOptions)
   defaults.setCompilerOptions(compilerOptions)
-
-  // Grab types last so that it logs in a logical way
-  if (config.acquireTypes) {
-    // Take the code from the editor right away
-    const code = editor.getModel()!.getValue()
-    detectNewImportsToAcquireTypeFor(code, addLibraryToRuntime, window.fetch.bind(window), config)
-  }
 
   // To let clients plug into compiler settings changes
   let didUpdateCompilerSettings = (opts: CompilerOptions) => {}
@@ -266,13 +293,19 @@ export const createTypeScriptSandbox = (
   /** Gets the results of compiling your editor's code */
   const getEmitResult = async () => {
     const model = editor.getModel()!
-
     const client = await getWorkerProcess()
     return await client.getEmitOutput(model.uri.toString())
   }
 
   /** Gets the JS  of compiling your editor's code */
   const getRunnableJS = async () => {
+    // This isn't quite _right_ in theory, we can downlevel JS -> JS
+    // but a browser is basically always esnext-y and setting allowJs and
+    // checkJs does not actually give the downlevel'd .js file in the output
+    // later down the line.
+    if (isJSLang) {
+      return getText()
+    }
     const result = await getEmitResult()
     const firstJS = result.outputFiles.find((o: any) => o.name.endsWith(".js") || o.name.endsWith(".jsx"))
     return (firstJS && firstJS.text) || ""
@@ -295,9 +328,12 @@ export const createTypeScriptSandbox = (
   const getText = () => getModel().getValue()
   const setText = (text: string) => getModel().setValue(text)
 
-  const setupTSVFS = async () => {
+  const setupTSVFS = async (fsMapAdditions?: Map<string, string>) => {
     const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
     fsMap.set(filePath.path, getText())
+    if (fsMapAdditions) {
+      fsMapAdditions.forEach((v, k) => fsMap.set(k, v))
+    }
 
     const system = tsvfs.createSystem(fsMap)
     const host = tsvfs.createVirtualCompilerHost(system, compilerOptions, ts)
@@ -379,6 +415,8 @@ export const createTypeScriptSandbox = (
      *
      * Try to use this sparingly as it can be computationally expensive, at the minimum you should be using the debounced setup.
      *
+     * Accepts an optional fsMap which you can use to add any files, or overwrite the default file.
+     *
      * TODO: It would be good to create an easy way to have a single program instance which is updated for you
      * when the monaco model changes.
      */
@@ -401,12 +439,20 @@ export const createTypeScriptSandbox = (
     lzstring,
     /** Returns compiler options found in the params of the current page */
     createURLQueryWithCompilerOptions,
+    /**
+     * @deprecated Use `getTwoSlashCompilerOptions` instead.
+     *
+     * Returns compiler options in the source code using twoslash notation
+     */
+    getTwoSlashComplierOptions: getTwoSlashCompilerOptions,
     /** Returns compiler options in the source code using twoslash notation */
-    getTwoSlashComplierOptions,
+    getTwoSlashCompilerOptions,
     /** Gets to the current monaco-language, this is how you talk to the background webworkers */
     languageServiceDefaults: defaults,
     /** The path which represents the current file using the current compiler options */
     filepath: filePath.path,
+    /** Adds a file to the vfs used by the editor */
+    addLibraryToRuntime,
   }
 }
 

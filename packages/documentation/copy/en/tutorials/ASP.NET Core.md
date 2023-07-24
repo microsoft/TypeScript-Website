@@ -41,7 +41,7 @@ Open **Dependencies > Manage NuGet Packages > Browse.** Search and install `Micr
 Open up your `Startup.cs` file and edit your `Configure` function to look like this:
 
 ```cs
-public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+public void Configure(IApplicationBuilder app, IHostEnvironment env)
 {
     if (env.IsDevelopment())
     {
@@ -89,7 +89,7 @@ _Configure the TypeScript compiler_
 
 First we need to tell TypeScript how to build. Right click on `scripts` and click **New Item**. Then choose **TypeScript Configuration File** and use the default name of `tsconfig.json`
 
-![A screenshot showing the new file diaglogue with TypeScript JSON Config selected](/images/tutorials/aspnet/tsconfig.png)
+![A screenshot showing the new file dialogue with TypeScript JSON Config selected](/images/tutorials/aspnet/tsconfig.png)
 
 Replace the contents of the `tsconfig.json` file with:
 
@@ -106,14 +106,14 @@ Replace the contents of the `tsconfig.json` file with:
 }
 ```
 
-- `noEmitOnError` : Do not emit outputs if any errors were reported.
-- `noImplicitAny` : Raise error on expressions and declarations with an implied `any` type.
-- `sourceMap` : Generates corresponding `.map` file.
-- `target` : Specify ECMAScript target version.
+- [`noEmitOnError`](/tsconfig#noEmitOnError) : Do not emit outputs if any errors were reported.
+- [`noImplicitAny`](/tsconfig#noImplicitAny) : Raise error on expressions and declarations with an implied `any` type.
+- [`sourceMap`](/tsconfig#sourceMap) : Generates corresponding `.map` file.
+- [`target`](/tsconfig#target) : Specify ECMAScript target version.
 
 Note: `"ESNext"` targets latest supported
 
-`"noImplicitAny"` is good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. `"compileOnSave"` makes it easy to update your code in a running web app.
+[`noImplicitAny`](/tsconfig#noImplicitAny) is good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. `"compileOnSave"` makes it easy to update your code in a running web app.
 
 #### _Set up NPM_
 
@@ -158,8 +158,9 @@ gulp.task("clean", function () {
   return del(["wwwroot/scripts/**/*"]);
 });
 
-gulp.task("default", function () {
-  gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
+gulp.task("default", function (done) {
+    gulp.src(paths.scripts).pipe(gulp.dest("wwwroot/scripts"));
+    done();
 });
 ```
 
@@ -167,7 +168,7 @@ The first line tells Visual Studio to run the task ‘default’ after the build
 
 Now right-click on `gulpfile.js` and click Task Runner Explorer.
 
-![Screenshot of right clicking on the "Gulpfile.js" with 'Task Runner Exploere' selected](/images/tutorials/aspnet/taskrunner.png)
+![Screenshot of right clicking on the "Gulpfile.js" with 'Task Runner Explorer' selected](/images/tutorials/aspnet/taskrunner.png)
 
 If ‘default’ and ‘clean’ tasks don’t show up, refresh the explorer:
 

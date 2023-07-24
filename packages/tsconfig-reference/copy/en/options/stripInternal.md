@@ -3,7 +3,7 @@ display: "Strip Internal"
 oneline: "Disable emitting declarations that have `@internal` in their JSDoc comments."
 ---
 
-Do not emit declarations for code that has an `@internal` annotation in it's JSDoc comment.
+Do not emit declarations for code that has an `@internal` annotation in its JSDoc comment.
 This is an internal compiler option; use at your own risk, because the compiler does not check that the result is valid.
 If you are searching for a tool to handle additional levels of visibility within your `d.ts` files, look at [api-extractor](https://api-extractor.com).
 

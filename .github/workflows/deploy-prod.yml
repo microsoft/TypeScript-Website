@@ -11,27 +11,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+        with:
+          # Fetch the full history, to build attribution.json
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+          cache: yarn
 
-      # For epub -> PDF conversion
-      - run: sudo apt-get update
-      - run: sudo apt install calibre
+      - uses: microsoft/playwright-github-action@v1
 
-      # Build v2
-      - name: Build website v2
+      # Builds the modules, and boostraps the other modules
+      - name: Build website
         run: |
           yarn install
           yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           yarn bootstrap
+          yarn workspace typescriptlang-org setup-playground-cache-bust
           yarn build
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
+      # Builds the site
+      - name: Makes the site
+        run: |
           yarn build-site
           cp -r packages/typescriptlang-org/public site
         env:
           YARN_CHECKSUM_BEHAVIOR: ignore
 
       # Deploy to the prod appservice
-      - name: Deploy + Publish to AppService
+      - name: Commit built site to SITE-PRODUCTION branch
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

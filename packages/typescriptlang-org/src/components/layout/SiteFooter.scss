@@ -1,8 +1,8 @@
 @import "../../style/globals.scss";
 
 #site-footer {
-  background-color: $ts-main-blue-darkest-color;
-  color: rgba(255, 255, 255, 0.7);
+  background-color: $ts-main-blue-color;
+  color: white;
   padding-top: 1rem;
   padding-bottom: 3rem;
 
@@ -60,6 +60,7 @@
     @media (max-width: $screen-sm) {
       li {
         margin-left: 10px;
+
         p {
           width: 100%;
         }
@@ -67,7 +68,7 @@
     }
   }
 
-  section#switcher {
+  section#customize {
     padding-top: 2px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 
@@ -75,11 +76,23 @@
       h3 {
         width: 240px;
       }
+
       display: flex;
       flex-direction: row;
+
+      @media (max-width: $screen-sm) {
+        flex-direction: column;
+        margin-bottom: 1rem;
+
+        label {
+          margin-left: 8px;
+        }
+      }
+
       label {
         display: flex;
         flex-direction: row;
+
         p {
           margin: 0;
           padding: 0;
@@ -90,45 +103,14 @@
     }
 
     .switch-wrap {
-      background: rgba(255, 255, 255, 0.2);
-      width: 50px;
       height: 20px;
       padding: 5px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
       display: inline-block;
-      cursor: pointer;
-      position: relative;
+      margin-right: 1rem;
 
-      input {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-
-        &:checked {
-          + .switch {
-            background-color: $ts-barely-blue-highlight;
-            transform: translateX(29px);
-          }
-        }
-      }
-
-      .switch {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        display: block;
-        border-radius: 50%;
-        background-color: #000;
-        transition: background 0.3s, transform 0.3s, content 0.3s;
-
-        @media (prefers-reduced-motion: reduce) {
-          transition: none;
-        }
-
-        height: 22px;
-        width: 22px;
+      select {
+        background-color: $ts-main-blue-darkest-color;
+        color: white;
       }
     }
   }
@@ -148,14 +130,15 @@
       }
     }
 
-    article > ul {
+    article>ul {
       display: flex;
       flex-wrap: wrap;
 
-      > li {
+      >li {
         @media (min-width: $screen-sm) {
           width: 50%;
         }
+
         margin-bottom: 0.8rem;
         word-break: break-all;
       }
@@ -164,6 +147,7 @@
     #logos {
       width: 200px;
       margin-right: 40px;
+
       svg {
         margin-bottom: -0.8rem;
       }
@@ -172,6 +156,7 @@
         img {
           filter: invert(100%);
         }
+
         svg path {
           fill: black;
         }
@@ -201,6 +186,7 @@
 }
 
 @media (max-width: $screen-sm) {
+
   // This was sneakily making site wider than
   // the viewport because it uses opacity which affects layout
   #playground-samples-popover {
@@ -217,26 +203,34 @@
 .popover-container {
   position: relative;
 
+  .examples {
+    overflow-y: auto;
+
+    >div.section-content .section-list {
+      width: 300px;
+    }
+  }
+
   // this class is added by JS at runtime if the window is over 900 px width
   &.allow-hover {
     #playground-samples-popover {
-      bottom: -5px;
+      bottom: -10px;
       opacity: 0;
     }
 
     &:hover #playground-samples-popover {
       visibility: visible;
-      bottom: 0px;
+      bottom: -5px;
       opacity: 1;
     }
 
     &:hover .footer-icon:after {
-      content: "⊙";
+      content: "▼";
     }
   }
 
   .footer-icon:after {
-    content: "▼";
+    content: "⊙";
   }
 }
 
@@ -244,7 +238,7 @@
   position: absolute;
   bottom: 0px;
   left: -252px;
-  right: -400px;
+  right: -320px;
   margin: 0 auto;
   visibility: hidden;
   transition: bottom 0.3s ease, opacity 0.2s linear, visibility 0s linear;
@@ -257,6 +251,10 @@
 
     .section-list li {
       margin-top: 4px;
+    }
+
+    .example-indicator {
+      margin-top: 0rem;
     }
   }
 
@@ -279,6 +277,7 @@
       padding: 20px;
       width: 320px;
     }
+
     border-bottom: 1px solid $ts-main-blue-darker-color;
     border-radius: 0;
   }

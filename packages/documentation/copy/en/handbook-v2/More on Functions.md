@@ -3,7 +3,6 @@ title: More on Functions
 layout: docs
 permalink: /docs/handbook/2/functions.html
 oneline: "Learn about how Functions work in TypeScript."
-beta: true
 ---
 
 Functions are the basic building block of any application, whether they're local functions, imported from another module, or methods on a class.
@@ -27,7 +26,7 @@ function printToConsole(s: string) {
 greeter(printToConsole);
 ```
 
-The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type string, that doesn't have a return value".
+The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type `string`, that doesn't have a return value".
 Just like with function declarations, if a parameter type isn't specified, it's implicitly `any`.
 
 > Note that the parameter name is **required**. The function type `(string) => void` means "a function with a parameter named `string` of type `any`"!
@@ -55,6 +54,13 @@ type DescribableFunction = {
 function doSomething(fn: DescribableFunction) {
   console.log(fn.description + " returned " + fn(6));
 }
+
+function myFunc(someArg: number) {
+  return someArg > 3;
+}
+myFunc.description = "default description";
+
+doSomething(myFunc);
 ```
 
 Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
@@ -82,7 +88,7 @@ You can combine call and construct signatures in the same type arbitrarily:
 ```ts twoslash
 interface CallOrConstruct {
   new (s: string): Date;
-  (n?: number): number;
+  (n?: number): string;
 }
 ```
 
@@ -104,42 +110,45 @@ In TypeScript, _generics_ are used when we want to describe a correspondence bet
 We do this by declaring a _type parameter_ in the function signature:
 
 ```ts twoslash
-function firstElement<T>(arr: T[]): T {
+function firstElement<Type>(arr: Type[]): Type | undefined {
   return arr[0];
 }
 ```
 
-By adding a type parameter `T` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value).
+By adding a type parameter `Type` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value).
 Now when we call it, a more specific type comes out:
 
 ```ts twoslash
-declare function firstElement<T>(arr: T[]): T;
+declare function firstElement<Type>(arr: Type[]): Type | undefined;
 // ---cut---
 // s is of type 'string'
 const s = firstElement(["a", "b", "c"]);
 // n is of type 'number'
 const n = firstElement([1, 2, 3]);
+// u is of type undefined
+const u = firstElement([]);
 ```
 
 ### Inference
 
-Note that we didn't have to specify `T` in this sample.
+Note that we didn't have to specify `Type` in this sample.
 The type was _inferred_ - chosen automatically - by TypeScript.
 
 We can use multiple type parameters as well.
 For example, a standalone version of `map` would look like this:
 
 ```ts twoslash
-function map<E, O>(arr: E[], func: (arg: E) => O): O[] {
+// prettier-ignore
+function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
   return arr.map(func);
 }
 
-// Parameter 'n' is of type 'number'
+// Parameter 'n' is of type 'string'
 // 'parsed' is of type 'number[]'
 const parsed = map(["1", "2", "3"], (n) => parseInt(n));
 ```
 
-Note that in this example, TypeScript could infer both the type of the `E` type parameter (from the given `string` array), as well as the type `O` based on the return value of the function expression.
+Note that in this example, TypeScript could infer both the type of the `Input` type parameter (from the given `string` array), as well as the `Output` type parameter based on the return value of the function expression (`number`).
 
 ### Constraints
 
@@ -153,7 +162,7 @@ We _constrain_ the type parameter to that type by writing an `extends` clause:
 
 ```ts twoslash
 // @errors: 2345 2322
-function longest<T extends { length: number }>(a: T, b: T) {
+function longest<Type extends { length: number }>(a: Type, b: Type) {
   if (a.length >= b.length) {
     return a;
   } else {
@@ -163,17 +172,17 @@ function longest<T extends { length: number }>(a: T, b: T) {
 
 // longerArray is of type 'number[]'
 const longerArray = longest([1, 2], [1, 2, 3]);
-// longerString is of type 'string'
+// longerString is of type 'alice' | 'bob'
 const longerString = longest("alice", "bob");
 // Error! Numbers don't have a 'length' property
 const notOK = longest(10, 100);
 ```
 
-There are few interesting things to note in this example.
+There are a few interesting things to note in this example.
 We allowed TypeScript to _infer_ the return type of `longest`.
 Return type inference also works on generic functions.
 
-Because we constrained `T` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters.
+Because we constrained `Type` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters.
 Without the type constraint, we wouldn't be able to access those properties because the values might have been some other type without a length property.
 
 The types of `longerArray` and `longerString` were inferred based on the arguments.
@@ -187,10 +196,10 @@ Here's a common error when working with generic constraints:
 
 ```ts twoslash
 // @errors: 2322
-function minimumLength<T extends { length: number }>(
-  obj: T,
+function minimumLength<Type extends { length: number }>(
+  obj: Type,
   minimum: number
-): T {
+): Type {
   if (obj.length >= minimum) {
     return obj;
   } else {
@@ -199,15 +208,15 @@ function minimumLength<T extends { length: number }>(
 }
 ```
 
-It might look like this function is OK - `T` is constrained to `{ length: number }`, and the function either returns `T` or a value matching that constraint.
+It might look like this function is OK - `Type` is constrained to `{ length: number }`, and the function either returns `Type` or a value matching that constraint.
 The problem is that the function promises to return the _same_ kind of object as was passed in, not just _some_ object matching the constraint.
 If this code were legal, you could write code that definitely wouldn't work:
 
 ```ts twoslash
-declare function minimumLength<T extends { length: number }>(
-  obj: T,
+declare function minimumLength<Type extends { length: number }>(
+  obj: Type,
   minimum: number
-): T;
+): Type;
 // ---cut---
 // 'arr' gets value { length: 6 }
 const arr = minimumLength([1, 2, 3], 6);
@@ -222,7 +231,7 @@ TypeScript can usually infer the intended type arguments in a generic call, but 
 For example, let's say you wrote a function to combine two arrays:
 
 ```ts twoslash
-function combine<T>(arr1: T[], arr2: T[]): T[] {
+function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
   return arr1.concat(arr2);
 }
 ```
@@ -231,15 +240,15 @@ Normally it would be an error to call this function with mismatched arrays:
 
 ```ts twoslash
 // @errors: 2322
-declare function combine<T>(arr1: T[], arr2: T[]): T[];
+declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 // ---cut---
 const arr = combine([1, 2, 3], ["hello"]);
 ```
 
-If you intended to do this, however, you could manually specify `T`:
+If you intended to do this, however, you could manually specify `Type`:
 
 ```ts twoslash
-declare function combine<T>(arr1: T[], arr2: T[]): T[];
+declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 // ---cut---
 const arr = combine<string | number>([1, 2, 3], ["hello"]);
 ```
@@ -254,11 +263,11 @@ Having too many type parameters or using constraints where they aren't needed ca
 Here are two ways of writing a function that appear similar:
 
 ```ts twoslash
-function firstElement1<T>(arr: T[]) {
+function firstElement1<Type>(arr: Type[]) {
   return arr[0];
 }
 
-function firstElement2<T extends any[]>(arr: T) {
+function firstElement2<Type extends any[]>(arr: Type) {
   return arr[0];
 }
 
@@ -269,7 +278,7 @@ const b = firstElement2([1, 2, 3]);
 ```
 
 These might seem identical at first glance, but `firstElement1` is a much better way to write this function.
-Its inferred return type is `T`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
+Its inferred return type is `Type`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
 
 > **Rule**: When possible, use the type parameter itself rather than constraining it
 
@@ -278,27 +287,30 @@ Its inferred return type is `T`, but `firstElement2`'s inferred return type is `
 Here's another pair of similar functions:
 
 ```ts twoslash
-function filter1<T>(arr: T[], func: (arg: T) => boolean): T[] {
+function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
   return arr.filter(func);
 }
 
-function filter2<T, F extends (arg: T) => boolean>(arr: T[], func: F): T[] {
+function filter2<Type, Func extends (arg: Type) => boolean>(
+  arr: Type[],
+  func: Func
+): Type[] {
   return arr.filter(func);
 }
 ```
 
-We've created a type parameter `F` that _doesn't relate two values_.
+We've created a type parameter `Func` that _doesn't relate two values_.
 That's always a red flag, because it means callers wanting to specify type arguments have to manually specify an extra type argument for no reason.
-`F` doesn't do anything but make the function harder to read and reason about!
+`Func` doesn't do anything but make the function harder to read and reason about!
 
 > **Rule**: Always use as few type parameters as possible
 
 #### Type Parameters Should Appear Twice
 
-Sometimes we forget that function doesn't need to be generic:
+Sometimes we forget that a function might not need to be generic:
 
 ```ts twoslash
-function greet<S extends string>(s: S) {
+function greet<Str extends string>(s: Str) {
   console.log("Hello, " + s);
 }
 
@@ -315,6 +327,7 @@ function greet(s: string) {
 
 Remember, type parameters are for _relating the types of multiple values_.
 If a type parameter is only used once in the function signature, it's not relating anything.
+This includes the inferred return type; for example, if `Str` was part of the inferred return type of `greet`, it would be relating the argument and return types, so would be used _twice_ despite appearing only once in the written code.
 
 > **Rule**: If a type parameter only appears in one location, strongly reconsider if you actually need it
 
@@ -351,7 +364,7 @@ function f(x = 10) {
 ```
 
 Now in the body of `f`, `x` will have type `number` because any `undefined` argument will be replaced with `10`.
-Note that when a parameter is optional, callers can always pass `undefined`, as this simply simualtes a "missing" argument:
+Note that when a parameter is optional, callers can always pass `undefined`, as this simply simulates a "missing" argument:
 
 ```ts twoslash
 declare function f(x?: number): void;
@@ -374,10 +387,10 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 }
 ```
 
-What people usually _intend_ when writing `index?` as an optional parameter is that they want both of these calls to be legal:
+What people usually intend when writing `index?` as an optional parameter is that they want both of these calls to be legal:
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 declare function myForEach(
   arr: any[],
   callback: (arg: any, index?: number) => void
@@ -391,7 +404,7 @@ What this _actually_ means is that _`callback` might get invoked with one argume
 In other words, the function definition says that the implementation might look like this:
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
     // I don't feel like providing the index today
@@ -404,7 +417,7 @@ In turn, TypeScript will enforce this meaning and issue errors that aren't reall
 
 <!-- prettier-ignore -->
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 declare function myForEach(
   arr: any[],
   callback: (arg: any, index?: number) => void
@@ -419,7 +432,7 @@ In JavaScript, if you call a function with more arguments than there are paramet
 TypeScript behaves the same way.
 Functions with fewer parameters (of the same types) can always take the place of functions with more parameters.
 
-> When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
+> **Rule**: When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
 
 ## Function Overloads
 
@@ -534,6 +547,58 @@ Callers can invoke this with either sort of value, and as an added bonus, we don
 
 > Always prefer parameters with union types instead of overloads when possible
 
+### Declaring `this` in a Function
+
+TypeScript will infer what the `this` should be in a function via code flow analysis, for example in the following:
+
+```ts twoslash
+const user = {
+  id: 123,
+
+  admin: false,
+  becomeAdmin: function () {
+    this.admin = true;
+  },
+};
+```
+
+TypeScript understands that the function `user.becomeAdmin` has a corresponding `this` which is the outer object `user`. `this`, _heh_, can be enough for a lot of cases, but there are a lot of cases where you need more control over what object `this` represents. The JavaScript specification states that you cannot have a parameter called `this`, and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+
+```ts twoslash
+interface User {
+  id: number;
+  admin: boolean;
+}
+declare const getDB: () => DB;
+// ---cut---
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+
+const db = getDB();
+const admins = db.filterUsers(function (this: User) {
+  return this.admin;
+});
+```
+
+This pattern is common with callback-style APIs, where another object typically controls when your function is called. Note that you need to use `function` and not arrow functions to get this behavior:
+
+```ts twoslash
+// @errors: 7041 7017
+interface User {
+  id: number;
+  isAdmin: boolean;
+}
+declare const getDB: () => DB;
+// ---cut---
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+
+const db = getDB();
+const admins = db.filterUsers(() => this.admin);
+```
+
 ## Other Types to Know About
 
 There are some additional types you'll want to recognize that appear often when working with function types.
@@ -553,15 +618,15 @@ function noop() {
 
 In JavaScript, a function that doesn't return any value will implicitly return the value `undefined`.
 However, `void` and `undefined` are not the same thing in TypeScript.
-See the reference page [[Why void is a special type]] for a longer discussion about this.
+There are further details at the end of this chapter.
 
 > `void` is not the same as `undefined`.
 
 ### `object`
 
-The special type `object` refers to any value that isn't a primitive (`string`, `number`, `boolean`, `symbol`, `null`, or `undefined`).
+The special type `object` refers to any value that isn't a primitive (`string`, `number`, `bigint`, `boolean`, `symbol`, `null`, or `undefined`).
 This is different from the _empty object type_ `{ }`, and also different from the global type `Object`.
-You can read the reference page about [[The global types]] for information on what `Object` is for - long story short, don't ever use `Object`.
+It's very likely you will never use `Object`.
 
 > `object` is not `Object`. **Always** use `object`!
 
@@ -574,7 +639,7 @@ The `unknown` type represents _any_ value.
 This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value:
 
 ```ts twoslash
-// @errors: 2571
+// @errors: 2571 18046
 function f1(a: any) {
   a.b(); // OK
 }
@@ -632,17 +697,22 @@ It also has the special property that values of type `Function` can always be ca
 
 ```ts twoslash
 function doSomething(f: Function) {
-  f(1, 2, 3);
+  return f(1, 2, 3);
 }
 ```
 
 This is an _untyped function call_ and is generally best avoided because of the unsafe `any` return type.
 
-If need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
+If you need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
 
 ## Rest Parameters and Arguments
 
-**Background reading**: [Rest Parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) and [Spread Syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters'>Rest Parameters</a><br/>
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax'>Spread Syntax</a><br/>
+   </p>
+</blockquote>
 
 ### Rest Parameters
 
@@ -658,11 +728,11 @@ function multiply(n: number, ...m: number[]) {
 const a = multiply(10, 1, 2, 3, 4);
 ```
 
-In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>`or `T[]`, or a tuple type (which we'll learn about later).
+In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we'll learn about later).
 
 ### Rest Arguments
 
-Conversely, we can _provide_ a variable number of arguments from an array using the spread syntax.
+Conversely, we can _provide_ a variable number of arguments from an iterable object (for example, an array) using the spread syntax.
 For example, the `push` method of arrays takes any number of arguments:
 
 ```ts twoslash
@@ -677,7 +747,7 @@ This can lead to some surprising behavior:
 ```ts twoslash
 // @errors: 2556
 // Inferred type is number[] -- "an array with zero or more numbers",
-// not specfically two numbers
+// not specifically two numbers
 const args = [8, 5];
 const angle = Math.atan2(...args);
 ```
@@ -691,11 +761,17 @@ const args = [8, 5] as const;
 const angle = Math.atan2(...args);
 ```
 
+Using rest arguments may require turning on [`downlevelIteration`](/tsconfig#downlevelIteration) when targeting older runtimes.
+
 <!-- TODO link to downlevel iteration -->
 
 ## Parameter Destructuring
 
-> > **Background reading**: [Destructuring Assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+<blockquote class='bg-reading'>
+   <p>Background Reading:<br />
+   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment'>Destructuring Assignment</a><br/>
+   </p>
+</blockquote>
 
 You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the function body.
 In JavaScript, it looks like this:
@@ -731,68 +807,71 @@ function sum({ a, b, c }: ABC) {
 
 The `void` return type for functions can produce some unusual, but expected behavior.
 
-Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type vf = () => void`), when implemented, can return _any_ other value, but it will be ignored.
+Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type voidFunc = () => void`), when implemented, can return _any_ other value, but it will be ignored.
 
 Thus, the following implementations of the type `() => void` are valid:
+
 ```ts twoslash
-type voidFunc = () => void
+type voidFunc = () => void;
 
 const f1: voidFunc = () => {
-  return true
-}
+  return true;
+};
 
-const f2: voidFunc = () => true
+const f2: voidFunc = () => true;
 
 const f3: voidFunc = function () {
-  return true
-}
+  return true;
+};
 ```
 
 And when the return value of one of these functions is assigned to another variable, it will retain the type of `void`:
 
 ```ts twoslash
-type voidFunc = () => void
+type voidFunc = () => void;
 
 const f1: voidFunc = () => {
-  return true
-}
+  return true;
+};
 
-const f2: voidFunc = () => true
+const f2: voidFunc = () => true;
 
 const f3: voidFunc = function () {
-  return true
-}
+  return true;
+};
 // ---cut---
-const v1 = f1()
+const v1 = f1();
 
-const v2 = f2()
+const v2 = f2();
 
-const v3 = f3()
+const v3 = f3();
 ```
 
 This behavior exists so that the following code is valid even though `Array.prototype.push` returns a number and the `Array.prototype.forEach` method expects a function with a return type of `void`.
-```ts twoslash
-const src = [1, 2, 3]
-const dst = [0]
 
-src.forEach(el => dst.push(el))
+```ts twoslash
+const src = [1, 2, 3];
+const dst = [0];
+
+src.forEach((el) => dst.push(el));
 ```
 
 There is one other special case to be aware of, when a literal function definition has a `void` return type, that function must **not** return anything.
 
 ```ts twoslash
-function f2 (): void {
+function f2(): void {
   // @ts-expect-error
-  return true 
+  return true;
 }
 
 const f3 = function (): void {
   // @ts-expect-error
-  return true 
-}
+  return true;
+};
 ```
 
 For more on `void` please refer to these other documentation entries:
+
 - [v1 handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html#void)
 - [v2 handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#void)
 - [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)

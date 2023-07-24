@@ -1,4 +1,4 @@
-//// { order: 4 }
+//// { "order": 4 }
 
 // Mixins are a faux-multiple inheritance pattern for classes
 // in JavaScript which TypeScript has support for. The pattern

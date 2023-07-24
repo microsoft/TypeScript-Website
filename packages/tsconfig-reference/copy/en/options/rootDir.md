@@ -3,7 +3,7 @@ display: "Root Dir"
 oneline: "Specify the root folder within your source files."
 ---
 
-**Default**: The longest common path of all non-declaration input files. If `composite` is set, the default is instead the directory containing the `tsconfig.json` file.
+**Default**: The longest common path of all non-declaration input files. If [`composite`](#composite) is set, the default is instead the directory containing the `tsconfig.json` file.
 
 When TypeScript compiles files, it keeps the same directory structure in the output directory as exists in the input directory.
 
@@ -22,7 +22,7 @@ MyProj
 
 The inferred value for `rootDir` is the longest common path of all non-declaration input files, which in this case is `core/`.
 
-If your `outDir` was `dist`, TypeScript would write this tree:
+If your [`outDir`](#outDir) was `dist`, TypeScript would write this tree:
 
 ```
 MyProj
@@ -47,9 +47,9 @@ MyProj
 ```
 
 Importantly, `rootDir` **does not affect which files become part of the compilation**.
-It has no interaction with the `include`, `exclude`, or `files` `tsconfig.json` settings.
+It has no interaction with the [`include`](#include), [`exclude`](#exclude), or [`files`](#files) `tsconfig.json` settings.
 
-Note that TypeScript will never write an output file to a directory outside of `outDir`, and will never skip emitting a file.
+Note that TypeScript will never write an output file to a directory outside of [`outDir`](#outDir), and will never skip emitting a file.
 For this reason, `rootDir` also enforces that all files which need to be emitted are underneath the `rootDir` path.
 
 For example, let's say you had this tree:
@@ -63,4 +63,4 @@ MyProj
 ├── helpers.ts
 ```
 
-It would be an error to specify `rootDir` as `core` _and_ `include` as `*` because it creates a file (`helpers.ts`) that would need to be emitted _outside_ the `outDir` (i.e. `../helpers.js`).
+It would be an error to specify `rootDir` as `core` _and_ [`include`](#include) as `*` because it creates a file (`helpers.ts`) that would need to be emitted _outside_ the [`outDir`](#outDir) (i.e. `../helpers.js`).

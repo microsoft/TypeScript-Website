@@ -6,8 +6,9 @@
   --text-color: #fff;
   --border-color: #444;
   --background-minor-highlight-color: #343434;
-  --inline-code-background-color: rgb(58, 58, 92);
+  --inline-code-background-color: rgb(58, 58, 92, 0.7);
   --link-color: #{$ts-main-blue-lightest-color};
+  --pure-background: black;
   --raised-background-color: #{$ts-dark-bg-for-foreground-color};
   --alt-text-color: #fff;
   --raised-box-shadow: 0 1.6px 3.6px 0 rgba(255, 255, 255, 0.132),
@@ -28,6 +29,8 @@
   --playground-pre-color: white;
   --table-border-color: #545454;
   --playground-pre-bg: #1e1e1e;
+  --blue-tinged-bg: #2c3841;
+  --blue-tinged-strong: #273f52;
   --footer-arrow-color: $ts-light-bg-grey-highlight-color;
   --fade-gradient: linear-gradient(
     0deg,
@@ -40,6 +43,7 @@ html,
 html.light-theme {
   // light theme
   --background-color: #{$ts-light-bg-sandy-color};
+  --pure-background: white;
   --text-color: #333;
   --border-color: #eee;
   --background-minor-highlight-color: #fcfcfc;
@@ -66,6 +70,8 @@ html.light-theme {
   --playground-pre-bg: #f7f7f7;
   --footer-arrow-color: $ts-dark-bg-for-foreground-color;
   --table-border-color: #f1f1f1;
+  --blue-tinged-bg: #e6f2fb;
+  --blue-tinged-strong: #cce4f6;
   --fade-gradient: linear-gradient(
     0deg,
     rgba(255, 255, 255, 1) 0%,
@@ -76,10 +82,52 @@ html.light-theme {
   color: var(--text-color);
 
   -webkit-font-smoothing: antialiased;
-  font-family: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-family: var(--body-font);
   font-size: 16px;
   line-height: 1.4;
+}
+
+html {
+  --code-font: "Cascadia Mono-SemiLight", Menlo, Monaco, Consolas, monospace;
+  --body-font: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+// These match the ids from the select in SiteFooter-Customize.tsx
+
+html.font-cascadia-ligatures {
+  --code-font: "Cascadia Code-SemiLight", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-consolas {
+  --code-font: Consolas, monospace;
+}
+
+html.font-dank-mono {
+  --code-font: "Dank Mono Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-jetbrains-mono {
+  --code-font: "JetBrains Mono-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-fira-code {
+  --code-font: "FiraCode-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-sf-mono {
+  --code-font: "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-source-code-pro {
+  --code-font: "SourceCode Pro Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-open-dyslexic {
+  --code-font: "OpenDyslexicMono Regular", Menlo, Monaco, Consolas, monospace;
+  --body-font: "OpenDyslexic Regular", "Segoe UI Web (West European)",
+    "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue",
+    sans-serif;
 }
 
 .raised {
@@ -112,9 +160,22 @@ html.light-theme {
     }
   }
 
+  h1 > code,
+  h2 > code,
+  h3 > code {
+    background-color: var(--inline-code-background-color);
+    font-size: 0.95em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    padding: 2px 4px;
+  }
+
   p > code,
   li > code {
     background-color: var(--inline-code-background-color);
+    font-family: $font-code;
+    font-size: 0.9rem;
+    padding: 2px 4px;
   }
 
   td {
@@ -125,6 +186,11 @@ html.light-theme {
 // Style the permalink icon in dark colour-scheme
 .dark-theme .raised .markdown .anchor.before svg path {
   fill: #fff;
+}
+
+h2,
+h3 {
+  font-weight: 400;
 }
 
 .main-content-block {
@@ -151,4 +217,8 @@ html,
 #site-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.dark-theme {
+  color-scheme: dark;
 }

@@ -145,7 +145,7 @@ function useKey<T, K extends keyof T>(o: T, k: K) {
   }
   ```
 
-- Otherwise use `--keyofStringsOnly` compiler option to disable the new behavior.
+- Otherwise use [`keyofStringsOnly`](/tsconfig#keyofStringsOnly) compiler option to disable the new behavior.
 
 ## Generic type arguments in JSX elements
 
@@ -237,7 +237,7 @@ function walk(p) {
 }
 ```
 
-## Relaxing declaration emit visiblity rules
+## Relaxing declaration emit visibility rules
 
 With `import` types available, many of the visibility errors reported during declaration file generation can be handled by the compiler without the need to change the input.
 
@@ -286,7 +286,7 @@ import.meta.__dirname; // Has type 'string'
 
 ## New `--resolveJsonModule`
 
-Often in Node.js applications a `.json` is needed. With TypeScript 2.9, `--resolveJsonModule` allows for importing, extracting types from and generating `.json` files.
+Often in Node.js applications a `.json` is needed. With TypeScript 2.9, [`resolveJsonModule`](/tsconfig#resolveJsonModule) allows for importing, extracting types from and generating `.json` files.
 
 ##### Example
 
@@ -323,14 +323,14 @@ settings.dry === 2; // Error: Operator '===' cannot be applied boolean and numbe
 
 ## `--pretty` output by default
 
-Starting TypeScript 2.9 errors are displayed under `--pretty` by default if the output device is applicable for colorful text.
-TypeScript will check if the output steam has [`isTty`](https://nodejs.org/api/tty.html) property set.
+Starting TypeScript 2.9 errors are displayed under [`pretty`](/tsconfig#pretty) by default if the output device is applicable for colorful text.
+TypeScript will check if the output stream has [`isTty`](https://nodejs.org/api/tty.html) property set.
 
-Use `--pretty false` on the command line or set `"pretty": false` in your `tsconfig.json` to disable `--pretty` output.
+Use `--pretty false` on the command line or set `"pretty": false` in your `tsconfig.json` to disable [`pretty`](/tsconfig#pretty) output.
 
 ## New `--declarationMap`
 
-Enabling `--declarationMap` alongside `--declaration` causes the compiler to emit `.d.ts.map` files alongside the output `.d.ts` files.
+Enabling [`declarationMap`](/tsconfig#declarationMap) alongside [`declaration`](/tsconfig#declaration) causes the compiler to emit `.d.ts.map` files alongside the output `.d.ts` files.
 Language Services can also now understand these map files, and uses them to map declaration-file based definition locations to their original source, when available.
 
-In other words, hitting go-to-definition on a declaration from a `.d.ts` file generated with `--declarationMap` will take you to the source file (`.ts`) location where that declaration was defined, and not to the `.d.ts`.
+In other words, hitting go-to-definition on a declaration from a `.d.ts` file generated with [`declarationMap`](/tsconfig#declarationMap) will take you to the source file (`.ts`) location where that declaration was defined, and not to the `.d.ts`.
