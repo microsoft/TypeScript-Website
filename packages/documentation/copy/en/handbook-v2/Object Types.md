@@ -160,23 +160,21 @@ Now `xPos` and `yPos` are both definitely present within the body of `paintShape
 
 > Note that there is currently no way to place type annotations within destructuring patterns.
 > This is because the following syntax already means something different in JavaScript.
-
-```ts twoslash
-// @noImplicitAny: false
-// @errors: 2552 2304
-interface Shape {}
-declare function render(x: unknown);
-// ---cut---
-function draw({ shape: Shape, xPos: number = 100 /*...*/ }) {
-  render(shape);
-  render(xPos);
-}
-```
-
-In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
-Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
-
-Using [mapping modifiers](/docs/handbook/2/mapped-types.html#mapping-modifiers), you can remove `optional` attributes.
+>
+> ```ts twoslash
+> // @noImplicitAny: false
+> // @errors: 2552 2304
+> interface Shape {}
+> declare function render(x: unknown);
+> // ---cut---
+> function draw({ shape: Shape, xPos: number = 100 /*...*/ }) {
+>   render(shape);
+>   render(xPos);
+> }
+> ```
+>
+> In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
+> Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
 
 ### `readonly` Properties
 
