@@ -3386,7 +3386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/react@npm:^3.0.0-alpha.33":
+"@docsearch/react@npm:^3.5.1":
   version: 3.5.1
   resolution: "@docsearch/react@npm:3.5.1"
   dependencies:
@@ -29077,7 +29077,7 @@ resolve@^2.0.0-next.3:
   dependencies:
     "@babel/core": ^7.8.4
     "@babel/plugin-syntax-optional-chaining": ^7.8.3
-    "@docsearch/react": ^3.0.0-alpha.33
+    "@docsearch/react": ^3.5.1
     "@formatjs/intl-relativetimeformat": ^4.5.15
     "@types/node-fetch": ^2.5.3
     "@types/react": ^16.9.20
