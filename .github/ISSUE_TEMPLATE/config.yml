@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: TypeScript Compiler issues
-    url: https://github.community/
-    about: https://github.com/microsoft/TypeScript/issues/new/choose
+    url: https://github.com/microsoft/TypeScript/issues/new/choose
+    about: File TypeScript issues here
 
   - name: Chat
     url: "https://discord.gg/typescript"
