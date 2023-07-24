@@ -261,7 +261,6 @@ TypeScript supports `export =` to model the traditional CommonJS and AMD workflo
 The `export =` syntax specifies a single object that is exported from the module.
 This can be a class, interface, namespace, function, or enum.
 
-The modules exported by using `export =` can be imported by either of the following ways such as `import module = require(“module”)` or `import module from “./module”` and `import * as module from “./module”`.
 
 ##### ZipCodeValidator.ts
 
