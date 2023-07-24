@@ -244,6 +244,14 @@ export const defaultsForOptions = {
   noImplicitThis: trueIf("strict"),
   preserveConstEnums: trueIf("isolatedModules"),
   reactNamespace: "React",
+  resolvePackageJsonExports: [
+    "`true` when [`moduleResolution`](#moduleResolution) is `node16`, `nodenext`, or `bundler`;",
+    "otherwise `false`",
+  ],
+  resolvePackageJsonImports: [
+    "`true` when [`moduleResolution`](#moduleResolution) is `node16`, `nodenext`, or `bundler`;",
+    "otherwise `false`",
+  ],
   rootDir: "Computed from the list of input files.",
   rootDirs: "Computed from the list of input files.",
   strictBindCallApply: trueIf("strict"),
