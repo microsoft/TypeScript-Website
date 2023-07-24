@@ -167,8 +167,8 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["declarationDir", ["declaration"]],
   ["emitDeclarationOnly", ["declaration"]],
 
-  ["module", ["moduleResolution"]],
-  ["moduleResolution", ["module", "customConditions", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
+  ["module", ["moduleResolution", "esModuleInterop", "allowImportingTsExtensions", "allowArbitraryExtensions", "resolveJsonModule"]],
+  ["moduleResolution", ["module", "paths", "baseUrl", "rootDirs", "moduleSuffixes", "customConditions", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
   ["customConditions", ["moduleResolution", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
   ["resolvePackageJsonExports", ["moduleResolution", "customConditions", "resolvePackageJsonImports"]],
   ["resolvePackageJsonImports", ["moduleResolution", "customConditions", "resolvePackageJsonExports"]],
