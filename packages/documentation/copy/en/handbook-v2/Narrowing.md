@@ -25,7 +25,7 @@ function padLeft(padding: number | string, input: string) {
 ```
 
 Uh-oh, we're getting an error on `padding`.
-TypeScript is warning us that adding a `number | string` to a `number` might not give us what we want, and it's right.
+TypeScript is warning us that we're passing a value with type `number | string` to the `repeat` function, which only accepts a `number`, and it's right.
 In other words, we haven't explicitly checked if `padding` is a `number` first, nor are we handling the case where it's a `string`, so let's do exactly that.
 
 ```ts twoslash
@@ -41,7 +41,7 @@ If this mostly looks like uninteresting JavaScript code, that's sort of the poin
 Apart from the annotations we put in place, this TypeScript code looks like JavaScript.
 The idea is that TypeScript's type system aims to make it as easy as possible to write typical JavaScript code without bending over backwards to get type safety.
 
-While it might not look like much, there's actually a lot going under the covers here.
+While it might not look like much, there's actually a lot going on under the covers here.
 Much like how TypeScript analyzes runtime values using static types, it overlays type analysis on JavaScript's runtime control flow constructs like `if/else`, conditional ternaries, loops, truthiness checks, etc., which can all affect those types.
 
 Within our `if` check, TypeScript sees `typeof padding === "number"` and understands that as a special form of code called a _type guard_.
@@ -84,7 +84,7 @@ For example, notice that in the list above, `typeof` doesn't return the string `
 Check out the following example:
 
 ```ts twoslash
-// @errors: 2531
+// @errors: 2531 18047
 function printAll(strs: string | string[] | null) {
   if (typeof strs === "object") {
     for (const s of strs) {
@@ -132,7 +132,7 @@ Values like
 - `null`
 - `undefined`
 
-all coerce to `false`, and other values get coerced `true`.
+all coerce to `false`, and other values get coerced to `true`.
 You can always coerce values to `boolean`s by running them through the `Boolean` function, or by using the shorter double-Boolean negation. (The latter has the advantage that TypeScript infers a narrow literal boolean type `true`, while inferring the first as type `boolean`.)
 
 ```ts twoslash
@@ -186,7 +186,7 @@ function printAll(strs: string | string[] | null) {
 
 We wrapped the entire body of the function in a truthy check, but this has a subtle downside: we may no longer be handling the empty string case correctly.
 
-TypeScript doesn't hurt us here at all, but this is behavior worth noting if you're less familiar with JavaScript.
+TypeScript doesn't hurt us here at all, but this behavior is worth noting if you're less familiar with JavaScript.
 TypeScript can often help you catch bugs early on, but if you choose to do _nothing_ with a value, there's only so much that it can do without being overly prescriptive.
 If you want, you can make sure you handle situations like these with a linter.
 
@@ -273,7 +273,7 @@ function multiplyValue(container: Container, factor: number) {
 
 ## The `in` operator narrowing
 
-JavaScript has an operator for determining if an object has a property with a name: the `in` operator.
+JavaScript has an operator for determining if an object or its prototype chain has a property with a name: the `in` operator.
 TypeScript takes this into account as a way to narrow down potential types.
 
 For example, with the code: `"value" in x`. where `"value"` is a string literal and `x` is a union type.
@@ -292,7 +292,7 @@ function move(animal: Fish | Bird) {
 }
 ```
 
-To reiterate optional properties will exist in both sides for narrowing, for example a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
+To reiterate, optional properties will exist in both sides for narrowing. For example, a human could both swim and fly (with the right equipment) and thus should show up in both sides of the `in` check:
 
 <!-- prettier-ignore -->
 ```ts twoslash
@@ -479,6 +479,10 @@ const underWater3: Fish[] = zoo.filter((pet): pet is Fish => {
 
 In addition, classes can [use `this is Type`](/docs/handbook/2/classes.html#this-based-type-guards) to narrow their type.
 
+## Assertion functions
+
+Types can also be narrowed using [Assertion functions](/docs/handbook/release-notes/typescript-3-7.html#assertion-functions).
+
 # Discriminated unions
 
 Most of the examples we've looked at so far have focused around narrowing single variables with simple types like `string`, `boolean`, and `number`.
@@ -521,7 +525,7 @@ We can write a `getArea` function that applies the right logic based on if it's 
 We'll first try dealing with circles.
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -540,7 +544,7 @@ Under [`strictNullChecks`](/tsconfig#strictNullChecks) that gives us an error - 
 But what if we perform the appropriate checks on the `kind` property?
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -688,7 +692,7 @@ function getArea(shape: Shape) {
 
 The important thing here was the encoding of `Shape`.
 Communicating the right information to TypeScript - that `Circle` and `Square` were really two separate types with specific `kind` fields - was crucial.
-Doing that let us write type-safe TypeScript code that looks no different than the JavaScript we would've written otherwise.
+Doing that lets us write type-safe TypeScript code that looks no different than the JavaScript we would've written otherwise.
 From there, the type system was able to do the "right" thing and figure out the types in each branch of our `switch` statement.
 
 > As an aside, try playing around with the above example and remove some of the return keywords.
@@ -704,9 +708,9 @@ In those cases, TypeScript will use a `never` type to represent a state which sh
 
 # Exhaustiveness checking
 
-The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a switch statement.
+The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a `switch` statement.
 
-For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will raise when every possible case has not been handled.
+For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will not raise an error when every possible case has been handled.
 
 ```ts twoslash
 interface Circle {

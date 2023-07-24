@@ -3,19 +3,13 @@
   node packages/playground-handbook/scripts/generate.mjs
 */
 
-import { writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 
 import { dirname, join } from "path";
-import { domainToASCII, fileURLToPath } from "url";
+import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const root = join(__dirname, "..");
-const files = readdirSync(root);
-const mds = files.filter(f => f.includes(".md"));
-const types = `export type PHandbookPage = ${mds.map(t => `"${t}"`).join(" | ")}`;
-writeFileSync(join(__dirname, "types.d.ts"), types);
 
-/** @type {import("./types").PHandbookPage[]} */
 // prettier-ignore
 const contents = [
   "Compiler Settings.md",   // 1
@@ -28,20 +22,8 @@ const contents = [
   "Writing DTS Files.md",   // 8
   "TypeScript Versions.md", // 9
   "URL Structure.md",       // 10
-  "Plugins.md",             // 11
-  "Exporting Your Code.md", // 12
-];
-
-/** @type {import("./types").PHandbookPage[]} */
-// prettier-ignore
-const extended = [
-  "Extended Edition.md",       // 12
-  "Twoslash Annotations.md",   // 13
-  "Multi-File Playgrounds.md", // 14
-  "Gist Docsets.md",           // 15
-  "Bug Workbench.md",          // 16
-  "Writing Plugins.md",        // 17
-  "Implementation Details.md", // 18
+  "Exporting Your Code.md", // 11
+  "Twoslash Annotations.md",// 12
 ];
 
 const outputDir = join(__dirname, "../output");
@@ -69,7 +51,4 @@ const add = strs =>
   });
 
 add(contents);
-json.docs.push({ type: "hr" });
-add(extended);
-
 writeFileSync(join(outputDir, "play-handbook.json"), JSON.stringify(json));

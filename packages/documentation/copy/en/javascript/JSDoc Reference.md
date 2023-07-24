@@ -187,7 +187,7 @@ export type Pet = {
 
 // @filename: main.js
 /**
- * @param { import("./types").Pet } p
+ * @param {import("./types").Pet} p
  */
 function walk(p) {
   console.log(`Walking ${p.name}...`);
@@ -204,7 +204,7 @@ export type Pet = {
 // @filename: main.js
 // ---cut---
 /**
- * @typedef { import("./types").Pet } Pet
+ * @typedef {import("./types").Pet} Pet
  */
 
 /**
@@ -231,7 +231,7 @@ export const userAccount = {
 // @filename: main.js
 // ---cut---
 /**
- * @type {typeof import("./accounts").userAccount }
+ * @type {typeof import("./accounts").userAccount}
  */
 var x = require("./accounts").userAccount;
 ```
@@ -293,10 +293,10 @@ You can use either `object` or `Object` on the first line.
 
 ```js twoslash
 /**
- * @typedef {object} SpecialType1 - creates a new type named 'SpecialType'
- * @property {string} prop1 - a string property of SpecialType
- * @property {number} prop2 - a number property of SpecialType
- * @property {number=} prop3 - an optional number property of SpecialType
+ * @typedef {object} SpecialType1 - creates a new type named 'SpecialType1'
+ * @property {string} prop1 - a string property of SpecialType1
+ * @property {number} prop2 - a number property of SpecialType1
+ * @property {number=} prop3 - an optional number property of SpecialType1
  */
 
 /** @type {SpecialType1} */
@@ -391,7 +391,7 @@ Finally, you can specify a default for a type parameter:
 /** @template [T=object] */
 class Cache {
     /** @param {T} initial */
-    constructor(T) {
+    constructor(initial) {
     }
 }
 let c = new Cache()

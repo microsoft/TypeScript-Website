@@ -3,24 +3,26 @@ import remark from "remark";
 import remarkHTML from "remark-html";
 import ts from "typescript";
 
-export interface CommandLineOption {
-  name: string;
-  type:
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "list"
-    | Map<string, number | string>;
-  defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
-  category?: ts.DiagnosticMessage;
-  element: CommandLineOption;
-}
-
 declare module "typescript" {
   const optionDeclarations: CommandLineOption[];
   const optionsForWatch: CommandLineOption[];
   const typeAcquisitionDeclarations: CommandLineOption[];
+  const defaultInitCompilerOptions: ts.CompilerOptions;
+}
+
+export interface CommandLineOption {
+  name: string;
+  type:
+  | "string"
+  | "number"
+  | "boolean"
+  | "object"
+  | "list"
+  | Map<string, number | string>;
+  defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
+  category?: ts.DiagnosticMessage;
+  strictFlag?: true;
+  element: CommandLineOption;
 }
 
 /**
@@ -41,7 +43,6 @@ export const denyList: CompilerOptionName[] = [
   "locale",
   "clean",
   "dry",
-  "enableAutoDiscovery",
 ];
 
 /** Things we should document, but really want to help move people away from */
@@ -72,18 +73,17 @@ export const buildOptionCompilerOptNames: string[] = ts.buildOpts
 export const rootOptNames = ["files", "extends", "include", "exclude", "references"];
 
 /** You should use this! They are off by default */
-export const recommended: CompilerOptionName[] = [
-  "strict",
-  "forceConsistentCasingInFileNames",
-  "alwaysStrict",
-  "strictNullChecks",
-  "strictBindCallApply",
-  "strictFunctionTypes",
-  "strictPropertyInitialization",
-  "noImplicitThis",
-  "noImplicitAny",
-  "esModuleInterop",
-  "skipLibCheck",
+export const recommended = [
+  // Options enabled by --init
+  ...Object.entries(ts.defaultInitCompilerOptions)
+    .filter(([, value]) => value === true)
+    .map(([name]) => name),
+  // Options enabled by --strict
+  ...ts.optionDeclarations
+    .filter((option) => option.strictFlag)
+    .map((option) => option.name),
+  // Not included in --init yet:
+  // https://github.com/microsoft/TypeScript/issues/44524#:~:text=--init%20should%20include%20it%20once%20the%20ecosystem%20catches%20up.
   "exactOptionalPropertyTypes",
 ];
 
@@ -167,8 +167,11 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["declarationDir", ["declaration"]],
   ["emitDeclarationOnly", ["declaration"]],
 
-  ["moduleResolution", ["module"]],
-  ["module", ["moduleResolution"]],
+  ["module", ["moduleResolution", "esModuleInterop", "allowImportingTsExtensions", "allowArbitraryExtensions", "resolveJsonModule"]],
+  ["moduleResolution", ["module", "paths", "baseUrl", "rootDirs", "moduleSuffixes", "customConditions", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
+  ["customConditions", ["moduleResolution", "resolvePackageJsonExports", "resolvePackageJsonImports"]],
+  ["resolvePackageJsonExports", ["moduleResolution", "customConditions", "resolvePackageJsonImports"]],
+  ["resolvePackageJsonImports", ["moduleResolution", "customConditions", "resolvePackageJsonExports"]],
 
   ["jsx", ["jsxFactory", "jsxFragmentFactory", "jsxImportSource"]],
   ["jsxFactory", ["jsx", "jsxFragmentFactory", "jsxImportSource"]],
@@ -178,7 +181,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["suppressImplicitAnyIndexErrors", ["noImplicitAny"]],
 
   ["listFiles", ["explainFiles"]],
-  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues"]]
+
+  ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues", "verbatimModuleSyntax"]],
+  ["importsNotUsedAsValues", ["preserveValueImports", "verbatimModuleSyntax"]],
 ];
 
 /**
@@ -188,7 +193,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
 function trueIf(name: string) {
   return [
-    `\`true\` if [\`${name}\`](#${name}),`,
+    `\`true\` if [\`${name}\`](#${name});`,
     "`false` otherwise.",
   ];
 }
@@ -200,34 +205,38 @@ export const defaultsForOptions = {
       typeof option.defaultValueDescription === "object"
         ? option.defaultValueDescription.message
         : formatDefaultValue(
-            option.defaultValueDescription,
-            option.type === "list" ? option.element.type : option.type
-          ),
+          option.defaultValueDescription,
+          option.type === "list" ? option.element.type : option.type
+        ),
     ])
   ),
   allowSyntheticDefaultImports: [
-    "`true` if [`module`](#module) is `system`, or [`esModuleInterop`](#esModuleInterop) and [`module`](#module) is not `es6`/`es2015` or `esnext`,",
+    "`true` if [`esModuleInterop`](#esModuleInterop) is enabled, [`module`](#module) is `system`, or [`moduleResolution`](#module-resolution) is `bundler`;",
     "`false` otherwise.",
   ],
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
+  esModuleInterop: [
+    "`true` if [`module`](#module) is `node16` or `nodenext`;",
+    "`false` otherwise.",
+  ],
   exclude: [
     "node_modules",
     "bower_components",
     "jspm_packages",
     "[`outDir`](#outDir)",
   ],
-  include: ["`[]` if [`files`](#files) is specified,", "`**` otherwise."],
+  include: ["`[]` if [`files`](#files) is specified;", "`**/*` otherwise."],
   incremental: trueIf("composite"),
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
   module: [
-    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`,",
+    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`;",
     "`ES6`/`ES2015` otherwise.",
   ],
   moduleResolution: [
-    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System` or `ES6`/`ES2015`,",
-    "Matches if [`module`](#module) is `node12` or `nodenext`,",
+    "`Classic` if [`module`](#module) is `AMD`, `UMD`, `System`, or `ES6`/`ES2015`;",
+    "Matches if [`module`](#module) is `node16` or `nodenext`;",
     "`Node` otherwise.",
   ],
   newLine: "Platform specific.",
@@ -235,6 +244,14 @@ export const defaultsForOptions = {
   noImplicitThis: trueIf("strict"),
   preserveConstEnums: trueIf("isolatedModules"),
   reactNamespace: "React",
+  resolvePackageJsonExports: [
+    "`true` when [`moduleResolution`](#moduleResolution) is `node16`, `nodenext`, or `bundler`;",
+    "otherwise `false`",
+  ],
+  resolvePackageJsonImports: [
+    "`true` when [`moduleResolution`](#moduleResolution) is `node16`, `nodenext`, or `bundler`;",
+    "otherwise `false`",
+  ],
   rootDir: "Computed from the list of input files.",
   rootDirs: "Computed from the list of input files.",
   strictBindCallApply: trueIf("strict"),
@@ -244,7 +261,7 @@ export const defaultsForOptions = {
   strictNullChecks: trueIf("strict"),
   target: "ES3",
   useDefineForClassFields: [
-    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`,",
+    "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",
   ],
 };
@@ -366,8 +383,8 @@ Object.keys(releaseToConfigsMap).forEach((v) => {
 export const parseMarkdown = (value: string | string[]) =>
   Array.isArray(value)
     ? `<ul>${value
-        .map((element) => `<li>${parseMarkdown(element)}</li>`)
-        .join("")}</ul>`
+      .map((element) => `<li>${parseMarkdown(element)}</li>`)
+      .join("")}</ul>`
     : remark()
-        .use(remarkHTML)
-        .processSync(value !== undefined ? String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`") : undefined);
+      .use(remarkHTML)
+      .processSync(value !== undefined ? String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`") : undefined);

@@ -236,7 +236,7 @@ for (const lang of langs) {
 
     /** @param {{ items?: HandbookNavSubItem[] }} itemable */
     function addItems(itemable) {
-      // Lots of 2nd level navs dont have subnav, bail for them
+      // Lots of 2nd level navs don't have subnav, bail for them
       if ("items" in itemable === false) return;
 
       codeForTheHandbook.push("items: [");

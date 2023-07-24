@@ -109,7 +109,7 @@ let c = createLabel(Math.random() ? "hello" : 42);
 ### Conditional Type Constraints
 
 Often, the checks in a conditional type will provide us with some new information.
-Just like with narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constrain generics by the type we check against.
+Just like narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constrain generics by the type we check against.
 
 For example, let's take the following:
 
@@ -184,7 +184,7 @@ For example, we could have inferred the element type in `Flatten` instead of fet
 type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
-Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `T` within the true branch.
+Here, we used the `infer` keyword to declaratively introduce a new generic type variable named `Item` instead of specifying how to retrieve the element type of `Type` within the true branch.
 This frees us from having to think about how to dig through and probing apart the structure of the types we're interested in.
 
 We can write some useful helper type aliases using the `infer` keyword.
@@ -234,7 +234,7 @@ type StrArrOrNumArr = ToArray<string | number>;
 //   ^?
 ```
 
-What happens here is that `StrArrOrNumArr ` distributes on:
+What happens here is that `ToArray` distributes on:
 
 ```ts twoslash
 type StrArrOrNumArr =

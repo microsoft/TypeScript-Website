@@ -298,7 +298,7 @@
         "source.coffee.embedded"
       ],
       "settings": {
-        "foreground": "#ff0000"
+        "foreground": "#e50000"
       }
     },
     {

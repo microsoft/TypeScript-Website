@@ -6,17 +6,16 @@ oneline: TypeScript Decorators overview
 translatable: true
 ---
 
-## Introduction
+> NOTE&nbsp; This document refers to an experimental stage 2 decorators implementation. Stage 3 decorator support is available since Typescript 5.0.
+> See: [Decorators in Typescript 5.0](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators)
 
-<blockquote class='bg-reading'>
-  <p>Further Reading:<br /><a href='https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/'>A Complete Guide to TypeScript Decorators</a></p>
-</blockquote>
+## Introduction
 
 With the introduction of Classes in TypeScript and ES6, there now exist certain scenarios that require additional features to support annotating or modifying classes and class members.
 Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.
-Decorators are a [stage 2 proposal](https://github.com/tc39/proposal-decorators) for JavaScript and are available as an experimental feature of TypeScript.
 
-> NOTE&emsp; Decorators are an experimental feature that may change in future releases.
+> Further Reading (stage 2): [A Complete Guide to TypeScript Decorators](https://saul-mirone.github.io/a-complete-guide-to-typescript-decorator/)
+
 
 To enable experimental support for decorators, you must enable the [`experimentalDecorators`](/tsconfig#experimentalDecorators) compiler option either on the command line or in your `tsconfig.json`:
 
@@ -475,7 +474,7 @@ function validate(target: any, propertyName: string, descriptor: TypedPropertyDe
 ```
 
 The `@required` decorator adds a metadata entry that marks the parameter as required.
-The `@validate` decorator then wraps the existing `greet` method in a function that validates the arguments before invoking the original method.
+The `@validate` decorator then wraps the existing `print` method in a function that validates the arguments before invoking the original method.
 
 > NOTE&emsp; This example requires the `reflect-metadata` library.
 > See [Metadata](#metadata) for more information about the `reflect-metadata` library.

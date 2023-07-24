@@ -339,7 +339,7 @@ interface Checkable {
 class NameChecker implements Checkable {
   check(s) {
     // Notice no error here
-    return s.toLowercse() === "ok";
+    return s.toLowerCase() === "ok";
     //         ^?
   }
 }
@@ -372,7 +372,7 @@ c.y = 10;
 </blockquote>
 
 Classes may `extend` from a base class.
-A derived class has all the properties and methods of its base class, and also define additional members.
+A derived class has all the properties and methods of its base class, and can also define additional members.
 
 ```ts twoslash
 class Animal {
@@ -443,7 +443,8 @@ class Base {
     console.log("Hello, world!");
   }
 }
-declare const d: Base;
+class Derived extends Base {}
+const d = new Derived();
 // ---cut---
 // Alias the derived instance through a base class reference
 const b: Base = d;
@@ -723,7 +724,7 @@ class Derived extends Base {
 }
 ```
 
-Because `private` members aren't visible to derived classes, a derived class can't increase its visibility:
+Because `private` members aren't visible to derived classes, a derived class can't increase their visibility:
 
 ```ts twoslash
 // @errors: 2415
@@ -1266,6 +1267,32 @@ const someClass = class<Type> {
 
 const m = new someClass("Hello, world");
 //    ^?
+```
+
+## Constructor Signatures
+
+JavaScript classes are instantiated with the `new` operator. Given the type of a class itself, the [InstanceType](/docs/handbook/utility-types.html#instancetypetype) utility type models this operation.
+
+```ts twoslash
+class Point {
+  createdAt: number;
+  x: number;
+  y: number
+  constructor(x: number, y: number) {
+    this.createdAt = Date.now()
+    this.x = x;
+    this.y = y;
+  }
+}
+type PointInstance = InstanceType<typeof Point>
+
+function moveRight(point: PointInstance) {
+  point.x += 5;
+}
+
+const point = new Point(3, 4);
+moveRight(point);
+point.x; // => 8
 ```
 
 ## `abstract` Classes and Members

@@ -60,15 +60,15 @@ const passedObject = {
 };
 ```
 
-The `on` function that will be added to the base object expects two arguments, an `eventName` (a `string`) and a `callBack` (a `function`).
+The `on` function that will be added to the base object expects two arguments, an `eventName` (a `string`) and a `callback` (a `function`).
 
 The `eventName` should be of the form `attributeInThePassedObject + "Changed"`; thus, `firstNameChanged` as derived from the attribute `firstName` in the base object.
 
-The `callBack` function, when called:
+The `callback` function, when called:
   * Should be passed a value of the type associated with the name `attributeInThePassedObject`; thus, since `firstName` is typed as `string`, the callback for the `firstNameChanged` event expects a `string` to be passed to it at call time. Similarly events associated with `age` should expect to be called with a `number` argument
   * Should have `void` return type (for simplicity of demonstration)
 
-The naive function signature of `on()` might thus be: `on(eventName: string, callBack: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we'd like to document in our code. Template Literal types let us bring these constraints into our code.
+The naive function signature of `on()` might thus be: `on(eventName: string, callback: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we'd like to document in our code. Template Literal types let us bring these constraints into our code.
 
 ```ts twoslash
 // @noErrors
@@ -94,7 +94,7 @@ type PropEventSource<Type> = {
     on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
 };
 
-/// Create a "watched object" with an 'on' method
+/// Create a "watched object" with an `on` method
 /// so that you can watch for changes to properties.
 declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
 ```
@@ -126,7 +126,7 @@ person.on("frstNameChanged", () => {});
 
 ### Inference with Template Literals
 
-Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event),  we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callBack`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
+Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event),  we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callback`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
 
 The key insight that makes this possible is this: we can use a function with a generic such that:
 
@@ -140,7 +140,7 @@ The key insight that makes this possible is this: we can use a function with a g
 ```ts twoslash
 type PropEventSource<Type> = {
     on<Key extends string & keyof Type>
-        (eventName: `${Key}Changed`, callback: (newValue: Type[Key]) => void ): void;
+        (eventName: `${Key}Changed`, callback: (newValue: Type[Key]) => void): void;
 };
 
 declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
@@ -167,7 +167,7 @@ person.on("ageChanged", newAge => {
 Here we made `on` into a generic method.
 
 When a user calls with the string `"firstNameChanged"`, TypeScript will try to infer the right type for `Key`.
-To do that, it will match `Key` against the content prior to `"Changed"` and infer the string `"firstName"`.
+To do that, it will match `Key` against the content before `"Changed"` and infer the string `"firstName"`.
 Once TypeScript figures that out, the `on` method can fetch the type of `firstName` on the original object, which is `string` in this case.
 Similarly, when called with `"ageChanged"`, TypeScript finds the type for the property `age` which is `number`.
 

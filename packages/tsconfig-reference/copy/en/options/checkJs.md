@@ -10,7 +10,7 @@ For example, this is incorrect JavaScript according to the `parseFloat` type def
 
 ```js
 // parseFloat only takes a string
-module.exports.pi = parseFloat(3.124);
+module.exports.pi = parseFloat(3.142);
 ```
 
 When imported into a TypeScript module:
@@ -18,7 +18,7 @@ When imported into a TypeScript module:
 ```ts twoslash
 // @allowJs
 // @filename: constants.js
-module.exports.pi = parseFloat(3.124);
+module.exports.pi = parseFloat(3.142);
 
 // @filename: index.ts
 import { pi } from "./constants";
@@ -32,7 +32,7 @@ You will not get any errors. However, if you turn on `checkJs` then you will get
 // @allowjs: true
 // @checkjs: true
 // @filename: constants.js
-module.exports.pi = parseFloat(3.124);
+module.exports.pi = parseFloat(3.142);
 
 // @filename: index.ts
 import { pi } from "./constants";

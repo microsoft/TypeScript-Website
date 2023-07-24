@@ -122,7 +122,7 @@ export const createTypeScriptSandbox = (
     : getInitialCode(config.text, document.location)
 
   // Defaults
-  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco)
+  const compilerDefaults = getDefaultSandboxCompilerOptions(config, monaco, ts)
 
   // Grab the compiler flags via the query params
   let compilerOptions: CompilerOptions

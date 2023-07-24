@@ -12,26 +12,26 @@ Here is how you can get it and use it with your tools.
 ## Using npm
 
 ```shell
-npm install -g typescript@next
+npm install -D typescript@next
 ```
 
 ## Updating your IDE to use the nightly builds
 
-You can also update your IDE to use the nightly drop.
-First you will need to install the package through npm.
-You can either install the npm package globally or to a local `node_modules` folder.
-
-The rest of this section assumes `typescript@next` is already installed.
+You can also update your editor/IDE to use the nightly drop.
+You will typically need to install the package through npm.
+The rest of this section mostly assumes `typescript@next` is already installed.
 
 ### Visual Studio Code
 
-Update `.vscode/settings.json` with the following:
+The VS Code website [has documentation on selecting a workspace version of TypeScript](https://code.visualstudio.com/Docs/languages/typescript#_using-newer-typescript-versions).
+After installing a nightly version of TypeScript in your workspace, you can follow directions there, or simply update your workspace settings in the JSON view.
+A direct way to do this is to open or create your workspace's `.vscode/settings.json` and add the following property:
 
 ```json
 "typescript.tsdk": "<path to your folder>/node_modules/typescript/lib"
 ```
 
-More information is available at [VSCode documentation](https://code.visualstudio.com/Docs/languages/typescript#_using-newer-typescript-versions).
+Alternatively, if you simply want to run the nightly editing experience for JavaScript and TypeScript in Visual Studio Code without changing your workspace version, you can run the [JavaScript and TypeScript Nightly Extension](https://marketplace.visualstudio.com/items?itemName%253Dms-vscode.vscode-typescript-next)
 
 ### Sublime Text
 

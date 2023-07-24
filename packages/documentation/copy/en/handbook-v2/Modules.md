@@ -6,7 +6,7 @@ oneline: "How JavaScript handles communicating across file boundaries."
 ---
 
 JavaScript has a long history of different ways to handle modularizing code.
-TypeScript having been around since 2012, has implemented support for a lot of these formats, but over time the community and the JavaScript specification has converged on a format called ES Modules (or ES6 modules). You might know it as the `import`/`export` syntax.
+Having been around since 2012, TypeScript has implemented support for a lot of these formats, but over time the community and the JavaScript specification has converged on a format called ES Modules (or ES6 modules). You might know it as the `import`/`export` syntax.
 
 ES Modules was added to the JavaScript spec in 2015, and by 2020 had broad support in most web browsers and JavaScript runtimes.
 
@@ -25,7 +25,8 @@ Conversely, to consume a variable, function, class, interface, etc. exported fro
 ## Non-modules
 
 Before we start, it's important to understand what TypeScript considers a module.
-The JavaScript specification declares that any JavaScript files without an `export` or top-level `await` should be considered a script and not a module.
+The JavaScript specification declares that any JavaScript files without an `import` declaration, `export`, or top-level `await` should be considered a script and not a module.
+
 
 Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll either use the [`outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
 
@@ -296,7 +297,7 @@ module.exports = {
 };
 // @filename: index.ts
 // ---cut---
-const maths = require("maths");
+const maths = require("./maths");
 maths.pi;
 //    ^?
 ```
@@ -320,7 +321,7 @@ module.exports = {
 };
 // @filename: index.ts
 // ---cut---
-const { squareTwo } = require("maths");
+const { squareTwo } = require("./maths");
 squareTwo;
 // ^?
 ```
@@ -403,4 +404,4 @@ You can see all of the available options and what their emitted JavaScript code 
 
 ## TypeScript namespaces
 
-TypeScript has its own module format called `namespaces` which pre-dates the ES Modules standard. This syntax has a lot of useful features for creating complex definition files, and still sees active use [in DefinitelyTyped](/dt). While not deprecated, the majority of the features in namespaces exist in ES Modules and we recommend you use that to align with JavaScript's direction. You can learn more about namespaces in [the namespaces reference page](/docs/handbook/namespaces.html).
+TypeScript has its own module format called `namespaces` which pre-dates the ES Modules standard. This syntax has a lot of useful features for creating complex definition files, and still sees active use [in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). While not deprecated, the majority of the features in namespaces exist in ES Modules and we recommend you use that to align with JavaScript's direction. You can learn more about namespaces in [the namespaces reference page](/docs/handbook/namespaces.html).
