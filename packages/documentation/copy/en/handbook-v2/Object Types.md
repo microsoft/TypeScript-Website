@@ -154,7 +154,6 @@ function paintShape({ shape, xPos = 0, yPos = 0 }: PaintOptions) {
 
 Here we used [a destructuring pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) for `paintShape`'s parameter, and provided [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Default_values) for `xPos` and `yPos`.
 Now `xPos` and `yPos` are both definitely present within the body of `paintShape`, but optional for any callers to `paintShape`.
-Using [mapping modifiers](/docs/handbook/2/mapped-types.html#mapping-modifiers), you can remove `optional` attributes.
 
 > Note that there is currently no way to place type annotations within destructuring patterns.
 > This is because the following syntax already means something different in JavaScript.
