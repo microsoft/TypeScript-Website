@@ -32,11 +32,6 @@ export const QuickJump = (props: Props) => {
         <h4>Get Started</h4>
         <ul>
           <li>
-            <IntlLink to="/docs/bootstrap">
-              Bootstrap a TS project
-            </IntlLink>
-          </li>
-          <li>
             <IntlLink to="/docs/handbook/typescript-in-5-minutes.html">
               JS to TS
             </IntlLink>
