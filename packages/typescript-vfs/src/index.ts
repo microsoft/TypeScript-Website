@@ -111,12 +111,16 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
   // or similar is merged.
   const files = [
     "lib.d.ts",
-    "lib.es5.d.ts",
-    "lib.es6.d.ts",
     "lib.decorators.d.ts",
     "lib.decorators.legacy.d.ts",
     "lib.dom.d.ts",
     "lib.dom.iterable.d.ts",
+    "lib.webworker.d.ts",
+    "lib.webworker.importscripts.d.ts",
+    "lib.webworker.iterable.d.ts",
+    "lib.scripthost.d.ts",
+    "lib.es5.d.ts",
+    "lib.es6.d.ts",
     "lib.es2015.collection.d.ts",
     "lib.es2015.core.d.ts",
     "lib.es2015.d.ts",
@@ -192,11 +196,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.esnext.promise.d.ts",
     "lib.esnext.string.d.ts",
     "lib.esnext.symbol.d.ts",
-    "lib.esnext.weakref.d.ts",
-    "lib.scripthost.d.ts",
-    "lib.webworker.d.ts",
-    "lib.webworker.importscripts.d.ts",
-    "lib.webworker.iterable.d.ts"
+    "lib.esnext.weakref.d.ts"
   ]
 
   const targetToCut = ts.ScriptTarget[target]
