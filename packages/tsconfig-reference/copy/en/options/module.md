@@ -74,17 +74,6 @@ import { valueOfPi } from "./constants";
 export const twoPi = valueOfPi * 2;
 ```
 
-#### `ES2020`
-
-```ts twoslash
-// @showEmit
-// @module: es2020
-// @noErrors
-import { valueOfPi } from "./constants";
-
-export const twoPi = valueOfPi * 2;
-```
-
 #### `ES2015`/`ES6`/`ES2020`/`ES2022`
 
 ```ts twoslash

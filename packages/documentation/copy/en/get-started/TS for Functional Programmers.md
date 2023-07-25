@@ -42,7 +42,7 @@ TypeScript uses postfix types, like so: `x: string` instead of `string x`.
 
 ## Concepts not in Haskell
 
-## Built-in types
+### Built-in types
 
 JavaScript defines 8 built-in types:
 
@@ -70,7 +70,7 @@ TypeScript has corresponding primitive types for the built-in types:
 - `undefined`
 - `object`
 
-### Other important TypeScript types
+#### Other important TypeScript types
 
 | Type           | Explanation                                                                     |
 | -------------- | ------------------------------------------------------------------------------- |
@@ -102,7 +102,7 @@ Notes:
 
 3. `[T, T]` is a subtype of `T[]`. This is different than Haskell, where tuples are not related to lists.
 
-### Boxed types
+#### Boxed types
 
 JavaScript has boxed equivalents of primitive types that contain the
 methods that programmers associate with those types. TypeScript
@@ -119,7 +119,7 @@ Number.prototype.toExponential.call(1);
 Note that calling a method on a numeric literal requires it to be in
 parentheses to aid the parser.
 
-## Gradual typing
+### Gradual typing
 
 TypeScript uses the type `any` whenever it can't tell what the type of
 an expression should be. Compared to `Dynamic`, calling `any` a type
@@ -151,7 +151,7 @@ let sepsis = anys[0] + anys[1]; // this could mean anything
 To get an error when TypeScript produces an `any`, use
 `"noImplicitAny": true`, or `"strict": true` in `tsconfig.json`.
 
-## Structural typing
+### Structural typing
 
 Structural typing is a familiar concept to most functional
 programmers, although Haskell and most MLs are not
@@ -191,7 +191,7 @@ let two: Two = x;
 two = new Three();
 ```
 
-## Unions
+### Unions
 
 In TypeScript, union types are untagged. In other words, they are not
 discriminated unions like `data` in Haskell. However, you can often
@@ -242,7 +242,7 @@ The following types have built-in predicates:
 Note that functions and arrays are objects at runtime, but have their
 own predicates.
 
-### Intersections
+#### Intersections
 
 In addition to unions, TypeScript also has intersections:
 
@@ -255,7 +255,7 @@ type Conflicting = { a: number } & { a: string };
 written as one object literal type. Intersection and union are
 recursive in case of conflicts, so `Conflicting.a: number & string`.
 
-## Unit types
+### Unit types
 
 Unit types are subtypes of primitive types that contain exactly one
 primitive value. For example, the string `"foo"` has the type
@@ -300,7 +300,7 @@ pad("hi", 10, s);
 
 ## Concepts similar to Haskell
 
-## Contextual typing
+### Contextual typing
 
 TypeScript has some obvious places where it can infer types, like
 variable declarations:
@@ -357,7 +357,7 @@ properties you'd have in a real program.
 Altogether, this feature can make TypeScript's inference look a bit
 like a unifying type inference engine, but it is not.
 
-## Type aliases
+### Type aliases
 
 Type aliases are mere aliases, just like `type` in Haskell. The
 compiler will attempt to use the alias name wherever it was used in
@@ -379,7 +379,7 @@ thinks it has a property named `__compileTimeOnly` that doesn't
 actually exist. This means that `FString` can still be assigned to
 `string`, but not the other way round.
 
-## Discriminated Unions
+### Discriminated Unions
 
 The closest equivalent to `data` is a union of types with discriminant
 properties, normally called discriminated unions in TypeScript:
@@ -437,7 +437,7 @@ function height(s: Shape) {
 }
 ```
 
-## Type Parameters
+### Type Parameters
 
 Like most C-descended languages, TypeScript requires declaration of
 type parameters:
@@ -477,7 +477,7 @@ In the first `length`, T is not necessary; notice that it's only
 referenced once, so it's not being used to constrain the type of the
 return value or other parameters.
 
-### Higher-kinded types
+#### Higher-kinded types
 
 TypeScript does not have higher kinded types, so the following is not legal:
 
@@ -485,7 +485,7 @@ TypeScript does not have higher kinded types, so the following is not legal:
 function length<T extends ArrayLike<unknown>, U>(m: T<U>) {}
 ```
 
-### Point-free programming
+#### Point-free programming
 
 Point-free programming &mdash; heavy use of currying and function
 composition &mdash; is possible in JavaScript, but can be verbose.
@@ -494,7 +494,7 @@ you'll end up specifying type parameters instead of value parameters. The
 result is so verbose that it's usually better to avoid point-free
 programming.
 
-## Module system
+### Module system
 
 JavaScript's modern module syntax is a bit like Haskell's, except that
 any file with `import` or `export` is implicitly a module:
@@ -533,7 +533,7 @@ function g() { }
 The latter style is more common but both are allowed, even in the same
 file.
 
-## `readonly` and `const`
+### `readonly` and `const`
 
 In JavaScript, mutability is the default, although it allows variable
 declarations with `const` to declare that the _reference_ is
@@ -589,7 +589,7 @@ a[0] = 101; // error
 However, none of these options are the default, so they are not
 consistently used in TypeScript code.
 
-## Next Steps
+### Next Steps
 
 This doc is a high level overview of the syntax and types you would use in everyday code. From here you should:
 

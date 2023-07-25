@@ -641,6 +641,7 @@ $headline-foreground-bg: white;
   .call-to-action {
     display: flex;
     justify-content: center;
+    position: relative;
 
     a.flat-button {
       display: block;

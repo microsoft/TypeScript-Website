@@ -12,7 +12,7 @@ The [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) switch is part of the
 You can opt-out by setting `--strictFunctionTypes false` on your command line or in your tsconfig.json.
 
 Under [`strictFunctionTypes`](/tsconfig#strictFunctionTypes) function type parameter positions are checked _contravariantly_ instead of _bivariantly_.
-For some background on what variance means for function types check out [What are covariance and contravariance?](https://archive.md/B1xWu).
+For some background on what variance means for function types check out [What are covariance and contravariance?](https://web.archive.org/web/20220823104433/https://www.stephanboyer.com/post/132/what-are-covariance-and-contravariance).
 
 The stricter checking applies to all function types, _except_ those originating in method or constructor declarations.
 Methods are excluded specifically to ensure generic classes and interfaces (such as `Array<T>`) continue to mostly relate covariantly.

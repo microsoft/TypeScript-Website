@@ -146,7 +146,7 @@ Running `tsc --build` (`tsc -b` for short) will do the following:
 You can provide `tsc -b` with multiple config file paths (e.g. `tsc -b src test`).
 Just like `tsc -p`, specifying the config file name itself is unnecessary if it's named `tsconfig.json`.
 
-## `tsc -b` Commandline
+### `tsc -b` Commandline
 
 You can specify any number of config files:
 
@@ -191,7 +191,7 @@ If your solution is like this, you can continue to use `msbuild` with `tsc -p` a
 
 ## Guidance
 
-## Overall Structure
+### Overall Structure
 
 With more `tsconfig.json` files, you'll usually want to use [Configuration file inheritance](/docs/handbook/tsconfig-json.html) to centralize your common compiler options.
 This way you can change a setting in one file rather than having to edit multiple files.
@@ -202,20 +202,20 @@ This presents a simple entry point; e.g. in the TypeScript repo we simply run `t
 
 You can see these patterns in the TypeScript repo - see `src/tsconfig_base.json`, `src/tsconfig.json`, and `src/tsc/tsconfig.json` as key examples.
 
-## Structuring for relative modules
+### Structuring for relative modules
 
 In general, not much is needed to transition a repo using relative modules.
 Simply place a `tsconfig.json` file in each subdirectory of a given parent folder, and add `reference`s to these config files to match the intended layering of the program.
 You will need to either set the [`outDir`](/tsconfig#outDir) to an explicit subfolder of the output folder, or set the [`rootDir`](/tsconfig#rootDir) to the common root of all project folders.
 
-## Structuring for outFiles
+### Structuring for outFiles
 
 Layout for compilations using [`outFile`](/tsconfig#outFile) is more flexible because relative paths don't matter as much.
 One thing to keep in mind is that you'll generally want to not use `prepend` until the "last" project - this will improve build times and reduce the amount of I/O needed in any given build.
 The TypeScript repo itself is a good reference here - we have some "library" projects and some "endpoint" projects; "endpoint" projects are kept as small as possible and pull in only the libraries they need.
 
 <!--
-## Structuring for monorepos
+### Structuring for monorepos
 
 TODO: Experiment more and figure this out. Rush and Lerna seem to have different models that imply different things on our end
 -->

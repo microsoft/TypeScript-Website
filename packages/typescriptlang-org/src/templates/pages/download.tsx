@@ -74,7 +74,6 @@ const Index: React.FC<Props> = (props) => {
           <h3>via npm</h3>
           <p>You can use npm to install TypeScript globally, this means that you can use the <code>tsc</code> command anywhere in your terminal.</p>
           <p>To do this, run <code>npm install -g typescript</code>. This will install the latest version (currently {releaseInfo.tags.stableMajMin}).</p>
-          <p>An alternative is to use <a title="Link to the npx package on npm" href="https://www.npmjs.com/package/npx">npx</a> when you have to run <code>tsc</code> for one-off occasions.</p>
         </div>
 
         <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>

@@ -571,7 +571,7 @@ main #editor-toolbar {
       ul.right {
         background-color: var(--playground-dropdown-bg);
 
-        position: absolute;
+        position: relative;
         right: 0;
       }
     }

@@ -7,7 +7,7 @@ oneline: "Recommendations for writing d.ts files"
 
 ## General Types
 
-## `Number`, `String`, `Boolean`, `Symbol` and `Object`
+### `Number`, `String`, `Boolean`, `Symbol` and `Object`
 
 ❌ **Don't** ever use the types `Number`, `String`, `Boolean`, `Symbol`, or `Object`
 These types refer to non-primitive boxed objects that are almost never used appropriately in JavaScript code.
@@ -26,12 +26,12 @@ function reverse(s: string): string;
 
 Instead of `Object`, use the non-primitive `object` type ([added in TypeScript 2.2](../release-notes/typescript-2-2.html#object-type)).
 
-## Generics
+### Generics
 
 ❌ **Don't** ever have a generic type which doesn't use its type parameter.
 See more details in [TypeScript FAQ page](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-doesnt-type-inference-work-on-this-interface-interface-foot--).
 
-## any
+### any
 
 ❌ **Don't** use `any` as a type unless you are in the process of migrating a JavaScript project to TypeScript. The compiler _effectively_ treats `any` as "please turn off type checking for this thing". It is similar to putting an `@ts-ignore` comment around every usage of the variable. This can be very helpful when you are first migrating a JavaScript project to TypeScript as you can set the type for stuff you haven't migrated yet as `any`, but in a full TypeScript project you are disabling type checking for any parts of your program that use it.
 
@@ -41,7 +41,7 @@ In cases where you don't know what type you want to accept, or when you want to 
 
 ## Callback Types
 
-## Return Types of Callbacks
+### Return Types of Callbacks
 
 <!-- TODO: Reword; these examples make no sense in the context of a declaration file -->
 
@@ -72,7 +72,7 @@ function fn(x: () => void) {
 }
 ```
 
-## Optional Parameters in Callbacks
+### Optional Parameters in Callbacks
 
 ❌ **Don't** use optional parameters in callbacks unless you really mean it:
 
@@ -97,7 +97,7 @@ interface Fetcher {
 }
 ```
 
-## Overloads and Callbacks
+### Overloads and Callbacks
 
 ❌ **Don't** write separate overloads that differ only on callback arity:
 
@@ -125,7 +125,7 @@ Providing a shorter callback first allows incorrectly-typed functions to be pass
 
 ## Function Overloads
 
-## Ordering
+### Ordering
 
 ❌ **Don't** put more general overloads before more specific overloads:
 
@@ -154,7 +154,7 @@ var x = fn(myElem); // x: string, :)
 ❔ **Why:** TypeScript chooses the _first matching overload_ when resolving function calls.
 When an earlier overload is "more general" than a later one, the later one is effectively hidden and cannot be called.
 
-## Use Optional Parameters
+### Use Optional Parameters
 
 ❌ **Don't** write several overloads that differ only in trailing parameters:
 
@@ -203,7 +203,7 @@ var x: Example;
 x.diff("something", true ? undefined : "hour");
 ```
 
-## Use Union Types
+### Use Union Types
 
 ❌ **Don't** write overloads that differ by type in only one argument position:
 
