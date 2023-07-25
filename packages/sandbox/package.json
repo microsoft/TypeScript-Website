@@ -1,6 +1,6 @@
 {
   "name": "@typescript/sandbox",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "license": "MIT",
   "author": "TypeScript team",
   "homepage": "https://github.com/microsoft/TypeScript-Website",
@@ -43,7 +43,7 @@
     ]
   },
   "dependencies": {
-    "@typescript/ata": "0.9.4",
+    "@typescript/ata": "0.9.3",
     "@typescript/vfs": "1.4.0"
   },
   "devDependencies": {
