@@ -6086,7 +6086,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript/twoslash@3.2.1, @typescript/twoslash@workspace:packages/ts-twoslasher":
+"@typescript/twoslash@3.2.2, @typescript/twoslash@workspace:packages/ts-twoslasher":
   version: 0.0.0-use.local
   resolution: "@typescript/twoslash@workspace:packages/ts-twoslasher"
   dependencies:
@@ -6104,6 +6104,8 @@ __metadata:
     ts-jest: ^29.0.5
     tsdx: ^0.14.1
     tslib: ^1.10.0
+    typescript: "*"
+  peerDependencies:
     typescript: "*"
   languageName: unknown
   linkType: soft
@@ -28857,7 +28859,7 @@ resolve@^2.0.0-next.3:
     "@types/react-helmet": ^5.0.15
     "@typescript/playground": 0.1.0
     "@typescript/sandbox": 0.1.0
-    "@typescript/twoslash": 3.2.1
+    "@typescript/twoslash": 3.2.2
     concurrently: ^5.1.0
     gatsby: ^3.8.1
     gatsby-link: 3.10.0
