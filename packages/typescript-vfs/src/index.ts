@@ -111,6 +111,8 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
   // or similar is merged.
   const files = [
     "lib.d.ts",
+    "lib.es5.d.ts",
+    "lib.es6.d.ts",
     "lib.decorators.d.ts",
     "lib.decorators.legacy.d.ts",
     "lib.dom.d.ts",
@@ -179,8 +181,6 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.es2023.collection.d.ts",
     "lib.es2023.d.ts",
     "lib.es2023.full.d.ts",
-    "lib.es5.d.ts",
-    "lib.es6.d.ts",
     "lib.esnext.array.d.ts",
     "lib.esnext.asynciterable.d.ts",
     "lib.esnext.bigint.d.ts",
