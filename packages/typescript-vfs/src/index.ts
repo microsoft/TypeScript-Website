@@ -295,7 +295,7 @@ export const createDefaultMapFromCDN = (
   function cached() {
     const storelike = storer || localStorage
 
-    const keys = Object.keys(localStorage)
+    const keys = Object.keys(storelike)
     keys.forEach(key => {
       // Remove anything which isn't from this version
       if (key.startsWith("ts-lib-") && !key.startsWith("ts-lib-" + version)) {
