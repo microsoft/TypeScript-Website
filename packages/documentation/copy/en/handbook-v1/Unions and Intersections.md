@@ -75,7 +75,7 @@ let indentedString = padLeft("Hello world", true);
 A union type describes a value that can be one of several types.
 We use the vertical bar (`|`) to separate each type, so `number | string | boolean` is the type of a value that can be a `number`, a `string`, or a `boolean`.
 
-## Unions with Common Fields
+### Unions with Common Fields
 
 If we have a value that is a union type, we can only access members that are common to all types in the union.
 
@@ -107,7 +107,7 @@ In this example, `Bird` has a member named `fly`.
 We can't be sure whether a variable typed as `Bird | Fish` has a `fly` method.
 If the variable is really a `Fish` at runtime, then calling `pet.fly()` will fail.
 
-## Discriminating Unions
+### Discriminating Unions
 
 A common technique for working with unions is to have a single field which uses literal types which you can use to let TypeScript narrow down the possible current type. For example, we're going to create a union of three types which have a single shared field.
 
@@ -259,7 +259,7 @@ function logger(state: NetworkState): string {
 }
 ```
 
-## Union Exhaustiveness checking
+### Union Exhaustiveness checking
 
 We would like the compiler to tell us when we don't cover all variants of the discriminated union.
 For example, if we add `NetworkFromCachedState` to `NetworkState`, we need to update `logger` as well:

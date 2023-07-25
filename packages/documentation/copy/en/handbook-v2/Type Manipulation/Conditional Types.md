@@ -234,7 +234,7 @@ type StrArrOrNumArr = ToArray<string | number>;
 //   ^?
 ```
 
-What happens here is that `StrArrOrNumArr` distributes on:
+What happens here is that `ToArray` distributes on:
 
 ```ts twoslash
 type StrArrOrNumArr =

@@ -16,7 +16,7 @@ interface UserDefaults {
 
 Without this flag enabled, there are three values which you can set `colorThemeOverride` to be: "dark", "light" and `undefined`.
 
-Setting the value to `undefined` will allow most JavaScript runtime checks for the existence to fail, which is effectively falsy. However, this isn't quite accurate `colorThemeOverride: undefined` is not the same as `colorThemeOverride` not being defined. For example `"colorThemeOverride" in settings` would have different behavior with `undefined` as the key compared to not being defined.
+Setting the value to `undefined` will allow most JavaScript runtime checks for the existence to fail, which is effectively falsy. However, this isn't quite accurate; `colorThemeOverride: undefined` is not the same as `colorThemeOverride` not being defined. For example, `"colorThemeOverride" in settings` would have different behavior with `undefined` as the key compared to not being defined.
 
 `exactOptionalPropertyTypes` makes TypeScript truly enforce the definition provided as an optional property:
 

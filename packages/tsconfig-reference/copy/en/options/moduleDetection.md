@@ -1,7 +1,10 @@
 ---
 display: "Module Detection"
-oneline: "Control what method is used to detect the whether a JS file is a module."
+oneline: "Specify what method is used to detect whether a file is a script or a module."
 ---
+
+This setting controls how TypeScript determines whether a file is a
+[script or a module](/docs/handbook/2/modules.html#how-javascript-modules-are-defined).
 
 There are three choices:
 

@@ -78,3 +78,5 @@ packages/documentation/output/attribution.json
 packages/sandbox/src/releases.json
 packages/sandbox/src/release_data.ts
 packages/typescriptlang-org/src/lib/documentationNavigation.ts
+
+.idea/

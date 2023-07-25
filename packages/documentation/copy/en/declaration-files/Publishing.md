@@ -33,7 +33,6 @@ For example:
 
 Note that the `"typings"` field is synonymous with `types`, and could be used as well.
 
-Also note that if your main declaration file is named `index.d.ts` and lives at the root of the package (next to `index.js`) you do not need to mark the `types` property, though it is advisable to do so.
 
 ## Dependencies
 
@@ -138,6 +137,8 @@ When you want to only change the resolution for a single file at a time, you can
 ```
 
 On TypeScript 4.0 and above, an import for `"package-name"` would resolve to `./index.d.ts` and for 3.9 and below `"./index.v3.d.ts`.
+
+Note that redirections only affect the _external_ API of a package; import resolution within a project is not affected by `typesVersions`. For example, a `d.ts` file in the previous example containing `import * as foo from "./index"` will still map to `index.d.ts`, not `index.v3.d.ts`, whereas another package importing `import * as foo from "package-name"` _will_ get `index.v3.d.ts`.
 
 ## Matching behavior
 

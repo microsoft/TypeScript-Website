@@ -70,7 +70,7 @@ This is important for two reasons:
 TypeScript uses the [same convention that React does](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) for distinguishing between these.
 An intrinsic element always begins with a lowercase letter, and a value-based element always begins with an uppercase letter.
 
-## Intrinsic elements
+### Intrinsic elements
 
 Intrinsic elements are looked up on the special interface `JSX.IntrinsicElements`.
 By default, if this interface is not specified, then anything goes and intrinsic elements will not be type checked.
@@ -100,7 +100,7 @@ declare namespace JSX {
 }
 ```
 
-## Value-based elements
+### Value-based elements
 
 Value-based elements are simply looked up by identifiers that are in scope.
 
@@ -118,7 +118,7 @@ There are two ways to define a value-based element:
 
 Because these two types of value-based elements are indistinguishable from each other in a JSX expression, first TS tries to resolve the expression as a Function Component using overload resolution. If the process succeeds, then TS finishes resolving the expression to its declaration. If the value fails to resolve as a Function Component, TS will then try to resolve it as a class component. If that fails, TS will report an error.
 
-### Function Component
+#### Function Component
 
 As the name suggests, the component is defined as a JavaScript function where its first argument is a `props` object.
 TS enforces that its return type must be assignable to `JSX.Element`.
@@ -172,7 +172,7 @@ function MainButton(prop: ClickableProps): JSX.Element {
 
 > Note: Function Components were formerly known as Stateless Function Components (SFC). As Function Components can no longer be considered stateless in recent versions of react, the type `SFC` and its alias `StatelessComponent` were deprecated.
 
-### Class Component
+#### Class Component
 
 It is possible to define the type of a class component.
 However, to do so it is best to understand two new terms: the _element class type_ and the _element instance type_.
@@ -237,7 +237,7 @@ function NotAValidFactoryFunction() {
 <NotAValidFactoryFunction />; // error
 ```
 
-## Attribute type checking
+### Attribute type checking
 
 The first step to type checking attributes is to determine the _element attributes type_.
 This is slightly different between intrinsic and value-based elements.
@@ -312,7 +312,7 @@ const badProps = {};
 <foo {...badProps} />; // error
 ```
 
-## Children Type Checking
+### Children Type Checking
 
 In TypeScript 2.3, TS introduced type checking of _children_. _children_ is a special property in an _element attributes type_ where child *JSXExpression*s are taken to be inserted into the attributes.
 Similar to how TS uses `JSX.ElementAttributesProperty` to determine the name of _props_, TS uses `JSX.ElementChildrenAttribute` to determine the name of _children_ within those props.
