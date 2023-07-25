@@ -90,7 +90,7 @@ helper();
 This might feel a bit cumbersome at first, but TypeScript tooling like auto-imports and path completion will typically just do this for you.
 
 One other thing to mention is the fact that this applies to `.d.ts` files too.
-When TypeScript finds a `.d.ts` file in package, it is interpreted based on the containing package.
+When TypeScript finds a `.d.ts` file in a package, it is interpreted based on the containing package.
 
 ### New File Extensions
 
@@ -176,7 +176,7 @@ You can [read more about ESM/CommonJS interop in Node.js here](https://nodejs.or
 Node.js supports [a new field for defining entry points in `package.json` called `"exports"`](https://nodejs.org/api/packages.html#packages_exports).
 This field is a more powerful alternative to defining `"main"` in `package.json`, and can control what parts of your package are exposed to consumers.
 
-Here's an `package.json` that supports separate entry-points for CommonJS and ESM:
+Here's a `package.json` that supports separate entry-points for CommonJS and ESM:
 
 ```jsonc
 // package.json
@@ -280,7 +280,7 @@ Under the mode `"auto"`, TypeScript will not only look for `import` and `export`
 * check whether the current file is a JSX file when running under `--jsx react-jsx`
 
 In cases where you want every file to be treated as a module, the `"force"` setting ensures that every non-declaration file is treated as a module.
-This will be true regardless of how `module`, `moduleResoluton`, and `jsx` are configured.
+This will be true regardless of how `module`, `moduleResolution`, and `jsx` are configured.
 
 Meanwhile, the `"legacy"` option simply goes back to the old behavior of only seeking out `import` and `export` statements to determine whether a file is a module.
 
@@ -563,7 +563,7 @@ Now technically speaking, in a purely structural type system, type parameters an
 So if TypeScript uses a structural type system, why are we interested in the variance of type parameters?
 And why might we ever want to annotate them?
 
-One reason is that it can be a useful for a reader to explicitly see how a type parameter is used at a glance.
+One reason is that it can be useful for a reader to explicitly see how a type parameter is used at a glance.
 For much more complex types, it can be difficult to tell whether a type is meant to be read, written, or both.
 TypeScript will also help us out if we forget to mention how that type parameter is used.
 As an example, if we forgot to specify both `in` and `out` on `State`, we'd get an error.
@@ -872,7 +872,7 @@ In some cases, you can get around this by wrapping the expression in a call to `
 
 ```ts
 function logKey<S extends string | symbol>(key: S): S {
-    // Now an error.
+    // No longer an error.
     console.log(`${String(key)} is the key`);
     return key;
 }
@@ -883,7 +883,7 @@ In such cases, you can switch to `string & keyof ...`:
 
 ```ts
 function get<T, K extends string & keyof T>(obj: T, key: K) {
-    // Now an error.
+    // No longer an error.
     console.log(`Grabbing property '${key}'.`);
     return obj[key];
 }

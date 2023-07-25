@@ -8,8 +8,9 @@ disable_toc: true
 
 ## Using the CLI
 
-Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, you can compile a set of TypeScript
-files by passing in a glob of files you want.
+Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, or you can compile a set of TypeScript
+files by passing in a glob of files you want. When input files are specified on the command line, `tsconfig.json` files are
+ignored.
 
 ```sh
 # Run a compile based on a backwards look through the fs for a tsconfig.json
@@ -304,9 +305,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowSyntheticDefaultImports'>--allowSyntheticDefaultImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>system</code>, or <a href="#esModuleInterop"><code>esModuleInterop</code></a> and <a href="#module"><code>module</code></a> is not <code>es6</code>/<code>es2015</code> or <code>esnext</code>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#esModuleInterop"><code>esModuleInterop</code></a> is enabled, <a href="#module"><code>module</code></a> is <code>system</code>, or <a href="#module-resolution"><code>moduleResolution</code></a> is <code>bundler</code>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Allow 'import x from y' when a module doesn't have a default export.</p>
@@ -349,9 +349,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#alwaysStrict'>--alwaysStrict</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Ensure 'use strict' is always emitted.</p>
@@ -427,9 +426,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#declaration'>--declaration</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#composite"><code>composite</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#composite"><code>composite</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Generate .d.ts files from TypeScript and JavaScript files in your project.</p>
@@ -560,7 +558,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#esModuleInterop'>--esModuleInterop</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>false</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -659,9 +657,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#incremental'>--incremental</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#composite"><code>composite</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#composite"><code>composite</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Save .tsbuildinfo files to allow for incremental compilation of projects.</p>
@@ -814,9 +811,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
   <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, or <code>nodenext</code></p>
 </td>
-  <td><ul><li><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>,</p>
-</li><li><p><code>ES6</code>/<code>ES2015</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify what module code is generated.</p>
@@ -830,17 +826,15 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Control what method is used to detect the whether a JS file is a module.</p>
+<p>Specify what method is used to detect whether a file is a script or a module.</p>
 </td></tr>
 
 <tr class='even' name='moduleResolution'>
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
-  <td><ul><li><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code> or <code>ES6</code>/<code>ES2015</code>,</p>
-</li><li><p>Matches if <a href="#module"><code>module</code></a> is <code>node12</code> or <code>nodenext</code>,</p>
-</li><li><p><code>Node</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code>, or <code>ES6</code>/<code>ES2015</code>; Matches if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>Node</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify how TypeScript looks up a file from a given module specifier.</p>
@@ -927,9 +921,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noImplicitAny'>--noImplicitAny</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Enable error reporting for expressions and declarations with an implied <code>any</code> type.</p>
@@ -961,9 +954,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noImplicitThis'>--noImplicitThis</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Enable error reporting when <code>this</code> is given the type <code>any</code>.</p>
@@ -1116,9 +1108,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#preserveConstEnums'>--preserveConstEnums</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#isolatedModules"><code>isolatedModules</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#isolatedModules"><code>isolatedModules</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Disable erasing <code>const enum</code> declarations in generated code.</p>
@@ -1304,9 +1295,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictBindCallApply'>--strictBindCallApply</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Check that the arguments for <code>bind</code>, <code>call</code>, and <code>apply</code> methods match the original function.</p>
@@ -1316,9 +1306,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictFunctionTypes'>--strictFunctionTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>When assigning functions, check to ensure parameters and the return values are subtype-compatible.</p>
@@ -1328,9 +1317,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictNullChecks'>--strictNullChecks</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>When type checking, take into account <code>null</code> and <code>undefined</code>.</p>
@@ -1340,9 +1328,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictPropertyInitialization'>--strictPropertyInitialization</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Check for class properties that are declared but not set in the constructor.</p>
@@ -1411,7 +1398,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Specify the folder for .tsbuildinfo incremental compilation files.</p>
+<p>The file to store <code>.tsbuildinfo</code> incremental build information in.</p>
 </td></tr>
 
 <tr class='even' name='typeRoots'>
@@ -1440,9 +1427,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#useDefineForClassFields'>--useDefineForClassFields</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#target"><code>target</code></a> is <code>ES2022</code> or higher, including <code>ESNext</code>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#target"><code>target</code></a> is <code>ES2022</code> or higher, including <code>ESNext</code>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Emit ECMAScript-standard-compliant class fields.</p>
@@ -1452,9 +1438,8 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#useUnknownInCatchVariables'>--useUnknownInCatchVariables</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><ul><li><p><code>true</code> if <a href="#strict"><code>strict</code></a>,</p>
-</li><li><p><code>false</code> otherwise.</p>
-</li></ul></td>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
+</td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Default catch clause variables as <code>unknown</code> instead of <code>any</code>.</p>

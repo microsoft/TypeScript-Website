@@ -22,7 +22,7 @@ We'll give hints on how to identify structure both based on its _usage_ and its 
 Depending on the library's documentation and organization, one might be easier than the other.
 We recommend using whichever is more comfortable to you.
 
-## What should you look for?
+### What should you look for?
 
 Question to ask yourself while looking at a library you are trying to type.
 
@@ -34,9 +34,9 @@ Question to ask yourself while looking at a library you are trying to type.
 
    Does it add a global object? Does it use `require` or `import`/`export` statements?
 
-## Smaller samples for different types of libraries
+### Smaller samples for different types of libraries
 
-## Modular Libraries
+### Modular Libraries
 
 Almost every modern Node.js library falls into the module family.
 These type of libraries only work in a JS environment with a module loader.
@@ -71,7 +71,7 @@ define(..., ['someLib'], function(someLib) {
 
 As with global modules, you might see these examples in the documentation of [a UMD](#umd) module, so be sure to check the code or documentation.
 
-### Identifying a Module Library from Code
+#### Identifying a Module Library from Code
 
 Modular libraries will typically have at least some of the following:
 
@@ -83,7 +83,7 @@ They will rarely have:
 
 - Assignments to properties of `window` or `global`
 
-### Templates For Modules
+#### Templates For Modules
 
 There are four templates available for modules,
 [`module.d.ts`](/docs/handbook/declaration-files/templates/module-d-ts.html), [`module-class.d.ts`](/docs/handbook/declaration-files/templates/module-class-d-ts.html), [`module-function.d.ts`](/docs/handbook/declaration-files/templates/module-function-d-ts.html) and [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html).
@@ -113,7 +113,7 @@ const jest = require("jest");
 require("jest-matchers-files");
 ```
 
-## Global Libraries
+### Global Libraries
 
 A _global_ library is one that can be accessed from the global scope (i.e. without using any form of `import`).
 Many libraries simply expose one or more global variables for use.
@@ -135,7 +135,7 @@ Today, most popular globally-accessible libraries are actually written as UMD li
 UMD library documentation is hard to distinguish from global library documentation.
 Before writing a global declaration file, make sure the library isn't actually UMD.
 
-### Identifying a Global Library from Code
+#### Identifying a Global Library from Code
 
 Global library code is usually extremely simple.
 A global "Hello, world" library might look like this:
@@ -178,17 +178,17 @@ You _won't_ see:
 - Calls to `define(...)`
 - Documentation describing how to `require` or import the library
 
-### Examples of Global Libraries
+#### Examples of Global Libraries
 
 Because it's usually easy to turn a global library into a UMD library, very few popular libraries are still written in the global style.
 However, libraries that are small and require the DOM (or have _no_ dependencies) may still be global.
 
-### Global Library Template
+#### Global Library Template
 
 The template file [`global.d.ts`](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html) defines an example library `myLib`.
 Be sure to read the ["Preventing Name Conflicts" footnote](#preventing-name-conflicts).
 
-## _UMD_
+### _UMD_
 
 A _UMD_ module is one that can _either_ be used as module (through an import), or as a global (when run in an environment without a module loader).
 Many popular libraries, such as [Moment.js](https://momentjs.com/), are written this way.
@@ -205,7 +205,7 @@ whereas in a vanilla browser environment you would write:
 console.log(moment.format());
 ```
 
-### Identifying a UMD library
+#### Identifying a UMD library
 
 [UMD modules](https://github.com/umdjs/umd) check for the existence of a module loader environment.
 This is an easy-to-spot pattern that looks something like this:
@@ -227,12 +227,12 @@ If you see tests for `typeof define`, `typeof window`, or `typeof module` in the
 Documentation for UMD libraries will also often demonstrate a "Using in Node.js" example showing `require`,
 and a "Using in the browser" example showing using a `<script>` tag to load the script.
 
-### Examples of UMD libraries
+#### Examples of UMD libraries
 
 Most popular libraries are now available as UMD packages.
 Examples include [jQuery](https://jquery.com/), [Moment.js](https://momentjs.com/), [lodash](https://lodash.com/), and many more.
 
-### Template
+#### Template
 
 Use the [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module-plugin-d-ts.html) template.
 
@@ -241,7 +241,7 @@ Use the [`module-plugin.d.ts`](/docs/handbook/declaration-files/templates/module
 There are several kinds of dependencies your library might have.
 This section shows how to import them into the declaration file.
 
-## Dependencies on Global Libraries
+### Dependencies on Global Libraries
 
 If your library depends on a global library, use a `/// <reference types="..." />` directive:
 
@@ -251,7 +251,7 @@ If your library depends on a global library, use a `/// <reference types="..." /
 function getThing(): someLib.thing;
 ```
 
-## Dependencies on Modules
+### Dependencies on Modules
 
 If your library depends on a module, use an `import` statement:
 
@@ -261,9 +261,9 @@ import * as moment from "moment";
 function getThing(): moment;
 ```
 
-## Dependencies on UMD libraries
+### Dependencies on UMD libraries
 
-### From a Global Library
+#### From a Global Library
 
 If your global library depends on a UMD module, use a `/// <reference types` directive:
 
@@ -273,7 +273,7 @@ If your global library depends on a UMD module, use a `/// <reference types` dir
 function getThing(): moment;
 ```
 
-### From a Module or UMD Library
+#### From a Module or UMD Library
 
 If your module or UMD library depends on a UMD library, use an `import` statement:
 
@@ -285,7 +285,7 @@ Do _not_ use a `/// <reference` directive to declare a dependency to a UMD libra
 
 ## Footnotes
 
-## Preventing Name Conflicts
+### Preventing Name Conflicts
 
 Note that it's possible to define many types in the global scope when writing a global declaration file.
 We strongly discourage this as it leads to possible unresolvable name conflicts when many declaration files are in a project.
@@ -308,7 +308,7 @@ interface CatsKittySettings {}
 
 This guidance also ensures that the library can be transitioned to UMD without breaking declaration file users.
 
-## The Impact of ES6 on Module Call Signatures
+### The Impact of ES6 on Module Call Signatures
 
 Many popular libraries, such as Express, expose themselves as a callable function when imported.
 For example, the typical Express usage looks like this:

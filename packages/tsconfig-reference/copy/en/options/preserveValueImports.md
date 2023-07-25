@@ -1,5 +1,5 @@
 ---
-display: "preserveValueImports"
+display: "Preserve Value Imports"
 oneline: "Preserve unused imported values in the JavaScript output that would otherwise be removed."
 ---
 

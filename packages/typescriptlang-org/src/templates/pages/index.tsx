@@ -29,7 +29,7 @@ const Section = (props: { children: any, color: string, className?: string }) =>
   <div key={props.color} className={props.color + " " + (props.className ?? "")}><div className="container">{props.children}</div></div>
 
 const Row = (props: { children: any, className?: string, key?: string }) => <div key={props.key} className={[props.className, "row"].join(" ")}>{props.children}</div>
-const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
+const Col = (props: { children: any, className?: string, role?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 const Half = (props: { children: any, className?: string }) => <div className={[props.className, "half"].join(" ")}>{props.children}</div>
 
@@ -62,7 +62,7 @@ const Index: React.FC<Props> = (props) => {
 
   /** Basically a <p> with bold set up */
   const P = (props: { ikey: keyof typeof indexCopy }) =>  <p key={props.ikey}>{i(props.ikey, { strong: (...chunk) => <strong>{chunk}</strong> })}</p>
-  const GetStarted = (props: { href: string, title: any, subtitle: any, classes: string }) => (
+  const GetStarted = (props: { role: string, href: string, title: any, subtitle: any, classes: string }) => (
     <Link to={props.href} className={"get-started " + props.classes} >
         <div> 
             <div className="fluid-button-title">{i(props.title)}</div>
@@ -107,14 +107,14 @@ const Index: React.FC<Props> = (props) => {
         <Section color="light-grey" className="get-started-section">
             <h2 id='get_started'>{i("index_2_started_title")}</h2>
             <Row>
-                <Col key='handbook'>
-                    <GetStarted href="/docs/handbook/intro.html" classes="tall handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
+                <Col key='handbook' role="tablist">
+                    <GetStarted role="tab" href="/docs/handbook/intro.html" classes="tall handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
                 </Col>
-                <Col key='playground'>
-                    <GetStarted href="/play" classes="tall playground" title="nav_playground" subtitle="index_2_playground_blurb" />
+                <Col key='playground' role="tablist">
+                    <GetStarted role="tab" href="/play" classes="tall playground" title="nav_playground" subtitle="index_2_playground_blurb" />
                 </Col>
-                <Col key='download'>
-                    <GetStarted href="/download" classes="tall download" title="nav_download" subtitle="index_2_install" />
+                <Col key='download' role="tablist">
+                    <GetStarted role="tab" href="/download" classes="tall download" title="nav_download" subtitle="index_2_install" />
                 </Col>
             </Row>
         </Section>
@@ -230,14 +230,14 @@ const Index: React.FC<Props> = (props) => {
         <Section color="blue" className="get-started-section"> 
           <h2 id='get_started_blue'>{i("index_2_started_title")}</h2>
             <Row>
-                <Col key='handbook'>
-                    <GetStarted href="/docs/handbook/intro.html" classes="short handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
+                <Col key='handbook' role="tablist">
+                    <GetStarted role="tab" href="/docs/handbook/intro.html" classes="short handbook" title="index_2_started_handbook" subtitle="index_2_started_handbook_blurb" />
                 </Col>
-                <Col key='playground'>
-                    <GetStarted href="/play" classes="short playground" title="nav_playground" subtitle="index_2_playground_blurb" />
+                <Col key='playground' role="tablist">
+                    <GetStarted role="tab" href="/play" classes="short playground" title="nav_playground" subtitle="index_2_playground_blurb" />
                 </Col>
-                <Col key='download'>
-                    <GetStarted href="/download" classes="short download" title="nav_download" subtitle="index_2_install" />
+                <Col key='download' role="tablist">
+                    <GetStarted role="tab" href="/download" classes="short download" title="nav_download" subtitle="index_2_install" />
                 </Col>
             </Row>
         </Section>

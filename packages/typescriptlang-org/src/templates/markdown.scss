@@ -116,6 +116,10 @@
     max-width: 100%;
   }
 
+  div.table-container {
+    overflow-x: auto;
+  }
+
   table.full-width-table {
     width: 100%;
     display: table;

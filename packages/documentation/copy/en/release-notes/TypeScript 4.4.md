@@ -486,7 +486,7 @@ These changes can improve TypeScript's general performance in code with fairly c
 
 TypeScript often has to do several types of "normalization" on file paths to get them into a consistent format that the compiler can use everywhere.
 This involves things like replacing backslashes with slashes, or removing intermediate `/./` and `/../` segments of paths.
-When TypeScript has to operates over millions of these paths, these operations end up being a bit slow.
+When TypeScript has to operate over millions of these paths, these operations end up being a bit slow.
 In TypeScript 4.4, paths first undergo quick checks to see whether they need any normalization in the first place.
 These improvements together reduce project load time by 5-10% on bigger projects, and significantly more in massive projects that we've tested internally.
 

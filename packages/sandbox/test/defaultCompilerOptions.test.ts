@@ -14,7 +14,7 @@ const fauxMonaco: any = {
 
 describe(getCompilerOptionsFromParams, () => {
   it("ignores compiler flags which are the same as the defaults", () => {
-    // noImplicitReturns=true is the default, and shouldnt be in the object
+    // noImplicitReturns=true is the default, and shouldn't be in the object
     const params = new URLSearchParams("?noImplicitThis=false&noImplicitReturns=true#code/JYOw")
     const defaults = getDefaultSandboxCompilerOptions({ filetype: "js" } as any, fauxMonaco, {
       versionMajorMinor: "4.9",

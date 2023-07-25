@@ -26,7 +26,7 @@ function printToConsole(s: string) {
 greeter(printToConsole);
 ```
 
-The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type string, that doesn't have a return value".
+The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type `string`, that doesn't have a return value".
 Just like with function declarations, if a parameter type isn't specified, it's implicitly `any`.
 
 > Note that the parameter name is **required**. The function type `(string) => void` means "a function with a parameter named `string` of type `any`"!
@@ -54,6 +54,13 @@ type DescribableFunction = {
 function doSomething(fn: DescribableFunction) {
   console.log(fn.description + " returned " + fn(6));
 }
+
+function myFunc(someArg: number) {
+  return someArg > 3;
+}
+myFunc.description = "default description";
+
+doSomething(myFunc);
 ```
 
 Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
@@ -81,7 +88,7 @@ You can combine call and construct signatures in the same type arbitrarily:
 ```ts twoslash
 interface CallOrConstruct {
   new (s: string): Date;
-  (n?: number): number;
+  (n?: number): string;
 }
 ```
 
@@ -320,6 +327,7 @@ function greet(s: string) {
 
 Remember, type parameters are for _relating the types of multiple values_.
 If a type parameter is only used once in the function signature, it's not relating anything.
+This includes the inferred return type; for example, if `Str` was part of the inferred return type of `greet`, it would be relating the argument and return types, so would be used _twice_ despite appearing only once in the written code.
 
 > **Rule**: If a type parameter only appears in one location, strongly reconsider if you actually need it
 
@@ -424,7 +432,7 @@ In JavaScript, if you call a function with more arguments than there are paramet
 TypeScript behaves the same way.
 Functions with fewer parameters (of the same types) can always take the place of functions with more parameters.
 
-> When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
+> **Rule**: When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
 
 ## Function Overloads
 
@@ -720,11 +728,11 @@ function multiply(n: number, ...m: number[]) {
 const a = multiply(10, 1, 2, 3, 4);
 ```
 
-In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>`or `T[]`, or a tuple type (which we'll learn about later).
+In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we'll learn about later).
 
 ### Rest Arguments
 
-Conversely, we can _provide_ a variable number of arguments from an array using the spread syntax.
+Conversely, we can _provide_ a variable number of arguments from an iterable object (for example, an array) using the spread syntax.
 For example, the `push` method of arrays takes any number of arguments:
 
 ```ts twoslash
@@ -799,7 +807,7 @@ function sum({ a, b, c }: ABC) {
 
 The `void` return type for functions can produce some unusual, but expected behavior.
 
-Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type vf = () => void`), when implemented, can return _any_ other value, but it will be ignored.
+Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type voidFunc = () => void`), when implemented, can return _any_ other value, but it will be ignored.
 
 Thus, the following implementations of the type `() => void` are valid:
 

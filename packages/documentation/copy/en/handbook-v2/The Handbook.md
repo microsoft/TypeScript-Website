@@ -12,7 +12,7 @@ Over 20 years after its introduction to the programming community, JavaScript is
 
 The most common kinds of errors that programmers write can be described as type errors: a certain kind of value was used where a different kind of value was expected. This could be due to simple typos, a failure to understand the API surface of a library, incorrect assumptions about runtime behavior, or other errors. The goal of TypeScript is to be a static typechecker for JavaScript programs - in other words, a tool that runs before your code runs (static) and ensures that the types of the program are correct (typechecked).
 
-If you are coming to TypeScript without a JavaScript background, with the intention of TypeScript being your first language, we recommend you first start reading the documentation on either the [Microsoft Learn JavaScript tutorial](https://docs.microsoft.com/javascript/) or read [JavaScript at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide).
+If you are coming to TypeScript without a JavaScript background, with the intention of TypeScript being your first language, we recommend you first start reading the documentation on either the [Microsoft Learn JavaScript tutorial](https://developer.microsoft.com/javascript/) or read [JavaScript at the Mozilla Web Docs](https://developer.mozilla.org/docs/Web/JavaScript/Guide).
 If you have experience in other languages, you should be able to pick up JavaScript syntax quite quickly by reading the handbook.
 
 ## How is this Handbook Structured
@@ -51,9 +51,9 @@ Finally, the Handbook won't cover how TypeScript interacts with other tools, exc
 
 Before getting started with [The Basics](/docs/handbook/2/basic-types.html), we recommend reading one of the following introductory pages. These introductions are intended to highlight key similarities and differences between TypeScript and your favored programming language, and clear up common misconceptions specific to those languages.
 
-- [TypeScript for New Programmers](/docs/handbook/typescript-from-scratch.html)
+- [TypeScript for the New Programmer](/docs/handbook/typescript-from-scratch.html)
 - [TypeScript for JavaScript Programmers](/docs/handbook/typescript-in-5-minutes.html)
-- [TypeScript for OOP Programmers](/docs/handbook/typescript-in-5-minutes-oop.html)
+- [TypeScript for Java/C# Programmers](/docs/handbook/typescript-in-5-minutes-oop.html)
 - [TypeScript for Functional Programmers](/docs/handbook/typescript-in-5-minutes-func.html)
 
 Otherwise, jump to [The Basics](/docs/handbook/2/basic-types.html).
