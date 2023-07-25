@@ -1,6 +1,6 @@
 {
   "name": "@typescript/sandbox",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "author": "TypeScript team",
   "homepage": "https://github.com/microsoft/TypeScript-Website",
@@ -43,8 +43,8 @@
     ]
   },
   "dependencies": {
-    "@typescript/ata": "0.9.3",
-    "@typescript/vfs": "1.4.0"
+    "@typescript/ata": "0.9.4",
+    "@typescript/vfs": "1.5.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^13.0.1",

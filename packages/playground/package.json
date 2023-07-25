@@ -1,6 +1,6 @@
 {
   "name": "@typescript/playground",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "license": "MIT",
   "private": true,
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@typescript/playground-worker": "0.1.0",
-    "@typescript/sandbox": "0.1.0",
+    "@typescript/sandbox": "0.1.1",
     "esbuild": "^0.13.4"
   },
   "devDependencies": {
