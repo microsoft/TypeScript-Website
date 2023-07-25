@@ -351,7 +351,7 @@ When inferring the type of an object, TypeScript will usually choose a type that
 For example, in this case, the inferred type of `names` is `string[]`:
 
 ```ts
-type HasNames = { readonly names: string[] };
+type HasNames = { names: readonly string[] };
 function getNamesExactly<T extends HasNames>(arg: T): T["names"] {
     return arg.names;
 }
@@ -555,7 +555,7 @@ They also allowed us to refer to only a subset of the types of an enum, and to n
 ```ts
 // Color is like a union of Red | Orange | Yellow | Green | Blue | Violet
 enum Color {
-    Red, Orange, Yellow, Green, Blue, /* Indigo */, Violet
+    Red, Orange, Yellow, Green, Blue, /* Indigo, */ Violet
 }
 
 // Each enum member has its own type that we can refer to!

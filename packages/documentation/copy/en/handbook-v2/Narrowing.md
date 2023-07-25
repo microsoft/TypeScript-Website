@@ -273,7 +273,7 @@ function multiplyValue(container: Container, factor: number) {
 
 ## The `in` operator narrowing
 
-JavaScript has an operator for determining if an object has a property with a name: the `in` operator.
+JavaScript has an operator for determining if an object or its prototype chain has a property with a name: the `in` operator.
 TypeScript takes this into account as a way to narrow down potential types.
 
 For example, with the code: `"value" in x`. where `"value"` is a string literal and `x` is a union type.
@@ -710,7 +710,7 @@ In those cases, TypeScript will use a `never` type to represent a state which sh
 
 The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a `switch` statement.
 
-For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will raise an error when every possible case has not been handled.
+For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will not raise an error when every possible case has been handled.
 
 ```ts twoslash
 interface Circle {

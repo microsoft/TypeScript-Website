@@ -25,7 +25,7 @@ export const showNavForHandbook = (sandbox: Sandbox, escapeFunction: () => void)
   if (nav) nav.classList.add("handbook")
 }
 
-/** 
+/**
  * Hides the nav and the close button, specifically only when we have
  * the handbook open and not when a gist is open
  */
@@ -45,7 +45,7 @@ export const hideNavForHandbook = (sandbox: Sandbox) => {
   if (story && possibleButtonToRemove) story.removeChild(possibleButtonToRemove)
 }
 
-/** 
+/**
  * Assumes a nav has been set up already, and then fills out the content of the nav bar
  * with clickable links for each potential story.
  */
@@ -139,7 +139,7 @@ const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], 
   }
 }
 
-// Use fetch to grab the HTML from a URL, with a special case 
+// Use fetch to grab the HTML from a URL, with a special case
 // when that is a gatsby URL where we pull out the important
 // HTML from inside the __gatsby id.
 const setStoryViaHref = (href: string, sandbox: Sandbox) => {
@@ -173,8 +173,8 @@ const setStoryViaHref = (href: string, sandbox: Sandbox) => {
   })
 }
 
-/** 
- * Passing in either a root HTML element or the HTML for the story, present a 
+/**
+ * Passing in either a root HTML element or the HTML for the story, present a
  * markdown doc as a 'story' inside the playground.
  */
 const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
@@ -200,7 +200,7 @@ const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
   // We need to hijack internal links
   for (const a of Array.from(story.getElementsByTagName("a"))) {
     if (!a.pathname.startsWith("/play")) continue
-    // Note the the header generated links also count in here
+    // Note the header generated links also count in here
 
     // overwrite playground links
     if (a.hash.includes("#code/")) {

@@ -141,17 +141,16 @@ Here's an example:
 
 ```ts twoslash
 // @errors: 2551
-// No type annotations here, but TypeScript can spot the bug
 const names = ["Alice", "Bob", "Eve"];
 
-// Contextual typing for function
+// Contextual typing for function - parameter s inferred to have type string
 names.forEach(function (s) {
-  console.log(s.toUppercase());
+  console.log(s.toUpperCase());
 });
 
 // Contextual typing also applies to arrow functions
 names.forEach((s) => {
-  console.log(s.toUppercase());
+  console.log(s.toUpperCase());
 });
 ```
 
@@ -387,6 +386,7 @@ Being concerned only with the structure and capabilities of types is why we call
 Type aliases and interfaces are very similar, and in many cases you can choose between them freely.
 Almost all features of an `interface` are available in `type`, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable.
 
+<div class='table-container'>
 <table class='full-width-table'>
   <tbody>
     <tr>
@@ -452,6 +452,7 @@ type Window = {
     </tr>
     </tbody>
 </table>
+</div>
 
 You'll learn more about these concepts in later chapters, so don't worry if you don't understand all of these right away.
 
@@ -597,7 +598,7 @@ The same applies to strings:
 ```ts twoslash
 // @errors: 2345
 declare function handleRequest(url: string, method: "GET" | "POST"): void;
-// ---cut---
+
 const req = { url: "https://example.com", method: "GET" };
 handleRequest(req.url, req.method);
 ```

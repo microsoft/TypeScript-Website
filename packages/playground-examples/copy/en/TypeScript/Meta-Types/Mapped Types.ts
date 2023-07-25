@@ -54,4 +54,4 @@ type CorrectMappedArtistForEdit = MyPartialTypeForEdit<Artist>;
 // work, but covers most of the basics. If you'd like to
 // dive in with more depth, check out the handbook:
 //
-// https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
+// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html

@@ -74,7 +74,7 @@ function f() {
 f(); // returns '2'
 ```
 
-## Scoping rules
+### Scoping rules
 
 `var` declarations have some odd scoping rules for those used to other languages.
 Take the following example:
@@ -118,7 +118,7 @@ function sumMatrix(matrix: number[][]) {
 Maybe it was easy to spot out for some experienced JavaScript developers, but the inner `for`-loop will accidentally overwrite the variable `i` because `i` refers to the same function-scoped variable.
 As experienced developers know by now, similar sorts of bugs slip through code reviews and can be an endless source of frustration.
 
-## Variable capturing quirks
+### Variable capturing quirks
 
 Take a quick second to guess what the output of the following snippet is:
 
@@ -199,7 +199,7 @@ let hello = "Hello!";
 
 The key difference is not in the syntax, but in the semantics, which we'll now dive into.
 
-## Block-scoping
+### Block-scoping
 
 When a variable is declared using `let`, it uses what some call _lexical-scoping_ or _block-scoping_.
 Unlike variables declared with `var` whose scopes leak out to their containing function, block-scoped variables are not visible outside of their nearest containing block or `for`-loop.
@@ -263,7 +263,7 @@ let a;
 
 For more information on temporal dead zones, see relevant content on the [Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let).
 
-## Re-declarations and Shadowing
+### Re-declarations and Shadowing
 
 With `var` declarations, we mentioned that it didn't matter how many times you declared your variables; you just got one.
 
@@ -340,7 +340,7 @@ This version of the loop will actually perform the summation correctly because t
 Shadowing should _usually_ be avoided in the interest of writing clearer code.
 While there are some scenarios where it may be fitting to take advantage of it, you should use your best judgement.
 
-## Block-scoped variable capturing
+### Block-scoped variable capturing
 
 When we first touched on the idea of variable capturing with `var` declaration, we briefly went into how variables act once captured.
 To give a better intuition of this, each time a scope is run, it creates an "environment" of variables.
@@ -450,7 +450,7 @@ Another ECMAScript 2015 feature that TypeScript has is destructuring.
 For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
 In this section, we'll give a short overview.
 
-## Array destructuring
+### Array destructuring
 
 The simplest form of destructuring is array destructuring assignment:
 
@@ -509,7 +509,7 @@ console.log(second); // outputs 2
 console.log(fourth); // outputs 4
 ```
 
-## Tuple destructuring
+### Tuple destructuring
 
 Tuples may be destructured like arrays; the destructuring variables get the types of the corresponding tuple elements:
 
@@ -539,7 +539,7 @@ let [a] = tuple; // a: number
 let [, b] = tuple; // b: string
 ```
 
-## Object destructuring
+### Object destructuring
 
 You can also destructure objects:
 
@@ -571,7 +571,7 @@ let { a, ...passthrough } = o;
 let total = passthrough.b + passthrough.c.length;
 ```
 
-### Property renaming
+#### Property renaming
 
 You can also give different names to properties:
 
@@ -595,7 +595,7 @@ The type, if you specify it, still needs to be written after the entire destruct
 let { a: newName1, b: newName2 }: { a: string; b: number } = o;
 ```
 
-### Default values
+#### Default values
 
 Default values let you specify a default value in case a property is undefined:
 

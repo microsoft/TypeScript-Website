@@ -64,7 +64,7 @@ const popularPages = [
 const useTypeScriptLinks = [
   {
     title: "Get Started",
-    url: "/docs/home",
+    url: "/docs",
   },
   {
     title: "Download",
@@ -281,7 +281,7 @@ export const SiteFooter = (props: Props) => {
               href="https://go.microsoft.com/fwlink/?LinkId=521839"
               title="Microsoft Privacy Policy"
             >
-              Privacy
+            { lang === "ko" ? "개인정보처리방침 및 위치정보이용약관" : "Privacy"}
             </a>
             {lang === "fr" ?
               <a

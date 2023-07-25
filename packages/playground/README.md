@@ -23,7 +23,7 @@ Automatic Type Acquisition is a feature which lives in the sandbox and not the p
 The Playground supports a set of query inputs from the URL. The hash is used to reflect the code:
 
 - `#code/PRA` - A base64 and zipped version of the code which should live in the editor
-- `#src/The%20code` - URLEncoded way to have the code for the editor
+- `#src=The%20code` - URLEncoded way to have the code for the editor
 - `#example/generic-functions` - Grab the code from an example with the id generic-functions
 
 Or to trigger some action by default:

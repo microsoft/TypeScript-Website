@@ -251,6 +251,14 @@ type T1 = Exclude<"a" | "b" | "c", "a" | "b">;
 //    ^?
 type T2 = Exclude<string | number | (() => void), Function>;
 //    ^?
+
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; x: number }
+  | { kind: "triangle"; x: number; y: number };
+
+type T3 = Exclude<Shape, { kind: "circle" }>
+//    ^?
 ```
 
 ## `Extract<Type, Union>`
@@ -270,6 +278,14 @@ Constructs a type by extracting from `Type` all union members that are assignabl
 type T0 = Extract<"a" | "b" | "c", "a" | "f">;
 //    ^?
 type T1 = Extract<string | number | (() => void), Function>;
+//    ^?
+
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; x: number }
+  | { kind: "triangle"; x: number; y: number };
+
+type T2 = Extract<Shape, { kind: "circle" }>
 //    ^?
 ```
 
