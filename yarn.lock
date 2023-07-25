@@ -6121,25 +6121,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript/vfs@npm:1.3.4":
-  version: 1.3.4
-  resolution: "@typescript/vfs@npm:1.3.4"
-  dependencies:
-    debug: ^4.1.1
-  checksum: 9468126c7f5da5811f65a6a8ccded68ba3ae32e5bff710ff0fc792b9592dd0b64606669703c707a61350d18d0640a60465fd1fdfa19224bf75998061d461cbf5
-  languageName: node
-  linkType: hard
-
-"@typescript/vfs@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@typescript/vfs@npm:1.4.0"
-  dependencies:
-    debug: ^4.1.1
-  checksum: 67219c9354d142ef8259da172066db043133d8b6cc0a5d862b9867d5950c5f6c9b816e8b29f8901e8cd2572003282fbbec097e53932bc6da01d0fa2e40520014
-  languageName: node
-  linkType: hard
-
-"@typescript/vfs@workspace:packages/typescript-vfs":
+"@typescript/vfs@1.4.0, @typescript/vfs@workspace:packages/typescript-vfs":
   version: 0.0.0-use.local
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
@@ -6155,6 +6137,15 @@ __metadata:
     typescript: "*"
   languageName: unknown
   linkType: soft
+
+"@typescript/vfs@npm:1.3.4":
+  version: 1.3.4
+  resolution: "@typescript/vfs@npm:1.3.4"
+  dependencies:
+    debug: ^4.1.1
+  checksum: 9468126c7f5da5811f65a6a8ccded68ba3ae32e5bff710ff0fc792b9592dd0b64606669703c707a61350d18d0640a60465fd1fdfa19224bf75998061d461cbf5
+  languageName: node
+  linkType: hard
 
 "@webassemblyjs/ast@npm:1.11.0":
   version: 1.11.0
