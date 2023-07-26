@@ -20,7 +20,8 @@ const handbookRedirects = {
   "/docs/handbook/release-notes": "/docs/",
   "/docs/handbook/release-notes/overview": "/docs/",
   "/docs/handbook/release-notes/overview.html": "/docs",
-  "/docs/handbook/react-&-webpack.html": "https://webpack.js.org/guides/typescript/"
+  "/docs/handbook/react-&-webpack.html": "https://webpack.js.org/guides/typescript/",
+  "/docs/bootstrap": "/docs/"
 }
 
 import { NodePluginArgs } from "gatsby"
