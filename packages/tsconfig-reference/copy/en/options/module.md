@@ -3,7 +3,7 @@ display: "Module"
 oneline: "Specify what module code is generated."
 ---
 
-Sets the module system for the program. See the <a href='/docs/handbook/modules.html'>Modules</a> reference page for more information. You very likely want `"CommonJS"` for node projects.
+Sets the module system for the program. See the <a href='/docs/handbook/modules.html'>Modules</a> reference page for more information. You very likely want `"nodenext"` for modern node projects.
 
 Changing `module` affects [`moduleResolution`](#moduleResolution) which [also has a reference page](/docs/handbook/module-resolution.html).
 
