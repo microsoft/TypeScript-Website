@@ -2,7 +2,7 @@
 // yarn danger pr https://github.com/microsoft/TypeScript-Website/pull/115
 
 import spellcheck from "danger-plugin-spellcheck"
-import { warn, danger }from "danger"
+import { warn, danger } from "danger"
 import { execSync } from "child_process"
 
 // Spell check all the things
