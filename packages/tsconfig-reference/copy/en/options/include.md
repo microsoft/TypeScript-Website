@@ -63,4 +63,4 @@ Which would include:
 - `?` matches any one character (excluding directory separators)
 - `**/` matches any directory nested to any level
 
-If the last path segment in a pattern does not contain a file extension or wildcard charater, then it is treated as a directory, and files with supported extensions inside that directory are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default, with `.js` and `.jsx` if [`allowJs`](#allowJs) is set to true).
+If the last path segment in a pattern does not contain a file extension or wildcard character, then it is treated as a directory, and files with supported extensions inside that directory are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default, with `.js` and `.jsx` if [`allowJs`](#allowJs) is set to true).
