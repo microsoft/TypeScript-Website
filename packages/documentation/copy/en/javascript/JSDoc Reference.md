@@ -405,6 +405,7 @@ let c = new Cache()
 
 ```js twoslash
 // @errors: 1360
+// @ts-check
 /**
  * @typedef {"hello world" | "Hello, world"} WelcomeMessage
  */
