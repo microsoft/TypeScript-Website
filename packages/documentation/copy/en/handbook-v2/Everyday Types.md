@@ -621,16 +621,16 @@ There are two ways to work around this.
    Change 1 means "I intend for `req.method` to always have the _literal type_ `"GET"`", preventing the possible assignment of `"GUESS"` to that field after.
    Change 2 means "I know for other reasons that `req.method` has the value `"GET"`".
 
-2. You can use `as const` to convert the entire object to be type literals:
+2. You can use `as const` to convert the entire object *or* specific properties to be type literals:
 
    ```ts twoslash
    declare function handleRequest(url: string, method: "GET" | "POST"): void;
    // ---cut---
    const req = { url: "https://example.com", method: "GET" } as const;
-   handleRequest(req.url, req.method);
-   ```
+   // or
+   // const req = { url: "https://example.com", method: "GET"  as const};
 
-The `as const` suffix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like `string` or `number`.
+The `as const` suffix acts like `const` but for the type system, ensuring that all properties are assigned the literal type instead of a more general version like `string` or `number`. But also `as const` can be used for specific properties.
 
 ## `null` and `undefined`
 
