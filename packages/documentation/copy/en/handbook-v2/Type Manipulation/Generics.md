@@ -378,10 +378,16 @@ This pattern is used to power the [mixins](/docs/handbook/mixins.html) design pa
 
 ## Generic Parameter Defaults
 
-Consider a function that creates a new `HTMLElement`. Calling the function with no arguments generates a `Div`; calling it with an element as the first argument generates an element of the argument's type. You can optionally pass a list of children as well. Previously you would have to define it as:
+By declaring a default for a generic type parameter, you make it optional to specify the corresponding type argument. For example, a function which creates a new `HTMLElement`. Calling the function with no arguments generates a `HTMLDivElement`; calling the function with an element as the first argument generates an element of the argument's type. You can optionally pass a list of children as well. Previously you would have to define the function as:
 
 
 ```ts twoslash
+type Container<T, U> = {
+  element: T;
+  children: U;
+};
+
+// ---cut---
 declare function create(): Container<HTMLDivElement, HTMLDivElement[]>;
 declare function create<T extends HTMLElement>(element: T): Container<T, T[]>;
 declare function create<T extends HTMLElement, U extends HTMLElement>(
@@ -393,10 +399,22 @@ declare function create<T extends HTMLElement, U extends HTMLElement>(
 With generic parameter defaults we can reduce it to:
 
 ```ts twoslash
+type Container<T, U> = {
+  element: T;
+  children: U;
+};
+
+// ---cut---
 declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
   element?: T,
   children?: U
 ): Container<T, U>;
+
+const div = create();
+//    ^?
+
+const p = create(new HTMLParagraphElement());
+//    ^?
 ```
 
 A generic parameter default follows the following rules:
