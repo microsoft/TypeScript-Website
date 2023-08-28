@@ -40,6 +40,8 @@ const Play: React.FC<Props> = (props) => {
     window.reactDOM = ReactDOM
     // @ts-ignore - so that plugins etc can use local functions
     window.i = i
+    // @ts-ignore - same as window.i but hopefully not overwritten by App Insights
+    window.__tsLocalize = i
 
     const getLoaderScript = document.createElement('script');
     getLoaderScript.src = withPrefix("/js/vs.loader.js");
