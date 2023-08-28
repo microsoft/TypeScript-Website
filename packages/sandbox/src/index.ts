@@ -144,7 +144,10 @@ export const createTypeScriptSandbox = (
 
   const language = languageType(config)
   const filePath = createFileUri(config, compilerOptions, monaco)
-  const element = (config as any).elementToAppend ? (config as any).elementToAppend : document.getElementById(config.domID)
+  const element = "elementToAppend" in config ? config.elementToAppend : document.getElementById(config.domID)
+  if (!element)
+    throw new Error("DOM element lookup by domID failed")
+
 
   const model = monaco.editor.createModel(defaultText, language, filePath)
   monaco.editor.defineTheme("sandbox", sandboxTheme)
