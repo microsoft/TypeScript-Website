@@ -113,10 +113,10 @@ export const createTypeScriptSandbox = (
   monaco: Monaco,
   ts: typeof import("typescript")
 ) => {
-  const config = { ...defaultPlaygroundSettings(), ...partialConfig }
-  if (!("domID" in config) && !("elementToAppend" in config))
+  if (!("domID" in partialConfig) && !("elementToAppend" in partialConfig))
     throw new Error("You did not provide a domID or elementToAppend")
 
+  const config = { ...defaultPlaygroundSettings(), ...partialConfig }
   const defaultText = config.suppressAutomaticallyGettingDefaultText
     ? config.text
     : getInitialCode(config.text, document.location)
