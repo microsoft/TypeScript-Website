@@ -34,7 +34,6 @@ We'll learn more about the syntax `T<U>` when we cover _generics_.
 
 > Note that `[number]` is a different thing; refer to the section on [Tuples](/docs/handbook/2/objects.html#tuple-types).
 
-
 ## `any`
 
 TypeScript also has a special type, `any`, that you can use whenever you don't want a particular value to cause typechecking errors.
@@ -44,7 +43,7 @@ When a value is of type `any`, you can access any properties of it (which will i
 ```ts twoslash
 let obj: any = { x: 0 };
 // None of the following lines of code will throw compiler errors.
-// Using `any` disables all further type checking, and it is assumed 
+// Using `any` disables all further type checking, and it is assumed
 // you know the environment better than TypeScript.
 obj.foo();
 obj();
@@ -131,6 +130,16 @@ function getFavoriteNumber(): number {
 Much like variable type annotations, you usually don't need a return type annotation because TypeScript will infer the function's return type based on its `return` statements.
 The type annotation in the above example doesn't change anything.
 Some codebases will explicitly specify a return type for documentation purposes, to prevent accidental changes, or just for personal preference.
+
+#### Functions Which Return Promises
+
+If you want to annotate the return type of a function which returns a promise, you should use the `Promise` type:
+
+```ts twoslash
+async function getFavoriteNumber(): Promise<number> {
+  return 26;
+}
+```
 
 ### Anonymous Functions
 
@@ -501,7 +510,7 @@ If this happens, you can use two assertions, first to `any` (or `unknown`, which
 declare const expr: any;
 type T = { a: 1; b: 2; c: 3 };
 // ---cut---
-const a = (expr as any) as T;
+const a = expr as any as T;
 ```
 
 ## Literal Types
