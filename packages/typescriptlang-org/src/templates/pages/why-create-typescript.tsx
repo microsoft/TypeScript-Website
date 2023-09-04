@@ -64,7 +64,7 @@ class Main {
 `.trim()}</code></pre>
 
                                 <p>These two code samples do the same thing, however the Java version comes with a lot of words that aren't necessarily about
-telling the computer exactly what to do, e.g. <code>class Main &#123;</code>, <code>public static void main(String[] args) &#123;</code>, and two extra <code>&rbrace;</code>s.
+telling the computer exactly what to do, e.g. <code>class Main &#123;</code>, <code>public static void main(String[] args) &#123;</code>, and two extra <code>&#125;</code>s.
           It also has semi-colons at the end of some lines. Neither of these programming languages are wrong, Java however, is aimed at building different things from JavaScript, and these extra bits of code make sense within the constraints of building a Java app.</p>
 
                                 <p>To get to the key point though, there is one standout line I'd like us to compare:</p>
