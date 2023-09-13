@@ -457,3 +457,8 @@
     animation: 0.1s ease forwards;
   }
 }
+
+.handbook-on-this-page-section-list {
+  overflow: auto;
+  max-height: 80vh;
+}
