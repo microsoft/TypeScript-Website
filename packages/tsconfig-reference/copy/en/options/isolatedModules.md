@@ -51,7 +51,7 @@ This restriction doesn't apply to `.d.ts` files.
 
 In TypeScript, when you reference a `const enum` member, the reference is replaced by its actual value in the emitted JavaScript. Changing this TypeScript:
 
-```ts twoslash
+```ts 
 declare const enum Numbers {
   Zero = 0,
   One = 1,

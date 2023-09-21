@@ -7,7 +7,7 @@ oneline: "Understand how TypeScript uses JavaScript knowledge to reduce the amou
 
 Imagine we have a function called `padLeft`.
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string): string {
   throw new Error("Not implemented yet!");
 }
@@ -28,7 +28,7 @@ Uh-oh, we're getting an error on `padding`.
 TypeScript is warning us that we're passing a value with type `number | string` to the `repeat` function, which only accepts a `number`, and it's right.
 In other words, we haven't explicitly checked if `padding` is a `number` first, nor are we handling the case where it's a `string`, so let's do exactly that.
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
@@ -113,7 +113,7 @@ Truthiness might not be a word you'll find in the dictionary, but it's very much
 In JavaScript, we can use any expression in conditionals, `&&`s, `||`s, `if` statements, Boolean negations (`!`), and more.
 As an example, `if` statements don't expect their condition to always have the type `boolean`.
 
-```ts twoslash
+```ts 
 function getUsersOnlineMessage(numUsersOnline: number) {
   if (numUsersOnline) {
     return `There are ${numUsersOnline} online now!`;
@@ -135,7 +135,7 @@ Values like
 all coerce to `false`, and other values get coerced to `true`.
 You can always coerce values to `boolean`s by running them through the `Boolean` function, or by using the shorter double-Boolean negation. (The latter has the advantage that TypeScript infers a narrow literal boolean type `true`, while inferring the first as type `boolean`.)
 
-```ts twoslash
+```ts 
 // both of these result in 'true'
 Boolean("hello"); // type: boolean, value: true
 !!"world"; // type: true,    value: true
@@ -144,7 +144,7 @@ Boolean("hello"); // type: boolean, value: true
 It's fairly popular to leverage this behavior, especially for guarding against values like `null` or `undefined`.
 As an example, let's try using it for our `printAll` function.
 
-```ts twoslash
+```ts 
 function printAll(strs: string | string[] | null) {
   if (strs && typeof strs === "object") {
     for (const s of strs) {
@@ -166,7 +166,7 @@ TypeError: null is not iterable
 Keep in mind though that truthiness checking on primitives can often be error prone.
 As an example, consider a different attempt at writing `printAll`
 
-```ts twoslash {class: "do-not-do-this"}
+```ts  {class: "do-not-do-this"}
 function printAll(strs: string | string[] | null) {
   // !!!!!!!!!!!!!!!!
   //  DON'T DO THIS!
@@ -192,7 +192,7 @@ If you want, you can make sure you handle situations like these with a linter.
 
 One last word on narrowing by truthiness is that Boolean negations with `!` filter out from negated branches.
 
-```ts twoslash
+```ts 
 function multiplyAll(
   values: number[] | undefined,
   factor: number
@@ -279,7 +279,7 @@ TypeScript takes this into account as a way to narrow down potential types.
 For example, with the code: `"value" in x`. where `"value"` is a string literal and `x` is a union type.
 The "true" branch narrows `x`'s types which have either an optional or required property `value`, and the "false" branch narrows to types which have an optional or missing property `value`.
 
-```ts twoslash
+```ts 
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 
@@ -373,7 +373,7 @@ Up until this point, we've gone through some basic examples of how TypeScript na
 But there's a bit more going on than just walking up from every variable and looking for type guards in `if`s, `while`s, conditionals, etc.
 For example
 
-```ts twoslash
+```ts 
 function padLeft(padding: number | string, input: string) {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
@@ -493,7 +493,7 @@ Circles keep track of their radiuses and squares keep track of their side length
 We'll use a field called `kind` to tell which shape we're dealing with.
 Here's a first attempt at defining `Shape`.
 
-```ts twoslash
+```ts 
 interface Shape {
   kind: "circle" | "square";
   radius?: number;
@@ -587,7 +587,7 @@ The problem with this encoding of `Shape` is that the type-checker doesn't have 
 We need to communicate what _we_ know to the type checker.
 With that in mind, let's take another swing at defining `Shape`.
 
-```ts twoslash
+```ts 
 interface Circle {
   kind: "circle";
   radius: number;

@@ -224,7 +224,7 @@ It's important to manage expectations of what `readonly` implies.
 It's useful to signal intent during development time for TypeScript on how an object should be used.
 TypeScript doesn't factor in whether properties on two types are `readonly` when checking whether those types are compatible, so `readonly` properties can also change via aliasing.
 
-```ts twoslash
+```ts 
 interface Person {
   name: string;
   age: number;
@@ -314,7 +314,7 @@ interface NumberDictionary {
 
 However, properties of different types are acceptable if the index signature is a union of the property types:
 
-```ts twoslash
+```ts 
 interface NumberOrStringDictionary {
   [index: string]: number | string;
   length: number; // ok, length is a number
@@ -409,7 +409,7 @@ let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
 However, a better approach might be to add a string index signature if you're sure that the object can have some extra properties that are used in some special way.
 If `SquareConfig` can have `color` and `width` properties with the above types, but could _also_ have any number of other properties, then we could define it like so:
 
-```ts twoslash
+```ts 
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -472,7 +472,7 @@ In this instance, if it's okay to pass an object with both a `color` or `colour`
 It's pretty common to have types that might be more specific versions of other types.
 For example, we might have a `BasicAddress` type that describes the fields necessary for sending letters and packages in the U.S.
 
-```ts twoslash
+```ts 
 interface BasicAddress {
   name?: string;
   street: string;
@@ -501,7 +501,7 @@ interface AddressWithUnit {
 This does the job, but the downside here is that we had to repeat all the other fields from `BasicAddress` when our changes were purely additive.
 Instead, we can extend the original `BasicAddress` type and just add the new fields that are unique to `AddressWithUnit`.
 
-```ts twoslash
+```ts 
 interface BasicAddress {
   name?: string;
   street: string;
@@ -521,7 +521,7 @@ For example, `AddressWithUnit` didn't need to repeat the `street` property, and 
 
 `interface`s can also extend from multiple types.
 
-```ts twoslash
+```ts 
 interface Colorful {
   color: string;
 }
@@ -545,7 +545,7 @@ TypeScript provides another construct called _intersection types_ that is mainly
 
 An intersection type is defined using the `&` operator.
 
-```ts twoslash
+```ts 
 interface Colorful {
   color: string;
 }
@@ -594,7 +594,7 @@ TODO -->
 
 Let's imagine a `Box` type that can contain any value - `string`s, `number`s, `Giraffe`s, whatever.
 
-```ts twoslash
+```ts 
 interface Box {
   contents: any;
 }
@@ -604,7 +604,7 @@ Right now, the `contents` property is typed as `any`, which works, but can lead 
 
 We could instead use `unknown`, but that would mean that in cases where we already know the type of `contents`, we'd need to do precautionary checks, or use error-prone type assertions.
 
-```ts twoslash
+```ts 
 interface Box {
   contents: unknown;
 }
@@ -667,7 +667,7 @@ This is frustrating, since our box types and overloads are all effectively the s
 
 Instead, we can make a _generic_ `Box` type which declares a _type parameter_.
 
-```ts twoslash
+```ts 
 interface Box<Type> {
   contents: Type;
 }
@@ -735,7 +735,7 @@ function setContents<Type>(box: Box<Type>, newContents: Type) {
 
 It is worth noting that type aliases can also be generic. We could have defined our new `Box<Type>` interface, which was:
 
-```ts twoslash
+```ts 
 interface Box<Type> {
   contents: Type;
 }
@@ -743,7 +743,7 @@ interface Box<Type> {
 
 by using a type alias instead:
 
-```ts twoslash
+```ts 
 type Box<Type> = {
   contents: Type;
 };
@@ -846,7 +846,7 @@ new ReadonlyArray("red", "green", "blue");
 
 Instead, we can assign regular `Array`s to `ReadonlyArray`s.
 
-```ts twoslash
+```ts 
 const roArray: ReadonlyArray<string> = ["red", "green", "blue"];
 ```
 
@@ -880,7 +880,7 @@ y = x;
 
 A _tuple type_ is another sort of `Array` type that knows exactly how many elements it contains, and exactly which types it contains at specific positions.
 
-```ts twoslash
+```ts 
 type StringNumberPair = [string, number];
 //                      ^^^^^^^^^^^^^^^^
 ```
@@ -934,7 +934,7 @@ function doSomething(stringHash: [string, number]) {
 
 Other than those length checks, simple tuple types like these are equivalent to types which are versions of `Array`s that declare properties for specific indexes, and that declare `length` with a numeric literal type.
 
-```ts twoslash
+```ts 
 interface StringNumberPair {
   // specialized properties
   length: 2;
@@ -963,7 +963,7 @@ function setCoordinate(coord: Either2dOr3d) {
 
 Tuples can also have rest elements, which have to be an array/tuple type.
 
-```ts twoslash
+```ts \
 type StringNumberBooleans = [string, number, ...boolean[]];
 type StringBooleansNumber = [string, ...boolean[], number];
 type BooleansStringNumber = [...boolean[], string, number];
@@ -987,7 +987,7 @@ Why might optional and rest elements be useful?
 Well, it allows TypeScript to correspond tuples with parameter lists.
 Tuples types can be used in [rest parameters and arguments](/docs/handbook/2/functions.html#rest-parameters-and-arguments), so that the following:
 
-```ts twoslash
+```ts 
 function readButtonInput(...args: [string, number, ...boolean[]]) {
   const [name, version, ...input] = args;
   // ...
@@ -996,7 +996,7 @@ function readButtonInput(...args: [string, number, ...boolean[]]) {
 
 is basically equivalent to:
 
-```ts twoslash
+```ts 
 function readButtonInput(name: string, version: number, ...input: boolean[]) {
   // ...
 }

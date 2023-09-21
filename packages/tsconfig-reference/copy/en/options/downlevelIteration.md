@@ -13,7 +13,7 @@ ECMAScript 6 added several new iteration primitives: the `for / of` loop (`for (
 
 With this TypeScript code:
 
-```ts twoslash
+```ts 
 const str = "Hello!";
 for (const s of str) {
   console.log(s);

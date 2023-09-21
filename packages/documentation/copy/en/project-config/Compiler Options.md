@@ -1196,7 +1196,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#resolvePackageJsonExports'>--resolvePackageJsonExports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> when 'moduleResolution' is 'node16', 'nodenext', or 'bundler'; otherwise <code>false</code>.</p>
+  <td><p><code>true</code> when <a href="#moduleResolution"><code>moduleResolution</code></a> is <code>node16</code>, <code>nodenext</code>, or <code>bundler</code>; otherwise <code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1207,7 +1207,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#resolvePackageJsonImports'>--resolvePackageJsonImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> when 'moduleResolution' is 'node16', 'nodenext', or 'bundler'; otherwise <code>false</code>.</p>
+  <td><p><code>true</code> when <a href="#moduleResolution"><code>moduleResolution</code></a> is <code>node16</code>, <code>nodenext</code>, or <code>bundler</code>; otherwise <code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">

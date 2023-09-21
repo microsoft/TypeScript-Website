@@ -164,7 +164,7 @@ function move(pet: Fish | Bird) {
 Let's go back and write the code for a version of `padLeft` which uses union types.
 We could write it with type predicates as follows:
 
-```ts twoslash
+```ts 
 function isNumber(x: any): x is number {
   return typeof x === "number";
 }
@@ -188,7 +188,7 @@ However, having to define a function to figure out if a type is a primitive is k
 Luckily, you don't need to abstract `typeof x === "number"` into its own function because TypeScript will recognize it as a type guard on its own.
 That means we could just write these checks inline.
 
-```ts twoslash
+```ts 
 function padLeft(value: string, padding: string | number) {
   if (typeof padding === "number") {
     return Array(padding + 1).join(" ") + value;
@@ -325,7 +325,7 @@ c.b = null;
 Since nullable types are implemented with a union, you need to use a type guard to get rid of the `null`.
 Fortunately, this is the same code you'd write in JavaScript:
 
-```ts twoslash
+```ts 
 function f(stringOrNull: string | null): string {
   if (stringOrNull === null) {
     return "default";
@@ -337,7 +337,7 @@ function f(stringOrNull: string | null): string {
 
 The `null` elimination is pretty obvious here, but you can use terser operators too:
 
-```ts twoslash
+```ts 
 function f(stringOrNull: string | null): string {
   return stringOrNull ?? "default";
 }
@@ -374,7 +374,7 @@ user!.email!.length;
 Type aliases create a new name for a type.
 Type aliases are sometimes similar to interfaces, but can name primitives, unions, tuples, and any other types that you'd otherwise have to write by hand.
 
-```ts twoslash
+```ts 
 type Second = number;
 
 let timeInSecond: number = 10;
@@ -510,7 +510,7 @@ This is called _F_-bounded polymorphism, a lot of people know it as the [fluent 
 This makes hierarchical fluent interfaces much easier to express, for example.
 Take a simple calculator that returns `this` after each operation:
 
-```ts twoslash
+```ts 
 class BasicCalculator {
   public constructor(protected value: number = 0) {}
   public currentValue(): number {
@@ -580,7 +580,7 @@ function pluck(o, propertyNames) {
 
 Here's how you would write and use this function in TypeScript, using the **index type query** and **indexed access** operators:
 
-```ts twoslash
+```ts 
 function pluck<T, K extends keyof T>(o: T, propertyNames: K[]): T[K][] {
   return propertyNames.map((n) => o[n]);
 }
@@ -773,7 +773,7 @@ type WrongPartialWithNewMember<T> = {
 
 Let's take a look at the simplest mapped type and its parts:
 
-```ts twoslash
+```ts 
 type Keys = "option1" | "option2";
 type Flags = { [K in Keys]: boolean };
 ```
@@ -787,7 +787,7 @@ There are three parts:
 
 In this simple example, `Keys` is a hard-coded list of property names and the property type is always `boolean`, so this mapped type is equivalent to writing:
 
-```ts twoslash
+```ts 
 type Flags = {
   option1: boolean;
   option2: boolean;
@@ -860,7 +860,7 @@ type Record<K extends keyof any, T> = {
 `Readonly`, `Partial` and `Pick` are homomorphic whereas `Record` is not.
 One clue that `Record` is not homomorphic is that it doesn't take an input type to copy properties from:
 
-```ts twoslash
+```ts 
 type ThreeStringProps = Record<"prop1" | "prop2" | "prop3", string>;
 ```
 
@@ -957,7 +957,7 @@ type T4 = TypeName<string[]>;
 
 But as an example of a place where conditional types are deferred - where they stick around instead of picking a branch - would be in the following:
 
-```ts twoslash
+```ts 
 interface Foo {
   propA: boolean;
   propB: boolean;
