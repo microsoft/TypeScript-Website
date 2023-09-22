@@ -84,9 +84,6 @@ const handbookPages = [
       { file: "reference/Iterators and Generators.md" },
       { file: "reference/JSX.md" },
       { file: "reference/Mixins.md" },
-      { file: "reference/ESM Support for Node.md" },
-      { file: "reference/Modules.md" },
-      { file: "reference/Module Resolution.md" },
       { file: "reference/Namespaces.md" },
       { file: "reference/Namespaces and Modules.md" },
       { file: "reference/Symbols.md" },
@@ -95,6 +92,27 @@ const handbookPages = [
       { file: "reference/Type Inference.md" },
       { file: "reference/Variable Declarations.md" },
     ],
+  },
+  {
+    title: "Modules Reference",
+    summary: "How TypeScript models JavaScript modules.",
+    items: [
+      { file: "modules-reference/Introduction.md" },
+      { file: "modules-reference/Theory.md" },
+      {
+        title: "Guides",
+        items: [
+          { file: "modules-reference/guides/Choosing Compiler Options.md" },
+        ]
+      },
+      { file: "modules-reference/Reference.md" },
+      {
+        title: "Appendices",
+        items: [
+          { file: "modules-reference/appendices/ESM-CJS-Interop.md" },
+        ]
+      }
+    ]
   },
   {
     title: "Tutorials",

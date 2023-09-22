@@ -50,7 +50,14 @@ export const setupRedirects = (
 
   addRedirects(veryOldRedirects)
   addRedirects(handbookRedirects)
-
+  addRedirects({
+    "/docs/handbook/esm-node": "/docs/handbook/modules/reference.html#node16-nodenext",
+    "/docs/handbook/esm-node.html": "/docs/handbook/modules/reference.html#node16-nodenext",
+    "/docs/handbook/modules": "/docs/handbook/modules/introduction.html",
+    "/docs/handbook/modules.html": "/docs/handbook/modules/introduction.html",
+    "/docs/handbook/module-resolution": "/docs/handbook/modules/theory.html#module-resolution",
+    "/docs/handbook/module-resolution.html": "/docs/handbook/modules/theory.html#module-resolution",
+  });
   // These have been replaced by the real output in the handbook
   // addRedirects({
   //   "/assets/typescript-handbook.epub": "/docs/handbook/intro.html",
