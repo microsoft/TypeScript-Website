@@ -963,7 +963,7 @@ function setCoordinate(coord: Either2dOr3d) {
 
 Tuples can also have rest elements, which have to be an array/tuple type.
 
-```ts \
+```ts 
 type StringNumberBooleans = [string, number, ...boolean[]];
 type StringBooleansNumber = [string, ...boolean[], number];
 type BooleansStringNumber = [...boolean[], string, number];
