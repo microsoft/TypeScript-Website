@@ -71,7 +71,7 @@ let myName: string = "Alice";
 ```
 
 > TypeScript doesn't use "types on the left"-style declarations like `int x = 0;`
-> Type annotations will always go _after_ the thing being typed.
+> Type annotations will always go _after_ the identifier being typed.
 
 In most cases, though, this isn't needed.
 Wherever possible, TypeScript tries to automatically _infer_ the types in your code.
