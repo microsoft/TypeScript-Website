@@ -673,6 +673,67 @@ Turns to:
 > }
 > ```
 
+#### `multiFileErrors.ts`
+
+```ts
+// @filename: sum.ts
+export function sum(a: number, b: number): number {
+  return a + b
+}
+
+// @filename: ok.ts
+import { sum } from "./sum"
+sum(1, 2)
+
+// @filename: error.ts
+// @errors: 2345
+import { sum } from "./sum"
+sum(4, "woops")
+```
+
+Turns to:
+
+> ```ts
+> // @filename: sum.ts
+> export function sum(a: number, b: number): number {
+>   return a + b
+> }
+>
+> // @filename: ok.ts
+> import { sum } from "./sum"
+> sum(1, 2)
+>
+> // @filename: error.ts
+> import { sum } from "./sum"
+> sum(4, "woops")
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [],
+>   "staticQuickInfos": "[ 9 items ]",
+>   "errors": [
+>     {
+>       "category": 1,
+>       "code": 2345,
+>       "length": 7,
+>       "start": 208,
+>       "line": 11,
+>       "character": 7,
+>       "renderedMessage": "Argument of type 'string' is not assignable to parameter of type 'number'.",
+>       "id": "err-2345-35-7"
+>     }
+>   ],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAzgV1QHQAu2AUPAB4AOA9gE5GiS6IDGR0NiO+AFMlkT4ARvDoAaUMMEixAShmpRdUAG9SoUHXhFcdbslABqKaQC+pUiAgwEKdFhoBrYmWipaDNT1SgzTOhpfACICYDxUYNII3gBGSQAmOUtrKDgkNExQMUC6VyswcBz6bCwEgGYAFgBWUndPRlUfPwCg0FDw-CiYyslggHcaGipsYOSgA",
+>   "tags": []
+> }
+> ```
+
 #### `query.ts`
 
 ```ts

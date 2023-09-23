@@ -461,4 +461,7 @@
 .handbook-on-this-page-section-list {
   overflow: auto;
   max-height: 80vh;
+  ul {
+    padding-left: .5em !important;
+  }
 }
