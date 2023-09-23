@@ -97,15 +97,15 @@ const handbookPages = [
     title: "Modules Reference",
     summary: "How TypeScript models JavaScript modules.",
     items: [
-      { file: "modules-reference/Introduction.md" },
-      { file: "modules-reference/Theory.md" },
+      { title: "Introduction", file: "modules-reference/Introduction.md" },
+      { title: "Theory", file: "modules-reference/Theory.md" },
       {
         title: "Guides",
         items: [
-          { file: "modules-reference/guides/Choosing Compiler Options.md" },
+          { title: "Choosing Compiler Options", file: "modules-reference/guides/Choosing Compiler Options.md" },
         ]
       },
-      { file: "modules-reference/Reference.md" },
+      { title: "Reference", file: "modules-reference/Reference.md" },
       {
         title: "Appendices",
         items: [
