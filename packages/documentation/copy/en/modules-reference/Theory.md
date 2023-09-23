@@ -1,5 +1,5 @@
 ---
-title: Modules Reference - Theory
+title: Theory
 layout: docs
 permalink: /docs/handbook/modules/theory.html
 oneline: How TypeScript models JavaScript modules

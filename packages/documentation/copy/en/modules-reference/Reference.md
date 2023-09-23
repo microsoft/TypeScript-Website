@@ -1,5 +1,5 @@
 ---
-title: Modules Reference
+title: Reference
 layout: docs
 permalink: /docs/handbook/modules/reference.html
 oneline: Module syntax and compiler options reference
