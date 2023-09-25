@@ -72,34 +72,11 @@ It’s worth taking a step back here and clarifying what the _goal_ is. As soon 
 
 By following the specification, it was easy enough for transpilers to find a set of transformations that made the semantics of their transpiled CommonJS outputs match the specified semantics of their ESM inputs (arrows represent imports):
 
-```mermaid
-graph TB
-  subgraph Transpiled[ESM transpiled to CJS]
-    direction TB
-    C[Importing module] -- designed based on spec --> D[Imported module]
-  end
-  subgraph ESM
-    direction TB
-    A[Importing module] -- specified behavior --> B[Imported module]
-  end
-```
+![](../diagrams/esm-cjs-interop.mmd-1.svg)
 
 However, CommonJS modules (written as CommonJS, not as ESM transpiled to CommonJS) were already well-established in the Node.js ecosystem, so it was inevitable that modules written as ESM and transpiled to CJS would start “importing” modules written as CommonJS. The behavior for this interoperability, though, was not specified by ES2015, and didn’t yet exist in any real runtime.
 
-```mermaid
-graph TD
-  subgraph Transpiled[ESM transpiled to CJS]
-    C[Importing module] -- designed based on spec --> D[Imported module]
-  end
-  subgraph CJS[True CJS]
-    E[Imported module]
-  end
-  subgraph ESM
-    A[Importing module] -- specified behavior --> B[Imported module]
-  end
-  A -. unspecified behavior .-> E
-  C .->|"<span style='font-size: 3em'>❓🤷🏻‍♂️❓</span>"| E
-```
+![](../diagrams/esm-cjs-interop.mmd-2.svg)
 
 Even if transpiler authors did nothing, a behavior would emerge from the existing semantics between the `require` calls they emitted in transpiled code and the `exports` defined in existing CJS modules. And to allow users to transition seamlessly from transpiled ESM to true ESM once their runtime supported it, that behavior would have to match the one the runtime chose to implement.
 
@@ -353,7 +330,7 @@ import express = require("express");
 
 Examples like this have led to conventional wisdom that says libraries should _not_ enable `esModuleInterop`. This advice is a reasonable start, but we’ve looked at examples where the type of a namespace import changes, potentially _introducing_ an error, when enabling `esModuleInterop`. So whether libraries compile with or without `esModuleInterop`, they run the risk of writing syntax that makes their choice infectious.
 
-Library authors who want to go above and beyond to ensure maximum compatibility would do well to validate their declaration files against a matrix of compiler options. But using `verbatimModuleSyntax` completely sidesteps the issue with `esModuleInterop` by forcing CommonJS-emitting files to use CommonJS-style import and export syntax. Additionally, since `esModuleInterop` only affects CommonJS, so as more libraries move to ESM-only publishing over time, the relevance of this issue will decline.
+Library authors who want to go above and beyond to ensure maximum compatibility would do well to validate their declaration files against a matrix of compiler options. But using `verbatimModuleSyntax` completely sidesteps the issue with `esModuleInterop` by forcing CommonJS-emitting files to use CommonJS-style import and export syntax. Additionally, since `esModuleInterop` only affects CommonJS, as more libraries move to ESM-only publishing over time, the relevance of this issue will decline.
 
 <!--
 

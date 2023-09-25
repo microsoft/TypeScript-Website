@@ -1,0 +1,8 @@
+Some of this content uses mermaid diagrams. We could render them as part of the website build with gatsby-remark-mermaid, but that requires puppeteer/Chromium, which has historically caused a lot of cross-platform build issues. These diagrams should not change often, so I’m just going to store the source here and generate the SVGs manually.
+
+Example:
+
+```sh
+npm install -g @mermaid-js/mermaid-cli
+mmdc -i packages/documentation/copy/en/modules-reference/diagrams/esm-cjs-interop.md
+```

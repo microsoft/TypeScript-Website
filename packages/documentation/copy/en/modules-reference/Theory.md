@@ -250,29 +250,11 @@ add(1, 2);
 
 When we see the import from `"./math"`, it might be tempting to think, “This is how one TypeScript file refers to another. The compiler follows this (extensionless) path in order to assign a type to `add`.”
 
-```mermaid
-graph LR
-  main.ts -- "#quot;./math#quot;" --> math.ts
-```
+<img src="./diagrams/theory.md-1.svg" width="400" />
 
 This isn’t entirely wrong, but the reality is deeper. The resolution of `"./math"` (and subsequently, the type of `add`) need to reflect the reality of what happens at runtime to the _output_ files. A more robust way to think about this process would look like this:
 
-```mermaid
-graph LR
-  subgraph Output files
-    main.js
-    style main.js stroke-dasharray: 5 5
-    math.js
-    style math.js stroke-dasharray: 5 5
-  end
-  subgraph Input files
-    main.ts
-    math.ts
-  end
-  main.ts -. Map to output .-> main.js
-  main.js -- "#quot;./math#quot;" --> math.js
-  math.js -. Map to input .-> math.ts
-```
+![](./diagrams/theory.md-2.svg)
 
 This model makes it clear that for TypeScript, module resolution is mostly a matter of accurately modeling the host’s module resolution algorithm between output files, with a little bit of remapping applied to find type information. Let’s look at another example that appears unintuitive through the lens of the simple model, but makes perfect sense with the robust model:
 
@@ -293,22 +275,7 @@ add(1, 2);
 
 Node.js ESM `import` declarations use a strict module resolution algorithm that requires relative paths to include file extensions. When we only think about input files, it’s a little strange that `"./math.mjs"` seems to resolve to `math.mts`. Since we’re using an `outDir` to put compiled outputs in a different directory, `math.mjs` doesn’t even exist next to `main.mts`! Why should this resolve? With our new mental model, it’s no problem:
 
-```mermaid
-graph LR
-  subgraph Output files
-    dist/main.mjs
-    style dist/main.mjs stroke-dasharray: 5 5
-    dist/math.mjs
-    style dist/math.mjs stroke-dasharray: 5 5
-  end
-  subgraph Input files
-    src/main.mts
-    src/math.mts
-  end
-  src/main.mts -. Map to output .-> dist/main.mjs
-  dist/main.mjs -- "#quot;./math.mjs#quot;" --> dist/math.mjs
-  dist/math.mjs -. Map to input .-> src/math.mts
-```
+![](./diagrams/theory.md-3.svg)
 
 Understanding this mental model may not immediately eliminate the strangeness of seeing output file extensions in input files, and it’s natural to think in terms of shortcuts: “`"./math.mjs"` refers to the input file `math.mts`. I have to write the output extension, but the compiler knows to look for `.mts` when I write `.mjs`.” This shortcut is even how the compiler works internally, but the more robust mental model explains _why_ module resolution in TypeScript works this way: given the constraint that the module specifier in the output file will be [the same](#module-specifiers-are-not-transformed) as the module specifier in the input file, this is the only process that accomplishes our two goals of validating output files and assigning types.
 
@@ -318,13 +285,7 @@ In the previous example, we saw the “remapping” part of module resolution wo
 
 This is where declaration files (`.d.ts`, `.d.mts`, etc.) come into play. The best way to understand how declaration files are interpreted is to understand where they come from. When you run `tsc --declaration` on an input file, you get one output JavaScript file and one output declaration file:
 
-```mermaid
-graph TB
-  main.ts --> main.js
-  main.ts --> main.d.ts
-  style main.js stroke-dasharray: 5 5
-  style main.d.ts stroke-dasharray: 15 4
-```
+<img src="./diagrams/theory.md-4.svg" width="400" />
 
 Because of this relationship, the compiler _assumes_ that wherever it sees a declaration file, there is a corresponding JavaScript file that is perfectly described by the type information in the declaration file. For performance reasons, in every module resolution mode, the compiler always looks for TypeScript and declaration files first, and if it finds one, it doesn’t continue looking for the corresponding JavaScript file—if it finds a TypeScript input file, it knows a JavaScript file _will_ exist after compilation, and if it finds a declaration file, it knows a compilation (perhaps someone else’s) already happened and created a JavaScript file at the same time as the declaration file.
 
