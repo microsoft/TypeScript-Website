@@ -204,7 +204,7 @@ for (const lang of langs) {
   const langMap = new Map();
   langInfo[lang] = langMap;
 
-  const allEnPages = getFilePaths(enRoot);
+  const allEnPages = getFilePaths(enRoot).filter((f) => !f.includes("/modules-reference/diagrams/"));
   for (const page of allEnPages) {
     const relativeToLangPath = page.replace(enRoot, "");
     const localPage = join(copyPath, lang + relativeToLangPath);
