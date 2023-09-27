@@ -839,15 +839,3 @@ Individual declarations in merged declaration 'replaceInFile' must be all export
 ```
 
 For more information, [see the change here](https://github.com/microsoft/TypeScript/pull/54659).
-
-## What's Next?
-
-At this point, we do not expect any major changes to TypeScript 5.2.
-Over the next 2 weeks we're seeking feedback, and we only expect to introduce low-risk changes for new behaviors, and address critical issues.
-[You can take a look at the 5.2 iteration plan for more information on target dates and more](https://github.com/microsoft/TypeScript/issues/54298).
-
-So please try out the RC today and let us know what you think!
-
-Happy Hacking!
-
-\- Daniel Rosenwasser and the TypeScript Team
