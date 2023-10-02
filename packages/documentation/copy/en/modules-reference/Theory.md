@@ -56,7 +56,7 @@ Accordingly, when TypeScript detects that a file is a CommonJS or ECMAScript mod
 
 ## TypeScript’s job concerning modules
 
-The TypeScript compiler’s chief goal is to look at input code and tell the author about problems the output code might encounter at runtime. To do this, the compiler needs to know some things about the code’s intended runtime environment—what globals are available, for example. When the input code is a module, there are several additional questions the compiler needs to answer in order to do its job. Let’s use a few lines of input code as an example to think about all the information needed to analyze it:
+The TypeScript compiler’s chief goal is to prevent certain kinds of runtime errors by catching them at compile time. With or without modules involved, the compiler needs to know about the code’s intended runtime environment—what globals are available, for example. When modules are involved, there are several additional questions the compiler needs to answer in order to do its job. Let’s use a few lines of input code as an example to think about all the information needed to analyze it:
 
 ```ts
 import sayHello from "greetings";
@@ -65,16 +65,19 @@ sayHello("world");
 
 To check this file, the compiler needs to know the type of `sayHello` (is it a function that can accept one string argument?), which opens quite a few additional questions:
 
-1. What kind of module does the module system expect to find at the location where I output this file?
-2. What output JavaScript code should I emit for this input?
-3. When the module system loads that output code, where will it look to find the module specified by `"greetings"`? Will the lookup succeed?
-4. What kind of module is the file resolved by that lookup?
-5. Does the module system allow the kind of module detected in (1) to reference the kind of module detected in (4) with the syntax decided in (2)?
-6. Once the `"greetings"` module has been analyzed, what piece of that module is bound to `sayHello`?
+1. Will the module system load this TypeScript file directly, or will it load a JavaScript file that I (or another compiler) generate from this TypeScript file?
+2. What _kind_ of module does the module system expect to find, given the file name it will load and its location on disk?
+3. If output JavaScript is being emitted, how will the module syntax present in this file be transformed in the output code?
+4. Where will the module system look to find the module specified by `"greetings"`? Will the lookup succeed?
+5. What kind of module is the file resolved by that lookup?
+6. Does the module system allow the kind of module detected in (2) to reference the kind of module detected in (5) with the syntax decided in (3)?
+7. Once the `"greetings"` module has been analyzed, what piece of that module is bound to `sayHello`?
 
-Notice that all of these questions depend on characteristics of the _host_—the system that ultimately consumes the output code to direct its module loading behavior, typically either a runtime (like Node.js) or bundler (like Webpack). The ECMAScript specification defines how ESM imports and exports match up with each other, but it doesn’t specify how the file lookup in (3), known as _module resolution_, happens, and it doesn’t say anything about other module systems like CommonJS. So runtimes and bundlers, especially those that want to support both ESM and CJS, have a lot of freedom to design their own rules. Consequently, the way TypeScript should answer the questions above can vary dramatically depending on where the code is intended to run. There’s no single right answer, so the compiler must be told the rules through configuration options.
+Notice that all of these questions depend on characteristics of the _host_—the system that ultimately consumes the output JavaScript (or raw TypeScript, as the case may be) to direct its module loading behavior, typically either a runtime (like Node.js) or bundler (like Webpack).
 
-The other key idea to keep in mind is that TypeScript always has to think about these questions in terms of its _output_ JavaScript files, not its _input_ TypeScript (or JavaScript!) files. Over the course of this document, we’ll examine a few concrete examples of where this matters. But for now, we can summarize TypeScript’s job when it comes to modules in those terms:
+The ECMAScript specification defines how ESM imports and exports link up with each other, but it doesn’t specify how the file lookup in (4), known as _module resolution_, happens, and it doesn’t say anything about other module systems like CommonJS. So runtimes and bundlers, especially those that want to support both ESM and CJS, have a lot of freedom to design their own rules. Consequently, the way TypeScript should answer the questions above can vary dramatically depending on where the code is intended to run. There’s no single right answer, so the compiler must be told the rules through configuration options.
+
+The other key idea to keep in mind is that TypeScript almost always thinks about these questions in terms of its _output_ JavaScript files, not its _input_ TypeScript (or JavaScript!) files. Today, some runtimes and bundlers support loading TypeScript files directly, and in those cases, it doesn’t make sense to think about separate input and output files. Most of this document discusses cases where TypeScript files are compiled to JavaScript files, which in turn are loaded by the runtime module system. Examining these cases is essential for building an understanding of the compiler’s options and behavior—it’s easier to start there and simplify when thinking about esbuild, Bun, and other [TypeScript-first runtimes and bundlers](#module-resolution-for-bundlers-typescript-runtimes-and-nodejs-loaders). So for now, we can summarize TypeScript’s job when it comes to modules in terms of output files:
 
 Understand the **rules of the host** enough
 
