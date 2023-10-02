@@ -37,12 +37,14 @@ Single-file transpilers don't know whether `someType` produces a value or not, s
 
 #### Non-Module Files
 
-If `isolatedModules` is set, all implementation files must be _modules_ (which means it has some form of `import`/`export`). An error occurs if any file isn't a module:
+If `isolatedModules` is set, namespaces are only allowed in _modules_ (which means it has some form of `import`/`export`). An error occurs if a namespace is found in a module:
 
 ```ts twoslash
-// @errors: 1208
+// @errors: 1277
 // @isolatedModules
-function fn() {}
+namespace Instantiated {
+ export const x = 1;
+}
 ```
 
 This restriction doesn't apply to `.d.ts` files.
