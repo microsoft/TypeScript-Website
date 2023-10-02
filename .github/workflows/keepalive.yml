@@ -1,0 +1,21 @@
+name: Keep alive
+on:
+  schedule:
+    - cron: "0 0 * * *"
+    
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          if [[ $(git log --format="%H" --since "50 days" | head -c1 | wc -c) == 0 ]]; then
+            git config user.email "typescriptbot@microsoft.com"
+            git config user.name "TypeScript Bot"
+            git commit --allow-empty -m "Automated commit to keep GitHub Actions active"
+            git push
+          fi
