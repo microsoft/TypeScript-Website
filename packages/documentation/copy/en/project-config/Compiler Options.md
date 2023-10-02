@@ -375,7 +375,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify the base directory to resolve non-relative module names.</p>
+<p>Specify the base directory to resolve bare specifier module names.</p>
 </td></tr>
 
 <tr class='odd' name='charset'>

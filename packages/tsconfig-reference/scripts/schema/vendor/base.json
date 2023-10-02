@@ -658,9 +658,9 @@
               "markdownDescription": "Emit a v8 CPU profile of the compiler run for debugging.\n\nSee more: https://www.typescriptlang.org/tsconfig#generateCpuProfile"
             },
             "baseUrl": {
-              "description": "Specify the base directory to resolve non-relative module names.",
+              "description": "Specify the base directory to resolve bare specifier module names.",
               "type": "string",
-              "markdownDescription": "Specify the base directory to resolve non-relative module names.\n\nSee more: https://www.typescriptlang.org/tsconfig#baseUrl"
+              "markdownDescription": "Specify the base directory to resolve bare specifier module names.\n\nSee more: https://www.typescriptlang.org/tsconfig#baseUrl"
             },
             "paths": {
               "description": "Specify a set of entries that re-map imports to additional lookup locations.",
