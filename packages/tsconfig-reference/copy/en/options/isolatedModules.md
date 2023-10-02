@@ -37,7 +37,7 @@ Single-file transpilers don't know whether `someType` produces a value or not, s
 
 #### Non-Module Files
 
-If `isolatedModules` is set, namespaces are only allowed in _modules_ (which means it has some form of `import`/`export`). An error occurs if a namespace is found in a module:
+If `isolatedModules` is set, namespaces are only allowed in _modules_ (which means it has some form of `import`/`export`). An error occurs if a namespace is found in a non-module file:
 
 ```ts twoslash
 // @errors: 1277
