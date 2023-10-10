@@ -258,11 +258,11 @@ add(1, 2);
 
 When we see the import from `"./math"`, it might be tempting to think, “This is how one TypeScript file refers to another. The compiler follows this (extensionless) path in order to assign a type to `add`.”
 
-<img src="./diagrams/theory.md-1.svg" width="400" />
+<img src="./diagrams/theory.md-1.svg" width="400" alt="A simple flowchart diagram. A file (rectangle node) main.ts resolves (labeled arrow) through module specifier './math' to another file math.ts." />
 
 This isn’t entirely wrong, but the reality is deeper. The resolution of `"./math"` (and subsequently, the type of `add`) need to reflect the reality of what happens at runtime to the _output_ files. A more robust way to think about this process would look like this:
 
-![](./diagrams/theory.md-2.svg)
+![A flowchart diagram with two groups of files: Input files and Output files. main.ts (an input file) maps to output file main.js, which resolves through the module specifier "./math" to math.js (another output file), which maps back to the input file math.ts.](./diagrams/theory.md-2.svg)
 
 This model makes it clear that for TypeScript, module resolution is mostly a matter of accurately modeling the host’s module resolution algorithm between output files, with a little bit of remapping applied to find type information. Let’s look at another example that appears unintuitive through the lens of the simple model, but makes perfect sense with the robust model:
 
@@ -283,7 +283,7 @@ add(1, 2);
 
 Node.js ESM `import` declarations use a strict module resolution algorithm that requires relative paths to include file extensions. When we only think about input files, it’s a little strange that `"./math.mjs"` seems to resolve to `math.mts`. Since we’re using an `outDir` to put compiled outputs in a different directory, `math.mjs` doesn’t even exist next to `main.mts`! Why should this resolve? With our new mental model, it’s no problem:
 
-![](./diagrams/theory.md-3.svg)
+![A flowchart diagram with identical structure to the one above. There are two groups of files: Input files and Output files. src/main.mts (an input file) maps to output file dist/main.mjs, which resolves through module specifier "./math.mjs" to dist/math.mjs (another output file), which maps back to input file src/math.mts.](./diagrams/theory.md-3.svg)
 
 Understanding this mental model may not immediately eliminate the strangeness of seeing output file extensions in input files, and it’s natural to think in terms of shortcuts: “`"./math.mjs"` refers to the input file `math.mts`. I have to write the output extension, but the compiler knows to look for `.mts` when I write `.mjs`.” This shortcut is even how the compiler works internally, but the more robust mental model explains _why_ module resolution in TypeScript works this way: given the constraint that the module specifier in the output file will be [the same](#module-specifiers-are-not-transformed) as the module specifier in the input file, this is the only process that accomplishes our two goals of validating output files and assigning types.
 
@@ -293,7 +293,7 @@ In the previous example, we saw the “remapping” part of module resolution wo
 
 This is where declaration files (`.d.ts`, `.d.mts`, etc.) come into play. The best way to understand how declaration files are interpreted is to understand where they come from. When you run `tsc --declaration` on an input file, you get one output JavaScript file and one output declaration file:
 
-<img src="./diagrams/theory.md-4.svg" width="400" />
+<img src="./diagrams/declaration-files.svg" width="400" alt="A diagram showing the relationship between different file types. A .ts file (top) has two arrows labeled 'generates' flowing to a .js file (bottom left) and a .d.ts file (bottom right). Another arrow labeled 'implies' points from the .d.ts file to the .js file." />
 
 Because of this relationship, the compiler _assumes_ that wherever it sees a declaration file, there is a corresponding JavaScript file that is perfectly described by the type information in the declaration file. For performance reasons, in every module resolution mode, the compiler always looks for TypeScript and declaration files first, and if it finds one, it doesn’t continue looking for the corresponding JavaScript file—if it finds a TypeScript input file, it knows a JavaScript file _will_ exist after compilation, and if it finds a declaration file, it knows a compilation (perhaps someone else’s) already happened and created a JavaScript file at the same time as the declaration file.
 

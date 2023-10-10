@@ -6,3 +6,5 @@ Example:
 npm install -g @mermaid-js/mermaid-cli
 mmdc -i packages/documentation/copy/en/modules-reference/diagrams/esm-cjs-interop.md
 ```
+
+declaration-files.svg is a non-Mermaid replacement for theory.md-4.svg. I made it for a talk one time and it’s better than what Mermaid can do with a flowchart.
