@@ -166,13 +166,18 @@ Let’s examine why we picked each of these settings:
 
 ### Considerations for bundling libraries
 
-If you’re using a bundler to emit your library, then all your (non-externalized) imports will be processed by the bundler with known behavior, not by your users’ unknowable environments. In this case, you can use `"module": "esnext"` and `"moduleResolution": "bundler"`, but only with a significant caveat: you must ensure that your declaration files get bundled as well. Recall the [first rule of declaration files](/docs/handbook/modules/theory.html#the-role-of-declaration-files): every declaration file represents exactly one JavaScript file. If you use `"moduleResolution": "bundler"` and use a bundler to emit an ESM bundle while using `tsc` to emit many individual declaration files, your declaration files may cause errors when consumed under `"module": "nodenext"`. For example, an input file like:
+If you’re using a bundler to emit your library, then all your (non-externalized) imports will be processed by the bundler with known behavior, not by your users’ unknowable environments. In this case, you can use `"module": "esnext"` and `"moduleResolution": "bundler"`, but only with two caveats:
 
-```ts
-import { Component } from "./extensionless-relative-import";
-```
+1. TypeScript cannot model module resolution when some files are bundled and some are externalized. When bundling libraries with dependencies, it’s common to bundle the first-party library source code into a single file, but leave imports of external dependencies as real imports in the bundled output. This essentially means module resolution is split between the bundler and the end user’s environment. To model this in TypeScript, you would want to process bundled imports with `"moduleResolution": "bundler"` and externalized imports with `"moduleResolution": "nodenext"` (or with multiple options to check that everything will work in a range of end-user environments). But TypeScript cannot be configured to use two different module resolution settings in the same compilation. As a consequence, using `"moduleResolution": "bundler"` may allow imports of externalized dependencies that would work in a bundler but are unsafe in Node.js. On the other hand, using `"moduleResolution": "nodenext"` may impose overly strict requirements on bundled imports.
+2. You must ensure that your declaration files get bundled as well. Recall the [first rule of declaration files](/docs/handbook/modules/theory.html#the-role-of-declaration-files): every declaration file represents exactly one JavaScript file. If you use `"moduleResolution": "bundler"` and use a bundler to emit an ESM bundle while using `tsc` to emit many individual declaration files, your declaration files may cause errors when consumed under `"module": "nodenext"`. For example, an input file like:
 
-will have its import erased by the JS bundler, but produce a declaration file with an identical import statement. That import statement, however, will contain an invalid module specifier in Node.js, since it’s missing a file extension. For Node.js users, TypeScript will error on the declaration file and infect types referencing `Component` with `any`, assuming the dependency will crash at runtime.
+   ```ts
+   import { Component } from "./extensionless-relative-import";
+   ```
+
+   will have its import erased by the JS bundler, but produce a declaration file with an identical import statement. That import statement, however, will contain an invalid module specifier in Node.js, since it’s missing a file extension. For Node.js users, TypeScript will error on the declaration file and infect types referencing `Component` with `any`, assuming the dependency will crash at runtime.
+
+   If your TypeScript bundler does not produce bundled declaration files, use `"moduleResolution": "nodenext"` to ensure that the imports preserved in your declaration files will be compatible with end-users’ TypeScript settings. Even better, consider not bundling your library.
 
 ### Notes on dual-emit solutions
 
