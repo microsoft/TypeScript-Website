@@ -148,7 +148,28 @@ Choosing compilation settings as a library author is a fundamentally different p
 
 Let’s examine why we picked each of these settings:
 
-- **`module: "node16"`**. When a codebase is compatible with Node.js’s module system, it almost always works in bundlers as well. If you’re using a third-party emitter to emit ESM outputs, ensure that you set `"type": "module"` in your package.json so TypeScript checks your code as ESM, which uses a stricter module resolution algorithm in Node.js than CommonJS does.
+- **`module: "node16"`**. When a codebase is compatible with Node.js’s module system, it almost always works in bundlers as well. If you’re using a third-party emitter to emit ESM outputs, ensure that you set `"type": "module"` in your package.json so TypeScript checks your code as ESM, which uses a stricter module resolution algorithm in Node.js than CommonJS does. As an example, let’s look at what would happen if a library were to compile with `"moduleResolution": "bundler"`:
+
+  ```ts
+  export * from "./utils";
+  ```
+
+  Assuming `./utils.ts` (or `./utils/index.ts`) exists, a bundler would be fine with this code, so `"moduleResolution": "bundler"` doesn’t complain. Compiled with `"module": "esnext"`, the output JavaScript for this export statement will look exactly the same as the input. If that JavaScript were published to npm, it would be usable by projects that use a bundler, but it would cause an error when run in Node.js:
+
+  ```
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module '.../node_modules/dependency/utils' imported from .../node_modules/dependency/index.js
+  Did you mean to import ./utils.js?
+  ```
+
+  On the other hand, if we had written:
+
+  ```ts
+  export * from "./utils.js";
+  ```
+
+  This would produce output that works both in Node.js _and_ in bundlers.
+
+  In short, `"moduleResolution": "bundler"` is infectious, allowing code that only works in bundlers to be produced. Likewise, `"moduleResolution": "nodenext"` is only checking that the output works in Node.js, but in most cases, module code that works in Node.js will work in other runtimes and in bundlers.
 - **``target: "es2020"``**. Setting this value to the _lowest_ ECMAScript version that you intend to support ensures the emitted code will not use language features introduced in a later version. Since `target` also implies a corresponding value for `lib`, this also ensures you don’t access globals that may not be available in older environments.
 - **`strict: true`**. Without this, you may write type-level code that ends up in your output `.d.ts` files and errors when a consumer compiles with `strict` enabled. For example, this `extends` clause:
   ```ts

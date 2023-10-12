@@ -321,7 +321,7 @@ declare function doSomething(req: express.Request): any;
 export = doSomething;
 ```
 
-Suppose this default import _only_ works with `esModuleInterop` enabled, and is an error without. The user of this dependency should _probably_ enable `esModuleInterop` anyway, but it’s generally seen as bad form for libraries to make their configurations infectious like this. It would be much better for the library to ship a declaration file like:
+Suppose this default import _only_ works with `esModuleInterop` enabled, and causes an error when a user without that option references this file. The user should _probably_ enable `esModuleInterop` anyway, but it’s generally seen as bad form for libraries to make their configurations infectious like this. It would be much better for the library to ship a declaration file like:
 
 ```ts
 import express = require("express");
