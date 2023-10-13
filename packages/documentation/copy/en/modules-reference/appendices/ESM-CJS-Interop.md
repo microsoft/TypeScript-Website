@@ -72,11 +72,11 @@ It’s worth taking a step back here and clarifying what the _goal_ is. As soon 
 
 By following the specification, it was easy enough for transpilers to find a set of transformations that made the semantics of their transpiled CommonJS outputs match the specified semantics of their ESM inputs (arrows represent imports):
 
-![](../diagrams/esm-cjs-interop.mmd-1.svg)
+![A flowchart with two similar flows side-by-side. Left: ESM. Right: ESM transpiled to CJS. In the ESM flow: "Importing module" flows to "Imported module" through arrow labeled "specified behavior". In the ESM transpiled to CJS flow: "Importing module" flows to "Imported module" through arrow labeled "designed based on spec".](../diagrams/esm-cjs-interop.mmd-1.svg)
 
 However, CommonJS modules (written as CommonJS, not as ESM transpiled to CommonJS) were already well-established in the Node.js ecosystem, so it was inevitable that modules written as ESM and transpiled to CJS would start “importing” modules written as CommonJS. The behavior for this interoperability, though, was not specified by ES2015, and didn’t yet exist in any real runtime.
 
-![](../diagrams/esm-cjs-interop.mmd-2.svg)
+![A flowchart with three areas side-by-side. Left: ESM. Middle: True CJS. Right: ESM transpiled to CJS. Left: ESM "Importing module" flows to ESM "Imported module" through arrow labeled "specified behavior," and to True CJS "Imported module" through dotted arrow labeled "unspecified behavior." Right: ESM transpiled to CJS "Importing module" flows to ESM transpiled to CJS "Imported module" through arrow labeled "designed based on spec," and to True CJS "Imported module" through dotted arrow labeled "❓🤷‍♂️❓"](../diagrams/esm-cjs-interop.mmd-2.svg)
 
 Even if transpiler authors did nothing, a behavior would emerge from the existing semantics between the `require` calls they emitted in transpiled code and the `exports` defined in existing CJS modules. And to allow users to transition seamlessly from transpiled ESM to true ESM once their runtime supported it, that behavior would have to match the one the runtime chose to implement.
 
