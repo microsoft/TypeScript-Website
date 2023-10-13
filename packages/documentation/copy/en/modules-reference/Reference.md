@@ -47,7 +47,7 @@ let x: mod.SomeType; // Ok
 
 ### Type-only imports and exports
 
-When emitting imports and exports to JavaScript, by default, TypeScript automatically elides imports that are only used in type positions and exports that only refer to types. Type-only imports and exports can be used to force this behavior and make the elision explicit. Import declarations written with `import type`, export declarations written with `export type { ... }`, and import or export specifiers prefixed with the `type` keyword are all guaranteed to be elided from the output JavaScript.
+When emitting imports and exports to JavaScript, by default, TypeScript automatically elides (does not emit) imports that are only used in type positions and exports that only refer to types. Type-only imports and exports can be used to force this behavior and make the elision explicit. Import declarations written with `import type`, export declarations written with `export type { ... }`, and import or export specifiers prefixed with the `type` keyword are all guaranteed to be elided from the output JavaScript.
 
 ```ts
 // @Filename: main.ts
