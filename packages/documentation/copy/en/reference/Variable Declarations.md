@@ -704,3 +704,108 @@ clone.m(); // error!
 
 Second, the TypeScript compiler doesn't allow spreads of type parameters from generic functions.
 That feature is expected in future versions of the language.
+
+## `using` declarations
+
+`using` declarations are an upcoming feature for JavaScript that are part of the 
+[Stage 3 Explicit Resource Management](https://github.com/tc39/proposal-explicit-resource-management) proposal. A `using`
+declaration is much like a `const` declaration, except that it couples the _lifetime_ of the value bound to the declaration with
+the _scope_ of the variable.
+
+When control exits the block containing a `using` declaration, the `[Symbol.dispose]()` method of the
+declared value is executed, which allows that value to perform cleanup:
+
+```ts
+function f() {
+  using x = new C();
+  doSomethingWith(x);
+} // `x[Symbol.dispose]()` is called
+```
+
+At runtime, this has an affect _roughly_ similar to the following:
+
+```ts
+function f() {
+  const x = new C();
+  try {
+    doSomethingWith(x);
+  }
+  finally {
+    x[Symbol.dispose]();
+  }
+}
+```
+
+It's important to note that the value can be `null` or `undefined`, in which case nothing is disposed at the end of the block:
+
+```ts
+{
+  using x = b ? new C() : null;
+}
+```
+
+`using` declarations are extremely useful for avoiding memory leaks when working with JavaScript object's that hold on to native
+references like file handles, or scoped operations like tracing:
+
+```ts
+{
+  using file = await openFile();
+  file.write(text);
+  doSomethingThatMayThrow();
+} // `file` is disposed, even if an error is thrown
+```
+
+Unlike `var`, `let`, and `const`, `using` declarations do not support destructuring.
+
+## `await using` declarations
+
+Some resources or operations may have cleanup that needs to be performed asynchronously. To accommodate this, the
+[Explicit Resource Management](https://github.com/tc39/proposal-explicit-resource-management) proposal also introduces the
+`await using` declaration:
+
+```ts
+async function f() {
+  await using x = new C();
+} // `await x[Symbol.asyncDispose]()` is invoked
+```
+
+An `await using` declaration invokes, and _awaits_, its value's `[Symbol.asyncDispose]()` method as control leaves the containing
+block. This allows for asynchronous cleanup, such as a database transaction performing a rollback or commit.
+
+It's important to note that there is a small caveat with this behavior if you are using an `await using` declaration in a `async` function that returns a `Promise` without `await`-ing it:
+
+```ts
+function g() {
+  return Promise.reject("error!");
+}
+
+async function f() {
+  await using x = new C();
+  return g(); // missing an `await`
+}
+```
+
+Because the returned promise isn't `await`-ed, it's possible that the JavaScript runtime may report an unhandled rejection since
+it ends up paused while `await`-ing the asynchronous disposal of `x` without having subscribed to the return promise. It's
+important to note that this is an existing concern with `async` functions that use `try..finally` and isn't limited to
+`await using`:
+
+```ts
+async function f() {
+  try {
+    return g(); // also reports an unhandled rejection
+  }
+  finally {
+    await somethingElse();
+  }
+}
+```
+
+To avoid this situation, it is recommended that you `await` your return value if it may be a `Promise`:
+
+```ts
+async function f() {
+  await using x = new C();
+  return await g();
+}
+```
