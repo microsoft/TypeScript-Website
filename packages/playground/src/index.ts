@@ -295,7 +295,7 @@ export const setupPlayground = (
 
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
-  const allVersions = [...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f)), "Nightly"]
+  const allVersions = ["Nightly", ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f))]
 
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
