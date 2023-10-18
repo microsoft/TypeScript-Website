@@ -14,17 +14,17 @@ For example:
 ```ts
 // Each property can be a string or an RGB tuple.
 const palette = {
-    red: [255, 0, 0],
-    green: "#00ff00",
+    red: "#ff0000",
+    green: [0, 255, 0],
     bleu: [0, 0, 255]
 //  ^^^^ sacrebleu - we've made a typo!
 };
 
-// We want to be able to use array methods on 'red'...
-const redComponent = palette.red.at(0);
+// We want to be able to use string methods on 'red'...
+const redComponent = palette.red.toUpperCase();
 
-// or string methods on 'green'...
-const greenNormalized = palette.green.toUpperCase();
+// or array methods on 'green'...
+const greenNormalized = palette.green.at(1);
 ```
 
 Notice that we've written `bleu`, whereas we probably should have written `blue`.
@@ -36,14 +36,14 @@ type Colors = "red" | "green" | "blue";
 type RGB = [red: number, green: number, blue: number];
 
 const palette: Record<Colors, string | RGB> = {
-    red: [255, 0, 0],
-    green: "#00ff00",
+    red: "#ff0000",
+    green: [0, 255, 0],
     bleu: [0, 0, 255]
 //  ~~~~ The typo is now correctly detected
 };
 
-// But we now have an undesirable error here - 'palette.red' "could" be a string.
-const redComponent = palette.red.at(0);
+// But we now have an undesirable error here - 'palette.red' "could" be an array.
+const redComponent = palette.red.toUpperCase();
 ```
 
 The new `satisfies` operator lets us validate that the type of an expression matches some type, without changing the resulting type of that expression.
@@ -55,15 +55,15 @@ type Colors = "red" | "green" | "blue";
 type RGB = [red: number, green: number, blue: number];
 
 const palette = {
-    red: [255, 0, 0],
-    green: "#00ff00",
+    red: "#ff0000",
+    green: [0, 255, 0],
     bleu: [0, 0, 255]
 //  ~~~~ The typo is now caught!
 } satisfies Record<Colors, string | RGB>;
 
 // Both of these methods are still accessible!
-const redComponent = palette.red.at(0);
-const greenNormalized = palette.green.toUpperCase();
+const redComponent = palette.red.toUpperCase();
+const greenNormalized = palette.green.at(1);
 ```
 
 `satisfies` can be used to catch lots of possible errors.
@@ -92,15 +92,15 @@ In that case, we can also ensure that all of an object's property values conform
 type RGB = [red: number, green: number, blue: number];
 
 const palette = {
-    red: [255, 0, 0],
-    green: "#00ff00",
+    red: "#ff0000",
+    green: [0, 255, 0],
     blue: [0, 0]
     //    ~~~~~~ error!
 } satisfies Record<string, string | RGB>;
 
 // Information about each property is still maintained.
-const redComponent = palette.red.at(0);
-const greenNormalized = palette.green.toUpperCase();
+const redComponent = palette.red.toUpperCase();
+const greenNormalized = palette.green.at(1);
 ```
 
 For more examples, you can see the [issue proposing this](https://github.com/microsoft/TypeScript/issues/47920) and [the implementing pull request](https://github.com/microsoft/TypeScript/pull/46827).
