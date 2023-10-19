@@ -959,7 +959,7 @@ for (using x = getReader(); !x.eof; x.next()) {
 In this case, the lifetime of `x` is scoped to the entire `for` statement and is only disposed when control leaves the
 loop due to `break`, `return`, `throw`, or when the loop condition is false.
 
-In addition, both declarations can also be used in a `for..of` statement:
+In addition to `for` statements, both declarations can also be used in `for..of` statements:
 
 ```ts
 function * g() {
