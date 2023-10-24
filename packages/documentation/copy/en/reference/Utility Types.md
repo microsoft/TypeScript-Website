@@ -320,6 +320,8 @@ Released:
 
 Constructs a tuple type from the types used in the parameters of a function type `Type`.
 
+For overloaded functions, this will be the parameters of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
+
 ##### Example
 
 ```ts twoslash
@@ -388,6 +390,8 @@ Released:
 </blockquote>
 
 Constructs a type consisting of the return type of function `Type`.
+
+For overloaded functions, this will be the return type of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
 
 ##### Example
 

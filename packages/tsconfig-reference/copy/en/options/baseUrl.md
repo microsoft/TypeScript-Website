@@ -1,9 +1,9 @@
 ---
 display: "Base URL"
-oneline: "Specify the base directory to resolve non-relative module names."
+oneline: "Specify the base directory to resolve bare specifier module names."
 ---
 
-Sets a base directory from which to resolve non-relative module names. For example, in the directory structure:
+Sets a base directory from which to resolve bare specifier module names. For example, in the directory structure:
 
 ```
 project
