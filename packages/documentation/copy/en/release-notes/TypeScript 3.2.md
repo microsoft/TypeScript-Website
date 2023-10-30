@@ -95,7 +95,7 @@ let bar: bigint = 100n; // a BigInt literal
 // This bad boy returns ints that can get *so* big!
 function fibonacci(n: bigint) {
   let result = 1n;
-  for (let last = 0n, i = 0n; i < n; i++) {
+  for (let last = 0n, i = 0n; i < n-1n; i++) {
     const current = result;
     result += last;
     last = current;
