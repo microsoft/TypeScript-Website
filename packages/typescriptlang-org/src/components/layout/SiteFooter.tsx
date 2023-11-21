@@ -116,7 +116,6 @@ const communityLinks = [
   {
     title: "@TypeScript",
     url: "https://twitter.com/TypeScript",
-    me: true,
   },
   {
     title: "Mastodon",
