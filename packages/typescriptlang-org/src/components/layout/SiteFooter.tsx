@@ -119,7 +119,7 @@ const communityLinks = [
     me: true,
   },
   {
-    title: "@TypeScript",
+    title: "Mastodon",
     url: "https://fosstodon.org/@TypeScript",
     me: true,
   },
