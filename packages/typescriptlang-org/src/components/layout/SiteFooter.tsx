@@ -201,9 +201,9 @@ const faviconForURL = (url: string) => {
       return (
         <svg
           fill="none"
-          height="10"
-          viewBox="0 0 13 10"
-          width="13"
+          height="12"
+          viewBox="0 0 74 79"
+          width="12"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
