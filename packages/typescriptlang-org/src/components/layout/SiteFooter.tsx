@@ -116,6 +116,12 @@ const communityLinks = [
   {
     title: "@TypeScript",
     url: "https://twitter.com/TypeScript",
+    me: true,
+  },
+  {
+    title: "@TypeScript",
+    url: "https://fosstodon.org/@TypeScript",
+    me: true,
   },
   {
     title: "Stack Overflow",
@@ -328,7 +334,7 @@ export const SiteFooter = (props: Props) => {
               const favSpan = favicon ? (<span className="link-prefix">{favicon}</span>) : null
               return (
                 <li key={page.url}>
-                  <a style={{ position: "relative" }} href={page.url}>
+                  <a style={{ position: "relative" }} href={page.url} rel={page.me ? "me" : undefined}>
                     {favSpan}
                     {page.title}
                   </a>
