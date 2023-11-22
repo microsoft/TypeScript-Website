@@ -9,7 +9,7 @@ The TSConfig file can be either a `tsconfig.json` or `jsconfig.json`, both have 
 This page covers all of the different options available inside a TSConfig file. There are over 100 options, and this page is not built to be read from top to bottom. Instead it has five main sections:
 
 - A categorized overview of all compiler flags
-- The [root fields](#Project_Files_0) for letting TypeScript know what files are available
+- The [root fields](#Top%20Level) for letting TypeScript know what files are available
 - The [`compilerOptions`](#compilerOptions) fields, this is the majority of the document
 - The [`watchOptions`](#watchOptions) fields, for tweaking the watch mode
 - The [`typeAcquisition`](#typeAcquisition) fields, for tweaking the how types are added to JavaScript projects
