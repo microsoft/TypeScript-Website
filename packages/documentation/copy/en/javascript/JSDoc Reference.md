@@ -663,6 +663,37 @@ function box<U>(u: U): Box<U> {
   return { t: u };
 }
 ```
+sometimes, you don't want to link a type, instead, link a prop defined in a type:
+
+```ts twoslash 
+type Pet = {
+  name: string
+  hello: () => string
+}
+
+/**
+ * Note: you should implement {@link Pet.hello} method of Pet.
+ */
+function hello(p: Pet) {
+  p.hello()
+}
+```
+
+furthermore, you can define another name of link:
+
+```ts twoslash
+type Pet = {
+  name: string
+  hello: () => string
+}
+
+/**
+ * Note: you should implement {@link Pet.hello | hello} method of Pet.
+ */
+function hello(p: Pet) {
+  p.hello()
+}
+```
 
 ## Other
 
