@@ -125,7 +125,7 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
     return { suggestions: [] }
   }
 
-  const words = thisLine.replace("\t", "").split(" ")
+  const words = thisLine.replace(/'/g, "").split(" ")
 
   // Not the right amount of
   if (words.length !== 2) {
