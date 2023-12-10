@@ -668,7 +668,7 @@ The main thing to note here is that in the derived class, we need to be careful 
 
 #### Cross-hierarchy `protected` access
 
-Different OOP languages disagree about whether it's legal to access a `protected` member through a base class reference:
+TypeScript doesn't allow accessing `protected` members of a sibling class in a class hierarchy:
 
 ```ts twoslash
 // @errors: 2446
@@ -688,13 +688,10 @@ class Derived2 extends Base {
 }
 ```
 
-Java, for example, considers this to be legal.
-On the other hand, C# and C++ chose that this code should be illegal.
-
-TypeScript sides with C# and C++ here, because accessing `x` in `Derived2` should only be legal from `Derived2`'s subclasses, and `Derived1` isn't one of them.
+This is because accessing `x` in `Derived2` should only be legal from `Derived2`'s subclasses, and `Derived1` isn't one of them.
 Moreover, if accessing `x` through a `Derived1` reference is illegal (which it certainly should be!), then accessing it through a base class reference should never improve the situation.
 
-See also [Why Can’t I Access A Protected Member From A Derived Class?](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) which explains more of C#'s reasoning.
+See also [Why Can’t I Access A Protected Member From A Derived Class?](https://blogs.msdn.microsoft.com/ericlippert/2005/11/09/why-cant-i-access-a-protected-member-from-a-derived-class/) which explains more of C#'s reasoning on the same topic.
 
 ### `private`
 
