@@ -20,7 +20,7 @@ This sample code:
 export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
-default: `"react-jsx"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
+React: `"react-jsx"`<sup>[[1]](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)</sup>
 
 ```tsx twoslash
 declare module JSX {
@@ -81,7 +81,7 @@ export const HelloWorld = () => <h1>Hello world</h1>;
 ```
 
 
-Legacy runtime: `"react"`
+Legacy React runtime: `"react"`
 
 ```tsx twoslash
 declare module JSX {
