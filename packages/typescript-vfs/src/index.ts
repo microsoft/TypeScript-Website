@@ -241,8 +241,10 @@ export const createDefaultMapFromNodeModules = (
     return fs.readFileSync(path.join(lib, name), "utf8")
   }
 
+  const isDtsFile = (file: string) => /\.d\.[cm]?ts$/.test(file)
+
   const libFiles = fs.readdirSync(tsLibDirectory || path.dirname(require.resolve("typescript")))
-  const knownLibFiles = libFiles.filter(f => f.startsWith("lib.") && f.endsWith(".d.ts"))
+  const knownLibFiles = libFiles.filter(f => f.startsWith("lib.") && isDtsFile(f))
 
   const fsMap = new Map<string, string>()
   knownLibFiles.forEach(lib => {
