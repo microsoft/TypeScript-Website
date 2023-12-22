@@ -149,7 +149,7 @@ function identity<Type>(arg: Type): Type {
 let myIdentity: <Type>(arg: Type) => Type = identity;
 ```
 
-We could also have used a different name for the generic type parameter in the type, so long as the number of type variables and how the type variables are used line up.
+We could also have used a different name for the generic type parameter in the type, as long as the number of type variables and how the type variables are used line up.
 
 ```ts twoslash
 function identity<Input>(arg: Input): Input {
