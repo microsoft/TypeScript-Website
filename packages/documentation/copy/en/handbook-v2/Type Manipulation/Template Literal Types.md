@@ -12,7 +12,7 @@ They have the same syntax as [template literal strings in JavaScript](https://de
 ```ts twoslash
 // @errors: 2322
 type PopularTopLevelDomains = 'com' | 'net' | 'org' | 'edu' | 'gov';
-type TypicalEmail = `${string}@${string}.${PopularTopLevelDomains}`;
+type TypicalEmail = `${string}@${string}.${PopularTopLevelDomains}`; // A template literal type
 
 // Valid:
 const simpleEmail: TypicalEmail = 'foo@bar.com';
