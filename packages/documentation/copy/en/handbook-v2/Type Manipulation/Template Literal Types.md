@@ -7,8 +7,23 @@ oneline: "Generating mapping types which change properties via template literal 
 
 Template literal types build on [string literal types](/docs/handbook/2/everyday-types.html#literal-types), and have the ability to expand into many strings via unions.
 
-They have the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but are used in type positions.
-When used with concrete literal types, a template literal produces a new string literal type by concatenating the contents.
+They have the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but are used in type positions:
+
+```ts twoslash
+// @errors: 2322
+type PopularTopLevelDomains = 'com' | 'net' | 'org' | 'edu' | 'gov';
+type TypicalEmail = `${string}@${string}.${PopularTopLevelDomains}`;
+
+// Valid:
+const simpleEmail: TypicalEmail = 'foo@bar.com';
+const emailWithExtraPeriods: TypicalEmail = 'foo.bar.baz@qux.net';
+
+// Invalid:
+const emailMissingAtSign: TypicalEmail = 'foobar.org';
+const emailWithPunctuationSwapped: TypicalEmail = 'foo.bar@edu';
+```
+
+When used with concrete literal types, a template literal produces a new string literal type by concatenating the contents:
 
 ```ts twoslash
 type World = "world";
