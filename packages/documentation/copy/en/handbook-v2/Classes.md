@@ -17,7 +17,7 @@ As with other JavaScript language features, TypeScript adds type annotations and
 
 Here's the most basic class - an empty one:
 
-```ts twoslash
+```ts 
 class Point {}
 ```
 
@@ -43,7 +43,7 @@ As with other locations, the type annotation is optional, but will be an implici
 
 Fields can also have _initializers_; these will run automatically when the class is instantiated:
 
-```ts twoslash
+```ts 
 class Point {
   x = 0;
   y = 0;
@@ -78,7 +78,7 @@ class BadGreeter {
 }
 ```
 
-```ts twoslash
+```ts 
 class GoodGreeter {
   name: string;
 
@@ -93,7 +93,7 @@ TypeScript does not analyze methods you invoke from the constructor to detect in
 
 If you intend to definitely initialize a field through means other than the constructor (for example, maybe an external library is filling in part of your class for you), you can use the _definite assignment assertion operator_, `!`:
 
-```ts twoslash
+```ts 
 class OKGreeter {
   // Not initialized, but no error
   name!: string;
@@ -135,7 +135,7 @@ g.name = "also not ok";
 Class constructors are very similar to functions.
 You can add parameters with type annotations, default values, and overloads:
 
-```ts twoslash
+```ts 
 class Point {
   x: number;
   y: number;
@@ -148,7 +148,7 @@ class Point {
 }
 ```
 
-```ts twoslash
+```ts 
 class Point {
   // Overloads
   constructor(x: number, y: string);
@@ -196,7 +196,7 @@ Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScr
 A function property on a class is called a _method_.
 Methods can use all the same type annotations as functions and constructors:
 
-```ts twoslash
+```ts 
 class Point {
   x = 10;
   y = 10;
@@ -231,7 +231,7 @@ class C {
 
 Classes can also have _accessors_:
 
-```ts twoslash
+```ts 
 class C {
   _length = 0;
   get length() {
@@ -254,7 +254,7 @@ TypeScript has some special inference rules for accessors:
 
 Since [TypeScript 4.3](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/), it is possible to have accessors with different types for getting and setting.
 
-```ts twoslash
+```ts 
 class Thing {
   _size = 0;
 
@@ -281,7 +281,7 @@ class Thing {
 
 Classes can declare index signatures; these work the same as [Index Signatures for other object types](/docs/handbook/2/objects.html#index-signatures):
 
-```ts twoslash
+```ts 
 class MyClass {
   [s: string]: boolean | ((s: string) => boolean);
 
@@ -374,7 +374,7 @@ c.y = 10;
 Classes may `extend` from a base class.
 A derived class has all the properties and methods of its base class, and can also define additional members.
 
-```ts twoslash
+```ts 
 class Animal {
   move() {
     console.log("Moving along!");
@@ -412,7 +412,7 @@ TypeScript enforces that a derived class is always a subtype of its base class.
 
 For example, here's a legal way to override a method:
 
-```ts twoslash
+```ts 
 class Base {
   greet() {
     console.log("Hello, world!");
@@ -487,7 +487,7 @@ b.greet();
 
 When `target >= ES2022` or [`useDefineForClassFields`](/tsconfig#useDefineForClassFields) is `true`, class fields are initialized after the parent class constructor completes, overwriting any value set by the parent class. This can be a problem when you only want to re-declare a more accurate type for an inherited field. To handle these cases, you can write `declare` to indicate to TypeScript that there should be no runtime effect for this field declaration.
 
-```ts twoslash
+```ts 
 interface Animal {
   dateOfBirth: any;
 }
@@ -518,7 +518,7 @@ class DogHouse extends AnimalHouse {
 The order that JavaScript classes initialize can be surprising in some cases.
 Let's consider this code:
 
-```ts twoslash
+```ts 
 class Base {
   name = "base";
   constructor() {
@@ -559,7 +559,7 @@ Other downlevel compilers generally have the same limitation by default.
 
 For a subclass like the following:
 
-```ts twoslash
+```ts 
 class MsgError extends Error {
   constructor(m: string) {
     super(m);
@@ -577,7 +577,7 @@ you may find that:
 
 As a recommendation, you can manually adjust the prototype immediately after any `super(...)` calls.
 
-```ts twoslash
+```ts 
 class MsgError extends Error {
   constructor(m: string) {
     super(m);
@@ -607,7 +607,7 @@ You can use TypeScript to control whether certain methods or properties are visi
 The default visibility of class members is `public`.
 A `public` member can be accessed anywhere:
 
-```ts twoslash
+```ts 
 class Greeter {
   public greet() {
     console.log("hi!");
@@ -623,7 +623,7 @@ Because `public` is already the default visibility modifier, you don't ever _nee
 
 `protected` members are only visible to subclasses of the class they're declared in.
 
-```ts twoslash
+```ts 
 // @errors: 2445
 class Greeter {
   public greet() {
@@ -651,7 +651,7 @@ g.getName();
 Derived classes need to follow their base class contracts, but may choose to expose a subtype of base class with more capabilities.
 This includes making `protected` members `public`:
 
-```ts twoslash
+```ts 
 class Base {
   protected m = 10;
 }
@@ -743,7 +743,7 @@ While languages like Java, C#, C++, Swift, and PHP allow this, Ruby does not.
 
 TypeScript does allow cross-instance `private` access:
 
-```ts twoslash
+```ts 
 class A {
   private x = 10;
 
@@ -760,7 +760,7 @@ Like other aspects of TypeScript's type system, `private` and `protected` [are o
 
 This means that JavaScript runtime constructs like `in` or simple property lookup can still access a `private` or `protected` member:
 
-```ts twoslash
+```ts 
 class MySafe {
   private secretKey = 12345;
 }
@@ -792,7 +792,7 @@ console.log(s["secretKey"]);
 
 Unlike TypeScripts's `private`, JavaScript's [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them _hard private_.
 
-```ts twoslash
+```ts 
 class Dog {
   #barkAmount = 0;
   personality = "happy";
@@ -839,7 +839,7 @@ Classes may have `static` members.
 These members aren't associated with a particular instance of the class.
 They can be accessed through the class constructor object itself:
 
-```ts twoslash
+```ts 
 class MyClass {
   static x = 0;
   static printX() {
@@ -862,7 +862,7 @@ console.log(MyClass.x);
 
 Static members are also inherited:
 
-```ts twoslash
+```ts 
 class Base {
   static getGreeting() {
     return "Hello world";
@@ -895,7 +895,7 @@ A class with only a single instance is typically just represented as a normal _o
 
 For example, we don't need a "static class" syntax in TypeScript because a regular object (or even top-level function) will do the job just as well:
 
-```ts twoslash
+```ts 
 // Unnecessary "static" class
 class MyStaticClass {
   static doSomething() {}
@@ -981,7 +981,7 @@ It's important to remember that TypeScript doesn't change the runtime behavior o
 
 JavaScript's handling of `this` is indeed unusual:
 
-```ts twoslash
+```ts 
 class MyClass {
   name = "MyClass";
   getName() {
@@ -1014,7 +1014,7 @@ TypeScript provides some ways to mitigate or prevent this kind of error.
 
 If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
 
-```ts twoslash
+```ts 
 class MyClass {
   name = "MyClass";
   getName = () => {
@@ -1038,7 +1038,7 @@ This has some trade-offs:
 In a method or function definition, an initial parameter named `this` has special meaning in TypeScript.
 These parameters are erased during compilation:
 
-```ts twoslash
+```ts 
 type SomeType = any;
 // ---cut---
 // TypeScript input with 'this' parameter
@@ -1122,7 +1122,7 @@ const b = a.set("hello");
 
 You can also use `this` in a parameter type annotation:
 
-```ts twoslash
+```ts 
 class Box {
   content: string = "";
   sameAs(other: this) {
@@ -1273,7 +1273,7 @@ const m = new someClass("Hello, world");
 
 JavaScript classes are instantiated with the `new` operator. Given the type of a class itself, the [InstanceType](/docs/handbook/utility-types.html#instancetypetype) utility type models this operation.
 
-```ts twoslash
+```ts 
 class Point {
   createdAt: number;
   x: number;
@@ -1417,7 +1417,7 @@ In most cases, classes in TypeScript are compared structurally, the same as othe
 
 For example, these two classes can be used in place of each other because they're identical:
 
-```ts twoslash
+```ts 
 class Point1 {
   x = 0;
   y = 0;
@@ -1457,7 +1457,7 @@ Empty classes have no members.
 In a structural type system, a type with no members is generally a supertype of anything else.
 So if you write an empty class (don't!), anything can be used in place of it:
 
-```ts twoslash
+```ts 
 class Empty {}
 
 function fn(x: Empty) {

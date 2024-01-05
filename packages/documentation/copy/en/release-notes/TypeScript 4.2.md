@@ -75,7 +75,7 @@ let b: [string, number, boolean] = ["hello", 42, true];
 Over time, TypeScript's tuple types have become more and more sophisticated, since they're also used to model things like parameter lists in JavaScript.
 As a result, they can have optional elements and rest elements, and can even have labels for tooling and readability.
 
-```ts twoslash
+```ts 
 // A tuple that has either one or two strings.
 let c: [string, string?] = ["hello"];
 c = ["hello", "world"];
@@ -98,7 +98,7 @@ In prior versions, TypeScript only allowed `...rest` elements at the very last p
 
 However, now rest elements can occur _anywhere_ within a tuple - with only a few restrictions.
 
-```ts twoslash
+```ts 
 let foo: [...string[], number];
 
 foo = [123];
@@ -131,7 +131,7 @@ let StringsAndMaybeBoolean: [...string[], boolean?];
 
 These non-trailing rest elements can be used to model functions that take any number of leading arguments, followed by a few fixed ones.
 
-```ts twoslash
+```ts 
 declare function doStuff(...args: [...names: string[], shouldCapitalize: boolean]): void;
 
 doStuff(/*shouldCapitalize:*/ false)
@@ -161,7 +161,7 @@ A big thanks to our external contributor [Jonas Hübotter](https://github.com/jo
 
 Back when TypeScript first introduced index signatures, you could only get properties declared by them with "bracketed" element access syntax like `person["name"]`.
 
-```ts twoslash
+```ts 
 interface SomeType {
   /** This is an index signature. */
   [propName: string]: any;
@@ -175,7 +175,7 @@ function doStuff(value: SomeType) {
 This ended up being cumbersome in situations where we need to work with objects that have arbitrary properties.
 For example, imagine an API where it's common to misspell a property name by adding an extra `s` character at the end.
 
-```ts twoslash
+```ts 
 interface Options {
   /** File patterns to be excluded. */
   exclude?: string[];
@@ -201,7 +201,7 @@ This also made it easier to transition existing JavaScript code over to TypeScri
 
 However, loosening the restriction also meant that misspelling an explicitly declared property became much easier.
 
-```ts twoslash
+```ts 
 interface Options {
   /** File patterns to be excluded. */
   exclude?: string[];
@@ -332,7 +332,7 @@ It doesn't stop you from passing in other classes/constructor functions that are
 This feature allows us to write _mixin factories_ in a way that supports abstract classes.
 For example, in the following code snippet, we're able to use the mixin function `withStyles` with the `abstract` class `SuperClass`.
 
-```ts twoslash
+```ts 
 abstract class SuperClass {
     abstract someMethod(): void;
     badda() {}
@@ -455,7 +455,7 @@ For more details, take a look at [the full change](https://github.com/microsoft/
 
 String index signatures are a way of typing dictionary-like objects, where you want to allow access with arbitrary keys:
 
-```ts twoslash
+```ts 
 const movieWatchCount: { [key: string]: number } = {};
 
 function watchMovie(title: string) {
@@ -466,7 +466,7 @@ function watchMovie(title: string) {
 Of course, for any movie title not yet in the dictionary, `movieWatchCount[title]` will be `undefined` (TypeScript 4.1 added the option [`noUncheckedIndexedAccess`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#checked-indexed-accesses---nouncheckedindexedaccess) to include `undefined` when reading from an index signature like this).
 Even though it's clear that there must be some strings not present in `movieWatchCount`, previous versions of TypeScript treated optional object properties as unassignable to otherwise compatible index signatures, due to the presence of `undefined`.
 
-```ts twoslash
+```ts 
 type WesAndersonWatchCount = {
   "Fantastic Mr. Fox"?: number;
   "The Royal Tenenbaums"?: number;

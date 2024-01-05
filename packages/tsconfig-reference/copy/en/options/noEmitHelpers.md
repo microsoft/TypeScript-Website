@@ -7,7 +7,7 @@ Instead of importing helpers with [`importHelpers`](#importHelpers), you can pro
 
 For example, using this `async` function in ES5 requires a `await`-like function and `generator`-like function to run:
 
-```ts twoslash
+```ts 
 const getAPI = async (url: string) => {
   // Get API
   return {};

@@ -129,7 +129,7 @@ const handler = function (uiEvent) {
 
 We can also explicitly give type information to the function's argument to override any contextual type:
 
-```ts twoslash
+```ts 
 window.onscroll = function (uiEvent: any) {
   console.log(uiEvent.button); // <- Now, no error is given
 };

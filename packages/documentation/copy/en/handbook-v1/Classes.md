@@ -15,7 +15,7 @@ In TypeScript, we allow developers to use these techniques now, and compile them
 
 Let's take a look at a simple class-based example:
 
-```ts twoslash
+```ts 
 class Greeter {
   greeting: string;
 
@@ -47,7 +47,7 @@ One of the most fundamental patterns in class-based programming is being able to
 
 Let's take a look at an example:
 
-```ts twoslash
+```ts 
 class Animal {
   move(distanceInMeters: number = 0) {
     console.log(`Animal moved ${distanceInMeters}m.`);
@@ -74,7 +74,7 @@ Because `Dog` extends the functionality from `Animal`, we were able to create an
 
 Let's now look at a more complex example.
 
-```ts twoslash
+```ts 
 class Animal {
   name: string;
   constructor(theName: string) {
@@ -141,7 +141,7 @@ In TypeScript, each member is `public` by default.
 You may still mark a member `public` explicitly.
 We could have written the `Animal` class from the previous section in the following way:
 
-```ts twoslash
+```ts
 class Animal {
   public name: string;
 
@@ -326,7 +326,7 @@ In our last example, we had to declare a readonly member `name` and a constructo
 _Parameter properties_ let you create and initialize a member in one place.
 Here's a further revision of the previous `Octopus` class using a parameter property:
 
-```ts twoslash
+```ts 
 class Octopus {
   readonly numberOfLegs: number = 8;
   constructor(readonly name: string) {}
@@ -415,7 +415,7 @@ In this example, we use `static` on the origin, as it's a general value for all 
 Each instance accesses this value through prepending the name of the class.
 Similarly to prepending `this.` in front of instance accesses, here we prepend `Grid.` in front of static accesses.
 
-```ts twoslash
+```ts 
 class Grid {
   static origin = { x: 0, y: 0 };
 
@@ -442,7 +442,7 @@ They may not be instantiated directly.
 Unlike an interface, an abstract class may contain implementation details for its members.
 The `abstract` keyword is used to define abstract classes as well as abstract methods within an abstract class.
 
-```ts twoslash
+```ts 
 abstract class Animal {
   abstract makeSound(): void;
 
@@ -498,7 +498,7 @@ department.generateReports(); // error: department is not of type AccountingDepa
 When you declare a class in TypeScript, you are actually creating multiple declarations at the same time.
 The first is the type of the _instance_ of the class.
 
-```ts twoslash
+```ts 
 class Greeter {
   greeting: string;
 

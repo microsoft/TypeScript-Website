@@ -40,7 +40,7 @@ TypeScript also has a special type, `any`, that you can use whenever you don't w
 
 When a value is of type `any`, you can access any properties of it (which will in turn be of type `any`), call it like a function, assign it to (or from) a value of any type, or pretty much anything else that's syntactically legal:
 
-```ts twoslash
+```ts 
 let obj: any = { x: 0 };
 // None of the following lines of code will throw compiler errors.
 // Using `any` disables all further type checking, and it is assumed
@@ -77,7 +77,7 @@ In most cases, though, this isn't needed.
 Wherever possible, TypeScript tries to automatically _infer_ the types in your code.
 For example, the type of a variable is inferred based on the type of its initializer:
 
-```ts twoslash
+```ts 
 // No type annotation needed -- 'myName' inferred as type 'string'
 let myName = "Alice";
 ```
@@ -95,7 +95,7 @@ TypeScript allows you to specify the types of both the input and output values o
 When you declare a function, you can add type annotations after each parameter to declare what types of parameters the function accepts.
 Parameter type annotations go after the parameter name:
 
-```ts twoslash
+```ts 
 // Parameter type annotation
 function greet(name: string) {
   //                 ^^^^^^^^
@@ -135,7 +135,7 @@ Some codebases will explicitly specify a return type for documentation purposes,
 
 If you want to annotate the return type of a function which returns a promise, you should use the `Promise` type:
 
-```ts twoslash
+```ts 
 async function getFavoriteNumber(): Promise<number> {
   return 26;
 }
@@ -178,7 +178,7 @@ To define an object type, we simply list its properties and their types.
 
 For example, here's a function that takes a point-like object:
 
-```ts twoslash
+```ts 
 // The parameter's type annotation is an object type
 function printCoord(pt: { x: number; y: number }) {
   //                      ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -199,7 +199,7 @@ If you don't specify a type, it will be assumed to be `any`.
 Object types can also specify that some or all of their properties are _optional_.
 To do this, add a `?` after the property name:
 
-```ts twoslash
+```ts 
 function printName(obj: { first: string; last?: string }) {
   // ...
 }
@@ -272,7 +272,7 @@ _Narrowing_ occurs when TypeScript can deduce a more specific type for a value b
 
 For example, TypeScript knows that only a `string` value will have a `typeof` value `"string"`:
 
-```ts twoslash
+```ts 
 function printId(id: number | string) {
   if (typeof id === "string") {
     // In this branch, id is of type 'string'
@@ -286,7 +286,7 @@ function printId(id: number | string) {
 
 Another example is to use a function like `Array.isArray`:
 
-```ts twoslash
+```ts 
 function welcomePeople(x: string[] | string) {
   if (Array.isArray(x)) {
     // Here: 'x' is 'string[]'
@@ -304,7 +304,7 @@ Sometimes you'll have a union where all the members have something in common.
 For example, both arrays and strings have a `slice` method.
 If every member in a union has a property in common, you can use that property without narrowing:
 
-```ts twoslash
+```ts 
 // Return type is inferred as number[] | string
 function getFirstThree(x: number[] | string) {
   return x.slice(0, 3);
@@ -325,7 +325,7 @@ This is convenient, but it's common to want to use the same type more than once 
 A _type alias_ is exactly that - a _name_ for any _type_.
 The syntax for a type alias is:
 
-```ts twoslash
+```ts 
 type Point = {
   x: number;
   y: number;
@@ -343,7 +343,7 @@ printCoord({ x: 100, y: 100 });
 You can actually use a type alias to give a name to any type at all, not just an object type.
 For example, a type alias can name a union type:
 
-```ts twoslash
+```ts 
 type ID = number | string;
 ```
 
@@ -372,7 +372,7 @@ userInput = "new input";
 
 An _interface declaration_ is another way to name an object type:
 
-```ts twoslash
+```ts 
 interface Point {
   x: number;
   y: number;
@@ -480,7 +480,7 @@ For example, if you're using `document.getElementById`, TypeScript only knows th
 
 In this situation, you can use a _type assertion_ to specify a more specific type:
 
-```ts twoslash
+```ts 
 const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
 ```
 
@@ -488,7 +488,7 @@ Like a type annotation, type assertions are removed by the compiler and won't af
 
 You can also use the angle-bracket syntax (except if the code is in a `.tsx` file), which is equivalent:
 
-```ts twoslash
+```ts 
 const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
 ```
 
@@ -560,7 +560,7 @@ printText("G'day, mate", "centre");
 
 Numeric literal types work the same way:
 
-```ts twoslash
+```ts 
 function compare(a: string, b: string): -1 | 0 | 1 {
   return a === b ? 0 : a > b ? 1 : -1;
 }
@@ -658,7 +658,7 @@ The lack of checking for these values tends to be a major source of bugs; we alw
 With [`strictNullChecks`](/tsconfig#strictNullChecks) _on_, when a value is `null` or `undefined`, you will need to test for those values before using methods or properties on that value.
 Just like checking for `undefined` before using an optional property, we can use _narrowing_ to check for values that might be `null`:
 
-```ts twoslash
+```ts 
 function doSomething(x: string | null) {
   if (x === null) {
     // do nothing
@@ -673,7 +673,7 @@ function doSomething(x: string | null) {
 TypeScript also has a special syntax for removing `null` and `undefined` from a type without doing any explicit checking.
 Writing `!` after any expression is effectively a type assertion that the value isn't `null` or `undefined`:
 
-```ts twoslash
+```ts 
 function liveDangerously(x?: number | null) {
   // No error
   console.log(x!.toFixed());

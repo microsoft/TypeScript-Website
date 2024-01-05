@@ -5,7 +5,7 @@ tags: typescript types keyword
 
 An interface is a way to describe the [Shape](#shape) of a JavaScript object. For example, a dog could be described in the following format:
 
-```ts twoslash
+```ts 
 interface Dog {
   name: string;
   dateOfBirth: Date;
