@@ -742,7 +742,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
     const emitSourceFilename =
-      fsRoot + emitFilename.replace(".jsx", "").replace(".js", "").replace(/\.d\.(.+\.)?[cm]?ts$/i, "").replace(".map", "")
+      fsRoot + emitFilename.replace(".jsx", "").replace(".js", "").replace(/\.d\.([^\.]+\.)?[cm]?ts$/i, "").replace(".map", "")
 
     let emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 

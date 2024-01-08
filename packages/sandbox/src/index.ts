@@ -314,7 +314,7 @@ export const createTypeScriptSandbox = (
     return (firstJS && firstJS.text) || ""
   }
 
-  const isDtsFile = (name: string) => /\.d\.(.+\.)?[cm]?ts$/i.test(name)
+  const isDtsFile = (name: string) => /\.d\.([^\.]+\.)?[cm]?ts$/i.test(name)
 
   /** Gets the DTS for the JS/TS  of compiling your editor's code */
   const getDTSForCode = async () => {

@@ -270,5 +270,5 @@ function getDTName(s: string) {
 }
 
 function isDtsFile(file: string) {
-  return /\.d\.(.+\.)?[cm]?ts$/i.test(file)
+  return /\.d\.([^\.]+\.)?[cm]?ts$/i.test(file)
 }
