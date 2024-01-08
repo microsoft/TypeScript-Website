@@ -42,8 +42,9 @@ const palette: Record<Colors, string | RGB> = {
 //  ~~~~ The typo is now correctly detected
 };
 
-// But we now have an undesirable error here - 'palette.red' "could" be a string.
 const redComponent = palette.red.at(0);
+// But we now have an undesirable error here - 'palette.green' "could" be an array.
+const greenNormalized = palette.green.toUpperCase();
 ```
 
 The new `satisfies` operator lets us validate that the type of an expression matches some type, without changing the resulting type of that expression.
