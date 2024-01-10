@@ -850,12 +850,12 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     queries,
     staticQuickInfos,
     errors,
-    tags,
     get playgroundURL() {
       const lzstring: LZ = options.lzstringModule ?? require("lz-string")
       const zippedCode = lzstring.compressToEncodedURIComponent(originalCode)
       return `https://www.typescriptlang.org/play/#code/${zippedCode}`
     },
+    tags,
   }
 }
 
