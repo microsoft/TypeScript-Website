@@ -188,6 +188,34 @@ todo;
 // ^?
 ```
 
+## `Extract<Type, Union>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
+
+</blockquote>
+
+Constructs a type by extracting from `Type` all union members that are assignable to `Union`.
+
+##### Example
+
+```ts twoslash
+type T0 = Extract<"a" | "b" | "c", "a" | "f">;
+//    ^?
+type T1 = Extract<string | number | (() => void), Function>;
+//    ^?
+
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; x: number }
+  | { kind: "triangle"; x: number; y: number };
+
+type T2 = Extract<Shape, { kind: "circle" }>
+//    ^?
+```
+
 ## `Omit<Type, Keys>`
 
 <blockquote class=bg-reading>
@@ -229,34 +257,6 @@ const todoInfo: TodoInfo = {
 
 todoInfo;
 // ^?
-```
-
-## `Extract<Type, Union>`
-
-<blockquote class=bg-reading>
-
-Released:  
-[2.8](/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types)
-
-</blockquote>
-
-Constructs a type by extracting from `Type` all union members that are assignable to `Union`.
-
-##### Example
-
-```ts twoslash
-type T0 = Extract<"a" | "b" | "c", "a" | "f">;
-//    ^?
-type T1 = Extract<string | number | (() => void), Function>;
-//    ^?
-
-type Shape =
-  | { kind: "circle"; radius: number }
-  | { kind: "square"; x: number }
-  | { kind: "triangle"; x: number; y: number };
-
-type T2 = Extract<Shape, { kind: "circle" }>
-//    ^?
 ```
 
 ## `Exclude<UnionType, ExcludedMembers>`
