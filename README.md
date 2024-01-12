@@ -67,6 +67,10 @@ yarn start
 
 To optimize even more, the env var `NO_TRANSLATIONS` as truthy will make the website only load pages for English.
 
+### Using Docker 
+
+This repo includes a Dockerfile that enables you to run TypeScriptLang-Org everywhere.
+
 ## Sandbox
 
 The editor aspect of the TypeScript Playground REPL, useable for all sites which want to show a monaco editor
