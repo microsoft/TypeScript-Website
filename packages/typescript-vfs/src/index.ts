@@ -527,6 +527,7 @@ export function createFSBackedSystem(
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
     },
+    realpath: nodeSys.realpath,
   }
 }
 
