@@ -24,7 +24,7 @@ export function getDefaultSandboxCompilerOptions(config: SandboxConfig, monaco: 
     // 3.7 off, 3.8 on I think
     useDefineForClassFields: false,
 
-    alwaysStrict: true,
+    alwaysStrict: false,
     allowUnreachableCode: false,
     allowUnusedLabels: false,
 

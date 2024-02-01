@@ -28,7 +28,7 @@ const defaultCompilerOptions = {
   noImplicitThis: true,
   noImplicitReturns: true,
 
-  alwaysStrict: true,
+  alwaysStrict: false,
   allowUnreachableCode: false,
   allowUnusedLabels: false,
 
