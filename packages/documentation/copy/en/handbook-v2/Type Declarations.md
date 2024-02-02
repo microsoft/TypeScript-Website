@@ -1,7 +1,7 @@
 ---
 title: Type Declarations
 layout: docs
-permalink: /docs/handbook/2/type-declarations.html
+permalink: /zh/docs/handbook/2/type-declarations.html
 oneline: "How TypeScript provides types for un-typed JavaScript."
 ---
 

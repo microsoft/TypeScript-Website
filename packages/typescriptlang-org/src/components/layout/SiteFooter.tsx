@@ -15,102 +15,102 @@ export type Props = {
 
 const popularPages = [
   {
-    title: "Everyday Types",
+    title: "常见类型",
     url: "/docs/handbook/2/everyday-types.html",
-    description: "All of the common types in TypeScript",
+    description: "TypeScript 中所有常见的类型",
   },
   {
-    title: "Creating Types from Types",
+    title: "用现有类型创建新类型",
     url: "/docs/handbook/2/types-from-types.html",
-    description: "Techniques to make more elegant types",
+    description: "用于优雅地创建类型的技术",
   },
   {
-    title: "More on Functions",
+    title: "函数进阶",
     url: "/docs/handbook/2/functions.html",
-    description: "How to provide types to functions in JavaScript",
+    description: "在 JavaScript 中向函数赋类型的方式",
   },
   {
-    title: "More on Objects",
+    title: "对象进阶",
     url: "/docs/handbook/2/objects.html",
-    description: "How to provide a type shape to JavaScript objects",
+    description: "向 JavaScript 对象赋类型的方式",
   },
   {
-    title: "Narrowing",
+    title: "缩小类型",
     url: "/docs/handbook/2/narrowing.html",
-    description: "How TypeScript infers types based on runtime behavior",
+    description: "TypeScript 通过运行时行为推断类型的方式",
   },
   {
-    title: "Variable Declarations",
+    title: "变量声明",
     url: "/docs/handbook/variable-declarations.html",
-    description: "How to create and type JavaScript variables",
+    description: "如何创建 JavaScript 变量并给它赋类型",
   },
   {
-    title: "TypeScript in 5 minutes",
+    title: "5 分钟速成 TypeScript",
     url: "/docs/handbook/typescript-in-5-minutes.html",
-    description: "An overview of building a TypeScript web app",
+    description: "构建 TypeScript web 应用程序概述",
   },
   {
-    title: "TSConfig Options",
+    title: "TSConfig 选项",
     url: "/tsconfig",
-    description: "All the configuration options for a project",
+    description: "项目的所有配置选项",
   },
   {
-    title: "Classes",
+    title: "类",
     url: "/docs/handbook/2/classes.html",
-    description: "How to provide types to JavaScript ES6 classes",
+    description: "给 JavaScript ES6 类赋类型的方式",
   },
 ]
 
 const useTypeScriptLinks = [
   {
-    title: "Get Started",
+    title: "开始",
     url: "/docs",
   },
   {
-    title: "Download",
+    title: "下载",
     url: "/download",
   },
   {
-    title: "Community",
+    title: "社群",
     url: "/community",
   },
   {
-    title: "Playground",
+    title: "演练场",
     url: "/play/",
   },
   {
-    title: "TSConfig Ref",
+    title: "TSConfig 参考",
     url: "/tsconfig",
   },
   {
-    title: "Code Samples",
+    title: "代码示例",
     url: "/play/#show-examples",
   },
   {
-    title: "Why TypeScript",
+    title: "为何选择 TypeScript",
     url: "/why-create-typescript",
   },
   {
-    title: "Design",
+    title: "设计",
     url: "/branding",
   },
 ]
 
 const communityLinks = [
   {
-    title: "Get Help",
+    title: "获取帮助",
     url: "/community",
   },
   {
-    title: "Blog",
+    title: "博客",
     url: "https://devblogs.microsoft.com/typescript/",
   },
   {
-    title: "GitHub Repo",
+    title: "GitHub 仓库",
     url: "https://github.com/microsoft/TypeScript/#readme",
   },
   {
-    title: "Community Chat",
+    title: "社群交流",
     url: "https://discord.gg/typescript",
   },
   {
@@ -127,8 +127,8 @@ const communityLinks = [
     url: "https://stackoverflow.com/questions/tagged/typescript",
   },
   {
-    title: "Web Repo",
-    url: "https://github.com/microsoft/TypeScript-Website",
+    title: "Web 仓库",
+    url: "https://github.com/ts-zh-docs/TypeScript-zh-Website",
   },
 ]
 
@@ -240,7 +240,7 @@ export const SiteFooter = (props: Props) => {
 
       {hideDocs ? null :
         <section id="popular">
-          <h3>Popular Documentation Pages</h3>
+          <h3>热门文档页面</h3>
           <ul>
             {popularPages.map(page => (
               <li key={page.url}>
@@ -283,7 +283,7 @@ export const SiteFooter = (props: Props) => {
               fillRule="evenodd"
             />
           </svg>
-          <p>Made with &#9829; in Redmond, Boston, SF &amp; Dublin</p>
+          <p>在雷德蒙德、波士顿、旧金山和都柏林，用 &#9829; 共同创造</p>
 
           <a href="">
             <img
@@ -295,7 +295,7 @@ export const SiteFooter = (props: Props) => {
             />
           </a>
           <p>
-            © 2012-{new Date().getFullYear()} Microsoft
+            © 2012-{new Date().getFullYear()} 微软
             <br />
             <a
               href="https://go.microsoft.com/fwlink/?LinkId=521839"

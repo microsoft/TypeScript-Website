@@ -1,14 +1,13 @@
 ---
-title: Template Literal Types
+title: 模板字面类型
 layout: docs
-permalink: /docs/handbook/2/template-literal-types.html
-oneline: "Generating mapping types which change properties via template literal strings."
+permalink: /zh/docs/handbook/2/template-literal-types.html
+oneline: "通过模板字面字符串生成修改属性的映射类型。"
 ---
 
-Template literal types build on [string literal types](/docs/handbook/2/everyday-types.html#literal-types), and have the ability to expand into many strings via unions.
+模板字面类型是基于[字符串字面类型](/zh/docs/handbook/2/everyday-types.html#literal-types)的基础上构建的，可以通过联合类型展开为多个字符串。
 
-They have the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but are used in type positions.
-When used with concrete literal types, a template literal produces a new string literal type by concatenating the contents.
+它们与 JavaScript 中的[模板字面字符串](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Template_literals)具有相同的语法，但前者在类型位置使用。当与具体的字面类型一起使用时，模板字面可以通过拼接内容生成新的字符串字面类型。
 
 ```ts twoslash
 type World = "world";
@@ -17,7 +16,7 @@ type Greeting = `hello ${World}`;
 //   ^?
 ```
 
-When a union is used in the interpolated position, the type is the set of every possible string literal that could be represented by each union member:
+当联合类型被用于插值位置时，类型是由每个联合成员可能表示的所有字符串字面类型的集合：
 
 ```ts twoslash
 type EmailLocaleIDs = "welcome_email" | "email_heading";
@@ -27,7 +26,7 @@ type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
 //   ^?
 ```
 
-For each interpolated position in the template literal, the unions are cross multiplied:
+对于模板字面中的每个插值位置，联合类型会进行交叉乘积：
 
 ```ts twoslash
 type EmailLocaleIDs = "welcome_email" | "email_heading";
@@ -40,16 +39,13 @@ type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
 //   ^?
 ```
 
-We generally recommend that people use ahead-of-time generation for large string unions, but this is useful in smaller cases.
+通常建议在大量字符串联合的情况下预先生成，但在较小规模的情况下，这种方式很有用。
 
-### String Unions in Types
+### 类型中的字符串联合
 
-The power in template literals comes when defining a new string based on information inside a type.
+模板字面类型的威力在于可以基于类型内的信息定义新的字符串。
 
-Consider the case where a function (`makeWatchedObject`) adds a new function
-called `on()` to a passed object.  In JavaScript, its call might look like:
-`makeWatchedObject(baseObject)`. We can imagine the base object as looking
-like:
+假设有一个函数（`makeWatchedObject`），它向传入的对象添加一个名为 `on()` 的新函数。在 JavaScript 中，调用可能如下所示：`makeWatchedObject(baseObject)`。我们可以将基本对象想象为如下所示：
 
 ```ts twoslash
 // @noErrors
@@ -60,15 +56,15 @@ const passedObject = {
 };
 ```
 
-The `on` function that will be added to the base object expects two arguments, an `eventName` (a `string`) and a `callback` (a `function`).
+将被添加到基本对象的 `on` 函数有两个实参，一个是 `eventName`（一个 `string`），另一个是 `callback`（一个 `function`）。
 
-The `eventName` should be of the form `attributeInThePassedObject + "Changed"`; thus, `firstNameChanged` as derived from the attribute `firstName` in the base object.
+`eventName` 的形式应为 `传入对象的属性名称 + "Changed"`；因此，从基本对象的属性 `firstName` 衍生的事件名应为 `firstNameChanged`。
 
-The `callback` function, when called:
-  * Should be passed a value of the type associated with the name `attributeInThePassedObject`; thus, since `firstName` is typed as `string`, the callback for the `firstNameChanged` event expects a `string` to be passed to it at call time. Similarly events associated with `age` should expect to be called with a `number` argument
-  * Should have `void` return type (for simplicity of demonstration)
+当调用 `callback` 函数时：
+  * 应传递一个类型与名为 `传入对象的属性名称` 的属性关联的值；因此，由于 `firstName` 类型为 `string`，`firstNameChanged` 事件的回调函数期望在调用时传递一个 `string`。
+  * 应具有 `void` 的返回类型（这里为了简化演示）
 
-The naive function signature of `on()` might thus be: `on(eventName: string, callback: (newValue: any) => void)`. However, in the preceding description, we identified important type constraints that we'd like to document in our code. Template Literal types let us bring these constraints into our code.
+因此，`on()` 的函数签名可能是这样的：`on(eventName: string, callback: (newValue: any) => void)`。然而，在前面的描述中，我们确定了我们希望在代码中记录的重要类型约束。模板字面类型让我们能够将这些约束带入我们的代码中。
 
 ```ts twoslash
 // @noErrors
@@ -80,26 +76,25 @@ const person = makeWatchedObject({
   age: 26,
 });
 
-// makeWatchedObject has added `on` to the anonymous Object
+// makeWatchedObject 已经向匿名对象添加了 `on` 方法
 
 person.on("firstNameChanged", (newValue) => {
-  console.log(`firstName was changed to ${newValue}!`);
+  console.log(`firstName 已更改为 ${newValue}！`);
 });
 ```
 
-Notice that `on` listens on the event `"firstNameChanged"`, not just `"firstName"`. Our naive specification of `on()` could be made more robust if we were to ensure that the set of eligible event names was constrained by the union of attribute names in the watched object with "Changed" added at the end. While we are comfortable with doing such a calculation in JavaScript i.e. ``Object.keys(passedObject).map(x => `${x}Changed`)``, template literals _inside the type system_ provide a similar approach to string manipulation:
+注意，`on` 监听的事件是 `"firstNameChanged"`，而不仅仅是 `"firstName"`。如果我们能确保符合属性名集合与末尾添加“Changed”的并集的约束，我们可以使 `on()` 的规范更加强大。虽然我们在 JavaScript 中可以轻松进行这样的计算，即 ``Object.keys(passedObject).map(x => `${x}Changed`)``，但是*在类型系统中*，模板字面类型提供了类似的字符串处理方法：
 
 ```ts twoslash
 type PropEventSource<Type> = {
     on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
 };
 
-/// Create a "watched object" with an `on` method
-/// so that you can watch for changes to properties.
+/// 创建一个带有 `on` 方法的“被监视对象”，以便你可以监视属性的更改。
 declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
 ```
 
-With this, we can build something that errors when given the wrong property:
+有了这个，我们可以构建一个在给定错误属性时报错的结构：
 
 ```ts twoslash
 // @errors: 2345
@@ -117,24 +112,23 @@ const person = makeWatchedObject({
 
 person.on("firstNameChanged", () => {});
 
-// Prevent easy human error (using the key instead of the event name)
+// 防止易发生人为错误（使用键而不是事件名）
 person.on("firstName", () => {});
 
-// It's typo-resistant
+// 它具有防错功能
 person.on("frstNameChanged", () => {});
 ```
 
-### Inference with Template Literals
+### 使用模板字面类型进行类型推断
 
-Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event),  we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callback`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
+请注意，我们没有充分利用原始传入对象中提供的所有信息。对于 `firstName` 的更改（即 `firstNameChanged` 事件），我们应该期望回调函数接收一个 `string` 类型的参数。类似地，对于 `age` 的更改，回调函数应该接收一个 `number` 类型的参数。我们在类型推断中简单地使用了 `any` 来给 `callback` 的参数加上类型。再次强调，模板字面类型使得我们可以确保属性的数据类型与该属性的回调函数的第一个参数具有相同的类型。
 
-The key insight that makes this possible is this: we can use a function with a generic such that:
+使这成为可能的关键是：我们可以使用具有泛型的函数，使得：
 
-1. The literal used in the first argument is captured as a literal type
-2. That literal type can be validated as being in the union of valid attributes in the generic
-3. The type of the validated attribute can be looked up in the generic's structure using Indexed Access
-4. This typing information can _then_ be applied to ensure the argument to the
-   callback function is of the same type
+1. 在第一个实参中使用的字面量被捕获为字面类型
+2. 可以验证该字面类型是否属于泛型中有效属性的联合类型
+3. 可以使用索引访问来查找泛型结构中验证属性的类型
+4. 然后，可以应用这些类型信息来确保回调函数的实参是与之相同的类型
 
 
 ```ts twoslash
@@ -153,35 +147,32 @@ const person = makeWatchedObject({
 
 person.on("firstNameChanged", newName => {
     //                        ^?
-    console.log(`new name is ${newName.toUpperCase()}`);
+    console.log(`新姓名为 ${newName.toUpperCase()}`);
 });
 
 person.on("ageChanged", newAge => {
     //                  ^?
     if (newAge < 0) {
-        console.warn("warning! negative age");
+        console.warn("警告！年龄为负数");
     }
 })
 ```
 
-Here we made `on` into a generic method.
+在这里，我们将 `on` 方法转换为一个泛型方法。
 
-When a user calls with the string `"firstNameChanged"`, TypeScript will try to infer the right type for `Key`.
-To do that, it will match `Key` against the content before `"Changed"` and infer the string `"firstName"`.
-Once TypeScript figures that out, the `on` method can fetch the type of `firstName` on the original object, which is `string` in this case.
-Similarly, when called with `"ageChanged"`, TypeScript finds the type for the property `age` which is `number`.
+当用户使用字符串 `"firstNameChanged"` 调用时，TypeScript 将尝试为 `Key` 推断正确的类型。为了做到这一点，它将 `Key` 与 `"Changed"` 之前的内容进行匹配，并推断出字符串 `"firstName"`。一旦 TypeScript 弄清楚了这一点，`on` 方法就可以获取原始对象上 `firstName` 的类型，在本例中为 `string`。类似地，当使用 `"ageChanged"` 调用时，TypeScript 找到属性 `age` 的类型，即 `number`。
 
-Inference can be combined in different ways, often to deconstruct strings, and reconstruct them in different ways.
+推断可以以不同的方式组合，通常用于解构字符串，并以不同的方式重新构建它们。
 
-## Intrinsic String Manipulation Types
+## 内置字符串操作类型
 
-To help with string manipulation, TypeScript includes a set of types which can be used in string manipulation. These types come built-in to the compiler for performance and can't be found in the `.d.ts` files included with TypeScript.
+为了帮助进行字符串操作，TypeScript 包含了一组可用于字符串操作的类型。这些类型是内置到编译器中的，用于提高性能，不能在 TypeScript 附带的 `.d.ts` 文件中找到。
 
 ### `Uppercase<StringType>`
 
-Converts each character in the string to the uppercase version.
+将字符串中的每个字符转换为大写形式。
 
-##### Example
+##### 示例
 
 ```ts twoslash
 type Greeting = "Hello, world"
@@ -195,9 +186,9 @@ type MainID = ASCIICacheKey<"my_app">
 
 ### `Lowercase<StringType>`
 
-Converts each character in the string to the lowercase equivalent.
+将字符串中的每个字符转换为小写形式。
 
-##### Example
+##### 示例
 
 ```ts twoslash
 type Greeting = "Hello, world"
@@ -211,9 +202,9 @@ type MainID = ASCIICacheKey<"MY_APP">
 
 ### `Capitalize<StringType>`
 
-Converts the first character in the string to an uppercase equivalent.
+将字符串中的第一个字符转换为大写形式。
 
-##### Example
+##### 示例
 
 ```ts twoslash
 type LowercaseGreeting = "hello, world";
@@ -223,9 +214,9 @@ type Greeting = Capitalize<LowercaseGreeting>;
 
 ### `Uncapitalize<StringType>`
 
-Converts the first character in the string to a lowercase equivalent.
+将字符串中的第一个字符转换为小写形式。
 
-##### Example
+##### 示例
 
 ```ts twoslash
 type UppercaseGreeting = "HELLO WORLD";
@@ -234,8 +225,8 @@ type UncomfortableGreeting = Uncapitalize<UppercaseGreeting>;
 ```
 
 <details>
-    <summary>Technical details on the intrinsic string manipulation types</summary>
-    <p>The code, as of TypeScript 4.1, for these intrinsic functions uses the JavaScript string runtime functions directly for manipulation and are not locale aware.</p>
+    <summary>关于内置字符串操作类型的技术细节</summary>
+    <p>截至 TypeScript 4.1 版本，这些内置函数的代码直接使用 JavaScript 的字符串运行时函数进行操作，不考虑区域设置。</p>
     <code><pre>
 function applyStringMapping(symbol: Symbol, str: string) {
     switch (intrinsicTypeKinds.get(symbol.escapedName as string)) {

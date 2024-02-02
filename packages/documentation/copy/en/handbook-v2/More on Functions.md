@@ -1,18 +1,15 @@
 ---
-title: More on Functions
+title: 函数进阶
 layout: docs
-permalink: /docs/handbook/2/functions.html
-oneline: "Learn about how Functions work in TypeScript."
+permalink: /zh/docs/handbook/2/functions.html
+oneline: "学习 TypeScript 中函数的工作原理"
 ---
 
-Functions are the basic building block of any application, whether they're local functions, imported from another module, or methods on a class.
-They're also values, and just like other values, TypeScript has many ways to describe how functions can be called.
-Let's learn about how to write types that describe functions.
+函数是任何应用程序的基本构建块，它们可以是本地函数、从另一个模块导入的函数或者类的方法。它们也是值，并且与其他值一样，TypeScript 有很多方法来描述函数的调用方式。让我们来学习如何编写用于描述函数的类型。
 
-## Function Type Expressions
+## 函数类型表达式
 
-The simplest way to describe a function is with a _function type expression_.
-These types are syntactically similar to arrow functions:
+描述函数的最简单方式是使用*函数类型表达式*。这些类型在语法上类似于箭头函数：
 
 ```ts twoslash
 function greeter(fn: (a: string) => void) {
@@ -26,12 +23,11 @@ function printToConsole(s: string) {
 greeter(printToConsole);
 ```
 
-The syntax `(a: string) => void` means "a function with one parameter, named `a`, of type `string`, that doesn't have a return value".
-Just like with function declarations, if a parameter type isn't specified, it's implicitly `any`.
+`(a: string) => void` 的语法表示“有一个名为 `a` 的参数，`a` 的类型为 `string`，且没有返回值的函数”。就像函数声明一样，如果没有指定参数类型，它会隐式地被推断为 `any` 类型。
 
-> Note that the parameter name is **required**. The function type `(string) => void` means "a function with a parameter named `string` of type `any`"!
+> 注意，参数名是**必需的**。函数类型 `(string) => void` 的意思是“这个函数带有一个名为 `string` 的参数，这个参数的类型为 `any`”！
 
-Of course, we can use a type alias to name a function type:
+当然，我们可以使用类型别名为函数类型命名：
 
 ```ts twoslash
 type GreetFunction = (a: string) => void;
@@ -40,11 +36,9 @@ function greeter(fn: GreetFunction) {
 }
 ```
 
-## Call Signatures
+## 调用签名
 
-In JavaScript, functions can have properties in addition to being callable.
-However, the function type expression syntax doesn't allow for declaring properties.
-If we want to describe something callable with properties, we can write a _call signature_ in an object type:
+在 JavaScript 中，函数除了可以被调用之外，还可以有其他属性。然而，函数类型表达式语法不允许声明属性。如果我们想描述带有属性的可调用对象，可以在其对象类型中编写一个*调用签名（call signature）*：
 
 ```ts twoslash
 type DescribableFunction = {
@@ -52,24 +46,22 @@ type DescribableFunction = {
   (someArg: number): boolean;
 };
 function doSomething(fn: DescribableFunction) {
-  console.log(fn.description + " returned " + fn(6));
+  console.log(fn.description + " 返回了 " + fn(6));
 }
 
 function myFunc(someArg: number) {
   return someArg > 3;
 }
-myFunc.description = "default description";
+myFunc.description = "默认描述";
 
 doSomething(myFunc);
 ```
 
-Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
+请注意，其语法与函数类型表达式略有不同——在参数列表和返回类型之间使用 `:`，而不是 `=>`。
 
-## Construct Signatures
+## 构造签名
 
-JavaScript functions can also be invoked with the `new` operator.
-TypeScript refers to these as _constructors_ because they usually create a new object.
-You can write a _construct signature_ by adding the `new` keyword in front of a call signature:
+JavaScript 函数还可以使用 `new` 运算符调用。TypeScript 将这些称为“构造函数”，因为它们通常会创建一个新对象。你可以在调用签名前面添加 `new` 关键字，以编写一个“构造签名”：
 
 ```ts twoslash
 type SomeObject = any;
@@ -78,24 +70,22 @@ type SomeConstructor = {
   new (s: string): SomeObject;
 };
 function fn(ctor: SomeConstructor) {
-  return new ctor("hello");
+  return new ctor("你好");
 }
 ```
 
-Some objects, like JavaScript's `Date` object, can be called with or without `new`.
-You can combine call and construct signatures in the same type arbitrarily:
+某些对象，比如 JavaScript 的 `Date` 对象，既可以在使用也可以在不使用 `new` 的情况下调用。你可以任意组合调用和构造签名在同一类型中：
 
 ```ts twoslash
 interface CallOrConstruct {
-  (n?: number): string;
   new (s: string): Date;
+  (n?: number): string;
 }
 ```
 
-## Generic Functions
+## 泛型函数
 
-It's common to write a function where the types of the input relate to the type of the output, or where the types of two inputs are related in some way.
-Let's consider for a moment a function that returns the first element of an array:
+通常我们会编写一些函数，其中输入的类型与输出的类型相关联，或者两个输入的类型以某种方式相关联。让我们考虑一个返回数组的第一个元素的函数：
 
 ```ts twoslash
 function firstElement(arr: any[]) {
@@ -103,11 +93,9 @@ function firstElement(arr: any[]) {
 }
 ```
 
-This function does its job, but unfortunately has the return type `any`.
-It'd be better if the function returned the type of the array element.
+这个函数完成了它的工作，但不太好的是它的返回类型是 `any`。如果函数返回数组元素的类型会更好。
 
-In TypeScript, _generics_ are used when we want to describe a correspondence between two values.
-We do this by declaring a _type parameter_ in the function signature:
+在 TypeScript 中，当我们想要描述两个值之间的对应关系时，我们使用*泛型*。我们可以在函数签名中声明*类型参数*：
 
 ```ts twoslash
 function firstElement<Type>(arr: Type[]): Type | undefined {
@@ -115,27 +103,24 @@ function firstElement<Type>(arr: Type[]): Type | undefined {
 }
 ```
 
-By adding a type parameter `Type` to this function and using it in two places, we've created a link between the input of the function (the array) and the output (the return value).
-Now when we call it, a more specific type comes out:
+通过在函数中添加类型参数 `Type`，并在两个地方使用它，我们在函数的输入（数组）和输出（返回值）之间建立了一个链接。现在当我们调用它时，会得到更具体的类型：
 
 ```ts twoslash
 declare function firstElement<Type>(arr: Type[]): Type | undefined;
 // ---cut---
-// s is of type 'string'
+// s 的类型是 'string'
 const s = firstElement(["a", "b", "c"]);
-// n is of type 'number'
+// n 的类型是 'number'
 const n = firstElement([1, 2, 3]);
-// u is of type undefined
+// u 的类型是 undefined
 const u = firstElement([]);
 ```
 
-### Inference
+### 类型推断
 
-Note that we didn't have to specify `Type` in this sample.
-The type was _inferred_ - chosen automatically - by TypeScript.
+请注意，在这个示例中我们不必指定 `Type`。TypeScript 会自动*推断*类型。
 
-We can use multiple type parameters as well.
-For example, a standalone version of `map` would look like this:
+我们也可以使用多个类型参数。例如，`map` 函数的独立版本如下：
 
 ```ts twoslash
 // prettier-ignore
@@ -143,22 +128,18 @@ function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[
   return arr.map(func);
 }
 
-// Parameter 'n' is of type 'string'
-// 'parsed' is of type 'number[]'
+// 参数 'n' 的类型是 'string'
+// 'parsed' 的类型是 'number[]'
 const parsed = map(["1", "2", "3"], (n) => parseInt(n));
 ```
 
-Note that in this example, TypeScript could infer both the type of the `Input` type parameter (from the given `string` array), as well as the `Output` type parameter based on the return value of the function expression (`number`).
+请注意，在这个示例中，TypeScript 可以（根据给定的 `string` 数组）推断出 `Input` 类型参数的类型，同时根据函数表达式的返回值（`number`）推断出 `Output` 类型参数的类型。
 
-### Constraints
+### 约束
 
-We've written some generic functions that can work on _any_ kind of value.
-Sometimes we want to relate two values, but can only operate on a certain subset of values.
-In this case, we can use a _constraint_ to limit the kinds of types that a type parameter can accept.
+我们编写了一些泛型函数，可以适用于*任何*类型的值。有时候我们想要关联两个值，但只能对某个子集的类型的值进行操作。在这种情况下，我们可以使用*约束*来限制类型参数可以接受的类型的子集。
 
-Let's write a function that returns the longer of two values.
-To do this, we need a `length` property that's a number.
-We _constrain_ the type parameter to that type by writing an `extends` clause:
+让我们编写一个返回两个值中较长的值的函数。为了做到这一点，我们需要值属于具有 `length` 属性的类型。我们通过编写 `extends` 子句将类型参数*约束*为该类型：
 
 ```ts twoslash
 // @errors: 2345 2322
@@ -170,29 +151,25 @@ function longest<Type extends { length: number }>(a: Type, b: Type) {
   }
 }
 
-// longerArray is of type 'number[]'
+// longerArray 的类型为 'number[]'
 const longerArray = longest([1, 2], [1, 2, 3]);
-// longerString is of type 'alice' | 'bob'
+// longerString 的类型为 'alice' | 'bob'
 const longerString = longest("alice", "bob");
-// Error! Numbers don't have a 'length' property
+// 错误！数字没有 'length' 属性
 const notOK = longest(10, 100);
 ```
 
-There are a few interesting things to note in this example.
-We allowed TypeScript to _infer_ the return type of `longest`.
-Return type inference also works on generic functions.
+这个例子中有几个有趣的地方。我们允许 TypeScript *推断* `longest` 的返回类型。返回类型推断也适用于泛型函数。
 
-Because we constrained `Type` to `{ length: number }`, we were allowed to access the `.length` property of the `a` and `b` parameters.
-Without the type constraint, we wouldn't be able to access those properties because the values might have been some other type without a length property.
+由于我们将 `Type` 约束为 `{ length: number }`，我们可以访问 `a` 和 `b` 参数的 `.length` 属性。如果没有类型约束，我们将无法访问这些属性，因为这些值可能是没有 length 属性的其他类型。
 
-The types of `longerArray` and `longerString` were inferred based on the arguments.
-Remember, generics are all about relating two or more values with the same type!
+`longerArray` 和 `longerString` 的类型是基于参数推断的。记住，泛型主要是关于将两个或多个值与相同类型进行关联！
 
-Finally, just as we'd like, the call to `longest(10, 100)` is rejected because the `number` type doesn't have a `.length` property.
+最后，正如我们所希望的，调用 `longest(10, 100)` 被拒绝，因为 `number` 类型没有 `.length` 属性。
 
-### Working with Constrained Values
+### 使用受限值
 
-Here's a common error when working with generic constraints:
+在处理泛型约束时，以下是一个常见的错误：
 
 ```ts twoslash
 // @errors: 2322
@@ -208,9 +185,7 @@ function minimumLength<Type extends { length: number }>(
 }
 ```
 
-It might look like this function is OK - `Type` is constrained to `{ length: number }`, and the function either returns `Type` or a value matching that constraint.
-The problem is that the function promises to return the _same_ kind of object as was passed in, not just _some_ object matching the constraint.
-If this code were legal, you could write code that definitely wouldn't work:
+这个函数看起来可能没问题——`Type` 被约束为 `{ length: number }`，而函数要么返回 `Type` 类型的值，要么返回与该约束相匹配的值。问题在于该函数承诺返回与传入的对象*相同*类型的对象，而不仅仅是与约束匹配的*任意*对象。如果这段代码可以通过检查，那么你可以编写肯定不起作用的代码：
 
 ```ts twoslash
 declare function minimumLength<Type extends { length: number }>(
@@ -218,17 +193,15 @@ declare function minimumLength<Type extends { length: number }>(
   minimum: number
 ): Type;
 // ---cut---
-// 'arr' gets value { length: 6 }
+// 'arr' 得到值 { length: 6 }
 const arr = minimumLength([1, 2, 3], 6);
-// and crashes here because arrays have
-// a 'slice' method, but not the returned object!
+// 然后在这里崩溃，因为数组有一个 'slice' 方法，但返回的对象没有！
 console.log(arr.slice(0));
 ```
 
-### Specifying Type Arguments
+### 指定类型参数
 
-TypeScript can usually infer the intended type arguments in a generic call, but not always.
-For example, let's say you wrote a function to combine two arrays:
+TypeScript 通常可以推断出泛型函数调用中的类型参数，但并非总是如此。例如，假设你编写了一个函数来合并两个数组：
 
 ```ts twoslash
 function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
@@ -236,7 +209,7 @@ function combine<Type>(arr1: Type[], arr2: Type[]): Type[] {
 }
 ```
 
-Normally it would be an error to call this function with mismatched arrays:
+通常情况下，如果使用不匹配的数组调用该函数，会产生一个错误：
 
 ```ts twoslash
 // @errors: 2322
@@ -245,7 +218,7 @@ declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 const arr = combine([1, 2, 3], ["hello"]);
 ```
 
-If you intended to do this, however, you could manually specify `Type`:
+然而，如果你打算这样做，可以手动指定 `Type`：
 
 ```ts twoslash
 declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
@@ -253,14 +226,13 @@ declare function combine<Type>(arr1: Type[], arr2: Type[]): Type[];
 const arr = combine<string | number>([1, 2, 3], ["hello"]);
 ```
 
-### Guidelines for Writing Good Generic Functions
+### 编写良好的泛型函数的指南
 
-Writing generic functions is fun, and it can be easy to get carried away with type parameters.
-Having too many type parameters or using constraints where they aren't needed can make inference less successful, frustrating callers of your function.
+编写泛型函数很有趣，但很容易过度使用类型参数。如果类型参数过多或在不需要的情况下使用约束，可能会导致类型推断不成功，从而使函数调用变得困难。
 
-#### Push Type Parameters Down
+#### 将类型参数往下推
 
-Here are two ways of writing a function that appear similar:
+以下是两种看似相似的函数编写方式：
 
 ```ts twoslash
 function firstElement1<Type>(arr: Type[]) {
@@ -271,20 +243,19 @@ function firstElement2<Type extends any[]>(arr: Type) {
   return arr[0];
 }
 
-// a: number (good)
+// a: number（好）
 const a = firstElement1([1, 2, 3]);
-// b: any (bad)
+// b: any（差）
 const b = firstElement2([1, 2, 3]);
 ```
 
-These might seem identical at first glance, but `firstElement1` is a much better way to write this function.
-Its inferred return type is `Type`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
+这两个函数乍一看可能相同，但是 `firstElement1` 是编写该函数的更好方式。它的推断返回类型是 `Type`，但是 `firstElement2` 的推断返回类型是 `any`，因为 TypeScript 必须使用约束类型解析 `arr[0]` 表达式，而不是在调用期间“等待”解析元素。
 
-> **Rule**: When possible, use the type parameter itself rather than constraining it
+> **规则**：在可能的情况下，使用类型参数本身而不是对其进行约束。
 
-#### Use Fewer Type Parameters
+#### 使用较少的类型参数
 
-Here's another pair of similar functions:
+以下是另一对类似的函数：
 
 ```ts twoslash
 function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
@@ -299,63 +270,58 @@ function filter2<Type, Func extends (arg: Type) => boolean>(
 }
 ```
 
-We've created a type parameter `Func` that _doesn't relate two values_.
-That's always a red flag, because it means callers wanting to specify type arguments have to manually specify an extra type argument for no reason.
-`Func` doesn't do anything but make the function harder to read and reason about!
+我们创建了一个类型参数 `Func`，它*没有将任何两个值进行关联*。这总是一个警告信号，因为这意味着调用者想要指定类型参数时，必须手动为无关的类型参数指定额外的类型参数。`Func` 没有任何用处，只是让函数变得更难阅读和理解！
 
-> **Rule**: Always use as few type parameters as possible
+> **规则**：使用尽可能少的类型参数。
 
-#### Type Parameters Should Appear Twice
+#### 类型参数应该出现两次
 
-Sometimes we forget that a function might not need to be generic:
+有时候我们会忘记函数可能没有必要是泛型的：
 
 ```ts twoslash
 function greet<Str extends string>(s: Str) {
-  console.log("Hello, " + s);
+  console.log("你好，" + s);
 }
 
-greet("world");
+greet("世界");
 ```
 
-We could just as easily have written a simpler version:
+我们也可以写一个更简单的版本：
 
 ```ts twoslash
 function greet(s: string) {
-  console.log("Hello, " + s);
+  console.log("你好，" + s);
 }
 ```
 
-Remember, type parameters are for _relating the types of multiple values_.
-If a type parameter is only used once in the function signature, it's not relating anything.
-This includes the inferred return type; for example, if `Str` was part of the inferred return type of `greet`, it would be relating the argument and return types, so would be used _twice_ despite appearing only once in the written code.
+记住，类型参数是用于*关联多个值的类型*。如果类型参数在函数签名中只被使用一次，它就没有在关联任何内容。这包括推断的返回类型；例如，如果 `Str` 是 `greet` 的推断返回类型的一部分，它将关联参数和返回类型，因此在写入的代码中只出现一次，但实际上使用了两次。
 
-> **Rule**: If a type parameter only appears in one location, strongly reconsider if you actually need it
+> **规则**：如果一个类型参数只出现在一个位置，请仔细考虑是否真的需要它。
 
-## Optional Parameters
+## 可选参数
 
-Functions in JavaScript often take a variable number of arguments.
-For example, the `toFixed` method of `number` takes an optional digit count:
+JavaScript 中的函数通常可以接受可变数量的参数。例如，`number` 的 `toFixed` 方法接受一个可选的数字位数：
 
 ```ts twoslash
 function f(n: number) {
-  console.log(n.toFixed()); // 0 arguments
-  console.log(n.toFixed(3)); // 1 argument
+  console.log(n.toFixed()); // 0 个参数
+  console.log(n.toFixed(3)); // 1 个参数
 }
 ```
 
-We can model this in TypeScript by marking the parameter as _optional_ with `?`:
+我们可以在 TypeScript 中使用 `?` 将参数标记为*可选*：
 
 ```ts twoslash
 function f(x?: number) {
   // ...
 }
-f(); // OK
-f(10); // OK
+f(); // 可以
+f(10); // 可以
 ```
 
-Although the parameter is specified as type `number`, the `x` parameter will actually have the type `number | undefined` because unspecified parameters in JavaScript get the value `undefined`.
+尽管参数的类型被指定为 `number`，但是因为 JavaScript 中未指定的参数其值被当作 `undefined`，所以 `x` 参数实际上具有类型 `number | undefined`。
 
-You can also provide a parameter _default_:
+你还可以提供参数的*默认值*：
 
 ```ts twoslash
 function f(x = 10) {
@@ -363,21 +329,20 @@ function f(x = 10) {
 }
 ```
 
-Now in the body of `f`, `x` will have type `number` because any `undefined` argument will be replaced with `10`.
-Note that when a parameter is optional, callers can always pass `undefined`, as this simply simulates a "missing" argument:
+现在在 `f` 的函数体中，`x` 将具有类型 `number`，因为任何 `undefined` 的参数将被替换为 `10`。请注意，如果参数是可选的，调用者始终可以传递 `undefined`，因为这只是模拟了一个“缺失”的参数：
 
 ```ts twoslash
 declare function f(x?: number): void;
 // cut
-// All OK
+// 全部正常
 f();
 f(10);
 f(undefined);
 ```
 
-### Optional Parameters in Callbacks
+### 回调函数中的可选参数
 
-Once you've learned about optional parameters and function type expressions, it's very easy to make the following mistakes when writing functions that invoke callbacks:
+一旦你了解了可选参数和函数类型表达式，编写调用回调函数的函数时很容易犯以下错误：
 
 ```ts twoslash
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
@@ -387,7 +352,7 @@ function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
 }
 ```
 
-What people usually intend when writing `index?` as an optional parameter is that they want both of these calls to be legal:
+当把 `index?` 作为可选参数时，人们通常希望这两种调用都是合法的：
 
 ```ts twoslash
 // @errors: 2532 18048
@@ -400,20 +365,19 @@ myForEach([1, 2, 3], (a) => console.log(a));
 myForEach([1, 2, 3], (a, i) => console.log(a, i));
 ```
 
-What this _actually_ means is that _`callback` might get invoked with one argument_.
-In other words, the function definition says that the implementation might look like this:
+然而，*实际上*这样的话 *`callback` 只可能会被传递一个参数*。换句话说，函数定义表示其实现可能如下所示：
 
 ```ts twoslash
 // @errors: 2532 18048
 function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
-    // I don't feel like providing the index today
+    // 我今天不想提供 index
     callback(arr[i]);
   }
 }
 ```
 
-In turn, TypeScript will enforce this meaning and issue errors that aren't really possible:
+然后，TypeScript 将强制执行这个含义，并发出实际上不可能的错误：
 
 <!-- prettier-ignore -->
 ```ts twoslash
@@ -428,19 +392,15 @@ myForEach([1, 2, 3], (a, i) => {
 });
 ```
 
-In JavaScript, if you call a function with more arguments than there are parameters, the extra arguments are simply ignored.
-TypeScript behaves the same way.
-Functions with fewer parameters (of the same types) can always take the place of functions with more parameters.
+在 JavaScript 中，如果你用比参数多的实参调用一个函数，多余的实参会被忽略。TypeScript 的行为也是一样的。参数较少（类型相同）的函数总是可以替代参数较多的函数。
 
-> **Rule**: When writing a function type for a callback, _never_ write an optional parameter unless you intend to _call_ the function without passing that argument
+> **规则**：在编写回调函数的函数类型时，除非你打算在*调用*函数时不传递该参数，否则*永远不要*编写可选参数。
 
-## Function Overloads
+## 函数重载
 
-Some JavaScript functions can be called in a variety of argument counts and types.
-For example, you might write a function to produce a `Date` that takes either a timestamp (one argument) or a month/day/year specification (three arguments).
+某些 JavaScript 函数可以以不同数量或类型的实参进行调用。例如，你可以编写函数来创建 `Date` 对象，它既可以接受时间戳作为参数（一个实参），也可以接受月份/日期/年份作为参数（三个实参）。
 
-In TypeScript, we can specify a function that can be called in different ways by writing _overload signatures_.
-To do this, write some number of function signatures (usually two or more), followed by the body of the function:
+在 TypeScript 中，我们可以通过编写*重载签名*来指定可以以不同方式调用的函数。为此，我们先编写一些函数签名（通常是两个或更多），然后再编写函数的具体实现：
 
 ```ts twoslash
 // @errors: 2575
@@ -458,17 +418,13 @@ const d2 = makeDate(5, 5, 5);
 const d3 = makeDate(1, 3);
 ```
 
-In this example, we wrote two overloads: one accepting one argument, and another accepting three arguments.
-These first two signatures are called the _overload signatures_.
+在这个示例中，我们编写了两个重载：一个接受一个参数，另一个接受三个参数。这两个签名被称为*重载签名*。
 
-Then, we wrote a function implementation with a compatible signature.
-Functions have an _implementation_ signature, but this signature can't be called directly.
-Even though we wrote a function with two optional parameters after the required one, it can't be called with two parameters!
+然后，我们编写了一个具体的函数实现，其签名与重载签名是兼容的。函数有一个*具体实现*签名，但这个签名不能直接调用。尽管我们在函数必需的参数后面写了两个可选参数，但它不能用两个参数调用！
 
-### Overload Signatures and the Implementation Signature
+### 重载签名和具体实现签名
 
-This is a common source of confusion.
-Often people will write code like this and not understand why there is an error:
+这是一个常见的困惑来源。通常人们会编写这样的代码，并不理解为什么会出错：
 
 ```ts twoslash
 // @errors: 2554
@@ -476,22 +432,21 @@ function fn(x: string): void;
 function fn() {
   // ...
 }
-// Expected to be able to call with zero arguments
+// 期望可以使用零个参数调用
 fn();
 ```
 
-Again, the signature used to write the function body can't be "seen" from the outside.
+同样，函数体的签名在外部是“看”不到的。
 
-> The signature of the _implementation_ is not visible from the outside.
-> When writing an overloaded function, you should always have _two_ or more signatures above the implementation of the function.
+> 外部无法看到*具体实现*的签名。
+> 当编写重载函数时，你应该始终在函数实现之前编写*两个*或更多的签名。
 
-The implementation signature must also be _compatible_ with the overload signatures.
-For example, these functions have errors because the implementation signature doesn't match the overloads in a correct way:
+具体实现的签名也必须与重载签名*兼容*。例如，下面的函数存在错误，因为具体实现的签名与重载签名不匹配：
 
 ```ts twoslash
 // @errors: 2394
 function fn(x: boolean): void;
-// Argument type isn't right
+// 参数类型不正确
 function fn(x: string): void;
 function fn(x: boolean) {}
 ```
@@ -499,19 +454,18 @@ function fn(x: boolean) {}
 ```ts twoslash
 // @errors: 2394
 function fn(x: string): string;
-// Return type isn't right
+// 返回类型不正确
 function fn(x: number): boolean;
 function fn(x: string | number) {
   return "oops";
 }
 ```
 
-### Writing Good Overloads
+### 编写良好的重载函数
 
-Like generics, there are a few guidelines you should follow when using function overloads.
-Following these principles will make your function easier to call, easier to understand, and easier to implement.
+与泛型一样，使用函数重载时应遵循一些准则。遵循这些原则将使你的函数更易于调用、理解和实现。
 
-Let's consider a function that returns the length of a string or an array:
+让我们考虑一个返回字符串或数组的长度的函数：
 
 ```ts twoslash
 function len(s: string): number;
@@ -521,8 +475,7 @@ function len(x: any) {
 }
 ```
 
-This function is fine; we can invoke it with strings or arrays.
-However, we can't invoke it with a value that might be a string _or_ an array, because TypeScript can only resolve a function call to a single overload:
+这个函数是无错误的；我们可以用字符串或数组调用它。然而，我们不能用可能是字符串*或*数组的值调用它，因为 TypeScript 只能解析函数调用为单个重载：
 
 ```ts twoslash
 // @errors: 2769
@@ -534,7 +487,7 @@ len([0]); // OK
 len(Math.random() > 0.5 ? "hello" : [0]);
 ```
 
-Because both overloads have the same argument count and same return type, we can instead write a non-overloaded version of the function:
+由于两个重载具有相同的参数数量和相同的返回类型，我们可以使用非重载版本的函数：
 
 ```ts twoslash
 function len(x: any[] | string) {
@@ -542,14 +495,13 @@ function len(x: any[] | string) {
 }
 ```
 
-This is much better!
-Callers can invoke this with either sort of value, and as an added bonus, we don't have to figure out a correct implementation signature.
+这好多了！调用者可以使用任一类型的值调用它，而且作为额外的好处，我们不必找出一个正确的实现签名。
 
-> Always prefer parameters with union types instead of overloads when possible
+> 尽可能使用带有联合类型的参数，而不是重载
 
-### Declaring `this` in a Function
+### 在函数中声明 `this`
 
-TypeScript will infer what the `this` should be in a function via code flow analysis, for example in the following:
+TypeScript 通过代码流分析推断出函数中的 `this` 应该是什么，例如在下面的代码中：
 
 ```ts twoslash
 const user = {
@@ -562,7 +514,7 @@ const user = {
 };
 ```
 
-TypeScript understands that the function `user.becomeAdmin` has a corresponding `this` which is the outer object `user`. `this`, _heh_, can be enough for a lot of cases, but there are a lot of cases where you need more control over what object `this` represents. The JavaScript specification states that you cannot have a parameter called `this`, and so TypeScript uses that syntax space to let you declare the type for `this` in the function body.
+TypeScript 理解到 `user.becomeAdmin` 函数有一个对应的 `this`，即外部对象 `user`。`this` 在很多情况下已经足够，但也有很多情况下你需要更多地掌控 `this` 表示的对象。JavaScript 规范规定你不能有一个名为 `this` 的参数，因此 TypeScript 使用该语法空间来让你在函数体中声明 `this` 的类型。
 
 ```ts twoslash
 interface User {
@@ -581,7 +533,7 @@ const admins = db.filterUsers(function (this: User) {
 });
 ```
 
-This pattern is common with callback-style APIs, where another object typically controls when your function is called. Note that you need to use `function` and not arrow functions to get this behavior:
+这种模式在回调式 API 中很常见，其中另一个对象通常控制何时调用你的函数。请注意，你需要使用 `function` 而不是箭头函数来获得这种行为：
 
 ```ts twoslash
 // @errors: 7041 7017
@@ -599,44 +551,36 @@ const db = getDB();
 const admins = db.filterUsers(() => this.admin);
 ```
 
-## Other Types to Know About
+## 其他需要了解的类型
 
-There are some additional types you'll want to recognize that appear often when working with function types.
-Like all types, you can use them everywhere, but these are especially relevant in the context of functions.
+在处理函数类型时，有一些额外的类型需要你认识。虽然所有类型都可以在任何地方使用，但这些类型在函数的上下文中尤其相关。
 
 ### `void`
 
-`void` represents the return value of functions which don't return a value.
-It's the inferred type any time a function doesn't have any `return` statements, or doesn't return any explicit value from those return statements:
+`void` 表示不返回任何值的函数的返回类型。当一个函数没有任何 `return` 语句，或者 `return` 语句中没有明确的返回值时，它是推断出的返回类型。
 
 ```ts twoslash
-// The inferred return type is void
+// 推断的返回类型是 void
 function noop() {
   return;
 }
 ```
 
-In JavaScript, a function that doesn't return any value will implicitly return the value `undefined`.
-However, `void` and `undefined` are not the same thing in TypeScript.
-There are further details at the end of this chapter.
+在 JavaScript 中，不返回任何值的函数会隐式返回 `undefined` 值。然而，在 TypeScript 中，`void` 和 `undefined` 并不相同。有关此问题的更多细节将会在本章末尾介绍。
 
-> `void` is not the same as `undefined`.
+> `void` 和 `undefined` 不是相同的类型。
 
 ### `object`
 
-The special type `object` refers to any value that isn't a primitive (`string`, `number`, `bigint`, `boolean`, `symbol`, `null`, or `undefined`).
-This is different from the _empty object type_ `{ }`, and also different from the global type `Object`.
-It's very likely you will never use `Object`.
+特殊类型 `object` 指代任何非原始类型（`string`、`number`、`bigint`、`boolean`、`symbol`、`null` 或 `undefined`）的值。这与 *空对象类型* `{ }` 不同，也不同于全局类型 `Object`。你可能永远不会使用 `Object`。
 
-> `object` is not `Object`. **Always** use `object`!
+> `object` 不是 `Object`。请**总是**使用 `object`！
 
-Note that in JavaScript, function values are objects: They have properties, have `Object.prototype` in their prototype chain, are `instanceof Object`, you can call `Object.keys` on them, and so on.
-For this reason, function types are considered to be `object`s in TypeScript.
+需要注意的是，在 JavaScript 中，函数值也是对象：它们具有属性，在原型链中包含 `Object.prototype`，是 `instanceof Object`，可以对它们调用 `Object.keys` 等等。因此，在 TypeScript 中，函数类型被认为是 `object` 类型。
 
 ### `unknown`
 
-The `unknown` type represents _any_ value.
-This is similar to the `any` type, but is safer because it's not legal to do anything with an `unknown` value:
+`unknown` 类型表示*任意*值。这与 `any` 类型类似，但更安全，因为无法对 `unknown` 值进行任何操作：
 
 ```ts twoslash
 // @errors: 2571 18046
@@ -648,9 +592,9 @@ function f2(a: unknown) {
 }
 ```
 
-This is useful when describing function types because you can describe functions that accept any value without having `any` values in your function body.
+在描述函数类型时，这有大作用，因为你可以描述接受任意值的函数，而不需要在函数体中使用 `any` 值。
 
-Conversely, you can describe a function that returns a value of unknown type:
+相反地，你可以描述返回未知类型值的函数：
 
 ```ts twoslash
 declare const someRandomString: string;
@@ -659,13 +603,13 @@ function safeParse(s: string): unknown {
   return JSON.parse(s);
 }
 
-// Need to be careful with 'obj'!
+// 需要小心处理 'obj'！
 const obj = safeParse(someRandomString);
 ```
 
 ### `never`
 
-Some functions _never_ return a value:
+有些函数永远不会返回值：
 
 ```ts twoslash
 function fail(msg: string): never {
@@ -673,27 +617,25 @@ function fail(msg: string): never {
 }
 ```
 
-The `never` type represents values which are _never_ observed.
-In a return type, this means that the function throws an exception or terminates execution of the program.
+`never` 类型表示永远不会观察到的值。在返回类型中，这意味着函数会抛出异常或终止程序的执行。
 
-`never` also appears when TypeScript determines there's nothing left in a union.
+当 TypeScript 确定联合类型中没有剩余的选项时，也会出现 `never`。
 
 ```ts twoslash
 function fn(x: string | number) {
   if (typeof x === "string") {
-    // do something
+    // 做一些操作
   } else if (typeof x === "number") {
-    // do something else
+    // 做另一些操作
   } else {
-    x; // has type 'never'!
+    x; // 的类型为 'never'!
   }
 }
 ```
 
 ### `Function`
 
-The global type `Function` describes properties like `bind`, `call`, `apply`, and others present on all function values in JavaScript.
-It also has the special property that values of type `Function` can always be called; these calls return `any`:
+全局类型 `Function` 描述了 JavaScript 中所有函数值的属性，如 `bind`、`call`、`apply` 等。它还具有特殊属性，这些属性 `Function` 类型的值总是可以调用；这些调用返回 `any`：
 
 ```ts twoslash
 function doSomething(f: Function) {
@@ -701,39 +643,38 @@ function doSomething(f: Function) {
 }
 ```
 
-This is an _untyped function call_ and is generally best avoided because of the unsafe `any` return type.
+这是一个*无类型的函数调用*，一般最好避免使用，因为它具有不安全的 `any` 返回类型。
 
-If you need to accept an arbitrary function but don't intend to call it, the type `() => void` is generally safer.
+如果你需要接受任意函数但不打算调用它，类型 `() => void` 通常更安全。
 
-## Rest Parameters and Arguments
+### 剩余参数和剩余实参
 
 <blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters'>Rest Parameters</a><br/>
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax'>Spread Syntax</a><br/>
+   <p>背景阅读：<br />
+   <a href='https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/rest_parameters'>剩余参数</a><br/>
+   <a href='https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Spread_syntax'>Spread Syntax</a><br/>
    </p>
 </blockquote>
 
-### Rest Parameters
+### 剩余参数
 
-In addition to using optional parameters or overloads to make functions that can accept a variety of fixed argument counts, we can also define functions that take an _unbounded_ number of arguments using _rest parameters_.
+除了使用可选参数或重载来创建可以接受各种固定参数数量的函数之外，我们还可以使用*剩余参数*定义可以接受**不确定数量**实参的函数。
 
-A rest parameter appears after all other parameters, and uses the `...` syntax:
+剩余参数位于其他参数之后，使用 `...` 语法：
 
 ```ts twoslash
 function multiply(n: number, ...m: number[]) {
   return m.map((x) => n * x);
 }
-// 'a' gets value [10, 20, 30, 40]
+// 'a' 的值为 [10, 20, 30, 40]
 const a = multiply(10, 1, 2, 3, 4);
 ```
 
-In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`, and any type annotation given must be of the form `Array<T>` or `T[]`, or a tuple type (which we'll learn about later).
+在 TypeScript 中，这些参数的类型注解隐式地是 `any[]` 而不是 `any`，而且任何给定的类型注解必须是 `Array<T>`、`T[]` 的形式，或者是元组类型（我们稍后会学习到元组类型）。
 
-### Rest Arguments
+### 剩余实参
 
-Conversely, we can _provide_ a variable number of arguments from an iterable object (for example, an array) using the spread syntax.
-For example, the `push` method of arrays takes any number of arguments:
+相反地，我们可以使用扩展语法从可迭代对象（例如数组）中*提供*可变数量的实参。例如，数组的 `push` 方法接受任意数量的实参：
 
 ```ts twoslash
 const arr1 = [1, 2, 3];
@@ -741,40 +682,37 @@ const arr2 = [4, 5, 6];
 arr1.push(...arr2);
 ```
 
-Note that in general, TypeScript does not assume that arrays are immutable.
-This can lead to some surprising behavior:
+请注意，通常情况下，TypeScript 不会假设数组是不可变的。这可能会导致一些令人惊讶的行为：
 
 ```ts twoslash
 // @errors: 2556
-// Inferred type is number[] -- "an array with zero or more numbers",
-// not specifically two numbers
+// 推断的类型是 number[]——“一个包含零个或多个数字的数组”，而不是特定的两个数字
 const args = [8, 5];
 const angle = Math.atan2(...args);
 ```
 
-The best fix for this situation depends a bit on your code, but in general a `const` context is the most straightforward solution:
+对于这种情况，最佳解决方案有点依赖于你的代码，但通常来说，在 `const` 上下文中是最直接的解决方案：
 
 ```ts twoslash
-// Inferred as 2-length tuple
+// 推断为长度为 2 的元组
 const args = [8, 5] as const;
 // OK
 const angle = Math.atan2(...args);
 ```
 
-Using rest arguments may require turning on [`downlevelIteration`](/tsconfig#downlevelIteration) when targeting older runtimes.
+在使用剩余参数时，可能需要在针对较旧的运行时环境时启用 [`downlevelIteration`](/tsconfig#downlevelIteration)。
 
 <!-- TODO link to downlevel iteration -->
 
-## Parameter Destructuring
+### 参数解构
 
 <blockquote class='bg-reading'>
-   <p>Background Reading:<br />
-   <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment'>Destructuring Assignment</a><br/>
+   <p>背景阅读：<br />
+   <a href='https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment'>解构赋值</a><br/>
    </p>
 </blockquote>
 
-You can use parameter destructuring to conveniently unpack objects provided as an argument into one or more local variables in the function body.
-In JavaScript, it looks like this:
+你可以使用参数解构将作为参数提供的对象方便地解构到函数体中的一个或多个局部变量中。在 JavaScript 中，它的样子如下：
 
 ```js
 function sum({ a, b, c }) {
@@ -783,7 +721,7 @@ function sum({ a, b, c }) {
 sum({ a: 10, b: 3, c: 9 });
 ```
 
-The type annotation for the object goes after the destructuring syntax:
+对象的类型注解位于解构语法之后：
 
 ```ts twoslash
 function sum({ a, b, c }: { a: number; b: number; c: number }) {
@@ -791,25 +729,25 @@ function sum({ a, b, c }: { a: number; b: number; c: number }) {
 }
 ```
 
-This can look a bit verbose, but you can use a named type here as well:
+这可能看起来有点冗长，但你也可以在这里使用命名类型：
 
 ```ts twoslash
-// Same as prior example
+// 与之前的示例相同
 type ABC = { a: number; b: number; c: number };
 function sum({ a, b, c }: ABC) {
   console.log(a + b + c);
 }
 ```
 
-## Assignability of Functions
+## 函数的可赋值性
 
-### Return type `void`
+### 返回类型为 `void`
 
-The `void` return type for functions can produce some unusual, but expected behavior.
+对于返回类型为 `void` 的函数，它们可能会产生一些不寻常但是符合预期的行为。
 
-Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type voidFunc = () => void`), when implemented, can return _any_ other value, but it will be ignored.
+使用返回类型为 `void` 的上下文类型并**不会**强制函数**不**返回任何值。换句话说，当实现一个带有 `void` 返回类型的上下文函数类型（`type voidFunc = () => void`）时，它可以返回*任何*其他值，但是该返回值会被忽略。
 
-Thus, the following implementations of the type `() => void` are valid:
+因此，以下 `() => void` 类型的实现是有效的：
 
 ```ts twoslash
 type voidFunc = () => void;
@@ -825,7 +763,7 @@ const f3: voidFunc = function () {
 };
 ```
 
-And when the return value of one of these functions is assigned to another variable, it will retain the type of `void`:
+当将其中一个函数的返回值赋给另一个变量时，它将保持 `void` 类型：
 
 ```ts twoslash
 type voidFunc = () => void;
@@ -847,7 +785,7 @@ const v2 = f2();
 const v3 = f3();
 ```
 
-This behavior exists so that the following code is valid even though `Array.prototype.push` returns a number and the `Array.prototype.forEach` method expects a function with a return type of `void`.
+这个行为的存在使得以下代码是有效的，即使 `Array.prototype.push` 返回一个数字，而 `Array.prototype.forEach` 方法期望的是一个返回类型为 `void` 的函数。
 
 ```ts twoslash
 const src = [1, 2, 3];
@@ -856,7 +794,7 @@ const dst = [0];
 src.forEach((el) => dst.push(el));
 ```
 
-There is one other special case to be aware of, when a literal function definition has a `void` return type, that function must **not** return anything.
+还有另一种特殊情况需要注意，当字面函数定义的返回类型为 `void` 时，该函数必须**不**返回任何内容。
 
 ```ts twoslash
 function f2(): void {
@@ -870,7 +808,7 @@ const f3 = function (): void {
 };
 ```
 
-For more on `void` please refer to these other documentation entries:
+有关 `void` 的更多信息，请参考以下其他文档条目：
 
-- [v2 handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#void)
-- [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+- [v2 手册](https://ts-zh-docs.vercel.app/zh/docs/handbook/2/functions.html#void)
+- [FAQ——“为什么返回非 void 的函数可以分配给返回 void 的函数？”](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)

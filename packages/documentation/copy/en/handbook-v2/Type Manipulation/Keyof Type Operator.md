@@ -1,14 +1,13 @@
 ---
-title: Keyof Type Operator
+title: keyof 类型运算符
 layout: docs
-permalink: /docs/handbook/2/keyof-types.html
-oneline: "Using the keyof operator in type contexts."
+permalink: /zh/docs/handbook/2/keyof-types.html
+oneline: "在类型上下文中使用 keyof 运算符。"
 ---
 
-## The `keyof` type operator
+## `keyof` 类型运算符
 
-The `keyof` operator takes an object type and produces a string or numeric literal union of its keys.
-The following type `P` is the same type as `type P = "x" | "y"`:
+`keyof` 运算符接受对象类型，并生成其键的字符串或数字字面量联合类型。下面的类型 `P` 与 `type P = "x" | "y"` 相同：
 
 ```ts twoslash
 type Point = { x: number; y: number };
@@ -16,7 +15,7 @@ type P = keyof Point;
 //   ^?
 ```
 
-If the type has a `string` or `number` index signature, `keyof` will return those types instead:
+如果类型具有 `string` 或 `number` 索引签名，`keyof` 将返回相应的类型：
 
 ```ts twoslash
 type Arrayish = { [n: number]: unknown };
@@ -28,6 +27,6 @@ type M = keyof Mapish;
 //   ^?
 ```
 
-Note that in this example, `M` is `string | number` -- this is because JavaScript object keys are always coerced to a string, so `obj[0]` is always the same as `obj["0"]`.
+请注意，在此示例中，`M` 是 `string | number`——这是因为 JavaScript 对象的键总是被强制转换为字符串，所以 `obj[0]` 总是等同于 `obj["0"]`。
 
-`keyof` types become especially useful when combined with mapped types, which we'll learn more about later.
+当与映射类型结合使用时，`keyof` 类型变得非常有用，我们稍后将详细了解。

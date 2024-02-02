@@ -1,28 +1,25 @@
 export const comCopy = {
-  com_layout_title: "TypeScript Community Resources",
+  com_layout_title: "TypeScript 社区资源",
   com_layout_description:
-    "Connect with other TypeScripters online and offline.",
-  com_headline: "Connect with us",
-  com_connect_online: "Online",
+    "在线上或线下与其他 Typescript 使用者交流",
+  com_headline: "联系我们",
+  com_connect_online: "在线",
   com_connect_online_description:
-    " Tell us what’s working well, what you want to see added or improved, and find out about new updates.",
+    " 让我们知道什么地方做得好，什么地方可以做得更好，并了解最新进展。",
   com_online_stack_overflow_desc:
-    "Engage with your peers and ask questions about TypeScript using the tag 'typescript'",
+    "与您的同路人互动，并使用‘　typescript　’标签询问有关 TypeScript 的问题",
   com_online_stack_overflow_tag: "",
-  com_online_discord_header: "Chat",
+  com_online_discord_header: "交流",
   com_online_discord_desc:
-    "Chat with other TypeScript users in the TypeScript Community Chat.",
-  com_online_github_desc:
-    "Found a bug, or want to give us constructive feedback?",
-  com_online_github_href: "Tell us on GitHub",
-  com_online_twitter_desc: "Stay up to date. Follow us on Twitter",
-  com_online_blog_desc:
-    "Learn about the latest TypeScript developments via our", //... blog
-  com_online_typed_desc: "TypeScript definition files.",
-  com_online_typed_href: "Browse the thousands of",
-  com_online_typed_available_for:
-    "available for common libraries and frameworks.",
-  com_person: "Connect in person",
-  com_conferences: "Conferences",
-  com_conferences_alt_img: "logo of ",
+    "在 TypeScript 社区聊天室中与其他 TypeScript 用户聊天。",
+  com_online_github_desc: "找到了 bug，或者有你独到的见解？",
+  com_online_github_href: "在 GitHub 上告诉我们",
+  com_online_twitter_desc: "跟进最新进展。在 Twitter 上关注我们",
+  com_online_blog_desc: "了解最新的 Typescript 的进展，通过我们的",
+  com_online_typed_desc: "TypeScript 定义文件",
+  com_online_typed_href: "浏览数千个",
+  com_online_typed_available_for: "可用的通用库和框架",
+  com_person: "亲身参与",
+  com_conferences: "会议",
+  com_conferences_alt_img: "标识"
 }

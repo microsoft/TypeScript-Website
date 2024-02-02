@@ -1,7 +1,7 @@
 ---
 title: Understanding Errors
 layout: docs
-permalink: /docs/handbook/2/understanding-errors.html
+permalink: /zh/docs/handbook/2/understanding-errors.html
 oneline: "How to read TypeScript errors."
 ---
 

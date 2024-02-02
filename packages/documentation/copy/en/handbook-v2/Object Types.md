@@ -1,14 +1,13 @@
 ---
-title: Object Types
+title: 对象类型
 layout: docs
-permalink: /docs/handbook/2/objects.html
-oneline: "How TypeScript describes the shapes of JavaScript objects."
+permalink: /zh/docs/handbook/2/objects.html
+oneline: "TypeScript 描述 JavaScript 对象的方式"
 ---
 
-In JavaScript, the fundamental way that we group and pass around data is through objects.
-In TypeScript, we represent those through _object types_.
+在 JavaScript 中，对象是我们最基本的组织和传递数据的方式。在 TypeScript 中，我们通过*对象类型*来表示它们。
 
-As we've seen, they can be anonymous:
+正如我们所见，它们可以是匿名的：
 
 ```ts twoslash
 function greet(person: { name: string; age: number }) {
@@ -17,7 +16,7 @@ function greet(person: { name: string; age: number }) {
 }
 ```
 
-or they can be named by using either an interface:
+或者可以通过接口来命名：
 
 ```ts twoslash
 interface Person {
@@ -31,7 +30,7 @@ function greet(person: Person) {
 }
 ```
 
-or a type alias:
+或者使用类型别名来命名：
 
 ```ts twoslash
 type Person = {
@@ -45,20 +44,19 @@ function greet(person: Person) {
 }
 ```
 
-In all three examples above, we've written functions that take objects that contain the property `name` (which must be a `string`) and `age` (which must be a `number`).
+在上面的三个示例中，我们编写了接受包含属性 `name`（必须是 `string` 类型）和 `age`（必须是 `number` 类型）的对象的函数。
 
-## Quick Reference
+## 快速参考
 
-We have cheat-sheets available for both [`type` and `interface`](https://www.typescriptlang.org/cheatsheets), if you want a quick look at the important every-day syntax at a glance.
+我们为 [`type` 和 `interface`](https://www.typescriptlang.org/cheatsheets) 都提供了备忘单，如果你想快速查看重要的常用语法，可以看一下。
 
-## Property Modifiers
+## 属性修饰符
 
-Each property in an object type can specify a couple of things: the type, whether the property is optional, and whether the property can be written to.
+对象类型中的每个属性可以指定一些内容：类型、属性是否可选以及属性是否可写。
 
-### Optional Properties
+### 可选属性
 
-Much of the time, we'll find ourselves dealing with objects that _might_ have a property set.
-In those cases, we can mark those properties as _optional_ by adding a question mark (`?`) to the end of their names.
+大部分情况下，我们处理的对象*可能*会有某些属性设置。在这种情况下，我们可以通过在属性名称末尾添加问号（`?`）来将这些属性标记为*可选*。
 
 ```ts twoslash
 interface Shape {}
@@ -84,11 +82,9 @@ paintShape({ shape, yPos: 100 });
 paintShape({ shape, xPos: 100, yPos: 100 });
 ```
 
-In this example, both `xPos` and `yPos` are considered optional.
-We can choose to provide either of them, so every call above to `paintShape` is valid.
-All optionality really says is that if the property _is_ set, it better have a specific type.
+在此示例中，`xPos` 和 `yPos` 都被视为可选的。我们可以选择提供其中任意一个，因此上面对 `paintShape` 的每个调用都是有效的。可选性实际上表示，如果属性被设置，它必须具有特定的类型。
 
-We can also read from those properties - but when we do under [`strictNullChecks`](/tsconfig#strictNullChecks), TypeScript will tell us they're potentially `undefined`.
+我们也可以读取这些属性的值——但是在 [`strictNullChecks`](/tsconfig#strictNullChecks) 下，TypeScript 会告诉我们它们可能是 `undefined`。
 
 ```ts twoslash
 interface Shape {}
@@ -110,8 +106,7 @@ function paintShape(opts: PaintOptions) {
 }
 ```
 
-In JavaScript, even if the property has never been set, we can still access it - it's just going to give us the value `undefined`.
-We can just handle `undefined` specially by checking for it.
+在 JavaScript 中，即使属性从未被设置，我们仍然可以访问它——它只会给我们返回 `undefined` 的值。我们只需要通过检查 `undefined` 来特殊处理它。
 
 ```ts twoslash
 interface Shape {}
@@ -133,7 +128,7 @@ function paintShape(opts: PaintOptions) {
 }
 ```
 
-Note that this pattern of setting defaults for unspecified values is so common that JavaScript has syntax to support it.
+需要注意的是，设置未指定值的默认值的这种模式非常常见，JavaScript 提供了相应的语法来支持它。
 
 ```ts twoslash
 interface Shape {}
@@ -147,19 +142,18 @@ interface PaintOptions {
 
 // ---cut---
 function paintShape({ shape, xPos = 0, yPos = 0 }: PaintOptions) {
-  console.log("x coordinate at", xPos);
-  //                             ^?
-  console.log("y coordinate at", yPos);
-  //                             ^?
+  console.log("x 坐标为", xPos);
+  //                      ^?
+  console.log("y 坐标为", yPos);
+  //                      ^?
   // ...
 }
 ```
 
-Here we used [a destructuring pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) for `paintShape`'s parameter, and provided [default values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Default_values) for `xPos` and `yPos`.
-Now `xPos` and `yPos` are both definitely present within the body of `paintShape`, but optional for any callers to `paintShape`.
+在这里，我们使用了[解构赋值模式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) 来定义 `paintShape` 的参数，并为 `xPos` 和 `yPos` 提供了[默认值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#默认值)。现在，在 `paintShape` 函数体内，`xPos` 和 `yPos` 都是必然存在的，但对于 `paintShape` 的调用者来说是可选的。
 
-> Note that there is currently no way to place type annotations within destructuring patterns.
-> This is because the following syntax already means something different in JavaScript.
+> 注意，目前无法在解构赋值模式中放置类型注解。
+> 这是因为在 JavaScript 中，以下语法已经具有不同的含义。
 >
 > ```ts twoslash
 > // @noImplicitAny: false
@@ -173,13 +167,12 @@ Now `xPos` and `yPos` are both definitely present within the body of `paintShape
 > }
 > ```
 >
-> In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
-> Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
+> 在对象解构赋值模式中，`shape: Shape` 的意思是“获取属性 `shape` 并在本地重新定义为名为 `Shape` 的变量。
+> 同样，`xPos: number` 创建一个名为 `number` 的变量，其值基于参数的 `xPos`。
 
-### `readonly` Properties
+### 只读属性
 
-Properties can also be marked as `readonly` for TypeScript.
-While it won't change any behavior at runtime, a property marked as `readonly` can't be written to during type-checking.
+在 TypeScript 中，属性也可以标记为 `readonly`。虽然在运行时不会改变任何行为，但标记为 `readonly` 的属性在类型检查期间无法被写入。
 
 ```ts twoslash
 // @errors: 2540
@@ -188,16 +181,15 @@ interface SomeType {
 }
 
 function doSomething(obj: SomeType) {
-  // We can read from 'obj.prop'.
-  console.log(`prop has the value '${obj.prop}'.`);
+  // 我们可以读取‘obj.prop’的值。
+  console.log(`prop 的值为 '${obj.prop}'。`);
 
-  // But we can't re-assign it.
+  // 但是我们无法重新赋值。
   obj.prop = "hello";
 }
 ```
 
-Using the `readonly` modifier doesn't necessarily imply that a value is totally immutable - or in other words, that its internal contents can't be changed.
-It just means the property itself can't be re-written to.
+使用 `readonly` 修饰符并不一定意味着一个值是完全不可变的，或者换句话说，它的内部内容无法改变。它只是表示该属性本身无法被改变。
 
 ```ts twoslash
 // @errors: 2540
@@ -206,13 +198,13 @@ interface Home {
 }
 
 function visitForBirthday(home: Home) {
-  // We can read and update properties from 'home.resident'.
-  console.log(`Happy birthday ${home.resident.name}!`);
+  // 我们可以读取和更新‘home.resident’的属性。
+  console.log(`生日快乐，${home.resident.name}！`);
   home.resident.age++;
 }
 
 function evict(home: Home) {
-  // But we can't write to the 'resident' property itself on a 'Home'.
+  // 但是我们无法直接写入‘Home’的‘resident’属性本身。
   home.resident = {
     name: "Victor the Evictor",
     age: 42,
@@ -220,9 +212,7 @@ function evict(home: Home) {
 }
 ```
 
-It's important to manage expectations of what `readonly` implies.
-It's useful to signal intent during development time for TypeScript on how an object should be used.
-TypeScript doesn't factor in whether properties on two types are `readonly` when checking whether those types are compatible, so `readonly` properties can also change via aliasing.
+适当调整对 `readonly` 的预期非常重要。在开发期间，它有助于 TypeScript 明确对象的使用方式。当检查两种类型是否兼容时，TypeScript 不会考虑这两种类型的属性是否为 `readonly`，所以通过别名，`readonly` 属性也可以发生变化。
 
 ```ts twoslash
 interface Person {
@@ -240,21 +230,21 @@ let writablePerson: Person = {
   age: 42,
 };
 
-// works
+// 可行
 let readonlyPerson: ReadonlyPerson = writablePerson;
 
-console.log(readonlyPerson.age); // prints '42'
+console.log(readonlyPerson.age); // 输出 '42'
 writablePerson.age++;
-console.log(readonlyPerson.age); // prints '43'
+console.log(readonlyPerson.age); // 输出 '43'
 ```
 
-Using [mapping modifiers](/docs/handbook/2/mapped-types.html#mapping-modifiers), you can remove `readonly` attributes.
+使用[映射修饰符](/zh/docs/handbook/2/mapped-types.html#mapping-modifiers)，可以去除 `readonly` 特性。
 
-### Index Signatures
+### 索引签名
 
-Sometimes you don't know all the names of a type's properties ahead of time, but you do know the shape of the values.
+有时候你预先并不知道所有属性的名称，但是你知道这些值的大致信息。
 
-In those cases you can use an index signature to describe the types of possible values, for example:
+在这种情况下，你可以使用索引签名来描述可能的值类型，例如：
 
 ```ts twoslash
 declare function getStringArray(): StringArray;
@@ -268,14 +258,13 @@ const secondItem = myArray[1];
 //     ^?
 ```
 
-Above, we have a `StringArray` interface which has an index signature.
-This index signature states that when a `StringArray` is indexed with a `number`, it will return a `string`.
+上面的例子中，我们有一个 `StringArray` 接口，它具有一个索引签名。这个索引签名表示当使用 `number` 值对 `StringArray` 进行索引时，它将返回 `string` 类型的值。
 
-Only some types are allowed for index signature properties: `string`, `number`, `symbol`, template string patterns, and union types consisting only of these.
+索引签名属性只允许某些类型：`string`、`number`、`symbol`、模板字符串模式，以及只包含这些类型的联合类型。
 
 <details>
-    <summary>It is possible to support both types of indexers...</summary>
-    <p>It is possible to support both types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because when indexing with a <code>number</code>, JavaScript will actually convert that to a <code>string</code> before indexing into an object. That means that indexing with <code>100</code> (a <code>number</code>) is the same thing as indexing with <code>"100"</code> (a <code>string</code>), so the two need to be consistent.</p>
+    <summary>它是可以同时支持两种类型的索引器的...</summary>
+    <p>它是可以同时支持两种类型的索引器的，但是数字索引器返回的类型必须是字符串索引器返回类型的子类型。这是因为在使用 <code>number</code> 进行索引时，JavaScript 实际上会将其转换为 <code>string</code>，然后再对对象进行索引。这意味着使用 <code>100</code>（一个 `number`）进行索引与使用 <code>"100"</code>（一个 <code>string</code>）进行索引是一样的，所以两者需要保持一致。</p>
 
 ```ts twoslash
 // @errors: 2413
@@ -288,7 +277,7 @@ interface Dog extends Animal {
   breed: string;
 }
 
-// Error: indexing with a numeric string might get you a completely separate type of Animal!
+// 错误：使用数字字符串进行索引可能会得到一个完全不同类型的 Animal！
 interface NotOkay {
   [x: number]: Animal;
   [x: string]: Dog;
@@ -297,9 +286,7 @@ interface NotOkay {
 
 </details>
 
-While string index signatures are a powerful way to describe the "dictionary" pattern, they also enforce that all properties match their return type.
-This is because a string index declares that `obj.property` is also available as `obj["property"]`.
-In the following example, `name`'s type does not match the string index's type, and the type checker gives an error:
+虽然字符串索引签名是描述“字典”模式的强大方式，但它也强制要求所有属性与它们的返回类型匹配。这是因为字符串索引声明了 `obj.property` 也可以使用 `obj["property"]` 访问。在下面的例子中，`name` 的类型与字符串索引的类型不匹配，类型检查器会报错：
 
 ```ts twoslash
 // @errors: 2411
@@ -307,22 +294,22 @@ In the following example, `name`'s type does not match the string index's type, 
 interface NumberDictionary {
   [index: string]: number;
 
-  length: number; // ok
+  length: number; // 可行
   name: string;
 }
 ```
 
-However, properties of different types are acceptable if the index signature is a union of the property types:
+然而，如果索引签名是属性类型的联合类型，不同类型的属性是可以接受的：
 
 ```ts twoslash
 interface NumberOrStringDictionary {
   [index: string]: number | string;
-  length: number; // ok, length is a number
-  name: string; // ok, name is a string
+  length: number; // 可行，length 是一个数字
+  name: string; // 可行，name 是一个字符串
 }
 ```
 
-Finally, you can make index signatures `readonly` in order to prevent assignment to their indices:
+最后，你可以将索引签名设置为 `readonly`，以防止对索引项进行赋值：
 
 ```ts twoslash
 declare function getReadOnlyStringArray(): ReadonlyStringArray;
@@ -336,12 +323,11 @@ let myArray: ReadonlyStringArray = getReadOnlyStringArray();
 myArray[2] = "Mallory";
 ```
 
-You can't set `myArray[2]` because the index signature is `readonly`.
+你不能设置 `myArray[2]`，因为索引签名是 `readonly` 的。
 
-## Excess Property Checks
+## 多余属性检查
 
-Where and how an object is assigned a type can make a difference in the type system.
-One of the key examples of this is in excess property checking, which validates the object more thoroughly when it is created and assigned to an object type during creation.
+对象被赋予类型的位置和方式会对类型系统产生影响。其中一个关键例子是多余属性检查（excess property checking），它在对象创建并赋值给对象类型时更加彻底地验证对象。
 
 ```ts twoslash
 // @errors: 2345 2739
@@ -360,14 +346,11 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 let mySquare = createSquare({ colour: "red", width: 100 });
 ```
 
-Notice the given argument to `createSquare` is spelled _`colour`_ instead of `color`.
-In plain JavaScript, this sort of thing fails silently.
+注意，传递给 `createSquare` 的参数中将 `color` 拼写为 *`colour`* 而不是 `color`。在普通的 JavaScript 中，这种情况会悄无声息地失败。
 
-You could argue that this program is correctly typed, since the `width` properties are compatible, there's no `color` property present, and the extra `colour` property is insignificant.
+你可以认为这个程序是正确类型化的，因为 `width` 属性是兼容的，没有 `color` 属性存在，并且额外的 `colour` 属性是无关紧要的。
 
-However, TypeScript takes the stance that there's probably a bug in this code.
-Object literals get special treatment and undergo _excess property checking_ when assigning them to other variables, or passing them as arguments.
-If an object literal has any properties that the "target type" doesn't have, you'll get an error:
+然而，TypeScript 认为这段代码可能存在 bug。对象字面量在赋值给其他变量或作为实参传递时会经历*额外的属性检查*。如果对象字面量具有任何目标类型不具备的属性，就会产生错误：
 
 ```ts twoslash
 // @errors: 2345 2739
@@ -386,8 +369,7 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 let mySquare = createSquare({ colour: "red", width: 100 });
 ```
 
-Getting around these checks is actually really simple.
-The easiest method is to just use a type assertion:
+绕过这些检查实际上非常简单。最简单的方法是使用类型断言：
 
 ```ts twoslash
 // @errors: 2345 2739
@@ -406,8 +388,7 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
 ```
 
-However, a better approach might be to add a string index signature if you're sure that the object can have some extra properties that are used in some special way.
-If `SquareConfig` can have `color` and `width` properties with the above types, but could _also_ have any number of other properties, then we could define it like so:
+然而，如果你确定该对象可以具有一些额外的属性，并且这些属性在某种特殊方式下使用，一种更好的方法是在对象上添加字符串索引签名。如果 `SquareConfig` 可以具有上述类型的 `color` 和 `width` 属性，但*还*可以具有任意数量的其他属性，那么我们可以这样定义它：
 
 ```ts twoslash
 interface SquareConfig {
@@ -417,10 +398,9 @@ interface SquareConfig {
 }
 ```
 
-Here we're saying that `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
+在这里，我们表示 `SquareConfig` 可以具有任意数量的属性，只要它们不是 `color` 或 `width`，它们的类型就无关紧要。
 
-One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable:
-Since assigning `squareOptions` won't undergo excess property checks, the compiler won't give you an error:
+最后一种绕过这些检查的方式可能有点令人惊讶，那就是将对象赋值给另一个变量：由于对 `squareOptions` 进行赋值不会进行多余属性检查，编译器不会报错：
 
 ```ts twoslash
 interface SquareConfig {
@@ -440,8 +420,7 @@ let squareOptions = { colour: "red", width: 100 };
 let mySquare = createSquare(squareOptions);
 ```
 
-The above workaround will work as long as you have a common property between `squareOptions` and `SquareConfig`.
-In this example, it was the property `width`. It will however, fail if the variable does not have any common object property. For example:
+上述解决方法只适用于 `squareOptions` 和 `SquareConfig` 之间存在公共属性的情况。在这个例子中，公共属性是 `width`。然而，如果变量没有任何公共对象属性，这种解决方法将失败。例如：
 
 ```ts twoslash
 // @errors: 2559
@@ -461,16 +440,13 @@ let squareOptions = { colour: "red" };
 let mySquare = createSquare(squareOptions);
 ```
 
-Keep in mind that for simple code like above, you probably shouldn't be trying to "get around" these checks.
-For more complex object literals that have methods and hold state, you might need to keep these techniques in mind, but a majority of excess property errors are actually bugs.
+请记住，对于上述简单的代码，你最好不应该试图绕过这些检查。对于具有方法和状态的更复杂的对象字面量，你可能需要牢记这些技巧，但是绝大多数多余属性错误实际上是 bug。
 
-That means if you're running into excess property checking problems for something like option bags, you might need to revise some of your type declarations.
-In this instance, if it's okay to pass an object with both a `color` or `colour` property to `createSquare`, you should fix up the definition of `SquareConfig` to reflect that.
+这意味着，如果你在处理诸如选项包（option bags）之类的问题时遇到多余属性检查问题，你可能需要重新检查一些类型声明。在这种情况下，如果将同时具有 `color` 或 `colour` 属性的对象传递给 `createSquare` 是允许的，那么你应该修正 `SquareConfig` 的定义以反映这一点。
 
-## Extending Types
+## 拓展类型
 
-It's pretty common to have types that might be more specific versions of other types.
-For example, we might have a `BasicAddress` type that describes the fields necessary for sending letters and packages in the U.S.
+在类型系统中，有时候会存在一些更具体版本的类型。例如，我们可能有一个 `BasicAddress` 类型，用于描述在美国发送信函和包裹所需的字段。
 
 ```ts twoslash
 interface BasicAddress {
@@ -482,8 +458,7 @@ interface BasicAddress {
 }
 ```
 
-In some situations that's enough, but addresses often have a unit number associated with them if the building at an address has multiple units.
-We can then describe an `AddressWithUnit`.
+在某些情况下，这已经足够了，但是地址经常会有一个单元号与之关联，比如某个地址对应的建筑物有多个单元。我们可以描述 `AddressWithUnit` 类型。
 
 <!-- prettier-ignore -->
 ```ts twoslash
@@ -498,8 +473,7 @@ interface AddressWithUnit {
 }
 ```
 
-This does the job, but the downside here is that we had to repeat all the other fields from `BasicAddress` when our changes were purely additive.
-Instead, we can extend the original `BasicAddress` type and just add the new fields that are unique to `AddressWithUnit`.
+这样做是可以的，但是这里的缺点是，我们不得不在我们的更改中重复所有其他来自 `BasicAddress` 的字段，然而我们想要做的更改只是简单地添加。相反，我们可以扩展原始的 `BasicAddress` 类型来达到同样的效果，这样只需添加唯一属于 `AddressWithUnit` 的新字段就可以了。
 
 ```ts twoslash
 interface BasicAddress {
@@ -515,11 +489,9 @@ interface AddressWithUnit extends BasicAddress {
 }
 ```
 
-The `extends` keyword on an `interface` allows us to effectively copy members from other named types, and add whatever new members we want.
-This can be useful for cutting down the amount of type declaration boilerplate we have to write, and for signaling intent that several different declarations of the same property might be related.
-For example, `AddressWithUnit` didn't need to repeat the `street` property, and because `street` originates from `BasicAddress`, a reader will know that those two types are related in some way.
+在 `interface` 上使用 `extends` 关键字可以让我们有效地复制其他命名类型的成员，并添加任何我们想要的新成员。这可以减少我们必须编写的类型声明的样板代码量，并且可以表明多个对同一属性的不同声明可能相关联。例如，`AddressWithUnit` 不需要重复 `street` 属性，并且因为 `street` 来源于 `BasicAddress`，读者会知道这两个类型在某种程度上是相关的。
 
-`interface`s can also extend from multiple types.
+`interface` 也可以从多个类型进行扩展。
 
 ```ts twoslash
 interface Colorful {
@@ -538,12 +510,11 @@ const cc: ColorfulCircle = {
 };
 ```
 
-## Intersection Types
+## 交叉类型
 
-`interface`s allowed us to build up new types from other types by extending them.
-TypeScript provides another construct called _intersection types_ that is mainly used to combine existing object types.
+在 TypeScript 中，除了使用 `interface` 来扩展已有类型外，还提供了另一种构造方式，称为*交叉类型（intersection types）*，主要用于组合现有的对象类型。
 
-An intersection type is defined using the `&` operator.
+交叉类型使用 `&` 运算符进行定义。
 
 ```ts twoslash
 interface Colorful {
@@ -556,7 +527,7 @@ interface Circle {
 type ColorfulCircle = Colorful & Circle;
 ```
 
-Here, we've intersected `Colorful` and `Circle` to produce a new type that has all the members of `Colorful` _and_ `Circle`.
+在这个例子中，我们对 `Colorful` 和 `Circle` 进行了交叉，生成了新类型，该类型具有 `Colorful` *和* `Circle` 的所有成员。
 
 ```ts twoslash
 // @errors: 2345
@@ -568,31 +539,29 @@ interface Circle {
 }
 // ---cut---
 function draw(circle: Colorful & Circle) {
-  console.log(`Color was ${circle.color}`);
-  console.log(`Radius was ${circle.radius}`);
+  console.log(`颜色是：${circle.color}`);
+  console.log(`半径是：${circle.radius}`);
 }
 
-// okay
-draw({ color: "blue", radius: 42 });
+// 正常
+draw({ color: "蓝", radius: 42 });
 
-// oops
-draw({ color: "red", raidus: 42 });
+// 错误
+draw({ color: "红", raidus: 42 });
 ```
 
-## Interfaces vs. Intersections
+## 接口 vs. 交叉类型
 
-We just looked at two ways to combine types which are similar, but are actually subtly different.
-With interfaces, we could use an `extends` clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias.
-The principal difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you'd pick one over the other between an interface and a type alias of an intersection type.
+我们刚刚讨论了两种将相似但实际上略有不同的类型组合在一起的方法。使用接口，我们可以使用 `extends` 子句从其他类型进行扩展，而交叉类型后给结果起类型别名也与之相似，并且我们可以。两者之间的主要区别在于如何处理冲突，而这种区别通常是你选择接口还是交叉类型的主要依据之一。
 
 <!--
-For example, two types can declare the same property in an interface.
+例如，两个类型可以在接口中声明相同的属性。
 
 TODO -->
 
-## Generic Object Types
+## 泛型对象类型
 
-Let's imagine a `Box` type that can contain any value - `string`s, `number`s, `Giraffe`s, whatever.
+让我们想象 `Box` 类型，它可以包含任何值——`string` 值、`number` 值、`Giraffe` 值，或者其他任何类型的值。
 
 ```ts twoslash
 interface Box {
@@ -600,9 +569,9 @@ interface Box {
 }
 ```
 
-Right now, the `contents` property is typed as `any`, which works, but can lead to accidents down the line.
+目前，`contents` 属性的类型为 `any`，这样也不是不能工作，但可能会在后续操作中导致错误。
 
-We could instead use `unknown`, but that would mean that in cases where we already know the type of `contents`, we'd need to do precautionary checks, or use error-prone type assertions.
+我们可以使用 `unknown`，但这意味着在我们已经知道 `contents` 的类型的情况下，我们需要进行预防性检查，或者使用容易出错的类型断言。
 
 ```ts twoslash
 interface Box {
@@ -613,16 +582,16 @@ let x: Box = {
   contents: "hello world",
 };
 
-// we could check 'x.contents'
+// 我们可以检查‘x.contents’
 if (typeof x.contents === "string") {
   console.log(x.contents.toLowerCase());
 }
 
-// or we could use a type assertion
+// 或者我们可以使用类型断言
 console.log((x.contents as string).toLowerCase());
 ```
 
-One type safe approach would be to instead scaffold out different `Box` types for every type of `contents`.
+一种类型安全的方法是为每种类型的 `contents` 创建不同的 `Box` 类型。
 
 ```ts twoslash
 // @errors: 2322
@@ -639,7 +608,7 @@ interface BooleanBox {
 }
 ```
 
-But that means we'll have to create different functions, or overloads of functions, to operate on these types.
+但这样的话，我们将不得不创建不同的函数或函数的重载来操作这些类型。
 
 ```ts twoslash
 interface NumberBox {
@@ -662,10 +631,9 @@ function setContents(box: { contents: any }, newContents: any) {
 }
 ```
 
-That's a lot of boilerplate. Moreover, we might later need to introduce new types and overloads.
-This is frustrating, since our box types and overloads are all effectively the same.
+有很多样板代码。而且，以后我们可能需要引入新的类型和重载。这很令人沮丧，因为我们的盒子类型和重载实际上是相同的。
 
-Instead, we can make a _generic_ `Box` type which declares a _type parameter_.
+相反，我们可以创建声明*类型参数*的*泛型* `Box` 类型。
 
 ```ts twoslash
 interface Box<Type> {
@@ -673,8 +641,7 @@ interface Box<Type> {
 }
 ```
 
-You might read this as “A `Box` of `Type` is something whose `contents` have type `Type`”.
-Later on, when we refer to `Box`, we have to give a _type argument_ in place of `Type`.
+你可以将其理解为“`Type` 类型的 `Box` 是具有类型为 `Type` 的 `contents` 的东西”。在稍后引用 `Box` 时，我们必须在 `Type` 的位置上给出一个*类型参数*。
 
 ```ts twoslash
 interface Box<Type> {
@@ -684,9 +651,7 @@ interface Box<Type> {
 let box: Box<string>;
 ```
 
-Think of `Box` as a template for a real type, where `Type` is a placeholder that will get replaced with some other type.
-When TypeScript sees `Box<string>`, it will replace every instance of `Type` in `Box<Type>` with `string`, and end up working with something like `{ contents: string }`.
-In other words, `Box<string>` and our earlier `StringBox` work identically.
+将 `Box` 视为一个真实类型的模板，其中 `Type` 是一个占位符，将被替换为其他类型。当 TypeScript 看到 `Box<string>` 时，它将用 `string` 替换 `Box<Type>` 中的每个 `Type` 实例，最终使用类似 `{ contents: string }` 的东西进行处理。换句话说，`Box<string>` 和我们之前的 `StringBox` 完全相同。
 
 ```ts twoslash
 interface Box<Type> {
@@ -705,7 +670,7 @@ boxB.contents;
 //   ^?
 ```
 
-`Box` is reusable in that `Type` can be substituted with anything. That means that when we need a box for a new type, we don't need to declare a new `Box` type at all (though we certainly could if we wanted to).
+`Box` 是可重用的，因为 `Type` 可以替换为任何类型。这意味着当我们需要一个新类型的盒子时，我们根本不需要声明新的 `Box` 类型（尽管如果我们愿意，确实可以声明新的类型）。
 
 ```ts twoslash
 interface Box<Type> {
@@ -716,11 +681,11 @@ interface Apple {
   // ....
 }
 
-// Same as '{ contents: Apple }'.
+// 等同于‘{ contents: Apple }’。
 type AppleBox = Box<Apple>;
 ```
 
-This also means that we can avoid overloads entirely by instead using [generic functions](/docs/handbook/2/functions.html#generic-functions).
+这也意味着我们可以通过使用[泛型函数](/zh/docs/handbook/2/functions.html#泛型函数)来完全避免重载。
 
 ```ts twoslash
 interface Box<Type> {
@@ -733,7 +698,7 @@ function setContents<Type>(box: Box<Type>, newContents: Type) {
 }
 ```
 
-It is worth noting that type aliases can also be generic. We could have defined our new `Box<Type>` interface, which was:
+值得注意的是，类型别名也可以是泛型的。假如我们有 `Box<Type>` 接口，它是：
 
 ```ts twoslash
 interface Box<Type> {
@@ -741,7 +706,7 @@ interface Box<Type> {
 }
 ```
 
-by using a type alias instead:
+可以使用类型别名来替代：
 
 ```ts twoslash
 type Box<Type> = {
@@ -749,7 +714,7 @@ type Box<Type> = {
 };
 ```
 
-Since type aliases, unlike interfaces, can describe more than just object types, we can also use them to write other kinds of generic helper types.
+由于类型别名不像接口那样只能描述对象类型，因此我们还可以使用它们来编写其他类型的通用辅助类型。
 
 ```ts twoslash
 // @errors: 2575
@@ -764,15 +729,13 @@ type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
 //   ^?
 ```
 
-We'll circle back to type aliases in just a little bit.
+稍后我们会回到类型别名。
 
-### The `Array` Type
+### `Array` 类型
 
-Generic object types are often some sort of container type that work independently of the type of elements they contain.
-It's ideal for data structures to work this way so that they're re-usable across different data types.
+泛型对象类型通常是独立于其包含元素类型的容器类型。这样设计数据结构可以使其在不同的数据类型之间可重用。
 
-It turns out we've been working with a type just like that throughout this handbook: the `Array` type.
-Whenever we write out types like `number[]` or `string[]`, that's really just a shorthand for `Array<number>` and `Array<string>`.
+事实上，在整个手册中我们一直在使用一种类似的类型：`Array` 类型。当我们写出像 `number[]` 或 `string[]` 这样的类型时，实际上它们是 `Array<number>` 和 `Array<string>` 的简写形式。
 
 ```ts twoslash
 function doSomething(value: Array<string>) {
@@ -781,12 +744,12 @@ function doSomething(value: Array<string>) {
 
 let myArray: string[] = ["hello", "world"];
 
-// either of these work!
+// 以下两种方式都可以！
 doSomething(myArray);
 doSomething(new Array("hello", "world"));
 ```
 
-Much like the `Box` type above, `Array` itself is a generic type.
+与上面的 `Box` 类型类似，`Array` 本身也是泛型类型。
 
 ```ts twoslash
 // @noLib: true
@@ -797,17 +760,17 @@ interface Symbol {}
 // ---cut---
 interface Array<Type> {
   /**
-   * Gets or sets the length of the array.
+   * 获取或设置数组的长度。
    */
   length: number;
 
   /**
-   * Removes the last element from an array and returns it.
+   * 从数组中移除最后一个元素并返回它。
    */
   pop(): Type | undefined;
 
   /**
-   * Appends new elements to an array, and returns the new length of the array.
+   * 向数组追加新元素，并返回数组的新长度。
    */
   push(...items: Type[]): number;
 
@@ -815,57 +778,55 @@ interface Array<Type> {
 }
 ```
 
-Modern JavaScript also provides other data structures which are generic, like `Map<K, V>`, `Set<T>`, and `Promise<T>`.
-All this really means is that because of how `Map`, `Set`, and `Promise` behave, they can work with any sets of types.
+现代 JavaScript 还提供了其他泛型的数据结构，如 `Map<K, V>`、`Set<T>` 和 `Promise<T>`。所有这些都意味着由于 `Map`、`Set` 和 `Promise` 的行为方式，它们可以适用于任何类型的集合。
 
-### The `ReadonlyArray` Type
+### `ReadonlyArray` 类型
 
-The `ReadonlyArray` is a special type that describes arrays that shouldn't be changed.
+`ReadonlyArray` 是一种特殊类型，用于描述不应该被修改的数组。
 
 ```ts twoslash
 // @errors: 2339
 function doStuff(values: ReadonlyArray<string>) {
-  // We can read from 'values'...
+  // 我们可以从‘values’中读取...
   const copy = values.slice();
   console.log(`The first value is ${values[0]}`);
 
-  // ...but we can't mutate 'values'.
+  // ...但是我们不能修改‘values’。
   values.push("hello!");
 }
 ```
 
-Much like the `readonly` modifier for properties, it's mainly a tool we can use for intent.
-When we see a function that returns `ReadonlyArray`s, it tells us we're not meant to change the contents at all, and when we see a function that consumes `ReadonlyArray`s, it tells us that we can pass any array into that function without worrying that it will change its contents.
+与属性的 `readonly` 修饰符类似，它主要是一个用于表达意图的工具。当我们看到返回 `ReadonlyArray` 的函数时，它告诉我们不应该对其内容进行任何修改；而当我们看到接受 `ReadonlyArray` 的函数时，它告诉我们可以将任何数组传递给该函数，而不必担心它会更改其内容。
 
-Unlike `Array`, there isn't a `ReadonlyArray` constructor that we can use.
+与 `Array` 不同，`ReadonlyArray` 没有构造函数。
 
 ```ts twoslash
 // @errors: 2693
 new ReadonlyArray("red", "green", "blue");
 ```
 
-Instead, we can assign regular `Array`s to `ReadonlyArray`s.
+相反，我们可以将普通的 `Array` 赋值给 `ReadonlyArray`。
 
 ```ts twoslash
 const roArray: ReadonlyArray<string> = ["red", "green", "blue"];
 ```
 
-Just as TypeScript provides a shorthand syntax for `Array<Type>` with `Type[]`, it also provides a shorthand syntax for `ReadonlyArray<Type>` with `readonly Type[]`.
+正如 TypeScript 提供了 `Array<Type>` 的简写语法 `Type[]`，它还提供了 `ReadonlyArray<Type>` 的简写语法 `readonly Type[]`。
 
 ```ts twoslash
 // @errors: 2339
 function doStuff(values: readonly string[]) {
   //                     ^^^^^^^^^^^^^^^^^
-  // We can read from 'values'...
+  // 我们可以从‘values’中读取...
   const copy = values.slice();
   console.log(`The first value is ${values[0]}`);
 
-  // ...but we can't mutate 'values'.
+  // ...但是我们不能修改‘values’。
   values.push("hello!");
 }
 ```
 
-One last thing to note is that unlike the `readonly` property modifier, assignability isn't bidirectional between regular `Array`s and `ReadonlyArray`s.
+最后需要注意的是，与属性的 `readonly` 修饰符不同，普通的 `Array` 和 `ReadonlyArray` 之间的可赋值性不是双向的。
 
 ```ts twoslash
 // @errors: 4104
@@ -876,18 +837,16 @@ x = y;
 y = x;
 ```
 
-### Tuple Types
+### 元组类型
 
-A _tuple type_ is another sort of `Array` type that knows exactly how many elements it contains, and exactly which types it contains at specific positions.
+*元组类型*是另一种 `Array` 类型，它确切地知道它包含多少个元素，以及在特定位置包含的确切类型。
 
 ```ts twoslash
 type StringNumberPair = [string, number];
 //                      ^^^^^^^^^^^^^^^^
 ```
 
-Here, `StringNumberPair` is a tuple type of `string` and `number`.
-Like `ReadonlyArray`, it has no representation at runtime, but is significant to TypeScript.
-To the type system, `StringNumberPair` describes arrays whose `0` index contains a `string` and whose `1` index contains a `number`.
+在这里，`StringNumberPair` 是一个包含 `string` 和 `number` 的元组类型。与 `ReadonlyArray` 类似，它在运行时没有表示，但对于 TypeScript 来说非常重要。对于类型系统来说，`StringNumberPair` 描述了一个数组，其 `0` 索引包含一个 `string`，而 `1` 索引包含一个 `number`。
 
 ```ts twoslash
 function doSomething(pair: [string, number]) {
@@ -901,7 +860,7 @@ function doSomething(pair: [string, number]) {
 doSomething(["hello", 42]);
 ```
 
-If we try to index past the number of elements, we'll get an error.
+如果我们尝试超出元素数量的索引，将会得到一个错误。
 
 ```ts twoslash
 // @errors: 2493
@@ -912,7 +871,7 @@ function doSomething(pair: [string, number]) {
 }
 ```
 
-We can also [destructure tuples](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Array_destructuring) using JavaScript's array destructuring.
+我们还可以使用 JavaScript 的数组解构来[解构元组](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#解构数组)。
 
 ```ts twoslash
 function doSomething(stringHash: [string, number]) {
@@ -926,28 +885,27 @@ function doSomething(stringHash: [string, number]) {
 }
 ```
 
-> Tuple types are useful in heavily convention-based APIs, where each element's meaning is "obvious".
-> This gives us flexibility in whatever we want to name our variables when we destructure them.
-> In the above example, we were able to name elements `0` and `1` to whatever we wanted.
+> 元组类型在高度基于约定的 API 中非常有用，这种 API 中每个元素的含义是“显而易见的”。
+> 这使得我们在解构它们时可以根据需要为变量命名。
+> 在上面的示例中，我们能够将元素 `0` 和 `1` 命名为任何我们想要的名称。
 >
-> However, since not every user holds the same view of what's obvious, it may be worth reconsidering whether using objects with descriptive property names may be better for your API.
+> 然而，由于不是每个用户都对什么是显而易见的持有相同的观点，因此再三考虑是否为你的 API 使用具有描述性属性名称的对象比较好。
 
-Other than those length checks, simple tuple types like these are equivalent to types which are versions of `Array`s that declare properties for specific indexes, and that declare `length` with a numeric literal type.
+除了长度检查外，简单的元组类型与声明具有特定索引属性和使用数字字面类型声明 `length` 的 `Array` 版本的类型是等效的。
 
 ```ts twoslash
 interface StringNumberPair {
-  // specialized properties
+  // 特别的属性
   length: 2;
   0: string;
   1: number;
 
-  // Other 'Array<string | number>' members...
+  // 其他‘Array<string | number>’的成员...
   slice(start?: number, end?: number): Array<string | number>;
 }
 ```
 
-Another thing you may be interested in is that tuples can have optional properties by writing out a question mark (`?` after an element's type).
-Optional tuple elements can only come at the end, and also affect the type of `length`.
+另一个你可能感兴趣的是，元组可以通过在元素类型后面写一个问号 (`?`) 来拥有可选属性。可选的元组元素只能出现在末尾，并且也会影响 `length` 的类型。
 
 ```ts twoslash
 type Either2dOr3d = [number, number, number?];
@@ -956,12 +914,12 @@ function setCoordinate(coord: Either2dOr3d) {
   const [x, y, z] = coord;
   //           ^?
 
-  console.log(`Provided coordinates had ${coord.length} dimensions`);
-  //                                            ^?
+  console.log(`所给坐标有 ${coord.length} 个维度`);
+  //                             ^?
 }
 ```
 
-Tuples can also have rest elements, which have to be an array/tuple type.
+元组还可以拥有剩余元素，它们必须是数组/元组类型。
 
 ```ts twoslash
 type StringNumberBooleans = [string, number, ...boolean[]];
@@ -969,11 +927,11 @@ type StringBooleansNumber = [string, ...boolean[], number];
 type BooleansStringNumber = [...boolean[], string, number];
 ```
 
-- `StringNumberBooleans` describes a tuple whose first two elements are `string` and `number` respectively, but which may have any number of `boolean`s following.
-- `StringBooleansNumber` describes a tuple whose first element is `string` and then any number of `boolean`s and ending with a `number`.
-- `BooleansStringNumber` describes a tuple whose starting elements are any number of `boolean`s and ending with a `string` then a `number`.
+- `StringNumberBooleans` 描述了一个元组，其前两个元素分别是 `string` 和 `number`，但后面可以有任意数量的 `boolean`。
+- `StringBooleansNumber` 描述了一个元组，其第一个元素是 `string`，然后是任意数量的 `boolean`，最后是一个 `number`。
+- `BooleansStringNumber` 描述了一个元组，其起始元素是任意数量的 `boolean`，然后是一个 `string`，最后是一个 `number`。
 
-A tuple with a rest element has no set "length" - it only has a set of well-known elements in different positions.
+带有剩余元素的元组没有固定的“length”——它只有一组在不同位置上的已知元素。
 
 ```ts twoslash
 type StringNumberBooleans = [string, number, ...boolean[]];
@@ -983,9 +941,7 @@ const b: StringNumberBooleans = ["beautiful", 2, true];
 const c: StringNumberBooleans = ["world", 3, true, false, true, false, true];
 ```
 
-Why might optional and rest elements be useful?
-Well, it allows TypeScript to correspond tuples with parameter lists.
-Tuples types can be used in [rest parameters and arguments](/docs/handbook/2/functions.html#rest-parameters-and-arguments), so that the following:
+为什么可选和剩余元素会有用呢？这使得 TypeScript 能够将元组与参数列表相对应。元组类型可以在[剩余参数和剩余实参](/zh/docs/handbook/2/functions.html#剩余参数和剩余实参) 中使用，因此以下代码：
 
 ```ts twoslash
 function readButtonInput(...args: [string, number, ...boolean[]]) {
@@ -994,7 +950,7 @@ function readButtonInput(...args: [string, number, ...boolean[]]) {
 }
 ```
 
-is basically equivalent to:
+基本上等同于：
 
 ```ts twoslash
 function readButtonInput(name: string, version: number, ...input: boolean[]) {
@@ -1002,12 +958,12 @@ function readButtonInput(name: string, version: number, ...input: boolean[]) {
 }
 ```
 
-This is handy when you want to take a variable number of arguments with a rest parameter, and you need a minimum number of elements, but you don't want to introduce intermediate variables.
+这在你想要使用剩余参数接收可变数量的实参，并且你需要确保有最小数量的元素，但又不想引入中间变量时非常方便。
 
 <!--
-TODO do we need this example?
+TODO 我们是否需要这个例子？
 
-For example, imagine we need to write a function that adds up `number`s based on arguments that get passed in.
+例如，想象我们需要编写一个函数，根据传入的参数将数字相加。
 
 ```ts twoslash
 function sum(...args: number[]) {
@@ -1015,8 +971,8 @@ function sum(...args: number[]) {
 }
 ```
 
-We might feel like it makes little sense to take any fewer than 2 elements, so we want to require callers to provide at least 2 arguments.
-A first attempt might be
+我们可能觉得，至少需要传入 2 个元素才有意义，所以我们希望要求调用者至少提供 2 个参数。
+第一个尝试可能是：
 
 ```ts twoslash
 function foo(a: number, b: number, ...args: number[]) {
@@ -1032,9 +988,9 @@ function foo(a: number, b: number, ...args: number[]) {
 
 -->
 
-### `readonly` Tuple Types
+### `readonly` 元组类型
 
-One final note about tuple types - tuple types have `readonly` variants, and can be specified by sticking a `readonly` modifier in front of them - just like with array shorthand syntax.
+关于元组类型，最后还有一个要注意的地方——元组类型有 `readonly` 变体，可以通过在前面加上 `readonly` 修饰符来指定，就像数组简写语法一样。
 
 ```ts twoslash
 function doSomething(pair: readonly [string, number]) {
@@ -1043,7 +999,7 @@ function doSomething(pair: readonly [string, number]) {
 }
 ```
 
-As you might expect, writing to any property of a `readonly` tuple isn't allowed in TypeScript.
+正如你所预期的，不允许在 `readonly` 元组的任何属性上进行写操作。
 
 ```ts twoslash
 // @errors: 2540
@@ -1052,8 +1008,7 @@ function doSomething(pair: readonly [string, number]) {
 }
 ```
 
-Tuples tend to be created and left un-modified in most code, so annotating types as `readonly` tuples when possible is a good default.
-This is also important given that array literals with `const` assertions will be inferred with `readonly` tuple types.
+在大多数代码中，元组通常被创建后不会被修改，因此在可能的情况下将类型注释为 `readonly` 元组是一个很好的默认选择。这一点也很重要，因为带有 `const` 断言的数组字面量将被推断为具有 `readonly` 元组类型。
 
 ```ts twoslash
 // @errors: 2345
@@ -1066,17 +1021,16 @@ function distanceFromOrigin([x, y]: [number, number]) {
 distanceFromOrigin(point);
 ```
 
-Here, `distanceFromOrigin` never modifies its elements, but expects a mutable tuple.
-Since `point`'s type was inferred as `readonly [3, 4]`, it won't be compatible with `[number, number]` since that type can't guarantee `point`'s elements won't be mutated.
+在这个例子中，`distanceFromOrigin` 从不修改其元素，但它期望一个可变的元组。由于 `point` 的类型被推断为 `readonly [3, 4]`，它与 `[number, number]` 不兼容，因为这个类型无法保证 `point` 的元素不会被修改。
 
-<!-- ## Other Kinds of Object Members
+<!-- ## 其他种类的对象成员
 
-Most of the declarations in object types:
+大多数对象类型的声明包括：
 
-### Method Syntax
+### 方法语法
 
-### Call Signatures
+### 调用签名
 
-### Construct Signatures
+### 构造签名
 
-### Index Signatures -->
+### 索引签名 -->

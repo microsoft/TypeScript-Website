@@ -23,25 +23,25 @@ const Index: React.FC<Props> = (props) => {
         <Col>
           <a className="cropper" href="/play">
             <img src={require("../../../static/images/tools/play.png").default} alt="Preview of the TypeScript Playground screenshot" />
-            <p>Playground</p>
+            <p>演练场</p>
           </a>
-          <p>A live environment for exploring, learning and sharing TypeScript code. Try different compiler flags, run through extensive code samples to learn specifics about how TypeScript works.</p>
+          <p>用于探索、学习和共享 TypeScript 代码的实时环境。你可以通过尝试不同的编译器标志，以及运行大量代码示例，以了解 TypeScript 工作的具体细节。</p>
         </Col>
         <Col>
           <Link className="cropper" to="/tsconfig">
             <img src={require("../../../static/images/tools/tsconfig-ref.png").default} alt="Preview of the TypeScript TSConfig Reference screenshot" />
-            <p>TSConfig Reference</p>
+            <p>TSConfig 参考</p>
           </Link>
-          <p>An annotated reference to more than a hundred compiler options available in a <code>tsconfig.json</code> or <code>jsconfig.json</code>.</p>
+          <p>针对 <code>tsconfig.json</code> 或 <code>jsconfig.json</code> 中可用的一百多个编译器选项的带注释参考。</p>
         </Col>
       </Row>
       <Row>
         <Col>
           <a className="cropper" href="/cheatsheets">
             <img src={require("../../../static/images/tools/cheat-sheets.png").default} alt="Preview of the cheat sheets page" />
-            <p>Cheat Sheets</p>
+            <p>速查表</p>
           </a>
-          <p>Quickly look up the syntax for common TypeScript code.</p>
+          <p>快速浏览常见 TypeScript 语法。</p>
         </Col>
       </Row>
     </div>
