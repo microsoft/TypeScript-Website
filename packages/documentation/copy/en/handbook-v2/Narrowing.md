@@ -19,7 +19,7 @@ Let's try to implement the logic for when `padLeft` is passed a `number` for `pa
 
 ```ts twoslash
 // @errors: 2345
-function padLeft(padding: number | string, input: string) {
+function padLeft(padding: number | string, input: string): string {
   return " ".repeat(padding) + input;
 }
 ```
@@ -29,7 +29,7 @@ TypeScript is warning us that we're passing a value with type `number | string` 
 In other words, we haven't explicitly checked if `padding` is a `number` first, nor are we handling the case where it's a `string`, so let's do exactly that.
 
 ```ts twoslash
-function padLeft(padding: number | string, input: string) {
+function padLeft(padding: number | string, input: string): string {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
   }
@@ -50,7 +50,7 @@ It looks at these special checks (called _type guards_) and assignments, and the
 In many editors we can observe these types as they change, and we'll even do so in our examples.
 
 ```ts twoslash
-function padLeft(padding: number | string, input: string) {
+function padLeft(padding: number | string, input: string): string {
   if (typeof padding === "number") {
     return " ".repeat(padding) + input;
     //                ^?
