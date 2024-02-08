@@ -3,12 +3,10 @@ name: 'Code Scanning - Action'
 on:
   push:
     branches:
-      - main
-      - release-*
+      - v2
   pull_request:
     branches:
-      - main
-      - release-*
+      - v2
   schedule:
     #        ┌───────────── minute (0 - 59)
     #        │  ┌───────────── hour (0 - 23)
