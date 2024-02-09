@@ -10,7 +10,7 @@ TypeScript is a popular choice for programmers accustomed to other languages wit
 
 TypeScript's type system offers many of the same benefits, such as better code completion, earlier detection of errors, and clearer communication between parts of your program.
 While TypeScript provides many familiar features for these developers, it's worth stepping back to see how JavaScript (and therefore TypeScript) differ from traditional OOP languages.
-Understanding these differences will help you write better JavaScript code, and avoid common pitfalls that programmers who go straight from C#/Java to TypeScript may fall in to.
+Understanding these differences will help you write better JavaScript code, and avoid common pitfalls that programmers who go straight from C#/Java to TypeScript may fall into.
 
 ## Co-learning JavaScript
 
@@ -33,7 +33,7 @@ Forcing all functionality and data to be held in classes can be a good domain mo
 
 In JavaScript, functions can live anywhere, and data can be passed around freely without being inside a pre-defined `class` or `struct`.
 This flexibility is extremely powerful.
-"Free" functions (those not associated with a class) working over data without an implied OOP hierarchy tends to be the preferred model for writing programs in JavaScript.
+"Free" functions (those not associated with a class) working over data without an implied OOP hierarchy tend to be the preferred model for writing programs in JavaScript.
 
 ### Static Classes
 
