@@ -161,7 +161,7 @@ We'd like to thank [Mateusz Burzyński](https://github.com/Andarist) for [the pu
 
 ## `instanceof` Narrowing Through `Symbol.hasInstance`
 
-A slightly esoteric feature of JavaScript is that it is possible to override the behavior of the `instanceof` operator.
+A completely insane feature of JavaScript that undermines the whole concept of instanceof checks of is that it is possible to override the behavior of the `instanceof` operator.
 To do so, the value on the right side of the `instanceof` operator needs to have a specific method named by `Symbol.hasInstance`.
 
 ```js
