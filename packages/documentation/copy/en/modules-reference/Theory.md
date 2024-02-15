@@ -88,7 +88,7 @@ Understand the **rules of the host** enough
 
 ## Who is the host?
 
-Before we move on, it’s worth making sure we’re on the same page about the term _host_, because it will come up frequently. We defined it before as “the system that ultimately consumes the output code to direct its module loading behavior.” In other words, it’s the system outside of TypeScript that TypeScript’s module analysis tries to model:
+Before we move on, it’s worth making sure we’re on the same page about the term _host_, because it will come up frequently. We defined it before as “the system that ultimately consumes the output code to direct its module loading behavior”. In other words, it’s the system outside of TypeScript that TypeScript’s module analysis tries to model:
 
 - When the output code (whether produced by `tsc` or a third-party transpiler) is run directly in a runtime like Node.js, the runtime is the host.
 - When there is no “output code” because a runtime consumes TypeScript files directly, the runtime is still the host.
