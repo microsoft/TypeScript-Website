@@ -162,7 +162,7 @@ TypeScript 2.2 improves checking of nullable operands in expressions. Specifical
 - If the operand of a `+`, `-`, `~`, `++`, or `--` unary operator is nullable.
 
 An operand is considered nullable if the type of the operand is `null` or `undefined` or a union type that includes `null` or `undefined`.
-Note that the union type case only only occurs in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because `null` and `undefined` disappear from unions in classic type checking mode.
+Note that the union type case only occurs in [`strictNullChecks`](/tsconfig#strictNullChecks) mode because `null` and `undefined` disappear from unions in classic type checking mode.
 
 ## Dotted property for types with string index signatures
 
