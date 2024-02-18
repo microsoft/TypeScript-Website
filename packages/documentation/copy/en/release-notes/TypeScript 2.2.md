@@ -180,12 +180,12 @@ map["prop1"] = 1;
 map.prop2 = 2;
 ```
 
-This only apply to types with an _explicit_ string index signature.
+This only applies to types with an _explicit_ string index signature.
 It is still an error to access unknown properties on a type using `.` notation.
 
 ## Support for spread operator on JSX element children
 
-TypeScript 2.2 adds support for using spread on a JSX element children.
+TypeScript 2.2 adds support for using spread on JSX element children.
 Please see [facebook/jsx#57](https://github.com/facebook/jsx/issues/57) for more details.
 
 ##### Example
@@ -208,5 +208,5 @@ let x: TodoListProps;
 
 ## New `jsx: react-native`
 
-React-native build pipeline expects all files to have a `.js` extensions even if the file contains JSX syntax.
-The new [`jsx`](/tsconfig#jsx) value `react-native` will persevere the JSX syntax in the output file, but give it a `.js` extension.
+React-native build pipeline expects all files to have a `.js` extension even if the file contains JSX syntax.
+The new [`jsx`](/tsconfig#jsx) value `react-native` will preserve the JSX syntax in the output file, but give it a `.js` extension.
