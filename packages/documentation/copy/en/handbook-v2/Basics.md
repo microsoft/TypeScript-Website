@@ -409,7 +409,7 @@ greet("Maddison", new Date());
 ## Strictness
 
 Different users come to TypeScript looking for different things in a type-checker.
-Some people are looking for a more loose opt-in experience which can help validate only some parts of their program, and still have decent tooling.
+Some people are looking for a more loose opt-ion experience which can help validate only some parts of their program, and still have decent tooling.
 This is the default experience with TypeScript, where types are optional, inference takes the most lenient types, and there's no checking for potentially `null`/`undefined` values.
 Much like how `tsc` emits in the face of errors, these defaults are put in place to stay out of your way.
 If you're migrating existing JavaScript, that might be a desirable first step.
