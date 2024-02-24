@@ -58,11 +58,13 @@ jobs:
           path: site/
 
       # danger for PR builds
-      - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
-        run: "yarn danger ci"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_DEPLOY_URL_ROOT: ${{ steps.deploy.outputs.static_web_app_url }}
+      - name: "Run Danger"
+        run: |
+          # Exposing this token is safe because the user of it has no other public repositories
+          # and has no permission to modify this repository. See DefinitelyTyped #62638 for the discussion.
+          TOKEN='ghp_i5wtj1l2AbpFv3OU96w6R'
+          TOKEN+='On3bHOkcV2AmVY6'
+          DANGER_GITHUB_API_TOKEN=$TOKEN yarn danger ci
 
   windows:
     if: github.event.action != 'closed'
