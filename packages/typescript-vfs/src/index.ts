@@ -555,14 +555,14 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       // getDefaultLibLocation: () => '/',
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
-      getSourceFile: fileName => {
+      getSourceFile: (fileName, languageVersionOrOptions) => {
         return (
           sourceFiles.get(fileName) ||
           save(
             ts.createSourceFile(
               fileName,
               sys.readFile(fileName)!,
-              compilerOptions.target || defaultCompilerOptions(ts).target!,
+              languageVersionOrOptions,
               false
             )
           )
