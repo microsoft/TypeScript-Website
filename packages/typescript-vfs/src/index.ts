@@ -440,7 +440,7 @@ export function createSystem(files: Map<string, string>): System {
     getDirectories: () => [],
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
-    readFile: audit("readFile", fileName => files.get(fileName) || files.get(libize(fileName))),
+    readFile: audit("readFile", fileName => files.get(fileName) ?? files.get(libize(fileName))),
     resolvePath: path => path,
     newLine: "\n",
     useCaseSensitiveFileNames: true,

@@ -214,3 +214,17 @@ it("grabs lib dts files from node_modules", async () => {
   const fsMap = createDefaultMapFromNodeModules({})
   expect(fsMap.get("/lib.es2015.collection.d.ts")).toBeDefined()
 })
+
+it("empty file content", async () => {
+  const options = { target: ts.ScriptTarget.ES2020 }
+  const fsMap = createDefaultMapFromNodeModules(options, ts)
+  fsMap.set("index.ts", "")
+  const system = createSystem(fsMap)
+  const host = createVirtualCompilerHost(system, options, ts)
+  ts.createProgram({
+    rootNames: ["index.ts"],
+    options,
+    host: host.compilerHost,
+  })
+})
+
