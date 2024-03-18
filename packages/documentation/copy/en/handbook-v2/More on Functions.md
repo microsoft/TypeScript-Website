@@ -368,7 +368,7 @@ Note that when a parameter is optional, callers can always pass `undefined`, as 
 
 ```ts twoslash
 declare function f(x?: number): void;
-// cut
+// ---cut---
 // All OK
 f();
 f(10);
