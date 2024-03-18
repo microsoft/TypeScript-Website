@@ -1,3 +1,6 @@
+require("@docsearch/react/style/variables")
+require("@docsearch/react/style/button")
+
 // This hooks ups client-side app analytics
 // it's based on how the google analytics plugin works for gatsby
 // https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-plugin-google-analytics/src/gatsby-browser.js
