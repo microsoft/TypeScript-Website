@@ -405,7 +405,7 @@ type Container<T, U> = {
 };
 
 // ---cut---
-declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
+declare function create<T extends HTMLElement = HTMLDivElement, U extends HTMLElement[] = T[]>(
   element?: T,
   children?: U
 ): Container<T, U>;
