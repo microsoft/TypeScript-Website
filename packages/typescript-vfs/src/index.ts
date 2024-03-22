@@ -641,9 +641,9 @@ export function createVirtualLanguageServiceHost(
 }
 
 const requirePath = () => {
-  return require(String.fromCharCode(112, 97, 116, 104)) as typeof import("path")
+  return require('path') as typeof import("path")
 }
 
 const requireFS = () => {
-  return require(String.fromCharCode(102, 115)) as typeof import("fs")
+  return require('fs') as typeof import("fs")
 }
