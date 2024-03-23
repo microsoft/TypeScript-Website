@@ -33,7 +33,7 @@ type ModuleMeta = { state: "loading" }
  * basically exported for tests and should be considered
  * implementation details by consumers.
  */
-export const setupTypeAcquisition: (config: ATABootstrapConfig) => (initialSourceFile: string) => void
+export const setupTypeAcquisition: (config: ATABootstrapConfig) => (initialSourceFile: string) => Promise<void>
 
 interface Logger {
   log: (...args: any[]) => void
