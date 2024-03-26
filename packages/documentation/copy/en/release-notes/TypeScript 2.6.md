@@ -143,7 +143,7 @@ var result = templateObjectFactory() === templateObjectFactory();
 ## Localized diagnostics on the command line
 
 TypeScript 2.6 npm package ships with localized versions of diagnostic messages for 13 languages.
-The localized messages are available when using `--locale` flag on the command line.
+The localized messages are available when using the `--locale` flag on the command line.
 
 ##### Example
 
@@ -214,7 +214,7 @@ wn' 'es2016.array.include' 'es2017.object' 'es2017.sharedmemory' 'es2017.string'
 
 ## Suppress errors in .ts files using '// @ts-ignore' comments
 
-TypeScript 2.6 support suppressing errors in .ts files using `// @ts-ignore` comments placed above the offending lines.
+TypeScript 2.6 supports suppressing errors in .ts files using `// @ts-ignore` comments placed above the offending lines.
 
 ##### Example
 
@@ -235,7 +235,7 @@ Please note that this comment only suppresses the error reporting, and we recomm
 TypeScript 2.6 brings a faster `--watch` implementation.
 The new version optimizes code generation and checking for code bases using ES modules.
 Changes detected in a module file will result in _only_ regenerating the changed module, and files that depend on it, instead of the whole project.
-Projects with large number of files should reap the most benefit from this change.
+Projects with a large number of files should reap the most benefit from this change.
 
 The new implementation also brings performance enhancements to watching in tsserver.
 The watcher logic has been completely rewritten to respond faster to change events.
@@ -247,7 +247,7 @@ Declarations are only written to but never read from are now flagged as unused.
 
 ##### Example
 
-Bellow both `n` and `m` will be marked as unused, because their values are never _read_. Previously TypeScript would only check whether their values were _referenced_.
+Below both `n` and `m` will be marked as unused, because their values are never _read_. Previously TypeScript would only check whether their values were _referenced_.
 
 ```ts
 function f(n: number) {

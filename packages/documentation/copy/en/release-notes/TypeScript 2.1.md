@@ -473,7 +473,7 @@ TypeScript 2.1 supports inheriting configuration using `extends`, where:
 
 - `extends` is a new top-level property in `tsconfig.json` (alongside `compilerOptions`, [`files`](/tsconfig#files), [`include`](/tsconfig#include), and [`exclude`](/tsconfig#exclude)).
 - The value of `extends` must be a string containing a path to another configuration file to inherit from.
-- The configuration from the base file are loaded first, then overridden by those in the inheriting config file.
+- The configuration from the base file is loaded first, then overridden by those in the inheriting config file.
 - Circularity between configuration files is not allowed.
 - [`files`](/tsconfig#files), [`include`](/tsconfig#include), and [`exclude`](/tsconfig#exclude) from the inheriting config file _overwrite_ those from the base config file.
 - All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.

@@ -267,7 +267,7 @@ type T24 = InstanceType<Function>; // Error
 
 ## Improved control over mapped type modifiers
 
-Mapped types support adding a `readonly` or `?` modifier to a mapped property, but they did not provide support the ability to _remove_ modifiers.
+Mapped types support adding a `readonly` or `?` modifier to a mapped property, but they did not provide support for the ability to _remove_ modifiers.
 This matters in [_homomorphic mapped types_](https://github.com/Microsoft/TypeScript/pull/12563) which by default preserve the modifiers of the underlying type.
 
 TypeScript 2.8 adds the ability for a mapped type to either add or remove a particular modifier.
@@ -328,7 +328,7 @@ type T7 = T4<A, B>; // "a" | "b"
 ## Better handling for namespace patterns in `.js` files
 
 TypeScript 2.8 adds support for understanding more namespace patterns in `.js` files.
-Empty object literals declarations on top level, just like functions and classes, are now recognized as as namespace declarations in JavaScript.
+Empty object literals declarations on top level, just like functions and classes, are now recognized as namespace declarations in JavaScript.
 
 ```js
 var ns = {}; // recognized as a declaration for a namespace `ns`

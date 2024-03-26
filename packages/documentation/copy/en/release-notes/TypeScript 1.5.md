@@ -292,7 +292,7 @@ TypeScript will emit the string in ES3/ES5 as `"\uD842\uDFB7"`.
 ## Tagged template strings in ES3/ES5
 
 In TypeScript 1.4, we added support for template strings for all targets, and tagged templates for just ES6.
-Thanks to some considerable work done by [@ivogabe](https://github.com/ivogabe), we bridged the gap for for tagged templates in ES3 and ES5.
+Thanks to some considerable work done by [@ivogabe](https://github.com/ivogabe), we bridged the gap for tagged templates in ES3 and ES5.
 
 When targeting ES3/ES5, the following code
 
@@ -320,7 +320,7 @@ var _a;
 
 ## AMD-dependency optional names
 
-`/// <amd-dependency path="x" />` informs the compiler about a non-TS module dependency that needs to be injected in the resulting module's require call;
+`/// <amd-dependency path="x" />` informs the compiler about a non-TS module dependency that needs to be injected in the resulting module's required call;
 however, there was no way to consume this module in the TS code.
 
 The new `amd-dependency name` property allows passing an optional name for an amd-dependency:
@@ -380,7 +380,7 @@ Now if a new file `FolderA\3.ts` is added to the input, the output structure wil
 
 The TypeScript compiler emits a few helpers like `__extends` when needed.
 The helpers are emitted in every file they are referenced in.
-If you want to consolidate all helpers in one place, or override the default behavior, use [`noEmitHelpers`](/tsconfig#noEmitHelpers) to instructs the compiler not to emit them.
+If you want to consolidate all helpers in one place, or override the default behavior, use [`noEmitHelpers`](/tsconfig#noEmitHelpers) to instruct the compiler not to emit them.
 
 ## `--newLine` command line option
 
@@ -389,5 +389,5 @@ By default the output new line character is `\r\n` on Windows based systems and 
 
 ## `--inlineSourceMap` and `inlineSources` command line options
 
-[`inlineSourceMap`](/tsconfig#inlineSourceMap) causes source map files to be written inline in the generated `.js` files instead of in a independent `.js.map` file.
+[`inlineSourceMap`](/tsconfig#inlineSourceMap) causes source map files to be written inline in the generated `.js` files instead of in an independent `.js.map` file.
 [`inlineSources`](/tsconfig#inlineSources) allows for additionally inlining the source `.ts` file into the `.js` file.

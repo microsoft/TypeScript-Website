@@ -646,7 +646,7 @@ We'd like to extend our thanks to [Josh Goldberg](https://github.com/JoshuaKGold
 
 ## Easier Method Usage for Unions of Arrays
 
-In previous versions on TypeScript, calling a method on a union of arrays could end in pain.
+In previous versions of TypeScript, calling a method on a union of arrays could end in pain.
 
 ```ts
 declare let array: string[] | number[];
@@ -750,7 +750,7 @@ To do this, the type system has to track when any two types are already being re
 Previously TypeScript already kept a stack of type pairs, and iterated through that to determine whether those types are being related.
 When this stack is shallow that's not a problem; but when the stack isn't shallow, that, uh, [is a problem](https://accidentallyquadratic.tumblr.com/).
 
-In TypeScript 5.3, a simple `Set` helps tracks this information.
+In TypeScript 5.3, a simple `Set` helps track this information.
 This reduced the time spent on a reported test case that used the [drizzle](https://github.com/drizzle-team/drizzle-orm) library by over 33%!
 
 ```
@@ -816,7 +816,7 @@ For more information, [see the change here](https://github.com/microsoft/TypeScr
 
 ### Consistent Export Checking for Merged Symbols
 
-When two declarations merge, they must agree in whether they are both exported.
+When two declarations merge, they must agree on whether they are both exported.
 Due to a bug, TypeScript missed specific cases in ambient contexts, like in declaration files or `declare module` blocks.
 For example, it would not issue an error on a case like the following, where `replaceInFile` is declared once as an exported function, and one as an un-exported namespace.
 

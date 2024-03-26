@@ -35,7 +35,7 @@ type Options = {
 //   };
 ```
 
-But there's another place that that string literal types could be used as building blocks: building other string literal types.
+But there's another place that string literal types could be used as building blocks: building other string literal types.
 
 That's why TypeScript 4.1 brings the template literal string type.
 It has the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but is used in type positions.
@@ -299,7 +299,7 @@ declare function customThen<T, U>(
 ): Promise<Awaited<U>>;
 ```
 
-Keep in mind that while these recursive types are powerful, but they should be used responsibly and sparingly.
+Keep in mind that while these recursive types are powerful, they should be used responsibly and sparingly.
 
 First off, these types can do a lot of work which means that they can increase type-checking time.
 Trying to model numbers in the Collatz conjecture or Fibonacci sequence might be fun, but don't ship that in `.d.ts` files on npm.
@@ -583,7 +583,7 @@ TypeScript 4.1 ships with a quick fix to help fix this break.
 In JavaScript, object spreads (like `{ ...foo }`) don't operate over falsy values.
 So in code like `{ ...foo }`, `foo` will be skipped over if it's `null` or `undefined`.
 
-Many users take advantage of this to spread in properties "conditionally".
+Many users take advantage of this to spread properties "conditionally".
 
 ```ts
 interface Person {
