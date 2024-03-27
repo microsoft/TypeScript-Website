@@ -440,7 +440,7 @@ export function createSystem(files: Map<string, string>): System {
     getDirectories: () => [],
     getExecutingFilePath: () => notImplemented("getExecutingFilePath"),
     readDirectory: audit("readDirectory", directory => (directory === "/" ? Array.from(files.keys()) : [])),
-    readFile: audit("readFile", fileName => files.get(fileName) || files.get(libize(fileName))),
+    readFile: audit("readFile", fileName => files.get(fileName) ?? files.get(libize(fileName))),
     resolvePath: path => path,
     newLine: "\n",
     useCaseSensitiveFileNames: true,
@@ -555,14 +555,14 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       // getDefaultLibLocation: () => '/',
       getDirectories: () => [],
       getNewLine: () => sys.newLine,
-      getSourceFile: fileName => {
+      getSourceFile: (fileName, languageVersionOrOptions) => {
         return (
           sourceFiles.get(fileName) ||
           save(
             ts.createSourceFile(
               fileName,
               sys.readFile(fileName)!,
-              compilerOptions.target || defaultCompilerOptions(ts).target!,
+              languageVersionOrOptions,
               false
             )
           )
