@@ -6126,6 +6126,7 @@ __metadata:
   resolution: "@typescript/vfs@workspace:packages/typescript-vfs"
   dependencies:
     "@types/jest": ^25.1.3
+    "@types/lz-string": ^1.3.33
     babel-jest: ^26.0.6
     cpy-cli: ^3.1.1
     debug: ^4.1.1
