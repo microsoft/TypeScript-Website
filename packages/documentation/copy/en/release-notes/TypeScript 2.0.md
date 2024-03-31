@@ -742,7 +742,7 @@ function test(x: Bar) {
 
 A class constructor may be marked `private` or `protected`.
 A class with a private constructor cannot be instantiated outside the class body, and cannot be extended.
-A class with protected constructor cannot be instantiated outside the class body, but can be extended.
+A class with a protected constructor cannot be instantiated outside the class body, but can be extended.
 
 ##### Example
 
