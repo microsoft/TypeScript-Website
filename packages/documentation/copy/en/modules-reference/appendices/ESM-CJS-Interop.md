@@ -141,7 +141,7 @@ Meanwhile, other transpilers were coming up with a way to solve the same problem
    ```
    that we can check for when we transpile a default import:
    ```ts
-   // import hello from "./modue";
+   // import hello from "./module";
    const _mod = require("./module");
    const hello = _mod.__esModule ? _mod.default : _mod;
    ```
