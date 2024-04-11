@@ -12,6 +12,10 @@ on:
   pull_request_target:
     types: [labeled]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   deploy:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
@@ -105,10 +109,6 @@ jobs:
           path: site
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ fromJson(steps.get-info.outputs.result).runId }}
-
-      - run: ls -R
-        if: ${{ steps.get-info.outputs.result != 'null' }}
-        working-directory: site
 
       - name: Deploy
         id: deploy
