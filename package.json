@@ -20,7 +20,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "resolutions": {
-    "@types/react": "18.0.1",
+    "@types/react": "^18.2.77",
     "@types/estree": "0.0.46",
     "@types/eslint": "7.29.0",
     "rollup-plugin-typescript2": "0.34.1",
