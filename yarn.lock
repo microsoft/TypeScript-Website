@@ -20701,7 +20701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-intl@npm:^3.12.1":
+"react-intl@npm:3.12.1":
   version: 3.12.1
   resolution: "react-intl@npm:3.12.1"
   dependencies:
@@ -20720,6 +20720,28 @@ __metadata:
   peerDependencies:
     react: ^16.3.0
   checksum: 4a9e9101d8d5bd60c73713b99bdad2deb2b6b21fd953f16165b5c4be64aafd503418e009736ba986ca75756c08ad41b80991090e222d80b2bebfefb027bf11eb
+  languageName: node
+  linkType: hard
+
+"react-intl@patch:react-intl@npm%3A3.12.1#./.yarn/patches/react-intl-npm-3.12.1-65fec75b25.patch::locator=root%40workspace%3A.":
+  version: 3.12.1
+  resolution: "react-intl@patch:react-intl@npm%3A3.12.1#./.yarn/patches/react-intl-npm-3.12.1-65fec75b25.patch::version=3.12.1&hash=919596&locator=root%40workspace%3A."
+  dependencies:
+    "@formatjs/intl-displaynames": ^1.2.0
+    "@formatjs/intl-listformat": ^1.4.1
+    "@formatjs/intl-relativetimeformat": ^4.5.9
+    "@formatjs/intl-unified-numberformat": ^3.2.0
+    "@formatjs/intl-utils": ^2.2.0
+    "@types/hoist-non-react-statics": ^3.3.1
+    "@types/invariant": ^2.2.31
+    hoist-non-react-statics: ^3.3.2
+    intl-format-cache: ^4.2.21
+    intl-messageformat: ^7.8.4
+    intl-messageformat-parser: ^3.6.4
+    shallow-equal: ^1.2.1
+  peerDependencies:
+    react: ^16.3.0
+  checksum: 6824b659ea8c58af53c69c5f0e993b00459ef9c6a1326bbc890e634f007f0c3347fb7c84f4ad54cdbc87cafc22875a461954812d80d11f7cab043a859f2d7b59
   languageName: node
   linkType: hard
 
