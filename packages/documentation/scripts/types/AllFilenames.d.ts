@@ -120,7 +120,6 @@ export type AllDocsPages =
   | "release-notes/TypeScript 4.6.md"
   | "release-notes/TypeScript 4.7.md"
   | "release-notes/TypeScript 4.8.md"
-  | "release-notes/TypeScript 4.8.md"
   | "release-notes/TypeScript 4.9.md"
   | "release-notes/TypeScript 5.0.md"
   | "release-notes/TypeScript 5.1.md"

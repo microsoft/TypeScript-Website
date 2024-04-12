@@ -341,4 +341,4 @@ function chunk<T>(arr: T[], chunkSize: number): T[][] {
   return newArray;
 }
 
-console.log(`Wrote TSConfig files for: ${languages.join(", ")}`);
+console.log(`Wrote TSConfig files for: ${languages.join(", ")}}`);

@@ -1,44 +1,7 @@
 {
+  "title": "JSON schema for the TypeScript compiler's configuration file",
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "allOf": [
-    {
-      "$ref": "#/definitions/compilerOptionsDefinition"
-    },
-    {
-      "$ref": "#/definitions/compileOnSaveDefinition"
-    },
-    {
-      "$ref": "#/definitions/typeAcquisitionDefinition"
-    },
-    {
-      "$ref": "#/definitions/extendsDefinition"
-    },
-    {
-      "$ref": "#/definitions/watchOptionsDefinition"
-    },
-    {
-      "$ref": "#/definitions/buildOptionsDefinition"
-    },
-    {
-      "$ref": "#/definitions/tsNodeDefinition"
-    },
-    {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/filesDefinition"
-        },
-        {
-          "$ref": "#/definitions/excludeDefinition"
-        },
-        {
-          "$ref": "#/definitions/includeDefinition"
-        },
-        {
-          "$ref": "#/definitions/referencesDefinition"
-        }
-      ]
-    }
-  ],
+  "id": "https://json.schemastore.org/tsconfig",
   "definitions": {
     "//": {
       "explainer": "https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#overview",
@@ -92,20 +55,8 @@
     "extendsDefinition": {
       "properties": {
         "extends": {
-          "description": "Path to base configuration file to inherit from (requires TypeScript version 2.1 or later), or array of base files, with the rightmost files having the greater priority (requires TypeScript version 5.0 or later).",
-          "oneOf": [
-            {
-              "default": "",
-              "type": "string"
-            },
-            {
-              "default": [],
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          ]
+          "description": "Path to base configuration file to inherit from. Requires TypeScript version 2.1 or later.",
+          "type": "string"
         }
       }
     },
@@ -381,14 +332,14 @@
                     "ES6",
                     "ES2015",
                     "ES2020",
-                    "ES2022",
+                    "es2022",
                     "ESNext",
-                    "Node16",
-                    "NodeNext"
+                    "node16",
+                    "nodenext"
                   ]
                 },
                 {
-                  "pattern": "^([Cc][Oo][Mm][Mm][Oo][Nn][Jj][Ss]|[AaUu][Mm][Dd]|[Ss][Yy][Ss][Tt][Ee][Mm]|[Ee][Ss]([356]|20(1[567]|2[02])|[Nn][Ee][Xx][Tt])|[Nn][Oo][dD][Ee]16|[Nn][Oo][Dd][Ee][Nn][Ee][Xx][Tt]|[Nn][Oo][Nn][Ee])$"
+                  "pattern": "^([Cc][Oo][Mm][Mm][Oo][Nn][Jj][Ss]|[AaUu][Mm][Dd]|[Ss][Yy][Ss][Tt][Ee][Mm]|[Ee][Ss]([356]|201[567]|2020|[Nn][Ee][Xx][Tt])|[Nn][Oo][Nn][Ee])$"
                 }
               ],
               "markdownDescription": "Specify what module code is generated.\n\nSee more: https://www.typescriptlang.org/tsconfig#module"
@@ -414,11 +365,20 @@
                   ]
                 },
                 {
-                  "pattern": "^(([Nn]ode)|([Nn]ode16)|([Nn]ode[Nn]ext)|([Cc]lassic)|([Bb]undler))$"
+                  "pattern": "^(([Nn]ode)|([Cc]lassic))$"
                 }
               ],
               "default": "classic",
               "markdownDescription": "Specify how TypeScript looks up a file from a given module specifier.\n\nSee more: https://www.typescriptlang.org/tsconfig#moduleResolution"
+            },
+            "moduleSuffixes": {
+              "description": "List of file name suffixes to search when resolving a module.",
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "markdownDescription": "List of file name suffixes to search when resolving a module.\n\nSee more: https://www.typescriptlang.org/tsconfig#moduleSuffixes"
             },
             "newLine": {
               "description": "Set the newline character for emitting files.",
@@ -604,12 +564,12 @@
                     "ES2019",
                     "ES2020",
                     "ES2021",
-                    "ES2022",
+                    "es2022",
                     "ESNext"
                   ]
                 },
                 {
-                  "pattern": "^([Ee][Ss]([356]|(20(1[56789]|2[0123]))|[Nn][Ee][Xx][Tt]))$"
+                  "pattern": "^([Ee][Ss]([356]|(20(1[56789]|2[01]))|[Nn][Ee][Xx][Tt]))$"
                 }
               ],
               "markdownDescription": "Set the JavaScript language version for emitted JavaScript and include compatible library declarations.\n\nSee more: https://www.typescriptlang.org/tsconfig#target"
@@ -839,10 +799,10 @@
                       "ES2021.String",
                       "ES2021.WeakRef",
                       "es2021.intl",
-                      "ES2022.Array",
-                      "ES2022.Error",
-                      "ES2022.Intl",
-                      "ES2022.Object",
+                      "es2022.array",
+                      "es2022.error",
+                      "es2022.intl",
+                      "es2022.object",
                       "es2022.sharedmemory",
                       "es2022.string",
                       "es2022.regexp",
@@ -865,16 +825,6 @@
                 ]
               },
               "markdownDescription": "Specify a set of bundled library declaration files that describe the target runtime environment.\n\nSee more: https://www.typescriptlang.org/tsconfig#lib"
-            },
-            "moduleDetection": {
-              "description": "Control what method is used to detect the whether a JS file is a module.",
-              "enum": ["auto", "legacy", "force"]
-            },
-            "moduleSuffixes": {
-              "description": "A way to add extra suffixes to module resolution",
-              "type": "boolean",
-              "default": false,
-              "markdownDescription": "A way to add extra suffixes to module resolution\n\nSee more: https://www.typescriptlang.org/tsconfig#moduleSuffixes"
             },
             "strictNullChecks": {
               "description": "When type checking, take into account `null` and `undefined`.",
@@ -1068,9 +1018,6 @@
         }
       }
     },
-    "tsNodeModuleTypes": {
-      "type": "object"
-    },
     "tsNodeDefinition": {
       "properties": {
         "ts-node": {
@@ -1102,22 +1049,9 @@
               "description": "Emit output files into `.ts-node` directory.",
               "type": "boolean"
             },
-            "esm": {
-              "description": "Enable native ESM support.\n\nFor details, see https://typestrong.org/ts-node/docs/imports#native-ecmascript-modules",
-              "type": "boolean"
-            },
             "experimentalReplAwait": {
               "description": "Allows the usage of top level await in REPL.\n\nUses node's implementation which accomplishes this with an AST syntax transformation.\n\nEnabled by default when tsconfig target is es2018 or above. Set to false to disable.\n\n**Note**: setting to `true` when tsconfig target is too low will throw an Error.  Leave as `undefined`\nto get default, automatic behavior.",
               "type": "boolean"
-            },
-            "experimentalResolver": {
-              "description": "Enable experimental features that re-map imports and require calls to support:\n`baseUrl`, `paths`, `rootDirs`, `.js` to `.ts` file extension mappings,\n`outDir` to `rootDir` mappings for composite projects and monorepos.\n\nFor details, see https://github.com/TypeStrong/ts-node/issues/1514",
-              "type": "boolean"
-            },
-            "experimentalSpecifierResolution": {
-              "description": "Like node's `--experimental-specifier-resolution`, , but can also be set in your `tsconfig.json` for convenience.\n\nFor details, see https://nodejs.org/dist/latest-v18.x/docs/api/esm.html#customizing-esm-specifier-resolution-algorithm",
-              "enum": ["explicit", "node"],
-              "type": "string"
             },
             "files": {
               "default": false,
@@ -1145,8 +1079,8 @@
               "type": "boolean"
             },
             "moduleTypes": {
-              "$ref": "#/definitions/tsNodeModuleTypes",
-              "description": "Override certain paths to be compiled and executed as CommonJS or ECMAScript modules.\nWhen overridden, the tsconfig \"module\" and package.json \"type\" fields are overridden, and\nthe file extension is ignored.\nThis is useful if you cannot use .mts, .cts, .mjs, or .cjs file extensions;\nit achieves the same effect.\n\nEach key is a glob pattern following the same rules as tsconfig's \"include\" array.\nWhen multiple patterns match the same file, the last pattern takes precedence.\n\n`cjs` overrides matches files to compile and execute as CommonJS.\n`esm` overrides matches files to compile and execute as native ECMAScript modules.\n`package` overrides either of the above to default behavior, which obeys package.json \"type\" and\ntsconfig.json \"module\" options."
+              "type": "object",
+              "description": "Override certain paths to be compiled and executed as CommonJS or ECMAScript modules.\nWhen overridden, the tsconfig \"module\" and package.json \"type\" fields are overridden.\nThis is useful because TypeScript files cannot use the .cjs nor .mjs file extensions;\nit achieves the same effect.\n\nEach key is a glob pattern following the same rules as tsconfig's \"include\" array.\nWhen multiple patterns match the same file, the last pattern takes precedence.\n\n`cjs` overrides matches files to compile and execute as CommonJS.\n`esm` overrides matches files to compile and execute as native ECMAScript modules.\n`package` overrides either of the above to default behavior, which obeys package.json \"type\" and\ntsconfig.json \"module\" options."
             },
             "preferTsExts": {
               "default": false,
@@ -1179,10 +1113,6 @@
               "description": "Skip ignore check, so that compilation will be attempted for all files with matching extensions.",
               "type": "boolean"
             },
-            "swc": {
-              "description": "Transpile with swc instead of the TypeScript compiler, and skip typechecking.\n\nEquivalent to setting both `transpileOnly: true` and `transpiler: 'ts-node/transpilers/swc'`\n\nFor complete instructions: https://typestrong.org/ts-node/docs/transpilers",
-              "type": "boolean"
-            },
             "transpileOnly": {
               "default": false,
               "description": "Use TypeScript's faster `transpileModule`.",
@@ -1191,6 +1121,18 @@
             "transpiler": {
               "anyOf": [
                 {
+                  "additionalItems": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "additionalProperties": true,
+                        "properties": {},
+                        "type": "object"
+                      }
+                    ]
+                  },
                   "items": [
                     {
                       "type": "string"
@@ -1201,7 +1143,6 @@
                       "type": "object"
                     }
                   ],
-                  "maxItems": 2,
                   "minItems": 2,
                   "type": "array"
                 },
@@ -1222,7 +1163,44 @@
       }
     }
   },
-  "id": "https://json.schemastore.org/tsconfig",
-  "title": "JSON schema for the TypeScript compiler's configuration file",
-  "type": "object"
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/definitions/compilerOptionsDefinition"
+    },
+    {
+      "$ref": "#/definitions/compileOnSaveDefinition"
+    },
+    {
+      "$ref": "#/definitions/typeAcquisitionDefinition"
+    },
+    {
+      "$ref": "#/definitions/extendsDefinition"
+    },
+    {
+      "$ref": "#/definitions/watchOptionsDefinition"
+    },
+    {
+      "$ref": "#/definitions/buildOptionsDefinition"
+    },
+    {
+      "$ref": "#/definitions/tsNodeDefinition"
+    },
+    {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/filesDefinition"
+        },
+        {
+          "$ref": "#/definitions/excludeDefinition"
+        },
+        {
+          "$ref": "#/definitions/includeDefinition"
+        },
+        {
+          "$ref": "#/definitions/referencesDefinition"
+        }
+      ]
+    }
+  ]
 }

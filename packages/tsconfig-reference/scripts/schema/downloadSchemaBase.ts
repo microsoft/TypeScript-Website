@@ -3,7 +3,7 @@
 // https://json.schemastore.org/tsconfig.json
 
 import nodeFetch from "node-fetch";
-import { writeFileSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
 const getFileAndStoreLocally = async (url, path, editFunc) => {
