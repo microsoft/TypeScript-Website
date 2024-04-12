@@ -77,7 +77,7 @@ jobs:
                 workflowRun = (await github.rest.actions.listWorkflowRuns({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  workflow_id: "ci.yml",
+                  workflow_id: "CI.yml",
                   head_sha: pr.head.sha,
                   per_page: 1,
                 })).data.workflow_runs[0];
