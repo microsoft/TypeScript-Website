@@ -14,7 +14,7 @@
       "targetString": "React"
     },
     {
-      "text": "function Hello(): JSX.Element",
+      "text": "function Hello(): React.JSX.Element",
       "docs": "",
       "start": 71,
       "length": 5,
@@ -59,7 +59,7 @@
       "targetString": "div"
     },
     {
-      "text": "(alias) function Hello(): JSX.Element\nimport Hello",
+      "text": "(alias) function Hello(): React.JSX.Element\nimport Hello",
       "docs": "",
       "start": 179,
       "length": 5,
@@ -86,7 +86,7 @@
       "targetString": "log"
     },
     {
-      "text": "(alias) function Hello(): JSX.Element\nimport Hello",
+      "text": "(alias) function Hello(): React.JSX.Element\nimport Hello",
       "docs": "",
       "start": 218,
       "length": 5,
