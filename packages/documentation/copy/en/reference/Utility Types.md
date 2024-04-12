@@ -457,7 +457,7 @@ type T4 = InstanceType<Function>;
 <blockquote class=bg-reading>
 
 Released:  
-[5.4](https://devblogs.microsoft.com/typescript/announcing-typescript-5-4/#the-noinfer-utility-type)
+[5.4](/docs/handbook/release-notes/typescript-5-4.html#the-noinfer-utility-type)
 
 </blockquote>
 
