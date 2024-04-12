@@ -3,7 +3,7 @@ display: "Resolve JSON Module"
 oneline: "Enable importing .json files."
 ---
 
-Allows importing modules with a '.json' extension, which is a common practice in node projects. This includes
+Allows importing modules with a `.json` extension, which is a common practice in node projects. This includes
 generating a type for the `import` based on the static JSON shape.
 
 TypeScript does not support resolving JSON files by default:

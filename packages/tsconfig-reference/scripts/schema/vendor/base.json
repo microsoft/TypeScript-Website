@@ -248,7 +248,10 @@
             },
             "declarationDir": {
               "description": "Specify the output directory for generated declaration files.",
-              "type": ["string", "null"],
+              "type": [
+                "string",
+                "null"
+              ],
               "markdownDescription": "Specify the output directory for generated declaration files.\n\nSee more: https://www.typescriptlang.org/tsconfig#declarationDir"
             },
             "diagnostics": {
@@ -308,7 +311,13 @@
             },
             "jsx": {
               "description": "Specify what JSX code is generated.",
-              "enum": ["preserve", "react", "react-jsx", "react-jsxdev", "react-native"]
+              "enum": [
+                "preserve",
+                "react",
+                "react-jsx",
+                "react-jsxdev",
+                "react-native"
+              ]
             },
             "reactNamespace": {
               "description": "Specify the object invoked for `createElement`. This only applies when targeting `react` JSX emit.",
@@ -371,12 +380,25 @@
               ],
               "markdownDescription": "Specify what module code is generated.\n\nSee more: https://www.typescriptlang.org/tsconfig#module"
             },
+            "moduleDetection": {
+              "description": "Control what method is used to detect module-format JS files.",
+              "type": "string",
+              "enum": [
+                "auto",
+                "legacy",
+                "force"
+              ],
+              "default": "auto"
+            },
             "moduleResolution": {
               "description": "Specify how TypeScript looks up a file from a given module specifier.",
               "type": "string",
               "anyOf": [
                 {
-                  "enum": ["classic", "node", "node16", "nodenext", "bundler"]
+                  "enum": [
+                    "Classic",
+                    "Node"
+                  ]
                 },
                 {
                   "pattern": "^(([Nn]ode)|([Nn]ode16)|([Nn]ode[Nn]ext)|([Cc]lassic)|([Bb]undler))$"
@@ -390,7 +412,10 @@
               "type": "string",
               "anyOf": [
                 {
-                  "enum": ["crlf", "lf"]
+                  "enum": [
+                    "crlf",
+                    "lf"
+                  ]
                 },
                 {
                   "pattern": "^(CRLF|LF|crlf|lf)$"
@@ -680,9 +705,9 @@
               "markdownDescription": "Emit a v8 CPU profile of the compiler run for debugging.\n\nSee more: https://www.typescriptlang.org/tsconfig#generateCpuProfile"
             },
             "baseUrl": {
-              "description": "Specify the base directory to resolve non-relative module names.",
+              "description": "Specify the base directory to resolve bare specifier module names.",
               "type": "string",
-              "markdownDescription": "Specify the base directory to resolve non-relative module names.\n\nSee more: https://www.typescriptlang.org/tsconfig#baseUrl"
+              "markdownDescription": "Specify the base directory to resolve bare specifier module names.\n\nSee more: https://www.typescriptlang.org/tsconfig#baseUrl"
             },
             "paths": {
               "description": "Specify a set of entries that re-map imports to additional lookup locations.",
@@ -928,7 +953,11 @@
             "importsNotUsedAsValues": {
               "description": "Specify emit/checking behavior for imports that are only used for types.",
               "default": "remove",
-              "enum": ["remove", "preserve", "error"]
+              "enum": [
+                "remove",
+                "preserve",
+                "error"
+              ]
             },
             "alwaysStrict": {
               "description": "Ensure 'use strict' is always emitted.",
@@ -1018,6 +1047,12 @@
               "type": "boolean",
               "default": false,
               "markdownDescription": "Use the package.json 'imports' field when resolving imports.\n\nSee more: https://www.typescriptlang.org/tsconfig#resolvePackageJsonImports"
+            },
+            "verbatimModuleSyntax": {
+              "description": "Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting.",
+              "type": "boolean",
+              "default": false,
+              "markdownDescription": "Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting."
             },
             "assumeChangesOnlyAffectDirectDependencies": {
               "description": "Have recompiles in '--incremental' and '--watch' assume that changes within a file will only affect files directly depending on it. Requires TypeScript version 3.8 or later.",
@@ -1159,7 +1194,9 @@
               "type": "boolean"
             },
             "ignore": {
-              "default": ["(?:^|/)node_modules/"],
+              "default": [
+                "(?:^|/)node_modules/"
+              ],
               "description": "Paths which should not be compiled.\n\nEach string in the array is converted to a regular expression via `new RegExp()` and tested against source paths prior to compilation.\n\nSource paths are normalized to posix-style separators, relative to the directory containing `tsconfig.json` or to cwd if no `tsconfig.json` is loaded.\n\nDefault is to ignore all node_modules subdirectories.",
               "items": {
                 "type": "string"
@@ -1169,7 +1206,10 @@
             "ignoreDiagnostics": {
               "description": "Ignore TypeScript warnings by diagnostic code.",
               "items": {
-                "type": ["string", "number"]
+                "type": [
+                  "string",
+                  "number"
+                ]
               },
               "type": "array"
             },

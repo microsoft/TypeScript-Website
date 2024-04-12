@@ -52,7 +52,7 @@ let zoo = [new Rhino(), new Elephant(), new Snake()];
 ```
 
 Ideally, we may want `zoo` to be inferred as an `Animal[]`, but because there is no object that is strictly of type `Animal` in the array, we make no inference about the array element type.
-To correct this, instead explicitly provide the type when no one type is a super type of all other candidates:
+To correct this, explicitly provide the type when no one type is a super type of all other candidates:
 
 ```ts twoslash
 // @strict: false

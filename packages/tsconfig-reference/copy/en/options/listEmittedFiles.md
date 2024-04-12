@@ -25,7 +25,7 @@ With:
 {
   "compilerOptions": {
     "declaration": true,
-    "listFiles": true
+    "listEmittedFiles": true
   }
 }
 ```

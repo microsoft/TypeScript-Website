@@ -47,7 +47,7 @@ const searchResults = {
 type PotentialString = string | undefined | null;
 
 // The PotentialString discards the undefined and null. If
-// you go up to the settings and turn on strict mode and come
+// you open the "TS Config" menu, enable strictNullChecks, and come
 // back, you'll see that hovering on PotentialString now shows
 // the full union.
 

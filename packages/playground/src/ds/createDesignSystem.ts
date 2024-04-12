@@ -159,6 +159,16 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createCodePre.appendChild(codeElement)
       container.appendChild(createCodePre)
 
+      // When <pre> focused, Ctrl+A should select only code pre instead of the entire document
+      createCodePre.addEventListener("keydown", e => {
+        if (e.key.toUpperCase() === "A" && (e.ctrlKey || e.metaKey)) {
+          const selection = window.getSelection();
+          if (!selection) return;
+          selection.selectAllChildren(createCodePre)
+          e.preventDefault();
+        }
+      })
+
       return codeElement
     }
 
@@ -331,21 +341,21 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       }
 
       const renderManyChildren = (key: string, nodes: Node[], depth: number) => {
-        const childers = document.createElement("div")
-        childers.classList.add("ast-children")
+        const children = document.createElement("div")
+        children.classList.add("ast-children")
 
         const li = document.createElement("li")
         li.innerHTML = `${key}: [<br/>`
-        childers.appendChild(li)
+        children.appendChild(li)
 
         nodes.forEach(node => {
-          renderItem(childers, node, depth + 1)
+          renderItem(children, node, depth + 1)
         })
 
         const liEnd = document.createElement("li")
         liEnd.innerHTML += "]"
-        childers.appendChild(liEnd)
-        return childers
+        children.appendChild(liEnd)
+        return children
       }
 
       const renderItem = (parentElement: Element, node: Node, depth: number) => {

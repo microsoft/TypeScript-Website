@@ -74,13 +74,15 @@ More details: [smrq/tsify](https://github.com/smrq/tsify)
 
 ## Grunt
 
-### Install
+### Using `grunt-ts` (no longer maintained)
+
+#### Install
 
 ```sh
-npm install grunt-ts
+npm install grunt-ts --save-dev
 ```
 
-### Basic Gruntfile.js
+#### Basic Gruntfile.js
 
 ```js
 module.exports = function (grunt) {
@@ -97,6 +99,36 @@ module.exports = function (grunt) {
 ```
 
 More details: [TypeStrong/grunt-ts](https://github.com/TypeStrong/grunt-ts)
+
+### Using `grunt-browserify` combined with `tsify`
+
+#### Install
+
+```sh
+npm install grunt-browserify tsify --save-dev
+```
+
+#### Basic Gruntfile.js
+
+```js
+module.exports = function (grunt) {
+  grunt.initConfig({
+    browserify: {
+      all: {
+        src: "src/main.ts",
+        dest: "dist/main.js",
+        options: {
+          plugin: ["tsify"],
+        },
+      },
+    },
+  });
+  grunt.loadNpmTasks("grunt-browserify");
+  grunt.registerTask("default", ["browserify"]);
+};
+```
+
+More details: [jmreidy/grunt-browserify](https://github.com/jmreidy/grunt-browserify), [TypeStrong/tsify](https://github.com/TypeStrong/tsify)
 
 ## Gulp
 

@@ -146,6 +146,9 @@ module.exports = {
             options: {
               theme: require("./lib/themes/typescript-beta-light.json"),
               addTryButton: true,
+              defaultOptions: {
+                noErrorValidation: true,
+              },
             },
           },
           "gatsby-remark-copy-linked-files",

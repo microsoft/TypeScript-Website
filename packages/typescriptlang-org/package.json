@@ -23,9 +23,9 @@
     "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/node-fetch": "^2.5.3",
     "@types/react-helmet": "^5.0.15",
-    "@typescript/playground": "0.1.0",
-    "@typescript/sandbox": "0.1.0",
-    "@typescript/twoslash": "3.2.1",
+    "@typescript/playground": "0.1.2",
+    "@typescript/sandbox": "0.1.2",
+    "@typescript/twoslash": "3.2.4",
     "gatsby": "^5.6.1",
     "gatsby-link": "5.6.0",
     "gatsby-plugin-catch-links": "^5.6.0",
@@ -66,8 +66,8 @@
     "@types/react-dom": "^18.0.11",
     "concurrently": "^5.1.0",
     "gatsby-plugin-typescript": "^5.6.0",
-    "jest": "*",
-    "ts-jest": "^26.4.4"
+    "jest": "^29.5.0",
+    "ts-jest": "^29.0.5"
   },
   "jest": {
     "preset": "ts-jest",

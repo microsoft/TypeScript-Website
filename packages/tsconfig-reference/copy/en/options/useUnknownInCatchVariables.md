@@ -1,8 +1,8 @@
 ---
-display: "useUnknownInCatchVariables"
+display: "Use Unknown In Catch Variables"
 oneline: "Default catch clause variables as `unknown` instead of `any`."
 ---
- 
+
 In TypeScript 4.0, support was added to allow changing the type of the variable in a catch clause from `any` to `unknown`. Allowing for code like:
 
 ```ts twoslash

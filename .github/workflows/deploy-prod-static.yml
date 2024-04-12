@@ -1,10 +1,13 @@
-name: Deploy to Azure Static Web Apps on push
+name: Deploy to Azure Static Web Apps
 
 on:
   push:
     branches:
       - v2
   workflow_dispatch:
+  schedule:
+    # https://crontab.guru/#0_12_*_*_1
+    - cron: "0 12 * * 1"
 
 jobs:
   build:

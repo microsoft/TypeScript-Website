@@ -20,7 +20,8 @@ const handbookRedirects = {
   "/docs/handbook/release-notes": "/docs/",
   "/docs/handbook/release-notes/overview": "/docs/",
   "/docs/handbook/release-notes/overview.html": "/docs",
-  "/docs/handbook/react-&-webpack.html": "https://webpack.js.org/guides/typescript/"
+  "/docs/handbook/react-&-webpack.html": "https://webpack.js.org/guides/typescript/",
+  "/docs/bootstrap": "/docs/"
 }
 
 import { NodePluginArgs } from "gatsby"
@@ -49,7 +50,14 @@ export const setupRedirects = (
 
   addRedirects(veryOldRedirects)
   addRedirects(handbookRedirects)
-
+  addRedirects({
+    "/docs/handbook/esm-node": "/docs/handbook/modules/reference.html#node16-nodenext",
+    "/docs/handbook/esm-node.html": "/docs/handbook/modules/reference.html#node16-nodenext",
+    "/docs/handbook/modules": "/docs/handbook/modules/introduction.html",
+    "/docs/handbook/modules.html": "/docs/handbook/modules/introduction.html",
+    "/docs/handbook/module-resolution": "/docs/handbook/modules/theory.html#module-resolution",
+    "/docs/handbook/module-resolution.html": "/docs/handbook/modules/theory.html#module-resolution",
+  });
   // These have been replaced by the real output in the handbook
   // addRedirects({
   //   "/assets/typescript-handbook.epub": "/docs/handbook/intro.html",

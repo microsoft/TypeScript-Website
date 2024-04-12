@@ -347,7 +347,7 @@ That means that in our last example, `opts.yadda` will have the type `string | n
 If you need to access that property, you'll either have to check for its existence first or use a non-null assertion operator (the postfix `!` character).
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 // @noUncheckedIndexedAccess
 interface Options {
   path: string;
@@ -380,7 +380,7 @@ function checkOptions(opts: Options) {
 One consequence of using [`noUncheckedIndexedAccess`](/tsconfig#noUncheckedIndexedAccess) is that indexing into an array is also more strictly checked, even in a bounds-checked loop.
 
 ```ts twoslash
-// @errors: 2532
+// @errors: 2532 18048
 // @noUncheckedIndexedAccess
 function screamLines(strs: string[]) {
   // This will have issues

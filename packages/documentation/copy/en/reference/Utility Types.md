@@ -13,7 +13,7 @@ TypeScript provides several utility types to facilitate common type transformati
 <blockquote class=bg-reading>
 
 Released:
-[4.5](docs/handbook/release-notes/typescript-4-5.html#the-awaited-type-and-promise-improvements)
+[4.5](/docs/handbook/release-notes/typescript-4-5.html#the-awaited-type-and-promise-improvements)
 
 </blockquote>
 
@@ -197,7 +197,7 @@ Released:
 
 </blockquote>
 
-Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals).
+Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals). The opposite of [`Pick`](#picktype-keys).
 
 ##### Example
 
@@ -251,6 +251,14 @@ type T1 = Exclude<"a" | "b" | "c", "a" | "b">;
 //    ^?
 type T2 = Exclude<string | number | (() => void), Function>;
 //    ^?
+
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; x: number }
+  | { kind: "triangle"; x: number; y: number };
+
+type T3 = Exclude<Shape, { kind: "circle" }>
+//    ^?
 ```
 
 ## `Extract<Type, Union>`
@@ -270,6 +278,14 @@ Constructs a type by extracting from `Type` all union members that are assignabl
 type T0 = Extract<"a" | "b" | "c", "a" | "f">;
 //    ^?
 type T1 = Extract<string | number | (() => void), Function>;
+//    ^?
+
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "square"; x: number }
+  | { kind: "triangle"; x: number; y: number };
+
+type T2 = Extract<Shape, { kind: "circle" }>
 //    ^?
 ```
 
@@ -303,6 +319,8 @@ Released:
 </blockquote>
 
 Constructs a tuple type from the types used in the parameters of a function type `Type`.
+
+For overloaded functions, this will be the parameters of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
 
 ##### Example
 
@@ -350,10 +368,15 @@ type T1 = ConstructorParameters<FunctionConstructor>;
 //    ^?
 type T2 = ConstructorParameters<RegExpConstructor>;
 //    ^?
-type T3 = ConstructorParameters<any>;
+class C {
+  constructor(a: number, b: string) {}
+}
+type T3 = ConstructorParameters<typeof C>;
+//    ^?
+type T4 = ConstructorParameters<any>;
 //    ^?
 
-type T4 = ConstructorParameters<Function>;
+type T5 = ConstructorParameters<Function>;
 //    ^?
 ```
 
@@ -367,6 +390,8 @@ Released:
 </blockquote>
 
 Constructs a type consisting of the return type of function `Type`.
+
+For overloaded functions, this will be the return type of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
 
 ##### Example
 
@@ -425,6 +450,32 @@ type T3 = InstanceType<string>;
 //    ^?
 type T4 = InstanceType<Function>;
 //    ^?
+```
+
+## `NoInfer<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[5.4](/docs/handbook/release-notes/typescript-5-4.html#the-noinfer-utility-type)
+
+</blockquote>
+
+Blocks inferences to the contained type. Other than blocking inferences, `NoInfer<Type>` is
+identical to `Type`.
+
+##### Example
+
+```ts
+function createStreetLight<C extends string>(
+  colors: C[],
+  defaultColor?: NoInfer<C>,
+) {
+  // ...
+}
+
+createStreetLight(["red", "yellow", "green"], "red");  // OK
+createStreetLight(["red", "yellow", "green"], "blue");  // Error
 ```
 
 ## `ThisParameterType<Type>`
@@ -487,7 +538,7 @@ This utility does not return a transformed type. Instead, it serves as a marker 
 ##### Example
 
 ```ts twoslash
-// @noImplicitThis: false
+// @noImplicitThis: true
 type ObjectDescriptor<D, M> = {
   data?: D;
   methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
@@ -514,7 +565,7 @@ obj.y = 20;
 obj.moveBy(5, 5);
 ```
 
-In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): number }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
+In the example above, the `methods` object in the argument to `makeObject` has a contextual type that includes `ThisType<D & M>` and therefore the type of [this](/docs/handbook/functions.html#this) in methods within the `methods` object is `{ x: number, y: number } & { moveBy(dx: number, dy: number): void }`. Notice how the type of the `methods` property simultaneously is an inference target and a source for the `this` type in methods.
 
 The `ThisType<T>` marker interface is simply an empty interface declared in `lib.d.ts`. Beyond being recognized in the contextual type of an object literal, the interface acts like any empty interface.
 

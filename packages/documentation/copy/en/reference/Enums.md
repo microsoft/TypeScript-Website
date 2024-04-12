@@ -167,7 +167,7 @@ enum FileAccess {
 There is a special subset of constant enum members that aren't calculated: literal enum members.
 A literal enum member is a constant enum member with no initialized value, or with values that are initialized to
 
-- any string literal (e.g. `"foo"`, `"bar`, `"baz"`)
+- any string literal (e.g. `"foo"`, `"bar"`, `"baz"`)
 - any numeric literal (e.g. `1`, `100`)
 - a unary minus applied to any numeric literal (e.g. `-1`, `-100`)
 
@@ -220,7 +220,7 @@ function f(x: E) {
 
 In that example, we first checked whether `x` was _not_ `E.Foo`.
 If that check succeeds, then our `||` will short-circuit, and the body of the 'if' will run.
-However, if the check didn't succeed, then `x` can _only_ be `E.Foo`, so it doesn't make sense to see whether it's equal to `E.Bar`.
+However, if the check didn't succeed, then `x` can _only_ be `E.Foo`, so it doesn't make sense to see whether it's _not_ equal to `E.Bar`.
 
 ## Enums at runtime
 
@@ -381,11 +381,11 @@ These pitfalls pertain to _ambient_ const enums only (basically const enums in `
 
 Here are two approaches to avoiding these pitfalls:
 
-A. Do not use const enums at all.
-   You can easily [ban const enums](https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md#how-can-i-ban-specific-language-feature) with the help of a linter.
+1. Do not use const enums at all.
+   You can easily [ban const enums](https://typescript-eslint.io/linting/troubleshooting#how-can-i-ban-specific-language-feature) with the help of a linter.
    Obviously this avoids any issues with const enums, but prevents your project from inlining its own enums.
    Unlike inlining enums from other projects, inlining a project's own enums is not problematic and has performance implications.
-B. Do not publish ambient const enums, by deconstifying them with the help of [`preserveConstEnums`](/tsconfig#preserveConstEnums).
+2. Do not publish ambient const enums, by deconstifying them with the help of [`preserveConstEnums`](/tsconfig#preserveConstEnums).
    This is the approach taken internally by the [TypeScript project itself](https://github.com/microsoft/TypeScript/pull/5422).
    [`preserveConstEnums`](/tsconfig#preserveConstEnums) emits the same JavaScript for const enums as plain enums.
    You can then safely strip the `const` modifier from `.d.ts` files [in a build step](https://github.com/microsoft/TypeScript/blob/1a981d1df1810c868a66b3828497f049a944951c/Gulpfile.js#L144).

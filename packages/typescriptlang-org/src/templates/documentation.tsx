@@ -85,14 +85,13 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
   const showSidebar = !post.frontmatter.disable_toc
   const showExperimental = post.frontmatter.experimental
-  const showSidebarHeadings = post.headings && sidebarHeaders.length <= 30
   const navigation = getDocumentationNavForLanguage(props.pageContext.lang)
   const isHandbook = post.frontmatter.handbook
   const prefix = isHandbook ? "Handbook" : "Documentation"
 
   const slug = slugger()
   return (
-    <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang}>
+    <Layout title={`${prefix} - ${post.frontmatter.title}`} description={post.frontmatter.oneline || ""} lang={props.pageContext.lang} skipToAnchor="#handbook-content">
       <section id="doc-layout" >
         <SidebarToggleButton />
 
@@ -161,16 +160,9 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             {showSidebar &&
               <aside className="handbook-toc">
                 <nav className={deprecationURL ? "deprecated" : ""}>
-                  {showSidebarHeadings && <>
+                  {<>
                     <h5>{i("handb_on_this_page")}</h5>
-                    <ul>
-                      {
-                        sidebarHeaders.map(heading => {
-                          const id = slug.slug(heading!.value, false)
-                          return <li key={id}><a href={'#' + id}>{heading!.value}</a></li>
-                        })
-                      }
-                    </ul>
+                    <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
                   </>
                   }
                   <div id="like-dislike-subnav">
@@ -193,6 +185,45 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       <Popup {...showPopup} />
     </Layout>
   )
+}
+
+type MarkdownHeadingTreeNode = {
+  value: string
+  depth: number
+  children?: MarkdownHeadingTreeNode[]
+}
+
+function headerListToTree(sidebarHeaders: GatsbyTypes.Maybe<Pick<GatsbyTypes.MarkdownHeading, "value" | "depth">>[]) {
+  const tree: MarkdownHeadingTreeNode[] = []
+  let currentParent: MarkdownHeadingTreeNode | undefined
+  sidebarHeaders.forEach(heading => {
+    if (!currentParent || heading!.depth === 2) {
+      currentParent = { value: heading!.value!, depth: heading!.depth!, children: [] }
+      tree.push(currentParent)
+    } else {
+      currentParent.children?.push({
+        value: heading!.value!,
+        depth: heading!.depth!,
+      })
+    }
+  })
+  return tree
+}
+
+function MarkdownHeadingTree(props: { tree: MarkdownHeadingTreeNode[], slug: typeof slugger, className?: string }) {
+  return <ul className={props.className}>
+      {
+        props.tree.map(heading => {
+          const id = props.slug.slug(heading.value, false)
+          return (
+            <li key={id}>
+              <a href={'#' + id}>{heading.value}</a>
+              {heading.children?.length ? <MarkdownHeadingTree tree={heading.children} slug={props.slug} /> : null}
+            </li>
+          )
+        })
+      }
+    </ul>
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>

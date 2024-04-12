@@ -19,6 +19,8 @@ Note any tags which are not explicitly listed below (such as `@async`) are not y
 - [`@typedef`](#typedef-callback-and-param)
 - [`@callback`](#typedef-callback-and-param)
 - [`@template`](#template)
+- [`@satisfies`](#satisfies)
+
 
 #### Classes
 
@@ -187,7 +189,7 @@ export type Pet = {
 
 // @filename: main.js
 /**
- * @param { import("./types").Pet } p
+ * @param {import("./types").Pet} p
  */
 function walk(p) {
   console.log(`Walking ${p.name}...`);
@@ -204,7 +206,7 @@ export type Pet = {
 // @filename: main.js
 // ---cut---
 /**
- * @typedef { import("./types").Pet } Pet
+ * @typedef {import("./types").Pet} Pet
  */
 
 /**
@@ -231,7 +233,7 @@ export const userAccount = {
 // @filename: main.js
 // ---cut---
 /**
- * @type {typeof import("./accounts").userAccount }
+ * @type {typeof import("./accounts").userAccount}
  */
 var x = require("./accounts").userAccount;
 ```
@@ -293,10 +295,10 @@ You can use either `object` or `Object` on the first line.
 
 ```js twoslash
 /**
- * @typedef {object} SpecialType1 - creates a new type named 'SpecialType'
- * @property {string} prop1 - a string property of SpecialType
- * @property {number} prop2 - a number property of SpecialType
- * @property {number=} prop3 - an optional number property of SpecialType
+ * @typedef {object} SpecialType1 - creates a new type named 'SpecialType1'
+ * @property {string} prop1 - a string property of SpecialType1
+ * @property {number} prop2 - a number property of SpecialType1
+ * @property {number=} prop3 - an optional number property of SpecialType1
  */
 
 /** @type {SpecialType1} */
@@ -391,11 +393,35 @@ Finally, you can specify a default for a type parameter:
 /** @template [T=object] */
 class Cache {
     /** @param {T} initial */
-    constructor(T) {
+    constructor(initial) {
     }
 }
 let c = new Cache()
 ```
+
+### `@satisfies`
+
+`@satisfies` provides access to the postfix [operator `satisfies`](/docs/handbook/release-notes/typescript-4-9.html) in TypeScript. Satisfies is used to declare that a value implements a type but does not affect the type of the value. 
+
+```js twoslash
+// @errors: 1360
+// @ts-check
+/**
+ * @typedef {"hello world" | "Hello, world"} WelcomeMessage
+ */
+
+/** @satisfies {WelcomeMessage} */
+const message = "hello world"
+//     ^?
+
+/** @satisfies {WelcomeMessage} */
+const failingMessage = "Hello world!"
+
+/** @type {WelcomeMessage} */
+const messageUsingType = "hello world"
+//     ^?
+```
+
 
 ## Classes
 

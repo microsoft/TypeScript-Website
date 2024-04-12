@@ -1,6 +1,6 @@
 ## Deprecating a documentation page
 
-Start with this question: are you deprecating or deleting? Ideally you're never deleting because [Cool URIs Dont Change](https://www.w3.org/Provider/Style/URI.html) but for something which intentionally had a limited self-life, that's OK.
+Start with this question: are you deprecating or deleting? Ideally you're never deleting because [Cool URIs Don't Change](https://www.w3.org/Provider/Style/URI.html) but for something which intentionally had a limited self-life, that's OK.
 
 ### Keep or Redirect?
 

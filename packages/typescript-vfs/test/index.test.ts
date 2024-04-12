@@ -21,11 +21,11 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
   // You can then interact with the languageService to introspect the code
   const definitions = env.languageService.getDefinitionAtPosition("index.ts", 7)
   expect(definitions).toMatchInlineSnapshot(`
-    Array [
-      Object {
+    [
+      {
         "containerKind": undefined,
         "containerName": "",
-        "contextSpan": Object {
+        "contextSpan": {
           "length": 18,
           "start": 0,
         },
@@ -35,7 +35,7 @@ it("runs a virtual environment and gets the right results from the LSP", () => {
         "isLocal": false,
         "kind": "const",
         "name": "hello",
-        "textSpan": Object {
+        "textSpan": {
           "length": 5,
           "start": 6,
         },
@@ -208,4 +208,9 @@ it("throws when you request a lib file which isn't in the fsMap", () => {
   }
 
   expect(t).toThrow()
+})
+
+it("grabs lib dts files from node_modules", async () => {
+  const fsMap = createDefaultMapFromNodeModules({})
+  expect(fsMap.get("/lib.es2015.collection.d.ts")).toBeDefined()
 })

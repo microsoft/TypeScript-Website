@@ -5,7 +5,7 @@ permalink: /docs/handbook/release-notes/typescript-4-5.html
 oneline: TypeScript 4.5 Release Notes
 ---
 
-### Supporting `lib` from `node_modules`
+## Supporting `lib` from `node_modules`
 
 To ensure that TypeScript and JavaScript support works well out of the box, TypeScript bundles a series of declaration files (`.d.ts` files).
 These declaration files represent the available APIs in the JavaScript language, and the standard browser DOM APIs.
@@ -80,7 +80,7 @@ Now `Promise.all` leverages the combination of certain features with `Awaited` t
 
 For more information, you [can read about this change on GitHub](https://github.com/microsoft/TypeScript/pull/45350).
 
-### Template String Types as Discriminants
+## Template String Types as Discriminants
 
 TypeScript 4.5 now can narrow values that have template string types, and also recognizes template string types as discriminants.
 
@@ -107,7 +107,7 @@ export function handler(r: Success | Error) {
 
 For more information, [see the change that enables this feature](https://github.com/microsoft/TypeScript/pull/46137).
 
-### `module es2022`
+## `module es2022`
 
 Thanks to [Kagami S. Rosylight](https://github.com/saschanaz), TypeScript now supports a new `module` setting: `es2022`.
 The main feature in [`module es2022`](/tsconfig#module) is top-level `await`, meaning you can use `await` outside of `async` functions.
@@ -115,7 +115,7 @@ This was already supported in `--module esnext` (and now [`--module nodenext`](/
 
 You can [read up more on this change here](https://github.com/microsoft/TypeScript/pull/44656).
 
-### Tail-Recursion Elimination on Conditional Types
+## Tail-Recursion Elimination on Conditional Types
 
 TypeScript often needs to gracefully fail when it detects possibly infinite recursion, or any type expansions that can take a long time and affect your editor experience.
 As a result, TypeScript has heuristics to make sure it doesn't go off the rails when trying to pick apart an infinitely-deep type, or working with types that generate a lot of intermediate results.
@@ -179,7 +179,7 @@ type GetCharsHelper<S, Acc> =
 
 You can read up more on the implementation [here](https://github.com/microsoft/TypeScript/pull/45711).
 
-### Disabling Import Elision
+## Disabling Import Elision
 
 There are some cases where TypeScript can't detect that you're using an import.
 For example, take the following code:
@@ -234,7 +234,7 @@ That makes another TypeScript 4.5 feature, [`type` modifiers on import names](#t
 
 For more information, [see the pull request here](https://github.com/microsoft/TypeScript/pull/44619).
 
-### `type` Modifiers on Import Names
+## `type` Modifiers on Import Names
 
 As mentioned above, [`preserveValueImports`](/tsconfig#preserveValueImports) and [`isolatedModules`](/tsconfig#isolatedModules) have special requirements so that there's no ambiguity for build tools whether it's safe to drop type imports.
 
@@ -286,7 +286,7 @@ export class Thing {
 
 For more information, see [the changes on GitHub](https://github.com/microsoft/TypeScript/pull/45998).
 
-### Private Field Presence Checks
+## Private Field Presence Checks
 
 TypeScript 4.5 supports an ECMAScript proposal for checking whether an object has a private field on it.
 You can now write a class with a `#private` field member and see whether another object has the same field by using the `in` operator.
@@ -313,7 +313,7 @@ As such, TypeScript is able to appropriately narrow the type of `other` on each 
 
 We'd like to extend a big thanks to our friends at Bloomberg [who contributed this pull request](https://github.com/microsoft/TypeScript/pull/44648): [Ashley Claymore](https://github.com/acutmore), [Titian Cernicova-Dragomir](https://github.com/dragomirtitian), [Kubilay Kahveci](https://github.com/mkubilayk), and [Rob Palmer](https://github.com/robpalme)!
 
-### Import Assertions
+## Import Assertions
 
 TypeScript 4.5 supports an ECMAScript proposal for _import assertions_.
 This is a syntax used by runtimes to make sure that an import has an expected format.
@@ -344,7 +344,62 @@ The expected type of that second argument is defined by a new type called `Impor
 
 We'd like to thank [Wenlu Wang](https://github.com/Kingwl/) for [implementing this feature](https://github.com/microsoft/TypeScript/pull/40698)!
 
-### Faster Load Time with `realPathSync.native`
+## Const Assertions and Default Type Arguments in JSDoc
+
+TypeScript 4.5 brings some extra expressivity to our JSDoc support.
+
+One example of this is with `const` assertions. In TypeScript, you can get a more precise and immutable type by writing `as const` after a literal.
+
+```ts
+// type is { prop: string }
+let a = { prop: "hello" };
+
+// type is { readonly prop: "hello" }
+let b = { prop: "hello" } as const;
+```
+
+In JavaScript files, you can now use JSDoc type assertions to achieve the same thing.
+
+```ts
+// type is { prop: string }
+let a = { prop: "hello" };
+
+// type is { readonly prop: "hello" }
+let b = /** @type {const} */ ({ prop: "hello" });
+```
+
+As a reminder, JSDoc type assertions comments start with `/** @type {TheTypeWeWant} */` and are followed by a parenthesized expression:
+
+```js
+/** @type {TheTypeWeWant} */` (someExpression)
+```
+
+TypeScript 4.5 also adds default type arguments to JSDoc, which means the following `type` declaration in TypeScript:
+
+```ts
+type Foo<T extends string | number = number> = { prop: T };
+```
+
+can be rewritten as the following `@typedef` declaration in JavaScript:
+
+```js
+/**
+ * @template {string | number} [T=number]
+ * @typedef Foo
+ * @property prop {T}
+ */
+
+// or
+
+/**
+ * @template {string | number} [T=number]
+ * @typedef {{ prop: T }} Foo
+ */
+ ```
+ 
+For more information, see [the pull request for const assertions](https://github.com/microsoft/TypeScript/pull/45464) along with [the changes for type argument defaults](https://github.com/microsoft/TypeScript/pull/45483).
+
+## Faster Load Time with `realPathSync.native`
 
 TypeScript now leverages a system-native implementation of the Node.js `realPathSync` function on all operating systems.
 
@@ -353,7 +408,7 @@ On certain codebases, this change sped up project loading by 5-13% (depending on
 
 For more information, see [the original change here](https://github.com/microsoft/TypeScript/pull/44966), along with [the 4.5-specific changes here](https://github.com/microsoft/TypeScript/pull/44966).
 
-### Snippet Completions for JSX Attributes
+## Snippet Completions for JSX Attributes
 
 TypeScript 4.5 brings _snippet completions_ for JSX attributes.
 When writing out an attribute in a JSX tag, TypeScript will already provide suggestions for those attributes;
@@ -368,7 +423,7 @@ TypeScript will typically use the type of an attribute to figure out what kind o
 Keep in mind, this feature will only work in newer versions of Visual Studio Code, so you might have to use an Insiders build to get this working.
 For more information, [read up on the original pull request](https://github.com/microsoft/TypeScript/pull/45903)
 
-### Better Editor Support for Unresolved Types
+## Better Editor Support for Unresolved Types
 
 In some cases, editors will leverage a lightweight "partial" semantic mode - either while the editor is waiting for the full project to load, or in contexts like [GitHub's web-based editor](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor).
 
@@ -390,19 +445,19 @@ Keep in mind, you'll always get an error in regular scenarios to tell you when a
 
 For more information, [see the implementation here](https://github.com/microsoft/TypeScript/pull/45976).
 
-### Breaking Changes
+## Breaking Changes
 
-#### `lib.d.ts` Changes
+### `lib.d.ts` Changes
 
 TypeScript 4.5 contains changes to its built-in declaration files which may affect your compilation;
 however, [these changes were fairly minimal](https://github.com/microsoft/TypeScript-DOM-lib-generator/issues/1143), and we expect most code will be unaffected.
 
-#### Inference Changes from `Awaited`
+### Inference Changes from `Awaited`
 
 Because `Awaited` is now used in `lib.d.ts` and as a result of `await`, you may see certain generic types change that might cause incompatibilities;
 however, given many intentional design decisions around `Awaited` to avoid breakage, we expect most code will be unaffected.
 
-#### Compiler Options Checking at the Root of `tsconfig.json`
+### Compiler Options Checking at the Root of `tsconfig.json`
 
 It's an easy mistake to accidentally forget about the `compilerOptions` section in a `tsconfig.json`.
 To help catch this mistake, in TypeScript 4.5, it is an error to add a top-level field which matches any of the available options in `compilerOptions` _without_ having also defined `compilerOptions` in that `tsconfig.json`.
