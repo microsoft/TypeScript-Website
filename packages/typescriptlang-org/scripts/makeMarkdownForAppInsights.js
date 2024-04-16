@@ -40,7 +40,7 @@ const makeAToSitePath = path =>
   `<a href='https://www.typescriptlang.org/${path}'>${path}</a>`
 
 const makeAToPlaygroundSample = path =>
-  `<a href='https://www.staging-typescript.org/play/#example/${path}'>${path}</a>`
+  `<a href='https://www.typescriptlang.org/play/#example/${path}'>${path}</a>`
 
 const makeAnchorAsNPMModule = path =>
   `<a href='https://www.npmjs.com/package/${path}'>${path}</a>`

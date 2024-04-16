@@ -21,7 +21,6 @@ We're currently running on App Service, the places where you can find info:
 The build to deploy train normally looks like this:
 
 - `v2` branch gets pushed:
-- A deploy is made to azure blob storage via [`.github/workflows/v2-merged-staging.yml`](https://github.com/microsoft/TypeScript-website/blob/v2/.github/workflows/v2-merged-staging.yml)
 - Every Monday, a deploy is made from v2 to the production app via [`.github/workflows/deploy-prod.yml`](https://github.com/microsoft/TypeScript-website/blob/v2/.github/workflows/deploy-prod.yml)
 
 You can deploy `v2` to production anytime via the ["Run workflow" button here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22), so if you have an emergency commit - it goes to `v2` then you can run the action.

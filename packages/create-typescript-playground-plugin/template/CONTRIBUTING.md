@@ -45,7 +45,7 @@ The route to handle this is via rollup:
 
 ## Deployment
 
-This module should be deployed to npm when you would like the world to see it, this may mean making your code handle a staging vs production environment (because the URLs will be different.)
+This module should be deployed to npm when you would like the world to see it, this may mean making your code handle a production environment (because the URLs will be different.)
 
 For example, this is how you can handle getting the URL for a CSS file which is included in your `dist` folder:
 
@@ -57,7 +57,7 @@ const cssHref = isDev ? "http://localhost:5000/slideshow.css" : unpkgURL
 
 ### Post-Deploy
 
-Once this is deployed, you can test it on the TypeScript playground by passing in the name of your plugin on npm to the custom plugin box. This is effectively your staging environment.
+Once this is deployed, you can test it on the TypeScript playground by passing in the name of your plugin on npm to the custom plugin box.
 
 Once you're happy and it's polished, you can apply to have it in the default plugin list.
 
