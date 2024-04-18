@@ -93,3 +93,19 @@ declare module JSX {
 // @jsx: react-jsxdev
 export const HelloWorld = () => <h1>Hello world</h1>;
 ```
+
+This option can be used on a per-file basis too using an `@jsxRuntime` comment.
+
+Always use the classic runtime (`"react"`) for this file:
+
+```tsx
+/* @jsxRuntime classic */
+export const HelloWorld = () => <h1>Hello world</h1>;
+```
+
+Always use the automatic runtime (`"react-jsx"`) for this file:
+
+```tsx
+/* @jsxRuntime automatic */
+export const HelloWorld = () => <h1>Hello world</h1>;
+```

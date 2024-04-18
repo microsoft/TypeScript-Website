@@ -18,7 +18,7 @@ In order to use JSX you must do two things.
 1. Name your files with a `.tsx` extension
 2. Enable the [`jsx`](/tsconfig#jsx) option
 
-TypeScript ships with three JSX modes: `preserve`, `react`, and `react-native`.
+TypeScript ships with several JSX modes: `preserve`, `react` (classic runtime), `react-jsx` (automatic runtime), `react-jsxdev` (automatic development runtime), and `react-native`.
 These modes only affect the emit stage - type checking is unaffected.
 The `preserve` mode will keep the JSX as part of the output to be further consumed by another transform step (e.g. [Babel](https://babeljs.io/)).
 Additionally the output will have a `.jsx` file extension.
@@ -70,6 +70,65 @@ This is important for two reasons:
 TypeScript uses the [same convention that React does](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) for distinguishing between these.
 An intrinsic element always begins with a lowercase letter, and a value-based element always begins with an uppercase letter.
 
+### The `JSX` namespace
+
+JSX in TypeScript is typed by the `JSX` namespace. The `JSX` namespace may be defined in various places, depending on the `jsx` compiler option.
+
+The `jsx` options `preserve`, `react`, and `react-native` use the type definitions for classic runtime. This means a variable needs to be in scope that’s determined by the `jsxFactory` compiler option. The `JSX` namespace needs to specified on the top-most identifier of the JSX factory. For example, React uses the default factory `React.createElement`. This means its `JSX` namespace should be defined as `React.JSX`.
+
+```ts
+export function createElement(): any;
+
+export namespace JSX {
+  // …
+}
+```
+
+And the user should always import React as `React`.
+
+```ts
+import * as React;
+```
+
+Preact uses the JSX factory `h`. That means its types should be defined as the `h.JSX`.
+
+```ts
+export function h(props: any): any;
+
+export namespace h.JSX {
+  // …
+}
+```
+
+The user should use a named import to import `h`.
+
+```ts
+import { h } from 'preact';
+```
+
+For the `jsx` options `react-jsx` and `react-jsxdev`, the `JSX` namespace needs to be exported from the matching entry points. For `react-jsx` this is `${jsxImportSource}/jsx-runtime`. For `react-jsxdev`, this is `${jsxImportSource}/jsx-dev-runtime`. Since these don’t use a file extension, you must use the [`exports`](https://nodejs.org/api/packages.html#exports) field in `package.json` map in order to support ESM users.
+
+```json 
+{
+  "exports": {
+    "./jsx-runtime": "./jsx-runtime.js",
+    "./jsx-dev-runtime": "./jsx-dev-runtime.js",
+  }
+}
+```
+
+Then in `jsx-runtime.d.ts` and `jsx-dev-runtime.d.ts`:
+
+```ts
+export namespace JSX {
+  // …
+}
+```
+
+Note that while exporting the `JSX` namespace is sufficient for type checking, the production runtime needs the `jsx`, `jsxs`, and `Fragment` exports at runtime, and the development runtime needs `jsxDEV` and `Fragment`. Ideally you add types for those too.
+
+If the `JSX` namespace isn’t available in the appropriate location, both the classic and the automatic runtime fall back to the global `JSX` namespace.
+
 ### Intrinsic elements
 
 Intrinsic elements are looked up on the special interface `JSX.IntrinsicElements`.
@@ -77,7 +136,7 @@ By default, if this interface is not specified, then anything goes and intrinsic
 However, if this interface _is_ present, then the name of the intrinsic element is looked up as a property on the `JSX.IntrinsicElements` interface.
 For example:
 
-```ts
+```tsx
 declare namespace JSX {
   interface IntrinsicElements {
     foo: any;
@@ -104,7 +163,7 @@ declare namespace JSX {
 
 Value-based elements are simply looked up by identifiers that are in scope.
 
-```ts
+```tsx
 import MyComponent from "./myComponent";
 
 <MyComponent />; // ok
@@ -123,7 +182,7 @@ Because these two types of value-based elements are indistinguishable from each 
 As the name suggests, the component is defined as a JavaScript function where its first argument is a `props` object.
 TS enforces that its return type must be assignable to `JSX.Element`.
 
-```ts
+```tsx
 interface FooProp {
   name: string;
   X: number;
@@ -211,7 +270,7 @@ const myComponent = MyFactoryFunction();
 The element instance type is interesting because it must be assignable to `JSX.ElementClass` or it will result in an error.
 By default `JSX.ElementClass` is `{}`, but it can be augmented to limit the use of JSX to only those types that conform to the proper interface.
 
-```ts
+```tsx
 declare namespace JSX {
   interface ElementClass {
     render: any;
@@ -244,7 +303,7 @@ This is slightly different between intrinsic and value-based elements.
 
 For intrinsic elements, it is the type of the property on `JSX.IntrinsicElements`
 
-```ts
+```tsx
 declare namespace JSX {
   interface IntrinsicElements {
     foo: { bar?: boolean };
@@ -262,7 +321,7 @@ It should be declared with a single property.
 The name of that property is then used.
 As of TypeScript 2.8, if `JSX.ElementAttributesProperty` is not provided, the type of first parameter of the class element's constructor or Function Component's call will be used instead.
 
-```ts
+```tsx
 declare namespace JSX {
   interface ElementAttributesProperty {
     props; // specify the property name to use
@@ -283,7 +342,7 @@ class MyComponent {
 The element attribute type is used to type check the attributes in the JSX.
 Optional and required properties are supported.
 
-```ts
+```tsx
 declare namespace JSX {
   interface IntrinsicElements {
     foo: { requiredProp: string; optionalProp?: number };
@@ -304,7 +363,7 @@ Additionally, the `JSX.IntrinsicAttributes` interface can be used to specify ext
 
 The spread operator also works:
 
-```ts
+```tsx
 const props = { requiredProp: "bar" };
 <foo {...props} />; // ok
 
@@ -326,7 +385,7 @@ declare namespace JSX {
 }
 ```
 
-```ts
+```tsx
 <div>
   <h1>Hello</h1>
 </div>;
@@ -345,7 +404,7 @@ const CustomComp = (props) => <div>{props.children}</div>
 
 You can specify the type of _children_ like any other attribute. This will override the default type from, e.g. the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react) if you use them.
 
-```ts
+```tsx
 interface PropsType {
   children: JSX.Element
   name: string
@@ -386,11 +445,30 @@ You can customize the type by specifying the `JSX.Element` interface.
 However, it is not possible to retrieve type information about the element, attributes or children of the JSX from this interface.
 It is a black box.
 
+## The JSX function return type
+
+By default, JSX functions must return the `JSX.Element` type. However, this doesn’t always represent runtime behaviour. As of TypeScript 5.1, you can specify `JSX.ElementType` to override what is a valid JSX component type. The default looks something like this.
+
+```ts
+namespace JSX {
+    export type ElementType =
+        // All the valid lowercase tags
+        keyof IntrinsicAttributes
+        // Function components
+        (props: any) => Element
+        // Class components
+        new (props: any) => ElementClass;
+    export interface IntrinsicAttributes extends /*...*/ {}
+    export type Element = /*...*/;
+    export type ElementClass = /*...*/;
+}
+```
+
 ## Embedding Expressions
 
 JSX allows you to embed expressions between tags by surrounding the expressions with curly braces (`{ }`).
 
-```ts
+```tsx
 const a = (
   <div>
     {["foo", "bar"].map((i) => (
@@ -403,7 +481,7 @@ const a = (
 The above code will result in an error since you cannot divide a string by a number.
 The output, when using the `preserve` option, looks like:
 
-```ts
+```tsx
 const a = (
   <div>
     {["foo", "bar"].map(function (i) {
@@ -418,7 +496,7 @@ const a = (
 To use JSX with React you should use the [React typings](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react).
 These typings define the `JSX` namespace appropriately for use with React.
 
-```ts
+```tsx
 /// <reference path="react.d.ts" />
 
 interface Props {
