@@ -24,6 +24,13 @@ const waitingCOC = [
 
 const meetups = [
   {
+    title: "Boston TypeScript Club",
+    url: "https://bostonts.club",
+    image: "boston-ts-club.png",
+    country: "🇺🇸",
+    continentish: "North America"
+  },
+  {
     title: "Hamburg TypeScript",
     url: "https://www.meetup.com/Hamburg-TypeScript-Meetup-Group",
     image: "hamburg-ts.png",
