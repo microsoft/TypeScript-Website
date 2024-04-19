@@ -24,7 +24,7 @@ As you might expect, these are the same names you'd see if you used the JavaScri
 - `number` is for numbers like `42`. JavaScript does not have a special runtime value for integers, so there's no equivalent to `int` or `float` - everything is simply `number`
 - `boolean` is for the two values `true` and `false`
 
-> The type names [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), and [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) (starting with capital letters) are legal and refer to the object wrapper for their respective data types. You should rarely find yourself using them except when you need to work with methods or properties specific to these data types. However, _Always_ use `string`, `number`, or `boolean` for types.
+> The type names [`String`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), and [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) (starting with capital letters) are legal and refer to the object wrapper for their respective data types. You should rarely find yourself using them except when you need to work with methods or properties specific to these data types. However, _always_ use `string`, `number`, or `boolean` for types.
 
 ## Arrays
 
