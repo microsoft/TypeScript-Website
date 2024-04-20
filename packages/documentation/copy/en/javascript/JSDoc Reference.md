@@ -823,7 +823,5 @@ TypeScript ignores any unsupported JSDoc tags.
 
 The following tags have open issues to support them:
 
-- `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
-- `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
