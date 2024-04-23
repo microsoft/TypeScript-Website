@@ -9,13 +9,6 @@ const Row = (props: { children: any, className?: string }) => <div className={[p
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
-const event = (name: string, options?: any) => {
-  // @ts-ignore
-  window.appInsights &&
-    // @ts-ignore
-    window.appInsights.trackEvent({ name }, options)
-}
-
 const FluidButton = (props: { href?: string, onClick?: any, title: string, subtitle?: string, icon: JSX.Element, className?: string }) => (
   <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick}>
     <div>
@@ -36,7 +29,6 @@ export const AboveTheFold = () => {
     const onclick = (e) => {
       setShowCTALinks(true)
       e.preventDefault()
-      event("Home Page CTA Started")
       return false
     }
 
@@ -76,7 +68,7 @@ export const AboveTheFold = () => {
             title={i("index_2_cta_play")}
             subtitle={i("index_2_cta_play_subtitle")}
             href="/play"
-            onClick={() => event("Home Page CTA Exited", { link: "playground" })}
+            onClick={() => ({ link: "playground" })}
             icon={
               <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0)">
@@ -100,7 +92,7 @@ export const AboveTheFold = () => {
             title={i("index_2_cta_download")}
             subtitle={i("index_2_cta_download_subtitle")}
             href="/download"
-            onClick={() => event("Home Page CTA Exited", { link: "download" })}
+            onClick={() => ({ link: "download" })}
             icon={
               <svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.5 0.5V19M7.5 19L1 13M7.5 19L13 13" stroke="black" strokeWidth="1.5" />
