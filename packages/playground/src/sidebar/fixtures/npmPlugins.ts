@@ -113,18 +113,18 @@ export const allNPMPlugins = [
     href: "https://github.com/orta/playground-ts-symbols",
   },
   {
-    name: "GitHub Explorer",
-    id: "ts-playground-plugin-github-explorer",
-    description: "Explore a GitHub repo on TypeScript playground",
-    author: "emnudge",
-    href: "https://www.npmjs.com/package/ts-playground-plugin-github-explorer",
-  },
-  {
     name: "Dts Plugin",
     id: "playground-dts-plugin",
     description: "Generate d.ts from JS",
     author: "sanders_n",
     href: "https://github.com/sandersn/playground-dts-plugin",
+  },
+  {
+    name: "GitHub Explorer",
+    id: "ts-playground-plugin-github-explorer",
+    description: "Explore a GitHub repo on TypeScript playground",
+    author: "emnudge",
+    href: "https://www.npmjs.com/package/ts-playground-plugin-github-explorer",
   },
   {
     name: "TypeScript Json Schema",
