@@ -56,7 +56,7 @@ const Index: React.FC<Props> = (props) => {
             title={i("cht_dl_title")}
             subtitle={i("cht_dl_subtitle")}
             href="/assets/typescript-cheat-sheets.zip"
-            onClick={() => event("Downloaded Cheat Sheet Zip", { link: "download" })}
+            onClick={() => ({ link: "download" })}
             icon={
               <svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.5 0.5V19M7.5 19L1 13M7.5 19L13 13" stroke="black" strokeWidth="1.5" />
@@ -69,13 +69,6 @@ const Index: React.FC<Props> = (props) => {
 
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
-
-const event = (name: string, options?: any) => {
-    // @ts-ignore
-    window.appInsights &&
-      // @ts-ignore
-      window.appInsights.trackEvent({ name }, options)
-  }
 
 const FluidButton = (props: { href?: string, onClick?: any, title: string, subtitle?: string, icon: JSX.Element, className?: string }) => (
     <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick}>
