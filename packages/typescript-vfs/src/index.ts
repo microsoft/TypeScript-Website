@@ -610,7 +610,7 @@ export function createVirtualLanguageServiceHost(
     getScriptFileNames: () => fileNames.slice(),
     getScriptSnapshot: fileName => {
       const contents = sys.readFile(fileName)
-      if (contents) {
+      if (contents && typeof contents === "string") {
         return ts.ScriptSnapshot.fromString(contents)
       }
       return
