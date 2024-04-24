@@ -1,0 +1,224 @@
+@import "../../style/globals.scss";
+@import "./fonts.scss";
+
+.dark-theme {
+  --background-color: #{$ts-dark-bg-color};
+  --text-color: #fff;
+  --border-color: #444;
+  --background-minor-highlight-color: #343434;
+  --inline-code-background-color: rgb(58, 58, 92, 0.7);
+  --link-color: #{$ts-main-blue-lightest-color};
+  --pure-background: black;
+  --raised-background-color: #{$ts-dark-bg-for-foreground-color};
+  --alt-text-color: #fff;
+  --raised-box-shadow: 0 1.6px 3.6px 0 rgba(255, 255, 255, 0.132),
+    0 0.3px 0.9px 0 rgba(255, 255, 255, 0.108);
+  --sidebar-background-color: #{$ts-dark-bg-secondary};
+  --sidebar-list-active-background-color: #{$ts-dark-barely-blue-highlight};
+  --sidebar-list-background-color: rgb(53, 52, 52);
+  --sidebar-link-border-color: #fff;
+  --sidebar-item-border-color: #3e3e3e;
+  --sidebar-active-button-background-color: #{$ts-bg-selection-grey};
+  --playground-divider: #{$ts-light-bg-grey-highlight-color};
+  --playground-dropdown-bg: #{$ts-dark-bg-for-foreground-color};
+  --playground-dropdown-shadow: 0 6px 12px rgba(148, 148, 148, 0.175);
+  --playground-dropdown-border: black;
+  --playground-toolbar-hover-bg: #{$ts-dark-bg-color};
+  --playground-dragbar-bg: #{$ts-dark-barely-blue-highlight};
+  --playground-dragbar-border: white;
+  --playground-pre-color: white;
+  --table-border-color: #545454;
+  --playground-pre-bg: #1e1e1e;
+  --blue-tinged-bg: #2c3841;
+  --blue-tinged-strong: #273f52;
+  --footer-arrow-color: $ts-light-bg-grey-highlight-color;
+  --fade-gradient: linear-gradient(
+    0deg,
+    rgba(49, 49, 49, 1) 0%,
+    rgba(49, 49, 49, 0.2) 100%
+  );
+}
+
+html,
+html.light-theme {
+  // light theme
+  --background-color: #{$ts-light-bg-sandy-color};
+  --pure-background: white;
+  --text-color: #333;
+  --border-color: #eee;
+  --background-minor-highlight-color: #fcfcfc;
+  --inline-code-background-color: rgb(241, 241, 254);
+  --link-color: #{$ts-main-blue-darker-color};
+  --raised-background-color: #fff;
+  --alt-text-color: #000;
+  --raised-box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.132),
+    0 0.3px 0.9px 0 rgba(0, 0, 0, 0.108);
+  --sidebar-background-color: #{$ts-light-bg-grey};
+  --sidebar-list-active-background-color: #{$ts-barely-blue-highlight};
+  --sidebar-list-background-color: #e4e4e4;
+  --sidebar-link-border-color: #000;
+  --sidebar-item-border-color: #dfdfdf;
+  --sidebar-active-button-background-color: #dfdfdf;
+  --playground-divider: #{$ts-bg-selection-grey};
+  --playground-dropdown-bg: white;
+  --playground-dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  --playground-dropdown-border: #{$ts-light-bg-grey-highlight-color};
+  --playground-toolbar-hover-bg: #{$ts-light-bg-grey-highlight-color};
+  --playground-dragbar-bg: white;
+  --playground-dragbar-border: #c4c4c4;
+  --playground-pre-color: black;
+  --playground-pre-bg: #f7f7f7;
+  --footer-arrow-color: $ts-dark-bg-for-foreground-color;
+  --table-border-color: #f1f1f1;
+  --blue-tinged-bg: #e6f2fb;
+  --blue-tinged-strong: #cce4f6;
+  --fade-gradient: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+html {
+  --code-font: "Cascadia Mono-SemiLight", Menlo, Monaco, Consolas, monospace;
+  --body-font: "Segoe UI Web (West European)", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+}
+
+// These match the ids from the select in SiteFooter-Customize.tsx
+
+html.font-cascadia-ligatures {
+  --code-font: "Cascadia Code-SemiLight", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-consolas {
+  --code-font: Consolas, monospace;
+}
+
+html.font-dank-mono {
+  --code-font: "Dank Mono Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-jetbrains-mono {
+  --code-font: "JetBrains Mono-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-fira-code {
+  --code-font: "FiraCode-Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-sf-mono {
+  --code-font: "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-source-code-pro {
+  --code-font: "SourceCode Pro Regular", Menlo, Monaco, Consolas, monospace;
+}
+
+html.font-open-dyslexic {
+  --code-font: "OpenDyslexicMono Regular", Menlo, Monaco, Consolas, monospace;
+  --body-font: "OpenDyslexic Regular", "Segoe UI Web (West European)",
+    "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue",
+    sans-serif;
+}
+
+.raised {
+  box-shadow: var(--raised-box-shadow);
+  background-color: var(--raised-background-color);
+  color: var(--alt-text-color);
+
+  a {
+    color: var(--link-color);
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: normal;
+  }
+
+  p,
+  li {
+    line-height: 1.4rem;
+  }
+
+  ul {
+    padding-left: 10px;
+    li {
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  h1 > code,
+  h2 > code,
+  h3 > code {
+    background-color: var(--inline-code-background-color);
+    font-size: 0.95em;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    padding: 2px 4px;
+  }
+
+  p > code,
+  li > code {
+    background-color: var(--inline-code-background-color);
+    font-family: $font-code;
+    font-size: 0.9rem;
+    padding: 2px 4px;
+  }
+
+  td {
+    padding: 4px;
+  }
+}
+
+// Style the permalink icon in dark colour-scheme
+.dark-theme .raised .markdown .anchor.before svg path {
+  fill: #fff;
+}
+
+h2,
+h3 {
+  font-weight: 400;
+}
+
+.main-content-block {
+  max-width: 960px;
+  margin: 1rem auto;
+  padding: 2rem;
+  padding-top: 0.4rem;
+
+  &.headline {
+    max-width: calc(960px + 4rem);
+  }
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+html,
+#___gatsby {
+  height: 100%;
+}
+
+#site-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.dark-theme {
+  color-scheme: dark;
+}

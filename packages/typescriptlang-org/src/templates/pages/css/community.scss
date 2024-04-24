@@ -1,0 +1,148 @@
+@import "./grid.scss";
+
+.community {
+  padding: 0;
+
+  &.centered {
+    text-align: center;
+    h2 {
+      margin-top: 120px;
+    }
+  }
+
+  .sidebar {
+    background-color: rgba(204, 207, 233, 0.1);
+  }
+
+  .next-steps-container {
+    background-color: white;
+  }
+
+  .banner-text {
+    margin-top: 20px;
+  }
+
+  .callouts {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+
+    .callout {
+      @media (max-width: $screen-sm) {
+        width: 90%;
+      }
+      margin-top: 20px;
+      margin-bottom: 10px;
+      width: 48%;
+      display: flex;
+      line-height: 1.4rem;
+    }
+
+    h3 {
+      padding: 0;
+      margin: 0;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .icon {
+      height: 5rem;
+      width: 5rem;
+      min-width: 5rem;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: auto 3.2rem;
+      display: block;
+      -webkit-transition: background-color 0.2s ease-out;
+      transition: background-color 0.2s ease-out;
+      margin: 20px;
+      margin-top: 0;
+
+      @media screen and (-ms-high-contrast: active) {
+        -ms-high-contrast-adjust: none;
+      }
+
+      &.high-contrast-only {
+        font-size: 1.8rem;
+      }
+
+      &.img-circle {
+        border-radius: 50%;
+      }
+
+      &.discord {
+        background-image: url("../../../assets/community/connect-discord.svg");
+        background-color: #7289da;
+      }
+
+      &.stackoverflow {
+        background-image: url("../../../assets/community/connect-stackoverflow-icon.svg");
+        background-color: #5016d9;
+      }
+
+      &.blog {
+        background-image: url("../../../assets/community/connect-blog-icon.svg");
+        background-color: #d9a216;
+      }
+
+      &.uservoice {
+        background-image: url("../../../assets/community/connect-uservoice-icon.svg");
+        background-color: #1a2833;
+      }
+
+      &.twitter {
+        background-image: url("../../../assets/community/connect-twitter-icon.svg");
+        background-color: #00a0d1;
+      }
+
+      &.definitelytyped {
+        background-image: url("../../../assets/community/definitely_typed_logo.png");
+        background-color: #0077d2;
+      }
+
+      &.bug {
+        background-image: url("../../../assets/community/connect-github-icon.png");
+        background-color: lighten(black, 30%);
+      }
+    }
+  }
+
+  .community-callout-headline {
+    margin-top: 0;
+  }
+
+  h3.centered-highlight {
+    background-color: rgba(204, 207, 233, 0.1);
+    text-align: center;
+    padding: 20px 20px;
+  }
+  .upcoming-event {
+    min-width: 330px;
+    img {
+      width: 50px;
+    }
+
+    .event-info {
+      position: relative;
+    }
+    .meetup-text {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-bottom: 20px;
+    }
+
+    .meetup-gradient {
+      height: 30px;
+      width: 100%;
+      position: absolute;
+      top: 290px;
+
+      background: var(--raised-background-color);
+      background: var(--fade-gradient);
+    }
+  }
+
+  .events > h4 {
+    padding-left: 20px;
+  }
+}

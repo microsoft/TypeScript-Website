@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: TypeScript Compiler issues
+    url: https://github.com/microsoft/TypeScript/issues/new/choose
+    about: File TypeScript issues here
+
+  - name: Chat
+    url: "https://discord.gg/typescript"
+    about: Use the TypeScript Community Discord to talk with others about the site

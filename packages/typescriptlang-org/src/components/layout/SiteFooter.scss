@@ -1,0 +1,289 @@
+@import "../../style/globals.scss";
+
+#site-footer {
+  background-color: $ts-main-blue-color;
+  color: white;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+
+  @media (max-width: $screen-sm) {
+    padding-bottom: 9rem;
+  }
+
+  a {
+    color: white;
+  }
+
+  section {
+    max-width: 1040px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0 auto;
+    padding-top: 1rem;
+  }
+
+  h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 1px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+
+    li {
+      width: 13rem;
+      font-weight: 600;
+      list-style: none;
+
+      a {
+        font-size: 16px;
+      }
+
+      p {
+        width: 74%;
+        font-size: 14px;
+        margin-top: 2px;
+      }
+
+      span.link-prefix {
+        position: absolute;
+        left: -30px;
+        width: 26px;
+        text-align: right;
+      }
+    }
+
+    @media (max-width: $screen-sm) {
+      li {
+        margin-left: 10px;
+
+        p {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  section#customize {
+    padding-top: 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+    article {
+      h3 {
+        width: 240px;
+      }
+
+      display: flex;
+      flex-direction: row;
+
+      @media (max-width: $screen-sm) {
+        flex-direction: column;
+        margin-bottom: 1rem;
+
+        label {
+          margin-left: 8px;
+        }
+      }
+
+      label {
+        display: flex;
+        flex-direction: row;
+
+        p {
+          margin: 0;
+          padding: 0;
+          margin-top: 6px;
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .switch-wrap {
+      height: 20px;
+      padding: 5px;
+      display: inline-block;
+      margin-right: 1rem;
+
+      select {
+        background-color: $ts-main-blue-darkest-color;
+        color: white;
+      }
+    }
+  }
+
+  section#community {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 2rem;
+    display: flex;
+
+    @media (max-width: $screen-sm) {
+      flex-direction: column-reverse;
+
+      article#logos {
+        text-align: center;
+        margin: 0 auto;
+        margin-top: 3rem;
+      }
+    }
+
+    article>ul {
+      display: flex;
+      flex-wrap: wrap;
+
+      >li {
+        @media (min-width: $screen-sm) {
+          width: 50%;
+        }
+
+        margin-bottom: 0.8rem;
+        word-break: break-all;
+      }
+    }
+
+    #logos {
+      width: 200px;
+      margin-right: 40px;
+
+      svg {
+        margin-bottom: -0.8rem;
+      }
+
+      @media screen and (-ms-high-contrast: black-on-white) {
+        img {
+          filter: invert(100%);
+        }
+
+        svg path {
+          fill: black;
+        }
+      }
+
+      // Fine tuning the positioning of the long-form TS logo
+      svg.typescript-long {
+        margin-left: 8px;
+        position: relative;
+        top: 2px;
+      }
+
+      img#microsoft-logo {
+        margin-top: 1rem;
+        margin-bottom: -0.8rem;
+      }
+    }
+
+    #using-typescript {
+      flex: 1;
+    }
+
+    #community-links {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: $screen-sm) {
+
+  // This was sneakily making site wider than
+  // the viewport because it uses opacity which affects layout
+  #playground-samples-popover {
+    display: none;
+  }
+
+  #community-links ul,
+  #using-typescript ul {
+    margin-left: 12px;
+  }
+}
+
+// This is the li which the popover lives within
+.popover-container {
+  position: relative;
+
+  .examples {
+    overflow-y: auto;
+
+    >div.section-content .section-list {
+      width: 300px;
+    }
+  }
+
+  // this class is added by JS at runtime if the window is over 900 px width
+  &.allow-hover {
+    #playground-samples-popover {
+      bottom: -10px;
+      opacity: 0;
+    }
+
+    &:hover #playground-samples-popover {
+      visibility: visible;
+      bottom: -5px;
+      opacity: 1;
+    }
+
+    &:hover .footer-icon:after {
+      content: "▼";
+    }
+  }
+
+  .footer-icon:after {
+    content: "⊙";
+  }
+}
+
+#playground-samples-popover {
+  position: absolute;
+  bottom: 0px;
+  left: -252px;
+  right: -320px;
+  margin: 0 auto;
+  visibility: hidden;
+  transition: bottom 0.3s ease, opacity 0.2s linear, visibility 0s linear;
+  opacity: 1;
+  z-index: 123;
+  color: black;
+
+  .section-content {
+    display: flex;
+
+    .section-list li {
+      margin-top: 4px;
+    }
+
+    .example-indicator {
+      margin-top: 0rem;
+    }
+  }
+
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 14px solid var(--footer-arrow-color);
+
+    margin: 0 auto;
+    margin-bottom: 20px;
+    position: relative;
+    right: 179px;
+  }
+
+  .navbar-sub {
+    div.info {
+      color: black;
+      padding: 20px;
+      width: 320px;
+    }
+
+    border-bottom: 1px solid $ts-main-blue-darker-color;
+    border-radius: 0;
+  }
+
+  a {
+    color: $ts-main-blue-color;
+    text-decoration: none;
+  }
+}

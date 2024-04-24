@@ -1,0 +1,10 @@
+
+## Errors were thrown in the sample, but not included in an errors tag
+
+These errors were not marked as being expected: 2588. 
+Expected: // @errors: 2588
+
+Compiler Errors:
+
+index.ts
+  [2588] 98 - Cannot assign to 'myVariable' because it is a constant.

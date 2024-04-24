@@ -1,0 +1,408 @@
+@import "../../style/globals.scss";
+
+#site-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#top-menu {
+  background-color: $ts-main-blue-color;
+
+  user-select: none;
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+  z-index: 101;
+
+  > {
+    .left {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .right {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-self: flex-end;
+    }
+  }
+
+  .nav {
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  #home-page-logo {
+    width: 200px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding-top: 0.7rem;
+
+    @media screen and (-ms-high-contrast: active) {
+      svg path {
+        fill: blue;
+      }
+    }
+
+    svg {
+      margin-right: 0.6rem;
+      margin-left: 1rem;
+    }
+
+    span {
+      position: relative;
+      margin-right: 0.2rem;
+      top: -0.3rem;
+      text-decoration: none;
+    }
+  }
+
+  .nav-item {
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+
+    display: inline-block;
+
+    a {
+      display: block;
+      padding: 0.95rem 0.5em 0.7em;
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.active,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+}
+
+#beta-notification-menu,
+.gatsby-noscript {
+  background-color: $ts-muted-red;
+  text-align: center;
+  color: white;
+  padding: 0.4rem 0;
+  user-select: none;
+
+  a {
+    color: white;
+  }
+}
+
+/* This juts out of the left a bit */
+
+form.search {
+  height: 3rem;
+  background-color: $ts-main-blue-darker-color;
+  border-radius: 3px 0px 0px 3px;
+
+  padding-left: 1rem;
+  display: inline-block;
+
+  svg {
+    position: relative;
+    top: 0.1rem;
+    margin-right: 0.3rem;
+  }
+
+  @media screen and (-ms-high-contrast: black-on-white) {
+    svg path {
+      fill: black;
+    }
+  }
+
+  &:focus-within {
+    background-color: $ts-main-blue-lighter-color;
+    @media screen and (-ms-high-contrast: black-on-white) {
+      border: 2px solid white;
+    }
+    @media screen and (-ms-high-contrast: white-on-black) {
+      border: 2px solid black;
+    }
+  }
+
+  input {
+    width: 150px;
+
+    &:focus-within {
+      background-color: $ts-main-blue-lighter-color;
+    }
+    -webkit-appearance: none;
+    background-color: $ts-main-blue-darker-color;
+
+    border-color: #152740;
+    border-radius: 0;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    height: 3rem;
+
+    /*  Algolia sets this to "top" at runtime which breaks the layout */
+    vertical-align: initial !important;
+
+    &::placeholder {
+      color: white;
+    }
+  }
+}
+
+#like-dislike-subnav,
+.page-popup {
+  transition: opacity 0.2s linear;
+}
+
+.page-popup {
+  z-index: 2;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  color: white;
+  background: #222;
+  border-radius: 5px;
+  box-shadow: 0 1.6px 3.6px 0 rgba(0, 0, 0, 0.432),
+    0 0.3px 0.9px 0 rgba(0, 0, 0, 0.408);
+
+  border-radius: 4px;
+
+  p {
+    padding: 0 10px;
+    font-size: 14px;
+  }
+  div {
+    display: flex;
+    button {
+      flex: 1;
+      flex-grow: 1;
+      background-color: $ts-main-blue-darker-color;
+      color: white;
+      border: none;
+      border-radius: 0;
+
+      &:hover,
+      &.focus {
+        background-color: #104261;
+      }
+
+      &.first {
+        border-right: white 1px solid;
+      }
+    }
+  }
+  svg {
+    fill: white;
+  }
+}
+
+// Avoid using these for other things, but it's a useful bit for when you need to have text content that changes. This
+// can make it a bit tricky with localization for something like german in the future though!
+//
+#top-menu nav ul {
+  .show-only-medium {
+    display: none;
+  }
+
+  .hide-only-medium {
+    display: inline;
+  }
+
+  .show-only-small {
+    display: none;
+  }
+
+  .show-only-largest {
+    display: none;
+  }
+
+  @media (max-width: $screen-sm) {
+    .show-only-small {
+      display: block !important;
+    }
+    .show-small {
+      display: inline !important;
+    }
+    .hide-only-medium {
+      display: none;
+    }
+    .show-only-large {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 767px) and (max-width: $screen-md) {
+    .show-only-medium {
+      display: inline !important;
+    }
+
+    .hide-only-medium {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: $screen-md) {
+    .show-only-large {
+      display: inline-block !important;
+    }
+  }
+
+  @media (min-width: 1050px) {
+    .show-only-largest {
+      display: inline-block !important;
+    }
+  }
+}
+
+/*  Mobile support  */
+@media (max-width: 790px) {
+  /* Move the nav to the bottom */
+  #site-wrapper {
+    margin-bottom: -1px;
+  }
+
+  /* Support hiding elements from small */
+  .hide-small,
+  #my-lang-quick-jump {
+    display: none !important;
+  }
+
+  /* Switch from left/right to above and below */
+  #top-menu {
+    display: flex;
+    flex-direction: column-reverse;
+    height: auto;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+
+    /* Makes search elements full width */
+    .nav-item {
+      display: block;
+    }
+
+    /* The position of the menu when not hidden (and default) */
+    &.up {
+      /* How long to get back up */
+      transition-timing-function: ease;
+      transition: transform 0.3s;
+      transform: translate(0, 0);
+    }
+
+    &.down {
+      /* How long to scroll down */
+      transition-timing-function: ease;
+      transition: transform 0.6s;
+      transform: translate(0, 8.2rem);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &.up,
+      &.down {
+        transition: none;
+      }
+    }
+
+    /* Because 'TypeScript' is removed, let the width be auto */
+    #home-page-logo {
+      width: auto;
+    }
+
+    /* Simplify the nav to a few buttons and home */
+    .below-small nav {
+      flex-grow: 1;
+
+      ul {
+        display: flex;
+
+        li {
+          flex: 1;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .above-small {
+    /* Make search full length */
+    .search-section {
+      width: 100%;
+    }
+
+    /* Make search input reach the end */
+    form.search {
+      width: calc(100% - 1rem);
+      display: flex;
+
+      svg {
+        // width: 2.5rem;
+        position: relative;
+        top: 1rem;
+      }
+
+      input {
+        width: calc(200%);
+      }
+    }
+  }
+
+  /* Override search UI for mobile */
+
+  #top-menu .ds-dropdown-menu {
+    top: initial !important;
+    left: 0px !important;
+    right: -180px !important;
+    bottom: 140%;
+    min-width: 0;
+    margin-left: -34px;
+
+    /* Make the triangle point to the right place */
+    &:before {
+      top: auto;
+      left: 40px;
+      bottom: -7px;
+      transform: rotate(135deg);
+    }
+  }
+}
+
+.skip-to-main {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.skip-to-main:focus {
+  clip: auto;
+  height: auto;
+  overflow: auto;
+  position: absolute;
+  width: 100%;
+  background-color: $ts-light-bg-sandy-color;
+  color: black;
+  text-align: center;
+  padding: 20px;
+  z-index: 999999;
+}
+
+.skip-to-main:focus {
+  border: 1px dashed black;
+}

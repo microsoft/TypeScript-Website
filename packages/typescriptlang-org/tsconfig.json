@@ -1,0 +1,16 @@
+{
+  "include": ["./src/**/*"],
+  "exclude": ["./src/components/index/twoslash/**.*"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "es2017"],
+    "strict": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "jsx": "react",
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true
+  }
+}

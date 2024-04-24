@@ -1,0 +1,163 @@
+@import "../../../style/globals.scss";
+
+.flow-links {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.clicky-grey-button {
+  width: 16rem;
+  height: 10rem;
+  background-color: #d8d8d8;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  color: black;
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column-reverse;
+
+  // For the badge
+  position: relative;
+  text-decoration: none;
+
+  &.white-theme {
+    background-color: white;
+    border: 1px black solid;
+
+    &:hover {
+      background-color: $ts-light-bg-grey;
+    }
+
+    &:active {
+      background-color: $ts-light-bg-grey-highlight-color;
+      margin-bottom: 19px;
+    }
+  }
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 1px solid grey;
+
+    svg path {
+      fill: white;
+    }
+  }
+
+  &.headline {
+    width: 300px;
+    height: 200px;
+  }
+
+  &.links {
+    height: 26rem;
+  }
+
+  &:hover,
+  &.focus {
+    background-color: #ccc;
+  }
+
+  &:active {
+    background-color: #ddd;
+  }
+
+  p {
+    color: black;
+  }
+
+  div {
+    color: black;
+    text-decoration: none;
+    font-size: 1.6rem;
+    font-weight: normal;
+    margin-bottom: 0.2rem;
+    line-height: 1.6rem;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .badge {
+    position: absolute;
+    background-color: #666;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+.columns {
+  // 2 for the container, 0.6 for the item
+  margin: 0 -2.6rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  &.wide {
+    justify-content: space-between;
+
+    .item {
+      min-width: 240px;
+    }
+  }
+
+  .item {
+    flex: 1;
+    margin: 0.6rem;
+    padding: 1rem;
+
+    h4 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding: 0;
+
+      ul {
+        margin-left: 0.5rem;
+      }
+    }
+
+    li {
+      list-style: none;
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: $screen-sm) {
+    flex-direction: column;
+    margin: 0;
+  }
+}
+
+div#like-dislike-subnav {
+  div {
+    font-size: 14px;
+    padding-top: 16px;
+    padding-left: 4px;
+
+    button {
+      border: none;
+      background: none;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      color: var(--text-color);
+
+      svg {
+        margin-right: 4px;
+        fill: var(--text-color);
+        color: var(--text-color);
+      }
+    }
+  }
+}

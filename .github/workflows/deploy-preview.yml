@@ -1,0 +1,142 @@
+name: Deploy preview environment
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        required: true
+        type: string
+        description: PR number
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR/workflow run info
+        id: get-info
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let pr;
+            let workflowRun;
+            let isLabel = false;
+            switch (context.eventName) {
+              case "workflow_dispatch":
+                pr = (await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: +context.payload.inputs.pr,
+                })).data;
+                break;
+              case "pull_request_target":
+                pr = context.payload.pull_request;
+                break;
+              case "workflow_run":
+                workflowRun = context.payload.workflow_run;
+                pr = workflowRun.pull_requests[0];
+                if (pr) {
+                  // Reload the PR to get the labels.
+                  pr = (await github.rest.pulls.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: pr.number,
+                  })).data;
+                } else {
+                  // PRs sent from forks do not get the pull_requests field set.
+                  // https://github.com/orgs/community/discussions/25220
+                  pr = (await github.rest.pulls.list({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    head: workflowRun.head_sha,
+                    per_page: 1,
+                  })).data[0];
+                }
+            }
+
+            if (!pr) {
+              throw new Error("Could not find PR");
+            }
+
+            if (!pr.labels.some((label) => label.name === "deploy-preview")) {
+              console.log(`PR ${pr.number} does not have the deploy-preview label`);
+              return null;
+            }
+
+            if (!workflowRun) {
+              try {
+                workflowRun = (await github.rest.actions.listWorkflowRuns({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: "CI.yml",
+                  head_sha: pr.head.sha,
+                  per_page: 1,
+                })).data.workflow_runs[0];
+              } catch (e) {
+                console.log(e);
+              }
+            }
+
+            if (!workflowRun) {
+              console.log(`Could not find workflow run for PR ${pr.number}`);
+              return null;
+            }
+
+            console.log(`Found workflow run ${workflowRun.html_url}`)
+
+            if (workflowRun.conclusion !== "success") {
+              console.log(`Workflow run did not succeed`);
+              return null;
+            }
+
+            const result = { pr: pr.number, runId: workflowRun.id };
+            console.log(result);
+            return result;
+
+      - name: Download site build from PR
+        if: ${{ steps.get-info.outputs.result != 'null' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ fromJson(steps.get-info.outputs.result).runId }}
+
+      - name: Deploy
+        id: deploy
+        if: ${{ steps.get-info.outputs.result != 'null' }}
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "site"
+          skip_app_build: true
+          production_branch: v2
+          deployment_environment: ${{ fromJson(steps.get-info.outputs.result).pr }}
+
+      - name: Comment on PR
+        # azure/static-web-apps-deploy seems to comment itself when the event is pull_request_target
+        if: ${{ steps.get-info.outputs.result != 'null' && github.event_name != 'pull_request_target' }}
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ fromJson(steps.get-info.outputs.result).pr }}
+          SITE_URL: ${{ steps.deploy.outputs.static_web_app_url }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: process.env.PR_NUMBER,
+              body: `Azure Static Web Apps: Your stage site is ready! Visit it here: ${process.env.SITE_URL}`
+            });

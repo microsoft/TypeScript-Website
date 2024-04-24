@@ -1,0 +1,11 @@
+{
+  "name": "playground-examples",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "scripts": {
+    "bootstrap": "yarn build",
+    "build": "node scripts/generateTOC.js && node scripts/copyFiles.js",
+    "test": "echo 'NOOP'"
+  }
+}

@@ -1,0 +1,45 @@
+@import "../../../style/globals.scss";
+
+.row,
+.split-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.split-row {
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+
+  .first {
+    margin-left: 0;
+  }
+}
+
+.col1 {
+  min-width: 250px;
+  flex: 1;
+
+  padding: 1rem;
+}
+
+.col2 {
+  flex: 2;
+}
+
+.col1 {
+  &.first {
+    margin-left: 20px;
+  }
+
+  &.last {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: $screen-sm) {
+  // from left to right -> top to down
+  .container > .row {
+    flex-direction: column;
+  }
+}

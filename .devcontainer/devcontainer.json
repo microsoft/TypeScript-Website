@@ -1,0 +1,14 @@
+{
+  "name": "TypeScript Website codespace",
+  "dockerFile": "Dockerfile",
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+
+  "forwardPorts": [8000],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "sudo yarn install && sudo yarn bootstrap && yarn start"
+}

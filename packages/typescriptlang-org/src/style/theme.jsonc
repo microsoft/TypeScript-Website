@@ -1,0 +1,25 @@
+// https://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/theming-designer/index.html
+{
+  "themePrimary": "#187ABF",
+  "themeLighterAlt": "#f4f9fc",
+  "themeLighter": "#d3e7f5",
+  "themeLight": "#aed2ec",
+  "themeTertiary": "#68aad9",
+  "themeSecondary": "#2f87c7",
+  "themeDarkAlt": "#166eac",
+  "themeDark": "#135d91",
+  "themeDarker": "#0e446b",
+  "neutralLighterAlt": "#f8f8f8",
+  "neutralLighter": "#f4f4f4",
+  "neutralLight": "#eaeaea",
+  "neutralQuaternaryAlt": "#dadada",
+  "neutralQuaternary": "#d0d0d0",
+  "neutralTertiaryAlt": "#c8c8c8",
+  "neutralTertiary": "#bab8b7",
+  "neutralSecondary": "#a3a2a0",
+  "neutralPrimaryAlt": "#8d8b8a",
+  "neutralPrimary": "#323130",
+  "neutralDark": "#605e5d",
+  "black": "#494847",
+  "white": "#ffffff"
+}

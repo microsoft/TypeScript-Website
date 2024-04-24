@@ -1,0 +1,9 @@
+{
+  "code": "var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {\n    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;\n    if (typeof Reflect === \"object\" && typeof Reflect.decorate === \"function\") r = Reflect.decorate(decorators, target, key, desc);\n    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;\n    return c > 3 && r && Object.defineProperty(target, key, r), r;\n};\nvar __metadata = (this && this.__metadata) || function (k, v) {\n    if (typeof Reflect === \"object\" && typeof Reflect.metadata === \"function\") return Reflect.metadata(k, v);\n};\nlet MyComponent = class MyComponent {\n    constructor(Service) {\n        this.Service = Service;\n    }\n    method(x) { }\n};\n__decorate([\n    decorator,\n    __metadata(\"design:type\", Function),\n    __metadata(\"design:paramtypes\", [Object]),\n    __metadata(\"design:returntype\", void 0)\n], MyComponent.prototype, \"method\", null);\nMyComponent = __decorate([\n    decorator,\n    __metadata(\"design:paramtypes\", [Service])\n], MyComponent);\nexport {};\n",
+  "extension": "js",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEFMFsEsBcAikDGB7ATgQ3pgspPFgCY5YBQIEkAHgA6QazSQB2RANsutrhgM6Uw4fgAs0AdwCiceEIgAzWBzZYWALlD9GAN1gpIAOniDadTPFAoOWfv1ABlXfsigA3gF9y88EpWs1SE1YVmJaY0FmcwxLeABPBndHZwNQD1AFDDRoUAAiQ2BtDD0DXO8w6ywMVx0q0ArMHExNLFY473AG3kxySrtQPDiAYWzzVjZLN3JQKzRWfngMAFcUPgAKOiWAIw59ZOKXTScDgwBKdy9piC6mjCuWeHFiNZpNR9h+c89yLyA"
+}

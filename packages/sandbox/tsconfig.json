@@ -1,0 +1,19 @@
+{
+  "include": ["src", "src/vendor/lzstring.min.js"],
+
+  "compilerOptions": {
+    "outDir": "../typescriptlang-org/static/js/sandbox",
+    "target": "ES2016",
+    "module": "AMD",
+    "lib": ["DOM", "esnext"],
+    "declaration": true,
+    "inlineSources": true,
+    "inlineSourceMap": true,
+    "rootDir": "./src",
+    "strict": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}

@@ -1,0 +1,130 @@
+@import "../style/globals.scss";
+
+// This is the visual aspect of the popover ( the white bit )
+// the non-visible layout is above in #playground-samples-popover
+.examples {
+  background-color: var(--playground-dropdown-bg);
+  color: var(--text-color);
+
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  height: 450px;
+
+  a {
+    color: var(--link-color);
+  }
+
+  button.section-name {
+    font-size: 2rem;
+    font-weight: 600;
+
+    height: 2.8rem;
+    text-decoration: none;
+    border-bottom: none;
+    padding-bottom: 0.05rem;
+    margin-top: 0;
+    padding-top: 0;
+    margin-right: 1rem;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+  }
+
+  button.section-name.selected {
+    border-bottom: $ts-main-blue-color 2px solid;
+  }
+
+  // The titles of the sections
+  >ol {
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+      padding: 0;
+      margin-bottom: 20px;
+      width: auto;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  ol {
+    list-style: none;
+    padding-right: 20px;
+    padding-left: 0;
+  }
+
+  >div.section-content {
+    flex-wrap: wrap;
+    display: flex;
+
+    >p>a {
+      display: inline-block;
+      color: $ts-main-blue-color;
+      padding: 0;
+    }
+
+    // Each smaller section inside the largest subsection
+    .section-list {
+      display: flex;
+      flex-direction: column;
+      width: 280px;
+      margin-top: 1.5em;
+
+      h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        margin-bottom: 8px;
+      }
+
+      ol {
+        li {
+          padding: 0;
+          margin: 0;
+          position: relative;
+          width: auto !important;
+
+          .section-list a {
+            display: block;
+            padding: 4px;
+            padding-left: 10px;
+            margin-left: -8px;
+            text-decoration: none;
+            border-bottom: none;
+            font-size: 14px;
+
+            &:hover {
+              color: black;
+            }
+
+            &.highlight {
+              border-left: $ts-main-blue-darker-color 2px solid;
+              padding-left: 8px;
+            }
+          }
+
+          .example-indicator {
+            position: absolute;
+            right: 0.8rem;
+            top: 0.75rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 0.5rem;
+            margin-top: 0.3rem;
+
+            &.done {
+              background-color: $ts-main-blue-darker-color;
+            }
+
+            &.changed {
+              border: $ts-main-blue-darker-color 1px solid;
+            }
+          }
+        }
+      }
+    }
+  }
+}

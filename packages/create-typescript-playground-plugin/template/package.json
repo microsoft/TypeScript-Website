@@ -1,0 +1,40 @@
+{
+  "name": "typescript-playground-plugin",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "description": "My playground plugin",
+  "license": "MIT",
+  "keywords": [
+    "playground-plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[you]/[repo]"
+  },
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "compile": "tsc",
+    "bootstrap": "node scripts/getDTS.js",
+    "start": "concurrently -p \"[{name}]\" -n \"ROLLUP,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn rollup -c rollup.config.js --watch\" \"yarn serve dist\"",
+    "prepublish": "yarn build",
+    "postinstall": "yarn bootstrap && yarn build"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.0",
+    "@rollup/plugin-typescript": "^3.0.0",
+    "@types/react": "^16.9.23",
+    "concurrently": "^5.1.0",
+    "monaco-editor": "^0.32.1",
+    "node-fetch": "^2.6.0",
+    "rollup": "^1.31.0",
+    "serve": "^11.3.0",
+    "typescript": "latest",
+    "lz-string": "^1.4.4",
+    "@types/lz-string": "^1.3.34"
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
+  }
+}

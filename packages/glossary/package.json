@@ -1,0 +1,21 @@
+{
+  "name": "glossary",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "generate-markdown": "yarn ts-node --project tsconfig.json scripts/generateMarkdown.ts ",
+    "build": "yarn generate-markdown",
+    "test": "yarn build && yarn lint",
+    "lint": "node scripts/lint.js"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": true
+  },
+  "devDependencies": {
+    "remark": "^11.0.2",
+    "remark-html": "^10.0.0",
+    "ts-node": "*"
+  }
+}

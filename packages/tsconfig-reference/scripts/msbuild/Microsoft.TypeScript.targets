@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+***********************************************************************************************
+Microsoft.TypeScript.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your web deploy projects from the command-line or the IDE.
+
+This file defines the steps in the standard build process for TypeScript files.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TSCompilerOutputLogDirectory Condition=" '$(TSCompilerOutputLogDirectory)' == '' And '$(IntermediateOutputPath)' != ''">$(IntermediateOutputPath)</TSCompilerOutputLogDirectory>
+    <TSCompilerOutputLogDirectory Condition=" '$(TSCompilerOutputLogDirectory)' == '' And '$(IntermediateOutputPath)' == ''">$(MSBuildProjectDirectory)\obj\</TSCompilerOutputLogDirectory>
+    <TSDefaultOutputLog>$(TSCompilerOutputLogDirectory)Tsc.out</TSDefaultOutputLog>
+    <TypeScriptProjectDir Condition=" '$(TypeScriptProjectDir)' == ''">$(MSBuildProjectDirectory)\</TypeScriptProjectDir>
+    <!-- TypeScriptTaskAssembly will be set if used NuGet pkg -->
+    <TypeScriptTaskAssembly Condition="'$(TypeScriptTaskAssembly)' == ''">$(MSBuildThisFileDirectory)TypeScript.Tasks.dll</TypeScriptTaskAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="TypeScript.Tasks.VsTsc" AssemblyFile="$(TypeScriptTaskAssembly)" />
+  <UsingTask TaskName="TypeScript.Tasks.FindConfigFiles" AssemblyFile="$(TypeScriptTaskAssembly)" />
+  <UsingTask TaskName="TypeScript.Tasks.CheckFileSystemCaseSensitive" AssemblyFile="$(TypeScriptTaskAssembly)" />
+  <UsingTask TaskName="TypeScript.Tasks.FormatLocalizedString" AssemblyFile="$(TypeScriptTaskAssembly)" />
+  <UsingTask TaskName="TypeScript.Tasks.GenerateOutputLogs" AssemblyFile="$(TypeScriptTaskAssembly)" />
+
+  <PropertyGroup>
+    <CompileTypeScriptDependsOn>
+      $(CompileTypeScriptDependsOn);
+      PreComputeCompileTypeScript;
+      PreComputeCompileTypeScriptWithTSConfig;
+    </CompileTypeScriptDependsOn>
+    <CompileTypeScriptBeforeTargets>
+      $(CompileTypeScriptBeforeTargets)
+    </CompileTypeScriptBeforeTargets>
+    <CompileTypeScriptAfterTargets>
+      $(CompileTypeScriptAfterTargets)
+    </CompileTypeScriptAfterTargets>
+    <CompileDependsOn>
+      CheckFileSystemCaseSensitive;
+      FindConfigFiles;
+      TypeScriptDeleteOutputFromOtherConfigs;
+      CompileTypeScript;
+      CompileTypeScriptWithTSConfig;
+      GetTypeScriptOutputForPublishing;
+      $(CompileDependsOn);
+    </CompileDependsOn>
+    <PublishPipelineCollectFilesCore>
+      $(PublishPipelineCollectFilesCore);
+      FindConfigFiles;
+      CompileTypeScript;
+      CompileTypeScriptWithTSConfig;
+      GetTypeScriptOutputForPublishing;
+    </PublishPipelineCollectFilesCore>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CheckFileSystemCaseSensitive;
+      FindConfigFiles;
+      TypeScriptDeleteCompilerOutput;
+      TypeScriptBuildModeClean;
+    </CleanDependsOn>
+    <BuiltProjectOutputGroupDependsOn>
+      CheckFileSystemCaseSensitive;
+      FindConfigFiles;
+      CompileTypeScript;
+      CompileTypeScriptWithTSConfig;
+      GetTypeScriptOutputForPublishing;
+      $(BuiltProjectOutputGroupDependsOn);
+    </BuiltProjectOutputGroupDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GetCopyToOutputDirectoryItemsDependsOn>
+      $(GetCopyToOutputDirectoryItemsDependsOn);
+      GetTypeScriptCopyToOutputDirectoryItems;
+    </GetCopyToOutputDirectoryItemsDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CfgPropertyPagesGuidsAddCSharp>{d4683cae-88c4-4b85-863d-ac8014f3ba36}</CfgPropertyPagesGuidsAddCSharp>
+    <CfgPropertyPagesGuidsAddVB>{d4683cae-88c4-4b85-863d-ac8014f3ba36}</CfgPropertyPagesGuidsAddVB>
+    <CfgPropertyPagesGuidsAddTypeScript>{d4683cae-88c4-4b85-863d-ac8014f3ba36}</CfgPropertyPagesGuidsAddTypeScript>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Indicates to the language service that this project supports TypeScript -->
+    <TypeScriptEnabled>true</TypeScriptEnabled>
+
+    <!-- Makes the TypeScript compilation task a no-op -->
+    <TypeScriptCompileBlocked Condition="'$(TypeScriptCompileBlocked)' == ''">false</TypeScriptCompileBlocked>
+
+    <!-- Controls Compile-on-Save in the IDE -->
+    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptCompileOnSaveEnabled)' == '' AND '$(TypeScriptCompileBlocked)' == 'true'">false</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptCompileOnSaveEnabled)' == ''">true</TypeScriptCompileOnSaveEnabled>
+
+    <!-- Flag to indicate if we need to preserve Jsx constructs, this affects the extension of the output files -->
+    <JsxPreserve>false</JsxPreserve>
+    <JsxPreserve Condition=" '$(TypeScriptJSXEmit)' == 'Preserve' ">true</JsxPreserve>
+
+    <GenerateDeclarationFiles>false</GenerateDeclarationFiles>
+    <GenerateDeclarationFiles Condition="'$(TypeScriptGeneratesDeclarations)' == 'true'">true</GenerateDeclarationFiles>
+
+    <GenerateSourceMaps>false</GenerateSourceMaps>
+    <GenerateSourceMaps Condition="'$(TypeScriptSourceMap)' == 'true'">true</GenerateSourceMaps>
+
+    <!--Variable to add additional flags to invocation of tsc in the presence of a config file-->
+    <TypeScriptConfigFileAdditionalFlags>$(TypeScriptConfigFileAdditionalFlags)</TypeScriptConfigFileAdditionalFlags>
+
+    <!--The TypeScriptEnableIncrementalMSBuild flag allows users to opt out of incremental build behavior-->
+    <EnableTSIncrementalMSBuild>true</EnableTSIncrementalMSBuild>
+    <EnableTSIncrementalMSBuild Condition="'$(TypeScriptEnableIncrementalMSBuild)' == 'false'">false</EnableTSIncrementalMSBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TypeScriptBuildConfigurations)' == ''">
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAdditionalFlags)' != ''">$(TypeScriptBuildConfigurations) $(TypeScriptAdditionalFlags)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAllowJS)' == 'true'">$(TypeScriptBuildConfigurations) --allowJs</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptRemoveComments)' == 'true'">$(TypeScriptBuildConfigurations) --removeComments</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoImplicitAny)' == 'true'">$(TypeScriptBuildConfigurations) --noImplicitAny</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptGeneratesDeclarations)' == 'true'">$(TypeScriptBuildConfigurations) --declaration</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptModuleKind)' != ''">$(TypeScriptBuildConfigurations) --module $(TypeScriptModuleKind)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptJSXEmit)' != '' and '$(TypeScriptJSXEmit)' != 'none'">$(TypeScriptBuildConfigurations) --jsx $(TypeScriptJSXEmit)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutFile)' != ''">$(TypeScriptBuildConfigurations) --out &quot;$(TypeScriptOutFile)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutDir)' != ''">$(TypeScriptBuildConfigurations) --outDir &quot;$(TypeScriptOutDir)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceMap)' == 'true'">$(TypeScriptBuildConfigurations) --sourcemap</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptTarget)' != ''">$(TypeScriptBuildConfigurations) --target $(TypeScriptTarget)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoResolve)' == 'true'">$(TypeScriptBuildConfigurations) --noResolve</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptMapRoot)' != ''">$(TypeScriptBuildConfigurations) --mapRoot &quot;$(TypeScriptMapRoot)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceRoot)' != ''">$(TypeScriptBuildConfigurations) --sourceRoot &quot;$(TypeScriptSourceRoot)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptCodePage)' != ''">$(TypeScriptBuildConfigurations) --codepage $(TypeScriptCodePage)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptCharset)' != ''">$(TypeScriptBuildConfigurations) --charset $(TypeScriptCharset)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptEmitBOM)' == 'true'">$(TypeScriptBuildConfigurations) --emitBOM</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoLib)' == 'true'">$(TypeScriptBuildConfigurations) --noLib</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptPreserveConstEnums)' == 'true'">$(TypeScriptBuildConfigurations) --preserveConstEnums</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSuppressImplicitAnyIndexErrors)' == 'true'">$(TypeScriptBuildConfigurations) --suppressImplicitAnyIndexErrors</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoEmitHelpers)' == 'true'">$(TypeScriptBuildConfigurations) --noEmitHelpers</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptInlineSourceMap)' == 'true'">$(TypeScriptBuildConfigurations) --inlineSourceMap</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptInlineSources)' == 'true'">$(TypeScriptBuildConfigurations) --inlineSources</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNewLine)' != ''">$(TypeScriptBuildConfigurations) --newLine $(TypeScriptNewLine)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptIsolatedModules)' == 'true'">$(TypeScriptBuildConfigurations) --isolatedModules</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptEmitDecoratorMetadata)' == 'true'">$(TypeScriptBuildConfigurations) --emitDecoratorMetadata</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptRootDir)' != ''">$(TypeScriptBuildConfigurations) --rootDir &quot;$(TypeScriptRootDir)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptExperimentalDecorators)' == 'true'">$(TypeScriptBuildConfigurations) --experimentalDecorators</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptModuleResolution)' != ''">$(TypeScriptBuildConfigurations) --moduleResolution $(TypeScriptModuleResolution)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptExperimentalAsyncFunctions)' == 'true'">$(TypeScriptBuildConfigurations) --experimentalAsyncFunctions</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSuppressExcessPropertyErrors)' == 'true'">$(TypeScriptBuildConfigurations) --suppressExcessPropertyErrors</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptReactNamespace)' != ''">$(TypeScriptBuildConfigurations) --reactNamespace $(TypeScriptReactNamespace)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSkipDefaultLibCheck)' == 'true'">$(TypeScriptBuildConfigurations) --skipDefaultLibCheck</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAllowUnusedLabels)' == 'true'">$(TypeScriptBuildConfigurations) --allowUnusedLabels</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoImplicitReturns)' == 'true'">$(TypeScriptBuildConfigurations) --noImplicitReturns</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoFallthroughCasesInSwitch)' == 'true'">$(TypeScriptBuildConfigurations) --noFallthroughCasesInSwitch</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAllowUnreachableCode)' == 'true'">$(TypeScriptBuildConfigurations) --allowUnreachableCode</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptForceConsistentCasingInFileNames)' == 'true'">$(TypeScriptBuildConfigurations) --forceConsistentCasingInFileNames</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAllowSyntheticDefaultImports)' == 'true'">$(TypeScriptBuildConfigurations) --allowSyntheticDefaultImports</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoImplicitUseStrict)' == 'true'">$(TypeScriptBuildConfigurations) --noImplicitUseStrict</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptLib)' != ''">$(TypeScriptBuildConfigurations) --lib $(TypeScriptLib)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptBaseUrl)' != ''">$(TypeScriptBuildConfigurations) --baseUrl &quot;$(TypeScriptBaseUrl)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptDeclarationDir)' != ''">$(TypeScriptBuildConfigurations) --declarationDir &quot;$(TypeScriptDeclarationDir)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoImplicitThis)' == 'true'">$(TypeScriptBuildConfigurations) --noImplicitThis</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSkipLibCheck)' == 'true'">$(TypeScriptBuildConfigurations) --skipLibCheck</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptStrictNullChecks)' == 'true'">$(TypeScriptBuildConfigurations) --strictNullChecks</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoUnusedLocals)' == 'true'">$(TypeScriptBuildConfigurations) --noUnusedLocals</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoUnusedParameters)' == 'true'">$(TypeScriptBuildConfigurations) --noUnusedParameters</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAlwaysStrict)' == 'true'">$(TypeScriptBuildConfigurations) --alwaysStrict</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptImportHelpers)' == 'true'">$(TypeScriptBuildConfigurations) --importHelpers</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptJSXFactory)' != ''">$(TypeScriptBuildConfigurations) --jsxFactory &quot;$(TypeScriptJSXFactory)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptStripInternal)' == 'true'">$(TypeScriptBuildConfigurations) --stripInternal</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptCheckJs)' == 'true'">$(TypeScriptBuildConfigurations) --checkJs</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptDownlevelIteration)' == 'true'">$(TypeScriptBuildConfigurations) --downlevelIteration</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptStrict)' == 'true'">$(TypeScriptBuildConfigurations) --strict</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoStrictGenericChecks)' == 'true'">$(TypeScriptBuildConfigurations) --noStrictGenericChecks</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptPreserveSymlinks)' == 'true'">$(TypeScriptBuildConfigurations) --preserveSymlinks</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptStrictFunctionTypes)' == 'true'">$(TypeScriptBuildConfigurations) --strictFunctionTypes</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptStrictPropertyInitialization)' == 'true'">$(TypeScriptBuildConfigurations) --strictPropertyInitialization</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptESModuleInterop)' == 'true'">$(TypeScriptBuildConfigurations) --esModuleInterop</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptEmitDeclarationOnly)' == 'true'">$(TypeScriptBuildConfigurations) --emitDeclarationOnly</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptKeyofStringsOnly )' == 'true'">$(TypeScriptBuildConfigurations) --keyofStringsOnly</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptUseDefineForClassFields )' == 'true'">$(TypeScriptBuildConfigurations) --useDefineForClassFields</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptDeclarationMap )' == 'true'">$(TypeScriptBuildConfigurations) --declarationMap</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptResolveJsonModule)' == 'true'">$(TypeScriptBuildConfigurations) --resolveJsonModule</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptStrictBindCallApply)' == 'true'">$(TypeScriptBuildConfigurations) --strictBindCallApply</TypeScriptBuildConfigurations>
+
+    <!-- noEmitOnError default is 'true', this ensures a proper incremental build behavior, where outputs are not generated in the presence of an error. -->
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoEmitOnError)' != 'false'">$(TypeScriptBuildConfigurations) --noEmitOnError</TypeScriptBuildConfigurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Prefer NuGet tools version -->
+    <TypeScriptToolsVersion Condition="'$(TypeScriptNuGetToolsVersion)'!=''">$(TypeScriptNuGetToolsVersion)</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion Condition="'$(TypeScriptToolsVersion)'==''">4.3</TypeScriptToolsVersion>
+    <!-- Nuget -->
+    <TSJavaScriptFile Condition="'$(TSJavaScriptFile)' == '' AND Exists('$(TscFolderPath)\tsc.js') ">$(TscFolderPath)\tsc.js</TSJavaScriptFile>
+    <!-- SDK -->
+    <TSJavaScriptFile Condition="'$(TSJavaScriptFile)' == '' AND Exists('$(MSBuildThisFileDirectory)\..\..\$(TypeScriptEffectiveToolsVersion)\tsc.js') ">$(MSBuildThisFileDirectory)\..\..\$(TypeScriptEffectiveToolsVersion)\tsc.js</TSJavaScriptFile>
+    <!-- Workaround for Cordova projects which still use TscToolPath -->
+    <TscToolPath>$(TSJavaScriptFile)</TscToolPath>
+    <!-- Best effort probing for node.exe in the VS install folder. If not found, then we assume node is already installed and on the system path. -->
+    <NodePath Condition="'$(OS)' == 'Windows_NT' AND Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\NodeJs\node.exe')">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\NodeJs</NodePath>
+    <!--Legacy node.exe path for VS2017 -->
+    <NodePath Condition="'$(NodePath)' == '' AND '$(OS)' == 'Windows_NT' AND Exists('$(VsInstallRoot)\Common7\IDE\CommonExtensions\Microsoft\NodeJs\node.exe')">$(VsInstallRoot)\Common7\IDE\CommonExtensions\Microsoft\NodeJs</NodePath>
+    <!--Another legacy node.exe path for VS2017 -->
+    <NodePath Condition="'$(NodePath)' == '' AND '$(OS)' == 'Windows_NT' AND Exists('$(VsInstallRoot)\Web\External\x86\node.exe')">$(VsInstallRoot)\Web\External\x86</NodePath>
+    <TscYieldDuringToolExecution Condition="'$(TscYieldDuringToolExecution)' == ''">true</TscYieldDuringToolExecution>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectCapability Include="TypeScript" />
+  </ItemGroup>
+
+  <!--
+    ============================================================
+                                        CheckFileSystemCaseSensitive
+
+    Set IsFileSystemCaseSensitive based on whether the task is being run on Windows or not.
+
+        [IN]
+        $(MSBuildThisFileFullPath) - Full path to the version of Microsoft.TypeScript.targets being used.
+
+        [OUT]
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+    ============================================================
+    -->
+  <Target Name="CheckFileSystemCaseSensitive">
+    <CheckFileSystemCaseSensitive
+       MSBuildThisFileFullPath="$(MSBuildThisFileFullPath)" >
+      <Output TaskParameter="IsFileSystemCaseSensitive"  PropertyName="IsFileSystemCaseSensitive" />
+    </CheckFileSystemCaseSensitive>
+  </Target>
+
+  <!--
+    ============================================================
+                                        FindConfigFiles
+
+    Finds set of tsconfig.json files to use for compilation.
+    If specified in @(Content), they are used.
+    Otherwise, searches subdirectories rooted at directory of project file.
+
+        [CONDITIONS]
+        This target does not run if called as part of a design-time build.
+        [IN]
+        $(TypeScriptProjectDir) - Full path to the directory containing the project file being compiled.
+        @(Content) - List of files used to specify tsconfig files that should be included in compilation.
+                     This is not exclusively used by TypeScript.
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+
+        [OUT]
+        @(ConfigFiles) - List of tsconfig files to be compiled.
+    ============================================================
+    -->
+  <Target Name="FindConfigFiles"
+          Condition="'$(DesignTimeBuild)' != 'true'">
+    <FindConfigFiles
+       ProjectDir="$(TypeScriptProjectDir)"
+       ContentFiles="@(Content);@(TypeScriptCompile)"
+       IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)">
+      <Output TaskParameter="ConfigFiles" ItemName="foundFiles" />
+    </FindConfigFiles>
+    <ItemGroup>
+      <ConfigFiles Include="@(foundFiles)" KeepDuplicates="false" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        PreComputeCompileTypeScriptWithTSConfig
+
+    First, this target associates each tsconfig file with its associated output log file.
+    Then it uses VsTsc to determine the input and output files of the triggered computation.
+    These files are used to decide whether or not to skip CompileTypeScriptWithTSConfig.
+
+        [CONDITIONS]
+        This target only runs if one or more tsconfig files specify compilation settings.
+        This target does not run if called as part of a design-time build.
+        [IN]
+        @(ConfigFiles) - List of tsconfig files to be compiled.
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+        $(TSCompilerOutputLogDirectory) - Path to directory containing output log files. May be relative to project file or absolute.
+        $(NodePath) - Full path to a directory containing node.exe (optional)
+        $(TscToolExe) - Name of compiler executable (node.exe).
+        $(PreferredUILang) - Language for localization.
+        $(TSJavaScriptFile) - Full path to tsc.js as defined by the NuGet package.
+        $(TypeScriptConfigFileAdditionalFlags) - Compiler flags to be used for each project in addition to those in the tsconfig.
+        $(TscYieldDuringToolExecution) - If true, the MSBuild thread may be used to build other projects
+                                         while the task runs in its own thread. See the following for more details:
+                                         https://blogs.msdn.microsoft.com/visualstudio/2010/06/01/better-parallelism-in-msbuild-4-with-yieldduringtoolexecution/
+        $(TypeScriptProjectDir) - Full path to the directory containing the project file being compiled.
+        $(TypeScriptEffectiveToolsVersion) - Version of the compiler to use for building.
+        $(TypeScriptCompileBlocked) - If true, VsTsc is skipped. Set when compiling using the grunt/gulp task,
+                                      in which case we don't want to invoke the compiler from the MSBuild task.
+
+        [OUT]
+        @(TSConfigFilesWithOutputLogs) - List of items, each of which specifies the full path to a tsconfig file (%(Identity))
+                                         and the path to its associated output log file (%(OutputLog)).
+                                         This is created by GenerateOutputLogs.
+                                         Note: the output log files may not exist.
+        @(TypeScriptInputFiles) - List of full paths to source files for the compilation, as determined by listFiles.
+                                   All of these files should exist.
+        @(emittedFiles) - List of paths to output files of the compilation, as determined by previously-existing log files.
+                          These files may not exist.
+        @(GeneratedJavascript) - De-duplicated copy of @(emittedFiles). If empty, should_not_exist.file is added to force build to occur.
+    ============================================================
+    -->
+  <Target Name="PreComputeCompileTypeScriptWithTSConfig"
+          Condition="'@(ConfigFiles)' != '' AND '$(DesignTimeBuild)' != 'true'">
+    <GenerateOutputLogs
+      ConfigFiles="@(ConfigFiles)"
+      IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)"
+      OutputLogDirectory="$(TSCompilerOutputLogDirectory)">
+
+      <Output TaskParameter="ConfigFilesWithOutputLogs" ItemName="TSConfigFilesWithOutputLogs" />
+    </GenerateOutputLogs>
+    <VsTsc
+      NodePath="$(NodePath)"
+      ToolExe="$(TscToolExe)"
+      IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)"
+      PreferredUILang="$(PreferredUILang)"
+      TSConfigFile="%(TSConfigFilesWithOutputLogs.Identity)"
+      AdditionalFlagsForInvocationWithConfigFile="$(TypeScriptConfigFileAdditionalFlags)"
+      TSJavaScriptFile="$(TSJavaScriptFile)"
+      YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
+      ProjectDir="$(TypeScriptProjectDir)"
+      BuildMode="$(TypeScriptBuildMode)"
+      ToolsVersion="$(TypeScriptEffectiveToolsVersion)"
+      TypeScriptCompileBlocked="$(TypeScriptCompileBlocked)"
+      ComputeInputAndOutputOnly="true"
+      OutputLogFile="%(TSConfigFilesWithOutputLogs.OutputLog)"
+      OutputLogDirectory="$(TSCompilerOutputLogDirectory)">
+
+      <Output TaskParameter="FullPathsToFiles" ItemName="TypeScriptInputFiles" />
+      <Output TaskParameter="GeneratedJavascript" ItemName="emittedFiles" />
+    </VsTsc>
+    <ItemGroup>
+      <GeneratedJavascript Include="@(emittedFiles)" KeepDuplicates="false" />
+      <!--Need to include file that will not exist to force build when the log does not exist or is empty-->
+      <!--When incremental build is not enabled, always add it so build is always forced.-->
+      <GeneratedJavascript
+        Condition="!$(EnableTSIncrementalMSBuild) OR ('@(GeneratedJavascript)' == '' AND '@(TypeScriptInputFiles)' != '')"
+        Include="should_not_exist.file" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        PreComputeCompileTypeScript
+    Uses VsTsc to determine the input and output files of the triggered computation.
+    These files are used to decide whether or not to skip CompileTypeScriptWithTSConfig.
+        [CONDITIONS]
+        This target only runs if no tsconfig files are used for compilation and if source files are specified in @(TypeScriptCompile).
+        This target does not run if called as part of a design-time build.
+        [IN]
+        $(NodePath) - Full path to a directory containing node.exe (optional)
+        $(TscToolExe) - Name of compiler executable (node.exe).
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+        $(TSJavaScriptFile) - Full path to tsc.js as defined by the NuGet package.
+        $(TypeScriptBuildConfigurations) - String of command line arguments to give to tsc.
+        $(PreferredUILang) - Language for localization.
+        @(TypeScriptCompile) - List of source files for the compilation as defined by the project file.
+        $(TscYieldDuringToolExecution) - If true, the MSBuild thread may be used to build other projects
+                                         while the task runs in its own thread. See the following for more details:
+                                         https://blogs.msdn.microsoft.com/visualstudio/2010/06/01/better-parallelism-in-msbuild-4-with-yieldduringtoolexecution/
+        $(TypeScriptOutFile) - Argument for outfile.
+        $(TypeScriptOutDir) - Argument for outDir.
+        $(TypeScriptProjectDir) - Full path to the directory containing the project file being compiled.
+        $(TypeScriptEffectiveToolsVersion) - Version of the compiler to use for building.
+        $(TypeScriptRootDir) - Specify root directory for source files.
+        $(TypeScriptCompileBlocked) - If true, VsTsc is skipped. Set when compiling using the grunt/gulp task,
+                                      in which case we don't want to invoke the compiler from the MSBuild task.
+        $(JsxPreserve) - If true, output files should have .jsx extensions.
+        $(GenerateDeclarationFiles) - If true, declaration is added to compiler options.
+        $(GenerateSourceMaps) - If true, sourceMap is added to compiler options.
+        $(TSCompilerOutputLogDirectory) - Path to directory containing output log files. May be relative to project file or absolute.
+
+        [OUT]
+        @(TSConfigFilesWithOutputLogs) - List of items, each of which specifies the full path to a tsconfig file (%(Identity))
+                                         and the path to its associated output log file (%(OutputLog)).
+                                         This is created by GenerateOutputLogs.
+                                         Note: the output log files may not exist.
+        @(TypeScriptInputFiles) - List of full paths to source files for the compilation, as determined by listFiles.
+                                   All of these files should exist.
+        @(emittedFiles) - List of paths to output files of the compilation, as determined by previously-existing log files.
+                          These files may not exist.
+        @(GeneratedJavascript) - De-duplicated copy of @(emittedFiles). If empty, should_not_exist.file is added to force build to occur.
+    ============================================================
+    -->
+  <Target Name="PreComputeCompileTypeScript"
+          Condition="'@(ConfigFiles)' == '' AND '@(TypeScriptCompile)' != '' AND '$(DesignTimeBuild)' != 'true'">
+    <VsTsc
+      NodePath="$(NodePath)"
+      ToolExe="$(TscToolExe)"
+      IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)"
+      TSJavaScriptFile="$(TSJavaScriptFile)"
+      Configurations="$(TypeScriptBuildConfigurations)"
+      PreferredUILang="$(PreferredUILang)"
+      FullPathsToFiles="@(TypeScriptCompile)"
+      YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
+      OutFile="$(TypeScriptOutFile)"
+      OutDir="$(TypeScriptOutDir)"
+      ProjectDir="$(TypeScriptProjectDir)"
+      BuildMode="$(TypeScriptBuildMode)"
+      ToolsVersion="$(TypeScriptEffectiveToolsVersion)"
+      RootDir="$(TypeScriptRootDir)"
+      TypeScriptCompileBlocked="$(TypeScriptCompileBlocked)"
+      JsxPreserve="$(JsxPreserve)"
+      GenerateDeclarationFiles="$(GenerateDeclarationFiles)"
+      GenerateSourceMaps="$(GenerateSourceMaps)"
+      ComputeInputAndOutputOnly="true"
+      OutputLogDirectory="$(TSCompilerOutputLogDirectory)">
+
+      <Output TaskParameter="FullPathsToFiles" ItemName="TypeScriptInputFiles" />
+      <Output TaskParameter="GeneratedJavascript" ItemName="emittedFiles" />
+    </VsTsc>
+    <ItemGroup>
+      <GeneratedJavascript Include="@(emittedFiles)" KeepDuplicates="false" />
+      <!--Need to include file that will not exist to force build when the output log does not exist or is empty-->
+      <!--When incremental build is not enabled, always add it so build is always forced.-->
+      <GeneratedJavascript
+        Condition="!$(EnableTSIncrementalMSBuild) OR ('@(GeneratedJavascript)' == '' AND '@(TypeScriptInputFiles)' != '')"
+        Include="should_not_exist.file" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        CompileTypeScriptWithTSConfig
+    Uses VsTsc to call the TypeScript compiler on each tsconfig file in @(TSConfigFilesWithOutputLogs).
+
+        [CONDITIONS]
+        This target only runs if one or more tsconfig files specify compilation settings.
+        This target does not run if called as part of a design-time build or if $(BuildingProject) is set to false.
+        [INPUTS]
+        @(TypeScriptInputFiles) - List of source files for the compilation. This is created by PreComputeCompileTypeScriptWithTSConfig.
+        [OUTPUTS]
+        @(GeneratedJavascript) - List of output files from the compilation. This is created by PreComputeCompileTypeScriptWithTSConfig.
+        [IN]
+        @(TSConfigFilesWithOutputLogs) - List of items, each of which specifies the full path to a tsconfig file (%(Identity))
+                                         and the path to its associated output log file (%(OutputLog)).
+                                         This is created by GenerateOutputLogs.
+                                         Note: the output log files may not exist.
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+        $(TSCompilerOutputLogDirectory) - Path to directory containing output log files. May be relative to project file or absolute.
+        $(NodePath) - Full path to a directory containing node.exe (optional)
+        $(TscToolExe) - Name of compiler executable (node.exe).
+        $(PreferredUILang) - Language for localization.
+        $(TSJavaScriptFile) - Full path to tsc.js as defined by the NuGet package.
+        $(TypeScriptConfigFileAdditionalFlags) - Compiler flags to be used for each project in addition to those in the tsconfig.
+        $(TscYieldDuringToolExecution) - If true, the MSBuild thread may be used to build other projects
+                                         while the task runs in its own thread. See the following for more details:
+                                         https://blogs.msdn.microsoft.com/visualstudio/2010/06/01/better-parallelism-in-msbuild-4-with-yieldduringtoolexecution/
+        $(TypeScriptBuildMode) - If true, use tsc -b. Other commandline flags for settings are ignored.
+        $(TypeScriptProjectDir) - Full path to the directory containing the project file being compiled.
+        $(TypeScriptEffectiveToolsVersion) - Version of the compiler to use for building.
+        $(TypeScriptCompileBlocked) - If true, VsTsc is skipped. Set when compiling using the grunt/gulp task,
+                                      in which case we don't want to invoke the compiler from the MSBuild task.
+
+        [OUT]
+        $(CompileRan) - True iff target is not skipped.
+        @(emittedFiles) - List of paths to output files of the compilation, as determined by previously-existing log files.
+                          These files may not exist.
+        @(GeneratedJavascript) - De-duplicated copy of @(emittedFiles). If empty, should_not_exist.file is added to force build to occur.
+    ============================================================
+    -->
+  <Target Name="CompileTypeScriptWithTSConfig"
+    Condition="'$(BuildingProject)' != 'false' AND '@(ConfigFiles)' != '' AND '$(DesignTimeBuild)' != 'true'"
+    DependsOnTargets="$(CompileTypeScriptDependsOn)"
+    BeforeTargets="$(CompileTypeScriptBeforeTargets)"
+    AfterTargets="$(CompileTypeScriptAfterTargets)"
+    Inputs="@(TypeScriptInputFiles)" Outputs="@(GeneratedJavascript)">
+    <!--For some reason, ItemGroup operations are occurring even when the target is skipped-->
+    <!--So we use the CompileRan property to ensure the ItemGroup operations only run when it isn't skipped-->
+    <CreateProperty Value="true">
+      <Output TaskParameter="ValueSetByTask" PropertyName="CompileRan" />
+    </CreateProperty>
+    <ItemGroup>
+      <emittedFiles Remove="@(emittedFiles)" Condition="'$(CompileRan)' == 'true'" />
+      <GeneratedJavascript Remove="@(GeneratedJavascript)" Condition="'$(CompileRan)' == 'true'" />
+    </ItemGroup>
+    <VsTsc
+      NodePath="$(NodePath)"
+      ToolExe="$(TscToolExe)"
+      IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)"
+      TSJavaScriptFile="$(TSJavaScriptFile)"
+      PreferredUILang="$(PreferredUILang)"
+      TSConfigFile="%(TSConfigFilesWithOutputLogs.Identity)"
+      AdditionalFlagsForInvocationWithConfigFile="$(TypeScriptConfigFileAdditionalFlags)"
+      YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
+      BuildMode="$(TypeScriptBuildMode)"
+      ProjectDir="$(TypeScriptProjectDir)"
+      ToolsVersion="$(TypeScriptEffectiveToolsVersion)"
+      TypeScriptCompileBlocked="$(TypeScriptCompileBlocked)"
+      ComputeInputAndOutputOnly="false"
+      OutputLogFile="%(TSConfigFilesWithOutputLogs.OutputLog)"
+      OutputLogDirectory="$(TSCompilerOutputLogDirectory)">
+
+      <Output TaskParameter="GeneratedJavascript" ItemName="emittedFiles" />
+    </VsTsc>
+    <ItemGroup>
+      <GeneratedJavascript Include="@(emittedFiles)" KeepDuplicates="false" Condition="'$(CompileRan)' == 'true'" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        CompileTypeScript
+
+    Uses VsTsc to call the TypeScript compiler using settings from the project file.
+
+        [CONDITIONS]
+        This target only runs if no tsconfig files are used for compilation and if source files are specified in @(TypeScriptCompile).
+        This target does not run if called as part of a design-time build or if $(BuildingProject) is set to false.
+        [INPUTS]
+        @(TypeScriptInputFiles) - List of source files for the compilation. This is created by PreComputeCompileTypeScript.
+        [OUTPUTS]
+        @(GeneratedJavascript) - List of output files from the compilation. This is created by PreComputeCompileTypeScript.
+        [IN]
+        $(NodePath) - Full path to a directory containing node.exe (optional)
+        $(TscToolExe) - Name of compiler executable (node.exe).
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+        $(TSJavaScriptFile) - Full path to tsc.js as defined by the NuGet package.
+        $(TypeScriptBuildConfigurations) - String of command line arguments to give to tsc.
+        $(PreferredUILang) - Language for localization.
+        @(TypeScriptCompile) - List of source files for the compilation as defined by the project file.
+        $(TscYieldDuringToolExecution) - If true, the MSBuild thread may be used to build other projects
+                                         while the task runs in its own thread. See the following for more details:
+                                         https://blogs.msdn.microsoft.com/visualstudio/2010/06/01/better-parallelism-in-msbuild-4-with-yieldduringtoolexecution/
+        $(TypeScriptOutFile) - Argument for outfile.
+        $(TypeScriptOutDir) - Argument for outDir.
+        $(TypeScriptProjectDir) - Full path to the directory containing the project file being compiled.
+        $(TypeScriptEffectiveToolsVersion) - Version of the compiler to use for building.
+        $(TypeScriptRootDir) - Specify root directory for source files.
+        $(TypeScriptCompileBlocked) - If true, VsTsc is skipped. Set when compiling using the grunt/gulp task,
+                                      in which case we don't want to invoke the compiler from the MSBuild task.
+        $(JsxPreserve) - If true, output files should have .jsx extensions.
+        $(GenerateDeclarationFiles) - If true, declaration is added to compiler options.
+        $(GenerateSourceMaps) - If true, sourceMap is added to compiler options.
+        $(TSCompilerOutputLogDirectory) - Path to directory containing output log files. May be relative to project file or absolute.
+
+        [OUT]
+        $(CompileRan) - True iff target is not skipped.
+        @(emittedFiles) - List of paths to output files of the compilation. These files should exist if the target runs.
+        @(GeneratedJavascript) - De-duplicated copy of @(emittedFiles).
+    ============================================================
+    -->
+  <Target Name="CompileTypeScript"
+          Condition="'$(BuildingProject)' != 'false' AND '@(ConfigFiles)' == '' AND '@(TypeScriptCompile)' != '' AND '$(DesignTimeBuild)' != 'true'"
+          DependsOnTargets="$(CompileTypeScriptDependsOn)"
+          BeforeTargets="$(CompileTypeScriptBeforeTargets)"
+          AfterTargets="$(CompileTypeScriptAfterTargets)"
+          Inputs="@(TypeScriptInputFiles)" Outputs="@(GeneratedJavascript)">
+    <!--For some reason, ItemGroup operations are occurring even when the target is skipped-->
+    <!--So we use the CompileRan property to ensure the ItemGroup operations only run when it isn't skipped-->
+    <CreateProperty Value="true">
+      <Output TaskParameter="ValueSetByTask" PropertyName="CompileRan" />
+    </CreateProperty>
+    <ItemGroup>
+      <emittedFiles Remove="@(emittedFiles)" Condition="'$(CompileRan)' == 'true'" />
+      <GeneratedJavascript Remove="@(GeneratedJavascript)" Condition="'$(CompileRan)' == 'true'" />
+    </ItemGroup>
+    <VsTsc
+      NodePath="$(NodePath)"
+      ToolExe="$(TscToolExe)"
+      IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)"
+      TSJavaScriptFile="$(TSJavaScriptFile)"
+      PreferredUILang="$(PreferredUILang)"
+      Configurations="$(TypeScriptBuildConfigurations)"
+      FullPathsToFiles="@(TypeScriptCompile)"
+      YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
+      OutFile="$(TypeScriptOutFile)"
+      OutDir="$(TypeScriptOutDir)"
+      ProjectDir="$(TypeScriptProjectDir)"
+      BuildMode="$(TypeScriptBuildMode)"
+      ToolsVersion="$(TypeScriptEffectiveToolsVersion)"
+      RootDir="$(TypeScriptRootDir)"
+      TypeScriptCompileBlocked="$(TypeScriptCompileBlocked)"
+      JsxPreserve="$(JsxPreserve)"
+      ComputeInputAndOutputOnly="false"
+      OutputLogDirectory="$(TSCompilerOutputLogDirectory)">
+
+      <Output TaskParameter="GeneratedJavascript" ItemName="emittedFiles" />
+    </VsTsc>
+    <ItemGroup>
+      <GeneratedJavascript Include="@(emittedFiles)" KeepDuplicates="false" Condition="'$(CompileRan)' == 'true'" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        GetTypeScriptOutputForPublishing
+
+    Adds TypeScript compiler output to appropriate lists for publishing.
+        [IN]
+        @(GeneratedJavascript) - List of output files from compilation. Created by CompileTypeScript(WithTSConfig),
+                                 or if that is skipped, PreComputeCompileTypeScript(WithTSConfig).
+        $(MSBuildProjectDirectory) - Directory containing project file being compiled.
+
+        [OUT]
+        @(GeneratedJavascriptWithTargetPath) - List of output files from compilation, where each file is associated with a TargetPath attribute
+                                               that gives the relative path from the project file to the output file.
+        @(FilesForPackagingFromProject) - List of files to be published in an ASP.NET Classic project.
+        @(ContentWithTargetPath) - List of files to be published in an ASP.NET Core project.
+        @(Content) - List of files to be added to @(BuiltWebOutputGroupOutput).
+    ============================================================
+    -->
+  <Target Name="GetTypeScriptOutputForPublishing">
+    <AssignTargetPath Files="@(GeneratedJavascript)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="GeneratedJavascriptWithTargetPath" />
+    </AssignTargetPath>
+    <ItemGroup>
+      <FilesForPackagingFromProject Include="@(GeneratedJavascriptWithTargetPath->'%(Identity)')"/>
+      <ContentWithTargetPath Include="@(GeneratedJavascriptWithTargetPath->'%(Identity)')"/>
+      <Content Include="@(GeneratedJavascript->'%(Identity)')" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        GetTypeScriptCopyToOutputDirectoryItems
+
+    Gathers source files that should be copied to the output directory according to their "Copy To Output Directory" setting.
+
+        [IN]
+        @(TypeScriptCompile) - List of source files for the compilation as defined by the project file.
+        $(MSBuildProjectDirectory) - Directory containing project file being compiled.
+
+        [OUT]
+        @(TypeScriptCompile) - List of source files for the compilation as defined by the project file, where each file
+                               is associated with a TargetPath attribute that gives the relative path from the project file to the output file.
+        @(AllItemsFullPathWithTargetPath) - Contains all items involved in compilation.
+        @(_SourceItemsToCopyToOutputDirectoryAlways) - Contains all items to be copied to the output directory on every build.
+        @(_SourceItemsToCopyToOutputDirectory) - Contains all items to be copied to the output directory if they are newer than the existing copy there.
+    ============================================================
+    -->
+  <Target Name="GetTypeScriptCopyToOutputDirectoryItems">
+    <AssignTargetPath Files="@(TypeScriptCompile)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="TypeScriptCompileWithTargetPath" />
+    </AssignTargetPath>
+    <Message Text="Adding items with BuildAction=TypeScriptCompile to the same collections that will be populated (with items of other BuildActions) by the GetCopyToOutputDirectoryItems target"/>
+    <ItemGroup>
+      <AllItemsFullPathWithTargetPath            Include="@(TypeScriptCompileWithTargetPath->'%(FullPath)')" Condition="'%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='Always' OR '%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='PreserveNewest'"/>
+      <_SourceItemsToCopyToOutputDirectoryAlways Include="@(TypeScriptCompileWithTargetPath->'%(FullPath)')" Condition="'%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='Always'"/>
+      <_SourceItemsToCopyToOutputDirectory       Include="@(TypeScriptCompileWithTargetPath->'%(FullPath)')" Condition="'%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='PreserveNewest'"/>
+    </ItemGroup>
+  </Target>
+
+  <!--
+    ============================================================
+                                        TypeScriptDeleteCompilerOutput
+
+    Deletes files specified in output log files, as well as the output log files themselves.
+
+        [CONDITIONS]
+        This target does not run if called as part of a design-time build.
+        [IN]
+        $(TSCompilerOutputLogDirectory) - Path to directory containing output log files. May be relative to project file or absolute.
+        $(TypeScriptCompileBlocked) - If true, VsTsc is skipped. Set when compiling using the grunt/gulp task,
+                                      in which case we don't want to invoke the compiler from the MSBuild task.
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+
+        [OUT]
+        @(TSCompilerOutput) - List of files enumerated in output log files. These will be deleted after the task runs.
+        @(TSOutputLogsToDelete) - List of output log files in $(TSCompilerOutputLogDirectory). These will be deleted after the task runs.
+    ============================================================
+    -->
+  <Target Name="TypeScriptDeleteCompilerOutput" Condition="'$(TypeScriptBuildMode)' != 'true'">
+    <ItemGroup>
+      <TSOutputLogsToDelete Include="$(TSCompilerOutputLogDirectory)Tsc*.out" />
+    </ItemGroup>
+    <ReadLinesFromFile File="%(TSOutputLogsToDelete.Identity)" Condition="'$(TypeScriptCompileBlocked)' != 'true' And '@(TSOutputLogsToDelete)' != ''">
+      <Output TaskParameter="Lines" ItemName="TSCompilerOutput"/>
+    </ReadLinesFromFile>
+    <!-- Skip the Delete tasks if there is nothing to delete to avoid unnecessary logging. -->
+    <Delete Files="@(TSCompilerOutput)" Condition=" '@(TSCompilerOutput)' != '' "/>
+    <Delete Files="@(TSOutputLogsToDelete)" Condition=" '@(TSOutputLogsToDelete)' != '' " />
+  </Target>
+
+  <!--
+    ============================================================
+                                        TypeScriptDeleteOutputFromOtherConfigs
+
+    Deletes files specified in output log files, as well as the output log files themselves, if any exist from other configurations.
+
+        [CONDITIONS]
+        This target does not run if called as part of a design-time build or if $(BuildingProject) is set to false.
+        [IN]
+        $(TSCompilerOutputLogDirectory) - Path to directory containing output log files. May be relative to project file or absolute.
+        $(TypeScriptCompileBlocked) - If true, VsTsc is skipped. Set when compiling using the grunt/gulp task,
+                                      in which case we don't want to invoke the compiler from the MSBuild task.
+        $(IsFileSystemCaseSensitive) - True iff the file system that MSBuild is running on is case sensitive.
+
+        [OUT]
+        @(TSOutputLogsFromOtherBuilds) - List of output logs in $(BaseIntermediateOutputPath) subdirectories, not including the current build config.
+        @(TSCompilerOutput) - List of files enumerated in output log files. These will be deleted if @(TSOutputLogsFromOtherBuilds) exists.
+        @(TSOutputLogsToDelete) - List of output log files in $(TSCompilerOutputLogDirectory). These will be deleted if @(TSOutputLogsFromOtherBuilds) exists.
+    ============================================================
+    -->
+  <Target Name="TypeScriptDeleteOutputFromOtherConfigs" Condition ="'$(BuildingProject)' != 'false' AND '$(DesignTimeBuild)' != 'true'">
+    <ItemGroup>
+      <TSOutputLogsFromOtherBuilds Include="$(BaseIntermediateOutputPath)\**\Tsc*.out" Exclude="$(TSCompilerOutputLogDirectory)Tsc*.out" />
+      <TSOutputLogsToDelete Include="$(BaseIntermediateOutputPath)\**\Tsc*.out" Condition="'@(TSOutputLogsFromOtherBuilds)' != ''" />
+    </ItemGroup>
+    <ReadLinesFromFile File="%(TSOutputLogsToDelete.Identity)" Condition="'$(TypeScriptCompileBlocked)' != 'true' And '@(TSOutputLogsToDelete)' != ''">
+      <Output TaskParameter="Lines" ItemName="TSCompilerOutput"/>
+    </ReadLinesFromFile>
+    <!-- Skip the Delete tasks if there is nothing to delete to avoid unnecessary logging. -->
+    <Delete Files="@(TSCompilerOutput)" Condition=" '@(TSCompilerOutput)' != '' "/>
+    <Delete Files="@(TSOutputLogsToDelete)" Condition="'@(TSOutputLogsToDelete)' != '' " />
+  </Target>
+
+  <Target Name="TypeScriptBuildModeClean" Condition="'$(TypeScriptBuildMode)' == 'true'">
+    <VsTsc
+      NodePath="$(NodePath)"
+      ToolExe="$(TscToolExe)"
+      IsFileSystemCaseSensitive="$(IsFileSystemCaseSensitive)"
+      PreferredUILang="$(PreferredUILang)"
+      TSConfigFile="%(ConfigFiles.Identity)"
+      TSJavaScriptFile="$(TSJavaScriptFile)"
+      YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
+      ProjectDir="$(TypeScriptProjectDir)"
+      BuildMode="$(TypeScriptBuildMode)"
+      ToolsVersion="$(TypeScriptEffectiveToolsVersion)"
+      TypeScriptCompileBlocked="$(TypeScriptCompileBlocked)"
+      Clean="true"
+      OutputLogFile="%(TSConfigFilesWithOutputLogs.OutputLog)"
+      OutputLogDirectory="$(TSCompilerOutputLogDirectory)">
+    </VsTsc>
+  </Target>
+</Project>

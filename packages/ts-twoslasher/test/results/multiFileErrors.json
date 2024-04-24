@@ -1,0 +1,103 @@
+{
+  "code": "// @filename: sum.ts\nexport function sum(a: number, b: number): number {\n  return a + b\n}\n\n// @filename: ok.ts\nimport { sum } from \"./sum\"\nsum(1, 2)\n\n// @filename: error.ts\nimport { sum } from \"./sum\"\nsum(4, \"woops\")\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [],
+  "staticQuickInfos": [
+    {
+      "text": "function sum(a: number, b: number): number",
+      "docs": "",
+      "start": 37,
+      "length": 3,
+      "line": 1,
+      "character": 16,
+      "targetString": "sum"
+    },
+    {
+      "text": "(parameter) a: number",
+      "docs": "",
+      "start": 41,
+      "length": 1,
+      "line": 1,
+      "character": 20,
+      "targetString": "a"
+    },
+    {
+      "text": "(parameter) b: number",
+      "docs": "",
+      "start": 52,
+      "length": 1,
+      "line": 1,
+      "character": 31,
+      "targetString": "b"
+    },
+    {
+      "text": "(parameter) a: number",
+      "docs": "",
+      "start": 82,
+      "length": 1,
+      "line": 2,
+      "character": 9,
+      "targetString": "a"
+    },
+    {
+      "text": "(parameter) b: number",
+      "docs": "",
+      "start": 86,
+      "length": 1,
+      "line": 2,
+      "character": 13,
+      "targetString": "b"
+    },
+    {
+      "text": "(alias) function sum(a: number, b: number): number\nimport sum",
+      "docs": "",
+      "start": 120,
+      "length": 3,
+      "line": 6,
+      "character": 9,
+      "targetString": "sum"
+    },
+    {
+      "text": "(alias) sum(a: number, b: number): number\nimport sum",
+      "docs": "",
+      "start": 139,
+      "length": 3,
+      "line": 7,
+      "character": 0,
+      "targetString": "sum"
+    },
+    {
+      "text": "(alias) function sum(a: number, b: number): number\nimport sum",
+      "docs": "",
+      "start": 182,
+      "length": 3,
+      "line": 10,
+      "character": 9,
+      "targetString": "sum"
+    },
+    {
+      "text": "(alias) sum(a: number, b: number): number\nimport sum",
+      "docs": "",
+      "start": 201,
+      "length": 3,
+      "line": 11,
+      "character": 0,
+      "targetString": "sum"
+    }
+  ],
+  "errors": [
+    {
+      "category": 1,
+      "code": 2345,
+      "length": 7,
+      "start": 208,
+      "line": 11,
+      "character": 7,
+      "renderedMessage": "Argument of type 'string' is not assignable to parameter of type 'number'.",
+      "id": "err-2345-35-7"
+    }
+  ],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAzgV1QHQAu2AUPAB4AOA9gE5GiS6IDGR0NiO+AFMlkT4ARvDoAaUMMEixAShmpRdUAG9SoUHXhFcdbslABqKaQC+pUiAgwEKdFhoBrYmWipaDNT1SgzTOhpfACICYDxUYNII3gBGSQAmOUtrKDgkNExQMUC6VyswcBz6bCwEgGYAFgBWUndPRlUfPwCg0FDw-CiYyslggHcaGipsYOSgA",
+  "tags": []
+}

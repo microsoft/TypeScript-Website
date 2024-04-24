@@ -1,0 +1,69 @@
+name: CI
+on:
+  pull_request:
+    branches:
+      - v2
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out, and set up the node/ruby infra
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+
+      # Install, should be basically instant if cached
+      - run: yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
+      # Verify dependencies are hooked up right
+      - run: node test/verifyPackageVersions.js
+
+      # Grab localizations
+      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+
+      # Build the packages
+      - run: yarn bootstrap
+      - run: yarn build
+
+      # Verify it compiles
+      - run: yarn build-site
+      - run: cp -r packages/typescriptlang-org/public site
+
+      # Run all the package's tests
+      - run: yarn test
+        env:
+          CI: true
+
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request'
+        with:
+          name: site
+          path: site
+
+      # danger for PR builds
+      - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
+        run: "yarn danger ci"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      # Check out, and set up the node infra
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+
+      # Get local dependencies
+      - run: yarn install
+        env:
+          YARN_CHECKSUM_BEHAVIOR: ignore
+
+      - run: yarn bootstrap
+      - run: yarn build

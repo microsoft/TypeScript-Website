@@ -1,0 +1,233 @@
+@import "../../style/globals.scss";
+
+#small-device-button-sidebar {
+  display: none;
+}
+
+nav#sidebar {
+  min-width: 16rem;
+  background-color: var(--sidebar-background-color);
+  color: var(--alt-text-color);
+
+  /* "Basically a section of documentation */
+  ul {
+    position: sticky;
+    top: 0;
+    margin: 0;
+    padding: 0;
+
+    li {
+      // Mostly stuff for all of the links
+      list-style: none;
+      padding: 0;
+      min-height: 2.5rem;
+      border-bottom: 1px solid var(--sidebar-item-border-color);
+
+      font-weight: 400;
+      font-size: 1rem;
+
+      // The top level navigation items
+      button {
+        display: block;
+        position: relative;
+        height: 2.5rem;
+        font-size: 1rem;
+        padding-left: 1rem;
+        width: 100%;
+        text-align: left;
+        -webkit-appearance: none;
+        background-color: transparent;
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+
+        color: var(--alt-text-color);
+
+        .open path,
+        .closed path {
+          stroke: var(--text-color);
+        }
+
+        &:active,
+        &:focus {
+          color: var(--alt-text-color);
+          background-color: var(--sidebar-active-button-background-color);
+        }
+
+        span {
+          position: absolute;
+          right: 20px;
+        }
+      }
+
+      ul ul {
+        margin-left: 0.2rem;
+      }
+    }
+  }
+
+  // Still looking at the highest level of navigation
+  ul li {
+    &.highlighted {
+      background-color: var(--sidebar-list-active-background-color);
+
+      svg path {
+        stroke: $ts-main-blue-color;
+      }
+    }
+
+    // When the dropdown for a section is showing
+    &.open {
+      // Hide the sideways SVG
+      > button > span.closed {
+        display: none;
+      }
+    }
+
+    &.closed {
+      // Hide the down SVG
+      span.open {
+        display: none;
+      }
+
+      ul {
+        display: none;
+      }
+    }
+  }
+
+  ul li.open > ul {
+    background-color: var(--sidebar-list-background-color);
+  }
+
+  ul li.open.highlighted ul {
+    background-color: var(--sidebar-list-active-background-color);
+  }
+
+  // Individual pages
+  ul li ul {
+    margin: 0;
+    padding: 0;
+
+    a {
+      display: block;
+      flex-grow: 1;
+      text-decoration: none;
+      color: var(--alt-text-color);
+      padding-top: 0.5rem;
+      padding-left: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    li {
+      list-style: none;
+
+      a {
+        font-weight: 300;
+        margin-right: -0.5rem;
+      }
+
+      &:hover {
+        padding-left: 0.3rem;
+        margin-right: -0.3rem;
+        transition: padding-left 0.1s ease-out;
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
+      }
+
+      a:focus,
+      a:hover {
+        border-left: 2px solid var(--sidebar-link-border-color);
+      }
+
+      &.highlight a {
+        color: $ts-sidebar-link;
+        border-left: 2px solid $ts-main-blue-color;
+        margin-left: 0.5rem;
+        margin-right: -0.5rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // Only set max-height and overflow rules for direct ul children to prevent scrolling in subnav uls
+  & > ul {
+    @media (min-width: $screen-sm) {
+      max-height: calc(100vh - 10px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+}
+
+@media (max-width: $screen-sm) {
+  // This is a button which will scroll off and on with the nav
+  button#small-device-button-sidebar {
+    display: flex;
+    position: fixed;
+
+    transition-timing-function: ease;
+    transition: left 0.3s;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &.hidden {
+      left: -80px;
+    }
+
+    left: 20px;
+    bottom: 120px;
+    padding: 10px;
+    margin-bottom: env(safe-area-inset-bottom);
+    background-color: #c4c4c4;
+    border-radius: 6px;
+
+    z-index: $z-index-for-handbook-nav-button;
+
+    // Reset the button
+    -webkit-appearance: none;
+    border: none;
+
+    &:active {
+      background-color: #575757;
+    }
+  }
+
+  // Pulls it out of the layout system
+  nav#sidebar {
+    position: fixed;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    z-index: $z-index-for-handbook-nav;
+    margin-left: -800px;
+    width: 90%;
+
+    ul {
+      padding-bottom: 200px;
+    }
+
+    transition-timing-function: ease;
+    transition: margin-left 0.3s;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
+    &.show {
+      margin-left: 0px;
+    }
+
+    & > ul > li,
+    & > ul > li > button {
+      font-size: 1.3rem;
+    }
+  }
+}

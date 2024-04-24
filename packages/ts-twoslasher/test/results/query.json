@@ -1,0 +1,30 @@
+{
+  "code": "let foo = \"hello there!\";\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    {
+      "docs": "",
+      "kind": "query",
+      "start": 4,
+      "length": 15,
+      "text": "let foo: string",
+      "offset": 4,
+      "line": 1
+    }
+  ],
+  "staticQuickInfos": [
+    {
+      "text": "let foo: string",
+      "docs": "",
+      "start": 4,
+      "length": 3,
+      "line": 0,
+      "character": 4,
+      "targetString": "foo"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/DYUwLgBAZg9jEF4ICIAWJjHmdAnEAhMgNwBQA9ORBAHoD8pQA",
+  "tags": []
+}

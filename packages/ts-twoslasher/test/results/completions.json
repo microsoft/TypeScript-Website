@@ -1,0 +1,160 @@
+{
+  "code": "console.log\n",
+  "extension": "ts",
+  "highlights": [],
+  "queries": [
+    {
+      "completions": [
+        {
+          "name": "assert",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "clear",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "count",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "countReset",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "debug",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "dir",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "dirxml",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "error",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "group",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "groupCollapsed",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "groupEnd",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "info",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "log",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "table",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "time",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "timeEnd",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "timeLog",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "timeStamp",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "trace",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        },
+        {
+          "name": "warn",
+          "kind": "method",
+          "kindModifiers": "declare",
+          "sortText": "11"
+        }
+      ],
+      "kind": "completions",
+      "start": 9,
+      "completionsPrefix": "l",
+      "length": 1,
+      "offset": 9,
+      "line": 1
+    }
+  ],
+  "staticQuickInfos": [
+    {
+      "text": "var console: Console",
+      "docs": "",
+      "start": 0,
+      "length": 7,
+      "line": 0,
+      "character": 0,
+      "targetString": "console"
+    },
+    {
+      "text": "(method) Console.log(...data: any[]): void",
+      "docs": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/console/log_static)",
+      "start": 8,
+      "length": 3,
+      "line": 0,
+      "character": 8,
+      "targetString": "log"
+    }
+  ],
+  "errors": [],
+  "playgroundURL": "https://www.typescriptlang.org/play/#code/MYewdgziA2CmB00QHMBQB6dACHusD0AfVIA",
+  "tags": []
+}

@@ -1,0 +1,49 @@
+// The CSS Vars live in main.scss
+
+$ts-main-blue-color: #3178c6;
+$ts-main-blue-darker-color: #235a97;
+$ts-main-blue-lighter-color: #358ef1;
+$ts-main-blue-lightest-color: #719af4;
+$ts-main-blue-darkest-color: #00273f;
+
+$ts-barely-blue-highlight: #e3e8ec;
+$ts-dark-barely-blue-highlight: #28323a;
+
+$ts-js-yellow-bright-color: #f1dd35;
+$ts-js-yellow-muted-color: #c6bf31;
+
+$ts-light-bg-sandy-color: #faf9f8;
+$ts-light-bg-sandy-color-20: #faf9f820;
+$ts-light-bg-grey: #eeeeee;
+$ts-light-bg-grey-highlight-color: #f2f2f2;
+
+$ts-dark-bg-color: #262626;
+$ts-dark-bg-for-foreground-color: #313131;
+$ts-dark-bg-secondary: #2a2a2b;
+$ts-bg-selection-grey: #4e4e4f;
+
+$ts-muted-red: #c63131;
+$ts-muted-green: #086f56;
+$ts-muted-purple: #4e086f;
+
+$ts-sidebar-link: #2866a9;
+
+$screen-xs: 480px;
+$font-code: var(--code-font);
+
+// Small screen / tablet
+$screen-sm: 800px;
+$screen-sm-min: $screen-sm;
+
+// Medium screen / desktop
+$screen-md: 900px;
+$screen-md-min: $screen-md;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-sm-max: ($screen-md-min - 1);
+
+$z-index-for-search: 100;
+$z-index-for-site-nav: 101;
+$z-index-for-handbook-nav: 99;
+$z-index-for-handbook-nav-button: 100;

@@ -1,0 +1,48 @@
+@import "../../../style/globals.scss";
+
+.cropper {
+  overflow: hidden;
+  height: 500px;
+  display: block;
+  position: relative;
+  background-color: #f9f6f6;
+
+  img {
+    margin-left: -50px;
+  }
+
+  p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 3rem;
+    line-height: 3rem;
+    margin: 0;
+    padding-bottom: 0.8rem;
+    padding-left: 0.8rem;
+
+    width: 100%;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+  }
+}
+
+.dev-tools h3 {
+  margin: 0;
+  margin-top: 0.6rem;
+  margin-left: 1rem;
+}
+
+@media (max-width: $screen-sm) {
+  .navbar-sub.dev-tools {
+    height: auto;
+
+    .nav {
+      flex-direction: column;
+    }
+  }
+}
