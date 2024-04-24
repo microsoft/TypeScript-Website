@@ -87,7 +87,7 @@ export namespace JSX {
 And the user should always import React as `React`.
 
 ```ts
-import * as React;
+import * as React from 'react';
 ```
 
 Preact uses the JSX factory `h`. That means its types should be defined as the `h.JSX`.
