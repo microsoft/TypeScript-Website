@@ -855,7 +855,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#newLine'>--newLine</a></code></td>
   <td><p><code>crlf</code> or <code>lf</code></p>
 </td>
-  <td><p>Platform specific.</p>
+  <td><p><code>lf</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
