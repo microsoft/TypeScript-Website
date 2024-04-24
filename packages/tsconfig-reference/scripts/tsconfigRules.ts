@@ -239,7 +239,7 @@ export const defaultsForOptions = {
     "Matches if [`module`](#module) is `node16` or `nodenext`;",
     "`Node` otherwise.",
   ],
-  newLine: "Platform specific.",
+  newLine: "`lf`",
   noImplicitAny: trueIf("strict"),
   noImplicitThis: trueIf("strict"),
   preserveConstEnums: trueIf("isolatedModules"),
