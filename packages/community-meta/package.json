@@ -10,5 +10,8 @@
   "scripts": {
     "build": "node scripts/generateRichMeetupData.js",
     "test": "echo 'NOOP'"
+  },
+  "devDependencies": {
+    "chalk": "^4"
   }
 }
