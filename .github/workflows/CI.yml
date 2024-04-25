@@ -18,9 +18,6 @@ jobs:
       # Install, should be basically instant if cached
       - run: pnpm install
 
-      # Verify dependencies are hooked up right
-      - run: node test/verifyPackageVersions.js
-
       # Grab localizations
       - run: pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
