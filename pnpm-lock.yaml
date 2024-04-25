@@ -164,6 +164,9 @@ importers:
       monaco-typescript:
         specifier: ^3.7.0
         version: 3.7.0
+      node-fetch:
+        specifier: ^2.7.0
+        version: 2.7.0
       typescript:
         specifier: 5.4.5
         version: 5.4.5
