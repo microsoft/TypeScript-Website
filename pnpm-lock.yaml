@@ -69,6 +69,9 @@ importers:
       git-branch-is:
         specifier: ^3.1.0
         version: 3.1.0
+      glob:
+        specifier: ^7.2.3
+        version: 7.2.3
       pleb:
         specifier: ^2.6.1
         version: 2.6.1
