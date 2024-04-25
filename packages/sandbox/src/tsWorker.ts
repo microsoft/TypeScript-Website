@@ -53,7 +53,7 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     providePrefixAndSuffixTextForRename: boolean
   ): Promise<readonly ts.RenameLocation[] | undefined>
   getRenameInfo(fileName: string, position: number, options: ts.RenameInfoOptions): Promise<ts.RenameInfo>
-  getEmitOutput(fileName: string): Promise<ts.EmitOutput>
+  getEmitOutput(fileName: string, emitOnlyDtsFiles?: boolean, forceDtsEmit?: boolean): Promise<ts.EmitOutput>
   getCodeFixesAtPosition(
     fileName: string,
     start: number,
