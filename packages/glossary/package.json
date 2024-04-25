@@ -14,8 +14,6 @@
     "semi": true
   },
   "devDependencies": {
-    "remark": "^11.0.2",
-    "remark-html": "^10.0.0",
     "ts-node": "*"
   }
 }
