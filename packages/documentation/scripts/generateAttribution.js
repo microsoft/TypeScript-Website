@@ -1,6 +1,6 @@
 /**
     Updates the JSON file `attribution.json` with contributors based on commits to files, to run:
-    yarn workspace documentation bootstrap
+    pnpm run --filter=documentation bootstrap
 */
 const { execSync } = require("child_process");
 const path = require("path");

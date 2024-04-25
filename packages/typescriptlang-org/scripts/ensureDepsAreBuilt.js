@@ -6,7 +6,7 @@ const code = str => chalk.bold.greenBright(str)
 
 const nodeModsPath = join(__dirname, "..", "..", "..", "node_modules")
 if (!fs.existsSync(nodeModsPath)) {
-  throw new Error(`Please run ${code("yarn install")}`)
+  throw new Error(`Please run ${code("pnpm install")}`)
 }
 
 const pkgsRoot = join(__dirname, "..", "..")
@@ -30,12 +30,12 @@ ${chalk.bgBlueBright.white.bold("  ts")}
   First of all, awesome! Welcome to the TypeScript website monorepo. 
   To get the site up and running, the other modules need building first.
   
-  Please run ${code("yarn bootstrap")} to build the website's local dependencies,
+  Please run ${code("pnpm bootstrap")} to build the website's local dependencies,
   and pre-cache the website's pages.
   
   This should take about 5m, so maybe go make a tea/coffee.
   
-  Finally re-run ${code("yarn start")}.
+  Finally re-run ${code("pnpm start")}.
   `)
     process.exit(0)
   }
@@ -54,7 +54,7 @@ if (!fs.existsSync(releaseInfo)) {
   console.log(`
 Please run:
 
-> ${chalk.bgBlueBright.white.bold("yarn workspace typescriptlang-org update-versions")}
+> ${chalk.bgBlueBright.white.bold("pnpm run --filter=typescriptlang-org update-versions")}
 
 Then re-run the command.`
   )

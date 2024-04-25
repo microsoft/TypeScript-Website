@@ -7,7 +7,7 @@
   "scripts": {
     "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "clean": "gatsby clean",
-    "bootstrap": "yarn update-versions",
+    "bootstrap": "pnpm update-versions",
     "update-static-assets": "node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "setup-playground-cache-bust": "node scripts/cacheBustPlayground.mjs",
@@ -16,7 +16,7 @@
     "compile-index-examples": "twoslash --reactAlso src/components/index/twoslash/*.ts src/components/index/twoslash/*.js src/components/index/twoslash/*.tsx src/components/index/twoslash/generated && node scripts/updateIndexTwoslashExamples.js",
     "start": "gatsby develop",
     "serve": "gatsby serve",
-    "test": "yarn tsc && jest"
+    "test": "pnpm tsc && jest"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",

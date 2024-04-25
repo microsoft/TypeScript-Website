@@ -1,9 +1,6 @@
 {
   "private": true,
   "name": "root",
-  "workspaces": [
-    "packages/*"
-  ],
   "engines": {
     "node": ">=18"
   },
@@ -18,20 +15,20 @@
     "pleb": "^2.6.1",
     "reflect-metadata": "^0.1.13"
   },
-  "resolutions": {
-    "@types/react": "^18.2.77",
-    "@types/estree": "0.0.46",
-    "@types/eslint": "7.29.0",
-    "assert": "2.0.0",
-    "rollup-plugin-typescript2": "0.34.1",
-    "node-gyp": "5.1.0",
-    "typescript": "5.4.5",
-    "tslib": "2.6.0",
-    "prettier": "^2.0.2",
-    "shelljs": "0.8.4",
-    "sharp": "0.28.1",
-    "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": "patch:react-server-dom-webpack@npm%3A0.0.0-experimental-c8b778b7f-20220825#./.yarn/patches/react-server-dom-webpack-npm-0.0.0-experimental-c8b778b7f-20220825-b0e92c72ae.patch",
-    "react-intl@^3.12.1": "patch:react-intl@npm%3A3.12.1#./.yarn/patches/react-intl-npm-3.12.1-65fec75b25.patch"
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^18.2.77",
+      "@types/estree": "0.0.46",
+      "@types/eslint": "7.29.0",
+      "assert": "2.0.0",
+      "rollup-plugin-typescript2": "0.34.1",
+      "node-gyp": "5.1.0",
+      "typescript": "5.4.5",
+      "tslib": "2.6.0",
+      "prettier": "^2.0.2",
+      "shelljs": "0.8.4",
+      "sharp": "0.28.1"
+    }
   },
   "jest": {
     "transformIgnorePatterns": [
@@ -39,16 +36,16 @@
     ]
   },
   "scripts": {
-    "bootstrap": "yarn workspaces foreach -v -t --exclude root run bootstrap && BOOTSTRAPPING=true yarn workspaces foreach -v -t --exclude root run build",
-    "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"yarn workspace typescriptlang-org start\"",
-    "build": "yarn workspaces foreach -v -t --exclude root --exclude typescriptlang-org run build",
-    "build-site": "yarn workspace typescriptlang-org build",
-    "compile": "yarn workspace typescriptlang-org tsc",
-    "update-snapshots": "yarn workspace typescriptlang-org update-snapshots",
-    "clean": "yarn workspace typescriptlang-org gatsby clean",
+    "bootstrap": "pnpm -r run bootstrap && BOOTSTRAPPING=true pnpm -r run build",
+    "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"pnpm run --filter=typescriptlang-org start\"",
+    "build": "pnpm run --filter=!typescriptlang-org build",
+    "build-site": "pnpm run --filter=typescriptlang-org build",
+    "compile": "pnpm run --filter=typescriptlang-org tsc",
+    "update-snapshots": "pnpm run --filter=typescriptlang-org update-snapshots",
+    "clean": "pnpm run --filter=typescriptlang-org gatsby clean",
     "clean-twoslash": "rm -rf packages/.cache/twoslash",
-    "test": "CI=true yarn workspaces foreach -v -t --exclude root run test",
-    "update-test-snapshots": "CI=true yarn workspaces foreach --include gatsby-remark-shiki-twoslash  --include @typescript/twoslash --include shiki-twoslash --include @typescript/vfs run test -u"
+    "test": "CI=true pnpm -r run test",
+    "update-test-snapshots": "CI=true pnpm run --filter=@typescript/twoslash --filter=@typescript/vfs test -u"
   },
   "dependencies": {
     "@oss-docs/sync": "^1.1.4",
@@ -66,8 +63,5 @@
     ],
     "onlyPublishWithReleaseLabel": true
   },
-  "packageManager": "pnpm@8.15.7+sha256.50783dd0fa303852de2dd1557cd4b9f07cb5b018154a6e76d0f40635d6cee019",
-  "volta": {
-    "node": "14.21.1"
-  }
+  "packageManager": "pnpm@8.15.7+sha256.50783dd0fa303852de2dd1557cd4b9f07cb5b018154a6e76d0f40635d6cee019"
 }

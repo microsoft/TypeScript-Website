@@ -3,7 +3,7 @@
 // Looks at all the npm packages with the playground-plugin keyword, which
 // is a default in the templates.
 
-// Run via: CI=true yarn workspace typescript-playground run bootstrap
+// Run via: CI=true pnpm run --filter=typescript-playground run bootstrap
 
 if (!process.env.CI) {
   console.log("Skipping because it's not the CI")

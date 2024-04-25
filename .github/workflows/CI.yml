@@ -13,24 +13,23 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "18.x"
+      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
 
       # Install, should be basically instant if cached
-      - run: yarn install
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
+      - run: pnpm install
 
       # Verify dependencies are hooked up right
       - run: node test/verifyPackageVersions.js
 
       # Grab localizations
-      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+      - run: pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
       # Build the packages
-      - run: yarn bootstrap
-      - run: yarn build
+      - run: pnpm bootstrap
+      - run: pnpm build
 
       # Verify it compiles
-      - run: yarn build-site
+      - run: pnpm build-site
       
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'pull_request'
@@ -39,13 +38,13 @@ jobs:
           path: packages/typescriptlang-org/public
 
       # Run all the package's tests
-      - run: yarn test
+      - run: pnpm test
         env:
           CI: true
 
       # danger for PR builds
       - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
-        run: "yarn danger ci"
+        run: "pnpm danger ci"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -78,11 +77,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "18.x"
-
+      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
       # Get local dependencies
-      - run: yarn install
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
+      - run: pnpm install
 
-      - run: yarn bootstrap
-      - run: yarn build
+      - run: pnpm bootstrap
+      - run: pnpm build

@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "bootstrap": "node script/downloadReleases.js",
-    "build": "dts build --tsconfig tsconfig.lib.json && yarn make-for-website",
+    "build": "dts build --tsconfig tsconfig.lib.json && pnpm make-for-website",
     "make-for-website": "tsc",
     "test": "jest"
   },

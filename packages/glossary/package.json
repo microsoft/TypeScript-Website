@@ -4,9 +4,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "generate-markdown": "yarn ts-node --project tsconfig.json scripts/generateMarkdown.ts ",
-    "build": "yarn generate-markdown",
-    "test": "yarn build && yarn lint",
+    "generate-markdown": "pnpm ts-node --project tsconfig.json scripts/generateMarkdown.ts ",
+    "build": "pnpm generate-markdown",
+    "test": "pnpm build && pnpm lint",
     "lint": "node scripts/lint.js"
   },
   "prettier": {

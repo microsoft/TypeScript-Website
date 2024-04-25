@@ -33,25 +33,22 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "18.x"
-          cache: yarn
+
+      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
 
       # Builds the modules, and boostraps the other modules
       - name: Build website
         run: |
-          yarn install
-          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
-          yarn bootstrap
-          yarn workspace typescriptlang-org setup-playground-cache-bust
-          yarn build
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
+          pnpm install
+          pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+          pnpm bootstrap
+          pnpm workspace typescriptlang-org setup-playground-cache-bust
+          pnpm build
 
       - name: Makes the site
         run: |
-          yarn build-site
+          pnpm build-site
           cp -r packages/typescriptlang-org/public site
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
 
       - name: Deploy
         id: builddeploy

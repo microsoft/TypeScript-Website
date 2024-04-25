@@ -14,7 +14,7 @@
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=node && cpy src/userFacingTypes.d.ts dist/ --rename=index.d.ts && cpy src/ ../sandbox/src/vendor/ata",
     "test": "jest",
-    "bootstrap": "yarn build"
+    "bootstrap": "pnpm build"
   },
   "publishConfig": {
     "access": "public"

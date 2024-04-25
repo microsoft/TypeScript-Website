@@ -3,7 +3,7 @@
 This a pretty traditional Gatsby site. You can start it up via:
 
 ```sh
-yarn start
+pnpm start
 ```
 
 Which starts up a dev server.

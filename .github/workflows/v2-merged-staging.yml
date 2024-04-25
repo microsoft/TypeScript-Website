@@ -19,25 +19,26 @@ jobs:
         with:
           node-version: "18.x"
           registry-url: "https://registry.npmjs.org/"
-          cache: yarn
+      
+      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
 
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       - name: Prepare website v2
         run: |
-          yarn install
-          yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
-          yarn bootstrap
-          yarn workspace typescriptlang-org setup-playground-cache-bust
-          yarn workspace typescriptlang-org setup-staging
-          yarn build
+          pnpm install
+          pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+          pnpm bootstrap
+          pnpm workspace typescriptlang-org setup-playground-cache-bust
+          pnpm workspace typescriptlang-org setup-staging
+          pnpm build
         env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
+          pnpm_CHECKSUM_BEHAVIOR: ignore
 
       - name: Build website v2
         run: |
-          yarn build-site
+          pnpm build-site
           cp -r packages/typescriptlang-org/public site
 
       - name: Deploy + Publish to CDN
@@ -61,7 +62,7 @@ jobs:
       # Deploy
       - name: Deploy npm Packages
         run: |
-          yarn pleb publish
+          pnpm pleb publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 

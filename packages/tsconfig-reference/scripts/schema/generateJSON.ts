@@ -3,8 +3,8 @@
 
 /** Run with either:
      node --loader ts-node/esm  packages/tsconfig-reference/scripts/schema/generateJSON.ts
-     yarn ts-node scripts/cli/generateJSON.ts
-     yarn workspace tsconfig-reference generate:json:schema
+     pnpm ts-node scripts/cli/generateJSON.ts
+     pnpm run --filter=tsconfig-reference generate:json:schema
 */
 console.log("TSConfig Ref: JSON schema");
 
@@ -88,7 +88,7 @@ filteredOptions.forEach((option) => {
 
 You're also probably going to need to make the new Markdown file for the compiler flag, run:
 
-\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description.message}\\n ' > ${sectionsPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n
+\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description.message}\\n ' > ${sectionsPath}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n
     `;
 
     throw new Error([title, headline, msg, ""].join("\n\n"));
@@ -100,7 +100,7 @@ You're also probably going to need to make the new Markdown file for the compile
     } catch (error) {
       // prettier-ignore
       throw new Error(
-        `\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something" \\n---\\n${option.description.message.replace(/'/g, "`")}\\n ' > ${sectionsPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`
+        `\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something" \\n---\\n${option.description.message.replace(/'/g, "`")}\\n ' > ${sectionsPath}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n`
       );
     }
 
