@@ -579,7 +579,7 @@ draw({ color: "blue", radius: 42 });
 draw({ color: "red", raidus: 42 });
 ```
 
-## Interfaces vs. Intersections
+## Extensions vs. Intersections
 
 We just looked at two ways to combine types which are similar, but are actually subtly different.
 With interfaces, we could use an `extends` clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias.
