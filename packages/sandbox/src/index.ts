@@ -319,7 +319,7 @@ export const createTypeScriptSandbox = (
   /** Gets the DTS for the JS/TS  of compiling your editor's code */
   const getDTSForCode = async () => {
     const result = await getEmitResult()
-    return result.outputFiles.find((o: any) => o.name.endsWith(".d.ts"))!.text
+    return result.outputFiles.find((o: any) => o.name.endsWith(".d.ts"))?.text || ""
   }
 
   const getWorkerProcess = async (): Promise<TypeScriptWorker> => {
