@@ -48,6 +48,9 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
     devDependencies:
+      chalk:
+        specifier: ^4.1.2
+        version: 4.1.2
       concurrently:
         specifier: ^5.1.0
         version: 5.3.0
@@ -106,10 +109,6 @@ importers:
       moment-timezone:
         specifier: 0.5.28
         version: 0.5.28
-    devDependencies:
-      chalk:
-        specifier: ^4
-        version: 4.1.2
 
   packages/create-typescript-playground-plugin:
     dependencies:

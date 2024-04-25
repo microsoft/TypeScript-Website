@@ -5,6 +5,7 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "chalk": "^4.1.2",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "danger": "^9.2.10",

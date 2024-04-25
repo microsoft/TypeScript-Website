@@ -12,6 +12,5 @@
     "test": "echo 'NOOP'"
   },
   "devDependencies": {
-    "chalk": "^4"
   }
 }
