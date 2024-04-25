@@ -298,7 +298,7 @@ export const createTypeScriptSandbox = (
   /** Gets the results of compiling your editor's code */
   const getEmitResult = async (
     emitOnlyDtsFiles?: boolean,
-		forceDtsEmit?: boolean
+    forceDtsEmit?: boolean
   ) => {
     const model = editor.getModel()!
     const client = await getWorkerProcess()
