@@ -17,6 +17,14 @@ overrides:
   shelljs: 0.8.4
   sharp: 0.28.1
 
+patchedDependencies:
+  react-intl@3.12.1:
+    hash: yqkzm4v5lxjbatodvsvpq7o7bq
+    path: patches/react-intl@3.12.1.patch
+  react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825:
+    hash: mr727qw45duqihwv4trgafh5ci
+    path: patches/react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825.patch
+
 importers:
 
   .:
@@ -129,10 +137,10 @@ importers:
   packages/playground:
     dependencies:
       '@typescript/playground-worker':
-        specifier: 0.1.0
+        specifier: workspace:*
         version: link:../playground-worker
       '@typescript/sandbox':
-        specifier: 0.1.2
+        specifier: workspace:*
         version: link:../sandbox
       esbuild:
         specifier: ^0.17.8
@@ -191,10 +199,10 @@ importers:
   packages/sandbox:
     dependencies:
       '@typescript/ata':
-        specifier: 0.9.4
+        specifier: workspace:*
         version: link:../ata
       '@typescript/vfs':
-        specifier: 1.5.0
+        specifier: workspace:*
         version: link:../typescript-vfs
       lz-string:
         specifier: ^1.5.0
@@ -234,7 +242,7 @@ importers:
   packages/ts-twoslasher:
     dependencies:
       '@typescript/vfs':
-        specifier: 1.5.0
+        specifier: workspace:*
         version: link:../typescript-vfs
       debug:
         specifier: ^4.1.1
@@ -353,14 +361,17 @@ importers:
         specifier: ^5.0.15
         version: 5.0.27
       '@typescript/playground':
-        specifier: 0.1.2
+        specifier: workspace:*
         version: link:../playground
       '@typescript/sandbox':
-        specifier: 0.1.2
+        specifier: workspace:*
         version: link:../sandbox
       '@typescript/twoslash':
-        specifier: 3.2.4
+        specifier: workspace:*
         version: link:../ts-twoslasher
+      '@typescript/vfs':
+        specifier: workspace:*
+        version: link:../typescript-vfs
       gatsby:
         specifier: ^5.6.1
         version: 5.13.4(babel-eslint@10.1.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.5)
@@ -424,6 +435,9 @@ importers:
       gatsby-transformer-remark:
         specifier: ^6.6.0
         version: 6.13.1(gatsby@5.13.4)
+      github-slugger:
+        specifier: ^1.5.0
+        version: 1.5.0
       jsdom:
         specifier: ^16.2.0
         version: 16.7.0
@@ -441,10 +455,13 @@ importers:
         version: 6.1.0(react@18.2.0)
       react-intl:
         specifier: ^3.12.1
-        version: 3.12.1(react@18.2.0)
+        version: 3.12.1(patch_hash=yqkzm4v5lxjbatodvsvpq7o7bq)(react@18.2.0)
       sass:
         specifier: ^1.26.10
         version: 1.75.0
+      shiki-twoslash:
+        specifier: ^3.1.2
+        version: 3.1.2(typescript@5.4.5)
       ts-debounce:
         specifier: ^2.2.0
         version: 2.3.0
@@ -488,6 +505,12 @@ importers:
       node-fetch:
         specifier: ^2.7.0
         version: 2.7.0
+      remark:
+        specifier: ^11.0.2
+        version: 11.0.2
+      remark-html:
+        specifier: ^10.0.0
+        version: 10.0.0
       semver:
         specifier: ^7.6.0
         version: 7.6.0
@@ -10661,7 +10684,7 @@ packages:
       react-dev-utils: 12.0.1(eslint@7.32.0)(typescript@5.4.5)(webpack@5.91.0)
       react-dom: 18.2.0(react@18.2.0)
       react-refresh: 0.14.0
-      react-server-dom-webpack: 0.0.0-experimental-c8b778b7f-20220825(react@18.2.0)(webpack@5.91.0)
+      react-server-dom-webpack: 0.0.0-experimental-c8b778b7f-20220825(patch_hash=mr727qw45duqihwv4trgafh5ci)(react@18.2.0)(webpack@5.91.0)
       redux: 4.2.1
       redux-thunk: 2.4.2(redux@4.2.1)
       resolve-from: 5.0.0
@@ -16391,7 +16414,7 @@ packages:
       react-side-effect: 2.1.2(react@18.2.0)
     dev: false
 
-  /react-intl@3.12.1(react@18.2.0):
+  /react-intl@3.12.1(patch_hash=yqkzm4v5lxjbatodvsvpq7o7bq)(react@18.2.0):
     resolution: {integrity: sha512-cgumW29mwROIqyp8NXStYsoIm27+8FqnxykiLSawWjOxGIBeLuN/+p2srei5SRIumcJefOkOIHP+NDck05RgHg==}
     peerDependencies:
       react: ^16.3.0
@@ -16410,6 +16433,7 @@ packages:
       react: 18.2.0
       shallow-equal: 1.2.1
     dev: false
+    patched: true
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -16422,7 +16446,7 @@ packages:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
 
-  /react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825(react@18.2.0)(webpack@5.91.0):
+  /react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825(patch_hash=mr727qw45duqihwv4trgafh5ci)(react@18.2.0)(webpack@5.91.0):
     resolution: {integrity: sha512-JyCjbp6ZvkH/T0EuVPdceYlC8u5WqWDSJr2KxDvc81H2eJ+7zYUN++IcEycnR2F+HmER8QVgxfotnIx352zi+w==}
     engines: {node: '>=0.10.0'}
     peerDependencies:
@@ -16434,6 +16458,7 @@ packages:
       neo-async: 2.6.2
       react: 18.2.0
       webpack: 5.91.0
+    patched: true
 
   /react-side-effect@2.1.2(react@18.2.0):
     resolution: {integrity: sha512-PVjOcvVOyIILrYoyGEpDN3vmYNLdy1CajSFNt4TDsVQC5KpTijDvWVoR+/7Rz2xT978D8/ZtFceXxzsPwZEDvw==}

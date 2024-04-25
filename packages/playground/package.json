@@ -15,8 +15,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@typescript/playground-worker": "0.1.0",
-    "@typescript/sandbox": "0.1.2",
+    "@typescript/playground-worker": "workspace:*",
+    "@typescript/sandbox": "workspace:*",
     "esbuild": "^0.17.8"
   },
   "devDependencies": {

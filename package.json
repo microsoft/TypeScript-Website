@@ -28,6 +28,10 @@
       "prettier": "^2.0.2",
       "shelljs": "0.8.4",
       "sharp": "0.28.1"
+    },
+    "patchedDependencies": {
+      "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": "patches/react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825.patch",
+      "react-intl@3.12.1": "patches/react-intl@3.12.1.patch"
     }
   },
   "jest": {
