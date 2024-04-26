@@ -38,7 +38,7 @@ printDelayed(["Hello", "beautiful", "asynchronous", "world"]).then(() => {
 });
 ```
 
-For more information see [async function reference](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) reference.
+For more information see [async function reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) reference.
 
 ## Support for `--target ES6` with `--module`
 

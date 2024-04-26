@@ -52,7 +52,7 @@ if (typeof possibleOrder === "undefined") {
 }
 
 // You can see a full list of possible typeof values
-// here: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/typeof
+// here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 
 // Using JavaScript operators can only get you so far. When
 // you want to check your own object types you can use

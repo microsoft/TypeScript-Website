@@ -1,4 +1,4 @@
-/** Based on https://developer.mozilla.org/docs/Web/HTTP/Browser_detection_using_the_user_agent */
+/** Based on https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent */
 export function isTouchDevice() {
   var hasTouchScreen = false
   if ("maxTouchPoints" in navigator) {

@@ -261,7 +261,7 @@ foo();
 let a;
 ```
 
-For more information on temporal dead zones, see relevant content on the [Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let).
+For more information on temporal dead zones, see relevant content on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#temporal_dead_zone_tdz).
 
 ### Re-declarations and Shadowing
 
@@ -447,7 +447,7 @@ The majority of this handbook uses `let` declarations.
 ## Destructuring
 
 Another ECMAScript 2015 feature that TypeScript has is destructuring.
-For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
+For a complete reference, see [the article on the Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
 In this section, we'll give a short overview.
 
 ### Array destructuring
@@ -688,7 +688,7 @@ Then the `food` property in `defaults` overwrites `food: "rich"`, which is not w
 
 Object spread also has a couple of other surprising limits.
 First, it only includes an objects'
-[own, enumerable properties](https://developer.mozilla.org/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
+[own, enumerable properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties).
 Basically, that means you lose methods when you spread instances of an object:
 
 ```ts

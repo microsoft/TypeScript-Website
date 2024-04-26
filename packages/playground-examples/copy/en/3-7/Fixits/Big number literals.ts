@@ -16,7 +16,7 @@ const oneBelowMin = -9007199254740992;
 // is to convert these numbers to BigInts instead
 // of a number:
 //
-// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
 
 // TypeScript will now offer a fixit for number
 // literals which are above 2^52 (positive / negative)

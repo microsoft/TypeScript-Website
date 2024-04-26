@@ -790,7 +790,7 @@ console.log(s.secretKey);
 console.log(s["secretKey"]);
 ```
 
-Unlike TypeScripts's `private`, JavaScript's [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them _hard private_.
+Unlike TypeScripts's `private`, JavaScript's [private fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties) (`#`) remain private after compilation and do not provide the previously mentioned escape hatches like bracket notation access, making them _hard private_.
 
 ```ts twoslash
 class Dog {

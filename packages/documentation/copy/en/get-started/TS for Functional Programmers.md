@@ -57,7 +57,7 @@ JavaScript defines 8 built-in types:
 | `Undefined` | also equivalent to the unit type.           |
 | `Object`    | similar to records.                         |
 
-[See the MDN page for more detail](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures).
+[See the MDN page for more detail](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures).
 
 TypeScript has corresponding primitive types for the built-in types:
 

@@ -134,7 +134,7 @@ let x = foo !== null && foo !== undefined ? foo : bar();
 ```
 
 The `??` operator can replace uses of `||` when trying to use a default value.
-For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/docs/Web/API/Window/localStorage) (if it ever was);
+For example, the following code snippet tries to fetch the volume that was last saved in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) (if it ever was);
 however, it has a bug because it uses `||`.
 
 ```ts

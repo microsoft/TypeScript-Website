@@ -200,7 +200,7 @@ function padLeft(value: string, padding: string | number) {
 }
 ```
 
-These _`typeof` type guards_ are recognized in two different forms: `typeof v === "typename"` and `typeof v !== "typename"`, where `"typename"` can be one of [`typeof` operator's return values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#Description) (`"undefined"`, `"number"`, `"string"`, `"boolean"`, `"bigint"`, `"symbol"`, `"object"`, or `"function"`).
+These _`typeof` type guards_ are recognized in two different forms: `typeof v === "typename"` and `typeof v !== "typename"`, where `"typename"` can be one of [`typeof` operator's return values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#description) (`"undefined"`, `"number"`, `"string"`, `"boolean"`, `"bigint"`, `"symbol"`, `"object"`, or `"function"`).
 While TypeScript won't stop you from comparing to other strings, the language won't recognize those expressions as type guards.
 
 ## `instanceof` type guards
