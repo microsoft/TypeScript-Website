@@ -19,7 +19,6 @@ In order to use JSX you must do two things.
 2. Enable the [`jsx`](/tsconfig#jsx) option
 
 TypeScript ships with several JSX modes: `preserve`, `react` (classic runtime), `react-jsx` (automatic runtime), `react-jsxdev` (automatic development runtime), and `react-native`.
-These modes only affect the emit stage - type checking is unaffected.
 The `preserve` mode will keep the JSX as part of the output to be further consumed by another transform step (e.g. [Babel](https://babeljs.io/)).
 Additionally the output will have a `.jsx` file extension.
 The `react` mode will emit `React.createElement`, does not need to go through a JSX transformation before use, and the output will have a `.js` file extension.
