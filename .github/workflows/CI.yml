@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "18.x"
 
       # Install, should be basically instant if cached
       - run: yarn install
@@ -31,24 +31,43 @@ jobs:
 
       # Verify it compiles
       - run: yarn build-site
-      - run: cp -r packages/typescriptlang-org/public site
+      
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request'
+        with:
+          name: site
+          path: packages/typescriptlang-org/public
 
       # Run all the package's tests
       - run: yarn test
         env:
           CI: true
 
-      - uses: actions/upload-artifact@v4
-        if: github.event_name == 'pull_request'
-        with:
-          name: site
-          path: site
-
       # danger for PR builds
       - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
         run: "yarn danger ci"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: |
+          git add .
+          if ! git diff --staged --exit-code --quiet; then
+            echo "This PR is missing some generated changes. Please update locally or merge the patch artifact."
+            echo ""
+            git diff --staged
+            git diff --staged > missing.patch
+            exit 1
+          fi
+        name: Check for uncommitted changes
+        id: check-diff
+        if: github.event_name == 'pull_request'
+
+      - name: Upload diff artifact
+        if: ${{ failure() && steps.check-diff.conclusion == 'failure' }}
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        with:
+          name: missing.patch
+          path: missing.patch
 
   windows:
     runs-on: windows-latest
@@ -58,7 +77,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "18.x"
 
       # Get local dependencies
       - run: yarn install

@@ -2,7 +2,7 @@
 // Data-dump all the CLI options
 
 /** Run with either:
-     node ./node_modules/.bin/ts-node-transpile-only  packages/tsconfig-reference/scripts/schema/generateJSON.ts
+     node --loader ts-node/esm  packages/tsconfig-reference/scripts/schema/generateJSON.ts
      yarn ts-node scripts/cli/generateJSON.ts
      yarn workspace tsconfig-reference generate:json:schema
 */
@@ -143,7 +143,7 @@ for (const [properties, options] of [
       properties[name] = undefined;
     } else if (option.type === "list") {
       updateItemsSchema(
-        (optionSchema as Extract<typeof optionSchema, { items?: unknown }>).items as never,
+        ((optionSchema as Extract<typeof optionSchema, { items?: unknown }>).items as never) || [],
         option.element.type
       );
     } else {
