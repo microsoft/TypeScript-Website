@@ -32,7 +32,7 @@ const Index: React.FC<Props> = props => {
     getLoaderScript.src = withPrefix("/js/vs.loader.js")
     getLoaderScript.async = true
     getLoaderScript.onload = () => {
-      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      // Allow prod builds to set a custom commit prefix to bust caches
       const {sandboxRoot} = getPlaygroundUrls()
       
       // @ts-ignore

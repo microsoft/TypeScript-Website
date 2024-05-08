@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Check out, and set up the node/ruby infra
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: "18.x"
 
@@ -32,7 +32,7 @@ jobs:
       # Verify it compiles
       - run: yarn build-site
       
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: github.event_name == 'pull_request'
         with:
           name: site
@@ -74,8 +74,8 @@ jobs:
 
     steps:
       # Check out, and set up the node infra
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: "18.x"
 

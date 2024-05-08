@@ -11,7 +11,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
       - run: |
           if [[ $(git log --format="%H" --since "50 days" | head -c1 | wc -c) == 0 ]]; then
             git config user.email "typescriptbot@microsoft.com"
