@@ -1,7 +1,6 @@
 ### Meta
 
-- **URLs:** [production](https://www.typescriptlang.org), [staging](http://www.staging-typescript.org/)
-- **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd)
+- **URLs:** [production](https://www.typescriptlang.org)
 - **Translations:** [microsoft/TypeScript-Website-Localizations](https://github.com/microsoft/TypeScript-Website-Localizations)
 
 ### Getting Started
@@ -32,8 +31,6 @@ Some useful knowledge you need to know:
 
 - All packages have: `yarn build` and `yarn test`
 - All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
-
-You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
 
 Having issues getting set up? [Consult the troubleshooting](./docs/Setup%20Troubleshooting.md).
 
@@ -102,7 +99,7 @@ yarn workspace tsconfig-reference run lint resolveJson
 
 ## Documentation
 
-The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
+The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook).
 
 ## JSON Schema
 

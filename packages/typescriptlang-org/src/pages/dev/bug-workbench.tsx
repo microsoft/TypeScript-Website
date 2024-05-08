@@ -57,7 +57,7 @@ const Play: React.FC<Props> = (props) => {
         const nightlyJSON = await nightlyLookup.json()
         tsVersionParam = nightlyJSON.version
       }
-      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      // Allow prod builds to set a custom commit prefix to bust caches
       const { sandboxRoot, playgroundRoot, playgroundWorker } = getPlaygroundUrls()
 
       // @ts-ignore

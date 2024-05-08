@@ -63,4 +63,4 @@ Once you're happy and it's polished, you can apply to have it in the default plu
 
 ## Support
 
-Ask questions either on the TypeScript Website issues](https://github.com/microsoft/TypeScript-Website/issues), or in the [TypeScript Community Discord](https://discord.gg/typescript) - in the TypeScript Website channel.
+Ask questions either on the [TypeScript Website issues](https://github.com/microsoft/TypeScript-Website/issues), or in the [TypeScript Community Discord](https://discord.gg/typescript) - in the TypeScript Website channel.
