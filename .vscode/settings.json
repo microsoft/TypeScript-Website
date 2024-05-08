@@ -4,6 +4,7 @@
     "**/packages/typescriptlang-org/public/*": true,
     "**/packages/typescriptlang-org/.cache/*": true
   },
+  "github-actions.remote-name": "upstream",
   "typescript.tsdk": "node_modules/typescript/lib",
   "deno.enable": false,
 }
