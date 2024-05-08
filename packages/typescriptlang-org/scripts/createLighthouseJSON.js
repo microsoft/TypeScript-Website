@@ -4,7 +4,7 @@ const { join } = require("path")
 const parser = require("xml-js")
 
 const prRoot =
-  process.env.PR_DEPLOY_URL_ROOT;
+  process.env.PR_DEPLOY_URL_ROOT || "https://www.typescriptlang.org/"
 
 const go = async () => {
   const sitemap = `${prRoot}/sitemap.xml`
