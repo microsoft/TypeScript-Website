@@ -25,6 +25,11 @@ export const getExampleSourceCode = async (prefix: string, lang: string, example
       code = code.split("\n").slice(1).join("\n").trim()
     }
 
+    // @ts-ignore
+    window.appInsights &&
+    // @ts-ignore
+    window.appInsights.trackEvent({ name: "Read Playground Example", properties: { id: exampleID, lang } })
+
     return {
       example,
       code,

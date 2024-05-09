@@ -71,3 +71,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  # Update the site stats
+      - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
+          APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}

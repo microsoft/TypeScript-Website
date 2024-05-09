@@ -241,6 +241,8 @@ export const setupPlayground = (
   // When any compiler flags are changed, trigger a potential change to the URL
   sandbox.setDidUpdateCompilerSettings(async () => {
     playgroundDebouncedMainFunction()
+    // @ts-ignore
+    window.appInsights && window.appInsights.trackEvent({ name: "Compiler Settings changed" })
 
     const model = sandbox.editor.getModel()
     const plugin = getCurrentPlugin()
