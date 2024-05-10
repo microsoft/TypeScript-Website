@@ -97,7 +97,7 @@ const Play: React.FC<Props> = (props) => {
       const useLocalCompiler = tsVersion === "dev"
       const devIsh = ["pr", "dev"]
       const version = devIsh.find(d => tsVersion.includes(d)) ? "dev" : "min"
-      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/${version}/vs`
+      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/${version}/vs`
 
       // Make a quick HEAD call for the main monaco editor for this version of TS, if it
       // bails then give a useful error message and bail.
