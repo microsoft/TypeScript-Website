@@ -90,7 +90,7 @@ error TS2345: Argument of type 'number[]' is not assignable to parameter of type
 ```
 
 Similarly, try removing all the arguments to the greeter call.
-TypeScript will let you know that you have called this function with an unexpected number of parameters.
+TypeScript will let you know that you have called this function with an unexpected number of arguments.
 In both cases, TypeScript can offer static analysis based on both the structure of your code, and the type annotations you provide.
 
 Notice that although there were errors, the `greeter.js` file is still created.
