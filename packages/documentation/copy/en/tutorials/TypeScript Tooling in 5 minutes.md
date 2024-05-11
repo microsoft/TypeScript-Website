@@ -54,7 +54,7 @@ The result will be a file `greeter.js` which contains the same JavaScript that y
 We're up and running using TypeScript in our JavaScript app!
 
 Now we can start taking advantage of some of the new tools TypeScript offers.
-Add a `: string` type annotation to the 'person' function argument as shown here:
+Add a `: string` type annotation to the 'person' function parameter as shown here:
 
 ```ts twoslash
 function greeter(person: string) {
