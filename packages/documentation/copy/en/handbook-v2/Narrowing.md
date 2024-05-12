@@ -415,7 +415,9 @@ function example() {
 
 ## Using type predicates
 
-We've worked with existing JavaScript constructs to handle narrowing so far, however sometimes you want more direct control over how types change throughout your code.
+We've worked with existing JavaScript constructs to handle narrowing so far, however sometimes you want more direct control over how types change throughout your code. Type predicates provide a way to perform type narrowing in scenarios where the TypeScript compiler is *unable* to do so.
+
+Type predicates supersede the TypeScript compiler's type checking. This means that they can be used to change a value's type to an incorrect type. **Type predicates should be a last resort for narrowing that cannot be done any other way.**
 
 To define a user-defined type guard, we simply need to define a function whose return type is a _type predicate_:
 
@@ -482,6 +484,11 @@ In addition, classes can [use `this is Type`](/docs/handbook/2/classes.html#this
 ## Assertion functions
 
 Types can also be narrowed using [Assertion functions](/docs/handbook/release-notes/typescript-3-7.html#assertion-functions).
+
+As with [type predicates](#using-type-predicates), assertion functions provide a way to perform type narrowing in scenarios where the TypeScript compiler is *unable* to do so.
+
+Assertion functions supersede the TypeScript compiler's type checking. This means that they can be used to change a value's type to an incorrect type. **Assertion functions should be a last resort for narrowing that cannot be done any other way.**
+
 
 # Discriminated unions
 
