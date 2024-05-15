@@ -510,6 +510,9 @@ importers:
       jest:
         specifier: ^29.5.0
         version: 29.7.0(@types/node@18.19.33)(ts-node@10.9.2)
+      monaco-editor:
+        specifier: ^0.32.1
+        version: 0.32.1
       node-fetch:
         specifier: ^2.7.0
         version: 2.7.0

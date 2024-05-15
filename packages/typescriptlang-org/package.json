@@ -70,6 +70,7 @@
     "gatsby-plugin-typegen": "^3.1.0",
     "gatsby-plugin-typescript": "^5.6.0",
     "jest": "^29.5.0",
+    "monaco-editor": "^0.32.1",
     "node-fetch": "^2.7.0",
     "semver": "^7.6.0",
     "ts-jest": "^29.0.5"
