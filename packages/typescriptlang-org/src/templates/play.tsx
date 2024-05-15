@@ -18,8 +18,10 @@ import "reflect-metadata"
 import playgroundReleases from "../../../sandbox/src/releases.json"
 import { getPlaygroundUrls } from "../lib/playgroundURLs"
 
+import type * as playgroundPackage from "../../static/js/playground";
+
 // This gets set by the playground
-declare const playground: ReturnType<typeof import("@typescript/playground").setupPlayground>
+declare const playground: playgroundPackage.Playground;
 
 type Props = {
   pageContext: {
@@ -139,7 +141,7 @@ const Play: React.FC<Props> = (props) => {
         }
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof playgroundPackage) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts || tsWorker.typescript
         const isOK = main && ts && sandbox && playground
