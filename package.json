@@ -6,6 +6,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
+    "@types/node": "^18.19.33",
+    "@types/react": "^18.2.77",
     "chalk": "^4.1.2",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
