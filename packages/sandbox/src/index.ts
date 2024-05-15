@@ -296,10 +296,13 @@ export const createTypeScriptSandbox = (
   }
 
   /** Gets the results of compiling your editor's code */
-  const getEmitResult = async () => {
+  const getEmitResult = async (
+    emitOnlyDtsFiles?: boolean,
+    forceDtsEmit?: boolean
+  ) => {
     const model = editor.getModel()!
     const client = await getWorkerProcess()
-    return await client.getEmitOutput(model.uri.toString())
+    return await client.getEmitOutput(model.uri.toString(), emitOnlyDtsFiles, forceDtsEmit)
   }
 
   /** Gets the JS  of compiling your editor's code */
@@ -318,8 +321,8 @@ export const createTypeScriptSandbox = (
 
   /** Gets the DTS for the JS/TS  of compiling your editor's code */
   const getDTSForCode = async () => {
-    const result = await getEmitResult()
-    return result.outputFiles.find((o: any) => o.name.endsWith(".d.ts"))!.text
+    const result = await getEmitResult(/*emitOnlyDtsFiles*/ undefined, /*forceDtsEmit*/ true)
+    return result.outputFiles.find((o: any) => o.name.endsWith(".d.ts"))?.text || ""
   }
 
   const getWorkerProcess = async (): Promise<TypeScriptWorker> => {

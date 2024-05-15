@@ -107,7 +107,7 @@ const b = "345"
 ```
 
 Now returns correct query responses, I needed this for the bug workbench.
-http://www.staging-typescript.org/dev/bug-workbench
+http://www.typescriptlang.org/dev/bug-workbench
 
 Also has a way to set the defaults for the config
 
