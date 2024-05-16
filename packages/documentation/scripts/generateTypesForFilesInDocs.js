@@ -23,7 +23,7 @@ const enRoot = path.join(__dirname, "..", "copy", "en");
 
 // From:   '/Users/ortatherox/dev/typescript/new-website/packages/documentation/copy/en/Advanced Types.md',
 // To:     'Advanced Types.md',
-const files = allFiles.map((f) => path.relative(enRoot, f).replace(/\\/g, "/"));
+const files = allFiles.map((f) => path.relative(enRoot, f).replace(/\\/g, "/")).sort();
 
 const code = `
   export type AllDocsPages = "${files.join('" | "')}"
