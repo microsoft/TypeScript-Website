@@ -27,11 +27,14 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
+            console.log(context);
+
             let pr;
             let workflowRun;
             let isLabel = false;
             switch (context.eventName) {
               case "workflow_dispatch":
+                console.log("Workflow dispatch event");
                 pr = (await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -39,12 +42,15 @@ jobs:
                 })).data;
                 break;
               case "pull_request_target":
+                console.log("Pull request target event");
                 pr = context.payload.pull_request;
                 break;
               case "workflow_run":
+                console.log("Workflow run event");
                 workflowRun = context.payload.workflow_run;
                 pr = workflowRun.pull_requests[0];
                 if (pr) {
+                  console.log("PR found in workflow run");
                   // Reload the PR to get the labels.
                   pr = (await github.rest.pulls.get({
                     owner: context.repo.owner,
@@ -52,6 +58,7 @@ jobs:
                     pull_number: pr.number,
                   })).data;
                 } else {
+                  console.log("PR not found in workflow run");
                   // PRs sent from forks do not get the pull_requests field set.
                   // https://github.com/orgs/community/discussions/25220
                   pr = (await github.rest.pulls.list({
@@ -67,12 +74,16 @@ jobs:
               throw new Error("Could not find PR");
             }
 
+            console.log(`Found PR ${pr.html_url}`);
+            console.log(pr);
+
             if (!pr.labels.some((label) => label.name === "deploy-preview")) {
               console.log(`PR ${pr.number} does not have the deploy-preview label`);
               return null;
             }
 
             if (!workflowRun) {
+              console.log(`No workflow run found in event, searching for it with ${pr.head.sha}`);
               try {
                 workflowRun = (await github.rest.actions.listWorkflowRuns({
                   owner: context.repo.owner,
@@ -92,6 +103,7 @@ jobs:
             }
 
             console.log(`Found workflow run ${workflowRun.html_url}`)
+            console.log(workflowRun)
 
             if (workflowRun.conclusion !== "success") {
               console.log(`Workflow run did not succeed`);
