@@ -17,6 +17,9 @@ permissions:
   pull-requests: write
   actions: read
 
+concurrency:
+  group: preview-site
+
 jobs:
   deploy:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
