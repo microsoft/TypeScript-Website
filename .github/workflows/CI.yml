@@ -42,7 +42,7 @@ jobs:
       - run: pnpm build-site
       
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
         with:
           name: site
           path: packages/typescriptlang-org/public
