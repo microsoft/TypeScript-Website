@@ -58,15 +58,14 @@ jobs:
                     pull_number: pr.number,
                   })).data;
                 } else {
-                  console.log("PR not found in workflow run");
+                  const q = `is:pr is:open repo:${context.repo.owner}/${context.repo.repo} sha:${workflowRun.head_sha}`;
+                  console.log(`PR not found in workflow run, searching for it with ${q}`);
                   // PRs sent from forks do not get the pull_requests field set.
                   // https://github.com/orgs/community/discussions/25220
-                  pr = (await github.rest.pulls.list({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    head: workflowRun.head_sha,
-                    per_page: 1,
-                  })).data[0];
+                  const response = await github.rest.search.issuesAndPullRequests({ q });
+                  if (response.data.items.length > 0) {
+                    pr = response.data.items[0];
+                  }
                 }
             }
 
