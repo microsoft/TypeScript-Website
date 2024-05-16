@@ -75,3 +75,32 @@ jobs:
         with:
           name: missing.patch
           path: missing.patch
+
+  changesets:
+    name: changesets
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+      with:
+        node-version: 'lts/*'
+    - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+    
+    - run: pnpm install
+    
+    - name: Check for missing changesets
+      run: |
+        PR_CHANGESETS=$(ls .changeset | (grep -v -E 'README\.md|config\.json' || true) | wc -l)
+        MAIN_CHANGESETS=$(git ls-tree -r origin/v2 .changeset | (grep -v -E 'README\.md|config\.json' || true) | wc -l)
+
+        # If the PR has no changesets, but main has changesets, assume this is PR is a versioning PR and exit
+        if [[ $PR_CHANGESETS -eq 0 && $MAIN_CHANGESETS -gt 0 ]]; then
+          echo "This PR is a versioning PR, exiting"
+          exit 0
+        fi
+
+        # git switch -c changesets-temp
+        # git checkout origin/v2 -- <ignored files>
+        pnpm changeset status --since=origin/v2
