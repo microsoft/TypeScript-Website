@@ -2,7 +2,8 @@
   "private": true,
   "name": "root",
   "engines": {
-    "node": ">=18"
+    "node": ">=18",
+    "pnpm": ">=9"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
@@ -33,7 +34,6 @@
       "@types/eslint": "7.29.0",
       "assert": "2.0.0",
       "rollup-plugin-typescript2": "0.34.1",
-      "node-gyp": "5.1.0",
       "typescript": "5.4.5",
       "tslib": "2.6.0",
       "prettier": "^2.0.2",
@@ -79,5 +79,5 @@
     ],
     "onlyPublishWithReleaseLabel": true
   },
-  "packageManager": "pnpm@8.15.8+sha256.691fe176eea9a8a80df20e4976f3dfb44a04841ceb885638fe2a26174f81e65e"
+  "packageManager": "pnpm@9.1.1+sha256.9551e803dcb7a1839fdf5416153a844060c7bce013218ce823410532504ac10b"
 }
