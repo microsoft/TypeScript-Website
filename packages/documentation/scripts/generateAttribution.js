@@ -83,6 +83,8 @@ const allFiles = recursiveReadDirSync("copy/");
 const json = {};
 
 allFiles.forEach((f) => {
+  f = f.replace(/\\/g, "/");
+
   const oldName = f.split("/").splice(2).join("/");
   const originalRef = oldJSON[oldName] || { top: [], total: 0 };
 
