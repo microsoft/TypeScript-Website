@@ -42,7 +42,7 @@ jobs:
           pnpm install
           pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           pnpm bootstrap
-          pnpm workspace typescriptlang-org setup-playground-cache-bust
+          pnpm run --filter=typescriptlang-org setup-playground-cache-bust
           pnpm build
 
       - name: Makes the site
