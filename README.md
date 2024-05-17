@@ -51,6 +51,27 @@ If you want to know _in-depth_ how this website works, there is an [hour long vi
 - [Updating the TypeScript Version](./docs/New%20TypeScript%20Version.md)
 - [Something Went Wrong](./docs/Something%20Went%20Wrong.md)
 
+## Changesets
+
+This repo uses `pnpm` + `changesets` to manage package version bumps and releases.
+
+CI will fail if a PR is missing a changeset. To add a changeset, run `pnpm changeset`, then follow along with the CLI.
+
+```console
+$ pnpm changeset
+🦋  Which packages would you like to include? … 
+◯ changed packages
+  ◯ create-typescript-playground-plugin
+  ◯ @typescript/vfs
+  ◯ @typescript/twoslash
+  ◯ @typescript/sandbox
+  ◯ @typescript/ata
+```
+
+New files will be created in `.changeset` and must be committed.
+
+If you are making a change that does not affect published code, you can create an empty changeset for your PR with `pnpm changeset --empty`.
+
 # Website Packages
 
 ## TypeScriptLang-Org
