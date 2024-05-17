@@ -5,8 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "bootstrap": "pnpm build",
-    "build": "node scripts/generateTOC.js && node scripts/copyFiles.js",
-    "test": "echo 'NOOP'"
+    "build": "node scripts/generateTOC.js && node scripts/copyFiles.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",

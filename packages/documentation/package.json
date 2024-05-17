@@ -4,8 +4,6 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
-    "build": "echo 'NOOP'",
-    "test": "echo 'NOOP'",
     "lint": "node scripts/lintTwoslashErrors.js",
     "create-handbook-nav": "node ./scripts/generateTypesForFilesInDocs && node ./scripts/generateDocsNavigationPerLanguage.js",
     "bootstrap": "pnpm create-handbook-nav && node ./scripts/generateAttribution.js"
