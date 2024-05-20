@@ -107,8 +107,18 @@ jobs:
             console.log(`Found workflow run ${workflowRun.html_url}`)
             console.log(workflowRun)
 
-            if (workflowRun.conclusion !== "success") {
-              console.log(`Workflow run did not succeed`);
+            try {
+              const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                owner: "microsoft",
+                repo: "TypeScript-Website",
+                run_id: 9164276500,
+              })
+              if (!artifacts.data.artifacts.some(x => x.name === "site")) {
+                console.log("No artifact found in workflow run");
+                return null;
+              }
+            } catch (e) {
+              console.log(e);
               return null;
             }
 
