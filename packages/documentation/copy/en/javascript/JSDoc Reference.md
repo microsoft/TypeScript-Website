@@ -825,3 +825,27 @@ The following tags have open issues to support them:
 
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
+
+### Legacy type synonyms
+
+A number of common types are given aliases for compatibility with old JavaScript code.
+Some of the aliases are the same as existing types, although most of those are rarely used.
+For example, `String` is treated as an alias for `string`.
+Even though `String` is a type in TypeScript, it's rarely used, and old JSDoc often uses it to mean `string`.
+
+- `String -> string`
+- `Number -> number`
+- `Boolean -> boolean`
+- `Void -> void`
+- `Undefined -> undefined`
+- `Null -> null`
+- `function -> Function`
+- `array -> Array<any>`
+- `promise -> Promise<any>`
+- `Object -> any`
+
+The last three aliases are turned off when `noImplicitAny: true`:
+
+- `Object` stays `Object`, which is rarely used built-in type.
+- `array` stays `array`, which is not a built-in type.
+- `promise` stays `promise`, which is not a built-in type.
