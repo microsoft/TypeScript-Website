@@ -1,3 +1,5 @@
+# @typescript/vfs
+
 ### 1.5
 
 - Makes `createDefaultMapFromNodeModules` pull all the `.d.ts` files from the node_modules folder, not just the `.d.ts` files which were known ahead of time. 
