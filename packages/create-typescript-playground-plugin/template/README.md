@@ -22,8 +22,8 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full details, however, TLDR:
 
 ```sh
 git clone ...
-pnpm install
-pnpm start
+yarn install
+yarn start
 ```
 
 Then tick the box for starting plugin development inside the TypeScript Playground.

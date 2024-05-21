@@ -15,9 +15,9 @@
     "build": "rollup -c rollup.config.js",
     "compile": "tsc",
     "bootstrap": "node scripts/getDTS.js",
-    "start": "concurrently -p \"[{name}]\" -n \"ROLLUP,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"pnpm rollup -c rollup.config.js --watch\" \"pnpm serve dist\"",
-    "prepublish": "pnpm build",
-    "postinstall": "pnpm bootstrap && pnpm build"
+    "start": "concurrently -p \"[{name}]\" -n \"ROLLUP,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"yarn rollup -c rollup.config.js --watch\" \"yarn serve dist\"",
+    "prepublish": "yarn build",
+    "postinstall": "yarn bootstrap && yarn build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",

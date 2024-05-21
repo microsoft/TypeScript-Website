@@ -7,7 +7,7 @@
 // Changes:
 //  - Less dependencies
 //  - Ability for me to define the branch and the depth to extract from a zip
-//  - pnpm not npm
+//  - yarn not npm
 
 const path = require("path")
 const os = require("os")
@@ -20,7 +20,7 @@ const https = require("https")
 
 const install = () => {
   return new Promise((resolve, reject) => {
-    const child = spawn("pnpm", ["install"], {
+    const child = spawn("yarn", ["install"], {
       stdio: "inherit",
     })
     child.on("close", code => {
@@ -128,7 +128,7 @@ const create = async (opts = {}) => {
   console.log("To get started:")
   console.log(` - code ${name}`)
   console.log(` - cd ${name}`)
-  console.log(` - pnpm start`)
+  console.log(` - yarn start`)
 
   console.log(
     "\nCome and ask questions to other plugin authors in the TypeScript Community Discord: https://discord.gg/typescript"
