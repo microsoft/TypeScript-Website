@@ -843,9 +843,11 @@ Even though `String` is a type in TypeScript, it's rarely used, and old JSDoc of
 - `array -> Array<any>`
 - `promise -> Promise<any>`
 - `Object -> any`
+- `object -> any`
 
-The last three aliases are turned off when `noImplicitAny: true`:
+The last four aliases are turned off when `noImplicitAny: true`:
 
-- `Object` stays `Object`, which is rarely used built-in type.
+- `object` stays `object`, which is a common built-in type.
+- `Object` stays `Object`, which is a rarely used built-in type.
 - `array` stays `array`, which is not a built-in type.
 - `promise` stays `promise`, which is not a built-in type.
