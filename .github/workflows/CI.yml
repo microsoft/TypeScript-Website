@@ -4,48 +4,55 @@ on:
     branches:
       - v2
 
+# Ensure scripts are run with pipefail. See:
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#exit-codes-and-error-action-preference
+defaults:
+  run:
+    shell: bash
+
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    runs-on: ${{ matrix.os }}
+
     steps:
-      # Check out, and set up the node/ruby infra
       - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
           node-version: "18.x"
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
 
-      # Install, should be basically instant if cached
-      - run: yarn install
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
-
-      # Verify dependencies are hooked up right
-      - run: node test/verifyPackageVersions.js
+      - run: pnpm install
 
       # Grab localizations
-      - run: yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+      - run: pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
       # Build the packages
-      - run: yarn bootstrap
-      - run: yarn build
+      - run: pnpm bootstrap
+      - run: pnpm build
 
       # Verify it compiles
-      - run: yarn build-site
+      - run: pnpm build-site
       
       - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
         with:
           name: site
           path: packages/typescriptlang-org/public
 
       # Run all the package's tests
-      - run: yarn test
-        env:
-          CI: true
+      - run: pnpm test
 
       # danger for PR builds
-      - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
-        run: "yarn danger ci"
+      - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id && matrix.os == 'ubuntu-latest'
+        run: "pnpm danger ci"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -69,30 +76,41 @@ jobs:
           name: missing.patch
           path: missing.patch
 
-  windows:
-    runs-on: windows-latest
-
+  changesets:
+    name: changesets
+    runs-on: ubuntu-latest
     steps:
-      # Check out, and set up the node infra
-      - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
-        with:
-          node-version: "18.x"
+    - uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+      with:
+        node-version: 'lts/*'
+    - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+    
+    - run: pnpm install
+    
+    - name: Check for missing changesets
+      run: |
+        PR_CHANGESETS=$(ls .changeset | (grep -v -E 'README\.md|config\.json' || true) | wc -l)
+        MAIN_CHANGESETS=$(git ls-tree -r origin/v2 .changeset | (grep -v -E 'README\.md|config\.json' || true) | wc -l)
 
-      # Get local dependencies
-      - run: yarn install
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
+        # If the PR has no changesets, but main has changesets, assume this is PR is a versioning PR and exit
+        if [[ $PR_CHANGESETS -eq 0 && $MAIN_CHANGESETS -gt 0 ]]; then
+          echo "This PR is a versioning PR, exiting"
+          exit 0
+        fi
 
-      - run: yarn bootstrap
-      - run: yarn build
+        # git switch -c changesets-temp
+        # git checkout origin/v2 -- <ignored files>
+        pnpm changeset status --since=origin/v2
 
   required:
     runs-on: ubuntu-latest
     if: ${{ always() }}
     needs:
       - tests
-      - windows
+      - changesets
     
     steps:
       - name: Check required jobs

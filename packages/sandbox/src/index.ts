@@ -5,8 +5,7 @@ import {
   getCompilerOptionsFromParams,
   createURLQueryWithCompilerOptions,
 } from "./compilerOptions"
-// import lzstring from "./vendor/lzstring.min"
-declare var LZString: any
+import lzstring from "./vendor/lzstring.min"
 
 import { supportedReleases } from "./release_data"
 import { getInitialCode } from "./getInitialCode"
@@ -337,7 +336,7 @@ export const createTypeScriptSandbox = (
   const setText = (text: string) => getModel().setValue(text)
 
   const setupTSVFS = async (fsMapAdditions?: Map<string, string>) => {
-    const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, LZString)
+    const fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts, lzstring)
     fsMap.set(filePath.path, getText())
     if (fsMapAdditions) {
       fsMapAdditions.forEach((v, k) => fsMap.set(k, v))
@@ -444,7 +443,7 @@ export const createTypeScriptSandbox = (
     /** A way to get callbacks when compiler settings have changed */
     setDidUpdateCompilerSettings,
     /** A copy of lzstring, which is used to archive/unarchive code */
-    lzstring: LZString,
+    lzstring,
     /** Returns compiler options found in the params of the current page */
     createURLQueryWithCompilerOptions,
     /**

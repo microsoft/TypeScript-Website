@@ -8,7 +8,4 @@
   },
 
   "forwardPorts": [8000],
-
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "sudo yarn install && sudo yarn bootstrap && yarn start"
 }

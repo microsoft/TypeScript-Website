@@ -1,6 +1,6 @@
 // @ts-check
 
-// A script which uses Facebook's watchman to run `yarn build` in different modules
+// A script which uses Facebook's watchman to run `pnpm build` in different modules
 // in a standard monorepo.
 
 const { spawnSync } = require("child_process")
@@ -158,10 +158,10 @@ const runCommand = argString => {
   if (currentProcess) return
 
   const prefix = chalk.gray("> ")
-  const cmd = chalk.bold("yarn " + argString)
+  const cmd = chalk.bold("pnpm " + argString)
   log(prefix + cmd)
 
-  const build = spawn("yarn", argString.split(" "))
+  const build = spawn("pnpm", argString.split(" "))
   build.stdout.on("data", l => {
     if (l.toString().includes("Done in")) return
     log("  " + l.toString().trim())

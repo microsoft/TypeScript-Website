@@ -1,6 +1,6 @@
 // @ts-check
 
-// yarn workspace typescriptlang-org update-versions
+// pnpm run --filter=typescriptlang-org update-versions
 
 const nodeFetch = require("node-fetch").default
 const { writeFileSync, existsSync } = require("fs")
