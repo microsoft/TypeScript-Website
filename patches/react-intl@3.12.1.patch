@@ -1,3 +1,6 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index 844297f0982cca5fbd7ef9fb26a3f9e82eae476c..0000000000000000000000000000000000000000
 diff --git a/lib/react-intl.d.ts b/lib/react-intl.d.ts
 index e24bb8a41ecbf948de4c08486afb0efac36afad4..b9dec1e421f10923a27a806613d1f09ec31dec07 100644
 --- a/lib/react-intl.d.ts

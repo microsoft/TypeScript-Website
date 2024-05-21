@@ -22,6 +22,8 @@ import { createDefaultMapFromCDN } from "@typescript/vfs"
 import { twoslasher, TwoSlashReturn } from "@typescript/twoslash"
 import { getPlaygroundUrls } from "../../lib/playgroundURLs";
 
+import type * as playgroundPackage from "../../../static/js/playground";
+
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 
 type Props = {}
@@ -73,7 +75,7 @@ const Play: React.FC<Props> = (props) => {
         ignoreDuplicateModules: ["vs/editor/editor.main"],
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof playgroundPackage) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts
         const isOK = main && ts && sandbox && playground

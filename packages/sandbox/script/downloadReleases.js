@@ -1,6 +1,6 @@
 // @ts-check
 
-// Run via: yarn workspace typescript-sandbox bootstrap
+// Run via: pnpm run --filter=typescript-sandbox bootstrap
 
 // Ensure the versions dropdown is up to date
 const axios = require("axios").default

@@ -1,7 +1,7 @@
 // @ts-check
 // Loops through all the sample code and ensures that twoslash doesn't raise
 
-// yarn workspace glossary lint
+// pnpm run --filter=glossary lint
 
 const chalk = require("chalk");
 
@@ -82,7 +82,7 @@ const go = async () => {
     console.log("\n\n");
 
     console.log(
-      "Note: you can add an extra argument to the lint script ( yarn workspace glossary lint [opt] ) to just run one lint."
+      "Note: you can add an extra argument to the lint script ( pnpm run --filter=glossary lint [opt] ) to just run one lint."
     );
   }
 };

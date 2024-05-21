@@ -17,6 +17,9 @@ permissions:
   pull-requests: write
   actions: read
 
+concurrency:
+  group: preview-site
+
 jobs:
   deploy:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
@@ -27,11 +30,14 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
+            console.log(context);
+
             let pr;
             let workflowRun;
             let isLabel = false;
             switch (context.eventName) {
               case "workflow_dispatch":
+                console.log("Workflow dispatch event");
                 pr = (await github.rest.pulls.get({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -39,12 +45,15 @@ jobs:
                 })).data;
                 break;
               case "pull_request_target":
+                console.log("Pull request target event");
                 pr = context.payload.pull_request;
                 break;
               case "workflow_run":
+                console.log("Workflow run event");
                 workflowRun = context.payload.workflow_run;
                 pr = workflowRun.pull_requests[0];
                 if (pr) {
+                  console.log("PR found in workflow run");
                   // Reload the PR to get the labels.
                   pr = (await github.rest.pulls.get({
                     owner: context.repo.owner,
@@ -52,14 +61,14 @@ jobs:
                     pull_number: pr.number,
                   })).data;
                 } else {
+                  const q = `is:pr is:open repo:${context.repo.owner}/${context.repo.repo} sha:${workflowRun.head_sha}`;
+                  console.log(`PR not found in workflow run, searching for it with ${q}`);
                   // PRs sent from forks do not get the pull_requests field set.
                   // https://github.com/orgs/community/discussions/25220
-                  pr = (await github.rest.pulls.list({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    head: workflowRun.head_sha,
-                    per_page: 1,
-                  })).data[0];
+                  const response = await github.rest.search.issuesAndPullRequests({ q });
+                  if (response.data.items.length > 0) {
+                    pr = response.data.items[0];
+                  }
                 }
             }
 
@@ -67,12 +76,16 @@ jobs:
               throw new Error("Could not find PR");
             }
 
+            console.log(`Found PR ${pr.html_url}`);
+            console.log(pr);
+
             if (!pr.labels.some((label) => label.name === "deploy-preview")) {
               console.log(`PR ${pr.number} does not have the deploy-preview label`);
               return null;
             }
 
             if (!workflowRun) {
+              console.log(`No workflow run found in event, searching for it with ${pr.head.sha}`);
               try {
                 workflowRun = (await github.rest.actions.listWorkflowRuns({
                   owner: context.repo.owner,
@@ -92,9 +105,20 @@ jobs:
             }
 
             console.log(`Found workflow run ${workflowRun.html_url}`)
+            console.log(workflowRun)
 
-            if (workflowRun.conclusion !== "success") {
-              console.log(`Workflow run did not succeed`);
+            try {
+              const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                owner: "microsoft",
+                repo: "TypeScript-Website",
+                run_id: 9164276500,
+              })
+              if (!artifacts.data.artifacts.some(x => x.name === "site")) {
+                console.log("No artifact found in workflow run");
+                return null;
+              }
+            } catch (e) {
+              console.log(e);
               return null;
             }
 
@@ -117,7 +141,8 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          # Unsetting the repo token so we can control commenting ourselves.
+          # repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "site"
           skip_app_build: true
@@ -125,8 +150,7 @@ jobs:
           deployment_environment: ${{ fromJson(steps.get-info.outputs.result).pr }}
 
       - name: Comment on PR
-        # azure/static-web-apps-deploy seems to comment itself when the event is pull_request_target
-        if: ${{ steps.get-info.outputs.result != 'null' && github.event_name != 'pull_request_target' }}
+        if: ${{ steps.get-info.outputs.result != 'null' }}
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         env:
           PR_NUMBER: ${{ fromJson(steps.get-info.outputs.result).pr }}
@@ -134,9 +158,28 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const prefix = "Azure Static Web Apps: Your stage site is ready!";
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: +process.env.PR_NUMBER,
+              per_page: 100,
+            });
+
+            for (const comment of comments) {
+              if (comment.user?.login === "github-actions[bot]" && comment.body?.startsWith(prefix)) {
+                console.log(`Deleting comment ${comment.id}`);
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id,
+                });
+              }
+            }
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: process.env.PR_NUMBER,
-              body: `Azure Static Web Apps: Your stage site is ready! Visit it here: ${process.env.SITE_URL}`
+              issue_number: +process.env.PR_NUMBER,
+              body: `${prefix} Visit it here: ${process.env.SITE_URL}`
             });
