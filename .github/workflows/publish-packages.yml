@@ -29,15 +29,8 @@ jobs:
       - name: Prepare website v2
         run: |
           pnpm install
-          pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
           pnpm bootstrap
-          pnpm run --filter=typescriptlang-org setup-playground-cache-bust
           pnpm build
-
-      - name: Build website v2
-        run: |
-          pnpm build-site
-          cp -r packages/typescriptlang-org/public site
 
       - uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7
         with:
