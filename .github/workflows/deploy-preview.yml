@@ -17,9 +17,6 @@ permissions:
   pull-requests: write
   actions: read
 
-concurrency:
-  group: preview-site
-
 jobs:
   deploy:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
@@ -78,6 +75,11 @@ jobs:
 
             console.log(`Found PR ${pr.html_url}`);
             console.log(pr);
+
+            if (pr.state !== "open") {
+              console.log(`PR ${pr.number} is not open`);
+              return null;
+            }
 
             if (!pr.labels.some((label) => label.name === "deploy-preview")) {
               console.log(`PR ${pr.number} does not have the deploy-preview label`);
