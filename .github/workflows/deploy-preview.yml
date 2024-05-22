@@ -70,7 +70,8 @@ jobs:
             }
 
             if (!pr) {
-              throw new Error("Could not find PR");
+              console.log("Could not find PR");
+              return null;
             }
 
             console.log(`Found PR ${pr.html_url}`);
