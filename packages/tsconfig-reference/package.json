@@ -8,15 +8,15 @@
     "generate:json:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateJSON",
     "generate:json:schema": "tsc --build && node --experimental-json-modules scripts/schema/generateJSON",
     "generate:json:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateJSON",
-    "generate:json": "yarn generate:json:tsconfig && yarn generate:json:cli && yarn generate:json:schema && yarn generate:json:msbuild",
+    "generate:json": "pnpm generate:json:tsconfig && pnpm generate:json:cli && pnpm generate:json:schema && pnpm generate:json:msbuild",
     "generate:md:tsconfig": "tsc --build && node --experimental-json-modules scripts/tsconfig/generateMarkdown",
     "generate:md:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateMarkdown",
     "generate:md:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateMarkdown",
-    "generate:md": "yarn generate:md:tsconfig && yarn generate:md:cli && yarn generate:md:tsconfig",
+    "generate:md": "pnpm generate:md:tsconfig && pnpm generate:md:cli && pnpm generate:md:tsconfig",
     "download": "node scripts/schema/downloadSchemaBase.js",
-    "bootstrap": "yarn generate:json",
-    "build": "yarn generate:json && yarn generate:md",
-    "test": "yarn build && yarn lint",
+    "bootstrap": "pnpm generate:json",
+    "build": "pnpm generate:json && pnpm generate:md",
+    "test": "pnpm build && pnpm lint",
     "lint": "node scripts/lint.js"
   },
   "prettier": {
@@ -24,10 +24,11 @@
     "semi": true
   },
   "devDependencies": {
-    "remark": "^11.0.2",
-    "remark-html": "^10.0.0",
+    "@types/json-schema": "^7.0.15",
+    "node-fetch": "^2.7.0",
     "ts-node": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "xml-js": "^1.6.11"
   },
   "type": "module"
 }

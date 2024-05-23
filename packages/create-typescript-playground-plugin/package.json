@@ -13,10 +13,7 @@
   "bugs": {
     "url": "https://github.com/microsoft/TypeScript-Website/issues"
   },
-  "scripts": {
-    "build": "echo NOOP",
-    "test": "echo NOOP"
-  },
+  "scripts": {},
   "dependencies": {
     "cross-spawn": "^7.0.1",
     "gunzip-maybe": "^1.4.1",
