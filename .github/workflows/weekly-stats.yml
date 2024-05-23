@@ -21,13 +21,7 @@ jobs:
       
       - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
 
-      - name: Build website
-        run: |
-          pnpm install
-          pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
-          pnpm bootstrap
-          pnpm run --filter=typescriptlang-org setup-playground-cache-bust
-          pnpm build
+      - run: pnpm install
       
       # Update the site stats
       - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
