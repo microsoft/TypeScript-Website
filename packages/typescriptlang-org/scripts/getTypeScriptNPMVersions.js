@@ -28,7 +28,6 @@ const getLatestVSExtensions = async latest => {
       `https://marketplace.visualstudio.com/search?term=typescript%20${semver.major(latest)}.${semver.minor(latest)}&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance`,
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15",
-    "Content-Length": "1082",
     Connection: "keep-alive",
     "X-TFS-Session": "e16c1b5b-850f-42ee-ab7c-519c79f6e356",
     "X-Requested-With": "XMLHttpRequest",
