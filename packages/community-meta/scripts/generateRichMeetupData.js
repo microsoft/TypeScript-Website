@@ -7,7 +7,6 @@ const { join } = require("path")
 const { writeFileSync } = require("fs")
 const { meetups } = require("./meetups")
 // const xml2js = require("xml2js")
-// const nodeFetch = require("node-fetch").default
 // const icalToolkit = require("ical-utils")
 const { format } = require("prettier")
 // const moment = require("moment")
@@ -31,7 +30,7 @@ const go = async () => {
     //     const meetupID = meetupURL.split('/').pop()
     //     process.stdout.write(meetupID)
 
-    //     const icalResponse = await nodeFetch(`https://www.meetup.com/${meetupID}/events/ical/`)
+    //     const icalResponse = await fetch(`https://www.meetup.com/${meetupID}/events/ical/`)
     //     const icalText = await icalResponse.text()
     //     const ical = await icalToolkit.parseToJSON(icalText)
 
@@ -53,7 +52,7 @@ const go = async () => {
     //     let richDescription = '<p>' + upcomingEvent.description + '</p>'
 
     //     // Best to not assume meetup.com's long term health, and it's rss
-    //     const rssResponse = await nodeFetch(`https://www.meetup.com/${meetupID}/events/rss/`)
+    //     const rssResponse = await fetch(`https://www.meetup.com/${meetupID}/events/rss/`)
     //     const rssText = await rssResponse.text()
     //     const rss = await xml2js.parseStringPromise(rssText)
 
