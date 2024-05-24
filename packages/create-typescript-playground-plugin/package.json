@@ -17,6 +17,6 @@
   "dependencies": {
     "cross-spawn": "^7.0.1",
     "gunzip-maybe": "^1.4.1",
-    "tar-fs": "^2.1.0"
+    "tar-fs": "^3.0.6"
   }
 }
