@@ -474,8 +474,8 @@ importers:
         specifier: ^0.48.0
         version: 0.48.0
       node-polyfill-webpack-plugin:
-        specifier: ^3.0.0
-        version: 3.0.0(webpack@5.91.0)
+        specifier: ^4.0.0
+        version: 4.0.0(webpack@5.91.0)
       semver:
         specifier: ^7.6.2
         version: 7.6.2
@@ -4013,9 +4013,9 @@ packages:
   dom-serializer@2.0.0:
     resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
 
-  domain-browser@4.23.0:
-    resolution: {integrity: sha512-ArzcM/II1wCCujdCNyQjXrAFwS4mrLh4C7DZWlaI8mdh7h3BfKdNd3bKXITfl2PT9FtfQqaGvhi1vPRQPimjGA==}
-    engines: {node: '>=10'}
+  domain-browser@5.7.0:
+    resolution: {integrity: sha512-edTFu0M/7wO1pXY6GDxVNVW086uqwWYIHP98txhcPyV995X21JIH2DtYp33sQJOupYoXKe9RwTw2Ya2vWaquTQ==}
+    engines: {node: '>=4'}
 
   domelementtype@2.3.0:
     resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
@@ -6775,8 +6775,8 @@ packages:
     resolution: {integrity: sha512-jY5dPJzw6NHd/KPSfPKJ+IHoFS81/tJ43r34ZeNMXGzCOM8jwQDCD12HYayKIB6MuznrnqIYy2e891NA2g0ibA==}
     engines: {node: '>=0.10.0'}
 
-  node-polyfill-webpack-plugin@3.0.0:
-    resolution: {integrity: sha512-QpG496dDBiaelQZu9wDcVvpLbtk7h9Ctz693RaUMZBgl8DUoFToO90ZTLKq57gP7rwKqYtGbMBXkcEgLSag2jQ==}
+  node-polyfill-webpack-plugin@4.0.0:
+    resolution: {integrity: sha512-WLk77vLpbcpmTekRj6s6vYxk30XoyaY5MDZ4+9g8OaKoG3Ij+TjOqhpQjVUlfDZBPBgpNATDltaQkzuXSnnkwg==}
     engines: {node: '>=14'}
     peerDependencies:
       webpack: '>=5'
@@ -13975,7 +13975,7 @@ snapshots:
       domhandler: 5.0.3
       entities: 4.5.0
 
-  domain-browser@4.23.0: {}
+  domain-browser@5.7.0: {}
 
   domelementtype@2.3.0: {}
 
@@ -18025,7 +18025,7 @@ snapshots:
 
   node-object-hash@2.3.10: {}
 
-  node-polyfill-webpack-plugin@3.0.0(webpack@5.91.0):
+  node-polyfill-webpack-plugin@4.0.0(webpack@5.91.0):
     dependencies:
       assert: 2.0.0
       browserify-zlib: 0.2.0
@@ -18033,7 +18033,7 @@ snapshots:
       console-browserify: 1.2.0
       constants-browserify: 1.0.0
       crypto-browserify: 3.12.0
-      domain-browser: 4.23.0
+      domain-browser: 5.7.0
       events: 3.3.0
       https-browserify: 1.0.0
       os-browserify: 0.3.0
