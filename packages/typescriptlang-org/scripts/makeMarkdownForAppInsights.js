@@ -5,25 +5,27 @@
     APP_INSIGHTS_ID="X" APP_INSIGHTS_API_KEY="Y" node packages/typescriptlang-org/scripts/makeMarkdownForAppInsights.js
   */
 
-    const nodeFetch = require("node-fetch").default
     const querystring = require("querystring")
+
+    const APP_INSIGHTS_ID = process.env.APP_INSIGHTS_ID;
+    const APP_INSIGHTS_API_KEY = process.env.APP_INSIGHTS_API_KEY;
     
     // Get these from: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/typescriptlang-org/providers/microsoft.insights/components/TypeScriptLang-Prod-Ai/apiKeys
-    if (!process.env.APP_INSIGHTS_ID)
+    if (!APP_INSIGHTS_ID)
       throw new Error("No App Insights ID at process.env.APP_INSIGHTS_ID")
     
-    if (!process.env.APP_INSIGHTS_API_KEY)
+    if (!APP_INSIGHTS_API_KEY)
       throw new Error("No App Insights ID at process.env.APP_INSIGHTS_API_KEY")
     
     const getJSON = async (query, params) => {
       const headers = {
-        "x-api-key": process.env.APP_INSIGHTS_API_KEY,
+        "x-api-key": APP_INSIGHTS_API_KEY,
       }
     
       const queryParams = querystring.stringify(params)
-      const root = `https://api.applicationinsights.io/v1/apps/${process.env.APP_INSIGHTS_ID}`
+      const root = `https://api.applicationinsights.io/v1/apps/${APP_INSIGHTS_ID}`
       const href = `${root}${query}?${queryParams}`
-      const response = await nodeFetch(href, { headers })
+      const response = await fetch(href, { headers })
     
       if (!response.ok) {
         console.error("Error in API call to app insights")

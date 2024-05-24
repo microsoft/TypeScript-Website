@@ -10,13 +10,12 @@ if (!process.env.CI) {
   process.exit(0)
 }
 
-const nodeFetch = require("node-fetch").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
 
 const get = async url => {
-  const packageJSON = await nodeFetch(url)
+  const packageJSON = await fetch(url)
   const contents = await packageJSON.json()
   return contents
 }
