@@ -59,7 +59,7 @@ importers:
         specifier: ^7.2.3
         version: 7.2.3
       gray-matter:
-        specifier: 4.0.3
+        specifier: ^4.0.3
         version: 4.0.3
       reflect-metadata:
         specifier: ^0.2.2
@@ -102,10 +102,10 @@ importers:
   packages/community-meta:
     dependencies:
       moment:
-        specifier: 2.30.1
+        specifier: ^2.30.1
         version: 2.30.1
       moment-timezone:
-        specifier: 0.5.45
+        specifier: ^0.5.45
         version: 0.5.45
 
   packages/create-typescript-playground-plugin:
