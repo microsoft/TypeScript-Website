@@ -350,8 +350,8 @@ importers:
         specifier: ^5.13.5
         version: 5.13.5(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.18.2)(typescript@5.4.5)
       gatsby-link:
-        specifier: 5.6.0
-        version: 5.6.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.13.1
+        version: 5.13.1(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       gatsby-plugin-catch-links:
         specifier: ^5.6.0
         version: 5.13.1(gatsby@5.13.5(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.18.2)(typescript@5.4.5))
@@ -380,8 +380,8 @@ importers:
         specifier: ^6.6.0
         version: 6.13.1(gatsby@5.13.5(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.18.2)(typescript@5.4.5))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       gatsby-react-router-scroll:
-        specifier: 6.6.0
-        version: 6.6.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.13.1
+        version: 6.13.1(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       gatsby-remark-autolink-headers:
         specifier: ^6.6.0
         version: 6.13.1(gatsby@5.13.5(babel-eslint@10.1.0(eslint@7.32.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.18.2)(typescript@5.4.5))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4823,14 +4823,6 @@ packages:
       react: ^18.0.0 || ^0.0.0
       react-dom: ^18.0.0 || ^0.0.0
 
-  gatsby-link@5.6.0:
-    resolution: {integrity: sha512-kC/EUajQJGDyUMtdarDQkLaILfuhGNCVMOGs+Px5e/KxAQXmCzWbA0M7tr0i3awyW7Qj3JsBjaL6y3ePe4kzNg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@gatsbyjs/reach-router': ^2.0.0
-      react: ^18.0.0 || ^0.0.0
-      react-dom: ^18.0.0 || ^0.0.0
-
   gatsby-page-utils@3.13.1:
     resolution: {integrity: sha512-+/V+ZKPn1Lv3KfeTBV/XUVljwTFQq5kg3T0esu9ygXEz3EVXjG5VjL/IX57awiDm9sLsEALqRuuYLoHpfNHg0A==}
     engines: {node: '>=18.0.0'}
@@ -4923,14 +4915,6 @@ packages:
 
   gatsby-react-router-scroll@6.13.1:
     resolution: {integrity: sha512-srBpg/ZHW4miwH/4OWOcspHqr8ZmKLE4DBNvckt0KO4giJerWiGoLj6qePwLFRWZPfV7txJr2kuUzACxarpL5g==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      '@gatsbyjs/reach-router': ^2.0.0
-      react: ^18.0.0 || ^0.0.0
-      react-dom: ^18.0.0 || ^0.0.0
-
-  gatsby-react-router-scroll@6.6.0:
-    resolution: {integrity: sha512-/Ipza3HKp07s+pFkxpYlUmQUgeO9NbKVOnoyGHCjQXj4k0YkmUpqeux3LFbosW4wqMTRli+90fA6ps9Z4DP3dw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@gatsbyjs/reach-router': ^2.0.0
@@ -15431,15 +15415,6 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  gatsby-link@5.6.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@gatsbyjs/reach-router': 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/reach__router': 1.3.15
-      gatsby-page-utils: 3.13.1
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
   gatsby-page-utils@3.13.1:
     dependencies:
       '@babel/runtime': 7.24.5
@@ -15625,14 +15600,6 @@ snapshots:
       mime: 3.0.0
 
   gatsby-react-router-scroll@6.13.1(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.24.5
-      '@gatsbyjs/reach-router': 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  gatsby-react-router-scroll@6.6.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.24.5
       '@gatsbyjs/reach-router': 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
