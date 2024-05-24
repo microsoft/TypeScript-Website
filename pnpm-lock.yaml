@@ -12,6 +12,7 @@ overrides:
   '@types/react': ^18.2.77
   '@types/estree': 0.0.46
   '@types/eslint': 7.29.0
+  '@types/node': ^18.19.33
   assert: 2.0.0
   rollup-plugin-typescript2: 0.34.1
   typescript: 5.4.5
@@ -2399,17 +2400,8 @@ packages:
   '@types/node-fetch@2.6.11':
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
 
-  '@types/node@12.20.55':
-    resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
-
-  '@types/node@17.0.45':
-    resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-
   '@types/node@18.19.33':
     resolution: {integrity: sha512-NR9+KrpSajr2qBVp/Yt5TU/rp+b5Mayi3+OlMlcg2cVCfRmcG5PWZ7S4+MG9PZ5gWBoc9Pd0BKSRViuBCRPu0A==}
-
-  '@types/node@8.10.66':
-    resolution: {integrity: sha512-tktOkFUA4kXx2hhhrB8bIFb5TbwzS4uOhKEmwiD+NoiL0qtP2OQ9mFldbgD4dV1djrlBYP6eBuQZiWjuHUpqFw==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -5982,7 +5974,7 @@ packages:
     resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
-      '@types/node': '*'
+      '@types/node': ^18.19.33
       ts-node: '>=9.0.0'
     peerDependenciesMeta:
       '@types/node':
@@ -8891,7 +8883,7 @@ packages:
     peerDependencies:
       '@swc/core': '>=1.2.50'
       '@swc/wasm': '>=1.2.50'
-      '@types/node': '*'
+      '@types/node': ^18.19.33
       typescript: 5.4.5
     peerDependenciesMeta:
       '@swc/core':
@@ -11326,7 +11318,7 @@ snapshots:
   '@manypkg/find-root@1.1.0':
     dependencies:
       '@babel/runtime': 7.24.5
-      '@types/node': 12.20.55
+      '@types/node': 18.19.33
       find-up: 4.1.0
       fs-extra: 8.1.0
 
@@ -12046,15 +12038,9 @@ snapshots:
       '@types/node': 18.19.33
       form-data: 4.0.0
 
-  '@types/node@12.20.55': {}
-
-  '@types/node@17.0.45': {}
-
   '@types/node@18.19.33':
     dependencies:
       undici-types: 5.26.5
-
-  '@types/node@8.10.66': {}
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -14047,7 +14033,7 @@ snapshots:
       '@types/glob': 5.0.38
       '@types/lodash': 4.17.4
       '@types/mkdirp': 0.5.2
-      '@types/node': 8.10.66
+      '@types/node': 18.19.33
       '@types/rimraf': 2.0.5
       '@types/tmp': 0.0.33
       application-config-path: 0.1.1
@@ -19984,7 +19970,7 @@ snapshots:
 
   sitemap@7.1.2:
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 18.19.33
       '@types/sax': 1.2.7
       arg: 5.0.2
       sax: 1.3.0
