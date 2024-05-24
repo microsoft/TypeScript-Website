@@ -10,8 +10,6 @@ overrides:
   shiki-twoslash>@typescript/twoslash: link:./packages/ts-twoslasher
   shiki-twoslash>@typescript/vfs: link:./packages/typescript-vfs
   '@types/react': ^18.2.77
-  '@types/estree': 0.0.46
-  '@types/eslint': 7.29.0
   '@types/node': ^18.19.33
   assert: 2.0.0
   rollup-plugin-typescript2: 0.34.1
@@ -2313,8 +2311,11 @@ packages:
   '@types/eslint@7.29.0':
     resolution: {integrity: sha512-VNcvioYDH8/FxaeTKkM4/TiTwt6pBV9E3OfGmvaw8tPl0rrHCJ4Ll15HRT+pMiFAf/MLQvAzC+6RzUMEL9Ceng==}
 
-  '@types/estree@0.0.46':
-    resolution: {integrity: sha512-laIjwTQaD+5DukBZaygQ79K1Z0jb1bPEMRrkXSLjtCcZm+abyp5YbrqpSLzD42FwWW6gK/aS4NYpJ804nG2brg==}
+  '@types/eslint@8.56.10':
+    resolution: {integrity: sha512-Shavhk87gCtY2fhXDctcfS3e6FdxWkCx1iUZ9eEUbh7rTqlZT0/IzOkCOVt0fCjcFuZ9FPYfuezTBImfHCDBGQ==}
+
+  '@types/estree@1.0.5':
+    resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
   '@types/express-serve-static-core@4.19.1':
     resolution: {integrity: sha512-ej0phymbFLoCB26dbbq5PGScsf2JAJ4IJHjG10LalgUV36XKTmA4GdA+PVllKvRk0sEKt64X8975qFnkSi0hqA==}
@@ -11590,7 +11591,7 @@ snapshots:
 
   '@rollup/pluginutils@5.1.0(rollup@3.29.4)':
     dependencies:
-      '@types/estree': 0.0.46
+      '@types/estree': 1.0.5
       estree-walker: 2.0.2
       picomatch: 2.3.1
     optionalDependencies:
@@ -11760,15 +11761,20 @@ snapshots:
 
   '@types/eslint-scope@3.7.7':
     dependencies:
-      '@types/eslint': 7.29.0
-      '@types/estree': 0.0.46
+      '@types/eslint': 8.56.10
+      '@types/estree': 1.0.5
 
   '@types/eslint@7.29.0':
     dependencies:
-      '@types/estree': 0.0.46
+      '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
 
-  '@types/estree@0.0.46': {}
+  '@types/eslint@8.56.10':
+    dependencies:
+      '@types/estree': 1.0.5
+      '@types/json-schema': 7.0.15
+
+  '@types/estree@1.0.5': {}
 
   '@types/express-serve-static-core@4.19.1':
     dependencies:
@@ -16554,7 +16560,7 @@ snapshots:
 
   is-reference@1.2.1:
     dependencies:
-      '@types/estree': 0.0.46
+      '@types/estree': 1.0.5
 
   is-regex@1.1.4:
     dependencies:
@@ -20724,7 +20730,7 @@ snapshots:
   webpack@5.91.0:
     dependencies:
       '@types/eslint-scope': 3.7.7
-      '@types/estree': 0.0.46
+      '@types/estree': 1.0.5
       '@webassemblyjs/ast': 1.12.1
       '@webassemblyjs/wasm-edit': 1.12.1
       '@webassemblyjs/wasm-parser': 1.12.1
