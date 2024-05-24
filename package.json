@@ -17,7 +17,7 @@
     "fb-watchman": "^2.0.1",
     "glob": "^7.2.3",
     "gray-matter": "4.0.3",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.2",
     "remark": "^11.0.2",
     "remark-html": "^10.0.0",
     "remark-shiki-twoslash": "^3.1.3",
@@ -63,7 +63,6 @@
     "test": "CI=true pnpm -r run test",
     "update-test-snapshots": "CI=true pnpm run --filter=@typescript/twoslash --filter=@typescript/vfs test -u"
   },
-  "dependencies": {},
   "repository": "microsoft/TypeScript-Website",
   "author": "Deploy Bot <ortam@microsoft.com>",
   "auto": {
