@@ -12,7 +12,6 @@ overrides:
   '@types/react': ^18.2.77
   '@types/node': ^18.19.33
   assert: 2.0.0
-  rollup-plugin-typescript2: 0.34.1
   typescript: 5.4.5
   tslib: ^2.6.2
   prettier: ^2.0.2
@@ -7924,8 +7923,8 @@ packages:
       rollup: ^3.0
       typescript: 5.4.5
 
-  rollup-plugin-typescript2@0.34.1:
-    resolution: {integrity: sha512-P4cHLtGikESmqi1CA+tdMDUv8WbQV48mzPYt77TSTOPJpERyZ9TXdDgjSDix8Fkqce6soYz3+fa4lrC93IEkcw==}
+  rollup-plugin-typescript2@0.36.0:
+    resolution: {integrity: sha512-NB2CSQDxSe9+Oe2ahZbf+B4bh7pHwjV5L+RSYpCu7Q5ROuN94F9b6ioWwKfz3ueL3KTtmX4o2MUH2cgHDIEUsw==}
     peerDependencies:
       rollup: '>=1.26.3'
       typescript: 5.4.5
@@ -14019,7 +14018,7 @@ snapshots:
       rollup: 3.29.4
       rollup-plugin-delete: 2.0.0
       rollup-plugin-dts: 5.3.1(rollup@3.29.4)(typescript@5.4.5)
-      rollup-plugin-typescript2: 0.34.1(rollup@3.29.4)(typescript@5.4.5)
+      rollup-plugin-typescript2: 0.36.0(rollup@3.29.4)(typescript@5.4.5)
       sade: 1.8.1
       semver: 7.6.2
       shelljs: 0.8.5
@@ -19316,7 +19315,7 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.24.6
 
-  rollup-plugin-typescript2@0.34.1(rollup@3.29.4)(typescript@5.4.5):
+  rollup-plugin-typescript2@0.36.0(rollup@3.29.4)(typescript@5.4.5):
     dependencies:
       '@rollup/pluginutils': 4.2.1
       find-cache-dir: 3.3.2
