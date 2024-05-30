@@ -53,7 +53,7 @@
     ]
   },
   "scripts": {
-    "ci:publish": "pnpm changeset tag && pnpm publish -r --publish-branch v2",
+    "ci:publish": "pnpm changeset tag && pnpm publish -r",
     "bootstrap": "pnpm -r run bootstrap && BOOTSTRAPPING=true pnpm -r run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"pnpm run --filter=typescriptlang-org start\"",
     "build": "pnpm run --filter=!typescriptlang-org build",
