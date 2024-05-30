@@ -115,6 +115,7 @@ jobs:
                 repo: "TypeScript-Website",
                 run_id: 9164276500,
               })
+              console.log(artifacts);
               if (!artifacts.data.artifacts.some(x => x.name === "site")) {
                 console.log("No artifact found in workflow run");
                 return null;
