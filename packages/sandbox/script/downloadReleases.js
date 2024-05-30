@@ -8,13 +8,13 @@ const { join } = require("path")
 const { format } = require("prettier")
 
 const go = async () => {
-  const response = await fetch("https://typescript.azureedge.net/indexes/releases.json")
+  const response = await fetch("https://tswebinfra-static-web-temp-geh2cke5fmbadkda.z01.azurefd.net/indexes/releases.json")
   const releases = await response.json()
   const versions = releases.versions.reverse()
 
   // Look through the prereleases to see if the beta and RC are included in the pre-releases
   // and add those to the list of versions.
-  const preReleaseResponse = await fetch("https://typescript.azureedge.net/indexes/pre-releases.json")
+  const preReleaseResponse = await fetch("https://tswebinfra-static-web-temp-geh2cke5fmbadkda.z01.azurefd.net/indexes/pre-releases.json")
   const preReleases = await preReleaseResponse.json()
   const latestStable = versions[0]
 

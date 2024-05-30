@@ -66,7 +66,7 @@ const Play: React.FC<Props> = (props) => {
       const re: any = global.require
       re.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/dev/vs`,
+          vs: `https://tswebinfra-static-web-temp-geh2cke5fmbadkda.z01.azurefd.net/cdn/${tsVersionParam}/monaco/dev/vs`,
           "typescript-sandbox": sandboxRoot,
           "typescript-playground": playgroundRoot,
           "unpkg": "https://unpkg.com/",

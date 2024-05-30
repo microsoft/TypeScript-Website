@@ -40,7 +40,7 @@ const Index: React.FC<Props> = props => {
 
       re.config({
         paths: {
-          vs: "https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs",
+          vs: "https://tswebinfra-static-web-temp-geh2cke5fmbadkda.z01.azurefd.net/cdn/4.0.5/monaco/min/vs",
           sandbox: sandboxRoot,
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],

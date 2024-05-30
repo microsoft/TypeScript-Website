@@ -316,7 +316,7 @@ export const createDefaultMapFromCDN = (
   const fetchlike = fetcher || fetch
   const fsMap = new Map<string, string>()
   const files = knownLibFilesForCompilerOptions(options, ts)
-  const prefix = `https://typescript.azureedge.net/cdn/${version}/typescript/lib/`
+  const prefix = `https://tswebinfra-static-web-temp-geh2cke5fmbadkda.z01.azurefd.net/cdn/${version}/typescript/lib/`
 
   function zip(str: string) {
     return lzstring ? lzstring.compressToUTF16(str) : str
