@@ -1,8 +1,14 @@
 # @typescript/vfs
 
+## 1.5.1
+
+### Patch Changes
+
+- 46eba14: Initial bump for changesets
+
 ### 1.5
 
-- Makes `createDefaultMapFromNodeModules` pull all the `.d.ts` files from the node_modules folder, not just the `.d.ts` files which were known ahead of time. 
+- Makes `createDefaultMapFromNodeModules` pull all the `.d.ts` files from the node_modules folder, not just the `.d.ts` files which were known ahead of time.
 - Updates the known .d.s files to include ones from TypeScript 5.1 beta.
 
 ### 1.3
