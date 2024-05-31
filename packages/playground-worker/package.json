@@ -7,7 +7,7 @@
     "build": "esbuild index.ts --outdir=../typescriptlang-org/static/js/playground-worker  --format=esm --target=es2020 --bundle"
   },
   "dependencies": {
-    "esbuild": "^0.21.3"
+    "esbuild": "^0.21.4"
   },
   "devDependencies": {
     "typescript": "*"

@@ -17,7 +17,7 @@
   "dependencies": {
     "@typescript/playground-worker": "workspace:*",
     "@typescript/sandbox": "workspace:*",
-    "esbuild": "^0.21.3"
+    "esbuild": "^0.21.4"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
