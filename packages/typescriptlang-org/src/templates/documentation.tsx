@@ -18,8 +18,8 @@ import { createIntlLink } from "../components/IntlLink"
 import { handbookCopy } from "../copy/en/handbook"
 import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
-// import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
-// import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
+import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
+import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
 import { Popup, useQuickInfoPopup } from "../components/Popup"
 import Helmet from "react-helmet"
 
@@ -69,7 +69,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
     // Sets current selection
     updateSidebarOnScroll()
 
-    // setupLikeDislikeButtons(props.pageContext.slug, i)
+    setupLikeDislikeButtons(props.pageContext.slug, i)
 
 
     return () => {
@@ -95,13 +95,13 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       <section id="doc-layout" >
         <SidebarToggleButton />
 
-        {/* <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0, display: "none" }}>
+        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0, display: "none" }}>
           <p>Was this page helpful?</p>
           <div>
             <button className="first" id="like-button-popup" title="Like this page"><LikeUnfilledSVG /></button>
             <button id="dislike-button-popup" title="Dislike this page"><DislikeUnfilledSVG /></button>
           </div>
-        </div> */}
+        </div>
 
         <noscript>
           {/* Open by default so that folks without JS get a fully open sidebar */}
@@ -165,13 +165,13 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                     <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
                   </>
                   }
-                  {/* <div id="like-dislike-subnav">
+                  <div id="like-dislike-subnav">
                     <h5>{i("handb_like_dislike_title")}</h5>
                     <div>
                       <button title="Like this page" id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
                       <button title="Dislike this page" id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
                     </div>
-                  </div> */}
+                  </div>
 
                 </nav>
               </aside>

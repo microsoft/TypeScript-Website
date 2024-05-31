@@ -4,6 +4,14 @@ export const setupLikeDislikeButtons = (slug: string, i: any) => {
   if (!likeButton || !dislikeButton) return
 
   const clicked = (eventName: string) => () => {
+    // @ts-ignore
+    window.appInsights &&
+      // @ts-ignore
+      window.appInsights.trackEvent({
+        name: eventName,
+        properties: { slug: slug, ab: "b" },
+      })
+
     const newContent: string = i("handb_thanks")
 
     const textSectionNav = document.getElementById("like-dislike-subnav")!

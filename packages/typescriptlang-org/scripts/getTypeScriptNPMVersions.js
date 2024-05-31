@@ -2,15 +2,13 @@
 
 // pnpm run --filter=typescriptlang-org update-versions
 
-const nodeFetch = require("node-fetch").default
 const { writeFileSync, existsSync } = require("fs")
 const { join, dirname } = require("path")
 const semver = require("semver")
-const axios = require("axios").default
 const { format } = require("prettier")
 
 const get = async url => {
-  const packageJSON = await nodeFetch(url)
+  const packageJSON = await fetch(url)
   const contents = await packageJSON.text()
   return contents
 }
@@ -30,7 +28,6 @@ const getLatestVSExtensions = async latest => {
       `https://marketplace.visualstudio.com/search?term=typescript%20${semver.major(latest)}.${semver.minor(latest)}&target=VS&category=All%20categories&vsVersion=&sortBy=Relevance`,
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15",
-    "Content-Length": "1082",
     Connection: "keep-alive",
     "X-TFS-Session": "e16c1b5b-850f-42ee-ab7c-519c79f6e356",
     "X-Requested-With": "XMLHttpRequest",
@@ -40,19 +37,19 @@ const getLatestVSExtensions = async latest => {
   const query = name =>
     `{"assetTypes":["Microsoft.VisualStudio.Services.Icons.Default","Microsoft.VisualStudio.Services.Icons.Branding","Microsoft.VisualStudio.Services.Icons.Small"],"filters":[{"criteria":[{"filterType":8,"value":"Microsoft.VisualStudio.Ide"},{"filterType":10,"value":"${name}"},{"filterType":12,"value":"37888"}],"direction":2,"pageSize":54,"pageNumber":1,"sortBy":0,"sortOrder":0,"pagingToken":null}],"flags":870}`
 
-  const extensionSearchResults = await axios({
-    url:
-      "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery",
+  const extensionSearchResults = await fetch("https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery", {
     method: "POST",
-    headers: headers,
-    data: query(`typescript ${semver.major(latest)}.${semver.minor(latest)}`),
+    headers,
+    body: query(`typescript ${semver.major(latest)}.${semver.minor(latest)}`),
   })
 
-  if (!extensionSearchResults.data || !extensionSearchResults.data.results) {
+  const data = await extensionSearchResults.json()
+
+  if (!data || !data.results) {
     throw new Error("Got a bad response from VS marketplace")
   }
 
-  const extensions = extensionSearchResults.data.results[0].extensions
+  const extensions = data.results[0].extensions
   const officialExtensions = extensions.filter(
     e => e.publisher.publisherId === "4f0355d2-4a53-4ab1-a8ea-507f4a333a6f"
   )

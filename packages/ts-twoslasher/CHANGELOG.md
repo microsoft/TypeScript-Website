@@ -1,3 +1,13 @@
+# @typescript/twoslash
+
+## 3.2.5
+
+### Patch Changes
+
+- 46eba14: Initial bump for changesets
+- Updated dependencies [46eba14]
+  - @typescript/vfs@1.5.1
+
 ## 3.1.0
 
 Adds support for `// ---cut-after---`, e.g.

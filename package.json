@@ -6,7 +6,7 @@
     "pnpm": ">=9"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.3",
+    "@changesets/cli": "^2.27.5",
     "@oss-docs/sync": "^1.1.4",
     "@types/express": "^4.17.6",
     "@types/node": "^18.19.33",
@@ -53,7 +53,7 @@
     ]
   },
   "scripts": {
-    "ci:publish": "pnpm changeset tag && pnpm publish -r",
+    "ci:publish": "pnpm changeset tag && pnpm publish -r --publish-branch v2",
     "bootstrap": "pnpm -r run bootstrap && BOOTSTRAPPING=true pnpm -r run build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"pnpm run --filter=typescriptlang-org start\"",
     "build": "pnpm run --filter=!typescriptlang-org build",
@@ -65,7 +65,6 @@
     "test": "CI=true pnpm -r run test",
     "update-test-snapshots": "CI=true pnpm run --filter=@typescript/twoslash --filter=@typescript/vfs test -u"
   },
-  "dependencies": {},
   "repository": "microsoft/TypeScript-Website",
   "author": "Deploy Bot <ortam@microsoft.com>",
   "auto": {

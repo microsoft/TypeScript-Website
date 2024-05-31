@@ -3,11 +3,9 @@
 // Run via: pnpm run --filter=typescript-sandbox bootstrap
 
 // Ensure the versions dropdown is up to date
-const axios = require("axios").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
-const fetch = require("node-fetch").default
 
 const go = async () => {
   const response = await fetch("https://playgroundcdn.typescriptlang.org/indexes/releases.json")

@@ -1,0 +1,31 @@
+name: Publish Weekly Stats
+
+on:
+  schedule:
+    # https://crontab.guru/#0_12_*_*_1
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  comments: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: "18.x"
+      
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+
+      - run: pnpm install
+      
+      # Update the site stats
+      - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
+          APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
