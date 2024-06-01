@@ -218,7 +218,8 @@ type T1 = ReturnType<typeof stringOrNum>;
 
 ## Distributive Conditional Types
 
-When conditional types act on a generic type, they become _distributive_ when given a union type.
+When the type on the left of the `extends` is a generic type parameter,
+the conditional type becomes _distributive_ over unions.
 For example, take the following:
 
 ```ts twoslash
