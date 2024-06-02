@@ -19,7 +19,7 @@ function uppercaseStrings(x: string | number) {
 }
 ```
 
-One common pain-point was that these narrowed types weren't always preserved within function closures.
+One common pain point was that these narrowed types weren't always preserved within function closures.
 
 ```ts
 function getUrls(url: string | URL, names: string[]) {
@@ -106,7 +106,7 @@ What happens when we pass in a `defaultColor` that wasn't in the original `color
 In this function, `colors` is supposed to be the "source of truth" and describe what can be passed to `defaultColor`.
 
 ```ts
-// Oops! This undesirable, but is allowed!
+// Oops! This is undesirable, but is allowed!
 createStreetLight(["red", "yellow", "green"], "blue");
 ```
 
@@ -373,11 +373,11 @@ Previously, when TypeScript checked the initializer for `second`, it needed to d
 While `IsArray<U>` isn't compatible any obvious way, TypeScript looks at the *constraint* of that type as well.
 In a conditional type like `T extends Foo ? TrueBranch : FalseBranch`, where `T` is generic, the type system would look at the constraint of `T`, substitute it in for `T` itself, and decide on either the true or false branch.
 
-But this behavior was inaccurate because it was overly-eager.
+But this behavior was inaccurate because it was overly eager.
 Even if the constraint of `T` isn't assignable to `Foo`, that doesn't mean that it won't be instantiated with something that is.
 And so the more correct behavior is to produce a union type for the constraint of the conditional type in cases where it can't be proven that `T` *never* or *always* extends `Foo.`
 
-TypeScript 5.4 adopts this more accuratre behavior.
+TypeScript 5.4 adopts this more accurate behavior.
 What this means in practice is that you may begin to find that some conditional type instances are no longer compatible with their branches.
 
 [You can read about the specific changes here](https://github.com/microsoft/TypeScript/pull/56004).
@@ -433,7 +433,7 @@ import { Something } from "./some/path";
 let Something = 123;
 ```
 
-However, it's not safe for a single-file compilers to assume whether it's "safe" to drop the `import`, even if the code is guaranteed to fail at runtime.
+However, it's not safe for single-file compilers to assume whether it's "safe" to drop the `import`, even if the code is guaranteed to fail at runtime.
 In TypeScript 5.4, this code will trigger an error like the following:
 
 ```
@@ -484,7 +484,7 @@ function foo(x: First.SomeEnum, y: Second.SomeEnum) {
 }
 ```
 
-Additionally, there are new restrictions for when one of the enum members does not have a statically-known value.
+Additionally, there are new restrictions for when one of the enum members does not have a statically known value.
 In these cases, the other enum must at least be implicitly numeric (e.g. it has no statically resolved initializer), or it is explicitly numeric (meaning TypeScript could resolve the value to something numeric).
 Practically speaking, what this means is that string enum members are only ever compatible with other string enums of the same value.
 
@@ -549,7 +549,7 @@ For more information, see [the fix](https://github.com/microsoft/TypeScript/pull
 
 ### Emit Changes
 
-While not a breaking change per-se, developers may have implicitly taken dependencies on TypeScript's JavaScript or declaration emit outputs.
+While not a breaking change per se, developers may have implicitly taken dependencies on TypeScript's JavaScript or declaration emit outputs.
 The following are notable changes.
 
 * [Preserve type parameter names more often when shadowed](https://github.com/microsoft/TypeScript/pull/55820)
