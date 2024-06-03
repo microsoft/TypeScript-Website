@@ -25,7 +25,7 @@ module.exports = {
   flags: {
     DEV_SSR: false,
   },
-  trailingSlash: "never",
+  trailingSlash: "ignore",
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
     {
