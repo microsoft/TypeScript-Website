@@ -1,5 +1,12 @@
 # @typescript/twoslash
 
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies [642ea11]
+  - @typescript/vfs@1.5.2
+
 ## 3.2.5
 
 ### Patch Changes
