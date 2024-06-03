@@ -54,8 +54,8 @@ const Play: React.FC<Props> = (props) => {
       let tsVersionParam = params.get("ts")
       // handle the nightly lookup 
       if (!tsVersionParam || tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
-        // Avoids the CDN to doubly skip caching
-        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+        // The CDN is configured to have a short TTL on the indexes directory.
+        const nightlyLookup = await fetch("https://playgroundcdn.typescriptlang.org/indexes/next.json", { cache: "no-cache" })
         const nightlyJSON = await nightlyLookup.json()
         tsVersionParam = nightlyJSON.version
       }
@@ -66,7 +66,7 @@ const Play: React.FC<Props> = (props) => {
       const re: any = global.require
       re.config({
         paths: {
-          vs: `https://typescript.azureedge.net/cdn/${tsVersionParam}/monaco/dev/vs`,
+          vs: `https://playgroundcdn.typescriptlang.org/cdn/${tsVersionParam}/monaco/dev/vs`,
           "typescript-sandbox": sandboxRoot,
           "typescript-playground": playgroundRoot,
           "unpkg": "https://unpkg.com/",

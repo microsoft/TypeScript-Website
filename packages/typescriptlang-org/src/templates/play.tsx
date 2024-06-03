@@ -80,8 +80,8 @@ const Play: React.FC<Props> = (props) => {
       let tsVersionParam = params.get("ts")
       // handle the nightly lookup 
       if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
-        // Avoids the CDN to doubly skip caching
-        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+        // The CDN is configured to have a short TTL on the indexes directory.
+        const nightlyLookup = await fetch("https://playgroundcdn.typescriptlang.org/indexes/next.json", { cache: "no-cache" })
         const nightlyJSON = await nightlyLookup.json()
         tsVersionParam = nightlyJSON.version
       }
@@ -99,7 +99,7 @@ const Play: React.FC<Props> = (props) => {
       const useLocalCompiler = tsVersion === "dev"
       const devIsh = ["pr", "dev"]
       const version = devIsh.find(d => tsVersion.includes(d)) ? "dev" : "min"
-      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/${version}/vs`
+      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/${version}/vs`
 
       // Make a quick HEAD call for the main monaco editor for this version of TS, if it
       // bails then give a useful error message and bail.
