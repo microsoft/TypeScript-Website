@@ -80,6 +80,7 @@ const Play: React.FC<Props> = (props) => {
       let tsVersionParam = params.get("ts")
       // handle the nightly lookup 
       if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
+        // The CDN is configured to have a short TTL on the indexes directory.
         const nightlyLookup = await fetch("https://playgroundcdn.typescriptlang.org/indexes/next.json", { cache: "no-cache" })
         const nightlyJSON = await nightlyLookup.json()
         tsVersionParam = nightlyJSON.version
