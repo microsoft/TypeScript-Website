@@ -1,5 +1,11 @@
 # @typescript/vfs
 
+## 1.5.2
+
+### Patch Changes
+
+- 642ea11: Move playground CDN to new, stable URL
+
 ## 1.5.1
 
 ### Patch Changes
