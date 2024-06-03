@@ -113,7 +113,7 @@ jobs:
               const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                 owner: "microsoft",
                 repo: "TypeScript-Website",
-                run_id: 9164276500,
+                run_id: workflowRun.id,
               });
               console.dir(artifacts, { depth: null });
               if (!artifacts.data.artifacts.some(x => x.name === "site")) {
