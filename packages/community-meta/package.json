@@ -4,12 +4,10 @@
   "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
-    "moment": "2.24.0",
-    "moment-timezone": "0.5.28"
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45"
   },
   "scripts": {
     "build": "node scripts/generateRichMeetupData.js"
-  },
-  "devDependencies": {
   }
 }

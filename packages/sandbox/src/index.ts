@@ -68,7 +68,7 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
     enabled: false,
   },
   lightbulb: {
-    enabled: true,
+    enabled: "on" as any, // This monaco API isn't quite right; the only enum in this.
   },
   quickSuggestions: {
     other: !isAndroid,
@@ -79,7 +79,7 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   acceptSuggestionOnEnter: !isAndroid ? "on" : "off",
   accessibilitySupport: !isAndroid ? "on" : "off",
   inlayHints: {
-    enabled: true,
+    enabled: "on",
   },
 }
 
