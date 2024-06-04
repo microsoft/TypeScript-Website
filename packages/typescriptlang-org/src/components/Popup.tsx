@@ -64,7 +64,7 @@ export const useQuickInfoPopup = (lang: string) => {
 	enterTimeoutId = setTimeout((args) => {
       setShowPopup(prevProps => {
       	return { ...prevProps, show: true, url: args[0], position: args[1] } })
-    }, 500, [url, { left: rect.x, top: rect.bottom + window.scrollY }])
+    }, 500, [url, { left: rect.x, top: rect.bottom + window.scrollY }] as const)
   }
 
   function handleLinkMouseLeave(e) {

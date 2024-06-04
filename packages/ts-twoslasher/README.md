@@ -583,6 +583,43 @@ Turns to:
 > }
 > ```
 
+#### `import_files.ts`
+
+```ts
+// @filename: file-with-export.ts
+export const helloWorld = "Example string"
+
+// @filename: index.ts
+import { helloWorld } from "./file-with-export"
+console.log(helloWorld)
+```
+
+Turns to:
+
+> ```ts
+> // @filename: file-with-export.ts
+> export const helloWorld = "Example string"
+>
+> // @filename: index.ts
+> import { helloWorld } from "./file-with-export"
+> console.log(helloWorld)
+> ```
+
+> With:
+
+> ```json
+> {
+>   "code": "See above",
+>   "extension": "ts",
+>   "highlights": [],
+>   "queries": [],
+>   "staticQuickInfos": "[ 5 items ]",
+>   "errors": [],
+>   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA",
+>   "tags": []
+> }
+> ```
+
 #### `importsModules.ts`
 
 ```ts
@@ -632,43 +669,6 @@ Turns to:
 >   "staticQuickInfos": "[ 10 items ]",
 >   "errors": [],
 >   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKAwge1QA66JIAuAdKQM4AeAUNIbgE6mgBK8yAxm5M-lAAiZl15C6deDSKtQkAK6Je0YqAAS8WLFwAKAJSgA3nVChRpBc0Shdps6AA8AE2gA3AHz2HTgBYBGD01tXFAAdRZYZ0dgAK8fGNdPe306AF9JEAgYBBR0LGhEZ2lKKgYmOSMNLR1QNPkBVGFyYDwmEkRSCW5iKlwEch0Ac11gnVSgA",
->   "tags": []
-> }
-> ```
-
-#### `import_files.ts`
-
-```ts
-// @filename: file-with-export.ts
-export const helloWorld = "Example string"
-
-// @filename: index.ts
-import { helloWorld } from "./file-with-export"
-console.log(helloWorld)
-```
-
-Turns to:
-
-> ```ts
-> // @filename: file-with-export.ts
-> export const helloWorld = "Example string"
->
-> // @filename: index.ts
-> import { helloWorld } from "./file-with-export"
-> console.log(helloWorld)
-> ```
-
-> With:
-
-> ```json
-> {
->   "code": "See above",
->   "extension": "ts",
->   "highlights": [],
->   "queries": [],
->   "staticQuickInfos": "[ 5 items ]",
->   "errors": [],
->   "playgroundURL": "https://www.typescriptlang.org/play/#code/PTAEAEDMEsBsFMB2BDAtvAXKGCC0B3aAFwAtd4APABwHsAnIgOiIGcAoS2h0AYxsRZFQJeLFg0A6vVgATUAF5QAIgCiFNFQShBdaIgDmSgNxs2ICDiRpMoPTMrN20VFyEBvEWMnSZAX2x0NKjKjMCWBMRknPRESmx8AjQIjOL6ABSe4lJ0sgCUbEA",
 >   "tags": []
 > }
 > ```
@@ -982,14 +982,14 @@ This package can be used as a commonjs import, an esmodule and directly via a sc
 
 Below is a list of commands you will probably find useful. You can get debug logs by running with the env var of `DEBUG="*"`.
 
-### `npm start` or `yarn start`
+### `pnpm start`
 
 Runs the project in development/watch mode. Your project will be rebuilt upon changes. The library will be rebuilt if you make edits.
 
-### `npm run build` or `yarn build`
+### `pnpm build`
 
 Bundles the package to the `dist` folder. The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
 
-### `npm test` or `yarn test`
+### `pnpm test`
 
 Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit.

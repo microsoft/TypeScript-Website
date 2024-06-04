@@ -59,18 +59,18 @@ export const QuickJump = (props: Props) => {
         <h4>Handbook</h4>
         <ul>
           <li>
-            <IntlLink to="/docs/handbook/basic-types.html">
-              Basic Types
+            <IntlLink to="/docs/handbook/2/everyday-types.html">
+              Everyday Types
             </IntlLink>
           </li>
           <li>
-            <IntlLink to="/docs/handbook/advanced-types.html">
-              Advanced Types
+            <IntlLink to="/docs/handbook/2/types-from-types.html">
+              Creating Types from Types
             </IntlLink>
           </li>
           <li>
-            <IntlLink to="/docs/handbook/interfaces.html">
-              Interfaces
+            <IntlLink to="/docs/handbook/2/objects.html">
+              Object Types
             </IntlLink>
           </li>
           <li>
@@ -79,7 +79,7 @@ export const QuickJump = (props: Props) => {
             </IntlLink>
           </li>
           <li>
-            <IntlLink to="/docs/handbook/functions.html">Functions</IntlLink>
+            <IntlLink to="/docs/handbook/2/functions.html">More on Functions</IntlLink>
           </li>
         </ul>
       </div>
