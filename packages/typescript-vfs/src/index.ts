@@ -6,13 +6,24 @@ type CompilerHost = import("typescript").CompilerHost
 type SourceFile = import("typescript").SourceFile
 type TS = typeof import("typescript")
 
+type FetchLike = (url: string) => Promise<{ json(): Promise<any>; text(): Promise<string> }>
+
+interface LocalStorageLike {
+  getItem(key: string): string | null
+  setItem(key: string, value: string): void
+  removeItem(key: string): void
+}
+
+declare var localStorage: LocalStorageLike | undefined;
+declare var fetch: FetchLike | undefined;
+
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
 } catch (error) { }
 
 const hasProcess = typeof process !== `undefined`
-const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
+const shouldDebug = (hasLocalStorage && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
 export interface VirtualTypeScriptEnvironment {
@@ -292,6 +303,11 @@ export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: stri
 export const addFilesForTypesIntoFolder = (map: Map<string, string>) =>
   addAllFilesFromFolder(map, "node_modules/@types")
 
+export interface LZString {
+  compressToUTF16(input: string): string
+  decompressFromUTF16(compressed: string): string
+}
+
 /**
  * Create a virtual FS Map with the lib files from a particular TypeScript
  * version based on the target, Always includes dom ATM.
@@ -309,11 +325,11 @@ export const createDefaultMapFromCDN = (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: typeof import("lz-string"),
-  fetcher?: typeof fetch,
-  storer?: typeof localStorage
+  lzstring?: LZString,
+  fetcher?: FetchLike,
+  storer?: LocalStorageLike
 ) => {
-  const fetchlike = fetcher || fetch
+  const fetchlike = fetcher || fetch!
   const fsMap = new Map<string, string>()
   const files = knownLibFilesForCompilerOptions(options, ts)
   const prefix = `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`
@@ -340,7 +356,7 @@ export const createDefaultMapFromCDN = (
 
   // A localstorage and lzzip aware version of the lib files
   function cached() {
-    const storelike = storer || localStorage
+    const storelike = storer || localStorage!
 
     const keys = Object.keys(storelike)
     keys.forEach(key => {
