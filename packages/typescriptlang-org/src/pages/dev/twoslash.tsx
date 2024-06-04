@@ -32,7 +32,7 @@ const Index: React.FC<Props> = props => {
     getLoaderScript.src = withPrefix("/js/vs.loader.js")
     getLoaderScript.async = true
     getLoaderScript.onload = () => {
-      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      // Allow prod builds to set a custom commit prefix to bust caches
       const {sandboxRoot} = getPlaygroundUrls()
       
       // @ts-ignore
@@ -40,7 +40,7 @@ const Index: React.FC<Props> = props => {
 
       re.config({
         paths: {
-          vs: "https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs",
+          vs: "https://playgroundcdn.typescriptlang.org/cdn/4.0.5/monaco/min/vs",
           sandbox: sandboxRoot,
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],

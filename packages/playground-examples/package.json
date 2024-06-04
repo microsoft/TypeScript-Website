@@ -4,8 +4,12 @@
   "license": "MIT",
   "version": "1.0.0",
   "scripts": {
-    "bootstrap": "yarn build",
-    "build": "node scripts/generateTOC.js && node scripts/copyFiles.js",
-    "test": "echo 'NOOP'"
+    "bootstrap": "pnpm build",
+    "build": "node scripts/generateTOC.js && node scripts/copyFiles.js"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "fs-extra": "^11.2.0",
+    "json5": "^2.2.3"
   }
 }

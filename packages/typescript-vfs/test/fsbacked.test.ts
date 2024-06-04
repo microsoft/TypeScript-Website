@@ -45,8 +45,9 @@ it("can import files in the virtual fs", () => {
   const exporter = path.join(fakeFolder, "file-with-export.ts")
   const index = path.join(fakeFolder, "index.ts")
 
-  fsMap.set(exporter, `export const helloWorld = "Example string";`)
-  fsMap.set(index, `import {helloWorld} from "./file-with-export"; console.log(helloWorld)`)
+  // TODO: the VFS should really be normalizing paths when looking into fsMap instead.
+  fsMap.set(exporter.replace(/\\/g, "/"), `export const helloWorld = "Example string";`)
+  fsMap.set(index.replace(/\\/g, "/"), `import {helloWorld} from "./file-with-export"; console.log(helloWorld)`)
 
   const system = createFSBackedSystem(fsMap, monorepoRoot, ts)
   const env = createVirtualTypeScriptEnvironment(system, [index, exporter], ts, compilerOpts)

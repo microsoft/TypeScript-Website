@@ -3,7 +3,7 @@
 
 /** Run with:
      node --inspect-brk ./node_modules/.bin/ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts
-     yarn ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts 
+     pnpm ts-node --project packages/tsconfig-reference/tsconfig.json packages/tsconfig-reference/scripts/generateMarkdown.ts 
 */
 
 /**
@@ -197,7 +197,7 @@ languages.forEach((lang) => {
         const scopedMDPath = join("options", section.name, optionName + ".md");
 
         const fullPath = new URL(`../../copy/${lang}/${mdPath}`, import.meta.url);
-        const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${optionName}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  yarn workspace tsconfig-reference build\n\n`;
+        const exampleOptionContent = `\n\n\n Run:\n    echo '---\\ndisplay: "${optionName}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n' > ${fullPath}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n`;
 
         const optionPath = getPathInLocale(mdPath, exampleOptionContent, true);
         const scopedOptionPath = getPathInLocale(scopedMDPath, exampleOptionContent, true);

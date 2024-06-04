@@ -8,7 +8,7 @@ if (process.env.BOOTSTRAPPING) {
 
   // prettier-ignore
   console.log(`
-  Bootstrapped. You can now run the site with ${chalk.greenBright.bold("yarn start")}.`)
+  Bootstrapped. You can now run the site with ${chalk.greenBright.bold("pnpm start")}.`)
   process.exit(0)
 }
 
