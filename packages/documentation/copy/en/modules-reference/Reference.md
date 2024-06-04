@@ -272,6 +272,41 @@ const dynamic = import("mod"); // not transformed
 - ESM emit transforms `import x = require("...")` to a `require` call constructed from a `createRequire` import.
 - CommonJS emit leaves dynamic `import()` calls untransformed, so CommonJS modules can asynchronously import ES modules.
 
+### `preserve`
+
+In `--module preserve` ([added](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-4.html#support-for-require-calls-in---moduleresolution-bundler-and---module-preserve) in TypeScript 5.4), ECMAScript imports and exports written in input files are preserved in the output, and CommonJS-style `import x = require("...")` and `export = ...` statements are emitted as CommonJS `require` and `module.exports`. In other words, the format of each individual import or export statement is preserved, rather than being coerced into a single format for the whole compilation (or even a whole file).
+
+While it’s rare to need to mix imports and require calls in the same file, this `module` mode best reflects the capabilities of most modern bundlers, as well as the Bun runtime.
+
+> Why care about TypeScript’s `module` emit with a bundler or with Bun, where you’re likely also setting `noEmit`? TypeScript’s type checking and module resolution behavior are affected by the module format that it _would_ emit. Setting `module` gives TypeScript information about how your bundler or runtime will process imports and exports, which ensures that the types you see on imported values accurately reflect what will happen at runtime or after bundling. See [`--moduleResolution bundler`](#bundler) for more discussion.
+
+#### Examples
+
+```ts
+import x, { y, z } from "mod";
+import mod = require("mod");
+const dynamic = import("mod");
+
+export const e1 = 0;
+export default "default export";
+```
+
+```js
+import x, { y, z } from "mod";
+const mod = require("mod");
+const dynamic = import("mod");
+
+export const e1 = 0;
+export default "default export";
+```
+
+#### Implied and enforced options
+
+- `--module preserve` implies `--moduleResolution bundler`.
+- `--module preserve` implies `--esModuleInterop`.
+
+> The option `--esModuleInterop` is enabled by default in `--module preserve` only for its [type checking](https://www.typescriptlang.org/docs/handbook/modules/appendices/esm-cjs-interop.html#allowsyntheticdefaultimports-and-esmoduleinterop) behavior. Since imports never transform into require calls in `--module preserve`, `--esModuleInterop` does not affect the emitted JavaScript.
+
 ### `es2015`, `es2020`, `es2022`, `esnext`
 
 #### Summary
@@ -1083,33 +1118,29 @@ Features are listed in order of precedence.
 
 `--moduleResolution bundler` attempts to model the module resolution behavior common to most JavaScript bundlers. In short, this means supporting all the behaviors traditionally associated with Node.js’s CommonJS `require` resolution algorithm like [`node_modules` lookups](#node_modules-package-lookups), [directory modules](#directory-modules-index-file-resolution), and [extensionless paths](#extensionless-relative-paths), while also supporting newer Node.js resolution features like [package.json `"exports"`](#packagejson-exports) and [package.json `"imports"`](#packagejson-imports-and-self-name-imports).
 
-This is very similar to the behavior of [`node16` and `nodenext`](#node16-nodenext-1) resolving in CommonJS mode, but in `bundler`, the conditions used to resolve package.json `"exports"` and `"imports"` are always `"types"` and `"import"`. To understand why, let’s compare against what happens to an import in a `.ts` file in `nodenext`:
+It’s instructive to think about the similarities and differences between `--moduleResolution bundler` and `--moduleResolution nodenext`, particularly in how they decide what conditions to use when resolving package.json `"exports"` or `"imports"`. Consider an import statement in a `.ts` file:
 
 ```ts
 // index.ts
 import { foo } from "pkg";
 ```
 
-In `--module nodenext --moduleResolution nodenext`, the `--module` setting first [determines](#module-format-detection) whether the import will be emitted to the `.js` file as an `import` or `require` call and passes that information to TypeScript’s module resolver, which decides whether to match `"import"` or `"require"` conditions accordingly. This ensures TypeScript’s module resolution process, although working from input `.ts` files, reflects what will happen in Node.js’s module resolution process when it runs the output `.js` files.
+Recall that in `--module nodenext --moduleResolution nodenext`, the `--module` setting first [determines](#module-format-detection) whether the import will be emitted to the `.js` file as an `import` or `require` call, then passes that information to TypeScript’s module resolver, which decides whether to match `"import"` or `"require"` conditions in `"pkg"`’s package.json `"exports"` accordingly. Let’s assume that there’s no package.json in scope of this file. The file extension is `.ts`, so the output file extension will be `.js`, which Node.js will interpret as CommonJS, so TypeScript will emit this `import` as a `require` call. So, the module resolver will use the `require` condition as it resolves `"exports"` from `"pkg"`.
 
-When using a bundler, on the other hand, the bundler typically processes the raw `.ts` files directly and runs its module resolution process on the untransformed `import` statement. In this scenario, it doesn’t make a lot of sense to think about how TypeScript will emit the `import`, because TypeScript isn’t being used to emit anything at all. As far as the bundler is concerned, `import`s are `import`s and `require`s are `require`s, so the conditions used to resolve package.json `"exports"` and `"imports"` are determined by the syntax seen in the input `.ts` file. Likewise, the conditions TypeScript’s module resolution process uses in `--moduleResolution bundler` are _also_ determined by the input syntax in input TypeScript files—it’s just that `require` calls are not currently resolved at all:
+The same process happens in `--moduleResolution bundler`, but the rules for deciding whether to emit an `import` or `require` call for this import statement will be different, since `--moduleResolution bundler` necessitates using [`--module esnext`](#es2015-es2020-es2022-esnext) or [`--module preserve`](#preserve). In both of those modes, ESM `import` declarations always emit as ESM `import` declarations, so TypeScript’s module resolver will receive that information and use the `"import"` condition as it resolves `"exports"` from `"pkg"`.
+
+This explanation may be somewhat unintuitive, since `--moduleResolution bundler` is usually used in combination with `--noEmit`—bundlers typically process raw `.ts` files and perform module resolution on untransformed `import`s or `require`s. However, for consistency, TypeScript still uses the hypothetical emit decided by `module` to inform module resolution and type checking. This makes [`--module preserve`](#preserve) the best choice whenever a runtime or bundler is operating on raw `.ts` files, since it implies no transformation. Under `--module preserve --moduleResolution bundler`, you can write imports and requires in the same file that will resolve with the `import` and `require` conditions, respectively:
 
 ```ts
-// Some library file:
-declare function require(module: string): any;
-
 // index.ts
-import { foo } from "pkg";    // Resolved with "import" condition
-import pkg2 = require("pkg"); // Not allowed
-const pkg = require("pkg");   // Not an error, but not resolved to anything
-   // ^? any
+import pkg1 from "pkg";       // Resolved with "import" condition
+import pkg2 = require("pkg"); // Resolved with "require" condition
 ```
 
-Since TypeScript doesn’t currently support resolving `require` calls in `--moduleResolution bundler`, everything it _does_ resolve uses the `"import"` condition.
 
 #### Implied and enforced options
 
-- `--moduleResolution bundler` must be paired with the `--module esnext` option.
+- `--moduleResolution bundler` must be paired with `--module esnext` or `--module preserve`.
 - `--moduleResolution bundler` implies `--allowSyntheticDefaultImports`.
 
 #### Supported features
@@ -1117,8 +1148,8 @@ Since TypeScript doesn’t currently support resolving `require` calls in `--mod
 - [`paths`](#paths) ✅
 - [`baseUrl`](#baseurl) ✅
 - [`node_modules` package lookups](#node_modules-package-lookups) ✅
-- [package.json `"exports"`](#packagejson-exports) ✅ matches `types`, `import`
-- [package.json `"imports"` and self-name imports](#packagejson-imports-and-self-name-imports) ✅ matches `types`, `import`
+- [package.json `"exports"`](#packagejson-exports) ✅ matches `types`, `import`/`require` depending on syntax
+- [package.json `"imports"` and self-name imports](#packagejson-imports-and-self-name-imports) ✅ matches `types`, `import`/`require` depending on syntax
 - [package.json `"typesVersions"`](#packagejson-typesversions) ✅
 - [Package-relative paths](#package-relative-file-paths) ✅ when `exports` not present
 - [Full relative paths](#relative-file-path-resolution) ✅

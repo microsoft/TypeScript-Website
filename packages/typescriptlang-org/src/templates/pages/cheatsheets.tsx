@@ -71,11 +71,11 @@ const Index: React.FC<Props> = (props) => {
 export default (props: Props) => <Intl locale={props.pageContext.lang}><Index {...props} /></Intl>
 
 const event = (name: string, options?: any) => {
+  // @ts-ignore
+  window.appInsights &&
     // @ts-ignore
-    window.appInsights &&
-      // @ts-ignore
-      window.appInsights.trackEvent({ name }, options)
-  }
+    window.appInsights.trackEvent({ name }, options)
+}
 
 const FluidButton = (props: { href?: string, onClick?: any, title: string, subtitle?: string, icon: JSX.Element, className?: string }) => (
     <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick}>

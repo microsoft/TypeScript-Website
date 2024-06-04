@@ -1,4 +1,4 @@
-//  yarn workspace tsconfig-reference generate:msbuild:schema
+// pnpm run --filter=tsconfig-reference generate:msbuild:schema
 
 console.log("TSConfig Ref: JSON for MSBuild");
 

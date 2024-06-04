@@ -377,7 +377,7 @@ These pitfalls pertain to _ambient_ const enums only (basically const enums in `
    These bugs are especially pernicious because it is common to run automated tests at roughly the same time as projects are built, with the same dependency versions, which misses these bugs completely.
 3. [`importsNotUsedAsValues: "preserve"`](/tsconfig#importsNotUsedAsValues) will not elide imports for const enums used as values, but ambient const enums do not guarantee that runtime `.js` files exist.
    The unresolvable imports cause errors at runtime.
-   The usual way to unambiguously elide imports, [type-only imports](/docs/handbook/modules.html#importing-types), [does not allow const enum values](https://github.com/microsoft/TypeScript/issues/40344), currently.
+   The usual way to unambiguously elide imports, [type-only imports](/docs/handbook/modules/reference.html#type-only-imports-and-exports), [does not allow const enum values](https://github.com/microsoft/TypeScript/issues/40344), currently.
 
 Here are two approaches to avoiding these pitfalls:
 

@@ -1,3 +1,20 @@
+# @typescript/twoslash
+
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies [642ea11]
+  - @typescript/vfs@1.5.2
+
+## 3.2.5
+
+### Patch Changes
+
+- 46eba14: Initial bump for changesets
+- Updated dependencies [46eba14]
+  - @typescript/vfs@1.5.1
+
 ## 3.1.0
 
 Adds support for `// ---cut-after---`, e.g.
@@ -107,7 +124,7 @@ const b = "345"
 ```
 
 Now returns correct query responses, I needed this for the bug workbench.
-http://www.staging-typescript.org/dev/bug-workbench
+http://www.typescriptlang.org/dev/bug-workbench
 
 Also has a way to set the defaults for the config
 

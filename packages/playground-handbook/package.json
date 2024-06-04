@@ -4,7 +4,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "bootstrap": "echo 'NOOP'",
     "build": "node scripts/generateJSON.mjs"
   },
   "devDependencies": {
