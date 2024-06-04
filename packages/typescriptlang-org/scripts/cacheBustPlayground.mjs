@@ -1,5 +1,5 @@
 // @ts-check
-// yarn workspace typescriptlang-org setup-playground-cache-bust
+// pnpm run --filter=typescriptlang-org setup-playground-cache-bust
 
 import fs from "fs"
 import path from "path"

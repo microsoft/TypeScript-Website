@@ -22,7 +22,7 @@ Or to trigger some action in the Playground UI by default:
 
 Then the query string tend to be about changing the state of the Playground setup from the default:
 
-- `?ts=3.9.2` - Sets the TypeScript version, the list of supported versions is in these [two](https://typescript.azureedge.net/indexes/pre-releases.json) [json](https://typescript.azureedge.net/indexes/releases.json) files.
+- `?ts=3.9.2` - Sets the TypeScript version, the list of supported versions is in these [two](https://playgroundcdn.typescriptlang.org/indexes/pre-releases.json) [json](https://playgroundcdn.typescriptlang.org/indexes/releases.json) files.
 
   There are two special cases for the `ts` option:
 

@@ -67,7 +67,7 @@ const go = async () => {
     console.log("\n\n");
 
     console.log(
-      "Note: you can add an extra argument to the lint script ( yarn workspace documentation lint [opt] ) to just run one lint."
+      "Note: you can add an extra argument to the lint script ( pnpm run --filter=documentation lint [opt] ) to just run one lint."
     );
   }
 };

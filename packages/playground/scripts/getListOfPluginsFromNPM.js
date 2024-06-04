@@ -3,20 +3,19 @@
 // Looks at all the npm packages with the playground-plugin keyword, which
 // is a default in the templates.
 
-// Run via: CI=true yarn workspace typescript-playground run bootstrap
+// Run via: CI=true pnpm run --filter=typescript-playground run bootstrap
 
 if (!process.env.CI) {
   console.log("Skipping because it's not the CI")
   process.exit(0)
 }
 
-const nodeFetch = require("node-fetch").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
 
 const get = async url => {
-  const packageJSON = await nodeFetch(url)
+  const packageJSON = await fetch(url)
   const contents = await packageJSON.json()
   return contents
 }

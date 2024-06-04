@@ -1,6 +1,6 @@
 ### A Guide to Converting to Twoslash
 
-To run the site with Twoslash enabled you need to use `yarn start`.
+To run the site with Twoslash enabled you need to use `pnpm start`.
 
 Code samples on the TypeScript Website should run through [Twoslash](https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher#typescript-twoslash) which lets the compiler do more of the work.
 
@@ -65,4 +65,4 @@ x = [10, "hello"];
 
 ---
 
-A twoslash code sample can do _a lot_ - the best documentation for twoslash lives inside the [bug workbench](https://www.staging-typescript.org/dev/bug-workbench) where you can test your code sample live and read how it all works.
+A twoslash code sample can do _a lot_ - the best documentation for twoslash lives inside the [bug workbench](https://www.typescriptlang.org/dev/bug-workbench) where you can test your code sample live and read how it all works.

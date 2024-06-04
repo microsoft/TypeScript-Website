@@ -1,5 +1,5 @@
 // You can test it by running
-// yarn danger pr https://github.com/microsoft/TypeScript-Website/pull/115
+// pnpm danger pr https://github.com/microsoft/TypeScript-Website/pull/115
 
 import spellcheck from "danger-plugin-spellcheck"
 
