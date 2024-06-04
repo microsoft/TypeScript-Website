@@ -292,6 +292,19 @@ export const addAllFilesFromFolder = (map: Map<string, string>, workingDir: stri
 export const addFilesForTypesIntoFolder = (map: Map<string, string>) =>
   addAllFilesFromFolder(map, "node_modules/@types")
 
+export interface LZString {
+  compressToUTF16(input: string): string
+  decompressFromUTF16(compressed: string): string
+}
+
+export type FetchLike = (url: string) => Promise<{ json(): Promise<any>; text(): Promise<string> }>
+
+export interface LocalStorageLike {
+  getItem(key: string): string | null
+  setItem(key: string, value: string): void
+  removeItem(key: string): void
+}
+
 /**
  * Create a virtual FS Map with the lib files from a particular TypeScript
  * version based on the target, Always includes dom ATM.
@@ -309,9 +322,9 @@ export const createDefaultMapFromCDN = (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: typeof import("lz-string"),
-  fetcher?: typeof fetch,
-  storer?: typeof localStorage
+  lzstring?: LZString,
+  fetcher?: FetchLike,
+  storer?: LocalStorageLike
 ) => {
   const fetchlike = fetcher || fetch
   const fsMap = new Map<string, string>()
