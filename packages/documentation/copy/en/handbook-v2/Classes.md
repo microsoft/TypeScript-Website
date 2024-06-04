@@ -1211,7 +1211,7 @@ class Box<T> {
   }
 }
 
-const box = new Box();
+const box = new Box<string>();
 box.value = "Gameboy";
 
 box.value;

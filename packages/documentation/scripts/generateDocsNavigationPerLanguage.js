@@ -22,7 +22,7 @@ const { read: readMarkdownFile } = require("gray-matter");
 
 /* 
   Run this after any changes to propagate:
-     yarn workspace documentation create-handbook-nav
+     pnpm run --filter=documentation create-handbook-nav
 */
 
 /** @type {HandbookNavItem[]} */
@@ -222,10 +222,10 @@ for (const lang of langs) {
 
 const codeForTheHandbook = [
   `
-  /* This function is completely auto-generated via the \`yarn bootstrap\` phase of
+  /* This function is completely auto-generated via the \`pnpm bootstrap\` phase of
   the app. You can re-run it when adding new localized handbook pages by running:
 
-  yarn workspace documentation create-handbook-nav
+  pnpm run --filter=documentation create-handbook-nav
 
   Find the source of truth at packages/documentation/scripts/generateDocsNavigationPerLanguage.js
 */

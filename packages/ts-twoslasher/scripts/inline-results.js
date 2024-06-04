@@ -61,7 +61,7 @@ module.exports = {
 
       mds.push('### Examples')
 
-      readdirSync(fixturesFolder).forEach((fixtureName) => {
+      readdirSync(fixturesFolder).sort().forEach((fixtureName) => {
         const fixture = join(fixturesFolder, fixtureName)
         if (lstatSync(fixture).isDirectory()) {
           return
