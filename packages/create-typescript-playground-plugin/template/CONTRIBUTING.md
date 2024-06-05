@@ -2,10 +2,10 @@
 
 ## Contributing
 
-You can use `yarn start` to set up both a copy of Rollup to generate the JS, and Serve to host it.
+You can use `pnpm start` to set up both a copy of Rollup to generate the JS, and Serve to host it.
 
 ```sh
-yarn start
+pnpm start
 ```
 
 Then set up the TypeScript playground to connect to a dev plugin at `http://localhost:5000/`.
@@ -33,9 +33,9 @@ Because most node_modules expect to be running in node, you might have to do som
 
 The route to handle this is via rollup:
 
-- add a new dependency via `yarn add xyz`
+- add a new dependency via `pnpm add xyz`
 - import it into your `index.ts`
-- run `yarn build` - did it provide some error messages?
+- run `pnpm build` - did it provide some error messages?
   - If it did, you may need to edit your `rollup.config.js`.
   - You could probably start by taking the [rollup config from `playground-plugin-tsquery`](https://github.com/orta/playground-plugin-tsquery/blob/master/rollup.config.js) and by adding any extra externals and globals.
 
@@ -63,4 +63,4 @@ Once you're happy and it's polished, you can apply to have it in the default plu
 
 ## Support
 
-Ask questions either on the TypeScript Website issues](https://github.com/microsoft/TypeScript-Website/issues), or in the [TypeScript Community Discord](https://discord.gg/typescript) - in the TypeScript Website channel.
+Ask questions either on the [TypeScript Website issues](https://github.com/microsoft/TypeScript-Website/issues), or in the [TypeScript Community Discord](https://discord.gg/typescript) - in the TypeScript Website channel.

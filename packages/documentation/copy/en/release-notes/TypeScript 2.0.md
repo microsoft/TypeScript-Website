@@ -523,7 +523,7 @@ See [Module Resolution](http://www.typescriptlang.org/docs/handbook/module-resol
 ## Base URL
 
 Using a [`baseUrl`](/tsconfig#baseUrl) is a common practice in applications using AMD module loaders where modules are "deployed" to a single folder at run-time.
-All module imports with non-relative names are assumed to be relative to the [`baseUrl`](/tsconfig#baseUrl).
+All module imports with bare specifier names are assumed to be relative to the [`baseUrl`](/tsconfig#baseUrl).
 
 ##### Example
 

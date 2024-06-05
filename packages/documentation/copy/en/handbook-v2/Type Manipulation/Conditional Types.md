@@ -265,7 +265,7 @@ To avoid that behavior, you can surround each side of the `extends` keyword with
 ```ts twoslash
 type ToArrayNonDist<Type> = [Type] extends [any] ? Type[] : never;
 
-// 'StrArrOrNumArr' is no longer a union.
-type StrArrOrNumArr = ToArrayNonDist<string | number>;
+// 'ArrOfStrOrNum' is no longer a union.
+type ArrOfStrOrNum = ToArrayNonDist<string | number>;
 //   ^?
 ```

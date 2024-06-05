@@ -162,14 +162,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                 <nav className={deprecationURL ? "deprecated" : ""}>
                   {<>
                     <h5>{i("handb_on_this_page")}</h5>
-                    <ul className="handbook-on-this-page-section-list">
-                      {
-                        sidebarHeaders.map(heading => {
-                          const id = slug.slug(heading!.value, false)
-                          return <li key={id}><a href={'#' + id}>{heading!.value}</a></li>
-                        })
-                      }
-                    </ul>
+                    <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
                   </>
                   }
                   <div id="like-dislike-subnav">
@@ -192,6 +185,45 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       <Popup {...showPopup} />
     </Layout>
   )
+}
+
+type MarkdownHeadingTreeNode = {
+  value: string
+  depth: number
+  children?: MarkdownHeadingTreeNode[]
+}
+
+function headerListToTree(sidebarHeaders: GatsbyTypes.Maybe<Pick<GatsbyTypes.MarkdownHeading, "value" | "depth">>[]) {
+  const tree: MarkdownHeadingTreeNode[] = []
+  let currentParent: MarkdownHeadingTreeNode | undefined
+  sidebarHeaders.forEach(heading => {
+    if (!currentParent || heading!.depth === 2) {
+      currentParent = { value: heading!.value!, depth: heading!.depth!, children: [] }
+      tree.push(currentParent)
+    } else {
+      currentParent.children?.push({
+        value: heading!.value!,
+        depth: heading!.depth!,
+      })
+    }
+  })
+  return tree
+}
+
+function MarkdownHeadingTree(props: { tree: MarkdownHeadingTreeNode[], slug: typeof slugger, className?: string }) {
+  return <ul className={props.className}>
+      {
+        props.tree.map(heading => {
+          const id = props.slug.slug(heading.value, false)
+          return (
+            <li key={id}>
+              <a href={'#' + id}>{heading.value}</a>
+              {heading.children?.length ? <MarkdownHeadingTree tree={heading.children} slug={props.slug} /> : null}
+            </li>
+          )
+        })
+      }
+    </ul>
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>

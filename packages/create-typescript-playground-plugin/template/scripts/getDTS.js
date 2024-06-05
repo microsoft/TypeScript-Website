@@ -22,7 +22,7 @@ const go = async () => {
   if (!existsSync(vendor)) mkdirSync(vendor)
   if (!existsSync(ds)) mkdirSync(ds)
 
-  const host = "https://www.staging-typescript.org"
+  const host = "https://www.typescriptlang.org"
 
   // For playground-dev purposes
   // const host = "http://localhost:8000";

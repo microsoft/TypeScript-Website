@@ -1,6 +1,6 @@
 /**
     Updates the JSON file `attribution.json` with contributors based on commits to files, to run:
-    yarn workspace documentation bootstrap
+    pnpm run --filter=documentation bootstrap
 */
 const { execSync } = require("child_process");
 const path = require("path");
@@ -83,6 +83,8 @@ const allFiles = recursiveReadDirSync("copy/");
 const json = {};
 
 allFiles.forEach((f) => {
+  f = f.replace(/\\/g, "/");
+
   const oldName = f.split("/").splice(2).join("/");
   const originalRef = oldJSON[oldName] || { top: [], total: 0 };
 

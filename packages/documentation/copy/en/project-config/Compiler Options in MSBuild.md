@@ -340,7 +340,7 @@ There is a series of mappings for common TypeScript settings, these are settings
 <td><code><a href='/tsconfig/#baseUrl'>--baseUrl</a></code></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify the base directory to resolve non-relative module names.</p>
+<p>Specify the base directory to resolve bare specifier module names.</p>
 
 </tr></td>
 <tr class='odd' name='declarationDir'>

@@ -87,8 +87,8 @@ You can combine call and construct signatures in the same type arbitrarily:
 
 ```ts 
 interface CallOrConstruct {
-  new (s: string): Date;
   (n?: number): string;
+  new (s: string): Date;
 }
 ```
 
@@ -368,7 +368,7 @@ Note that when a parameter is optional, callers can always pass `undefined`, as 
 
 ```ts 
 declare function f(x?: number): void;
-// cut
+// ---cut---
 // All OK
 f();
 f(10);

@@ -152,7 +152,7 @@ let myIdentity: <Type>(arg: Type) => Type = identity;
 We could also have used a different name for the generic type parameter in the type, so long as the number of type variables and how the type variables are used line up.
 
 ```ts
-function identity<Input>(arg: Input): Input {
+function identity<Type>(arg: Type): Type {
   return arg;
 }
 
@@ -405,7 +405,7 @@ type Container<T, U> = {
 };
 
 // ---cut---
-declare function create<T extends HTMLElement = HTMLDivElement, U = T[]>(
+declare function create<T extends HTMLElement = HTMLDivElement, U extends HTMLElement[] = T[]>(
   element?: T,
   children?: U
 ): Container<T, U>;

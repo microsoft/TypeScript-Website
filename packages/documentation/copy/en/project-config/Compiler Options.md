@@ -375,7 +375,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify the base directory to resolve non-relative module names.</p>
+<p>Specify the base directory to resolve bare specifier module names.</p>
 </td></tr>
 
 <tr class='odd' name='charset'>
@@ -809,7 +809,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, or <code>nodenext</code></p>
+  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>nodenext</code>, or <code>preserve</code></p>
 </td>
   <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
 </td>
@@ -855,7 +855,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#newLine'>--newLine</a></code></td>
   <td><p><code>crlf</code> or <code>lf</code></p>
 </td>
-  <td><p>Platform specific.</p>
+  <td><p><code>lf</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1196,7 +1196,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#resolvePackageJsonExports'>--resolvePackageJsonExports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> when 'moduleResolution' is 'node16', 'nodenext', or 'bundler'; otherwise <code>false</code>.</p>
+  <td><p><code>true</code> when <a href="#moduleResolution"><code>moduleResolution</code></a> is <code>node16</code>, <code>nodenext</code>, or <code>bundler</code>; otherwise <code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1207,7 +1207,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#resolvePackageJsonImports'>--resolvePackageJsonImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> when 'moduleResolution' is 'node16', 'nodenext', or 'bundler'; otherwise <code>false</code>.</p>
+  <td><p><code>true</code> when <a href="#moduleResolution"><code>moduleResolution</code></a> is <code>node16</code>, <code>nodenext</code>, or <code>bundler</code>; otherwise <code>false</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">

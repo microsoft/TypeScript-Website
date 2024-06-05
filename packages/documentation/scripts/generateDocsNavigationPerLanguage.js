@@ -22,7 +22,7 @@ const { read: readMarkdownFile } = require("gray-matter");
 
 /* 
   Run this after any changes to propagate:
-     yarn workspace documentation create-handbook-nav
+     pnpm run --filter=documentation create-handbook-nav
 */
 
 /** @type {HandbookNavItem[]} */
@@ -84,9 +84,6 @@ const handbookPages = [
       { file: "reference/Iterators and Generators.md" },
       { file: "reference/JSX.md" },
       { file: "reference/Mixins.md" },
-      { file: "reference/ESM Support for Node.md" },
-      { file: "reference/Modules.md" },
-      { file: "reference/Module Resolution.md" },
       { file: "reference/Namespaces.md" },
       { file: "reference/Namespaces and Modules.md" },
       { file: "reference/Symbols.md" },
@@ -95,6 +92,27 @@ const handbookPages = [
       { file: "reference/Type Inference.md" },
       { file: "reference/Variable Declarations.md" },
     ],
+  },
+  {
+    title: "Modules Reference",
+    summary: "How TypeScript models JavaScript modules.",
+    items: [
+      { title: "Introduction", file: "modules-reference/Introduction.md" },
+      { title: "Theory", file: "modules-reference/Theory.md" },
+      {
+        title: "Guides",
+        items: [
+          { title: "Choosing Compiler Options", file: "modules-reference/guides/Choosing Compiler Options.md" },
+        ]
+      },
+      { title: "Reference", file: "modules-reference/Reference.md" },
+      {
+        title: "Appendices",
+        items: [
+          { file: "modules-reference/appendices/ESM-CJS-Interop.md" },
+        ]
+      }
+    ]
   },
   {
     title: "Tutorials",
@@ -186,7 +204,7 @@ for (const lang of langs) {
   const langMap = new Map();
   langInfo[lang] = langMap;
 
-  const allEnPages = getFilePaths(enRoot);
+  const allEnPages = getFilePaths(enRoot).filter((f) => !/[\\/]modules-reference[\\/]diagrams[\\/]/.test(f));
   for (const page of allEnPages) {
     const relativeToLangPath = page.replace(enRoot, "");
     const localPage = join(copyPath, lang + relativeToLangPath);
@@ -204,10 +222,10 @@ for (const lang of langs) {
 
 const codeForTheHandbook = [
   `
-  /* This function is completely auto-generated via the \`yarn bootstrap\` phase of
+  /* This function is completely auto-generated via the \`pnpm bootstrap\` phase of
   the app. You can re-run it when adding new localized handbook pages by running:
 
-  yarn workspace documentation create-handbook-nav
+  pnpm run --filter=documentation create-handbook-nav
 
   Find the source of truth at packages/documentation/scripts/generateDocsNavigationPerLanguage.js
 */
