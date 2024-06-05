@@ -33,12 +33,12 @@
       }
     }
   }
-  &.button.open {
+  &.button.closed {
     svg {
       transform: rotate(270deg);
     }
   }
-  &.button.closed {
+  &.button.open {
     a {
       text-decoration: none;
       color: var(--text-color);
