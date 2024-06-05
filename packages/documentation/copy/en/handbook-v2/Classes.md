@@ -157,17 +157,7 @@ class Point {
   constructor(x: number, y: number);
   constructor(xy: string);
   constructor(x: string | number, y: number = 0) {
-    // Check if x is a string (assuming it contains comma-separated coordinates)
-    if (typeof x === 'string') {
-      const coordinates = x.split(','); 
-      this.x = parseFloat(coordinates[0]);
-      this.y = parseFloat(coordinates[1]);
-    } else {
-      // If x is not a string, assume it's a number and assign it to x
-      this.x = x;
-      // Assign y to the provided value or default to 0 if not provided
-      this.y = y;
-    }
+    // Code logic here
   }
 }
 ```
