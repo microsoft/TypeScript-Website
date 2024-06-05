@@ -205,7 +205,7 @@ type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
 //   ^?
 ```
 
-When inferring the return type from a type with multiple call signatures, such as an overloaded function, it's essential to note that inferences are made from the _last overload signature_, not from the [implementation signature](https://www.typescriptlang.org/docs/handbook/2/functions.html#overload-signatures-and-the-implementation-signature).
+When inferring the return type from a type with multiple call signatures, such as an overloaded function, inferences are made from the _last overload signature_, not from the [implementation signature](https://www.typescriptlang.org/docs/handbook/2/functions.html#overload-signatures-and-the-implementation-signature).
 
 ```ts twoslash
 // @errors: 2322
