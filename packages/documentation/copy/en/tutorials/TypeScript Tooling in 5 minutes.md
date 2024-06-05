@@ -54,7 +54,7 @@ The result will be a file `greeter.js` which contains the same JavaScript that y
 We're up and running using TypeScript in our JavaScript app!
 
 Now we can start taking advantage of some of the new tools TypeScript offers.
-Add a `: string` type annotation to the 'person' function argument as shown here:
+Add a `: string` type annotation to the 'person' function parameter as shown here:
 
 ```ts twoslash
 function greeter(person: string) {
@@ -90,7 +90,7 @@ error TS2345: Argument of type 'number[]' is not assignable to parameter of type
 ```
 
 Similarly, try removing all the arguments to the greeter call.
-TypeScript will let you know that you have called this function with an unexpected number of parameters.
+TypeScript will let you know that you have called this function with an unexpected number of arguments.
 In both cases, TypeScript can offer static analysis based on both the structure of your code, and the type annotations you provide.
 
 Notice that although there were errors, the `greeter.js` file is still created.
@@ -125,7 +125,7 @@ TypeScript supports new features in JavaScript, like support for class-based obj
 Here we're going to create a `Student` class with a constructor and a few public fields.
 Notice that classes and interfaces play well together, letting the programmer decide on the right level of abstraction.
 
-Also of note, the use of `public` on arguments to the constructor is a shorthand that allows us to automatically create properties with that name.
+Also of note, the use of `public` on parameters to the constructor is a shorthand that allows us to automatically create properties with that name.
 
 ```ts twoslash
 class Student {

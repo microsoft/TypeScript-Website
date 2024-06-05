@@ -452,6 +452,32 @@ type T4 = InstanceType<Function>;
 //    ^?
 ```
 
+## `NoInfer<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[5.4](/docs/handbook/release-notes/typescript-5-4.html#the-noinfer-utility-type)
+
+</blockquote>
+
+Blocks inferences to the contained type. Other than blocking inferences, `NoInfer<Type>` is
+identical to `Type`.
+
+##### Example
+
+```ts
+function createStreetLight<C extends string>(
+  colors: C[],
+  defaultColor?: NoInfer<C>,
+) {
+  // ...
+}
+
+createStreetLight(["red", "yellow", "green"], "red");  // OK
+createStreetLight(["red", "yellow", "green"], "blue");  // Error
+```
+
 ## `ThisParameterType<Type>`
 
 <blockquote class=bg-reading>

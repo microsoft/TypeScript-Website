@@ -982,14 +982,14 @@ This package can be used as a commonjs import, an esmodule and directly via a sc
 
 Below is a list of commands you will probably find useful. You can get debug logs by running with the env var of `DEBUG="*"`.
 
-### `npm start` or `yarn start`
+### `pnpm start`
 
 Runs the project in development/watch mode. Your project will be rebuilt upon changes. The library will be rebuilt if you make edits.
 
-### `npm run build` or `yarn build`
+### `pnpm build`
 
 Bundles the package to the `dist` folder. The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
 
-### `npm test` or `yarn test`
+### `pnpm test`
 
 Runs the test watcher (Jest) in an interactive mode. By default, runs tests related to files changed since the last commit.

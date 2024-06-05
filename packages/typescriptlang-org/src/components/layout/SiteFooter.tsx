@@ -303,6 +303,7 @@ export const SiteFooter = (props: Props) => {
             >
             { lang === "ko" ? "개인정보처리방침 및 위치정보이용약관" : "Privacy"}
             </a>
+            <a href="https://go.microsoft.com/fwlink/?LinkID=206977">Terms of Use</a>
             {lang === "fr" ?
               <a
                 lang="fr"

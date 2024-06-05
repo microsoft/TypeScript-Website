@@ -36,21 +36,21 @@ The TSConfig reference is created by a two step process:
 You can run these commands from the root of the repo:
 
 ```sh
-yarn workspace tsconfig-reference run generate-json
+pnpm run --filter=tsconfig-reference generate-json
 
-yarn workspace tsconfig-reference run generate-markdown
+pnpm run --filter=tsconfig-reference generate-markdown
 ```
 
 You can validate any codeblocks which use twoslash via the script:
 
 ```sh
-yarn workspace tsconfig-reference run test
+pnpm run --filter=tsconfig-reference test
 
 # or to just run the linter without a build
-yarn workspace tsconfig-reference run lint
+pnpm run --filter=tsconfig-reference lint
 
 # or to just one one linter
-yarn workspace tsconfig-reference run lint resolveJson
+pnpm run --filter=tsconfig-reference lint resolveJson
 ```
 
 You can debug twoslash by setting the environment var `DEBUG="*"` in all of these too.
