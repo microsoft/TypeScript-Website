@@ -1,39 +1,36 @@
 ### Meta
 
-- **URLs:** [production](https://www.typescriptlang.org), [staging](http://www.staging-typescript.org/)
-- **Admin:** Prod: [Azure Portal](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/appServices), [Deploy logs](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/99160d5b-9289-4b66-8074-ed268e739e8e/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/TypeScript-1ebb3390-2634-4956-a955-eab987b7bb25/vstscd), [App Insights](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/typescriptlang-org/providers/microsoft.insights/components/TypeScriptLang-Prod-Ai/overview)
+- **URLs:** [production](https://www.typescriptlang.org)
 - **Translations:** [microsoft/TypeScript-Website-Localizations](https://github.com/microsoft/TypeScript-Website-Localizations)
 
 ### Getting Started
 
-This repo uses [yarn workspaces][y-wrk] with node 13+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
+This repo uses pnpm workspaces with node 18+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
 
-With those set up, clone this repo and run `yarn install`.
+With those set up, clone this repo and run `pnpm install`.
 
 ```sh
 git clone https://github.com/microsoft/TypeScript-website
 cd TypeScript-website
-yarn install
+pnpm install
 code .
 
 # Then:
-yarn bootstrap
+pnpm bootstrap
 # Optional, grab the translations:
-yarn docs-sync pull microsoft/TypeScript-Website-localizations#main 1
+pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
 # Now you can start up the website
-yarn start
+pnpm start
 ```
 
-Working on this repo is done by running `yarn start` - this starts up the website on port `8000` and creates a
+Working on this repo is done by running `pnpm start` - this starts up the website on port `8000` and creates a
 builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
 
 Some useful knowledge you need to know:
 
-- All packages have: `yarn build` and `yarn test`
-- All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" yarn test` to get verbose logs
-
-You can manually via GH Actions for [production here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Monday+Website+Push+To+Production%22) and [staging here](https://github.com/microsoft/TypeScript-Website/actions?query=workflow%3A%22Build+Website+To+Staging%22).
+- All packages have: `pnpm build` and `pnpm test`
+- All packages use [debug](https://www.npmjs.com/package/debug) - which means you can do `env DEBUG="*" pnpm test` to get verbose logs
 
 Having issues getting set up? [Consult the troubleshooting](./docs/Setup%20Troubleshooting.md).
 
@@ -41,8 +38,7 @@ Having issues getting set up? [Consult the troubleshooting](./docs/Setup%20Troub
 
 Deployment is automatic:
 
-- Pushes to the branch `v2` deploy to [staging](http://www.staging-typescript.org)
-- On a Monday the v2 branch is deployed to [production](https://www.typescriptlang.org)
+- Pushes to the branch `v2` deploy to [production](https://www.typescriptlang.org)
 
 You can find the build logs in [GitHub Actions](https://github.com/microsoft/TypeScript-Website/actions)
 
@@ -55,6 +51,27 @@ If you want to know _in-depth_ how this website works, there is an [hour long vi
 - [Updating the TypeScript Version](./docs/New%20TypeScript%20Version.md)
 - [Something Went Wrong](./docs/Something%20Went%20Wrong.md)
 
+## Changesets
+
+This repo uses `pnpm` + `changesets` to manage package version bumps and releases.
+
+CI will fail if a PR is missing a changeset. To add a changeset, run `pnpm changeset`, then follow along with the CLI.
+
+```console
+$ pnpm changeset
+🦋  Which packages would you like to include? … 
+◯ changed packages
+  ◯ create-typescript-playground-plugin
+  ◯ @typescript/vfs
+  ◯ @typescript/twoslash
+  ◯ @typescript/sandbox
+  ◯ @typescript/ata
+```
+
+New files will be created in `.changeset` and must be committed.
+
+If you are making a change that does not affect published code, you can create an empty changeset for your PR with `pnpm changeset --empty`.
+
 # Website Packages
 
 ## TypeScriptLang-Org
@@ -62,7 +79,7 @@ If you want to know _in-depth_ how this website works, there is an [hour long vi
 The main website for TypeScript, a Gatsby website which is statically deployed. You can run it via:
 
 ```sh
-yarn start
+pnpm start
 ```
 
 To optimize even more, the env var `NO_TRANSLATIONS` as truthy will make the website only load pages for English.
@@ -84,33 +101,33 @@ A set of tools and scripts for generating a comprehensive API reference for the 
 
 ```sh
 # Generate JSON from the typescript cli
-yarn workspace tsconfig-reference run generate-json
+pnpm run --filter=tsconfig-reference generate-json
 # Jams them all into a single file
-yarn workspace tsconfig-reference run generate-markdown
+pnpm run --filter=tsconfig-reference generate-markdown
 ```
 
 Validate the docs:
 
 ```sh
-yarn workspace tsconfig-reference run test
+pnpm run --filter=tsconfig-reference test
 
 # or to just run the linter without a build
-yarn workspace tsconfig-reference run lint
+pnpm run --filter=tsconfig-reference lint
 
 # or to just one one linter for a single doc
-yarn workspace tsconfig-reference run lint resolveJson
+pnpm run --filter=tsconfig-reference lint resolveJson
 ```
 
 ## Documentation
 
-The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook), and finally updated for [Twoslash](http://www.staging-typescript.org/dev/twoslash/) and with new content.
+The docs for TypeScript. Originally ported over from [microsoft/TypeScript-Handbook](https://github.com/microsoft/TypeScript-Handbook/) then intermingled with [microsoft/TypeScript-New-Handbook](https://github.com/microsoft/TypeScript-New-Handbook).
 
 ## JSON Schema
 
 It's a little odd, but the `tsconfig-reference` package creates the JSON schema for a TSConfig files:
 
 ```sh
-yarn workspace tsconfig-reference build
+pnpm run --filter=tsconfig-reference build
 ```
 
 Then you can find it at: [`packages/tsconfig-reference/scripts/schema/result/schema.json`](packages/tsconfig-reference/scripts/schema/result/schema.json).
@@ -125,7 +142,7 @@ The code samples used in the Playground split across many languages.
 
 # Infra Packages
 
-Most of these packages use [`tsdx`](https://tsdx.io).
+Most of these packages use (a maintained [fork](https://github.com/weiran-zsd/dts-cli) of) [`tsdx`](https://tsdx.io).
 
 ## TS Twoslash
 
@@ -177,5 +194,3 @@ Privacy information can be found at https://privacy.microsoft.com/en-us/
 
 Microsoft and any contributors reserve all other rights, whether under their respective copyrights, patents,
 or trademarks, whether by implication, estoppel or otherwise.
-
-[y-wrk]: https://yarnpkg.com/blog/2017/08/02/introducing-workspaces/

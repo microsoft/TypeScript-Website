@@ -26,7 +26,7 @@ const Index: React.FC<Props> = props => {
 
       re.config({
         paths: {
-          vs: "https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs",
+          vs: "https://playgroundcdn.typescriptlang.org/cdn/4.0.5/monaco/min/vs",
           sandbox: withPrefix("/js/sandbox"),
         },
         ignoreDuplicateModules: ["vs/editor/editor.main"],
@@ -238,11 +238,11 @@ export default async function () {
 
       // For the monaco version you can use unpkg or the TypeSCript web infra CDN
       // You can see the available releases for TypeScript here:
-      // https://typescript.azureedge.net/indexes/releases.json
+      // https://playgroundcdn.typescriptlang.org/indexes/releases.json
       //
       require.config({
         paths: {
-          vs: 'https://typescript.azureedge.net/cdn/4.0.5/monaco/min/vs',
+          vs: 'https://playgroundcdn.typescriptlang.org/cdn/4.0.5/monaco/min/vs',
           // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@4.0.5/min/vs',
           sandbox: 'https://www.typescriptlang.org/js/sandbox',
         },
