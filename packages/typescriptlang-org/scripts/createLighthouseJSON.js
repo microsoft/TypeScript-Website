@@ -1,15 +1,14 @@
-const nodeFetch = require("node-fetch").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const parser = require("xml-js")
 
 const prRoot =
-  process.env.PR_DEPLOY_URL_ROOT || "https://www.staging-typescript.org/"
+  process.env.PR_DEPLOY_URL_ROOT || "https://www.typescriptlang.org/"
 
 const go = async () => {
   const sitemap = `${prRoot}/sitemap.xml`
   try {
-    const packageJSON = await nodeFetch(sitemap)
+    const packageJSON = await fetch(sitemap)
 
     const contents = await packageJSON.text()
     const sitemapJSON = JSON.parse(

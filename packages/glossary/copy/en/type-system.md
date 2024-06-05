@@ -24,7 +24,7 @@ shop.a;
 As well as to provide a rich set of error messages when the types inside the type system don't match up:
 
 ```ts twoslash
-// @errors: 2322
+// @errors: 2561
 let shop = {
   name: "Table Store",
   address: "Maplewood",

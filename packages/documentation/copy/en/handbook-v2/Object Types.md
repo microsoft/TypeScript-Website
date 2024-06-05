@@ -173,7 +173,7 @@ Now `xPos` and `yPos` are both definitely present within the body of `paintShape
 > }
 > ```
 >
-> In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
+> In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`."
 > Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
 
 ### `readonly` Properties
@@ -274,8 +274,8 @@ This index signature states that when a `StringArray` is indexed with a `number`
 Only some types are allowed for index signature properties: `string`, `number`, `symbol`, template string patterns, and union types consisting only of these.
 
 <details>
-    <summary>It is possible to support both types of indexers...</summary>
-    <p>It is possible to support both types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because when indexing with a <code>number</code>, JavaScript will actually convert that to a <code>string</code> before indexing into an object. That means that indexing with <code>100</code> (a <code>number</code>) is the same thing as indexing with <code>"100"</code> (a <code>string</code>), so the two need to be consistent.</p>
+    <summary>It is possible to support multiple types of indexers...</summary>
+    <p>It is possible to support multiple types of indexers. Note that when using both `number` and `string` indexers, the type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because when indexing with a <code>number</code>, JavaScript will actually convert that to a <code>string</code> before indexing into an object. That means that indexing with <code>100</code> (a <code>number</code>) is the same thing as indexing with <code>"100"</code> (a <code>string</code>), so the two need to be consistent.</p>
 
 ```ts twoslash
 // @errors: 2413
@@ -417,7 +417,7 @@ interface SquareConfig {
 }
 ```
 
-We'll discuss index signatures in a bit, but here we're saying a `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
+Here we're saying that `SquareConfig` can have any number of properties, and as long as they aren't `color` or `width`, their types don't matter.
 
 One final way to get around these checks, which might be a bit surprising, is to assign the object to another variable:
 Since assigning `squareOptions` won't undergo excess property checks, the compiler won't give you an error:

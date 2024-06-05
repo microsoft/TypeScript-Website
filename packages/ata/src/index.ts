@@ -53,7 +53,7 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     estimatedToDownload = 0
     estimatedDownloaded = 0
 
-    resolveDeps(initialSourceFile, 0).then(t => {
+    return resolveDeps(initialSourceFile, 0).then(t => {
       if (estimatedDownloaded > 0) {
         config.delegate.finished?.(fsMap)
       }
@@ -71,7 +71,7 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     const treesOnly = trees.filter(t => !("error" in t)) as NPMTreeMeta[]
 
     // These are the modules which we can grab directly
-    const hasDTS = treesOnly.filter(t => t.files.find(f => f.name.endsWith(".d.ts")))
+    const hasDTS = treesOnly.filter(t => t.files.find(f => isDtsFile(f.name)))
     const dtsFilesFromNPM = hasDTS.map(t => treeToDTSFiles(t, `/node_modules/${t.moduleName}`))
 
     // These are ones we need to look on DT for (which may not be there, who knows)
@@ -142,7 +142,7 @@ function treeToDTSFiles(tree: NPMTreeMeta, vfsPrefix: string) {
   const dtsRefs: ATADownload[] = []
 
   for (const file of tree.files) {
-    if (file.name.endsWith(".d.ts")) {
+    if (isDtsFile(file.name)) {
       dtsRefs.push({
         moduleName: tree.moduleName,
         moduleVersion: tree.version,
@@ -170,7 +170,7 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
   const references = meta.referencedFiles
     .concat(meta.importedFiles)
     .concat(meta.libReferenceDirectives)
-    .filter(f => !f.fileName.endsWith(".d.ts"))
+    .filter(f => !isDtsFile(f.fileName))
     .filter(d => !libMap.has(d.fileName))
 
   return references.map(r => {
@@ -267,4 +267,8 @@ function getDTName(s: string) {
     s = s.substr(1).replace("/", "__")
   }
   return s
+}
+
+function isDtsFile(file: string) {
+  return /\.d\.([^\.]+\.)?[cm]?ts$/i.test(file)
 }

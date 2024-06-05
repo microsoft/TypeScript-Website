@@ -225,7 +225,7 @@ namespace JSX {
         new (props: any) => ElementClass;
     export interface IntrinsicAttributes extends /*...*/ {}
     export type Element = /*...*/;
-    export type ClassElement = /*...*/;
+    export type ElementClass = /*...*/;
 }
 ```
 

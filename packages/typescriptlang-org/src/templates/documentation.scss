@@ -377,6 +377,7 @@
   text-align: center;
   display: inline-block;
   position: relative;
+  overflow: hidden;
   margin-top: 12px;
   margin-right: 3px;
 
@@ -455,5 +456,13 @@
   &.popup-fade-in {
     -webkit-animation: 0.1s ease forwards;
     animation: 0.1s ease forwards;
+  }
+}
+
+.handbook-on-this-page-section-list {
+  overflow: auto;
+  max-height: 80vh;
+  ul {
+    padding-left: .5em !important;
   }
 }

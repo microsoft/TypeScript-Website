@@ -69,7 +69,7 @@ This kind of behavior makes it hard to predict what the code will do before it r
 Seen in this way, a _type_ is the concept of describing which values can be passed to `fn` and which will crash.
 JavaScript only truly provides _dynamic_ typing - running the code to see what happens.
 
-The alternative is to use a _static_ type system to make predictions about what code is expected _before_ it runs.
+The alternative is to use a _static_ type system to make predictions about what the code is expected to do _before_ it runs.
 
 ## Static type-checking
 

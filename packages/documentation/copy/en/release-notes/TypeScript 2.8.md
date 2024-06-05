@@ -328,7 +328,7 @@ type T7 = T4<A, B>; // "a" | "b"
 ## Better handling for namespace patterns in `.js` files
 
 TypeScript 2.8 adds support for understanding more namespace patterns in `.js` files.
-Empty object literals declarations on top level, just like functions and classes, are now recognized as as namespace declarations in JavaScript.
+Empty object literals declarations on top level, just like functions and classes, are now recognized as namespace declarations in JavaScript.
 
 ```js
 var ns = {}; // recognized as a declaration for a namespace `ns`

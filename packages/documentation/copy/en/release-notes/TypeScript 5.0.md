@@ -936,7 +936,7 @@ let myConfigSettings = {
 } satisfies ConfigSettings;
 ```
 
-Here, TypeScript knows that `myCompilerOptions.extends` was declared with an array - because while `satisfies` validated the type of our object, it didn't bluntly change it to `CompilerOptions` and lose information.
+Here, TypeScript knows that `myConfigSettings.extends` was declared with an array - because while `satisfies` validated the type of our object, it didn't bluntly change it to `CompilerOptions` and lose information.
 So if we want to map over `extends`, that's fine.
 
 ```ts

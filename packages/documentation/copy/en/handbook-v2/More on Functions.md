@@ -87,8 +87,8 @@ You can combine call and construct signatures in the same type arbitrarily:
 
 ```ts twoslash
 interface CallOrConstruct {
-  new (s: string): Date;
   (n?: number): string;
+  new (s: string): Date;
 }
 ```
 
@@ -368,7 +368,7 @@ Note that when a parameter is optional, callers can always pass `undefined`, as 
 
 ```ts twoslash
 declare function f(x?: number): void;
-// cut
+// ---cut---
 // All OK
 f();
 f(10);
@@ -872,6 +872,5 @@ const f3 = function (): void {
 
 For more on `void` please refer to these other documentation entries:
 
-- [v1 handbook](https://www.typescriptlang.org/docs/handbook/basic-types.html#void)
 - [v2 handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#void)
 - [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)

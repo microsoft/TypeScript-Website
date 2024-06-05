@@ -682,7 +682,7 @@ class Derived2 extends Base {
   f1(other: Derived2) {
     other.x = 10;
   }
-  f2(other: Base) {
+  f2(other: Derived1) {
     other.x = 10;
   }
 }
@@ -1211,7 +1211,7 @@ class Box<T> {
   }
 }
 
-const box = new Box();
+const box = new Box<string>();
 box.value = "Gameboy";
 
 box.value;

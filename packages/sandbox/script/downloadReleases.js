@@ -1,22 +1,20 @@
 // @ts-check
 
-// Run via: yarn workspace typescript-sandbox bootstrap
+// Run via: pnpm run --filter=typescript-sandbox bootstrap
 
 // Ensure the versions dropdown is up to date
-const axios = require("axios").default
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 const { format } = require("prettier")
-const fetch = require("node-fetch").default
 
 const go = async () => {
-  const response = await fetch("https://typescript.azureedge.net/indexes/releases.json")
+  const response = await fetch("https://playgroundcdn.typescriptlang.org/indexes/releases.json")
   const releases = await response.json()
   const versions = releases.versions.reverse()
 
   // Look through the prereleases to see if the beta and RC are included in the pre-releases
   // and add those to the list of versions.
-  const preReleaseResponse = await fetch("https://typescript.azureedge.net/indexes/pre-releases.json")
+  const preReleaseResponse = await fetch("https://playgroundcdn.typescriptlang.org/indexes/pre-releases.json")
   const preReleases = await preReleaseResponse.json()
   const latestStable = versions[0]
 

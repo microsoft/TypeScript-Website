@@ -159,6 +159,16 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createCodePre.appendChild(codeElement)
       container.appendChild(createCodePre)
 
+      // When <pre> focused, Ctrl+A should select only code pre instead of the entire document
+      createCodePre.addEventListener("keydown", e => {
+        if (e.key.toUpperCase() === "A" && (e.ctrlKey || e.metaKey)) {
+          const selection = window.getSelection();
+          if (!selection) return;
+          selection.selectAllChildren(createCodePre)
+          e.preventDefault();
+        }
+      })
+
       return codeElement
     }
 

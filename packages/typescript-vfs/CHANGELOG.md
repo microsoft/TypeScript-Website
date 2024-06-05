@@ -1,3 +1,22 @@
+# @typescript/vfs
+
+## 1.5.2
+
+### Patch Changes
+
+- 642ea11: Move playground CDN to new, stable URL
+
+## 1.5.1
+
+### Patch Changes
+
+- 46eba14: Initial bump for changesets
+
+### 1.5
+
+- Makes `createDefaultMapFromNodeModules` pull all the `.d.ts` files from the node_modules folder, not just the `.d.ts` files which were known ahead of time.
+- Updates the known .d.s files to include ones from TypeScript 5.1 beta.
+
 ### 1.3
 
 - Adds a JS file into the npm tarball for using with a vanilla script tag, which sets `global.tsvfs` with exported function.

@@ -68,7 +68,7 @@ for (const s of str) {
 This is an array spread:
 
 ```js
-// Make a new array who elements are 1 followed by the elements of arr2
+// Make a new array whose elements are 1 followed by the elements of arr2
 const arr = [1, ...arr2];
 ```
 

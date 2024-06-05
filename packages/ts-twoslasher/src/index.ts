@@ -712,6 +712,14 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
   // We can't pass the ts.DiagnosticResult out directly (it can't be JSON.stringified)
   for (const err of relevantErrors) {
     const codeWhereErrorLives = env.sys.readFile(err.file!.fileName)!
+    const lineOffset =
+      codeLines.findIndex(line => {
+        if (line.includes(`// @filename: `)) {
+          const fileName = line.split("// @filename: ")[1].trim()
+          return err.file!.fileName.endsWith(fileName)
+        }
+        return false
+      }) + 1
     const fileContentStartIndexInModifiedFile = code.indexOf(codeWhereErrorLives)
     const renderedMessage = ts.flattenDiagnosticMessageText(err.messageText, "\n")
     const id = `err-${err.code}-${err.start}-${err.length}`
@@ -722,7 +730,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
       code: err.code,
       length: err.length,
       start: err.start ? err.start + fileContentStartIndexInModifiedFile : undefined,
-      line,
+      line: line + lineOffset,
       character,
       renderedMessage,
       id,
@@ -734,7 +742,7 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     // Get the file which created the file we want to show:
     const emitFilename = handbookOptions.showEmittedFile || defaultFileName
     const emitSourceFilename =
-      fsRoot + emitFilename.replace(".jsx", "").replace(".js", "").replace(".d.ts", "").replace(".map", "")
+      fsRoot + emitFilename.replace(".jsx", "").replace(".js", "").replace(/\.d\.([^\.]+\.)?[cm]?ts$/i, "").replace(".map", "")
 
     let emitSource = filenames.find(f => f === emitSourceFilename + ".ts" || f === emitSourceFilename + ".tsx")
 

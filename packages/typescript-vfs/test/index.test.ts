@@ -209,3 +209,39 @@ it("throws when you request a lib file which isn't in the fsMap", () => {
 
   expect(t).toThrow()
 })
+
+it("grabs lib dts files from node_modules", async () => {
+  const fsMap = createDefaultMapFromNodeModules({})
+  expect(fsMap.get("/lib.es2015.collection.d.ts")).toBeDefined()
+})
+
+it("empty file content", async () => {
+  const options = { target: ts.ScriptTarget.ES2020 }
+  const fsMap = createDefaultMapFromNodeModules(options, ts)
+  fsMap.set("index.ts", "")
+  const system = createSystem(fsMap)
+  const host = createVirtualCompilerHost(system, options, ts)
+  ts.createProgram({
+    rootNames: ["index.ts"],
+    options,
+    host: host.compilerHost,
+  })
+})
+
+it("moduleDetection options", async () => {
+  const options: ts.CompilerOptions = {
+    module: ts.ModuleKind.AMD,
+    moduleDetection: ts.ModuleDetectionKind.Force,
+  }
+  const fsMap = createDefaultMapFromNodeModules(options, ts)
+  fsMap.set("index.ts", "let foo = 'foo'")
+  const system = createSystem(fsMap)
+  const host = createVirtualCompilerHost(system, options, ts)
+  const program = ts.createProgram({
+    rootNames: ["index.ts"],
+    options,
+    host: host.compilerHost,
+  })
+  program.emit()
+  expect(fsMap.get("index.js")).toEqual(`define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    var foo = 'foo';\n});\n`)
+})

@@ -140,12 +140,12 @@ Constructs an object type whose property keys are `Keys` and whose property valu
 ##### Example
 
 ```ts twoslash
+type CatName = "miffy" | "boris" | "mordred";
+
 interface CatInfo {
   age: number;
   breed: string;
 }
-
-type CatName = "miffy" | "boris" | "mordred";
 
 const cats: Record<CatName, CatInfo> = {
   miffy: { age: 10, breed: "Persian" },
@@ -320,6 +320,8 @@ Released:
 
 Constructs a tuple type from the types used in the parameters of a function type `Type`.
 
+For overloaded functions, this will be the parameters of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
+
 ##### Example
 
 ```ts twoslash
@@ -389,6 +391,8 @@ Released:
 
 Constructs a type consisting of the return type of function `Type`.
 
+For overloaded functions, this will be the return type of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
+
 ##### Example
 
 ```ts twoslash
@@ -446,6 +450,32 @@ type T3 = InstanceType<string>;
 //    ^?
 type T4 = InstanceType<Function>;
 //    ^?
+```
+
+## `NoInfer<Type>`
+
+<blockquote class=bg-reading>
+
+Released:  
+[5.4](/docs/handbook/release-notes/typescript-5-4.html#the-noinfer-utility-type)
+
+</blockquote>
+
+Blocks inferences to the contained type. Other than blocking inferences, `NoInfer<Type>` is
+identical to `Type`.
+
+##### Example
+
+```ts
+function createStreetLight<C extends string>(
+  colors: C[],
+  defaultColor?: NoInfer<C>,
+) {
+  // ...
+}
+
+createStreetLight(["red", "yellow", "green"], "red");  // OK
+createStreetLight(["red", "yellow", "green"], "blue");  // Error
 ```
 
 ## `ThisParameterType<Type>`

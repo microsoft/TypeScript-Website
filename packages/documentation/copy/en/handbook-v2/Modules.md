@@ -339,7 +339,7 @@ The Node strategy replicates how Node.js works in CommonJS mode, with additional
 
 There are many TSConfig flags which influence the module strategy within TypeScript: [`moduleResolution`](/tsconfig#moduleResolution), [`baseUrl`](/tsconfig#baseUrl), [`paths`](/tsconfig#paths), [`rootDirs`](/tsconfig#rootDirs).
 
-For the full details on how these strategies work, you can consult the [Module Resolution](/docs/handbook/module-resolution.html).
+For the full details on how these strategies work, you can consult the [Module Resolution](/docs/handbook/modules/reference.html#the-moduleresolution-compiler-option) reference page.
 
 ## TypeScript's Module Output Options
 

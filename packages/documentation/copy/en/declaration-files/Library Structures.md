@@ -185,7 +185,7 @@ However, libraries that are small and require the DOM (or have _no_ dependencies
 
 #### Global Library Template
 
-The template file [`global.d.ts`](/docs/handbook/declaration-files/templates/global-plugin-d-ts.html) defines an example library `myLib`.
+The template file [`global.d.ts`](/docs/handbook/declaration-files/templates/global-d-ts.html) defines an example library `myLib`.
 Be sure to read the ["Preventing Name Conflicts" footnote](#preventing-name-conflicts).
 
 ### _UMD_
