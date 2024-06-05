@@ -195,18 +195,33 @@ type MarkdownHeadingTreeNode = {
 
 function headerListToTree(sidebarHeaders: GatsbyTypes.Maybe<Pick<GatsbyTypes.MarkdownHeading, "value" | "depth">>[]) {
   const tree: MarkdownHeadingTreeNode[] = []
-  let currentParent: MarkdownHeadingTreeNode | undefined
-  sidebarHeaders.forEach(heading => {
-    if (!currentParent || heading!.depth === 2) {
-      currentParent = { value: heading!.value!, depth: heading!.depth!, children: [] }
-      tree.push(currentParent)
-    } else {
-      currentParent.children?.push({
-        value: heading!.value!,
-        depth: heading!.depth!,
-      })
+  const stack: { node: MarkdownHeadingTreeNode; depth: number }[] = []
+
+  sidebarHeaders.forEach(header => {
+    const value = header?.value!;
+    const depth = header?.depth!;
+    const newNode: MarkdownHeadingTreeNode = {
+      value,
+      depth
     }
+
+    while (stack.length > 0 && stack[stack.length - 1].depth >= depth) {
+      stack.pop()
+    }
+
+    if (stack.length === 0) {
+      tree.push(newNode)
+    } else {
+      const topNode = stack[stack.length - 1].node;
+      if (!topNode.children) {
+        topNode.children = [];
+      }
+      topNode.children.push(newNode);
+    }
+
+    stack.push({ node: newNode, depth })
   })
+
   return tree
 }
 
