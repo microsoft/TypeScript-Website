@@ -150,11 +150,14 @@ class Point {
 
 ```ts twoslash
 class Point {
-  // Overloads
-  constructor(x: number, y: string);
-  constructor(s: string);
-  constructor(xs: any, y?: any) {
-    // TBD
+  x: number;
+  y: number;
+
+  // Constructor overloads
+  constructor(x: number, y: number);
+  constructor(xy: string);
+  constructor(x: string | number, y: number = 0) {
+    // Code logic here
   }
 }
 ```
