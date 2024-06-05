@@ -150,8 +150,8 @@ class Point {
 
 ```ts twoslash
 class Point {
-  x: number;
-  y: number;
+  x: number = 0;
+  y: number = 0;
 
   // Constructor overloads
   constructor(x: number, y: number);
