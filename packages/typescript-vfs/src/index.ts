@@ -562,7 +562,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
             ts.createSourceFile(
               fileName,
               sys.readFile(fileName)!,
-              languageVersionOrOptions,
+              languageVersionOrOptions ?? compilerOptions.target ?? defaultCompilerOptions(ts).target!,
               false
             )
           )
