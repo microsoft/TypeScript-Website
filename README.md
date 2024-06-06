@@ -55,7 +55,7 @@ If you want to know _in-depth_ how this website works, there is an [hour long vi
 
 This repo uses `pnpm` + `changesets` to manage package version bumps and releases.
 
-CI will fail if a PR is missing a changeset. To add a changeset, run `pnpm changeset`, then follow along with the CLI.
+CI will fail if a PR modifies a public package but is missing but changeset. To add a changeset, run `pnpm changeset`, then follow along with the CLI.
 
 ```console
 $ pnpm changeset
@@ -70,7 +70,8 @@ $ pnpm changeset
 
 New files will be created in `.changeset` and must be committed.
 
-If you are making a change that does not affect published code, you can create an empty changeset for your PR with `pnpm changeset --empty`.
+PRs which don't modify public packages (e.g. website content updates) do not require changesets.
+If you are making a change to a published package but are not affecting published code, you can create an empty changeset for your PR with `pnpm changeset --empty`.
 
 # Website Packages
 
