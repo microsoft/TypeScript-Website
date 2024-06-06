@@ -55,7 +55,7 @@ If you want to know _in-depth_ how this website works, there is an [hour long vi
 
 This repo uses `pnpm` + `changesets` to manage package version bumps and releases.
 
-CI will fail if a PR modifies a public package but is missing but changeset. To add a changeset, run `pnpm changeset`, then follow along with the CLI.
+CI will fail if a PR modifies a public package but is missing a changeset. To add a changeset, run `pnpm changeset`, then follow along with the CLI.
 
 ```console
 $ pnpm changeset
