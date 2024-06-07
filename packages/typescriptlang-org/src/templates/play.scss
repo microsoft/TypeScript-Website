@@ -59,16 +59,16 @@
     }
 
     &.dropdown {
-
       ul,
       .dropdown-dialog {
+        $sticky-widget-z-index: 4;
 
         display: none;
 
         position: absolute;
         top: 100%;
         left: 0;
-        z-index: 1;
+        z-index: $sticky-widget-z-index + 1;
         float: left;
       }
     }
