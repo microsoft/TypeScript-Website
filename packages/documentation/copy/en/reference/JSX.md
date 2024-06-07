@@ -73,7 +73,7 @@ An intrinsic element always begins with a lowercase letter, and a value-based el
 
 JSX in TypeScript is typed by the `JSX` namespace. The `JSX` namespace may be defined in various places, depending on the `jsx` compiler option.
 
-The `jsx` options `preserve`, `react`, and `react-native` use the type definitions for classic runtime. This means a variable needs to be in scope that’s determined by the `jsxFactory` compiler option. The `JSX` namespace needs to be specified on the top-most identifier of the JSX factory. For example, React uses the default factory `React.createElement`. This means its `JSX` namespace should be defined as `React.JSX`.
+The `jsx` options `preserve`, `react`, and `react-native` use the type definitions for classic runtime. This means a variable needs to be in scope that’s determined by the `jsxFactory` compiler option. The `JSX` namespace should be specified on the top-most identifier of the JSX factory. For example, React uses the default factory `React.createElement`. This means its `JSX` namespace should be defined as `React.JSX`.
 
 ```ts
 export function createElement(): any;
@@ -105,7 +105,7 @@ The user should use a named import to import `h`.
 import { h } from 'preact';
 ```
 
-For the `jsx` options `react-jsx` and `react-jsxdev`, the `JSX` namespace needs to be exported from the matching entry points. For `react-jsx` this is `${jsxImportSource}/jsx-runtime`. For `react-jsxdev`, this is `${jsxImportSource}/jsx-dev-runtime`. Since these don’t use a file extension, you must use the [`exports`](https://nodejs.org/api/packages.html#exports) field in `package.json` map in order to support ESM users.
+For the `jsx` options `react-jsx` and `react-jsxdev`, the `JSX` namespace should be exported from the matching entry points. For `react-jsx` this is `${jsxImportSource}/jsx-runtime`. For `react-jsxdev`, this is `${jsxImportSource}/jsx-dev-runtime`. Since these don’t use a file extension, you must use the [`exports`](https://nodejs.org/api/packages.html#exports) field in `package.json` map in order to support ESM users.
 
 ```json 
 {
