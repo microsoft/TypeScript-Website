@@ -19,14 +19,12 @@ export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang)
   const loadDocSearch = () => {
-    const isDev = document.location.host.includes('localhost')
-    let customHandleSelected;
-
-    if (isDev) {
-      customHandleSelected = (input, event, suggestion, datasetNumber, context) => {
-        const urlToOpen = suggestion.url.replace("www.typescriptlang.org", "localhost:8000").replace("https", "http")
-        window.open(urlToOpen)
-      }
+    const fixURL = (url: string) => {
+      const u = new URL(url);
+      if (u.host === document.location.host) return url;
+      u.host = document.location.host;
+      u.protocol = document.location.protocol;
+      return u.toString();
     }
 
     // @ts-ignore - this comes from the script above
@@ -35,7 +33,13 @@ export const SiteNav = (props: Props) => {
       apiKey: '37ee06fa68db6aef451a490df6df7c60',
       indexName: 'typescriptlang',
       inputSelector: '.search input',
-      handleSelected: customHandleSelected,
+      transformData: (hits) => {
+        for (const hit of hits) {
+          if (hit.url) hit.url = fixURL(hit.url);
+          if (hit.url_without_anchor) hit.url_without_anchor = fixURL(hit.url_without_anchor);
+        }
+        return hits;
+      }
     });
   }
   // This extra bit of mis-direction ensures that non-essential code runs after
