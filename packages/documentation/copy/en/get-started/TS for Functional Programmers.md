@@ -541,8 +541,8 @@ immutable. The referent is still mutable:
 
 ```js
 const a = [1, 2, 3];
-a.push(102); // ):
-a[0] = 101; // D:
+a = 5; // ):
+a[0] = 101; // (:
 ```
 
 TypeScript additionally has a `readonly` modifier for properties.
