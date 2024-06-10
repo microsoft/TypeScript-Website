@@ -59,7 +59,7 @@ const palette = {
 //  ~~~~ The typo is now caught!
 } satisfies Record<Colors, string | RGB>;
 
-// toUpperCase() methode is still accessible!
+// toUpperCase() method is still accessible!
 const greenNormalized = palette.green.toUpperCase();
 ```
 
