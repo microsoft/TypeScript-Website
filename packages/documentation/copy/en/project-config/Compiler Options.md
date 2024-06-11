@@ -1409,7 +1409,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify multiple folders that act like <code>./node_modules/@types</code>.</p>
+<p>Specify multiple folders that act like <code>./node_modules/@types</code>. Note that the commandline accepts null (as <code>--typeRoots 'null'</code>) or a comma seperated list of paths.</p>
 </td></tr>
 
 <tr class='odd' name='types'>
