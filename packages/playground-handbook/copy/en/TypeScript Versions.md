@@ -8,4 +8,4 @@ The dropdown shows the highest patch version for a TypeScript release, but that 
 
 Setting a TypeScript version will append `?ts=[version]` to your URL and reload. For example, setting the TypeScript version to 4.3.5 will add `?ts=4.3.5` to the URL, which is an OK segue to the overview of the [URL's structure](/play#handbook-10).
 
-There's one special case where `?ts=Nightly` will find the latest version of the TypeScript which was built for the Playground and use that.
+There's one special case where `?ts=next` will find the latest version of the TypeScript which was built for the Playground and use that.
