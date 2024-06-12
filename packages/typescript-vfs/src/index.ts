@@ -1,10 +1,12 @@
-type System = import("typescript").System
-type CompilerOptions = import("typescript").CompilerOptions
-type CustomTransformers = import("typescript").CustomTransformers
-type LanguageServiceHost = import("typescript").LanguageServiceHost
-type CompilerHost = import("typescript").CompilerHost
-type SourceFile = import("typescript").SourceFile
-type TS = typeof import("typescript")
+import type {
+  System,
+  CompilerOptions,
+  CustomTransformers,
+  SourceFile,
+  CompilerHost,
+  LanguageServiceHost,
+} from "typescript"
+import type TS from "typescript"
 
 type FetchLike = (url: string) => Promise<{ json(): Promise<any>; text(): Promise<string> }>
 
@@ -14,13 +16,13 @@ interface LocalStorageLike {
   removeItem(key: string): void
 }
 
-declare var localStorage: LocalStorageLike | undefined;
-declare var fetch: FetchLike | undefined;
+declare var localStorage: LocalStorageLike | undefined
+declare var fetch: FetchLike | undefined
 
 let hasLocalStorage = false
 try {
   hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+} catch (error) {}
 
 const hasProcess = typeof process !== `undefined`
 const shouldDebug = (hasLocalStorage && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -48,7 +50,7 @@ export interface VirtualTypeScriptEnvironment {
 export function createVirtualTypeScriptEnvironment(
   sys: System,
   rootFiles: string[],
-  ts: TS,
+  ts: typeof TS,
   compilerOptions: CompilerOptions = {},
   customTransformers?: CustomTransformers
 ): VirtualTypeScriptEnvironment {
@@ -103,7 +105,7 @@ export function createVirtualTypeScriptEnvironment(
  * @param target The compiler settings target baseline
  * @param ts A copy of the TypeScript module
  */
-export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions, ts: TS) => {
+export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions, ts: typeof TS) => {
   const target = compilerOptions.target || ts.ScriptTarget.ES5
   const lib = compilerOptions.lib || []
 
@@ -197,7 +199,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.esnext.promise.d.ts",
     "lib.esnext.string.d.ts",
     "lib.esnext.symbol.d.ts",
-    "lib.esnext.weakref.d.ts"
+    "lib.esnext.weakref.d.ts",
   ]
 
   const targetToCut = ts.ScriptTarget[target]
@@ -316,7 +318,7 @@ export const createDefaultMapFromCDN = (
   options: CompilerOptions,
   version: string,
   cache: boolean,
-  ts: TS,
+  ts: typeof TS,
   lzstring?: LZString,
   fetcher?: FetchLike,
   storer?: LocalStorageLike
@@ -342,7 +344,7 @@ export const createDefaultMapFromCDN = (
           contents.forEach((text, index) => fsMap.set("/" + files[index], text))
         })
         // Return a NOOP for .d.ts files which aren't in the current build of TypeScript
-        .catch(() => { })
+        .catch(() => {})
     )
   }
 
@@ -373,7 +375,7 @@ export const createDefaultMapFromCDN = (
                 return t
               })
               // Return a NOOP for .d.ts files which aren't in the current build of TypeScript
-              .catch(() => { })
+              .catch(() => {})
           )
         } else {
           return Promise.resolve(unzip(content))
@@ -467,7 +469,7 @@ export function createSystem(files: Map<string, string>): System {
 export function createFSBackedSystem(
   files: Map<string, string>,
   _projectRoot: string,
-  ts: TS,
+  ts: typeof TS,
   tsLibDirectory?: string
 ): System {
   // We need to make an isolated folder for the tsconfig, but also need to be able to resolve the
@@ -544,7 +546,7 @@ export function createFSBackedSystem(
  * which works with TypeScript objects - returns both a compiler host, and a way to add new SourceFile
  * instances to the in-memory file system.
  */
-export function createVirtualCompilerHost(sys: System, compilerOptions: CompilerOptions, ts: TS) {
+export function createVirtualCompilerHost(sys: System, compilerOptions: CompilerOptions, ts: typeof TS) {
   const sourceFiles = new Map<string, SourceFile>()
   const save = (sourceFile: SourceFile) => {
     sourceFiles.set(sourceFile.fileName, sourceFile)
@@ -596,7 +598,7 @@ export function createVirtualLanguageServiceHost(
   sys: System,
   rootFiles: string[],
   compilerOptions: CompilerOptions,
-  ts: TS,
+  ts: typeof TS,
   customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
