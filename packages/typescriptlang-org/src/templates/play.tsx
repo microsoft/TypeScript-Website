@@ -79,7 +79,7 @@ const Play: React.FC<Props> = (props) => {
 
       let tsVersionParam = params.get("ts")
       // handle the nightly lookup 
-      if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
+      if (tsVersionParam === "Nightly" || tsVersionParam === "next") {
         // The CDN is configured to have a short TTL on the indexes directory.
         const nightlyLookup = await fetch("https://playgroundcdn.typescriptlang.org/indexes/next.json", { cache: "no-cache" })
         const nightlyJSON = await nightlyLookup.json()
@@ -111,7 +111,7 @@ const Play: React.FC<Props> = (props) => {
           div.style.webkitAnimation = ""
         })
 
-        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace(/</g, "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">Nightly</a>`
+        document.getElementById("loading-message")!.innerHTML = `This version of TypeScript <em>(${tsVersion?.replace(/</g, "-")})</em><br/>has not been prepared for the Playground<br/><br/>Try <a href='/play?ts=${latestRelease}${document.location.hash}'>${latestRelease}</a> or <a href="/play?ts=next${document.location.hash}">next</a>`
         return
       }
 
