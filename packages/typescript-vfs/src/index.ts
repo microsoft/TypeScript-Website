@@ -31,7 +31,7 @@ export interface VirtualTypeScriptEnvironment {
   languageService: import("typescript").LanguageService
   getSourceFile: (fileName: string) => import("typescript").SourceFile | undefined
   createFile: (fileName: string, content: string) => void
-  updateFile: (fileName: string, content: string, replaceTextSpan?: import("typescript").TextSpan) => void
+  updateFile: (fileName: string, content: string) => void
 }
 
 /**
@@ -77,25 +77,15 @@ export function createVirtualTypeScriptEnvironment(
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
-      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
+      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!))
     },
-    updateFile: (fileName, content, optPrevTextSpan) => {
+    updateFile: (fileName, content) => {
       const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
       if (!prevSourceFile) {
         throw new Error("Did not find a source file for " + fileName)
       }
-      const prevFullContents = prevSourceFile.text
 
-      // TODO: Validate if the default text span has a fencepost error?
-      const prevTextSpan = optPrevTextSpan ?? ts.createTextSpan(0, prevFullContents.length)
-      const newText =
-        prevFullContents.slice(0, prevTextSpan.start) +
-        content +
-        prevFullContents.slice(prevTextSpan.start + prevTextSpan.length)
-      const newSourceFile = ts.updateSourceFile(prevSourceFile, newText, {
-        span: prevTextSpan,
-        newLength: content.length,
-      })
+      const newSourceFile = ts.createSourceFile(fileName, content, mergedCompilerOpts.target!)
 
       updateFile(newSourceFile)
     },
