@@ -26,7 +26,7 @@ Then the query string tend to be about changing the state of the Playground setu
 
   There are two special cases for the `ts` option:
 
-  - `ts=next`: Use the most recent nightly version.
+  - `ts=next`: Use the most recent [nightly build](https://www.typescriptlang.org/docs/handbook/nightly-builds.html).
   - `ts=dev`: Use your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/main/scripts/createPlaygroundBuild.js)
 
 - `?flag=value` - Any compiler flag referenced in can be set from a query
