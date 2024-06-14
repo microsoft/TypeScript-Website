@@ -5,9 +5,9 @@ permalink: /docs/handbook/2/mapped-types.html
 oneline: "Generating types by re-using an existing type."
 ---
 
-When you don't want to repeat yourself, sometimes a type needs to be based on another type: that is, a new type with the same JavaScript object properties as another type, but modified in some way.
+When you don't want to repeat yourself, sometimes a type needs to be based on another type.
 
-For example, supposing you have a mutable `Person` type and also want a separate type for an immutable Person, and another for a partially-built Person, and another separate type to represent per-property change-flags then you would need to repeat the property list every time, with modifications:
+For example, suppose you have a `Person` type and also want separate types for an immutable Person and a partially-built Person, along with a type to represent per-property change-flags. You would need to repeat the property list every time:
 
 ```ts twoslash
 type Person = {
@@ -38,7 +38,7 @@ type PersonChangeFlags = {
 };
 ```
 
-However if we define `ReadOnlyPerson`, `IncompletePerson`, and `PersonChangeFlags` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, as well as eliminating the maintenance burden of keeping all the types' properties lists in-sync. Doing this, the above types become just this:
+However, if we define `ReadOnlyPerson`, `IncompletePerson`, and `PersonChangeFlags` as types _mapped to_ `type Person` then the amount of code we need to write is drastically reduced, eliminating the maintenance burden of keeping all the types' properties lists in sync. Doing this, the above types become just this:
 
 ```ts twoslash
 type Person = { age: number; name: string; alive: boolean };
@@ -56,7 +56,7 @@ type PersonChangeFlags = { [PersonPropertyName in keyof Person]: boolean };
 //   ^?
 ```
 
-Taking this a step further: supposing in addition to `type Person` we also have `type Order`, `type Product`, `type OrderItem`, and we want immutable, partial, and flags copies of all of those types, then we don't need to manually define mapped-types for those either: we can make our mapped-types generic:
+Taking this a step further: suppose in addition to `type Person`, we also have `type Order`, `type Product`, `type OrderItem`, and we want immutable, partial, and flags copies of all of those types. We don't need to manually define mapped-types for those either -- we can make our mapped-types generic:
 
 ```ts twoslash
 type Person = { age: number; name: string; alive: boolean };
