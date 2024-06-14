@@ -409,4 +409,4 @@ Reiterating [The Basics](/docs/handbook/2/basic-types.html):
 - `void` is not assignable to or from anything, with the following exceptions: `any`, `unknown`, `never`, `undefined`, and `null` (if [`strictNullChecks`](/tsconfig#strictNullChecks) is off, see table for details).
 - When [`strictNullChecks`](/tsconfig#strictNullChecks) is off, `null` and `undefined` are similar to `never`: assignable to most types, most types are not assignable to them.
   They are assignable to each other.
-- When [`strictNullChecks`](/tsconfig#strictNullChecks) is on, `null` and `undefined` behave more like `void`: not assignable to or from anything, except for `any`, `unknown`, `never`, and `void` (`undefined` is always assignable to `void`).
+- When [`strictNullChecks`](/tsconfig#strictNullChecks) is on, `null` and `undefined` behave more like `void`: not assignable to or from anything, except for `any`, `unknown`, and `void` (`undefined` is always assignable to `void`).
