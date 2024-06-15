@@ -467,8 +467,6 @@ var result = C(1);
 They can also be declared as constructor functions; use [`@constructor`](#constructor) along with [`@this`](#this) for this.
 
 ### Property Modifiers
-<div id="jsdoc-property-modifiers"></div>
-
 
 `@public`, `@private`, and `@protected` work exactly like `public`, `private`, and `protected` in TypeScript:
 
