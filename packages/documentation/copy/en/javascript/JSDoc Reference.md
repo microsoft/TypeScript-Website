@@ -28,7 +28,7 @@ Note:
 
 - [Property Modifiers](#property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
 - [`@override`](#override)
-- [`@extends`](#extends) (or [`@augments`](#extends))
+- [`@extends`](#extends) (or [`@arguments`](#extends))
 - [`@implements`](#implements)
 - [`@class`](#constructor) (or [`@constructor`](#constructor))
 - [`@this`](#this)
