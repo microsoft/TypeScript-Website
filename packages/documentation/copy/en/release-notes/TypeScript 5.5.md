@@ -1094,18 +1094,3 @@ export declare const myPath: path.ParsedPath;
 Adding `preserve="true"` is backwards compatible with older versions of TypeScript as unknown attributes are ignored.
 
 This change also improved performance; in our benchmarks, the emit stage saw a 1-4% improvement in projects with declaration emit enabled.
-
-## What's Next?
-
-At this point, we anticipate very few changes to TypeScript 5.5 apart from critical bug fixes to the compiler and minor bug fixes to the language service.
-In the next few weeks, we'll be releasing the first stable version of TypeScript 5.5.
-[Keep an eye on our iteration plan](https://github.com/microsoft/TypeScript/issues/57475) for target release dates and more if you need to coordinate around that.
-
-Otherwise, our main focus is on developing TypeScript 5.6, and we'll have the iteration plan available in the coming days (including scheduled release dates).
-On top of that, we make it easy to use [nightly builds of TypeScript on npm](https://www.typescriptlang.org/docs/handbook/nightly-builds.html), and there is [an extension to use those nightly releases in Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next).
-
-So give the RC or our nightlies a try, and let us know how it goes!
-
-Happy Hacking!
-
-\- Daniel Rosenwasser and the TypeScript Team
