@@ -107,7 +107,7 @@ It now infers signatures with type predicates like `x is number` or `x is NonNul
 Type predicates have "if and only if" semantics.
 If a function returns `x is T`, then it means that:
 
-1. If the function returns `true` then `x` is has type `T`.
+1. If the function returns `true` then `x` has the type `T`.
 2. If the function returns `false` then `x` does *not* have type `T`.
 
 If you're expecting a type predicate to be inferred but it's not, then you may be running afoul of the second rule. This often comes up with "truthiness" checks:
@@ -183,7 +183,7 @@ function f1(obj: Record<string, unknown>, key: string) {
 In the above, neither `obj` nor `key` are ever mutated, so TypeScript can narrow the type of `obj[key]` to `string` after the `typeof` check.
 For more information, [see the implementing pull request here](https://github.com/microsoft/TypeScript/pull/57847).
 
-## Type Imports in JSDoc
+## The JSDoc `@import` Tag
 
 Today, if you want to import something only for type-checking in a JavaScript file, it is cumbersome.
 JavaScript developers can't simply import a type named `SomeType` if it's not there at runtime.
@@ -448,7 +448,7 @@ console.log(fruits.isSupersetOf(fruits));
 console.log(emptySet.isSupersetOf(fruits));
 ```
 
-We'd like to thank [Kevin Gibbons](https://github.com/bakkot) who not only proposed the feature in ECMAScript, but [also provided the declarations for `Set`, `ReadonlySet`, and `ReadonlySetLike` in TypeScript](https://github.com/microsoft/TypeScript/pull/57230)!
+We'd like to thank [Kevin Gibbons](https://github.com/bakkot) who not only co-championed the feature in ECMAScript, but [also provided the declarations for `Set`, `ReadonlySet`, and `ReadonlySetLike` in TypeScript](https://github.com/microsoft/TypeScript/pull/57230)!
 
 ## Isolated Declarations
 
@@ -609,7 +609,9 @@ Keep an eye on this space, and feel free to provide us with feedback.
 We also feel it is worth calling out that `isolatedDeclarations` should be adopted on a case-by-case basis.
 There are some developer ergonomics that are lost when using `isolatedDeclarations`, and thus it may not be the right choice if your setup is not leveraging the two scenarios mentioned earlier.
 For others, the work on `isolatedDeclarations` has already uncovered many optimizations and opportunities to unlock different parallel build strategies.
-In the meantime, if you're willing to make the trade-offs, we believe `isolatedDeclarations` can be a powerful tool to speed up your build process once external tooling becomes available.
+In the meantime, if you're willing to make the trade-offs, we believe `isolatedDeclarations` can be a powerful tool to speed up your build process as external tooling becomes more widely available.
+
+For more information, read up on the [Isolated Declarations: State of the Feature](https://github.com/microsoft/TypeScript/issues/58944) discussion on the TypeScript issue tracker.
 
 ### Credit
 
@@ -784,7 +786,7 @@ One of the issues with these APIs is that TypeScript internally would perform a 
 This was necessary to collect certain information which would later be used for the emit phase.
 
 In TypeScript 5.5, we've found a way to avoid performing a full check, only lazily collecting this information as necessary, and `transpileModule` and `transpileDeclaration` both enable this functionality by default.
-As a result, tools that integrate with with these APIs, like [ts-loader](https://www.npmjs.com/package/ts-loader) with `transpileOnly` and [ts-jest](https://www.npmjs.com/package/ts-jest), should see a noticeable speedup.
+As a result, tools that integrate with these APIs, like [ts-loader](https://www.npmjs.com/package/ts-loader) with `transpileOnly` and [ts-jest](https://www.npmjs.com/package/ts-jest), should see a noticeable speedup.
 In our testing, [we generally witness around a 2x speed-up in build time using `transpileModule`](https://github.com/microsoft/TypeScript/pull/58364#issuecomment-2138580690).
 
 ### TypeScript Package Size Reduction
@@ -913,48 +915,6 @@ See also the [Flag Deprecation Plan](https://github.com/microsoft/TypeScript/iss
 
 Types generated for the DOM may have an impact on type-checking your codebase.
 For more information, [see the DOM updates for TypeScript 5.5](https://github.com/microsoft/TypeScript/pull/58211).
-
-### Respecting File Extensions and `package.json` in Other Module Modes
-
-Before Node.js implemented support for ECMAScript modules in v12, there was never a good way for TypeScript to know whether `.d.ts` files it found in `node_modules` represented JavaScript files authored as CommonJS or ECMAScript modules.
-When the vast majority of npm was CommonJS-only, this didn't cause many problems - if in doubt, TypeScript could just assume that everything behaved like CommonJS.
-Unfortunately, if that assumption was wrong it could allow unsafe imports:
-
-```ts
-// node_modules/dep/index.d.ts
-export declare function doSomething(): void;
-
-// index.ts
-// Okay if "dep" is a CommonJS module, but fails if
-// it's an ECMAScript module - even in bundlers!
-import dep from "dep";
-dep.doSomething();
-```
-
-In practice, this didn't come up very often.
-But in the years since Node.js started supporting ECMAScript modules, the share of ESM on npm has grown.
-Fortunately, Node.js also introduced a mechanism that can help TypeScript determine if a file is an ECMAScript module or a CommonJS module: the `.mjs` and `.cjs` file extensions and the `package.json` `"type"` field.
-TypeScript 4.7 added support for understanding these indicators, as well as authoring `.mts` and `.cts` files;
-however, TypeScript would *only* read those indicators under `--module node16` and `--module nodenext`, so the unsafe import above was still a problem for anyone using `--module esnext` and `--moduleResolution bundler`, for example.
-
-To solve this, TypeScript 5.5 reads and stores module format information encoded by file extensions and `package.json` `"type"` in *all* `module` modes, and uses it to resolve ambiguities like the one in the example above in all modes (except for `amd`, `umd`, and `system`).
-
-A secondary effect of respecting this format information is that the format-specific TypeScript file extensions (`.mts` and `.cts`) or an explicitly set package.json `"type"` in your own project will *override* your `--module` option if it's set to `commonjs` or `es2015` through `esnext`.
-Previously, it was technically possible to produce CommonJS output into a `.mjs` file or vice versa:
-
-```ts
-// main.mts
-export default "oops";
-
-// $ tsc --module commonjs main.mts
-// main.mjs
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = "oops";
-```
-
-Now, `.mts` files (or `.ts` files in scope of a `package.json` with `"type": "module"`) never emit CommonJS output, and `.cts` files (or `.ts` files in scope of a package.json with `"type": "commonjs"`) never emit ESM output.
-
-More details are available [on the change here](https://github.com/microsoft/TypeScript/pull/57896).
 
 ### Stricter Parsing for Decorators
 
