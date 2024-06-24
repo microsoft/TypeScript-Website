@@ -34,7 +34,6 @@ export const hideNavForHandbook = (sandbox: Sandbox) => {
   if (!nav) return
   if (!nav.classList.contains("handbook")) return
 
-  showCode(sandbox)
   nav.style.display = "none"
 
   const leftDrag = document.querySelector(".playground-dragbar.left") as HTMLElement
@@ -43,6 +42,8 @@ export const hideNavForHandbook = (sandbox: Sandbox) => {
   const story = document.getElementById("editor-container")
   const possibleButtonToRemove = story?.querySelector("button")
   if (story && possibleButtonToRemove) story.removeChild(possibleButtonToRemove)
+
+  showCode(sandbox)
 }
 
 /**
