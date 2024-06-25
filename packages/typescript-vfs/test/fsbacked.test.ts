@@ -58,3 +58,17 @@ it("can import files in the virtual fs", () => {
 
   expect(errs.map(e => e.messageText)).toEqual([])
 })
+
+it("searches node_modules/@types", () => {
+  const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
+  const monorepoRoot = __dirname
+
+  const fsMap = new Map<string, string>()
+  fsMap.set("index.ts", "it('found @types/jest', () => undefined)")
+
+  const system = createFSBackedSystem(fsMap, monorepoRoot, ts)
+  const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, compilerOpts)
+
+  const semDiags = env.languageService.getSemanticDiagnostics("index.ts")
+  expect(semDiags.length).toBe(0)
+})
