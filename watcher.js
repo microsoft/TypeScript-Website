@@ -121,8 +121,8 @@ function watcher(error, resp) {
       const packageJSON = JSON.parse(readFileSync(packageJSONPath, "utf8"))
       if (!packageJSON.scripts || !packageJSON.scripts.build) return
 
-      if (packageJSON.scripts["build-fast"]) return `workspace ${packageJSON.name} run build-fast`
-      return `workspace ${packageJSON.name} run build`
+      if (packageJSON.scripts["build-fast"]) return `--filter=${packageJSON.name} run build-fast`
+      return `--filter=${packageJSON.name} run build`
     })
 
     if (commandToRun[0]) {
