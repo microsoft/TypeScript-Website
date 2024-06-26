@@ -121,8 +121,8 @@ function watcher(error, resp) {
       const packageJSON = JSON.parse(readFileSync(packageJSONPath, "utf8"))
       if (!packageJSON.scripts || !packageJSON.scripts.build) return
 
-      if (packageJSON.scripts["build-fast"]) return `workspace ${packageJSON.name} run build-fast`
-      return `workspace ${packageJSON.name} run build`
+      if (packageJSON.scripts["build-fast"]) return `--filter=${packageJSON.name} run build-fast`
+      return `--filter=${packageJSON.name} run build`
     })
 
     if (commandToRun[0]) {
@@ -146,7 +146,7 @@ client.on("error", function (error) {
   console.error("Error while talking to watchman: ", error)
 })
 
-client.capabilityCheck({ required: ["relative_root"] }, function (error, resp) {
+client.capabilityCheck({ required: ["relative_root"], optional: [] }, function (error, resp) {
   if (error) {
     console.error("Error checking capabilities:", error)
     return
