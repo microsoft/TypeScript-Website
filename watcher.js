@@ -146,7 +146,7 @@ client.on("error", function (error) {
   console.error("Error while talking to watchman: ", error)
 })
 
-client.capabilityCheck({ required: ["relative_root"] }, function (error, resp) {
+client.capabilityCheck({ required: ["relative_root"], optional: [] }, function (error, resp) {
   if (error) {
     console.error("Error checking capabilities:", error)
     return
