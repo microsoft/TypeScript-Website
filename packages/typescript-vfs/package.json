@@ -41,9 +41,10 @@
     "typescript": false
   },
   "dependencies": {
-    "debug": "^4.1.1"
+    "debug": "^4.3.4"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
     "@types/jest": "^29.5.12",
     "babel-jest": "^29.7.0",
     "cpy-cli": "^3.1.1",
