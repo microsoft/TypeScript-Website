@@ -225,6 +225,7 @@ function rewireLoggingToElement(
           (_, value) => {
             // JSON.stringify omits any keys with a value of undefined. To get around this, we replace undefined with the text __undefined__ and then do a global replace using regex back to keyword undefined
             if (value === undefined) return "__undefined__"
+            if (typeof value === 'bigint') return `BigInt('${value.toString()}')`
             return value
           },
           2
