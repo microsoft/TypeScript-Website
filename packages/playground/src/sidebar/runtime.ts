@@ -234,18 +234,23 @@ function rewireLoggingToElement(
   }
 
   function produceOutput(args: any[]) {
-    let result: string = args.reduce((output: any, arg: any, index) => {
-      const textRep = objectToText(arg)
-      const showComma = index !== args.length - 1
-      const comma = showComma ? "<span class='comma'>, </span>" : ""
-      return output + textRep + comma + " "
-    }, "")
-
-    Object.keys(replacers).forEach(k => {
-      result = result.replace(new RegExp((replacers as any)[k], "g"), k)
-    })
-
-    return result
+    try {
+      let result: string = args.reduce((output: any, arg: any, index) => {
+        const textRep = objectToText(arg)
+        const showComma = index !== args.length - 1
+        const comma = showComma ? "<span class='comma'>, </span>" : ""
+        return output + textRep + comma + " "
+      }, "")
+  
+      Object.keys(replacers).forEach(k => {
+        result = result.replace(new RegExp((replacers as any)[k], "g"), k)
+      })
+  
+      return result
+    } catch (error) {
+      console.warn(i("play_run_log_fail"), error)
+      return i("play_run_log_fail")
+    }
   }
 }
 
