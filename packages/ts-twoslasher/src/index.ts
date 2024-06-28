@@ -10,7 +10,7 @@ import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem 
 
 import Debug from 'debug'
 
-const log = Debug("typescript:vfs")
+const log = Debug("typescript:twoslash")
 
 // Hacking in some internal stuff
 declare module "typescript" {
