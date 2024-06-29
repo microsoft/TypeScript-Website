@@ -217,6 +217,9 @@ importers:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
         version: 25.0.8(rollup@3.29.4)
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
