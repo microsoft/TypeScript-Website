@@ -12,7 +12,7 @@ This feature is something most users may never have to think about; however, if 
 TypeScript 3.8 adds a new syntax for type-only imports and exports.
 
 ```ts
-import type { SomeThing } from "./some-module.js";
+import type { SomeThing } from "./some-module";
 
 export type { SomeThing };
 ```
@@ -264,7 +264,7 @@ While some runtimes might optimize their actual implementations of `#` private f
 It's often common to have a single entry-point that exposes all the members of another module as a single member.
 
 ```ts
-import * as utilities from "./utilities.js";
+import * as utilities from "./utilities";
 export { utilities };
 ```
 
