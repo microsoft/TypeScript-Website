@@ -474,6 +474,9 @@ export function createSystem(files: Map<string, string>): System {
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
     },
+    deleteFile: (fileName) => {
+      files.delete(fileName)
+    },
   }
 }
 
