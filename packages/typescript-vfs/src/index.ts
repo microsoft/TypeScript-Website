@@ -32,6 +32,7 @@ export interface VirtualTypeScriptEnvironment {
   getSourceFile: (fileName: string) => import("typescript").SourceFile | undefined
   createFile: (fileName: string, content: string) => void
   updateFile: (fileName: string, content: string, replaceTextSpan?: import("typescript").TextSpan) => void
+  deleteFile: (fileName: string) => void
 }
 
 /**
@@ -54,7 +55,7 @@ export function createVirtualTypeScriptEnvironment(
 ): VirtualTypeScriptEnvironment {
   const mergedCompilerOpts = { ...defaultCompilerOptions(ts), ...compilerOptions }
 
-  const { languageServiceHost, updateFile } = createVirtualLanguageServiceHost(
+  const { languageServiceHost, updateFile, deleteFile } = createVirtualLanguageServiceHost(
     sys,
     rootFiles,
     mergedCompilerOpts,
@@ -99,6 +100,13 @@ export function createVirtualTypeScriptEnvironment(
 
       updateFile(newSourceFile)
     },
+    deleteFile(fileName) {
+      const sourceFile = languageService.getProgram()!.getSourceFile(fileName)
+      if (!sourceFile) {
+        throw new Error("Did not find a source file for " + fileName)
+      }
+      deleteFile(sourceFile)
+    }
   }
 }
 
@@ -545,6 +553,9 @@ export function createFSBackedSystem(
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
     },
+    deleteFile: (fileName) => {
+      files.delete(fileName)
+    },
     realpath: nodeSys.realpath,
   }
 }
@@ -564,6 +575,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
   type Return = {
     compilerHost: CompilerHost
     updateFile: (sourceFile: SourceFile) => boolean
+    deleteFile: (sourceFile: SourceFile) => boolean
   }
 
   const vHost: Return = {
@@ -595,6 +607,12 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       sourceFiles.set(sourceFile.fileName, sourceFile)
       return alreadyExists
     },
+    deleteFile: sourceFile => {
+      const alreadyExists = sourceFiles.has(sourceFile.fileName)
+      sourceFiles.delete(sourceFile.fileName)
+      sys.deleteFile!(sourceFile.fileName)
+      return alreadyExists
+    }
   }
   return vHost
 }
@@ -610,7 +628,7 @@ export function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
-  const { compilerHost, updateFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
+  const { compilerHost, updateFile, deleteFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
   const fileVersions = new Map<string, string>()
   let projectVersion = 0
   const languageServiceHost: LanguageServiceHost = {
@@ -643,6 +661,7 @@ export function createVirtualLanguageServiceHost(
   type Return = {
     languageServiceHost: LanguageServiceHost
     updateFile: (sourceFile: import("typescript").SourceFile) => void
+    deleteFile: (sourceFile: import("typescript").SourceFile) => void
   }
 
   const lsHost: Return = {
@@ -655,6 +674,15 @@ export function createVirtualLanguageServiceHost(
       }
       updateFile(sourceFile)
     },
+    deleteFile: sourceFile => {
+      projectVersion++
+      fileVersions.set(sourceFile.fileName, projectVersion.toString())
+      const index = fileNames.indexOf(sourceFile.fileName)
+      if (index !== -1) {
+        fileNames.splice(index, 1)
+      }
+      deleteFile(sourceFile)
+    }
   }
   return lsHost
 }
