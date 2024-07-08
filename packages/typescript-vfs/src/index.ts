@@ -572,7 +572,6 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       getCanonicalFileName: fileName => fileName,
       getDefaultLibFileName: () => "/" + ts.getDefaultLibFileName(compilerOptions), // '/lib.d.ts',
       // getDefaultLibLocation: () => '/',
-      getDirectories: () => [],
       getNewLine: () => sys.newLine,
       getSourceFile: (fileName, languageVersionOrOptions) => {
         return (
