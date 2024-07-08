@@ -694,7 +694,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Does something</p>
+<p>Require sufficient annotation on exports so other tools can trivially generate declaration files.</p>
 </td></tr>
 
 <tr class='even' name='isolatedModules'>
@@ -881,7 +881,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Does something</p>
+<p>Disable full type checking (only critical parse and emit errors will be reported).</p>
 </td></tr>
 
 <tr class='odd' name='noEmit'>
