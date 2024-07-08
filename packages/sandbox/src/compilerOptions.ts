@@ -85,7 +85,7 @@ export const getCompilerOptionsFromParams = (
       let toSet = undefined
       if (val === "true" && playgroundDefaults[key] !== true) {
         toSet = true
-      } else if (val === "false" && playgroundDefaults[key] !== false) {
+      } else if (val === "false" && (playgroundDefaults[key] as any) !== false) { // TODO(jakebailey): remove as any, check undefined above
         toSet = false
       } else if (!isNaN(parseInt(val, 10)) && playgroundDefaults[key] !== parseInt(val, 10)) {
         toSet = parseInt(val, 10)

@@ -9,6 +9,11 @@ expect.extend({ toMatchFile })
 // To add a test, create a file in the fixtures folder and it will will run through
 // as though it was the codeblock.
 
+const defaultCompilerOptions = {
+  // avoid extra annotations from @types/node
+  types: []
+}
+
 describe("with fixtures", () => {
   // Add all codefixes
   const fixturesFolder = join(__dirname, "fixtures")
@@ -27,7 +32,7 @@ describe("with fixtures", () => {
 
       const file = readFileSync(fixture, "utf8")
 
-      const fourslashed = twoslasher(file, extname(fixtureName).substr(1), { customTags: ["annotate"] })
+      const fourslashed = twoslasher(file, extname(fixtureName).substr(1), { customTags: ["annotate"], defaultCompilerOptions })
       const jsonString = format(JSON.stringify(cleanFixture(fourslashed)), { parser: "json" })
       expect(jsonString).toMatchFile(result)
     })
@@ -46,7 +51,7 @@ describe("with fixtures", () => {
 
       const file = readFileSync(fixture, "utf8")
 
-      const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
+      const fourslashed = twoslasher(file, extname(fixtureName).substr(1), { defaultCompilerOptions })
       const jsonString = format(JSON.stringify(cleanFixture(fourslashed)), { parser: "json" })
       expect(jsonString).toMatchFile(result)
     })
@@ -65,7 +70,7 @@ describe("with fixtures", () => {
 
       const file = readFileSync(fixture, "utf8")
 
-      const fourslashed = twoslasher(file, extname(fixtureName).substr(1))
+      const fourslashed = twoslasher(file, extname(fixtureName).substr(1), { defaultCompilerOptions })
       const jsonString = format(JSON.stringify(cleanFixture(fourslashed)), { parser: "json" })
       expect(jsonString).toMatchFile(result)
     })
@@ -87,7 +92,7 @@ describe("with fixtures", () => {
 
       let thrown = false
       try {
-        twoslasher(file, extname(fixtureName).substr(1))
+        twoslasher(file, extname(fixtureName).substr(1), { defaultCompilerOptions })
       } catch (err) {
         thrown = true
         if (err instanceof Error) expect(err.message).toMatchFile(result)

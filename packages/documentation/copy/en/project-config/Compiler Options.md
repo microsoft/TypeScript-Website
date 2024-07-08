@@ -686,180 +686,202 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Include source code in the sourcemaps inside the emitted JavaScript.</p>
 </td></tr>
 
-<tr class='odd' name='isolatedModules'>
+<tr class='odd' name='isolatedDeclarations'>
+  <td><code><a href='/tsconfig/#isolatedDeclarations'>--isolatedDeclarations</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code></p>
+</td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+<p>Require sufficient annotation on exports so other tools can trivially generate declaration files.</p>
+</td></tr>
+
+<tr class='even' name='isolatedModules'>
   <td><code><a href='/tsconfig/#isolatedModules'>--isolatedModules</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Ensure that each file can be safely transpiled without relying on other imports.</p>
 </td></tr>
 
-<tr class='even' name='jsx'>
+<tr class='odd' name='jsx'>
   <td><code><a href='/tsconfig/#jsx'>--jsx</a></code></td>
   <td><p><code>preserve</code>, <code>react</code>, <code>react-native</code>, <code>react-jsx</code>, or <code>react-jsxdev</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify what JSX code is generated.</p>
 </td></tr>
 
-<tr class='odd' name='jsxFactory'>
+<tr class='even' name='jsxFactory'>
   <td><code><a href='/tsconfig/#jsxFactory'>--jsxFactory</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>React.createElement</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'.</p>
 </td></tr>
 
-<tr class='even' name='jsxFragmentFactory'>
+<tr class='odd' name='jsxFragmentFactory'>
   <td><code><a href='/tsconfig/#jsxFragmentFactory'>--jsxFragmentFactory</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>React.Fragment</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'.</p>
 </td></tr>
 
-<tr class='odd' name='jsxImportSource'>
+<tr class='even' name='jsxImportSource'>
   <td><code><a href='/tsconfig/#jsxImportSource'>--jsxImportSource</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>react</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify module specifier used to import the JSX factory functions when using <code>jsx: react-jsx*</code>.</p>
 </td></tr>
 
-<tr class='even' name='keyofStringsOnly'>
+<tr class='odd' name='keyofStringsOnly'>
   <td><code><a href='/tsconfig/#keyofStringsOnly'>--keyofStringsOnly</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Make keyof only return strings instead of string, numbers or symbols. Legacy option.</p>
 </td></tr>
 
-<tr class='odd' name='lib'>
+<tr class='even' name='lib'>
   <td><code><a href='/tsconfig/#lib'>--lib</a></code></td>
   <td><p><code>list</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify a set of bundled library declaration files that describe the target runtime environment.</p>
 </td></tr>
 
-<tr class='even' name='listEmittedFiles'>
+<tr class='odd' name='listEmittedFiles'>
   <td><code><a href='/tsconfig/#listEmittedFiles'>--listEmittedFiles</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Print the names of emitted files after a compilation.</p>
 </td></tr>
 
-<tr class='odd' name='listFiles'>
+<tr class='even' name='listFiles'>
   <td><code><a href='/tsconfig/#listFiles'>--listFiles</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Print all of the files read during the compilation.</p>
 </td></tr>
 
-<tr class='even' name='mapRoot'>
+<tr class='odd' name='mapRoot'>
   <td><code><a href='/tsconfig/#mapRoot'>--mapRoot</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify the location where debugger should locate map files instead of generated locations.</p>
 </td></tr>
 
-<tr class='odd' name='maxNodeModuleJsDepth'>
+<tr class='even' name='maxNodeModuleJsDepth'>
   <td><code><a href='/tsconfig/#maxNodeModuleJsDepth'>--maxNodeModuleJsDepth</a></code></td>
   <td><p><code>number</code></p>
 </td>
   <td><p><code>0</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify the maximum folder depth used for checking JavaScript files from <code>node_modules</code>. Only applicable with <a href="#allowJs"><code>allowJs</code></a>.</p>
 </td></tr>
 
-<tr class='even' name='module'>
+<tr class='odd' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
   <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>nodenext</code>, or <code>preserve</code></p>
 </td>
   <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify what module code is generated.</p>
 </td></tr>
 
-<tr class='odd' name='moduleDetection'>
+<tr class='even' name='moduleDetection'>
   <td><code><a href='/tsconfig/#moduleDetection'>--moduleDetection</a></code></td>
   <td><p><code>legacy</code>, <code>auto</code>, or <code>force</code></p>
 </td>
   <td><p>"auto": Treat files with imports, exports, import.meta, jsx (with jsx: react-jsx), or esm format (with module: node16+) as modules.</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify what method is used to detect whether a file is a script or a module.</p>
 </td></tr>
 
-<tr class='even' name='moduleResolution'>
+<tr class='odd' name='moduleResolution'>
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
   <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code>, or <code>ES6</code>/<code>ES2015</code>; Matches if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>Node</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify how TypeScript looks up a file from a given module specifier.</p>
 </td></tr>
 
-<tr class='odd' name='moduleSuffixes'>
+<tr class='even' name='moduleSuffixes'>
   <td><code><a href='/tsconfig/#moduleSuffixes'>--moduleSuffixes</a></code></td>
   <td><p><code>list</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>List of file name suffixes to search when resolving a module.</p>
 </td></tr>
 
-<tr class='even' name='newLine'>
+<tr class='odd' name='newLine'>
   <td><code><a href='/tsconfig/#newLine'>--newLine</a></code></td>
   <td><p><code>crlf</code> or <code>lf</code></p>
 </td>
   <td><p><code>lf</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Set the newline character for emitting files.</p>
+</td></tr>
+
+<tr class='even' name='noCheck'>
+  <td><code><a href='/tsconfig/#noCheck'>--noCheck</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code></p>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>Disable full type checking (only critical parse and emit errors will be reported).</p>
 </td></tr>
 
 <tr class='odd' name='noEmit'>
@@ -1370,7 +1392,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='target'>
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
-  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, or <code>esnext</code></p>
+  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, <code>es2023</code>, or <code>esnext</code></p>
 </td>
   <td><p><code>ES3</code></p>
 </td>
