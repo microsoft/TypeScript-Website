@@ -102,10 +102,9 @@ export function createVirtualTypeScriptEnvironment(
     },
     deleteFile(fileName) {
       const sourceFile = languageService.getProgram()!.getSourceFile(fileName)
-      if (!sourceFile) {
-        throw new Error("Did not find a source file for " + fileName)
+      if (sourceFile) {
+        deleteFile(sourceFile)
       }
-      deleteFile(sourceFile)
     }
   }
 }
