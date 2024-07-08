@@ -88,4 +88,4 @@ customObjectTryingToChangeThis.print();
 
 // You can learn more about that in the handbook:
 //
-// https://www.typescriptlang.org/docs/handbook/utility-types.html#thistypet
+// https://www.typescriptlang.org/docs/handbook/utility-types.html#thistypetype
