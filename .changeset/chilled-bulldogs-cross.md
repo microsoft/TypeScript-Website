@@ -1,5 +1,6 @@
 ---
 "@typescript/vfs": patch
+"@typescript/sandbox": patch
 "@typescript/twoslash": patch
 ---
 
