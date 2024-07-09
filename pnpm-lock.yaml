@@ -210,6 +210,9 @@ importers:
       '@typescript/vfs':
         specifier: workspace:*
         version: link:../typescript-vfs
+      debug:
+        specifier: ^4.3.4
+        version: 4.3.4
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0

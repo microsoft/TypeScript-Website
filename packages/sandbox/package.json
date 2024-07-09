@@ -45,6 +45,7 @@
   "dependencies": {
     "@typescript/ata": "workspace:*",
     "@typescript/vfs": "workspace:*",
+    "debug": "^4.3.4",
     "lz-string": "^1.5.0"
   },
   "devDependencies": {
