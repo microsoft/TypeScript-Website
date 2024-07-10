@@ -228,6 +228,7 @@ export const defaultsForOptions = {
   ],
   include: ["`[]` if [`files`](#files) is specified;", "`**/*` otherwise."],
   incremental: trueIf("composite"),
+  isolatedModules: trueIf("verbatimModuleSyntax"),
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
   module: [
