@@ -19,3 +19,6 @@ If `typeRoots` is specified, _only_ packages under `typeRoots` will be included.
 
 This config file will include _all_ packages under `./typings` and `./vendor/types`, and no packages from `./node_modules/@types`.
 All paths are relative to the `tsconfig.json`.
+
+Note that packages within the specified directories are resolved as [directory modules](/docs/handbook/modules/reference.html#directory-modules-index-file-resolution),
+not [`node_modules` packages](/docs/handbook/modules/reference.html#node_modules-package-lookups).
