@@ -601,7 +601,7 @@ interface Person {
 }
 ```
 
-In contrast, the following code will compile, but it results in an invalid type:
+In contrast, the following code will compile, but it results in a `never` type:
 
 ```
 type Person = {
@@ -612,7 +612,7 @@ type Staff = Person & {
   name: number;
 };
 ```
-In this case, Staff would require the name property to be both a string and a number, which is impossible and thus problematic.
+In this case, Staff would require the name property to be both a string and a number, which results in property being of type `never`.
 
 ## Generic Object Types
 
