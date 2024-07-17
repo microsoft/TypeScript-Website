@@ -591,7 +591,7 @@ In the case of intersection types, properties with different types will be merge
 
 For example, the following code will throw an error because the properties are incompatible:
 
-```
+```ts
 interface Person {
   name: string;
 }
@@ -603,7 +603,7 @@ interface Person {
 
 In contrast, the following code will compile, but it results in a `never` type:
 
-```
+```ts twoslash
 interface Person1 {
   name: string;
 }
@@ -613,6 +613,10 @@ interface Person2 {
 }
 
 type Staff = Person1 & Person2
+
+declare const staffer: Staff;
+staffer.name;
+//       ^?
 ```
 In this case, Staff would require the name property to be both a string and a number, which results in property being of type `never`.
 
