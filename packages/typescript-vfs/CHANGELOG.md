@@ -1,5 +1,15 @@
 # @typescript/vfs
 
+## 1.6.0
+
+### Minor Changes
+
+- [#3173](https://github.com/microsoft/TypeScript-Website/pull/3173) [`725841a`](https://github.com/microsoft/TypeScript-Website/commit/725841adc9e5b734ccb0663fccb2ba05d0dcca62) Thanks [@marklundin](https://github.com/marklundin)! - Adds `deleteFile` to the vfs api to which allows file to be removed from the file system.
+
+### Patch Changes
+
+- [#3165](https://github.com/microsoft/TypeScript-Website/pull/3165) [`441338c`](https://github.com/microsoft/TypeScript-Website/commit/441338c04fbbef834ffa1ac6dc0dc8816e9137fc) Thanks [@edemaine](https://github.com/edemaine)! - Use System's getDirectories if it's provided when constructing Host
+
 ## 1.5.3
 
 ### Patch Changes
