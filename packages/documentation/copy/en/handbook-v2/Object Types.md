@@ -604,13 +604,15 @@ interface Person {
 In contrast, the following code will compile, but it results in a `never` type:
 
 ```
-type Person = {
+interface Person1 {
   name: string;
-};
+}
 
-type Staff = Person & {
+interface Person2 {
   name: number;
-};
+}
+
+type Staff = Person1 & Person2
 ```
 In this case, Staff would require the name property to be both a string and a number, which results in property being of type `never`.
 
