@@ -585,10 +585,40 @@ We just looked at two ways to combine types which are similar, but are actually 
 With interfaces, we could use an `extends` clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias.
 The principal difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you'd pick one over the other between an interface and a type alias of an intersection type.
 
-<!--
-For example, two types can declare the same property in an interface.
+If interfaces are defined with the same name, TypeScript will attempt to merge them if the properties are compatible. If the properties are not compatible (i.e., they have the same property name but different types), TypeScript will raise an error.
 
-TODO -->
+In the case of intersection types, properties with different types will be merged automatically. When the type is used later, TypeScript will expect the property to satisfy both types simultaneously, which may produce unexpected results.
+
+For example, the following code will throw an error because the properties are incompatible:
+
+```ts
+interface Person {
+  name: string;
+}
+
+interface Person {
+  name: number;
+}
+```
+
+In contrast, the following code will compile, but it results in a `never` type:
+
+```ts twoslash
+interface Person1 {
+  name: string;
+}
+
+interface Person2 {
+  name: number;
+}
+
+type Staff = Person1 & Person2
+
+declare const staffer: Staff;
+staffer.name;
+//       ^?
+```
+In this case, Staff would require the name property to be both a string and a number, which results in property being of type `never`.
 
 ## Generic Object Types
 
