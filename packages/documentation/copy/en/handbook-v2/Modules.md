@@ -174,7 +174,7 @@ You can import a file and _not_ include any variables into your current module v
 export var pi = 3.14;
 // ---cut---
 // @filename: app.ts
-import "./maths.js";
+import "./maths.ts";
 
 console.log("3.14");
 ```
