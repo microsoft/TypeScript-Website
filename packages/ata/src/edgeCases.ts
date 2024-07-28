@@ -58,15 +58,7 @@ export const mapModuleNameToModule = (moduleSpecifier: string) => {
     "zlib",
   ]
 
-  const builtInNodeModsWithMandatoryPrefix = [
-    "node:sea",
-    "node:sqlite",
-    "node:test",
-    "node:test/mock_loader",
-    "node:test/reporters",
-  ]
-
-  if (builtInNodeMods.includes(moduleSpecifier.replace(/^node:/, "")) || builtInNodeModsWithMandatoryPrefix.includes(moduleSpecifier)) {
+  if (moduleSpecifier.indexOf("node:") === 0 || builtInNodeMods.includes(moduleSpecifier)) {
     return "node"
   }
 
