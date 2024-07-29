@@ -2,4 +2,4 @@
 "@typescript/ata": patch
 ---
 
-Improve `node:` module resolution
+Always treat `node:` modules as Node, expand list of known Node modules
