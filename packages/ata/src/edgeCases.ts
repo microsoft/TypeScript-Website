@@ -24,6 +24,7 @@ export const mapModuleNameToModule = (moduleSpecifier: string) => {
     "http2",
     "https",
     "inspector",
+    "inspector/promises",
     "module",
     "net",
     "os",
@@ -57,7 +58,7 @@ export const mapModuleNameToModule = (moduleSpecifier: string) => {
     "zlib",
   ]
 
-  if (builtInNodeMods.includes(moduleSpecifier.replace("node:", ""))) {
+  if (moduleSpecifier.indexOf("node:") === 0 || builtInNodeMods.includes(moduleSpecifier)) {
     return "node"
   }
 
