@@ -1,5 +1,11 @@
 # @typescript/ata
 
+## 0.9.7
+
+### Patch Changes
+
+- [#3191](https://github.com/microsoft/TypeScript-Website/pull/3191) [`1d0af97`](https://github.com/microsoft/TypeScript-Website/commit/1d0af97318b79943fe0bfa8871ee6e8c584c9af5) Thanks [@Renegade334](https://github.com/Renegade334)! - Always treat `node:` modules as Node, expand list of known Node modules
+
 ## 0.9.6
 
 ### Patch Changes

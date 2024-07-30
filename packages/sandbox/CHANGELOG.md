@@ -1,5 +1,12 @@
 # @typescript/sandbox
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [[`1d0af97`](https://github.com/microsoft/TypeScript-Website/commit/1d0af97318b79943fe0bfa8871ee6e8c584c9af5)]:
+  - @typescript/ata@0.9.7
+
 ## 0.1.6
 
 ### Patch Changes
