@@ -1,6 +1,6 @@
 # TypeScript Example Code
 
-The English examples can be found in [`en/`](en/).
+The English examples can be found in [`copy/en/`](copy/en/).
 
 # TypeScript Example Code
 
