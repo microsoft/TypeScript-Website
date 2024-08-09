@@ -8,7 +8,6 @@
     "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "clean": "gatsby clean",
     "bootstrap": "pnpm update-versions",
-    "update-static-assets": "node scripts/downloadSearchAssets.js",
     "update-versions": "node scripts/getTypeScriptNPMVersions.js",
     "setup-playground-cache-bust": "node scripts/cacheBustPlayground.mjs",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
@@ -19,6 +18,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.24.5",
+    "@docsearch/react": "^3.5.1",
     "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/react-helmet": "^5.0.15",
     "@typescript/playground": "workspace:*",
