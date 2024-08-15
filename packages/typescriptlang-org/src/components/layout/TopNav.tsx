@@ -18,7 +18,7 @@ import { OpenInMyLangQuickJump } from "./LanguageRecommendation";
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang)
-  const loadDocSearch = () => {
+  const loadDocSearch = (docsearch) => {
     const fixURL = (url: string) => {
       const u = new URL(url);
       if (u.host === document.location.host) return url;
@@ -47,26 +47,35 @@ export const SiteNav = (props: Props) => {
   useEffect(() => {
     setupStickyNavigation()
 
-    // @ts-ignore - this comes from the script above
-    if (window.docsearch) {
-      loadDocSearch();
-    }
-    if (document.getElementById("algolia-search")) return
-
     const searchScript = document.createElement('script');
     searchScript.id = "algolia-search"
-    const searchCSS = document.createElement('link');
 
     searchScript.src = withPrefix("/js/docsearch.js");
     searchScript.async = true;
-    searchScript.onload = () => {
-      // @ts-ignore - this comes from the script above
-      if (window.docsearch) {
-        loadDocSearch();
+    searchScript.onload = async () => {
+      // @ts-ignore this comes from the script above
+      let universalDocSearch = window.docsearch;
+  
+      if (global.require) {
+        universalDocSearch = await new Promise(resolve => {
+          const re: any = global.require;
+          re(['/js/docsearch.js'], (docsearch) => {
+            resolve(docsearch);
+          });
+        });
+      }
+  
+      if (universalDocSearch) {
+        loadDocSearch(universalDocSearch);
+      }
+
+      if (!document.querySelector("#docsearch-css")) {
+        const searchCSS = document.createElement('link');
 
         searchCSS.rel = 'stylesheet';
         searchCSS.href = withPrefix('/css/docsearch.css');
         searchCSS.type = 'text/css';
+        searchCSS.id = 'docsearch-css';
         document.body.appendChild(searchCSS);
 
         document.getElementById("search-form")?.classList.add("search-enabled")
