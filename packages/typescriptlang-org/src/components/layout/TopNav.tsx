@@ -87,7 +87,7 @@ export const SiteNav = (props: Props) => {
 
 
   return (
-    <header dir="ltr">
+    <header dir="ltr" className="no-print">
       <a className="skip-to-main" href={props.skipToAnchor || '#site-content'} tabIndex={0}>{i("skip_to_content")}</a>
 
       <div id="top-menu" className="up">

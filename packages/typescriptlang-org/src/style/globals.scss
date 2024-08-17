@@ -47,3 +47,12 @@ $z-index-for-search: 100;
 $z-index-for-site-nav: 101;
 $z-index-for-handbook-nav: 99;
 $z-index-for-handbook-nav-button: 100;
+
+// add print media query
+@media print {
+    .no-print, .no-print * {
+        display: none !important;
+        color: greenyellow;
+    }
+    .pagebreak { page-break-before: always; } 
+  }
