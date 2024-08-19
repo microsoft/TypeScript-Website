@@ -52,7 +52,6 @@ $z-index-for-handbook-nav-button: 100;
 @media print {
     .no-print, .no-print * {
         display: none !important;
-        color: greenyellow;
     }
     .pagebreak { page-break-before: always; } 
   }
