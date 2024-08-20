@@ -811,7 +811,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#maxNodeModuleJsDepth'>--maxNodeModuleJsDepth</a></code></td>
   <td><p><code>number</code></p>
 </td>
-  <td><p><code>0</code></p>
+  <td><p><code>0</code>, <code>2</code> when the project has root JavaScript files</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
