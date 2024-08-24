@@ -296,7 +296,7 @@ class MyClass {
 Because the index signature type needs to also capture the types of methods, it's not easy to usefully use these types.
 Generally it's better to store indexed data in another place instead of on the class instance itself.
 
-## Class Heritage
+## Class Inheritance
 
 Like other languages with object-oriented features, classes in JavaScript can inherit from base classes.
 
