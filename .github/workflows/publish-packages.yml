@@ -33,7 +33,7 @@ jobs:
           pnpm bootstrap
           pnpm build
 
-      - uses: changesets/action@aba318e9165b45b7948c60273e0b72fce0a64eb9 # v1.4.7
+      - uses: changesets/action@3de3850952bec538fde60aac71731376e57b9b57 # v1.4.8
         with:
           publish: pnpm ci:publish
         env:
