@@ -98,6 +98,11 @@
               "type": "boolean",
               "default": false,
               "markdownDescription": "Log paths used during the `moduleResolution` process.\n\nSee more: https://www.typescriptlang.org/tsconfig#traceResolution"
+            },
+            "stopBuildOnErrors": {
+              "description": "Skip building downstream projects on error in upstream project.",
+              "type": "boolean",
+              "default": false
             }
           }
         }
@@ -1020,6 +1025,21 @@
               "description": "Opt a project out of multi-project reference checking when editing.",
               "type": "boolean",
               "markdownDescription": "Opt a project out of multi-project reference checking when editing.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableSolutionSearching"
+            },
+            "generateTrace": {
+              "description": "Generates an event trace and a list of types.",
+              "type": "boolean",
+              "default": false
+            },
+            "noUncheckedSideEffectImports": {
+              "description": "Check side effect imports.",
+              "type": "boolean",
+              "default": false
+            },
+            "strictBuiltinIteratorReturn": {
+              "description": "Built-in iterators are instantiated with a 'TReturn' type of 'undefined' instead of 'any'.",
+              "type": "boolean",
+              "default": false
             }
           }
         }

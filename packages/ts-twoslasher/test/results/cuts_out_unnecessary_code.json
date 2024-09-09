@@ -96,7 +96,7 @@
       "targetString": "a"
     },
     {
-      "text": "function createLabel<\"typescript\">(idOrName: \"typescript\"): NameOrId<\"typescript\">",
+      "text": "function createLabel<\"typescript\">(idOrName: \"typescript\"): NameLabel",
       "docs": "",
       "start": 113,
       "length": 11,
@@ -114,7 +114,7 @@
       "targetString": "b"
     },
     {
-      "text": "function createLabel<2.8>(idOrName: 2.8): NameOrId<2.8>",
+      "text": "function createLabel<2.8>(idOrName: 2.8): IdLabel",
       "docs": "",
       "start": 149,
       "length": 11,
@@ -132,7 +132,7 @@
       "targetString": "c"
     },
     {
-      "text": "function createLabel<\"hello\" | 42>(idOrName: \"hello\" | 42): NameOrId<\"hello\" | 42>",
+      "text": "function createLabel<\"hello\" | 42>(idOrName: \"hello\" | 42): IdLabel | NameLabel",
       "docs": "",
       "start": 176,
       "length": 11,
