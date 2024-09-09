@@ -18,7 +18,7 @@ In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in
 
 | Name         | Contents                                                                                                                                          |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ES5`        | Core definitions for all ES3 and ES5 functionality                                                                                                |
+| `ES5`        | Core definitions for all ES5 functionality                                                                                                        |
 | `ES2015`     | Additional APIs available in ES2015 (also known as ES6) - `array.find`, `Promise`, `Proxy`, `Symbol`, `Map`, `Set`, `Reflect`, etc.               |
 | `ES6`        | Alias for "ES2015"                                                                                                                                |
 | `ES2016`     | Additional APIs available in ES2016 - `array.include`, etc.                                                                                       |
