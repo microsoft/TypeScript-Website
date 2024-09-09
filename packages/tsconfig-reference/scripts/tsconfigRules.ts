@@ -232,7 +232,7 @@ export const defaultsForOptions = {
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
   module: [
-    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`;",
+    "`CommonJS` if [`target`](#target) is `ES5`;",
     "`ES6`/`ES2015` otherwise.",
   ],
   moduleResolution: [
@@ -260,7 +260,7 @@ export const defaultsForOptions = {
   useUnknownInCatchVariables: trueIf("strict"),
   strictPropertyInitialization: trueIf("strict"),
   strictNullChecks: trueIf("strict"),
-  target: "ES3",
+  target: "ES5",
   useDefineForClassFields: [
     "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",
