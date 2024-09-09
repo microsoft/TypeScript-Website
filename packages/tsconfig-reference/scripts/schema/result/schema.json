@@ -100,10 +100,10 @@
               "markdownDescription": "Log paths used during the `moduleResolution` process.\n\nSee more: https://www.typescriptlang.org/tsconfig#traceResolution"
             },
             "stopBuildOnErrors": {
-              "description": "Does something",
+              "description": "Skip building downstream projects on error in upstream project.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#stopBuildOnErrors"
+              "markdownDescription": "Skip building downstream projects on error in upstream project.\n\nSee more: https://www.typescriptlang.org/tsconfig#stopBuildOnErrors"
             }
           }
         }
@@ -997,22 +997,22 @@
               "markdownDescription": "Opt a project out of multi-project reference checking when editing.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableSolutionSearching"
             },
             "generateTrace": {
-              "description": "Does something",
+              "description": "Generates an event trace and a list of types.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#generateTrace"
+              "markdownDescription": "Generates an event trace and a list of types.\n\nSee more: https://www.typescriptlang.org/tsconfig#generateTrace"
             },
             "noUncheckedSideEffectImports": {
-              "description": "Does something",
+              "description": "Check side effect imports.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#noUncheckedSideEffectImports"
+              "markdownDescription": "Check side effect imports.\n\nSee more: https://www.typescriptlang.org/tsconfig#noUncheckedSideEffectImports"
             },
             "strictBuiltinIteratorReturn": {
-              "description": "Does something",
+              "description": "Built-in iterators are instantiated with a TReturn type of undefined instead of any.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#strictBuiltinIteratorReturn"
+              "markdownDescription": "Built-in iterators are instantiated with a TReturn type of undefined instead of any.\n\nSee more: https://www.typescriptlang.org/tsconfig#strictBuiltinIteratorReturn"
             }
           }
         }

@@ -630,7 +630,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Does something</p>
+<p>Generates an event trace and a list of types.</p>
 </td></tr>
 
 <tr class='odd' name='importHelpers'>
@@ -1059,7 +1059,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Does something</p>
+<p>Check side effect imports.</p>
 </td></tr>
 
 <tr class='even' name='noUnusedLocals'>
@@ -1323,7 +1323,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Does something</p>
+<p>Skip building downstream projects on error in upstream project.</p>
 </td></tr>
 
 <tr class='even' name='strict'>
@@ -1356,7 +1356,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Does something</p>
+<p>Built-in iterators are instantiated with a TReturn type of undefined instead of any.</p>
 </td></tr>
 
 <tr class='odd' name='strictFunctionTypes'>

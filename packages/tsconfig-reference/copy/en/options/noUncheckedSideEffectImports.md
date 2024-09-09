@@ -1,6 +1,6 @@
 ---
 display: "noUncheckedSideEffectImports"
-oneline: "Does something"
+oneline: "Check side effect imports."
 ---
 Check side effect imports.
  
