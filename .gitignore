@@ -86,3 +86,5 @@ packages/typescriptlang-org/src/lib/documentationNavigation.ts
 !**/.vscode/settings.template.json
 !**/.vscode/launch.json
 !**/.vscode/extensions.json
+
+*.tsbuildinfo
