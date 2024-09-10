@@ -11,8 +11,8 @@ import "some-module";
 
 These imports are often called *side effect imports* because the only useful behavior they can provide is by executing some side effect (like registering a global variable, or adding a polyfill to a prototype).
 
-In TypeScript, this syntax has had a pretty strange quirk: if the `import` could be resolved to a valid source file, then TypeScript would load and check the file.
-On the other hand, if no source file could be found, TypeScript would silently ignore the `import`!
+By default, TypeScript will not check these imports for validity. If the import resolves to a valid source file, TypeScript will load and check the file.
+If no source file is found, TypeScript will silently ignore the import.
 
 This is surprising behavior, but it partially stems from modeling patterns in the JavaScript ecosystem.
 For example, this syntax has also been used with special loaders in bundlers to load CSS or other assets.
@@ -27,8 +27,8 @@ export function Button() {
 ```
 
 Still, this masks potential typos on side effect imports.
-That's why TypeScript 5.6 introduces a new compiler option called `--noUncheckedSideEffectImports`, to catch these cases.
-When `--noUncheckedSideEffectImports` is enabled, TypeScript will now error if it can't find a source file for a side effect import.
+
+When `--noUncheckedSideEffectImports` is enabled, TypeScript will error if it can't find a source file for a side effect import.
 
 ```ts
 import "oops-this-module-does-not-exist";
