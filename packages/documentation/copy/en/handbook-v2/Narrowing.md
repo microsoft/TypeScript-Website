@@ -227,7 +227,7 @@ function example(x: string | number, y: string | boolean) {
 }
 ```
 
-When we checked that `x` and `y` are both equal in the above example, TypeScript knew their types also had to be equal.
+When we checked that `x` and `y` are strictly equal in the above example, TypeScript knew their types also had to be equal.
 Since `string` is the only common type that both `x` and `y` could take on, TypeScript knows that `x` and `y` must be `string`s in the first branch.
 
 Checking against specific literal values (as opposed to variables) works also.
