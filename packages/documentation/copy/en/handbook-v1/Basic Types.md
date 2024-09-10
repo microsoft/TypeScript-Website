@@ -367,7 +367,7 @@ TypeScript assumes that you, the programmer, have performed any special checks t
 
 Type assertions have two forms.
 
-One is the `as`-syntax:
+One is the `as` operator:
 
 ```ts twoslash
 let someValue: unknown = "this is a string";
@@ -384,7 +384,48 @@ let strLength: number = (<string>someValue).length;
 ```
 
 The two samples are equivalent.
-Using one over the other is mostly a choice of preference; however, when using TypeScript with JSX, only `as`-style assertions are allowed.
+Using one over the other is mostly a choice of preference; however, when using TypeScript with JSX, only `as` assertions are allowed.
+
+## `satisfies` checks
+
+While the `as` operator *asserts* that an expression is of a given type, the `satisfies` operator *checks` the type instead.
+This is a useful tool for when you want to verify you've done something correctly without changing the inferred type of an expression.
+
+For example, let's say you want to make a mapping from *some* colors to their RGB values:
+```ts
+type Colors = "red" | "green" | "blue";
+
+const colorObj = {
+  red: "#FF0000",
+  dlue: "#0000FF"
+// ^ typo not caught! :(
+};
+```
+If you try to fix this with a type annotation, you'll add extra properties you don't really want:
+```ts
+type Colors = "red" | "green" | "blue";
+
+const colorObj: Partial<Record<Colors, string>> = {
+  red: "#FF0000",
+  blue: "#0000FF"
+// ^ typo caught and fixed
+};
+const green = colorObj.green;
+//                      ^
+// Not good: green definitely isn't present.
+// We'd prefer an error
+```
+By using `satisfies`, we get the best of both worlds: the typo is caught, but type inference still sees the original shape of the object:
+
+```ts
+const colorObj = {
+  red: "#FF0000",
+  dlue: "#0000FF" // typo caught!
+} satisfies Partial<Record<Colors, string>>;
+
+// Got the desired error here too, since 'green' isn't in the object
+const green = colorObj.green;
+```
 
 ## A note about `let`
 
