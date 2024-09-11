@@ -252,6 +252,18 @@ printId("202");
 printId({ myID: 22342 });
 ```
 
+> The separator of the union members is allowed before the first element, so you could also write this:
+> ```ts twoslash
+> function printTextOrNumberOrBool(
+>   textOrNumberOrBool:
+>   | string
+>   | number
+>   | boolean
+> ) {
+>   console.log(textOrNumberOrBool);
+> }
+> ```
+
 ### Working with Union Types
 
 It's easy to _provide_ a value matching a union type - simply provide a type matching any of the union's members.
