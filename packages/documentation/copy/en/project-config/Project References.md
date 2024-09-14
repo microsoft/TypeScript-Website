@@ -6,7 +6,7 @@ oneline: How to split up a large TypeScript project
 translatable: true
 ---
 
-Project references are a new feature in TypeScript 3.0 that allow you to structure your TypeScript programs into smaller pieces.
+Project references allows you to structure your TypeScript programs into smaller pieces, available in TypeScript 3.0 and newer.
 
 By doing this, you can greatly improve build times, enforce logical separation between components, and organize your code in new and better ways.
 
