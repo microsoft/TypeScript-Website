@@ -102,7 +102,7 @@ export const Sidebar = (props: Props) => {
         classes.push("closed")
       }
 
-      const opened = { "aria-expanded": "true", "aria-label": item.title + " close" }
+      const opened = { "aria-expanded": "true", "aria-label": item.title }
       const closed = { "aria-label": item.title + " expand" }
       const aria = hostsSelected ? opened : closed
 
