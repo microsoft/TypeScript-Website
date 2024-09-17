@@ -452,7 +452,7 @@ By default, function components must return `JSX.Element | null`. However, this 
 namespace JSX {
     export type ElementType =
         // All the valid lowercase tags
-        keyof IntrinsicAttributes
+        keyof IntrinsicElements
         // Function components
         (props: any) => Element
         // Class components
