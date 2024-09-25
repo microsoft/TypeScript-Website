@@ -527,7 +527,7 @@ Don't use variance annotations to try to "force" a particular variance; this wil
 
 > Do NOT write variance annotations unless they match the structural behavior of a type
 
-Rmember, TypeScript can automatically infer variance from your generic types.
+Remember, TypeScript can automatically infer variance from your generic types.
 It's almost never necessary to write a variance annotation, and you should only do so when you've identified a specific need.
 Variance annotations *do not* change the structural behavior of a type, and depending on the situation, you might see a structural comparison made when you expected an instantiation-based comparison.
 Variance annotations can't be used to modify how types behave in these structural contexts, and shouldn't be written unless the annotation is the same as the structural definition.
