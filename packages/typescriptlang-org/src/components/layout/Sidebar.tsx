@@ -122,7 +122,7 @@ export const Sidebar = (props: Props) => {
   }
 
   return (
-    <nav id="sidebar">
+    <nav aria-label = "sidebar" id="sidebar">
       <ul>
         {props.navItems.map(item => <RenderItem key={item.id} item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
       </ul>

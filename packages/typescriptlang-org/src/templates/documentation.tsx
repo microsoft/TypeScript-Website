@@ -159,7 +159,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             </div>
             {showSidebar &&
               <aside className="handbook-toc">
-                <nav className={deprecationURL ? "deprecated" : ""}>
+                <nav aria-label = "table of contents">
                   {<>
                     <h5>{i("handb_on_this_page")}</h5>
                     <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
