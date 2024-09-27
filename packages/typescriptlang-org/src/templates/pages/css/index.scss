@@ -578,6 +578,7 @@ $headline-foreground-bg: white;
       &:active {
         background-color: #156fb4;
       }
+      &:focus-visible,
       &:hover {
         outline-width: 2px;
         box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
@@ -591,6 +592,7 @@ $headline-foreground-bg: white;
       height: 342px;
       margin-bottom: 2px;
 
+      &:focus-visible,
       &:hover {
         outline-color: $ts-main-blue-color;
         outline-width: 2px;
