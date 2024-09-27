@@ -98,7 +98,7 @@ export const SiteNav = (props: Props) => {
             <span className="hide-small">TypeScript</span>
           </IntlLink>
 
-          <nav role="navigation">
+          <nav aria-label="top menu">
             <ul role="tablist" aria-owns="tab1 tab2 tab3 tab4 tab5 tab6" aria-busy="true">
             <li className="nav-item hide-small" role="none presentation" ><IntlLink id="tab1" role="tab" to="/download">{i("nav_download")}</IntlLink></li>
               <li className="nav-item" role="none presentation"><IntlLink id="tab2" role="tab" to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
