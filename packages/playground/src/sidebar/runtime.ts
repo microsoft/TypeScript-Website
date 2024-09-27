@@ -144,6 +144,7 @@ function rewireLoggingToElement(
     const replace = {} as any
     bindLoggingFunc(replace, rawConsole, "log", "LOG")
     bindLoggingFunc(replace, rawConsole, "debug", "DBG")
+    bindLoggingFunc(replace, rawConsole, "info", "INF")
     bindLoggingFunc(replace, rawConsole, "warn", "WRN")
     bindLoggingFunc(replace, rawConsole, "error", "ERR")
     replace["clear"] = clearLogs
