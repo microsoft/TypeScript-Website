@@ -45,7 +45,12 @@
 
   article {
     display: flex;
+    flex-direction: row;
     width: 100%;
+
+    @media (max-width: 999px) {
+      flex-direction: column;
+    }
   }
 
   .whitespace,
@@ -53,6 +58,10 @@
     margin: 1rem auto;
     margin-top: 0;
     padding: 2rem;
+
+    @media (max-width: 999px) {
+      order: 2;
+    }
   }
 
   .whitespace-tight {
@@ -60,11 +69,21 @@
   }
 
   aside {
-    display: block;
     width: 13rem;
     flex-shrink: 0;
     margin-left: 20px;
 
+    @media (min-width: 1000px) {
+      display: block;
+    }
+    @media (max-width: 999px) {
+      position: relative;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      margin-left: 0;
+      order: 1;
+    }
     nav {
       position: sticky;
       top: 30px;
