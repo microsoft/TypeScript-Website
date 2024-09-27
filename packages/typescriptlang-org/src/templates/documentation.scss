@@ -53,7 +53,6 @@
     margin: 1rem auto;
     margin-top: 0;
     padding: 2rem;
-    overflow: hidden;
   }
 
   .whitespace-tight {
@@ -61,12 +60,7 @@
   }
 
   aside {
-    display: none;
-
-    @media (min-width: 1000px) {
-      display: block;
-    }
-
+    display: block;
     width: 13rem;
     flex-shrink: 0;
     margin-left: 20px;
