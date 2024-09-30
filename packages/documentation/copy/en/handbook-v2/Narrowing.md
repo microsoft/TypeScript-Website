@@ -228,7 +228,7 @@ function example(x: string | number, y: string | boolean) {
 ```
 
 When we checked that `x` and `y` are both equal in the above example, TypeScript knew their types also had to be equal.
-Since `string` is the only common type that both `x` and `y` could take on, TypeScript knows that `x` and `y` must be a `string` in the first branch.
+Since `string` is the only common type that both `x` and `y` could take on, TypeScript knows that `x` and `y` must be `string`s in the first branch.
 
 Checking against specific literal values (as opposed to variables) works also.
 In our section about truthiness narrowing, we wrote a `printAll` function which was error-prone because it accidentally didn't handle empty strings properly.

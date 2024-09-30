@@ -228,10 +228,11 @@ export const defaultsForOptions = {
   ],
   include: ["`[]` if [`files`](#files) is specified;", "`**/*` otherwise."],
   incremental: trueIf("composite"),
+  isolatedModules: trueIf("verbatimModuleSyntax"),
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
   module: [
-    "`CommonJS` if [`target`](#target) is `ES3` or `ES5`;",
+    "`CommonJS` if [`target`](#target) is `ES5`;",
     "`ES6`/`ES2015` otherwise.",
   ],
   moduleResolution: [
@@ -239,7 +240,7 @@ export const defaultsForOptions = {
     "Matches if [`module`](#module) is `node16` or `nodenext`;",
     "`Node` otherwise.",
   ],
-  newLine: "Platform specific.",
+  newLine: "`lf`",
   noImplicitAny: trueIf("strict"),
   noImplicitThis: trueIf("strict"),
   preserveConstEnums: trueIf("isolatedModules"),
@@ -259,7 +260,7 @@ export const defaultsForOptions = {
   useUnknownInCatchVariables: trueIf("strict"),
   strictPropertyInitialization: trueIf("strict"),
   strictNullChecks: trueIf("strict"),
-  target: "ES3",
+  target: "ES5",
   useDefineForClassFields: [
     "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",

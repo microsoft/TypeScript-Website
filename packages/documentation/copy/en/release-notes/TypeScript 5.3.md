@@ -384,7 +384,7 @@ For more information, [see this pull request](https://github.com/microsoft/TypeS
 
 TypeScript itself ships two library files: `tsserverlibrary.js` and `typescript.js`.
 There are certain APIs available only in `tsserverlibrary.js` (like the `ProjectService` API), which may be useful to some importers.
-Still, the two are distinct bundles which have a lot of overlap, duplicating code in the package.
+Still, the two are distinct bundles with a lot of overlap, duplicating code in the package.
 What's more, it can be challenging to consistently use one over the other due to auto-imports or muscle memory.
 Accidentally loading both modules is far too easy, and code may not work properly on a different instance of the API.
 Even if it does work, loading a second bundle increases resource usage.

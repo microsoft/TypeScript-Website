@@ -2,13 +2,12 @@
 
 // https://json.schemastore.org/tsconfig.json
 
-import nodeFetch from "node-fetch";
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
 const getFileAndStoreLocally = async (url, path, editFunc) => {
   const editingFunc = editFunc ? editFunc : (text) => text;
-  const packageJSON = await nodeFetch(url);
+  const packageJSON = await fetch(url);
   const contents = await packageJSON.text();
   writeFileSync(new URL(path, import.meta.url), editingFunc(contents), "utf8");
 };

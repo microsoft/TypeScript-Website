@@ -34,7 +34,6 @@ export const hideNavForHandbook = (sandbox: Sandbox) => {
   if (!nav) return
   if (!nav.classList.contains("handbook")) return
 
-  showCode(sandbox)
   nav.style.display = "none"
 
   const leftDrag = document.querySelector(".playground-dragbar.left") as HTMLElement
@@ -43,6 +42,8 @@ export const hideNavForHandbook = (sandbox: Sandbox) => {
   const story = document.getElementById("editor-container")
   const possibleButtonToRemove = story?.querySelector("button")
   if (story && possibleButtonToRemove) story.removeChild(possibleButtonToRemove)
+
+  showCode(sandbox)
 }
 
 /**
@@ -163,7 +164,7 @@ const setStoryViaHref = (href: string, sandbox: Sandbox) => {
       }
 
       if (document.location.host === "localhost:8000") {
-        setStory("<p>Because the gatsby dev server uses JS to build your pages, and not statically, the page will not load during dev. It does work in prod though - use <code>yarn build-site</code> to test locally with a static build.</p>", sandbox)
+        setStory("<p>Because the gatsby dev server uses JS to build your pages, and not statically, the page will not load during dev. It does work in prod though - use <code>pnpm build-site</code> to test locally with a static build.</p>", sandbox)
       } else {
         setStory(text, sandbox)
       }

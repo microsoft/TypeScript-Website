@@ -6,19 +6,19 @@ We'll use 3.9.0 as the example. Note this looks long because there's a lot of ex
 
 ##### Site
 
-The website uses one version of TypeScript which you can find in the root `package.json` inside the `resolutions` field. It's always a specific version, so change the version to:
+The website uses one version of TypeScript which you can find in the root `package.json` inside the `overrides` field. It's always a specific version, so change the version to:
 
 ```json
-  "resolutions": {
-    "typescript": "3.9.0-beta",
-  },
+  "pnpm": {
+    "overrides": {
+      "typescript": "3.9.0",
+    }
+  }
 ```
 
-Then run `yarn install`.
+Then run `pnpm install`.
 
-That will update all of the site to use 3.9.0 for building. Run `yarn build` to see if any of the website's code broke.
-
-You might see issues with yarn patching TypeScript, if so, try run: `yarn set version latest` first to update to the latest yarn.
+That will update all of the site to use 3.9.0 for building. Run `pnpm build` to see if any of the website's code broke.
 
 Then empty the twoslash cache: `rm node_modules/.cache/twoslash`.
 
@@ -65,10 +65,10 @@ The tag should be automatically generated on a [daily basis](https://github.com/
 
 ##### Tests
 
-Run `yarn test`.
+Run `pnpm test`.
 
 Tests can fail between TS builds, for example snapshot tests in packages which have compiler errors or LSP responses in them.
-Run `yarn build; yarn update-test-snapshots` to try auto-update all snapshots, otherwise use `yarn workspace [package_name] test -u` for 1 package.
+Run `pnpm build; pnpm update-test-snapshots` to try auto-update all snapshots, otherwise use `pnpm run --filter=[package_name] test -u` for 1 package.
 
 ### RC
 

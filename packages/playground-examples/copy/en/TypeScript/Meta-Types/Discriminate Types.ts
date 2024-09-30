@@ -63,4 +63,4 @@ const handleResponse = (response: APIResponses) => {
 // parts of the union are checked. There is a good pattern
 // for this using the never type in the handbook:
 
-// https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
+// https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type

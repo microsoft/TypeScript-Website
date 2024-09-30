@@ -54,75 +54,66 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Show all compiler options.</p>
 </td></tr>
 
-<tr class='even' name='generateTrace'>
-  <td><code>--generateTrace</code></td>
-  <td><p><code>string</code></p>
-</td>
-</tr>
-<tr class="option-description even"><td colspan="3">
-<p>Generates an event trace and a list of types.</p>
-</td></tr>
-
-<tr class='odd' name='help'>
+<tr class='even' name='help'>
   <td><code>--help</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Gives local information for help on the CLI.</p>
 </td></tr>
 
-<tr class='even' name='init'>
+<tr class='odd' name='init'>
   <td><code>--init</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Initializes a TypeScript project and creates a tsconfig.json file.</p>
 </td></tr>
 
-<tr class='odd' name='listFilesOnly'>
+<tr class='even' name='listFilesOnly'>
   <td><code>--listFilesOnly</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Print names of files that are part of the compilation and then stop processing.</p>
 </td></tr>
 
-<tr class='even' name='locale'>
+<tr class='odd' name='locale'>
   <td><code>--locale</code></td>
   <td><p><code>string</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Set the language of the messaging from TypeScript. This does not affect emit.</p>
 </td></tr>
 
-<tr class='odd' name='project'>
+<tr class='even' name='project'>
   <td><code>--project</code></td>
   <td><p><code>string</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.</p>
 </td></tr>
 
-<tr class='even' name='showConfig'>
+<tr class='odd' name='showConfig'>
   <td><code>--showConfig</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Print the final configuration instead of building.</p>
 </td></tr>
 
-<tr class='odd' name='version'>
+<tr class='even' name='version'>
   <td><code>--version</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Print the compiler's version.</p>
 </td></tr>
 
@@ -631,66 +622,88 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Emit a v8 CPU profile of the compiler run for debugging.</p>
 </td></tr>
 
-<tr class='even' name='importHelpers'>
+<tr class='even' name='generateTrace'>
+  <td><code><a href='/tsconfig/#generateTrace'>--generateTrace</a></code></td>
+  <td><p><code>string</code></p>
+</td>
+  <td>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>Generates an event trace and a list of types.</p>
+</td></tr>
+
+<tr class='odd' name='importHelpers'>
   <td><code><a href='/tsconfig/#importHelpers'>--importHelpers</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Allow importing helper functions from tslib once per project, instead of including them per-file.</p>
 </td></tr>
 
-<tr class='odd' name='importsNotUsedAsValues'>
+<tr class='even' name='importsNotUsedAsValues'>
   <td><code><a href='/tsconfig/#importsNotUsedAsValues'>--importsNotUsedAsValues</a></code></td>
   <td><p><code>remove</code>, <code>preserve</code>, or <code>error</code></p>
 </td>
   <td><p><code>remove</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify emit/checking behavior for imports that are only used for types.</p>
 </td></tr>
 
-<tr class='even' name='incremental'>
+<tr class='odd' name='incremental'>
   <td><code><a href='/tsconfig/#incremental'>--incremental</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#composite"><code>composite</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Save .tsbuildinfo files to allow for incremental compilation of projects.</p>
 </td></tr>
 
-<tr class='odd' name='inlineSourceMap'>
+<tr class='even' name='inlineSourceMap'>
   <td><code><a href='/tsconfig/#inlineSourceMap'>--inlineSourceMap</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Include sourcemap files inside the emitted JavaScript.</p>
 </td></tr>
 
-<tr class='even' name='inlineSources'>
+<tr class='odd' name='inlineSources'>
   <td><code><a href='/tsconfig/#inlineSources'>--inlineSources</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Include source code in the sourcemaps inside the emitted JavaScript.</p>
+</td></tr>
+
+<tr class='even' name='isolatedDeclarations'>
+  <td><code><a href='/tsconfig/#isolatedDeclarations'>--isolatedDeclarations</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code></p>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>Require sufficient annotation on exports so other tools can trivially generate declaration files.</p>
 </td></tr>
 
 <tr class='odd' name='isolatedModules'>
   <td><code><a href='/tsconfig/#isolatedModules'>--isolatedModules</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td><p><code>true</code> if <a href="#verbatimModuleSyntax"><code>verbatimModuleSyntax</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -809,9 +822,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, or <code>nodenext</code></p>
+  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>nodenext</code>, or <code>preserve</code></p>
 </td>
-  <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES3</code> or <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
+  <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -855,176 +868,198 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#newLine'>--newLine</a></code></td>
   <td><p><code>crlf</code> or <code>lf</code></p>
 </td>
-  <td><p>Platform specific.</p>
+  <td><p><code>lf</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Set the newline character for emitting files.</p>
 </td></tr>
 
-<tr class='odd' name='noEmit'>
+<tr class='odd' name='noCheck'>
+  <td><code><a href='/tsconfig/#noCheck'>--noCheck</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code></p>
+</td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+<p>Disable full type checking (only critical parse and emit errors will be reported).</p>
+</td></tr>
+
+<tr class='even' name='noEmit'>
   <td><code><a href='/tsconfig/#noEmit'>--noEmit</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Disable emitting files from a compilation.</p>
 </td></tr>
 
-<tr class='even' name='noEmitHelpers'>
+<tr class='odd' name='noEmitHelpers'>
   <td><code><a href='/tsconfig/#noEmitHelpers'>--noEmitHelpers</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Disable generating custom helper functions like <code>__extends</code> in compiled output.</p>
 </td></tr>
 
-<tr class='odd' name='noEmitOnError'>
+<tr class='even' name='noEmitOnError'>
   <td><code><a href='/tsconfig/#noEmitOnError'>--noEmitOnError</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Disable emitting files if any type checking errors are reported.</p>
 </td></tr>
 
-<tr class='even' name='noErrorTruncation'>
+<tr class='odd' name='noErrorTruncation'>
   <td><code><a href='/tsconfig/#noErrorTruncation'>--noErrorTruncation</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Disable truncating types in error messages.</p>
 </td></tr>
 
-<tr class='odd' name='noFallthroughCasesInSwitch'>
+<tr class='even' name='noFallthroughCasesInSwitch'>
   <td><code><a href='/tsconfig/#noFallthroughCasesInSwitch'>--noFallthroughCasesInSwitch</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Enable error reporting for fallthrough cases in switch statements.</p>
 </td></tr>
 
-<tr class='even' name='noImplicitAny'>
+<tr class='odd' name='noImplicitAny'>
   <td><code><a href='/tsconfig/#noImplicitAny'>--noImplicitAny</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Enable error reporting for expressions and declarations with an implied <code>any</code> type.</p>
 </td></tr>
 
-<tr class='odd' name='noImplicitOverride'>
+<tr class='even' name='noImplicitOverride'>
   <td><code><a href='/tsconfig/#noImplicitOverride'>--noImplicitOverride</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Ensure overriding members in derived classes are marked with an override modifier.</p>
 </td></tr>
 
-<tr class='even' name='noImplicitReturns'>
+<tr class='odd' name='noImplicitReturns'>
   <td><code><a href='/tsconfig/#noImplicitReturns'>--noImplicitReturns</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Enable error reporting for codepaths that do not explicitly return in a function.</p>
 </td></tr>
 
-<tr class='odd' name='noImplicitThis'>
+<tr class='even' name='noImplicitThis'>
   <td><code><a href='/tsconfig/#noImplicitThis'>--noImplicitThis</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Enable error reporting when <code>this</code> is given the type <code>any</code>.</p>
 </td></tr>
 
-<tr class='even' name='noImplicitUseStrict'>
+<tr class='odd' name='noImplicitUseStrict'>
   <td><code><a href='/tsconfig/#noImplicitUseStrict'>--noImplicitUseStrict</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Disable adding 'use strict' directives in emitted JavaScript files.</p>
 </td></tr>
 
-<tr class='odd' name='noLib'>
+<tr class='even' name='noLib'>
   <td><code><a href='/tsconfig/#noLib'>--noLib</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Disable including any library files, including the default lib.d.ts.</p>
 </td></tr>
 
-<tr class='even' name='noPropertyAccessFromIndexSignature'>
+<tr class='odd' name='noPropertyAccessFromIndexSignature'>
   <td><code><a href='/tsconfig/#noPropertyAccessFromIndexSignature'>--noPropertyAccessFromIndexSignature</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Enforces using indexed accessors for keys declared using an indexed type.</p>
 </td></tr>
 
-<tr class='odd' name='noResolve'>
+<tr class='even' name='noResolve'>
   <td><code><a href='/tsconfig/#noResolve'>--noResolve</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Disallow <code>import</code>s, <code>require</code>s or <code>&#x3C;reference></code>s from expanding the number of files TypeScript should add to a project.</p>
 </td></tr>
 
-<tr class='even' name='noStrictGenericChecks'>
+<tr class='odd' name='noStrictGenericChecks'>
   <td><code><a href='/tsconfig/#noStrictGenericChecks'>--noStrictGenericChecks</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Disable strict checking of generic signatures in function types.</p>
 </td></tr>
 
-<tr class='odd' name='noUncheckedIndexedAccess'>
+<tr class='even' name='noUncheckedIndexedAccess'>
   <td><code><a href='/tsconfig/#noUncheckedIndexedAccess'>--noUncheckedIndexedAccess</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Add <code>undefined</code> to a type when accessed using an index.</p>
+</td></tr>
+
+<tr class='odd' name='noUncheckedSideEffectImports'>
+  <td><code><a href='/tsconfig/#noUncheckedSideEffectImports'>--noUncheckedSideEffectImports</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code></p>
+</td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+<p>Check side effect imports.</p>
 </td></tr>
 
 <tr class='even' name='noUnusedLocals'>
@@ -1280,26 +1315,48 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Specify the root path for debuggers to find the reference source code.</p>
 </td></tr>
 
-<tr class='odd' name='strict'>
+<tr class='odd' name='stopBuildOnErrors'>
+  <td><code><a href='/tsconfig/#stopBuildOnErrors'>--stopBuildOnErrors</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td>
+</td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+<p>Skip building downstream projects on error in upstream project.</p>
+</td></tr>
+
+<tr class='even' name='strict'>
   <td><code><a href='/tsconfig/#strict'>--strict</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Enable all strict type-checking options.</p>
 </td></tr>
 
-<tr class='even' name='strictBindCallApply'>
+<tr class='odd' name='strictBindCallApply'>
   <td><code><a href='/tsconfig/#strictBindCallApply'>--strictBindCallApply</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Check that the arguments for <code>bind</code>, <code>call</code>, and <code>apply</code> methods match the original function.</p>
+</td></tr>
+
+<tr class='even' name='strictBuiltinIteratorReturn'>
+  <td><code><a href='/tsconfig/#strictBuiltinIteratorReturn'>--strictBuiltinIteratorReturn</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code>, unless <code>strict</code> is set</p>
+</td>
+</tr>
+<tr class="option-description even"><td colspan="3">
+<p>Built-in iterators are instantiated with a TReturn type of undefined instead of any.</p>
 </td></tr>
 
 <tr class='odd' name='strictFunctionTypes'>
@@ -1370,9 +1427,9 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='odd' name='target'>
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
-  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, or <code>esnext</code></p>
+  <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, <code>es2023</code>, or <code>esnext</code></p>
 </td>
-  <td><p><code>ES3</code></p>
+  <td><p><code>ES5</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">

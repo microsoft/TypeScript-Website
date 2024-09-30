@@ -2,12 +2,11 @@
 
 // Ensure Playground assets are up to date
 
-const nodeFetch = require("node-fetch").default
 const { writeFileSync, readFileSync } = require("fs")
 const { join } = require("path")
 
 const getFileAndStoreLocally = async (url, path) => {
-  const packageJSON = await nodeFetch(url)
+  const packageJSON = await fetch(url)
   const contents = await packageJSON.text()
   writeFileSync(join(__dirname, "..", path), contents, "utf8")
 }

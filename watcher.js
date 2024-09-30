@@ -1,6 +1,6 @@
 // @ts-check
 
-// A script which uses Facebook's watchman to run `yarn build` in different modules
+// A script which uses Facebook's watchman to run `pnpm build` in different modules
 // in a standard monorepo.
 
 const { spawnSync } = require("child_process")
@@ -121,8 +121,8 @@ function watcher(error, resp) {
       const packageJSON = JSON.parse(readFileSync(packageJSONPath, "utf8"))
       if (!packageJSON.scripts || !packageJSON.scripts.build) return
 
-      if (packageJSON.scripts["build-fast"]) return `workspace ${packageJSON.name} run build-fast`
-      return `workspace ${packageJSON.name} run build`
+      if (packageJSON.scripts["build-fast"]) return `--filter=${packageJSON.name} run build-fast`
+      return `--filter=${packageJSON.name} run build`
     })
 
     if (commandToRun[0]) {
@@ -146,7 +146,7 @@ client.on("error", function (error) {
   console.error("Error while talking to watchman: ", error)
 })
 
-client.capabilityCheck({ required: ["relative_root"] }, function (error, resp) {
+client.capabilityCheck({ required: ["relative_root"], optional: [] }, function (error, resp) {
   if (error) {
     console.error("Error checking capabilities:", error)
     return
@@ -158,10 +158,10 @@ const runCommand = argString => {
   if (currentProcess) return
 
   const prefix = chalk.gray("> ")
-  const cmd = chalk.bold("yarn " + argString)
+  const cmd = chalk.bold("pnpm " + argString)
   log(prefix + cmd)
 
-  const build = spawn("yarn", argString.split(" "))
+  const build = spawn("pnpm", argString.split(" "))
   build.stdout.on("data", l => {
     if (l.toString().includes("Done in")) return
     log("  " + l.toString().trim())

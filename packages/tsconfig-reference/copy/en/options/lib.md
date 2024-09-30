@@ -18,7 +18,7 @@ In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in
 
 | Name         | Contents                                                                                                                                          |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ES5`        | Core definitions for all ES3 and ES5 functionality                                                                                                |
+| `ES5`        | Core definitions for all ES5 functionality                                                                                                        |
 | `ES2015`     | Additional APIs available in ES2015 (also known as ES6) - `array.find`, `Promise`, `Proxy`, `Symbol`, `Map`, `Set`, `Reflect`, etc.               |
 | `ES6`        | Alias for "ES2015"                                                                                                                                |
 | `ES2016`     | Additional APIs available in ES2016 - `array.include`, etc.                                                                                       |
@@ -29,6 +29,7 @@ In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in
 | `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc.                                                                                     |
 | `ES2021`     | Additional APIs available in ES2021 - `promise.any`, `string.replaceAll` etc.                                                                     |
 | `ES2022`     | Additional APIs available in ES2022 - `array.at`, `RegExp.hasIndices`, etc.                                                                       |
+| `ES2023`     | Additional APIs available in ES2023 - `array.with`, `array.findLast`, `array.findLastIndex`, `array.toSorted`, `array.toReversed`, etc.           |
 | `ESNext`     | Additional APIs available in ESNext - This changes as the JavaScript specification evolves                                                        |
 | `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc.                                                   |
 | `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts                              |
