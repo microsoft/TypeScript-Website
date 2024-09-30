@@ -70,7 +70,7 @@ const thing: Point | Label = {
 };
 ```
 
-Previously, a non-disciminated union wouldn't have _any_ excess property checking done on its members, and as a result, the incorrectly typed `name` property slipped by.
+Previously, a non-discriminated union wouldn't have _any_ excess property checking done on its members, and as a result, the incorrectly typed `name` property slipped by.
 
 In TypeScript 3.5, the type-checker at least verifies that all the provided properties belong to _some_ union member and have the appropriate type, meaning that the sample above correctly issues an error.
 

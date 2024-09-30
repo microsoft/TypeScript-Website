@@ -686,7 +686,7 @@ Note that historically, a similar effect has often been achievable by adding a d
 Strictly speaking, the former is interpreted as a declaration file for a JavaScript file named `app.css.js`.
 Because relative files imports need to include extensions in Node's ESM support, TypeScript would error on our example in an ESM file under `--moduleResolution node16` or `nodenext`.
 
-For more information, read up [the proposalfor this feature](https://github.com/microsoft/TypeScript/issues/50133) and [its corresponding pull request](https://github.com/microsoft/TypeScript/pull/51435).
+For more information, read up [the proposal for this feature](https://github.com/microsoft/TypeScript/issues/50133) and [its corresponding pull request](https://github.com/microsoft/TypeScript/pull/51435).
 
 ### `customConditions`
 
@@ -866,7 +866,7 @@ module.exports = {
 
 While this is a limitation, it does help make some issues more obvious.
 For example, it's very common to forget to set the [`type` field in `package.json`](https://nodejs.org/api/packages.html#type) under `--module node16`.
-As a result, developers would start writing CommonJS modules instead of an ES modules without realizing it, giving surprising lookup rules and JavaScript output.
+As a result, developers would start writing CommonJS modules instead of ES modules without realizing it, giving surprising lookup rules and JavaScript output.
 This new flag ensures that you're intentional about the file type you're using because the syntax is intentionally different.
 
 Because `--verbatimModuleSyntax` provides a more consistent story than `--importsNotUsedAsValues` and `--preserveValueImports`, those two existing flags are being deprecated in its favor.
@@ -1156,7 +1156,7 @@ The way JavaScript compares strings means that `"Toggle"` always comes before `"
 So from that perspective, the import list is sorted.
 
 TypeScript previously considered the import list to be sorted because it was doing a basic case-sensitive sort.
-This could be a point of frustration for developers who preferred a case-*insensitive* ordering, or who used tools like ESLint which require to case-insensitive ordering by default.
+This could be a point of frustration for developers who preferred a case-*insensitive* ordering, or who used tools like ESLint which require case-insensitive ordering by default.
 
 TypeScript now detects case sensitivity by default.
 This means that TypeScript and tools like ESLint typically won't "fight" each other over how to best sort imports.

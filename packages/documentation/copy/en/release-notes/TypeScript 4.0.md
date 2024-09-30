@@ -571,7 +571,7 @@ For details, [read up more on the pull request](https://github.com/microsoft/Typ
 
 ## `--incremental` with `--noEmit`
 
-TypeScript 4.0 allows us to use the [`noEmit`](/tsconfig#noEmit) flag when while still leveraging [`incremental`](/tsconfig#incremental) compiles.
+TypeScript 4.0 allows us to use the [`noEmit`](/tsconfig#noEmit) flag while still leveraging [`incremental`](/tsconfig#incremental) compiles.
 This was previously not allowed, as [`incremental`](/tsconfig#incremental) needs to emit a `.tsbuildinfo` files; however, the use-case to enable faster incremental builds is important enough to enable for all users.
 
 For more details, you can [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/39122).
@@ -604,7 +604,7 @@ For more details, [check out the pull request for this feature](https://github.c
 
 TypeScript's editing support now recognizes when a declaration has been marked with a `/** @deprecated */` JSDoc comment.
 That information is surfaced in completion lists and as a suggestion diagnostic that editors can handle specially.
-In an editor like VS Code, deprecated values are typically displayed a strike-though style ~~like this~~.
+In an editor like VS Code, deprecated values are typically displayed in a strike-though style ~~like this~~.
 
 ![Some examples of deprecated declarations with strikethrough text in the editor](https://devblogs.microsoft.com/typescript/wp-content/uploads/sites/11/2020/06/deprecated_4-0.png)
 
