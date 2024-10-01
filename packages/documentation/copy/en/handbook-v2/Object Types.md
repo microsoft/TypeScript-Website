@@ -413,7 +413,7 @@ If `SquareConfig` can have `color` and `width` properties with the above types, 
 interface SquareConfig {
   color?: string;
   width?: number;
-  [propName: string]: any;
+  [propName: string]: unknown;
 }
 ```
 
@@ -426,7 +426,6 @@ Since assigning `squareOptions` won't undergo excess property checks, the compil
 interface SquareConfig {
   color?: string;
   width?: number;
-  [propName: string]: any;
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
