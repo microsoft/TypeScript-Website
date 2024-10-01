@@ -148,7 +148,7 @@ export default async function () {
               </p>
               <p>
                 This library builds on top of the{" "}
-                <a href="https://microsoft.github.io/monaco-editor/index.html">
+                <a href="https://microsoft.github.io/monaco-editor/">
                   Monaco Editor
                 </a>
                 , providing a higher level API but offering access to all the
@@ -310,7 +310,7 @@ export default async function () {
             ))}
             <p>
               The API is mainly a light shim over the{" "}
-              <a href="https://microsoft.github.io/monaco-editor/api/index.html">
+              <a href="https://microsoft.github.io/monaco-editor/docs.html">
                 monaco-editor API
               </a>{" "}
               with the{" "}
