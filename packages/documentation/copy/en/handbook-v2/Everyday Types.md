@@ -256,9 +256,9 @@ printId({ myID: 22342 });
 > ```ts twoslash
 > function printTextOrNumberOrBool(
 >   textOrNumberOrBool:
->   | string
->   | number
->   | boolean
+>     | string
+>     | number
+>     | boolean
 > ) {
 >   console.log(textOrNumberOrBool);
 > }
