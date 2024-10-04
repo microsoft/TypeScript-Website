@@ -33,7 +33,8 @@ When `--noUncheckedSideEffectImports` is enabled, TypeScript will error if it ca
 ```ts
 import "oops-this-module-does-not-exist";
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// error: Cannot find module 'oops-this-module-does-not-exist' or its corresponding type declarations.
+// error: Cannot find module 'oops-this-module-does-not-exist' or its corresponding
+//        type declarations.
 ```
 
 When enabling this option, some working code may now receive an error, like in the CSS example above.
