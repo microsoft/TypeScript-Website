@@ -316,17 +316,8 @@ loggingIdentity({ length: 10, value: 3 });
 ## Using Type Parameters in Generic Constraints
 
 You can declare a type parameter that is constrained by another type parameter.
-For example, let's say we’d like to get a property from an object given its name.
-We'd like to ensure that we're not accidentally grabbing a property that does not exist on the `obj`.
-To do this, we use the `keyof` operator, which we'll cover in depth later.
-For now it's enough to know that `keyof` produces the union of the keys of an object type:
-
-```ts twoslash
-type Dimension = keyof { width: number; height: number };
-//   ^?
-```
-
-Here we use `Key extends keyof Type` to constrain `Key` to one of the property names in `Type`:
+For example, here we'd like to get a property from an object given its name.
+We'd like to ensure that we're not accidentally grabbing a property that does not exist on the `obj`, so we'll place a constraint between the two types:
 
 ```ts twoslash
 // @errors: 2345
@@ -389,6 +380,7 @@ This pattern is used to power the [mixins](/docs/handbook/mixins.html) design pa
 
 By declaring a default for a generic type parameter, you make it optional to specify the corresponding type argument. For example, a function which creates a new `HTMLElement`. Calling the function with no arguments generates a `HTMLDivElement`; calling the function with an element as the first argument generates an element of the argument's type. You can optionally pass a list of children as well. Previously you would have to define the function as:
 
+
 ```ts twoslash
 type Container<T, U> = {
   element: T;
@@ -413,10 +405,10 @@ type Container<T, U> = {
 };
 
 // ---cut---
-declare function create<
-  T extends HTMLElement = HTMLDivElement,
-  U extends HTMLElement[] = T[]
->(element?: T, children?: U): Container<T, U>;
+declare function create<T extends HTMLElement = HTMLDivElement, U extends HTMLElement[] = T[]>(
+  element?: T,
+  children?: U
+): Container<T, U>;
 
 const div = create();
 //    ^?
@@ -439,35 +431,30 @@ A generic parameter default follows the following rules:
 
 > This is an advanced feature for solving a very specific problem, and should only be used in situations where you've identified a reason to use it
 
-[Covariance and contravariance](<https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)>) are type theory terms that describe what the relationship between two generic types is.
+[Covariance and contravariance](https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)) are type theory terms that describe what the relationship between two generic types is.
 Here's a brief primer on the concept.
 
 For example, if you have an interface representing an object that can `make` a certain type:
-
 ```ts
 interface Producer<T> {
   make(): T;
 }
 ```
-
 We can use a `Producer<Cat>` where a `Producer<Animal>` is expected, because a `Cat` is an `Animal`.
-This relationship is called _covariance_: the relationship from `Producer<T>` to `Producer<U>` is the same as the relationship from `T` to `U`.
+This relationship is called *covariance*: the relationship from `Producer<T>` to `Producer<U>` is the same as the relationship from `T` to `U`.
 
 Conversely, if you have an interface that can `consume` a certain type:
-
 ```ts
 interface Consumer<T> {
   consume: (arg: T) => void;
 }
 ```
-
 Then we can use a `Consumer<Animal>` where a `Consumer<Cat>` is expected, because any function that is capable of accepting a `Cat` must also be capable of accepting an `Animal`.
-This relationship is called _contravariance_: the relationship from `Consumer<T>` to `Consumer<U>` is the same as the relationship from `U` to `T`.
+This relationship is called *contravariance*: the relationship from `Consumer<T>` to `Consumer<U>` is the same as the relationship from `U` to `T`.
 Note the reveral of direction as compared to covariance! This is why contravariance "cancels itself out" but covariance doesn't.
 
 In a structural type system like TypeScript's, covariance and contravariance are naturally emergent behaviors that follow from the definition of types.
 Even in the absence of generics, we would see covariant (and contravariant) relationships:
-
 ```ts
 interface AnimalProducer {
   make(): Animal;
@@ -486,10 +473,9 @@ However, variance allows for an extremely useful optimization: if `Producer<T>` 
 Note that this logic can only be used when we're examining two instantiations of the same type.
 If we have a `Producer<T>` and a `FastProducer<U>`, there's no guarantee that `T` and `U` necessarily refer to the same positions in these types, so this check will always be performed structurally.
 
-Because variance is a naturally emergent property of structural types, TypeScript automatically _infers_ the variance of every generic type.
+Because variance is a naturally emergent property of structural types, TypeScript automatically *infers* the variance of every generic type.
 **In extremely rare cases** involving certain kinds of circular types, this measurement can be inaccurate.
 If this happens, you can add a variance annotation to a type parameter to force a particular variance:
-
 ```ts
 // Contravariant annotation
 interface Consumer<in T> {
@@ -507,15 +493,13 @@ interface ProducerConsumer<in out T> {
   make(): T;
 }
 ```
-
-Only do this if you are writing the same variance that _should_ occur structurally.
+Only do this if you are writing the same variance that *should* occur structurally.
 
 > Never write a variance annotation that doesn't match the structural variance!
 
 It's critical to reinforce that variance annotations are only in effect during an instantiation-based comparison.
 They have no effect during a structural comparison.
 For example, you can't use variance annotations to "force" a type to be actually invariant:
-
 ```ts
 // DON'T DO THIS - variance annotation
 // does not match structural behavior
@@ -527,12 +511,11 @@ interface Producer<in out T> {
 // comparison, so variance annotations are
 // not in effect
 const p: Producer<string | number> = {
-  make(): number {
-    return 42;
-  },
-};
+    make(): number {
+        return 42;
+    }
+}
 ```
-
 Here, the object literal's `make` function returns `number`, which we might expect to cause an error because `number` isn't `string | number`.
 However, this isn't an instantiation-based comparison, because the object literal is an anonymous type, not a `Producer<string | number>`.
 
@@ -546,25 +529,23 @@ Don't use variance annotations to try to "force" a particular variance; this wil
 
 Remember, TypeScript can automatically infer variance from your generic types.
 It's almost never necessary to write a variance annotation, and you should only do so when you've identified a specific need.
-Variance annotations _do not_ change the structural behavior of a type, and depending on the situation, you might see a structural comparison made when you expected an instantiation-based comparison.
+Variance annotations *do not* change the structural behavior of a type, and depending on the situation, you might see a structural comparison made when you expected an instantiation-based comparison.
 Variance annotations can't be used to modify how types behave in these structural contexts, and shouldn't be written unless the annotation is the same as the structural definition.
 Because this is difficult to get right, and TypeScript can correctly infer variance in the vast majority of cases, you should not find yourself writing variance annotations in normal code.
 
 > Don't try to use variance annotations to change typechecking behavior; this is not what they are for
 
-You _may_ find temporary variance annotations useful in a "type debugging" situation, because variance annotations are checked.
+You *may* find temporary variance annotations useful in a "type debugging" situation, because variance annotations are checked.
 TypeScript will issue an error if the annotated variance is identifiably wrong:
-
 ```ts
 // Error, this interface is definitely contravariant on T
 interface Foo<out T> {
   consume: (arg: T) => void;
 }
 ```
-
 However, variance annotations are allowed to be stricter (e.g. `in out` is valid if the actual variance is covariant).
 Be sure to remove your variance annotations once you're done debugging.
 
-Lastly, if you're trying to maximize your typechecking performance, _and_ have run a profiler, _and_ have identified a specific type that's slow, _and_ have identified variance inference specifically is slow, _and_ have carefully validated the variance annotation you want to write, you _may_ see a small performance benefit in extraordinarily complex types by adding variance annotations.
+Lastly, if you're trying to maximize your typechecking performance, *and* have run a profiler, *and* have identified a specific type that's slow, *and* have identified variance inference specifically is slow, *and* have carefully validated the variance annotation you want to write, you *may* see a small performance benefit in extraordinarily complex types by adding variance annotations.
 
 > Don't try to use variance annotations to change typechecking behavior; this is not what they are for
