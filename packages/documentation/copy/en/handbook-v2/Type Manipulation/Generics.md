@@ -316,8 +316,17 @@ loggingIdentity({ length: 10, value: 3 });
 ## Using Type Parameters in Generic Constraints
 
 You can declare a type parameter that is constrained by another type parameter.
-For example, here we'd like to get a property from an object given its name.
-We'd like to ensure that we're not accidentally grabbing a property that does not exist on the `obj`, so we'll place a constraint between the two types:
+For example, let's say we’d like to get a property from an object given its name. 
+We’d like to ensure that we’re not accidentally grabbing a property that does not exist on the `obj`. 
+To do this, we use the `keyof` operator, which we'll cover in depth later. 
+For now it's enough to know that `keyof` produces the union of the keys of an object type:
+
+```ts twoslash
+type Dimension = keyof {width: number, height: number}
+//   ^?
+```
+
+Here we use `Key extends keyof Type` to constrain `Key` to one of the property names in `Type`:
 
 ```ts twoslash
 // @errors: 2345
@@ -366,7 +375,7 @@ class Lion extends Animal {
   keeper: ZooKeeper = new ZooKeeper();
 }
 
-function createInstance<A extends Animal>(c: new () => A): A {
+function createInstance<A extends Animal>(c: new () => A): A() {
   return new c();
 }
 
