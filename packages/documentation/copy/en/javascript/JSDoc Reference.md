@@ -665,7 +665,8 @@ function box<U>(u: U): Box<U> {
   return { t: u };
 }
 ```
-sometimes, you don't want to link a type, instead, link a prop defined in a type:
+
+You can also link a property:
 
 ```ts twoslash 
 type Pet = {
@@ -674,14 +675,14 @@ type Pet = {
 }
 
 /**
- * Note: you should implement {@link Pet.hello} method of Pet.
+ * Note: you should implement the {@link Pet.hello} method of Pet.
  */
 function hello(p: Pet) {
   p.hello()
 }
 ```
 
-furthermore, you can define another name of link:
+Or with an optional name:
 
 ```ts twoslash
 type Pet = {
@@ -690,7 +691,7 @@ type Pet = {
 }
 
 /**
- * Note: you should implement {@link Pet.hello | hello} method of Pet.
+ * Note: you should implement the {@link Pet.hello | hello} method of Pet.
  */
 function hello(p: Pet) {
   p.hello()
