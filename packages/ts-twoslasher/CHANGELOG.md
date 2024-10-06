@@ -1,3 +1,36 @@
+# @typescript/twoslash
+
+## 3.2.8
+
+### Patch Changes
+
+- Updated dependencies [[`441338c`](https://github.com/microsoft/TypeScript-Website/commit/441338c04fbbef834ffa1ac6dc0dc8816e9137fc), [`725841a`](https://github.com/microsoft/TypeScript-Website/commit/725841adc9e5b734ccb0663fccb2ba05d0dcca62)]:
+  - @typescript/vfs@1.6.0
+
+## 3.2.7
+
+### Patch Changes
+
+- [#3000](https://github.com/microsoft/TypeScript-Website/pull/3000) [`71776ae`](https://github.com/microsoft/TypeScript-Website/commit/71776aecc1b56289ab56d240a9272ce83686ef1a) Thanks [@antfu](https://github.com/antfu)! - Handle `.d.cts` and `.d.mts` files
+
+- Updated dependencies [[`0ea84b5`](https://github.com/microsoft/TypeScript-Website/commit/0ea84b59ae291aba677fe77ca059c4112e45fb9b), [`0ea84b5`](https://github.com/microsoft/TypeScript-Website/commit/0ea84b59ae291aba677fe77ca059c4112e45fb9b), [`6168ef4`](https://github.com/microsoft/TypeScript-Website/commit/6168ef49a4d08c0b5658732d23625bbcc6049109), [`9f8dea2`](https://github.com/microsoft/TypeScript-Website/commit/9f8dea2c19a3b6028148090f5e8cba8eea086ec3), [`26f3e56`](https://github.com/microsoft/TypeScript-Website/commit/26f3e566aa8fff235a8f6927ef2c33b28be4fe89), [`71776ae`](https://github.com/microsoft/TypeScript-Website/commit/71776aecc1b56289ab56d240a9272ce83686ef1a)]:
+  - @typescript/vfs@1.5.3
+
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies [642ea11]
+  - @typescript/vfs@1.5.2
+
+## 3.2.5
+
+### Patch Changes
+
+- 46eba14: Initial bump for changesets
+- Updated dependencies [46eba14]
+  - @typescript/vfs@1.5.1
+
 ## 3.1.0
 
 Adds support for `// ---cut-after---`, e.g.
@@ -107,7 +140,7 @@ const b = "345"
 ```
 
 Now returns correct query responses, I needed this for the bug workbench.
-http://www.staging-typescript.org/dev/bug-workbench
+http://www.typescriptlang.org/dev/bug-workbench
 
 Also has a way to set the defaults for the config
 

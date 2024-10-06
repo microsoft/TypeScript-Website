@@ -237,7 +237,7 @@ This is now the default for MSBuild projects; this allows MSBuild incremental bu
 
 ## AMD Module names
 
-By default AMD modules are generated anonymous. This can lead to problems when other tools are used to process the resulting modules like a bundlers (e.g. `r.js`).
+By default AMD modules are generated anonymous. This can lead to problems when other tools are used to process the resulting modules like bundlers (e.g. `r.js`).
 
 The new `amd-module name` tag allows passing an optional module name to the compiler:
 

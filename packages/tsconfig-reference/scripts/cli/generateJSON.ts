@@ -3,7 +3,7 @@
 
 /** Run with:
      node --inspect-brk ./node_modules/.bin/ts-node packages/tsconfig-reference/scripts/cli/generateJSON.ts
-     yarn ts-node scripts/cli/generateJSON.ts
+     pnpm ts-node scripts/cli/generateJSON.ts
 */
 console.log("TSConfig Ref: JSON for CLI Opts");
 

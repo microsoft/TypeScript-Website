@@ -144,6 +144,7 @@ function rewireLoggingToElement(
     const replace = {} as any
     bindLoggingFunc(replace, rawConsole, "log", "LOG")
     bindLoggingFunc(replace, rawConsole, "debug", "DBG")
+    bindLoggingFunc(replace, rawConsole, "info", "INF")
     bindLoggingFunc(replace, rawConsole, "warn", "WRN")
     bindLoggingFunc(replace, rawConsole, "error", "ERR")
     replace["clear"] = clearLogs
@@ -218,13 +219,18 @@ function rewireLoggingToElement(
       const nameWithoutObject = name && name === "Object" ? "" : htmlEscape(name)
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
 
-      // JSON.stringify omits any keys with a value of undefined. To get around this, we replace undefined with the text __undefined__ and then do a global replace using regex back to keyword undefined
       textRep =
         prefix +
-        JSON.stringify(arg, (_, value) => (value === undefined ? "__undefined__" : value), 2).replace(
-          /"__undefined__"/g,
-          "undefined"
-        )
+        JSON.stringify(
+          arg,
+          (_, value) => {
+            // JSON.stringify omits any keys with a value of undefined. To get around this, we replace undefined with the text __undefined__ and then do a global replace using regex back to keyword undefined
+            if (value === undefined) return "__undefined__"
+            if (typeof value === 'bigint') return `BigInt('${value.toString()}')`
+            return value
+          },
+          2
+        ).replace(/"__undefined__"/g, "undefined")
 
       textRep = htmlEscape(textRep)
     } else {

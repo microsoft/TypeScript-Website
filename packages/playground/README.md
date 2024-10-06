@@ -33,12 +33,12 @@ Or to trigger some action by default:
 
 Then queries tend to be about changing the state of the Playground setup from the default:
 
-- `?ts=3.9.2` - Sets the TypeScript version, the list of supported versions is in these [two](https://typescript.azureedge.net/indexes/pre-releases.json) [json](https://typescript.azureedge.net/indexes/releases.json) files.
+- `?ts=3.9.2` - Sets the TypeScript version, the list of supported versions is in these [two](https://playgroundcdn.typescriptlang.org/indexes/pre-releases.json) [json](https://playgroundcdn.typescriptlang.org/indexes/releases.json) files.
 
   There are two special cases for the `ts` option:
 
-  - `ts=Nightly` where it will switch to most recently the nightly version.
-  - `ts=dev` where it uses your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/main/scripts/createPlaygroundBuild.js)
+  - `ts=next`: Use the most recent [nightly build](https://www.typescriptlang.org/docs/handbook/nightly-builds.html).
+  - `ts=dev`: Use your [local developer's build of TypeScript](https://github.com/microsoft/TypeScript/blob/main/scripts/createPlaygroundBuild.js)
 
 - `?flag=value` - Any compiler flag referenced in can be set from a query
 - `?filetype=js|ts|dts` - Tells the Playground to set the editor's type

@@ -173,7 +173,7 @@ Now `xPos` and `yPos` are both definitely present within the body of `paintShape
 > }
 > ```
 >
-> In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`.
+> In an object destructuring pattern, `shape: Shape` means "grab the property `shape` and redefine it locally as a variable named `Shape`."
 > Likewise `xPos: number` creates a variable named `number` whose value is based on the parameter's `xPos`.
 
 ### `readonly` Properties
@@ -274,8 +274,8 @@ This index signature states that when a `StringArray` is indexed with a `number`
 Only some types are allowed for index signature properties: `string`, `number`, `symbol`, template string patterns, and union types consisting only of these.
 
 <details>
-    <summary>It is possible to support both types of indexers...</summary>
-    <p>It is possible to support both types of indexers, but the type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because when indexing with a <code>number</code>, JavaScript will actually convert that to a <code>string</code> before indexing into an object. That means that indexing with <code>100</code> (a <code>number</code>) is the same thing as indexing with <code>"100"</code> (a <code>string</code>), so the two need to be consistent.</p>
+    <summary>It is possible to support multiple types of indexers...</summary>
+    <p>It is possible to support multiple types of indexers. Note that when using both `number` and `string` indexers, the type returned from a numeric indexer must be a subtype of the type returned from the string indexer. This is because when indexing with a <code>number</code>, JavaScript will actually convert that to a <code>string</code> before indexing into an object. That means that indexing with <code>100</code> (a <code>number</code>) is the same thing as indexing with <code>"100"</code> (a <code>string</code>), so the two need to be consistent.</p>
 
 ```ts twoslash
 // @errors: 2413
@@ -413,7 +413,7 @@ If `SquareConfig` can have `color` and `width` properties with the above types, 
 interface SquareConfig {
   color?: string;
   width?: number;
-  [propName: string]: any;
+  [propName: string]: unknown;
 }
 ```
 
@@ -426,7 +426,6 @@ Since assigning `squareOptions` won't undergo excess property checks, the compil
 interface SquareConfig {
   color?: string;
   width?: number;
-  [propName: string]: any;
 }
 
 function createSquare(config: SquareConfig): { color: string; area: number } {
@@ -579,16 +578,46 @@ draw({ color: "blue", radius: 42 });
 draw({ color: "red", raidus: 42 });
 ```
 
-## Interfaces vs. Intersections
+## Interface Extension vs. Intersection
 
 We just looked at two ways to combine types which are similar, but are actually subtly different.
 With interfaces, we could use an `extends` clause to extend from other types, and we were able to do something similar with intersections and name the result with a type alias.
 The principal difference between the two is how conflicts are handled, and that difference is typically one of the main reasons why you'd pick one over the other between an interface and a type alias of an intersection type.
 
-<!--
-For example, two types can declare the same property in an interface.
+If interfaces are defined with the same name, TypeScript will attempt to merge them if the properties are compatible. If the properties are not compatible (i.e., they have the same property name but different types), TypeScript will raise an error.
 
-TODO -->
+In the case of intersection types, properties with different types will be merged automatically. When the type is used later, TypeScript will expect the property to satisfy both types simultaneously, which may produce unexpected results.
+
+For example, the following code will throw an error because the properties are incompatible:
+
+```ts
+interface Person {
+  name: string;
+}
+
+interface Person {
+  name: number;
+}
+```
+
+In contrast, the following code will compile, but it results in a `never` type:
+
+```ts twoslash
+interface Person1 {
+  name: string;
+}
+
+interface Person2 {
+  name: number;
+}
+
+type Staff = Person1 & Person2
+
+declare const staffer: Staff;
+staffer.name;
+//       ^?
+```
+In this case, Staff would require the name property to be both a string and a number, which results in property being of type `never`.
 
 ## Generic Object Types
 

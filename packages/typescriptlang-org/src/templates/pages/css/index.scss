@@ -484,6 +484,7 @@ $headline-foreground-bg: white;
           overflow-x: auto;
           position: relative;
           background-color: #235a97;
+          border-radius: 0px 0px calc(8px - 2px) calc(8px - 2px);
 
           pre {
             margin: 0;
@@ -557,7 +558,7 @@ $headline-foreground-bg: white;
       background: $ts-main-blue-color;
       background-position-y: bottom -180px;
       height: 260px;
-      border: 1px solid white;
+      outline: 1px solid white;
       color: white;
       &.handbook {
         background-image: url(/images/index/get-started-handbook-blue.svg);
@@ -577,27 +578,31 @@ $headline-foreground-bg: white;
       &:active {
         background-color: #156fb4;
       }
+      &:focus-visible,
       &:hover {
-        border-width: 2px;
+        outline-width: 2px;
         box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
-        max-width: 246px;
       }
     }
 
     &.tall {
       background: #ffffff;
-      border: 1px solid #000000;
+      outline: 1px solid #000000;
       color: black;
       height: 342px;
       margin-bottom: 2px;
 
+      &:focus-visible,
       &:hover {
-        border-color: $ts-main-blue-color;
-        border-width: 2px;
+        outline-color: $ts-main-blue-color;
+        outline-width: 2px;
+        color: $ts-main-blue-color;
         box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
-        max-width: 246px;
-        height: 344px;
         margin-bottom: 0px;
+
+        svg path {
+          stroke: $ts-main-blue-color;
+        }
       }
       &:active {
         background-color: #eeeeee;
@@ -617,7 +622,6 @@ $headline-foreground-bg: white;
     }
 
     &:active {
-      margin-top: 1px;
       box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
     }
 

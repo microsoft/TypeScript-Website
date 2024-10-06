@@ -18,15 +18,13 @@ import { OpenInMyLangQuickJump } from "./LanguageRecommendation";
 export const SiteNav = (props: Props) => {
   const i = createInternational<typeof navCopy>(useIntl())
   const IntlLink = createIntlLink(props.lang)
-  const loadDocSearch = () => {
-    const isDev = document.location.host.includes('localhost')
-    let customHandleSelected;
-
-    if (isDev) {
-      customHandleSelected = (input, event, suggestion, datasetNumber, context) => {
-        const urlToOpen = suggestion.url.replace("www.typescriptlang.org", "localhost:8000").replace("https", "http")
-        window.open(urlToOpen)
-      }
+  const loadDocSearch = (docsearch) => {
+    const fixURL = (url: string) => {
+      const u = new URL(url);
+      if (u.host === document.location.host) return url;
+      u.host = document.location.host;
+      u.protocol = document.location.protocol;
+      return u.toString();
     }
 
     // @ts-ignore - this comes from the script above
@@ -35,7 +33,13 @@ export const SiteNav = (props: Props) => {
       apiKey: '37ee06fa68db6aef451a490df6df7c60',
       indexName: 'typescriptlang',
       inputSelector: '.search input',
-      handleSelected: customHandleSelected,
+      transformData: (hits) => {
+        for (const hit of hits) {
+          if (hit.url) hit.url = fixURL(hit.url);
+          if (hit.url_without_anchor) hit.url_without_anchor = fixURL(hit.url_without_anchor);
+        }
+        return hits;
+      }
     });
   }
   // This extra bit of mis-direction ensures that non-essential code runs after
@@ -43,26 +47,35 @@ export const SiteNav = (props: Props) => {
   useEffect(() => {
     setupStickyNavigation()
 
-    // @ts-ignore - this comes from the script above
-    if (window.docsearch) {
-      loadDocSearch();
-    }
-    if (document.getElementById("algolia-search")) return
-
     const searchScript = document.createElement('script');
     searchScript.id = "algolia-search"
-    const searchCSS = document.createElement('link');
 
     searchScript.src = withPrefix("/js/docsearch.js");
     searchScript.async = true;
-    searchScript.onload = () => {
-      // @ts-ignore - this comes from the script above
-      if (window.docsearch) {
-        loadDocSearch();
+    searchScript.onload = async () => {
+      // @ts-ignore this comes from the script above
+      let universalDocSearch = window.docsearch;
+  
+      if (global.require) {
+        universalDocSearch = await new Promise(resolve => {
+          const re: any = global.require;
+          re(['/js/docsearch.js'], (docsearch) => {
+            resolve(docsearch);
+          });
+        });
+      }
+  
+      if (universalDocSearch) {
+        loadDocSearch(universalDocSearch);
+      }
+
+      if (!document.querySelector("#docsearch-css")) {
+        const searchCSS = document.createElement('link');
 
         searchCSS.rel = 'stylesheet';
         searchCSS.href = withPrefix('/css/docsearch.css');
         searchCSS.type = 'text/css';
+        searchCSS.id = 'docsearch-css';
         document.body.appendChild(searchCSS);
 
         document.getElementById("search-form")?.classList.add("search-enabled")
@@ -85,7 +98,7 @@ export const SiteNav = (props: Props) => {
             <span className="hide-small">TypeScript</span>
           </IntlLink>
 
-          <nav role="navigation">
+          <nav aria-label="top menu">
             <ul role="tablist" aria-owns="tab1 tab2 tab3 tab4 tab5 tab6" aria-busy="true">
             <li className="nav-item hide-small" role="none presentation" ><IntlLink id="tab1" role="tab" to="/download">{i("nav_download")}</IntlLink></li>
               <li className="nav-item" role="none presentation"><IntlLink id="tab2" role="tab" to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>

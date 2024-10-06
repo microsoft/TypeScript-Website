@@ -6,7 +6,7 @@ oneline: How to split up a large TypeScript project
 translatable: true
 ---
 
-Project references are a new feature in TypeScript 3.0 that allow you to structure your TypeScript programs into smaller pieces.
+Project references allows you to structure your TypeScript programs into smaller pieces, available in TypeScript 3.0 and newer.
 
 By doing this, you can greatly improve build times, enforce logical separation between components, and organize your code in new and better ways.
 
@@ -91,34 +91,6 @@ Enabling the [`composite`](/tsconfig#composite) flag changes a few things:
 
 We've also added support for [declaration source maps](https://github.com/Microsoft/TypeScript/issues/14479).
 If you enable [`declarationMap`](/tsconfig#declarationMap), you'll be able to use editor features like "Go to Definition" and Rename to transparently navigate and edit code across project boundaries in supported editors.
-
-## `prepend` with `outFile`
-
-You can also enable prepending the output of a dependency using the `prepend` option in a reference:
-
-```js
-   "references": [
-       { "path": "../utils", "prepend": true }
-   ]
-```
-
-Prepending a project will include the project's output above the output of the current project.
-All output files (`.js`, `.d.ts`, `.js.map`, `.d.ts.map`) will be emitted correctly.
-
-`tsc` will only ever use existing files on disk to do this process, so it's possible to create a project where a correct output file can't be generated because some project's output would be present more than once in the resulting file.
-For example:
-
-```txt
-   A
-  ^ ^
- /   \
-B     C
- ^   ^
-  \ /
-   D
-```
-
-It's important in this situation to not prepend at each reference, because you'll end up with two copies of `A` in the output of `D` - this can lead to unexpected results.
 
 ## Caveats for Project References
 
@@ -211,7 +183,6 @@ You will need to either set the [`outDir`](/tsconfig#outDir) to an explicit subf
 ### Structuring for outFiles
 
 Layout for compilations using [`outFile`](/tsconfig#outFile) is more flexible because relative paths don't matter as much.
-One thing to keep in mind is that you'll generally want to not use `prepend` until the "last" project - this will improve build times and reduce the amount of I/O needed in any given build.
 The TypeScript repo itself is a good reference here - we have some "library" projects and some "endpoint" projects; "endpoint" projects are kept as small as possible and pull in only the libraries they need.
 
 <!--

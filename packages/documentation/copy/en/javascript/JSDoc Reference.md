@@ -9,7 +9,9 @@ translatable: true
 The list below outlines which constructs are currently supported
 when using JSDoc annotations to provide type information in JavaScript files.
 
-Note any tags which are not explicitly listed below (such as `@async`) are not yet supported.
+Note:
+- Any tags which are not explicitly listed below (such as `@async`) are not yet supported.
+- Only documentation tags are supported in TypeScript files. The rest of the tags are only supported in JavaScript files.
 
 #### Types
 
@@ -854,7 +856,32 @@ TypeScript ignores any unsupported JSDoc tags.
 
 The following tags have open issues to support them:
 
-- `@const` ([issue #19672](https://github.com/Microsoft/TypeScript/issues/19672))
-- `@inheritdoc` ([issue #23215](https://github.com/Microsoft/TypeScript/issues/23215))
 - `@memberof` ([issue #7237](https://github.com/Microsoft/TypeScript/issues/7237))
 - `@yields` ([issue #23857](https://github.com/Microsoft/TypeScript/issues/23857))
+- `@member` ([issue #56674](https://github.com/microsoft/TypeScript/issues/56674))
+
+### Legacy type synonyms
+
+A number of common types are given aliases for compatibility with old JavaScript code.
+Some of the aliases are the same as existing types, although most of those are rarely used.
+For example, `String` is treated as an alias for `string`.
+Even though `String` is a type in TypeScript, old JSDoc often uses it to mean `string`.
+Besides, in TypeScript, the capitalized versions of primitive types are wrapper types -- almost always a mistake to use.
+So the compiler treats these types as synonyms based on usage in old JSDoc:
+
+- `String -> string`
+- `Number -> number`
+- `Boolean -> boolean`
+- `Void -> void`
+- `Undefined -> undefined`
+- `Null -> null`
+- `function -> Function`
+- `array -> Array<any>`
+- `promise -> Promise<any>`
+- `Object -> any`
+- `object -> any`
+
+The last four aliases are turned off when `noImplicitAny: true`:
+
+- `object` and `Object` are built-in types, although `Object` is rarely used.
+- `array` and `promise` are not built-in, but might be declared somewhere in your program.

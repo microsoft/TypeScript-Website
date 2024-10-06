@@ -73,7 +73,7 @@ const Index: React.FC<Props> = (props) => {
       } else {
 
       return <li key={item.id}>
-        { path.endsWith("png") ?
+        { path.endsWith(".png") || path.endsWith(".zip") ?
           <a href={path}>{item.title}</a> :
           <Link to={path}>{item.title}</Link>
         }

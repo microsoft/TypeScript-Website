@@ -76,8 +76,8 @@ TypeScript has corresponding primitive types for the built-in types:
 | -------------- | ------------------------------------------------------------------------------- |
 | `unknown`      | the top type.                                                                   |
 | `never`        | the bottom type.                                                                |
-| object literal | eg `{ property: Type }`                                                         |
-| `void`         | for functions with no documented return value |
+| object literal | e.g. `{ property: Type }`                                                       |
+| `void`         | for functions with no documented return value                                   |
 | `T[]`          | mutable arrays, also written `Array<T>`                                         |
 | `[T, T]`       | tuples, which are fixed-length but mutable                                      |
 | `(t: T) => U`  | functions                                                                       |

@@ -90,6 +90,20 @@ interface CallOrConstruct {
   (n?: number): string;
   new (s: string): Date;
 }
+
+function fn(ctor: CallOrConstruct) {
+  // Passing an argument of type `number` to `ctor` matches it against
+  // the first definition in the `CallOrConstruct` interface.
+  console.log(ctor(10));
+              // ^?
+
+  // Similarly, passing an argument of type `string` to `ctor` matches it
+  // against the second definition in the `CallOrConstruct` interface.
+  console.log(new ctor("10"));
+                  // ^?
+}
+
+fn(Date);
 ```
 
 ## Generic Functions
@@ -368,7 +382,7 @@ Note that when a parameter is optional, callers can always pass `undefined`, as 
 
 ```ts twoslash
 declare function f(x?: number): void;
-// cut
+// ---cut---
 // All OK
 f();
 f(10);
@@ -547,7 +561,7 @@ Callers can invoke this with either sort of value, and as an added bonus, we don
 
 > Always prefer parameters with union types instead of overloads when possible
 
-### Declaring `this` in a Function
+## Declaring `this` in a Function
 
 TypeScript will infer what the `this` should be in a function via code flow analysis, for example in the following:
 

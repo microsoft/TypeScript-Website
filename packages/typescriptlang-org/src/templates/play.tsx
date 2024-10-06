@@ -18,8 +18,10 @@ import "reflect-metadata"
 import playgroundReleases from "../../../sandbox/src/releases.json"
 import { getPlaygroundUrls } from "../lib/playgroundURLs"
 
+import type * as playgroundPackage from "../../static/js/playground";
+
 // This gets set by the playground
-declare const playground: ReturnType<typeof import("@typescript/playground").setupPlayground>
+declare const playground: playgroundPackage.Playground;
 
 type Props = {
   pageContext: {
@@ -77,9 +79,9 @@ const Play: React.FC<Props> = (props) => {
 
       let tsVersionParam = params.get("ts")
       // handle the nightly lookup 
-      if (tsVersionParam && tsVersionParam === "Nightly" || tsVersionParam === "next") {
-        // Avoids the CDN to doubly skip caching
-        const nightlyLookup = await fetch("https://tswebinfra.blob.core.windows.net/indexes/next.json", { cache: "no-cache" })
+      if (tsVersionParam === "Nightly" || tsVersionParam === "next") {
+        // The CDN is configured to have a short TTL on the indexes directory.
+        const nightlyLookup = await fetch("https://playgroundcdn.typescriptlang.org/indexes/next.json", { cache: "no-cache" })
         const nightlyJSON = await nightlyLookup.json()
         tsVersionParam = nightlyJSON.version
       }
@@ -97,7 +99,7 @@ const Play: React.FC<Props> = (props) => {
       const useLocalCompiler = tsVersion === "dev"
       const devIsh = ["pr", "dev"]
       const version = devIsh.find(d => tsVersion.includes(d)) ? "dev" : "min"
-      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/${version}/vs`
+      const urlForMonaco = useLocalCompiler ? "http://localhost:5615/dev/vs" : `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/${version}/vs`
 
       // Make a quick HEAD call for the main monaco editor for this version of TS, if it
       // bails then give a useful error message and bail.
@@ -113,7 +115,7 @@ const Play: React.FC<Props> = (props) => {
         return
       }
 
-      // Allow prod/staging builds to set a custom commit prefix to bust caches
+      // Allow prod builds to set a custom commit prefix to bust caches
       const { sandboxRoot, playgroundRoot, playgroundWorker } = getPlaygroundUrls()
 
       // @ts-ignore
@@ -139,7 +141,7 @@ const Play: React.FC<Props> = (props) => {
         }
       });
 
-      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof import("@typescript/playground")) => {
+      re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof playgroundPackage) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
         const ts = (global as any).ts || tsWorker.typescript
         const isOK = main && ts && sandbox && playground

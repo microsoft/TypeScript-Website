@@ -80,3 +80,11 @@ packages/sandbox/src/release_data.ts
 packages/typescriptlang-org/src/lib/documentationNavigation.ts
 
 .idea/
+
+**/.vscode/*
+!**/.vscode/tasks.json
+!**/.vscode/settings.template.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+
+*.tsbuildinfo

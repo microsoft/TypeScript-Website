@@ -73,11 +73,11 @@ It’s worth taking a step back here and clarifying what the _goal_ is. As soon 
 
 By following the specification, it was easy enough for transpilers to find a set of transformations that made the semantics of their transpiled CommonJS outputs match the specified semantics of their ESM inputs (arrows represent imports):
 
-![A flowchart with two similar flows side-by-side. Left: ESM. Right: ESM transpiled to CJS. In the ESM flow: "Importing module" flows to "Imported module" through arrow labeled "specified behavior". In the ESM transpiled to CJS flow: "Importing module" flows to "Imported module" through arrow labeled "designed based on spec".](../diagrams/esm-cjs-interop.mmd-1.svg)
+![A flowchart with two similar flows side-by-side. Left: ESM. Right: ESM transpiled to CJS. In the ESM flow: "Importing module" flows to "Imported module" through arrow labeled "specified behavior". In the ESM transpiled to CJS flow: "Importing module" flows to "Imported module" through arrow labeled "designed based on spec".](../diagrams/esm-cjs-interop.md-1.svg)
 
 However, CommonJS modules (written as CommonJS, not as ESM transpiled to CommonJS) were already well-established in the Node.js ecosystem, so it was inevitable that modules written as ESM and transpiled to CJS would start “importing” modules written as CommonJS. The behavior for this interoperability, though, was not specified by ES2015, and didn’t yet exist in any real runtime.
 
-![A flowchart with three areas side-by-side. Left: ESM. Middle: True CJS. Right: ESM transpiled to CJS. Left: ESM "Importing module" flows to ESM "Imported module" through arrow labeled "specified behavior," and to True CJS "Imported module" through dotted arrow labeled "unspecified behavior." Right: ESM transpiled to CJS "Importing module" flows to ESM transpiled to CJS "Imported module" through arrow labeled "designed based on spec," and to True CJS "Imported module" through dotted arrow labeled "❓🤷‍♂️❓"](../diagrams/esm-cjs-interop.mmd-2.svg)
+![A flowchart with three areas side-by-side. Left: ESM. Middle: True CJS. Right: ESM transpiled to CJS. Left: ESM "Importing module" flows to ESM "Imported module" through arrow labeled "specified behavior," and to True CJS "Imported module" through dotted arrow labeled "unspecified behavior." Right: ESM transpiled to CJS "Importing module" flows to ESM transpiled to CJS "Imported module" through arrow labeled "designed based on spec," and to True CJS "Imported module" through dotted arrow labeled "❓🤷‍♂️❓"](../diagrams/esm-cjs-interop.md-2.svg)
 
 Even if transpiler authors did nothing, a behavior would emerge from the existing semantics between the `require` calls they emitted in transpiled code and the `exports` defined in existing CJS modules. And to allow users to transition seamlessly from transpiled ESM to true ESM once their runtime supported it, that behavior would have to match the one the runtime chose to implement.
 
@@ -141,7 +141,7 @@ Meanwhile, other transpilers were coming up with a way to solve the same problem
    ```
    that we can check for when we transpile a default import:
    ```ts
-   // import hello from "./modue";
+   // import hello from "./module";
    const _mod = require("./module");
    const hello = _mod.__esModule ? _mod.default : _mod;
    ```
@@ -276,7 +276,7 @@ Since interoperability rules differ between hosts, TypeScript can’t offer corr
 
 ### Applications with CommonJS code should always enable `esModuleInterop`
 
-In a TypeScript _application_ (as opposed to a library that others may consume) where `tsc` is used to emit JavaScript files, whether `esModuleInterop` is enabled doesn’t have major consequences. The way you write imports for certain kinds of modules will change, but TypeScript’s checking and emit are in sync, so error-free code should be safe to run in either mode. The downside of leaving `esModuleInterop` disabled in this case is that it allows you to write JavaScript code with semantics that clearly violate the ECMASCript specification, confusing intuitions about namespace imports and making it harder to migrate to running ES modules in the future.
+In a TypeScript _application_ (as opposed to a library that others may consume) where `tsc` is used to emit JavaScript files, whether `esModuleInterop` is enabled doesn’t have major consequences. The way you write imports for certain kinds of modules will change, but TypeScript’s checking and emit are in sync, so error-free code should be safe to run in either mode. The downside of leaving `esModuleInterop` disabled in this case is that it allows you to write JavaScript code with semantics that clearly violate the ECMAScript specification, confusing intuitions about namespace imports and making it harder to migrate to running ES modules in the future.
 
 In an application that gets processed by a third-party transpiler or bundler, on the other hand, enabling `esModuleInterop` is more important. All major bundlers and transpilers use an `esModuleInterop`-like emit strategy, so TypeScript needs to adjust its checking to match. (The compiler always reasons about what will happen in the JavaScript files that `tsc` would emit, so even if another tool is being used in place of `tsc`, emit-affecting compiler options should still be set to match the output of that tool as closely as possible.)
 
@@ -313,7 +313,35 @@ As we’ve seen, there is no seamless migration path from transpiled modules to 
 
 ### Library code needs special considerations
 
-Libraries (that ship declaration files) should take extra care to ensure the types they write are error-free under a wide range of compiler options. For example, it’s possible to write one interface that extends another in such a way that it only compiles successfully when `strictNullChecks` is disabled. If a library were to publish types like that, it would force all their users to disable `strictNullChecks` too. `esModuleInterop` can allow type declarations to contain similarly “infectious” default imports:
+Libraries that ship as CommonJS should avoid using default exports, since the way those transpiled exports can be accessed varies between different tools and runtimes, and some of those ways will look confusing to users. A default export, transpiled to CommonJS by `tsc`, is accessible in Node.js as the default property of a default import:
+
+```js
+import pkg from "pkg";
+pkg.default();
+```
+
+in most bundlers or transpiled ESM as the default import itself:
+
+```js
+import pkg from "pkg";
+pkg();
+```
+
+and in vanilla CommonJS as the default property of a `require` call:
+
+```js
+const pkg = require("pkg");
+pkg.default();
+```
+
+Users will detect a misconfigured module smell if they have to access the `.default` property of a default import, and if they’re trying to write code that will run both in Node.js and a bundler, they might be stuck. Some third-party TypeScript transpilers expose options that change the way default exports are emitted to mitigate this difference, but they don’t produce their own declaration (`.d.ts`) files, so that creates a mismatch between the runtime behavior and the type checking, further confusing and frustrating users. Instead of using default exports, libraries that need to ship as CommonJS should use `export =` for modules that have a single main export, or named exports for modules that have multiple exports:
+
+```diff
+- export default function doSomething() { /* ... */ }
++ export = function doSomething() { /* ... */ }
+```
+
+Libraries (that ship declaration files) should also take extra care to ensure the types they write are error-free under a wide range of compiler options. For example, it’s possible to write one interface that extends another in such a way that it only compiles successfully when `strictNullChecks` is disabled. If a library were to publish types like that, it would force all their users to disable `strictNullChecks` too. `esModuleInterop` can allow type declarations to contain similarly “infectious” default imports:
 
 ```ts
 // @Filename: /node_modules/dependency/index.d.ts

@@ -71,9 +71,9 @@ for (let pet of pets) {
 
 ### Code generation
 
-#### Targeting ES5 and ES3
+#### Targeting ES5
 
-When targeting an ES5 or ES3-compliant engine, iterators are only allowed on values of `Array` type.
+When targeting an ES5-compliant engine, iterators are only allowed on values of `Array` type.
 It is an error to use `for..of` loops on non-Array values, even if these non-Array values implement the `Symbol.iterator` property.
 
 The compiler will generate a simple `for` loop for a `for..of` loop, for instance:

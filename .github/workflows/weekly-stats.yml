@@ -1,4 +1,4 @@
-name: Push AI stats to Teams
+name: Publish Weekly Stats
 
 on:
   schedule:
@@ -6,36 +6,26 @@ on:
     - cron: "0 12 * * 1"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  comments: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
         with:
-          node-version: "16.x"
-          cache: yarn
+          node-version: "18.x"
+      
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
 
-      # Build v2
-      - name: Deps
-        run: |
-          yarn install
-        env:
-          YARN_CHECKSUM_BEHAVIOR: ignore
-
+      - run: pnpm install
+      
       # Update the site stats
-      - run: node packages/typescriptlang-org/scripts/pingTeamsWithAppInsightData.js
+      - run: node packages/typescriptlang-org/scripts/updateAppInsightsGitHubIssue.js
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_INSIGHTS_API_KEY: ${{ secrets.APP_INSIGHTS_API_KEY }}
           APP_INSIGHTS_ID: ${{ secrets.APP_INSIGHTS_ID }}
-          STATS_WEBHOOK_INCOMING_URL: ${{ secrets.STATS_WEBHOOK_INCOMING_URL }}
-
-      - name: Send a message to Microsoft Teams
-        if: ${{ failure() }}
-        uses: aliencube/microsoft-teams-actions@v0.8.0
-        with:
-          webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
-          title: Updating site stats failed
-          summary: Something failed in the GitHub Action workflow
-          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Website/actions/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'
