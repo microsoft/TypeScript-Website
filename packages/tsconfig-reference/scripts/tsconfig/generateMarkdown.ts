@@ -136,7 +136,7 @@ languages.forEach((lang) => {
 
     // Show a sticky sub-nav for the categories
     if (sectionCategories.length > 1) {
-      mdChunks.push(`<nav id="sticky" role="Compiler options navigation"><ul>`);
+      mdChunks.push(`<nav id="sticky" aria-label="Compiler options"><ul>`);
       sectionCategories.forEach((categoryID) => {
         const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
         const categoryFile = matter.read(fileURLToPath(categoryPath));
