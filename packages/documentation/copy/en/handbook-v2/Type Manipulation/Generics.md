@@ -451,7 +451,7 @@ interface Consumer<T> {
 ```
 Then we can use a `Consumer<Animal>` where a `Consumer<Cat>` is expected, because any function that is capable of accepting a `Cat` must also be capable of accepting an `Animal`.
 This relationship is called *contravariance*: the relationship from `Consumer<T>` to `Consumer<U>` is the same as the relationship from `U` to `T`.
-Note the reveral of direction as compared to covariance! This is why contravariance "cancels itself out" but covariance doesn't.
+Note the reversal of direction as compared to covariance! This is why contravariance "cancels itself out" but covariance doesn't.
 
 In a structural type system like TypeScript's, covariance and contravariance are naturally emergent behaviors that follow from the definition of types.
 Even in the absence of generics, we would see covariant (and contravariant) relationships:
