@@ -41,7 +41,7 @@ You can specify this mode using either the [`jsx`](/tsconfig#jsx) command line f
 Recall how to write a type assertion:
 
 ```ts
-const foo = <foo>bar;
+const foo = <Foo>bar;
 ```
 
 This asserts the variable `bar` to have the type `foo`.
@@ -51,7 +51,7 @@ Since the above syntax cannot be used in `.tsx` files, an alternate type asserti
 The example can easily be rewritten with the `as` operator.
 
 ```ts
-const foo = bar as foo;
+const foo = bar as Foo;
 ```
 
 The `as` operator is available in both `.ts` and `.tsx` files, and is identical in behavior to the angle-bracket type assertion style.
