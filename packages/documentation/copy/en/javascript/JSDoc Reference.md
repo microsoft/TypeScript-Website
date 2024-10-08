@@ -666,6 +666,38 @@ function box<U>(u: U): Box<U> {
 }
 ```
 
+You can also link a property:
+
+```ts twoslash 
+type Pet = {
+  name: string
+  hello: () => string
+}
+
+/**
+ * Note: you should implement the {@link Pet.hello} method of Pet.
+ */
+function hello(p: Pet) {
+  p.hello()
+}
+```
+
+Or with an optional name:
+
+```ts twoslash
+type Pet = {
+  name: string
+  hello: () => string
+}
+
+/**
+ * Note: you should implement the {@link Pet.hello | hello} method of Pet.
+ */
+function hello(p: Pet) {
+  p.hello()
+}
+```
+
 ## Other
 
 ### `@enum`
