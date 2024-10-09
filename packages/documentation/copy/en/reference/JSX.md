@@ -44,7 +44,7 @@ Recall how to write a type assertion:
 const foo = <Foo>bar;
 ```
 
-This asserts the variable `bar` to have the type `foo`.
+This asserts the variable `bar` to have the type `Foo`.
 Since TypeScript also uses angle brackets for type assertions, combining it with JSX's syntax would introduce certain parsing difficulties. As a result, TypeScript disallows angle bracket type assertions in `.tsx` files.
 
 Since the above syntax cannot be used in `.tsx` files, an alternate type assertion operator should be used: `as`.
