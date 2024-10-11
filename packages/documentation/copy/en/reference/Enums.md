@@ -17,7 +17,7 @@ TypeScript provides both numeric and string-based enums.
 We'll first start off with numeric enums, which are probably more familiar if you're coming from other languages.
 An enum can be defined using the `enum` keyword.
 
-```ts twoslash
+```ts 
 enum Direction {
   Up = 1,
   Down,
@@ -32,7 +32,7 @@ In other words, `Direction.Up` has the value `1`, `Down` has `2`, `Left` has `3`
 
 If we wanted, we could leave off the initializers entirely:
 
-```ts twoslash
+```ts 
 enum Direction {
   Up,
   Down,
@@ -46,7 +46,7 @@ This auto-incrementing behavior is useful for cases where we might not care abou
 
 Using an enum is simple: just access any member as a property off of the enum itself, and declare types using the name of the enum:
 
-```ts twoslash
+```ts 
 enum UserResponse {
   No = 0,
   Yes = 1,
@@ -78,7 +78,7 @@ enum E {
 String enums are a similar concept, but have some subtle [runtime differences](#enums-at-runtime) as documented below.
 In a string enum, each member has to be constant-initialized with a string literal, or with another string enum member.
 
-```ts twoslash
+```ts 
 enum Direction {
   Up = "UP",
   Down = "DOWN",
@@ -94,7 +94,7 @@ In other words, if you were debugging and had to read the runtime value of a num
 
 Technically enums can be mixed with string and numeric members, but it's not clear why you would ever want to do so:
 
-```ts twoslash
+```ts 
 enum BooleanLikeHeterogeneousEnum {
   No = 0,
   Yes = "YES",
@@ -110,7 +110,7 @@ An enum member is considered constant if:
 
 - It is the first member in the enum and it has no initializer, in which case it's assigned the value `0`:
 
-  ```ts twoslash
+  ```ts 
   // E.X is constant:
   enum E {
     X,
@@ -120,7 +120,7 @@ An enum member is considered constant if:
 - It does not have an initializer and the preceding enum member was a _numeric_ constant.
   In this case the value of the current enum member will be the value of the preceding enum member plus one.
 
-  ```ts twoslash
+  ```ts 
   // All enum members in 'E1' and 'E2' are constant.
 
   enum E1 {
@@ -150,7 +150,7 @@ An enum member is considered constant if:
 
 In all other cases enum member is considered computed.
 
-```ts twoslash
+```ts 
 enum FileAccess {
   // constant members
   None,
@@ -227,7 +227,7 @@ However, if the check didn't succeed, then `x` can _only_ be `E.Foo`, so it does
 Enums are real objects that exist at runtime.
 For example, the following enum
 
-```ts twoslash
+```ts 
 enum E {
   X,
   Y,
@@ -237,7 +237,7 @@ enum E {
 
 can actually be passed around to functions
 
-```ts twoslash
+```ts 
 enum E {
   X,
   Y,
@@ -256,7 +256,7 @@ f(E);
 
 Even though Enums are real objects that exist at runtime, the `keyof` keyword works differently than you might expect for typical objects. Instead, use `keyof typeof` to get a Type that represents all Enum keys as strings.
 
-```ts twoslash
+```ts 
 enum LogLevel {
   ERROR,
   WARN,
@@ -286,7 +286,7 @@ printImportant("ERROR", "This is a message");
 In addition to creating an object with property names for members, numeric enums members also get a _reverse mapping_ from enum values to enum names.
 For example, in this example:
 
-```ts twoslash
+```ts 
 enum Enum {
   A,
 }
@@ -319,7 +319,7 @@ However sometimes requirements are tighter.
 To avoid paying the cost of extra generated code and additional indirection when accessing enum values, it's possible to use `const` enums.
 Const enums are defined using the `const` modifier on our enums:
 
-```ts twoslash
+```ts 
 const enum Enum {
   A = 1,
   B = A * 2,
@@ -330,7 +330,7 @@ Const enums can only use constant enum expressions and unlike regular enums they
 Const enum members are inlined at use sites.
 This is possible since const enums cannot have computed members.
 
-```ts twoslash
+```ts 
 const enum Direction {
   Up,
   Down,
@@ -396,7 +396,7 @@ Here are two approaches to avoiding these pitfalls:
 
 Ambient enums are used to describe the shape of already existing enum types.
 
-```ts twoslash
+```ts 
 declare enum Enum {
   A = 1,
   B,

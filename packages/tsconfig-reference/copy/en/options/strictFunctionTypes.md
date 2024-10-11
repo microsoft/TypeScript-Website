@@ -38,7 +38,7 @@ let func: StringOrNumberFunc = fn;
 During development of this feature, we discovered a large number of inherently unsafe class hierarchies, including some in the DOM.
 Because of this, the setting only applies to functions written in _function_ syntax, not to those in _method_ syntax:
 
-```ts twoslash
+```ts 
 type Methodish = {
   func(x: string | number): void;
 };

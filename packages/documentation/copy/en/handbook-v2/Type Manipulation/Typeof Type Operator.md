@@ -9,7 +9,7 @@ oneline: "Using the typeof operator in type contexts."
 
 JavaScript already has a `typeof` operator you can use in an _expression_ context:
 
-```ts twoslash
+```ts 
 // Prints "string"
 console.log(typeof "Hello world");
 ```
