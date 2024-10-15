@@ -114,10 +114,28 @@ $headline-foreground-bg: white;
       }
     }
 
+    #m-stories {
+      flex-direction: column;
+    }
+
+    #m-stories div.illustration  {
+      display: flex;
+      justify-content: center;
+      order: 1;
+      div.bg {
+        visibility: hidden;
+      }
+      div.fg {
+        position: static;
+        text-align: center;
+      }
+    }
+
     #m-stories div.copy {
       margin: 20px auto 0;
       position: static;
       text-align: center;
+      order: 2;
       a.migration-button {
         margin: 0 auto;
       }
