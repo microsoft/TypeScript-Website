@@ -25,13 +25,19 @@ export const getTagFromParents = (tag: string, root: { nodeName: string, parentE
 const toggleNavigationSection: MouseEventHandler = (event) => {
   const li = getTagFromParents("li", event.target as any)
   const isOpen = li.classList.contains("open")
+  const button = li.querySelector("button")
   if (isOpen) {
     li.classList.remove("open")
     li.classList.add("closed")
-
+    if (button) {
+      button.setAttribute("aria-expanded", "false");
+    }
   } else {
     li.classList.remove("closed")
     li.classList.add("open")
+    if (button) {
+      button.setAttribute("aria-expanded", "true");
+    }
   }
 }
 
@@ -102,19 +108,19 @@ export const Sidebar = (props: Props) => {
         classes.push("closed")
       }
 
-      const opened = { "aria-expanded": "true", "aria-label": item.title + " close" }
-      const closed = { "aria-label": item.title + " expand" }
+      const opened = { "aria-expanded": true }
+      const closed = { "aria-expanded": false }
       const aria = hostsSelected ? opened : closed
 
       return (
         <li className={classes.join(" ")} key={item.id}>
           <button {...aria} onClick={toggleNavigationSection} onKeyDown={onButtonKeydown}>
             {item.title}
-            <span key="open" className="open">{openChevron}</span>
-            <span key="closed" className="closed">{closedChevron}</span>
+            <span className="open">{openChevron}</span>
+            <span className="closed">{closedChevron}</span>
           </button>
           <ul>
-            {item.items.map(item => <RenderItem key={item.id} item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
+          {item.items.map(item => <RenderItem key={item.id} item={item} openAllSectionsExceptWhatsNew={props.openAllSectionsExceptWhatsNew} selectedID={props.selectedID} />)}
           </ul>
         </li>
       )
