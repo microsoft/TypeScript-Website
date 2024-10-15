@@ -29,7 +29,7 @@ const Index: React.FC<Props> = (props) => {
         </Col>
         <Col>
           <Link className="cropper" to="/tsconfig" aria-label="Preview of the TypeScript TSConfig Reference screenshot">
-            <img src={require("../../../static/images/tools/tsconfig-ref.png").default} alt="" aria-hidden="true" />
+            <img src={require("../../../static/images/tools/tsconfig-ref.png").default} aria-hidden="true" />
             <p>TSConfig Reference</p>
           </Link>
           <p>An annotated reference to more than a hundred compiler options available in a <code>tsconfig.json</code> or <code>jsconfig.json</code>.</p>
