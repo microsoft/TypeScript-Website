@@ -47,7 +47,8 @@ export const twoPi = valueOfPi * 2;
 // @showEmit
 // @module: amd
 // @noErrors
-import { valueOfPi } from "./constants";
+import { valueOfPi } from 
+"./constants";
 
 export const twoPi = valueOfPi * 2;
 ```
