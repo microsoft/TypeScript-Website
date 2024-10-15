@@ -28,7 +28,7 @@ const Index: React.FC<Props> = (props) => {
           <p>A live environment for exploring, learning and sharing TypeScript code. Try different compiler flags, run through extensive code samples to learn specifics about how TypeScript works.</p>
         </Col>
         <Col>
-        <Link className="cropper" to="/tsconfig">
+          <Link className="cropper" to="/tsconfig">
             <img src={require("../../../static/images/tools/tsconfig-ref.png").default} alt="Preview of the TypeScript TSConfig Reference screenshot" />
             <p>TSConfig Reference</p>
           </Link>
