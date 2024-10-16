@@ -16,6 +16,7 @@ Note:
 #### Types
 
 - [`@type`](#type)
+- [`@import`](#import)
 - [`@param`](#param-and-returns) (or [`@arg`](#param-and-returns) or [`@argument`](#param-and-returns))
 - [`@returns`](#param-and-returns) (or [`@return`](#param-and-returns))
 - [`@typedef`](#typedef-callback-and-param)
@@ -198,26 +199,6 @@ function walk(p) {
 }
 ```
 
-import types can be used in type alias declarations:
-
-```js twoslash
-// @filename: types.d.ts
-export type Pet = {
-  name: string,
-};
-// @filename: main.js
-// ---cut---
-/**
- * @typedef {import("./types").Pet} Pet
- */
-
-/**
- * @type {Pet}
- */
-var myPet;
-myPet.name;
-```
-
 import types can be used to get the type of a value from a module if you don't know the type, or if it has a large type that is annoying to type:
 
 ```js twoslash
@@ -238,6 +219,28 @@ export const userAccount = {
  * @type {typeof import("./accounts").userAccount}
  */
 var x = require("./accounts").userAccount;
+```
+
+### `@import`
+
+`@import` can be used for type-only imports:
+
+```js twoslash
+// @filename: types.d.ts
+export type Pet = {
+  name: string,
+};
+// @filename: main.js
+// ---cut---
+/**
+ * @import {Pet} from "./types"
+ */
+
+/**
+ * @type {Pet}
+ */
+var myPet;
+myPet.name;
 ```
 
 ### `@param` and `@returns`
