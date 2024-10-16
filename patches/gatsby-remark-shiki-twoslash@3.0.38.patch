@@ -1,0 +1,24 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index 6036d987fc2889ec9bc230f7774013ae4f736dd9..0000000000000000000000000000000000000000
+diff --git a/src/index.js b/src/index.js
+index e16676ef50b660d520a0efc0b73b68411db349af..bb21bc500a34ac31063774ba4ba133daed2c4f14 100755
+--- a/src/index.js
++++ b/src/index.js
+@@ -4,7 +4,15 @@ const { setupForFile, remarkVisitor }  = require("remark-shiki-twoslash")
+ 
+ const remarkShiki = async function ({ markdownAST }, userConfig) {
+   const {settings, highlighters} = await setupForFile(userConfig)
+-  visit(markdownAST, "code", remarkVisitor(highlighters, settings))
++  const orig = remarkVisitor(highlighters, settings)
++  /** @type {typeof orig} */
++  const visitor = (node) => {
++    orig(node)
++    // Hack to make shiki twoslash code blocks focusable; not needed in modern shiki but we're using an old version
++    node.value = node.value.replace(/(class='code-container')/g, "$1 tabindex='0'")
++  }
++  visit(markdownAST, "code", visitor);
+ }
+ 
+ module.exports = remarkShiki
++
