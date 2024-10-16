@@ -1,10 +1,3 @@
-let hasLocalStorage = false
-try {
-  hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
-const hasProcess = typeof process !== `undefined`
-const shouldDebug = (hasLocalStorage && localStorage.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
-
 type LZ = typeof import("lz-string")
 type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
@@ -15,7 +8,9 @@ import { validateInput, validateCodeForErrors } from "./validation"
 
 import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem } from "@typescript/vfs"
 
-const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
+import Debug from 'debug'
+
+const log = Debug("typescript:twoslash")
 
 // Hacking in some internal stuff
 declare module "typescript" {
