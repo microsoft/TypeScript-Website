@@ -408,9 +408,9 @@
               "markdownDescription": "Disable emitting files if any type checking errors are reported.\n\nSee more: https://www.typescriptlang.org/tsconfig#noEmitOnError"
             },
             "noImplicitAny": {
-              "description": "Enable error reporting for expressions and declarations with an implied `any` type..",
+              "description": "Enable error reporting for expressions and declarations with an implied `any` type.",
               "type": "boolean",
-              "markdownDescription": "Enable error reporting for expressions and declarations with an implied `any` type..\n\nSee more: https://www.typescriptlang.org/tsconfig#noImplicitAny"
+              "markdownDescription": "Enable error reporting for expressions and declarations with an implied `any` type.\n\nSee more: https://www.typescriptlang.org/tsconfig#noImplicitAny"
             },
             "noImplicitThis": {
               "description": "Enable error reporting when `this` is given the type `any`.",
