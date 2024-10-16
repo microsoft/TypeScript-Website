@@ -82,6 +82,10 @@ const useTypeScriptLinks = [
     url: "/tsconfig",
   },
   {
+    title: "Code Samples",
+    url: "/play/#show-examples",
+  },
+  {
     title: "Why TypeScript",
     url: "/why-create-typescript",
   },
@@ -211,10 +215,6 @@ const faviconForURL = (url: string) => {
 }
 
 export const SiteFooter = (props: Props) => {
-  const normalLinks = useTypeScriptLinks.filter(
-    l => !l.url.includes("#show-examples")
-  )
-
   const Link = createIntlLink(props.lang)
 
   useEffect(() => {
@@ -311,7 +311,7 @@ export const SiteFooter = (props: Props) => {
         <article id="using-typescript">
           <h3>Using TypeScript</h3>
           <ul>
-            {normalLinks.map(page => (
+            {useTypeScriptLinks.map(page => (
               <li key={page.url}>
                 <Link to={page.url}>{page.title}</Link>
               </li>
