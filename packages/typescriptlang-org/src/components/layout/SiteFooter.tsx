@@ -2,7 +2,6 @@ import * as React from "react"
 import { useEffect } from "react"
 
 import "./SiteFooter.scss"
-import { PlaygroundSamples } from "./SiteFooter-PlaygroundSamples"
 import { createIntlLink } from "../IntlLink"
 import { whenEscape } from "../../lib/whenEscape"
 import { Customize } from "./SiteFooter-Customize"
@@ -81,10 +80,6 @@ const useTypeScriptLinks = [
   {
     title: "TSConfig Ref",
     url: "/tsconfig",
-  },
-  {
-    title: "Code Samples",
-    url: "/play/#show-examples",
   },
   {
     title: "Why TypeScript",
@@ -219,9 +214,6 @@ export const SiteFooter = (props: Props) => {
   const normalLinks = useTypeScriptLinks.filter(
     l => !l.url.includes("#show-examples")
   )
-  const playgroundExamples = useTypeScriptLinks.find(l =>
-    l.url.includes("#show-examples")
-  )!
 
   const Link = createIntlLink(props.lang)
 
@@ -324,20 +316,6 @@ export const SiteFooter = (props: Props) => {
                 <Link to={page.url}>{page.title}</Link>
               </li>
             ))}
-            <li key="last" id="popover-trigger" className="popover-container">
-              <a
-                href={playgroundExamples.url}
-                aria-haspopup="true"
-                id="popover-trigger-anchor"
-              >
-                <span
-                  style={{ display: "none" }}
-                  className="link-prefix footer-icon"
-                ></span>
-                {playgroundExamples.title}
-              </a>
-              <PlaygroundSamples lang="en" />
-            </li>
           </ul>
         </article>
 
