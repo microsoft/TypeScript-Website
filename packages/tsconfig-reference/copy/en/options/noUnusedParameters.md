@@ -13,3 +13,12 @@ const createDefaultKeyboard = (modelID: number) => {
   return { type: "keyboard", modelID: defaultModelID };
 };
 ```
+
+Parameters declaration with names starting with an underscore _ are exempt from the unused parameter checking. e.g.:
+
+```ts twoslash
+function returnNull(_a) {
+  // OK
+  return null;
+}
+```
