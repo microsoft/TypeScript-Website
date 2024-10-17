@@ -53,5 +53,8 @@ $z-index-for-handbook-nav-button: 100;
     .no-print, .no-print * {
         display: none !important;
     }
-    .pagebreak { page-break-before: always; } 
+    .code-container {
+        display: block;
+        break-inside: avoid;
+    }
   }

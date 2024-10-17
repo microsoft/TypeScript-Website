@@ -62,8 +62,6 @@ function padLeft(padding: number | string, input: string): string {
 
 There are a couple of different constructs TypeScript understands for narrowing.
 
-<div class="pagebreak"></div>
-
 ## `typeof` type guards
 
 As we've seen, JavaScript supports a `typeof` operator which can give very basic information about the type of values we have at runtime.
@@ -165,8 +163,6 @@ This at least prevents us from dreaded errors when we run our code like:
 TypeError: null is not iterable
 ```
 
-<div class="pagebreak"></div>
-
 Keep in mind though that truthiness checking on primitives can often be error prone.
 As an example, consider a different attempt at writing `printAll`
 
@@ -237,8 +233,6 @@ Since `string` is the only common type that both `x` and `y` could take on, Type
 Checking against specific literal values (as opposed to variables) works also.
 In our section about truthiness narrowing, we wrote a `printAll` function which was error-prone because it accidentally didn't handle empty strings properly.
 Instead we could have done a specific check to block out `null`s, and TypeScript still correctly removes `null` from the type of `strs`.
-
-<div class="pagebreak"></div>
 
 ```ts twoslash
 function printAll(strs: string | string[] | null) {
