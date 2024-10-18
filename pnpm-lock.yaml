@@ -86,8 +86,8 @@ importers:
         specifier: ^11.0.2
         version: 11.0.2
       remark-html:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^13.0.2
+        version: 13.0.2
       remark-shiki-twoslash:
         specifier: ^3.1.3
         version: 3.1.3(typescript@5.6.2)
@@ -4394,9 +4394,6 @@ packages:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
 
-  detab@2.0.4:
-    resolution: {integrity: sha512-8zdsQA5bIkoRECvCrNKPla84lyoR7DSAyf7p0YgXzBO9PDJx8KntPUay7NS6yp+KdxdVtiE5SpHKtbp2ZQyA9g==}
-
   detect-indent@4.0.0:
     resolution: {integrity: sha512-BDKtmHlOzwI7iRuEkhzsnPoi5ypEhWAJB5RvHWe1kMr06js3uK5B3734i3ui5Yd+wOJV1cpE4JnivPD283GU/A==}
     engines: {node: '>=0.10.0'}
@@ -5891,11 +5888,8 @@ packages:
   hast-util-raw@6.1.0:
     resolution: {integrity: sha512-5FoZLDHBpka20OlZZ4I/+RBw5piVQ8iI1doEvffQhx5CbCyTtP8UCq8Tw6NmTAMtXgsQxmhW7Ly8OdFre5/YMQ==}
 
-  hast-util-sanitize@2.0.3:
-    resolution: {integrity: sha512-RILqWHmzU0Anmfw1KEP41LbCsJuJUVM0lQWAbTDk9+0bWqzRFXDaMdqIoRocLlOfR5NfcWyhFfZw/mGsuftwYA==}
-
-  hast-util-to-html@6.1.0:
-    resolution: {integrity: sha512-IlC+LG2HGv0Y8js3wqdhg9O2sO4iVpRDbHOPwXd7qgeagpGsnY49i8yyazwqS35RA35WCzrBQE/n0M6GG/ewxA==}
+  hast-util-sanitize@3.0.2:
+    resolution: {integrity: sha512-+2I0x2ZCAyiZOO/sb4yNLFmdwPBnyJ4PBkVTUMKMqBwYNA+lXSgOmoRXlJFazoyid9QPogRRKgKhVEodv181sA==}
 
   hast-util-to-html@7.1.3:
     resolution: {integrity: sha512-yk2+1p3EJTEE9ZEUkgHsUSVhIpCsL/bvT8E5GzmWc+N1Po5gBw+0F8bo7dpxXR0nu0bQVxVZGX2lBGF21CmeDw==}
@@ -7256,9 +7250,6 @@ packages:
   mdast-util-compact@1.0.4:
     resolution: {integrity: sha512-3YDMQHI5vRiS2uygEFYaqckibpJtKq5Sj2c8JioeOQBU6INpKbdWzfyLqFFnDwEcEnRFIdMsguzs5pC1Jp4Isg==}
 
-  mdast-util-definitions@1.2.5:
-    resolution: {integrity: sha512-CJXEdoLfiISCDc2JB6QLb79pYfI6+GcIH+W2ox9nMc7od0Pz+bovcHsiq29xAQY6ayqe/9CsK2VzkSJdg1pFYA==}
-
   mdast-util-definitions@4.0.0:
     resolution: {integrity: sha512-k8AJ6aNnUkB7IE+5azR9h81O5EQ/cTDXtWdMq9Kk5KcEW/8ritU5CeLg/9HhOC++nALHBlaogJ5jz0Ybk3kPMQ==}
 
@@ -7288,9 +7279,6 @@ packages:
 
   mdast-util-to-hast@10.2.0:
     resolution: {integrity: sha512-JoPBfJ3gBnHZ18icCwHR50orC9kNH81tiR1gs01D8Q5YpV6adHNO9nKNuFBCJQ941/32PT1a63UF/DitmS3amQ==}
-
-  mdast-util-to-hast@6.0.2:
-    resolution: {integrity: sha512-GjcOimC9qHI0yNFAQdBesrZXzUkRdFleQlcoU8+TVNfDW6oLUazUx8MgUoTaUyCJzBOnE5AOgqhpURrSlf0QwQ==}
 
   mdast-util-to-markdown@0.6.5:
     resolution: {integrity: sha512-XeV9sDE7ZlOQvs45C9UKMtfTcctcaj/pGwH8YLbMHoMOXNNCn2LsqVQOqrF1+/NU8lKDAqozme9SCXWyo9oAcQ==}
@@ -8750,8 +8738,8 @@ packages:
   remark-gfm@1.0.0:
     resolution: {integrity: sha512-KfexHJCiqvrdBZVbQ6RopMZGwaXz6wFJEfByIuEwGf0arvITHjiKKZ1dpXujjH9KZdm1//XJQwgfnJ3lmXaDPA==}
 
-  remark-html@10.0.0:
-    resolution: {integrity: sha512-TbSQuedRFjAhXSk1NAbfaTqDK0jKAjfgn82D2ZYFFT8XpJ80uwXc8yVwK/Tl2eqboTMPxzNzCIss4kIucE5M8w==}
+  remark-html@13.0.2:
+    resolution: {integrity: sha512-LhSRQ+3RKdBqB/RGesFWkNNfkGqprDUCwjq54SylfFeNyZby5kqOG8Dn/vYsRoM8htab6EWxFXCY6XIZvMoRiQ==}
 
   remark-parse@7.0.2:
     resolution: {integrity: sha512-9+my0lQS80IQkYXsMA8Sg6m9QfXYJBnXjWYN5U+kFc5/n69t+XZVXU/ZBYr3cYH8FheEGf1v87rkFDhJ8bVgMA==}
@@ -9753,9 +9741,6 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
 
-  trim-lines@1.1.3:
-    resolution: {integrity: sha512-E0ZosSWYK2mkSu+KEtQ9/KqarVjA9HztOSX+9FDdNacRAq29RRV6ZQNgob3iuW8Htar9vAfEa6yyt5qBAHZDBA==}
-
   trim-newlines@3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}
     engines: {node: '>=8'}
@@ -9983,9 +9968,6 @@ packages:
   unique-string@2.0.0:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}
     engines: {node: '>=8'}
-
-  unist-builder@1.0.4:
-    resolution: {integrity: sha512-v6xbUPP7ILrT15fHGrNyHc1Xda8H3xVhP7/HAIotHOhVPjH5dCXA097C3Rry1Q2O+HbOLCao4hfPB+EYEjHgVg==}
 
   unist-builder@2.0.3:
     resolution: {integrity: sha512-f98yt5pnlMWlzP539tPc4grGMsFaQQlP/vM396b00jngsiINumNmsY8rkXjfoi1c6QaM8nQ3vaGDuoKWbe/1Uw==}
@@ -15594,10 +15576,6 @@ snapshots:
 
   destroy@1.2.0: {}
 
-  detab@2.0.4:
-    dependencies:
-      repeat-string: 1.6.1
-
   detect-indent@4.0.0:
     dependencies:
       repeating: 2.0.1
@@ -18139,21 +18117,8 @@ snapshots:
       xtend: 4.0.2
       zwitch: 1.0.5
 
-  hast-util-sanitize@2.0.3:
+  hast-util-sanitize@3.0.2:
     dependencies:
-      xtend: 4.0.2
-
-  hast-util-to-html@6.1.0:
-    dependencies:
-      ccount: 1.1.0
-      comma-separated-tokens: 1.0.8
-      hast-util-is-element: 1.1.0
-      hast-util-whitespace: 1.0.4
-      html-void-elements: 1.0.5
-      property-information: 5.6.0
-      space-separated-tokens: 1.1.5
-      stringify-entities: 2.0.0
-      unist-util-is: 3.0.0
       xtend: 4.0.2
 
   hast-util-to-html@7.1.3:
@@ -19831,10 +19796,6 @@ snapshots:
     dependencies:
       unist-util-visit: 1.4.1
 
-  mdast-util-definitions@1.2.5:
-    dependencies:
-      unist-util-visit: 1.4.1
-
   mdast-util-definitions@4.0.0:
     dependencies:
       unist-util-visit: 2.0.3
@@ -19903,20 +19864,6 @@ snapshots:
       unist-util-generated: 1.1.6
       unist-util-position: 3.1.0
       unist-util-visit: 2.0.3
-
-  mdast-util-to-hast@6.0.2:
-    dependencies:
-      collapse-white-space: 1.0.6
-      detab: 2.0.4
-      mdast-util-definitions: 1.2.5
-      mdurl: 1.0.1
-      trim: 0.0.1
-      trim-lines: 1.1.3
-      unist-builder: 1.0.4
-      unist-util-generated: 1.1.6
-      unist-util-position: 3.1.0
-      unist-util-visit: 1.4.1
-      xtend: 4.0.2
 
   mdast-util-to-markdown@0.6.5:
     dependencies:
@@ -21535,12 +21482,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-html@10.0.0:
+  remark-html@13.0.2:
     dependencies:
-      hast-util-sanitize: 2.0.3
-      hast-util-to-html: 6.1.0
-      mdast-util-to-hast: 6.0.2
-      xtend: 4.0.2
+      hast-util-sanitize: 3.0.2
+      hast-util-to-html: 7.1.3
+      mdast-util-to-hast: 10.2.0
 
   remark-parse@7.0.2:
     dependencies:
@@ -22772,8 +22718,6 @@ snapshots:
 
   tree-kill@1.2.2: {}
 
-  trim-lines@1.1.3: {}
-
   trim-newlines@3.0.1: {}
 
   trim-repeated@1.0.0:
@@ -23016,10 +22960,6 @@ snapshots:
   unique-string@2.0.0:
     dependencies:
       crypto-random-string: 2.0.0
-
-  unist-builder@1.0.4:
-    dependencies:
-      object-assign: 4.1.1
 
   unist-builder@2.0.3: {}
 
