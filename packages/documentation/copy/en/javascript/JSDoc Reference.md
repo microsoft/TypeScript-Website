@@ -249,10 +249,10 @@ The parameter may also be declared optional by surrounding the name with square 
 // Parameters may be declared in a variety of syntactic forms
 /**
  * @param {string}  p1 - A string param.
- * @param {string=} p2 - An optional param (Google Closure syntax)
+ * @param {string=} p2 - An optional param (Google Closure syntax).
  * @param {string} [p3] - Another optional param (JSDoc syntax).
- * @param {string} [p4="test"] - An optional param with a default value
- * @returns {string} This is the result
+ * @param {string} [p4="test"] - An optional param with a default value.
+ * @returns {string} This is the result.
  */
 function stringsStringStrings(p1, p2, p3, p4) {
   // TODO
@@ -280,12 +280,12 @@ Similar syntax works with `@param`.
 
 ```js twoslash
 /**
- * @typedef {Object} SpecialType - creates a new type named 'SpecialType'
- * @property {string} prop1 - a string property of SpecialType
- * @property {number} prop2 - a number property of SpecialType
- * @property {number=} prop3 - an optional number property of SpecialType
- * @prop {number} [prop4] - an optional number property of SpecialType
- * @prop {number} [prop5=42] - an optional number property of SpecialType with default
+ * @typedef {Object} SpecialType - creates a new type named 'SpecialType'.
+ * @property {string} prop1 - a string property of SpecialType.
+ * @property {number} prop2 - a number property of SpecialType.
+ * @property {number=} prop3 - an optional number property of SpecialType.
+ * @prop {number} [prop4] - an optional number property of SpecialType.
+ * @prop {number} [prop5=42] - an optional number property of SpecialType with default.
  */
 
 /** @type {SpecialType} */
@@ -297,10 +297,10 @@ You can use either `object` or `Object` on the first line.
 
 ```js twoslash
 /**
- * @typedef {object} SpecialType1 - creates a new type named 'SpecialType1'
- * @property {string} prop1 - a string property of SpecialType1
- * @property {number} prop2 - a number property of SpecialType1
- * @property {number=} prop3 - an optional number property of SpecialType1
+ * @typedef {object} SpecialType1 - creates a new type named 'SpecialType1'.
+ * @property {string} prop1 - a string property of SpecialType1.
+ * @property {number} prop2 - a number property of SpecialType1.
+ * @property {number=} prop3 - an optional number property of SpecialType1.
  */
 
 /** @type {SpecialType1} */
@@ -312,7 +312,7 @@ Note that the nested property names must be prefixed with the name of the parame
 
 ```js twoslash
 /**
- * @param {Object} options - The shape is the same as SpecialType above
+ * @param {Object} options - The shape is the same as SpecialType above.
  * @param {string} options.prop1
  * @param {number} options.prop2
  * @param {number=} options.prop3
@@ -379,8 +379,8 @@ Only the first type parameter in a list is constrained:
 
 ```js twoslash
 /**
- * @template {string} K - K must be a string or string literal
- * @template {{ serious(): string }} Seriousalizable - must have a serious method
+ * @template {string} K - K must be a string or string literal.
+ * @template {{ serious(): string }} Seriousalizable - must have a serious method.
  * @param {K} key
  * @param {Seriousalizable} object
  */
