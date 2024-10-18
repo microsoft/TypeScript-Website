@@ -211,7 +211,7 @@ npm install -g typescript
 
 Now let's move to an empty folder and try writing our first TypeScript program: `hello.ts`:
 
-```ts twoslash
+```ts 
 // Greets the world.
 console.log("Hello world!");
 ```
@@ -295,7 +295,7 @@ Up until now, we haven't told TypeScript what `person` or `date` are.
 Let's edit the code to tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
 We'll also use the `toDateString()` method on `date`.
 
-```ts twoslash
+```ts 
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
@@ -324,7 +324,7 @@ On the other hand, constructing a `Date` with `new Date()` actually gives us wha
 
 Anyway, we can quickly fix up the error:
 
-```ts twoslash {4}
+```ts 
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }

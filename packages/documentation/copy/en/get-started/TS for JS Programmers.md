@@ -34,7 +34,7 @@ You can use a wide variety of design patterns in JavaScript. However, some desig
 
 For example, to create an object with an inferred type which includes `name: string` and `id: number`, you can write:
 
-```ts twoslash
+```ts
 const user = {
   name: "Hayes",
   id: 0,
@@ -43,7 +43,7 @@ const user = {
 
 You can explicitly describe this object's shape using an `interface` declaration:
 
-```ts twoslash
+```ts
 interface User {
   name: string;
   id: number;
@@ -81,7 +81,7 @@ const user: User = {
 
 Since JavaScript supports classes and object-oriented programming, so does TypeScript. You can use an interface declaration with classes:
 
-```ts twoslash
+```ts
 interface User {
   name: string;
   id: number;
@@ -130,7 +130,7 @@ With TypeScript, you can create complex types by combining simple ones. There ar
 
 With a union, you can declare that a type could be one of many types. For example, you can describe a `boolean` type as being either `true` or `false`:
 
-```ts twoslash
+```ts
 type MyBool = true | false;
 ```
 
@@ -138,7 +138,7 @@ _Note:_ If you hover over `MyBool` above, you'll see that it is classed as `bool
 
 A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/2/everyday-types.html#literal-types) that a value is allowed to be:
 
-```ts twoslash
+```ts
 type WindowStates = "open" | "closed" | "minimized";
 type LockStates = "locked" | "unlocked";
 type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
@@ -146,7 +146,7 @@ type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 
 Unions provide a way to handle different types too. For example, you may have a function that takes an `array` or a `string`:
 
-```ts twoslash
+```ts
 function getLength(obj: string | string[]) {
   return obj.length;
 }
@@ -212,7 +212,7 @@ One of TypeScript's core principles is that type checking focuses on the _shape_
 
 In a structural type system, if two objects have the same shape, they are considered to be of the same type.
 
-```ts twoslash
+```ts
 interface Point {
   x: number;
   y: number;

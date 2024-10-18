@@ -646,7 +646,7 @@ apiV;
 
 `@see` lets you link to other names in your program:
 
-```ts twoslash
+```ts 
 type Box<T> = { t: T }
 /** @see Box for implementation details */
 type Boxify<T> = { [K in keyof T]: Box<T> };
@@ -658,7 +658,7 @@ Some editors will turn `Box` into a link to make it easy to jump there and back.
 
 `@link` is like `@see`, except that it can be used inside other tags:
 
-```ts twoslash
+```ts 
 type Box<T> = { t: T }
 /** @returns A {@link Box} containing the parameter. */
 function box<U>(u: U): Box<U> {
@@ -718,7 +718,7 @@ JSDocState.SawAsterisk;
 
 Note that `@enum` is quite different from, and much simpler than, TypeScript's `enum`. However, unlike TypeScript's enums, `@enum` can have any type:
 
-```js twoslash
+```js 
 /** @enum {function(number): number} */
 const MathFuncs = {
   add1: (n) => n + 1,
@@ -733,7 +733,7 @@ MathFuncs.add1;
 
 You can specify the author of an item with `@author`:
 
-```ts twoslash
+```ts 
 /**
  * Welcome to awesome.ts
  * @author Ian Awesome <i.am.awesome@example.com>
@@ -803,7 +803,7 @@ function fn9(p1) {
 
 Postfix equals on a property type in an object literal type doesn't specify an optional property:
 
-```js twoslash
+```js 
 /**
  * @type {{ a: string, b: number= }}
  */
@@ -817,7 +817,7 @@ var right;
 
 Nullable types only have meaning if [`strictNullChecks`](/tsconfig#strictNullChecks) is on:
 
-```js twoslash
+```js 
 /**
  * @type {?number}
  * With strictNullChecks: true  -- number | null
@@ -828,7 +828,7 @@ var nullable;
 
 The TypeScript-native syntax is a union type:
 
-```js twoslash
+```js 
 /**
  * @type {number | null}
  * With strictNullChecks: true  -- number | null
@@ -839,7 +839,7 @@ var unionNullable;
 
 Non-nullable types have no meaning and are treated just as their original type:
 
-```js twoslash
+```js 
 /**
  * @type {!number}
  * Just has type number

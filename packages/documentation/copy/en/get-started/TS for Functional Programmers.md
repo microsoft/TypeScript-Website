@@ -127,7 +127,7 @@ is an overstatement. It just turns off the type checker
 wherever it appears. For example, you can push any value into an
 `any[]` without marking the value in any way:
 
-```ts twoslash
+```ts
 // with "noImplicitAny": false in tsconfig.json, anys: any[]
 const anys = [];
 anys.push(1);
@@ -197,7 +197,7 @@ In TypeScript, union types are untagged. In other words, they are not
 discriminated unions like `data` in Haskell. However, you can often
 discriminate types in a union using built-in tags or other properties.
 
-```ts twoslash
+```ts
 function start(
   arg: string | string[] | (() => string) | { s: string }
 ): string {
@@ -246,7 +246,7 @@ own predicates.
 
 In addition to unions, TypeScript also has intersections:
 
-```ts twoslash
+```ts
 type Combined = { a: number } & { b: string };
 type Conflicting = { a: number } & { a: string };
 ```
@@ -263,7 +263,7 @@ primitive value. For example, the string `"foo"` has the type
 well-known strings instead. Unions of string literal types allow
 TypeScript to type this pattern:
 
-```ts twoslash
+```ts
 declare function pad(s: string, n: number, direction: "left" | "right"): string;
 pad("hi", 10, "left");
 ```
@@ -305,14 +305,14 @@ pad("hi", 10, s);
 TypeScript has some obvious places where it can infer types, like
 variable declarations:
 
-```ts twoslash
+```ts
 let s = "I'm a string!";
 ```
 
 But it also infers types in a few other places that you may not expect
 if you've worked with other C-syntax languages:
 
-```ts twoslash
+```ts
 declare function map<T, U>(f: (t: T) => U, ts: T[]): U[];
 let sns = map((n) => n.toString(), [1, 2, 3]);
 ```
@@ -327,7 +327,7 @@ Note that inference will work in any order, but intellisense will only
 work left-to-right, so TypeScript prefers to declare `map` with the
 array first:
 
-```ts twoslash
+```ts
 declare function map<T, U>(ts: T[], f: (t: T) => U): U[];
 ```
 
@@ -335,7 +335,7 @@ Contextual typing also works recursively through object literals, and
 on unit types that would otherwise be inferred as `string` or
 `number`. And it can infer return types from context:
 
-```ts twoslash
+```ts
 declare function run<T>(thunk: (t: T) => void): T;
 let i: { inference: string } = run((o) => {
   o.inference = "INSERT STATE HERE";
@@ -363,7 +363,7 @@ Type aliases are mere aliases, just like `type` in Haskell. The
 compiler will attempt to use the alias name wherever it was used in
 the source code, but does not always succeed.
 
-```ts twoslash
+```ts
 type Size = [number, number];
 let x: Size = [101.1, 999.9];
 ```
@@ -397,7 +397,7 @@ unit type. This is still a normal union type; the leading `|` is
 an optional part of the union type syntax. You can discriminate the
 members of the union using normal JavaScript code:
 
-```ts twoslash
+```ts
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; x: number }
