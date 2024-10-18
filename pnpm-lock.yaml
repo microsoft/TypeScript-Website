@@ -213,6 +213,9 @@ importers:
       '@typescript/vfs':
         specifier: workspace:*
         version: link:../typescript-vfs
+      debug:
+        specifier: ^4.3.4
+        version: 4.3.4
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
@@ -220,6 +223,9 @@ importers:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
         version: 25.0.8(rollup@3.29.4)
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
@@ -248,12 +254,15 @@ importers:
         specifier: workspace:*
         version: link:../typescript-vfs
       debug:
-        specifier: ^4.1.1
+        specifier: ^4.3.4
         version: 4.3.4
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
     devDependencies:
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
@@ -306,9 +315,12 @@ importers:
   packages/typescript-vfs:
     dependencies:
       debug:
-        specifier: ^4.1.1
+        specifier: ^4.3.4
         version: 4.3.4
     devDependencies:
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12
@@ -2529,6 +2541,9 @@ packages:
   '@types/debug@0.0.30':
     resolution: {integrity: sha512-orGL5LXERPYsLov6CWs3Fh6203+dXzJkR7OnddIr2514Hsecwc8xRpzCapshBbKFImCsvS/mk6+FWiN5LyZJAQ==}
 
+  '@types/debug@4.1.12':
+    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
+
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
@@ -2624,6 +2639,9 @@ packages:
 
   '@types/mkdirp@0.5.2':
     resolution: {integrity: sha512-U5icWpv7YnZYGsN4/cmh3WD2onMY0aJIiTE6+51TwJCttdHvtCYmkBNOobHlXwrJRL0nkH9jH4kD+1FAdMN4Tg==}
+
+  '@types/ms@0.7.34':
+    resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
   '@types/node-fetch@2.6.11':
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
@@ -13165,6 +13183,10 @@ snapshots:
 
   '@types/debug@0.0.30': {}
 
+  '@types/debug@4.1.12':
+    dependencies:
+      '@types/ms': 0.7.34
+
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 7.29.0
@@ -13284,6 +13306,8 @@ snapshots:
   '@types/mkdirp@0.5.2':
     dependencies:
       '@types/node': 8.10.66
+
+  '@types/ms@0.7.34': {}
 
   '@types/node-fetch@2.6.11':
     dependencies:
