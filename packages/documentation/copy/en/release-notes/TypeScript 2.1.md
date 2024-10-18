@@ -5,6 +5,8 @@ permalink: /docs/handbook/release-notes/typescript-2-1.html
 oneline: TypeScript 2.1 Release Notes
 ---
 
+Release date: [December 7th, 2016](https://devblogs.microsoft.com/typescript/announcing-typescript-2-1-2/)
+
 ## `keyof` and Lookup Types
 
 In JavaScript it is fairly common to have APIs that expect property names as parameters, but so far it hasn't been possible to express the type relationships that occur in those APIs.
