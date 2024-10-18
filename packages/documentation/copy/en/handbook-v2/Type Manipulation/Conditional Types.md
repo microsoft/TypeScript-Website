@@ -205,15 +205,20 @@ type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
 //   ^?
 ```
 
-When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the _last_ signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
+When inferring the return type from a type with multiple call signatures, such as an overloaded function, inferences are made from the _last overload signature_, not from the [implementation signature](https://www.typescriptlang.org/docs/handbook/2/functions.html#overload-signatures-and-the-implementation-signature).
 
 ```ts twoslash
-declare function stringOrNum(x: string): number;
-declare function stringOrNum(x: number): string;
-declare function stringOrNum(x: string | number): string | number;
+// @errors: 2322
+function myFunction(x: string): null; // Overload signature
+function myFunction(x: number): boolean; // Overload signature
+function myFunction(x: string | number): null | boolean { // Implementation signature
+    return typeof x === "string" ? null : true;
+}
 
-type T1 = ReturnType<typeof stringOrNum>;
+type ReturnTypeOfMyFunction = ReturnType<typeof myFunction>; // boolean
 //   ^?
+
+const result: ReturnTypeOfMyFunction = myFunction("hi");  // Error
 ```
 
 ## Distributive Conditional Types
