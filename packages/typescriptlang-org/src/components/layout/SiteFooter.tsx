@@ -227,7 +227,7 @@ export const SiteFooter = (props: Props) => {
   const hideDocs = props.suppressDocRecommendations
   const lang = props.lang
   return (
-    <footer id="site-footer" role="contentinfo">
+    <footer id="site-footer" role="contentinfo" className="no-print">
       {props.suppressCustomization ? null : <Customize />}
 
       {hideDocs ? null :
