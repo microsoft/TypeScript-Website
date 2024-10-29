@@ -88,4 +88,4 @@ If absent, then "main" is used
 
 ## Tips
 
-If you'd like to write tests for your .d.ts files, try [tsd](https://github.com/SamVerschueren/tsd).
+If you'd like to write tests for your .d.ts files, try [tsd](https://github.com/SamVerschueren/tsd) or [TSTyche](https://github.com/tstyche/tstyche).
