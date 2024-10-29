@@ -13,7 +13,7 @@ Triple-slash directives are **only** valid at the top of their containing file.
 A triple-slash directive can only be preceded by single or multi-line comments, including other triple-slash directives.
 If they are encountered following a statement or a declaration they are treated as regular single-line comments, and hold no special meaning.
 
-As of TypeScript 5.5, the compiler does not generate reference directives, and does not _not_ emit handwritten triple-slash directives to output files unless those directives are marked as [`preserve="true"`](#preservetrue).
+As of TypeScript 5.5, the compiler does not generate reference directives, and does _not_ emit handwritten triple-slash directives to output files unless those directives are marked as [`preserve="true"`](#preservetrue).
 
 ## `/// <reference path="..." />`
 
