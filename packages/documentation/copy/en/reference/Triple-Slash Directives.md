@@ -13,6 +13,8 @@ Triple-slash directives are **only** valid at the top of their containing file.
 A triple-slash directive can only be preceded by single or multi-line comments, including other triple-slash directives.
 If they are encountered following a statement or a declaration they are treated as regular single-line comments, and hold no special meaning.
 
+As of TypeScript 5.5, the compiler does not generate reference directives, and does not _not_ emit handwritten triple-slash directives to output files unless those directives are marked as [`preserve="true"`](#preservetrue).
+
 ## `/// <reference path="..." />`
 
 The `/// <reference path="..." />` directive is the most common of this group.
@@ -54,11 +56,6 @@ An easy way to think of triple-slash-reference-types directives are as an `impor
 
 For example, including `/// <reference types="node" />` in a declaration file declares that this file uses names declared in `@types/node/index.d.ts`;
 and thus, this package needs to be included in the compilation along with the declaration file.
-
-Use these directives only when you're authoring a `d.ts` file by hand.
-
-For declaration files generated during compilation, the compiler will automatically add `/// <reference types="..." />` for you;
-A `/// <reference types="..." />` in a generated declaration file is added _if and only if_ the resulting file uses any declarations from the referenced package.
 
 For declaring a dependency on an `@types` package in a `.ts` file, use [`types`](/tsconfig#types) on the command line or in your `tsconfig.json` instead.
 See [using `@types`, `typeRoots` and `types` in `tsconfig.json` files](/docs/handbook/tsconfig-json.html#types-typeroots-and-types) for more details.
@@ -141,4 +138,25 @@ define(["require", "exports", "legacy/moduleA"], function (
 ) {
   moduleA.callStuff();
 });
+```
+
+
+## `preserve="true"`
+
+Triple-slash directives can be marked with `preserve="true"` to prevent the compiler from removing them from the output.
+
+For example, these will be erased in the output:
+
+```ts
+/// <reference path="..." />
+/// <reference types="..." />
+/// <reference lib="..." />
+```
+
+But these will be preserved:
+
+```ts
+/// <reference path="..." preserve="true" />
+/// <reference types="..." preserve="true" />
+/// <reference lib="..." preserve="true" />
 ```
