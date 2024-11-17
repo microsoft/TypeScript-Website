@@ -15,7 +15,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "cross-spawn": "^7.0.1",
+    "cross-spawn": "^7.0.5",
     "gunzip-maybe": "^1.4.1",
     "tar-fs": "^2.1.0"
   }
