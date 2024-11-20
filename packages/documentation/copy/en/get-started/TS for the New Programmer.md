@@ -2,6 +2,8 @@
 title: TypeScript for the New Programmer
 short: TS for the New Programmer
 layout: docs
+
+
 permalink: /docs/handbook/typescript-from-scratch.html
 oneline: Learn TypeScript from scratch
 ---
