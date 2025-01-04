@@ -25,7 +25,7 @@ The [homepage](/) has a list of editors which have TypeScript plugins.
 
 In a `.js` file, types can often be inferred. When types can't be inferred, they can be specified using JSDoc syntax.
 
-JSDoc annotations come before a declaration will be used to set the type of that declaration. For example:
+JSDoc annotations that come before a declaration will be used to set the type of that declaration. For example:
 
 ```js twoslash
 /** @type {number} */
