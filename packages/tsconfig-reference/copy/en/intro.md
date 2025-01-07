@@ -12,6 +12,6 @@ This page covers all of the different options available inside a TSConfig file. 
 - The [root fields](#Top%20Level) for letting TypeScript know what files are available
 - The [`compilerOptions`](#compilerOptions) fields, this is the majority of the document
 - The [`watchOptions`](#watchOptions) fields, for tweaking the watch mode
-- The [`typeAcquisition`](#typeAcquisition) fields, for tweaking the how types are added to JavaScript projects
+- The [`typeAcquisition`](#typeAcquisition) fields, for tweaking how types are added to JavaScript projects
 
 If you are starting a TSConfig from scratch, you may want to consider using `tsc --init` to bootstrap or use a [TSConfig base](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases).
