@@ -601,7 +601,7 @@ This pattern is common with callback-style APIs, where another object typically 
 // @errors: 7041 7017
 interface User {
   id: number;
-  isAdmin: boolean;
+  admin: boolean;
 }
 declare const getDB: () => DB;
 // ---cut---
