@@ -885,6 +885,22 @@ class S {
 }
 ```
 
+> This is legal starting ES2022. Note the difference between the tranpiled JavaScript files targetting ES2021 and ES2022.
+
+```js
+// javascript output targetting ES2021
+class S {
+}
+S.name = "S!";
+```
+
+```js
+// javascript output targetting ES2022
+class S {
+    static name = "S!";
+}
+```
+
 ### Why No Static Classes?
 
 TypeScript (and JavaScript) don't have a construct called `static class` the same way as, for example, C# does.
