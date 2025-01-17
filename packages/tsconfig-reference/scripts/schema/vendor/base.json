@@ -1040,6 +1040,11 @@
               "description": "Built-in iterators are instantiated with a 'TReturn' type of 'undefined' instead of 'any'.",
               "type": "boolean",
               "default": false
+            },
+            "rewriteRelativeImportExtensions": {
+              "description": "Rewrite '.ts', '.tsx', '.mts', and '.cts' file extensions in relative import paths to their JavaScript equivalent in output files.",
+              "type": "boolean",
+              "default": false
             }
           }
         }
