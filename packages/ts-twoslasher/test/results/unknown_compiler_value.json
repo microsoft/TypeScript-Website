@@ -3,4 +3,4 @@
 
 Got TS2015 for target but it is not a supported value by the TS compiler.
 
-Allowed values: es3,es5,es6,es2015,es2016,es2017,es2018,es2019,es2020,es2021,es2022,es2023,esnext
+Allowed values: es3,es5,es6,es2015,es2016,es2017,es2018,es2019,es2020,es2021,es2022,es2023,es2024,esnext
