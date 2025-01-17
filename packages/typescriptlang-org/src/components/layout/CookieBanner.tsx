@@ -49,7 +49,7 @@ export const CookieBanner = (props: { lang: string }) => {
       </Helmet>
 
       <div id="cookie-banner" className="openx"></div>
-      {scriptLoaded && verboseCookieLogging()}
+      {(scriptLoaded && verboseCookieLogging(), "")}
     </>
   )
 }
