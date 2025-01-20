@@ -426,7 +426,7 @@ const arr = ["a", "b" ,"c"];
 fnGood(arr);
 ```
 
-[See the pull request](https://github.com/microsoft/TypeScript/pull/51865) and the ([first](https://github.com/microsoft/TypeScript/issues/30680) and second [second](https://github.com/microsoft/TypeScript/issues/41114)) motivating issues for more details.
+[See the pull request](https://github.com/microsoft/TypeScript/pull/51865) and the ([first](https://github.com/microsoft/TypeScript/issues/30680) and [second](https://github.com/microsoft/TypeScript/issues/41114)) motivating issues for more details.
 
 ## Supporting Multiple Configuration Files in `extends`
 
