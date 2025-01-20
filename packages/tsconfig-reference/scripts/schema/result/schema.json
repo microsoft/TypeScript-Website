@@ -396,6 +396,7 @@
             "newLine": {
               "description": "Set the newline character for emitting files.",
               "type": "string",
+              "default": "lf",
               "anyOf": [
                 {
                   "enum": ["crlf", "lf"]
@@ -641,7 +642,7 @@
             "forceConsistentCasingInFileNames": {
               "description": "Ensure that casing is correct in imports.",
               "type": "boolean",
-              "default": false,
+              "default": true,
               "markdownDescription": "Ensure that casing is correct in imports.\n\nSee more: https://www.typescriptlang.org/tsconfig#forceConsistentCasingInFileNames"
             },
             "generateCpuProfile": {
