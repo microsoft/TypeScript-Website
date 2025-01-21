@@ -29,7 +29,8 @@ This would allow you to be able to write `import "jquery"`, and get all of the c
         "shared/*": ["./src/app/_shared/*"],
         "helpers/*": ["./src/helpers/*"],
         "tests/*": ["./src/tests/*"]
-    },
+    }
+  }
 }
 ```
 
