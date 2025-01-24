@@ -158,6 +158,10 @@ module.exports = {
               defaultOptions: {
                 noErrorValidation: true,
               },
+              defaultCompilerOptions: {
+                types: [],
+                target: 7, // ES2020
+              },
             },
           },
           "gatsby-remark-copy-linked-files",

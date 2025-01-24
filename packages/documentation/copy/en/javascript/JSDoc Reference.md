@@ -221,6 +221,7 @@ myPet.name;
 import types can be used to get the type of a value from a module if you don't know the type, or if it has a large type that is annoying to type:
 
 ```js twoslash
+// @types: node
 // @filename: accounts.d.ts
 export const userAccount = {
   name: "Name",
@@ -746,6 +747,7 @@ Otherwise, `@example` will be parsed as a new tag.
 ### Other supported patterns
 
 ```js twoslash
+// @types: react
 class Foo {}
 // ---cut---
 var someObj = {
