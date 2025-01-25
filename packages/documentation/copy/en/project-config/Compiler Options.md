@@ -549,7 +549,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#esModuleInterop'>--esModuleInterop</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>false</code> otherwise.</p>
+  <td><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>node16</code>, <code>nodenext</code>, or <code>preserve</code>; <code>false</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
