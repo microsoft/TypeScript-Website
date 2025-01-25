@@ -1363,7 +1363,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strictBuiltinIteratorReturn'>--strictBuiltinIteratorReturn</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code>, unless <code>strict</code> is set</p>
+  <td><p><code>true</code> if <a href="#strict"><code>strict</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
