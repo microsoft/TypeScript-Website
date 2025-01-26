@@ -209,6 +209,7 @@ export const createTypeScriptSandbox = (
     projectName: "TypeScript Playground",
     typescript: ts,
     logger: console,
+    resolveDependenciesFromPackageJson: true,
     delegate: {
       receivedFile: addLibraryToRuntime,
       progress: (downloaded: number, total: number) => {
