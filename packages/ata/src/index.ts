@@ -68,7 +68,15 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
 
     // Grab the module trees which gives us a list of files to download
     const trees = await Promise.all(depsToGet.map(f => getFileTreeForModuleWithTag(config, f.module, f.version)))
-    const treesOnly = trees.filter(t => !("error" in t)) as NPMTreeMeta[]
+    const treesOnly: NPMTreeMeta[] = []
+
+    trees.forEach(t => {
+      if ("error" in t) {
+        config.delegate.errorMessage?.(t.userFacingMessage, t.error)
+      } else {
+        treesOnly.push(t)
+      }
+    })
 
     // These are the modules which we can grab directly
     const hasDTS = treesOnly.filter(t => t.files.find(f => isDtsFile(f.name)))
@@ -81,7 +89,16 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
       mightBeOnDT.map(f => getFileTreeForModuleWithTag(config, `@types/${getDTName(f.moduleName)}`, "latest"))
     )
 
-    const dtTreesOnly = dtTrees.filter(t => !("error" in t)) as NPMTreeMeta[]
+    const dtTreesOnly: NPMTreeMeta[] = []
+
+    dtTrees.forEach(t => {
+      if ("error" in t) {
+        config.delegate.errorMessage?.(t.userFacingMessage, t.error)
+      } else {
+        dtTreesOnly.push(t)
+      }
+    })
+
     const dtsFilesFromDT = dtTreesOnly.map(t => treeToDTSFiles(t, `/node_modules/@types/${getDTName(t.moduleName).replace("types__", "")}`))
 
     // Collect all the npm and DT DTS requests and flatten their arrays
@@ -102,7 +119,9 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
         fsMap.set(path, pkgJSON)
         config.delegate.receivedFile?.(pkgJSON, path)
       } else {
-        config.logger?.error(`Could not download package.json for ${tree.moduleName}`)
+        const userFacingMessage = `Could not download package.json for ${tree.moduleName}`
+        config.logger?.error(userFacingMessage)
+        config.delegate.errorMessage?.(userFacingMessage, pkgJSON)
       }
     }
 
@@ -112,8 +131,9 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
         const dtsCode = await getDTSFileForModuleWithVersion(config, dts.moduleName, dts.moduleVersion, dts.path)
         estimatedDownloaded++
         if (dtsCode instanceof Error) {
-          // TODO?
-          config.logger?.error(`Had an issue getting ${dts.path} for ${dts.moduleName}`)
+          const userFacingMessage = `Had an issue getting ${dts.path} for ${dts.moduleName}`
+          config.logger?.error(userFacingMessage)
+          config.delegate.errorMessage?.(userFacingMessage, dtsCode)
         } else {
           fsMap.set(dts.vfsPath, dtsCode)
           config.delegate.receivedFile?.(dtsCode, dts.vfsPath)
@@ -226,7 +246,7 @@ export const getFileTreeForModuleWithTag = async (
       const versions = await getNPMVersionsForModule(config, moduleName)
       if (versions instanceof Error) {
         return {
-          error: response,
+          error: versions,
           userFacingMessage: `Could not get versions on npm for ${moduleName} - possible typo?`,
         }
       }
