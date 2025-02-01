@@ -427,7 +427,7 @@ type Shape =
   | { kind: "square"; x: number }
   | { kind: "triangle"; x: number; y: number };
 // ---cut---
-function height(s: Shape) {
+function width(s: Shape) {
   if (s.kind === "circle") {
     return 2 * s.radius;
   } else {
