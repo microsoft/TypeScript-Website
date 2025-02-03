@@ -1,5 +1,11 @@
 # @typescript/vfs
 
+## 1.6.1
+
+### Patch Changes
+
+- [#3324](https://github.com/microsoft/TypeScript-Website/pull/3324) [`4a30b02`](https://github.com/microsoft/TypeScript-Website/commit/4a30b022bc0c1df6b6abb71c99c104f3b19f2c91) Thanks [@jakebailey](https://github.com/jakebailey)! - Update hardcoded list of known lib files
+
 ## 1.6.0
 
 ### Minor Changes
