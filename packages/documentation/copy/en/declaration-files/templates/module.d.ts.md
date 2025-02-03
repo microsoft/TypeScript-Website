@@ -59,7 +59,7 @@ Which can be described by the following .d.ts:
 
 ```ts
 declare const helloWorld: RegExp;
-export default helloWorld;
+export = helloWorld;
 ```
 
 Or a number:
@@ -70,7 +70,7 @@ module.exports = 3.142;
 
 ```ts
 declare const pi: number;
-export default pi;
+export = pi;
 ```
 
 One style of exporting in CommonJS is to export a function.
@@ -88,20 +88,10 @@ module.exports = getArrayLength;
 Which can be described with:
 
 ```ts
-export default function getArrayLength(arr: any[]): number;
-export const maxInterval: 12;
-```
-
-Note that using `export default` in your .d.ts files requires [`esModuleInterop: true`](/tsconfig#esModuleInterop) to work.
-If you can't have `esModuleInterop: true` in your project, such as when you're submitting a PR to Definitely Typed, you'll have to use the `export=` syntax instead. This older syntax is harder to use but works everywhere.
-Here's how the above example would have to be written using `export=`:
-
-```ts
 declare function getArrayLength(arr: any[]): number;
 declare namespace getArrayLength {
-  declare const maxInterval: 12;
+    declare const maxInterval: 12;
 }
-
 export = getArrayLength;
 ```
 
