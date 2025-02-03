@@ -90,7 +90,7 @@ Which can be described with:
 ```ts
 declare function getArrayLength(arr: any[]): number;
 declare namespace getArrayLength {
-    declare const maxInterval: 12;
+  declare const maxInterval: 12;
 }
 export = getArrayLength;
 ```
