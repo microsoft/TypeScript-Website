@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: "18.x"
 
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
 
       # Builds the modules, and boostraps the other modules
       - name: Build website
