@@ -17,7 +17,7 @@ export const NextPrev = (props: NextPrevProps) => {
   const next = props.next && props.next.childMarkdownRemark.frontmatter
 
   return (
-    <div className="whitespace-tight raised">
+    <div className="whitespace-tight raised no-print">
       <Row className="justify-between">
         {!prev ? <EmptyLink /> : <LinkSection i={props.i} data={prev} InltLink={props.IntlLink} type="prev" />}
         <div className="hide-small vertical-line" />

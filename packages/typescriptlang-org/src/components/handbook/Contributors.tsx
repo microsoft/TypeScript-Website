@@ -57,7 +57,7 @@ export const Contributors = (props: ContributorsProps) => {
   }, []);
 
   return (
-    <div className="whitespace-tight raised" style={{ padding: 0 }}>
+    <div className="whitespace-tight raised no-print" style={{ padding: 0 }}>
       <Row className="justify-between small-columns">
         <Section sKey="pr">
           <p>
