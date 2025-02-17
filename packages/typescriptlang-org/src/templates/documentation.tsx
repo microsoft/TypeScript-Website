@@ -165,7 +165,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                     <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
                   </>
                   }
-                  <div id="like-dislike-subnav">
+                  <div id="like-dislike-subnav" className="no-print">
                     <h5>{i("handb_like_dislike_title")}</h5>
                     <div>
                       <button title="Like this page" id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
