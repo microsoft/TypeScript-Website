@@ -154,7 +154,7 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       createCodePre.setAttribute("tabindex", "0")
       const codeElement = document.createElement("code")
 
-      codeElement.innerHTML = code
+      codeElement.textContent = code
 
       createCodePre.appendChild(codeElement)
       container.appendChild(createCodePre)
