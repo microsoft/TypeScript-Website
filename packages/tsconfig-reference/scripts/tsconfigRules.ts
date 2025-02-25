@@ -314,8 +314,8 @@ function formatAllowedValues(type: CommandLineOption["type"]) {
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
   "5.7": ["rewriteRelativeImportExtensions"],
-  "5.6": ["strictBuiltinIteratorReturn", "noUncheckedSideEffectImports"],
-  "5.5": ["isolatedDeclarations", "noCheck"],
+  "5.6": ["strictBuiltinIteratorReturn", "noUncheckedSideEffectImports", "noCheck"],
+  "5.5": ["isolatedDeclarations"],
   "5.0": [
     "allowArbitraryExtensions",
     "allowImportingTsExtensions",
