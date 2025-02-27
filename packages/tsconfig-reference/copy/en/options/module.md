@@ -87,9 +87,13 @@ export const twoPi = valueOfPi * 2;
 
 In addition to the base functionality of `ES2015`/`ES6`, `ES2020` adds support for [dynamic `import`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import), and [`import.meta`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta) while `ES2022` further adds support for [top level `await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await).
 
-#### `node16`/`nodenext`
+#### `node16`/`node18`/`nodenext`
 
-Available from 4.7+, the `node16` and `nodenext` modes integrate with Node's [native ECMAScript Module support](https://nodejs.org/api/esm.html). The emitted JavaScript uses either `CommonJS` or `ES2020` output depending on the file extension and the value of the `type` setting in the nearest `package.json`. Module resolution also works differently. You can learn more in the [handbook](/docs/handbook/esm-node.html) and [Modules Reference](/docs/handbook/modules/reference.html#node16-nodenext).
+The `node16`, `node18`, and `nodenext` modes integrate with Node's [native ECMAScript Module support](https://nodejs.org/api/esm.html). The emitted JavaScript uses either `CommonJS` or `ES2020` output depending on the file extension and the value of the `type` setting in the nearest `package.json`. Module resolution also works differently. You can learn more in the [handbook](/docs/handbook/esm-node.html) and [Modules Reference](/docs/handbook/modules/reference.html#node16-node18-nodenext).
+
+- `node16` is available from TypeScript 4.7
+- `node18` is available from TypeScript 5.8 as a replacement for `node16`, with added support for import attributes.
+- `nodenext` is available from TypeScript 4.7, but its behavior changes with the latest stable versions of Node.js. As of TypeScript 5.8, `nodenext` supports `require` of ECMAScript modules.
 
 #### `preserve`
 

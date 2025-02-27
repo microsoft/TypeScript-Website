@@ -199,15 +199,21 @@ declare module "*.html" {
 
 ## The `module` compiler option
 
-This section discusses the details of each `module` compiler option value. See the [_Module output format_](/docs/handbook/modules/theory.html#the-module-output-format) theory section for more background on what the option is and how it fits into the overall compilation process. In brief, the `module` compiler option was historically only used to control the output module format of emitted JavaScript files. The more recent `node16` and `nodenext` values, however, describe a wide range of characteristics of Node.js’s module system, including what module formats are supported, how the module format of each file is determined, and how different module formats interoperate.
+This section discusses the details of each `module` compiler option value. See the [_Module output format_](/docs/handbook/modules/theory.html#the-module-output-format) theory section for more background on what the option is and how it fits into the overall compilation process. In brief, the `module` compiler option was historically only used to control the output module format of emitted JavaScript files. The more recent `node16`, `node18`, and `nodenext` values, however, describe a wide range of characteristics of Node.js’s module system, including what module formats are supported, how the module format of each file is determined, and how different module formats interoperate.
 
-### `node16`, `nodenext`
+### `node16`, `node18`, `nodenext`
 
-Node.js supports both CommonJS and ECMAScript modules, with specific rules for which format each file can be and how the two formats are allowed to interoperate. `node16` and `nodenext` describe the full range of behavior for Node.js’s dual-format module system, and **emit files in either CommonJS or ESM format**. This is different from every other `module` option, which are runtime-agnostic and force all output files into a single format, leaving it to the user to ensure the output is valid for their runtime.
+Node.js supports both CommonJS and ECMAScript modules, with specific rules for which format each file can be and how the two formats are allowed to interoperate. `node16`, `node18`, and `nodenext` describe the full range of behavior for Node.js’s dual-format module system, and **emit files in either CommonJS or ESM format**. This is different from every other `module` option, which are runtime-agnostic and force all output files into a single format, leaving it to the user to ensure the output is valid for their runtime.
 
-> A common misconception is that `node16` and `nodenext` only emit ES modules. In reality, `node16` and `nodenext` describe versions of Node.js that _support_ ES modules, not just projects that _use_ ES modules. Both ESM and CommonJS emit are supported, based on the [detected module format](#module-format-detection) of each file. Because `node16` and `nodenext` are the only `module` options that reflect the complexities of Node.js’s dual module system, they are the **only correct `module` options** for all apps and libraries that are intended to run in Node.js v12 or later, whether they use ES modules or not.
+> A common misconception is that `node16`—`nodenext` only emit ES modules. In reality, these modes describe versions of Node.js that _support_ ES modules, not just projects that _use_ ES modules. Both ESM and CommonJS emit are supported, based on the [detected module format](#module-format-detection) of each file. Because they are the only `module` options that reflect the complexities of Node.js’s dual module system, they are the **only correct `module` options** for all apps and libraries that are intended to run in Node.js v12 or later, whether they use ES modules or not.
 
-`node16` and `nodenext` are currently identical, with the exception that they [imply different `target` option values](#implied-and-enforced-options). If Node.js makes significant changes to its module system in the future, `node16` will be frozen while `nodenext` will be updated to reflect the new behavior.
+The fixed-version `node16` and `node18` modes represent the module system behavior stabilized in their respective Node.js versions, while the `nodenext` mode changes with the latest stable versions of Node.js. The following table summarizes the current differences between the three modes:
+
+|          | `target` | `moduleResolution` | import assertions | import attributes | JSON imports        | require(esm) |
+|----------|----------|--------------------|-------------------|-------------------|---------------------|--------------|
+| node16   | `es2022` | `node16`           | ❌                | ❌                 | no restrictions     | ❌           |
+| node18   | `es2022` | `node16`           | ✅                | ✅                 | needs `type "json"` | ❌           |
+| nodenext | `esnext` | `nodenext`         | ❌                | ✅                 | needs `type "json"` | ✅           |
 
 #### Module format detection
 
@@ -223,8 +229,9 @@ The detected module format of input `.ts`/`.tsx`/`.mts`/`.cts` files determines 
   - The `module.exports` of the CommonJS module is available as a default import to the ES module.
   - Properties (other than `default`) of the CommonJS module’s `module.exports` may or may not be available as named imports to the ES module. Node.js attempts to make them available via [static analysis](https://github.com/nodejs/cjs-module-lexer). TypeScript cannot know from a declaration file whether that static analysis will succeed, and optimistically assumes it will. This limits TypeScript’s ability to catch named imports that may crash at runtime. See [#54018](https://github.com/microsoft/TypeScript/issues/54018) for more details.
 - **When a CommonJS module references an ES module:**
-  - `require` cannot reference an ES module. For TypeScript, this includes `import` statements in files that are [detected](#module-format-detection) to be CommonJS modules, since those `import` statements will be transformed to `require` calls in the emitted JavaScript.
-  - A dynamic `import()` call may be used to import an ES module. It returns a Promise of the module’s Module Namespace Object (what you’d get from `import * as ns from "./module.js"` from another ES module).
+  - In `node16` and `node18`, `require` cannot reference an ES module. For TypeScript, this includes `import` statements in files that are [detected](#module-format-detection) to be CommonJS modules, since those `import` statements will be transformed to `require` calls in the emitted JavaScript.
+  - In `nodenext`, to reflect the behavior of Node.js v22.12.0 and later, `require` can reference an ES module. In Node.js, an error is thrown if the ES module, or any of its imported modules, uses top-level `await`. TypeScript does not attempt to detect this case and will not emit a compile-time error. The result of the `require` call is the module’s Module Namespace Object, i.e., the same as the result of an `await import()` of the same module (but without the need to `await` anything).
+  - A dynamic `import()` call can always be used to import an ES module. It returns a Promise of the module’s Module Namespace Object (what you’d get from `import * as ns from "./module.js"` from another ES module).
 
 #### Emit
 
@@ -263,15 +270,16 @@ const dynamic = import("mod"); // not transformed
 
 #### Implied and enforced options
 
-- `--module nodenext` or `node16` implies and enforces the `moduleResolution` with the same name.
+- `--module nodenext` implies and enforces `--moduleResolution nodenext`.
+- `--module node18` or `node16` implies and enforces `--moduleResolution node16`.
 - `--module nodenext` implies `--target esnext`.
-- `--module node16` implies `--target es2022`.
-- `--module nodenext` or `node16` implies `--esModuleInterop`.
+- `--module node18` or `node16` implies `--target es2022`.
+- `--module nodenext` or `node18` or `node16` implies `--esModuleInterop`.
 
 #### Summary
 
-- `node16` and `nodenext` are the only correct `module` options for all apps and libraries that are intended to run in Node.js v12 or later, whether they use ES modules or not.
-- `node16` and `nodenext` emit files in either CommonJS or ESM format, based on the [detected module format](#module-format-detection) of each file.
+- `node16`, `node18`, and `nodenext` are the only correct `module` options for all apps and libraries that are intended to run in Node.js v12 or later, whether they use ES modules or not.
+- `node16`, `node18`, and `nodenext` emit files in either CommonJS or ESM format, based on the [detected module format](#module-format-detection) of each file.
 - Node.js’s interoperability rules between ESM and CJS are reflected in type checking.
 - ESM emit transforms `import x = require("...")` to a `require` call constructed from a `createRequire` import.
 - CommonJS emit leaves dynamic `import()` calls untransformed, so CommonJS modules can asynchronously import ES modules.
@@ -316,7 +324,7 @@ export default "default export";
 #### Summary
 
 - Use `esnext` with `--moduleResolution bundler` for bundlers, Bun, and tsx.
-- Do not use for Node.js. Use `node16` or `nodenext` with `"type": "module"` in package.json to emit ES modules for Node.js.
+- Do not use for Node.js. Use `node16`, `node18`, or `nodenext` with `"type": "module"` in package.json to emit ES modules for Node.js.
 - `import mod = require("mod")` is not allowed in non-declaration files.
 - `es2020` adds support for `import.meta` properties.
 - `es2022` adds support for top-level `await`.
@@ -351,7 +359,7 @@ export default "default export";
 
 #### Summary
 
-- You probably shouldn’t use this. Use `node16` or `nodenext` to emit CommonJS modules for Node.js.
+- You probably shouldn’t use this. Use `node16`, `node18`, or `nodenext` to emit CommonJS modules for Node.js.
 - Emitted files are CommonJS modules, but dependencies may be any format.
 - Dynamic `import()` is transformed to a Promise of a `require()` call.
 - `esModuleInterop` affects the output code for default and namespace imports.
@@ -1111,7 +1119,7 @@ import mod = require("./mod");        // `require` algorithm due to syntax (emit
 
 #### Implied and enforced options
 
-- `--moduleResolution node16` and `nodenext` must be paired with their [corresponding `module` value](#node16-nodenext). 
+- `--moduleResolution node16` and `nodenext` must be paired with [`--module node16`, `node18`, or `nodenext`](#node16-node18-nodenext). 
 
 #### Supported features
 

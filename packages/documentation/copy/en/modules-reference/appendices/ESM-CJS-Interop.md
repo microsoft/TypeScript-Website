@@ -232,9 +232,9 @@ mod.world;
 // Accessing properties from the default always works ✅
 ```
 
-### Cannot `require` a true ES module
+### Cannot `require` a true ES module before Node.js v22
 
-True CommonJS modules can `require` an ESM-transpiled-to-CJS module, since they’re both CommonJS at runtime. But in Node.js, `require` crashes if it resolves to an ES module. This means published libraries cannot migrate from transpiled modules to true ESM without breaking their CommonJS (true or transpiled) consumers:
+True CommonJS modules can `require` an ESM-transpiled-to-CJS module, since they’re both CommonJS at runtime. But in Node.js versions older than v22.12.0, `require` crashes if it resolves to an ES module. This means published libraries cannot migrate from transpiled modules to true ESM without breaking their CommonJS (true or transpiled) consumers:
 
 ```ts
 // @Filename: node_modules/dependency/index.js

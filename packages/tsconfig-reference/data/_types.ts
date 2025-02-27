@@ -48,6 +48,8 @@ export type CompilerOptionName =
   | "isolatedModules"
   | "verbatimModuleSyntax"
   | "isolatedDeclarations"
+  | "erasableSyntaxOnly"
+  | "libReplacement"
   | "strict"
   | "noImplicitAny"
   | "strictNullChecks"

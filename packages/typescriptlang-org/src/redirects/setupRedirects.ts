@@ -51,8 +51,8 @@ export const setupRedirects = (
   addRedirects(veryOldRedirects)
   addRedirects(handbookRedirects)
   addRedirects({
-    "/docs/handbook/esm-node": "/docs/handbook/modules/reference.html#node16-nodenext",
-    "/docs/handbook/esm-node.html": "/docs/handbook/modules/reference.html#node16-nodenext",
+    "/docs/handbook/esm-node": "/docs/handbook/modules/reference.html#node16-node18-nodenext",
+    "/docs/handbook/esm-node.html": "/docs/handbook/modules/reference.html#node16-node18-nodenext",
     "/docs/handbook/modules": "/docs/handbook/modules/introduction.html",
     "/docs/handbook/modules.html": "/docs/handbook/modules/introduction.html",
     "/docs/handbook/module-resolution": "/docs/handbook/modules/theory.html#module-resolution",

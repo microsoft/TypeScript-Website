@@ -545,235 +545,257 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Emit design-type metadata for decorated declarations in source files.</p>
 </td></tr>
 
-<tr class='odd' name='esModuleInterop'>
+<tr class='odd' name='erasableSyntaxOnly'>
+  <td><code><a href='/tsconfig/#erasableSyntaxOnly'>--erasableSyntaxOnly</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>false</code></p>
+</td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+<p>Do not allow runtime constructs that are not part of ECMAScript.</p>
+</td></tr>
+
+<tr class='even' name='esModuleInterop'>
   <td><code><a href='/tsconfig/#esModuleInterop'>--esModuleInterop</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>node16</code>, <code>nodenext</code>, or <code>preserve</code>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Emit additional JavaScript to ease support for importing CommonJS modules. This enables <a href="#allowSyntheticDefaultImports"><code>allowSyntheticDefaultImports</code></a> for type compatibility.</p>
 </td></tr>
 
-<tr class='even' name='exactOptionalPropertyTypes'>
+<tr class='odd' name='exactOptionalPropertyTypes'>
   <td><code><a href='/tsconfig/#exactOptionalPropertyTypes'>--exactOptionalPropertyTypes</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Interpret optional property types as written, rather than adding <code>undefined</code>.</p>
 </td></tr>
 
-<tr class='odd' name='experimentalDecorators'>
+<tr class='even' name='experimentalDecorators'>
   <td><code><a href='/tsconfig/#experimentalDecorators'>--experimentalDecorators</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Enable experimental support for TC39 stage 2 draft decorators.</p>
 </td></tr>
 
-<tr class='even' name='explainFiles'>
+<tr class='odd' name='explainFiles'>
   <td><code><a href='/tsconfig/#explainFiles'>--explainFiles</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Print files read during the compilation including why it was included.</p>
 </td></tr>
 
-<tr class='odd' name='extendedDiagnostics'>
+<tr class='even' name='extendedDiagnostics'>
   <td><code><a href='/tsconfig/#extendedDiagnostics'>--extendedDiagnostics</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Output more detailed compiler performance information after building.</p>
 </td></tr>
 
-<tr class='even' name='forceConsistentCasingInFileNames'>
+<tr class='odd' name='forceConsistentCasingInFileNames'>
   <td><code><a href='/tsconfig/#forceConsistentCasingInFileNames'>--forceConsistentCasingInFileNames</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Ensure that casing is correct in imports.</p>
 </td></tr>
 
-<tr class='odd' name='generateCpuProfile'>
+<tr class='even' name='generateCpuProfile'>
   <td><code><a href='/tsconfig/#generateCpuProfile'>--generateCpuProfile</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>profile.cpuprofile</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Emit a v8 CPU profile of the compiler run for debugging.</p>
 </td></tr>
 
-<tr class='even' name='generateTrace'>
+<tr class='odd' name='generateTrace'>
   <td><code><a href='/tsconfig/#generateTrace'>--generateTrace</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Generates an event trace and a list of types.</p>
 </td></tr>
 
-<tr class='odd' name='importHelpers'>
+<tr class='even' name='importHelpers'>
   <td><code><a href='/tsconfig/#importHelpers'>--importHelpers</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Allow importing helper functions from tslib once per project, instead of including them per-file.</p>
 </td></tr>
 
-<tr class='even' name='importsNotUsedAsValues'>
+<tr class='odd' name='importsNotUsedAsValues'>
   <td><code><a href='/tsconfig/#importsNotUsedAsValues'>--importsNotUsedAsValues</a></code></td>
   <td><p><code>remove</code>, <code>preserve</code>, or <code>error</code></p>
 </td>
   <td><p><code>remove</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify emit/checking behavior for imports that are only used for types.</p>
 </td></tr>
 
-<tr class='odd' name='incremental'>
+<tr class='even' name='incremental'>
   <td><code><a href='/tsconfig/#incremental'>--incremental</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#composite"><code>composite</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Save .tsbuildinfo files to allow for incremental compilation of projects.</p>
 </td></tr>
 
-<tr class='even' name='inlineSourceMap'>
+<tr class='odd' name='inlineSourceMap'>
   <td><code><a href='/tsconfig/#inlineSourceMap'>--inlineSourceMap</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Include sourcemap files inside the emitted JavaScript.</p>
 </td></tr>
 
-<tr class='odd' name='inlineSources'>
+<tr class='even' name='inlineSources'>
   <td><code><a href='/tsconfig/#inlineSources'>--inlineSources</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Include source code in the sourcemaps inside the emitted JavaScript.</p>
 </td></tr>
 
-<tr class='even' name='isolatedDeclarations'>
+<tr class='odd' name='isolatedDeclarations'>
   <td><code><a href='/tsconfig/#isolatedDeclarations'>--isolatedDeclarations</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Require sufficient annotation on exports so other tools can trivially generate declaration files.</p>
 </td></tr>
 
-<tr class='odd' name='isolatedModules'>
+<tr class='even' name='isolatedModules'>
   <td><code><a href='/tsconfig/#isolatedModules'>--isolatedModules</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>true</code> if <a href="#verbatimModuleSyntax"><code>verbatimModuleSyntax</code></a>; <code>false</code> otherwise.</p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Ensure that each file can be safely transpiled without relying on other imports.</p>
 </td></tr>
 
-<tr class='even' name='jsx'>
+<tr class='odd' name='jsx'>
   <td><code><a href='/tsconfig/#jsx'>--jsx</a></code></td>
   <td><p><code>preserve</code>, <code>react</code>, <code>react-native</code>, <code>react-jsx</code>, or <code>react-jsxdev</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify what JSX code is generated.</p>
 </td></tr>
 
-<tr class='odd' name='jsxFactory'>
+<tr class='even' name='jsxFactory'>
   <td><code><a href='/tsconfig/#jsxFactory'>--jsxFactory</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>React.createElement</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'.</p>
 </td></tr>
 
-<tr class='even' name='jsxFragmentFactory'>
+<tr class='odd' name='jsxFragmentFactory'>
   <td><code><a href='/tsconfig/#jsxFragmentFactory'>--jsxFragmentFactory</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>React.Fragment</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'.</p>
 </td></tr>
 
-<tr class='odd' name='jsxImportSource'>
+<tr class='even' name='jsxImportSource'>
   <td><code><a href='/tsconfig/#jsxImportSource'>--jsxImportSource</a></code></td>
   <td><p><code>string</code></p>
 </td>
   <td><p><code>react</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify module specifier used to import the JSX factory functions when using <code>jsx: react-jsx*</code>.</p>
 </td></tr>
 
-<tr class='even' name='keyofStringsOnly'>
+<tr class='odd' name='keyofStringsOnly'>
   <td><code><a href='/tsconfig/#keyofStringsOnly'>--keyofStringsOnly</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
   <td><p><code>false</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Make keyof only return strings instead of string, numbers or symbols. Legacy option.</p>
 </td></tr>
 
-<tr class='odd' name='lib'>
+<tr class='even' name='lib'>
   <td><code><a href='/tsconfig/#lib'>--lib</a></code></td>
   <td><p><code>list</code></p>
 </td>
   <td>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Specify a set of bundled library declaration files that describe the target runtime environment.</p>
+</td></tr>
+
+<tr class='odd' name='libReplacement'>
+  <td><code><a href='/tsconfig/#libReplacement'>--libReplacement</a></code></td>
+  <td><p><code>boolean</code></p>
+</td>
+  <td><p><code>true</code></p>
+</td>
+</tr>
+<tr class="option-description odd"><td colspan="3">
+<p>Enable substitution of default <code>lib</code> files with custom ones.</p>
 </td></tr>
 
 <tr class='even' name='listEmittedFiles'>
@@ -822,7 +844,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 <tr class='even' name='module'>
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
-  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>nodenext</code>, or <code>preserve</code></p>
+  <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>node18</code>, <code>nodenext</code>, or <code>preserve</code></p>
 </td>
   <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
 </td>

@@ -237,6 +237,11 @@
               "default": false,
               "markdownDescription": "Only output d.ts files and not JavaScript files.\n\nSee more: https://www.typescriptlang.org/tsconfig#emitDeclarationOnly"
             },
+            "erasableSyntaxOnly": {
+              "default": false,
+              "description": "Do not allow runtime constructs that are not part of ECMAScript.",
+              "type": "boolean"
+            },
             "exactOptionalPropertyTypes": {
               "description": "Differentiate between undefined and not present when type checking",
               "type": "boolean",
@@ -875,6 +880,11 @@
                 ]
               },
               "markdownDescription": "Specify a set of bundled library declaration files that describe the target runtime environment.\n\nSee more: https://www.typescriptlang.org/tsconfig#lib"
+            },
+            "libReplacement": {
+              "description": "Enable lib replacement.",
+              "type": "boolean",
+              "default": true
             },
             "strictNullChecks": {
               "description": "When type checking, take into account `null` and `undefined`.",
