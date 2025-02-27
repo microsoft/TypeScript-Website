@@ -136,7 +136,7 @@ Choosing compilation settings as a library author is a fundamentally different p
 ```json5
 {
   "compilerOptions": {
-    "module": "node16",
+    "module": "node18",
     "target": "es2020", // set to the *lowest* target you support
     "strict": true,
     "verbatimModuleSyntax": true,
@@ -151,7 +151,7 @@ Choosing compilation settings as a library author is a fundamentally different p
 
 Let’s examine why we picked each of these settings:
 
-- **`module: "node16"`**. When a codebase is compatible with Node.js’s module system, it almost always works in bundlers as well. If you’re using a third-party emitter to emit ESM outputs, ensure that you set `"type": "module"` in your package.json so TypeScript checks your code as ESM, which uses a stricter module resolution algorithm in Node.js than CommonJS does. As an example, let’s look at what would happen if a library were to compile with `"moduleResolution": "bundler"`:
+- **`module: "node18"`**. When a codebase is compatible with Node.js’s module system, it almost always works in bundlers as well. If you’re using a third-party emitter to emit ESM outputs, ensure that you set `"type": "module"` in your package.json so TypeScript checks your code as ESM, which uses a stricter module resolution algorithm in Node.js than CommonJS does. As an example, let’s look at what would happen if a library were to compile with `"moduleResolution": "bundler"`:
 
   ```ts
   export * from "./utils";
