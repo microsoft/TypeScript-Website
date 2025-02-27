@@ -186,9 +186,9 @@ TypeScript needs to know which of these rule sets to assume in order to provide 
 
 [^1]: In Node.js v22.12.0 and later, a `require` of an ES module is allowed, but only if the resolved module and its top-level imports don’t use top-level `await`. TypeScript does not try to enforce this rule, as it lacks the ability to tell from a declaration file whether the corresponding JavaScript file contains top-level `await`.
 
-### Module specifiers are not transformed
+### Module specifiers are not transformed by default
 
-While the `module` compiler option can transform imports and exports in input files to different module formats in output files, the module _specifier_ (the string `from` which you `import`, or pass to `require`) is always emitted as-written. For example, an input like:
+While the `module` compiler option can transform imports and exports in input files to different module formats in output files, the module _specifier_ (the string `from` which you `import`, or pass to `require`) is emitted as-written. For example, an input like:
 
 ```ts
 import { add } from "./math.mjs";
@@ -209,7 +209,11 @@ const math_1 = require("./math.mjs");
 math_1.add(1, 2);
 ```
 
-depending on the `module` compiler option, but the module specifier will always be `"./math.mjs"`. There is no compiler option that enables transforming, substituting, or rewriting module specifiers. Consequently, module specifiers must be written in a way that works for the code’s target runtime or bundler, and it’s TypeScript’s job to understand those _output_-relative specifiers. The process of finding the file referenced by a module specifier is called _module resolution_.
+depending on the `module` compiler option, but the module specifier will be `"./math.mjs"` either way. By default, module specifiers must be written in a way that works for the code’s target runtime or bundler, and it’s TypeScript’s job to understand those _output_-relative specifiers. The process of finding the file referenced by a module specifier is called _module resolution_.
+
+> TypeScript 5.7 introduced the [`--rewriteRelativeImportExtensions` option](/docs/handbook/release-notes/typescript-5-7.html#path-rewriting-for-relative-paths), which transforms relative module specifiers with `.ts`, `.tsx`, `.mts`, or `.cts` extensions to their JavaScript equivalents in output files. This option is useful for creating TypeScript files that can be run directly in Node.js during development _and_ still be compiled to JavaScript outputs for distribution or production use.
+>
+> This documentation was written before the introduction of `--rewriteRelativeImportExtensions`, and the mental model it presents is built around modeling the behavior of the host module system operating on its input files, whether that’s a bundler operating on TypeScript files or a runtime operating on `.js` outputs. With `--rewriteRelativeImportExtensions`, the way to apply that mental model is to apply it _twice_: once to the runtime or bundler processing the TypeScript input files directly, and once again to the runtime or bundler processing the transformed outputs. Most of this documentation assumes that _only_ the input files or _only_ the output files will be loaded, but the principles it presents can be extended to the case where both are loaded.
 
 ## Module resolution
 
