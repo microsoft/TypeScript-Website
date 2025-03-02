@@ -886,5 +886,4 @@ const f3 = function (): void {
 
 For more on `void` please refer to these other documentation entries:
 
-- [v2 handbook](https://www.typescriptlang.org/docs/handbook/2/functions.html#void)
 - [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
