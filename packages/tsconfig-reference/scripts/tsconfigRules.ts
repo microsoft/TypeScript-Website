@@ -268,6 +268,7 @@ export const defaultsForOptions = {
     "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",
   ],
+  allowImportingTsExtensions: trueIf("rewriteRelativeImportExtensions"),
 };
 
 function formatDefaultValue(
