@@ -208,7 +208,7 @@ exports.default = function doSomething() { /*...*/ }
 import doSomething from "dependency";
 // Works after transpilation, but not a function in Node.js ESM:
 doSomething();
-// Doesn't exist after trasnpilation, but works in Node.js ESM:
+// Doesn't exist after transpilation, but works in Node.js ESM:
 doSomething.default();
 ```
 
