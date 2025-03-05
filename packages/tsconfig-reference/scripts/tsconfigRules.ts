@@ -241,7 +241,7 @@ export const defaultsForOptions = {
     "`Node10` if [`module`](#module) is `CommonJS`;",
     "`Node16` if [`module`](#module) is `Node16` or `Node18`;",
     "`NodeNext` if [`module`](#module) is `NodeNext`;",
-    "`Preserve` if [`module`](#module) is `Bundler`;",
+    "`Bundler` if [`module`](#module) is `Preserve`;",
     "`Classic` otherwise.",
   ],
   newLine: "`lf`",
