@@ -81,7 +81,7 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
         }
         customPlugins().forEach(module => {
           const li = document.createElement("li")
-          li.innerHTML = module
+          li.textContent = module
           const a = document.createElement("a")
           a.href = "#"
           a.textContent = "X"
