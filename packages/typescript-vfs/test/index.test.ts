@@ -245,3 +245,16 @@ it("moduleDetection options", async () => {
   program.emit()
   expect(fsMap.get("index.js")).toEqual(`define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    var foo = 'foo';\n});\n`)
 })
+
+it("update file content to empty string", () => {
+  const options: ts.CompilerOptions = {
+    target: ts.ScriptTarget.ES2020,
+  }
+  const fsMap = createDefaultMapFromNodeModules(options, ts)
+  fsMap.set("index.ts", "console.logx('')")
+  const system = createSystem(fsMap)
+  const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, options)
+  env.updateFile("index.ts", "")
+  const diagnostics = env.languageService.getSemanticDiagnostics("index.ts")
+  expect(diagnostics.length).toBe(0)
+})
