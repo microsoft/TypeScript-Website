@@ -41,7 +41,7 @@ jobs:
       # Verify it compiles
       - run: pnpm build-site
       
-      - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
         with:
           name: site
@@ -71,7 +71,7 @@ jobs:
 
       - name: Upload diff artifact
         if: ${{ failure() && steps.check-diff.conclusion == 'failure' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: missing.patch
           path: missing.patch
