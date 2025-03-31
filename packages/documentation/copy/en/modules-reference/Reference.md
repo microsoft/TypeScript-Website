@@ -295,6 +295,7 @@ While it’s rare to need to mix imports and require calls in the same file, thi
 #### Examples
 
 ```ts
+// @Filename: main.ts
 import x, { y, z } from "mod";
 import mod = require("mod");
 const dynamic = import("mod");
@@ -304,6 +305,7 @@ export default "default export";
 ```
 
 ```js
+// @Filename: main.js
 import x, { y, z } from "mod";
 const mod = require("mod");
 const dynamic = import("mod");
