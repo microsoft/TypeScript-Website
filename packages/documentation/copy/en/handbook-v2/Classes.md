@@ -279,6 +279,32 @@ class Thing {
 }
 ```
 
+### Auto-Accessors
+
+By adding the `accessor` keyword in front of a class field, you can define a getter and a setter at once:
+
+```ts twoslash
+class Person {
+  accessor name: string | undefined;
+}
+```
+
+The above roughly desugars to:
+
+```js
+class Person {
+  #name;
+
+  get name() {
+    return this.#name;
+  }
+
+  set name(value) {
+    this.#name = value;
+  }
+}
+```
+
 ### Index Signatures
 
 Classes can declare index signatures; these work the same as [Index Signatures for other object types](/docs/handbook/2/objects.html#index-signatures):
