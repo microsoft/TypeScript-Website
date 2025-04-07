@@ -285,15 +285,15 @@ By adding the `accessor` keyword in front of a class field, you can define a get
 
 ```ts twoslash
 class Person {
-  accessor name: string | undefined;
+  accessor name = "";
 }
 ```
 
-The above roughly desugars to:
+The above is roughly equivalent to:
 
-```js
+```ts twoslash
 class Person {
-  #name;
+  #name = "";
 
   get name() {
     return this.#name;
