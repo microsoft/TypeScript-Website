@@ -254,7 +254,7 @@ Remember the three components of TypeScript’s [job](#typescripts-job-concernin
 2. Ensure that imports in those **outputs** will **resolve successfully**
 3. Know what **type** to assign to **imported names**.
 
-Module resolution is needed to accomplish last two. But when we spend most of our time working in input files, it can be easy to forget about (2)—that a key component of module resolution is validating that the imports or `require` calls in the output files, containing the [same module specifiers as the input files](#module-specifiers-are-not-transformed), will actually work at runtime. Let’s look at a new example with multiple files:
+Module resolution is needed to accomplish last two. But when we spend most of our time working in input files, it can be easy to forget about (2)—that a key component of module resolution is validating that the imports or `require` calls in the output files, containing the [same module specifiers as the input files](#module-specifiers-are-not-transformed-by-default), will actually work at runtime. Let’s look at a new example with multiple files:
 
 ```ts
 // @Filename: math.ts
@@ -296,7 +296,7 @@ Node.js ESM `import` declarations use a strict module resolution algorithm that 
 
 ![A flowchart diagram with identical structure to the one above. There are two groups of files: Input files and Output files. src/main.mts (an input file) maps to output file dist/main.mjs, which resolves through module specifier "./math.mjs" to dist/math.mjs (another output file), which maps back to input file src/math.mts.](./diagrams/theory.md-3.svg)
 
-Understanding this mental model may not immediately eliminate the strangeness of seeing output file extensions in input files, and it’s natural to think in terms of shortcuts: _`"./math.mjs"` refers to the input file `math.mts`. I have to write the output extension, but the compiler knows to look for `.mts` when I write `.mjs`._ This shortcut is even how the compiler works internally, but the more robust mental model explains _why_ module resolution in TypeScript works this way: given the constraint that the module specifier in the output file will be [the same](#module-specifiers-are-not-transformed) as the module specifier in the input file, this is the only process that accomplishes our two goals of validating output files and assigning types.
+Understanding this mental model may not immediately eliminate the strangeness of seeing output file extensions in input files, and it’s natural to think in terms of shortcuts: _`"./math.mjs"` refers to the input file `math.mts`. I have to write the output extension, but the compiler knows to look for `.mts` when I write `.mjs`._ This shortcut is even how the compiler works internally, but the more robust mental model explains _why_ module resolution in TypeScript works this way: given the constraint that the module specifier in the output file will be [the same](#module-specifiers-are-not-transformed-by-default) as the module specifier in the input file, this is the only process that accomplishes our two goals of validating output files and assigning types.
 
 ### The role of declaration files
 
