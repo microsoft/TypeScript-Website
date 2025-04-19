@@ -83,7 +83,7 @@ Or if we were lucky enough to witness the error, we might have ended up doing la
 
 Ideally, we could have a tool that helps us find these bugs _before_ our code runs.
 That's what a static type-checker like TypeScript does.
-_Static types systems_ describe the shapes and behaviors of what our values will be when we run our programs.
+_Static type systems_ describe the shapes and behaviors of what our values will be when we run our programs.
 A type-checker like TypeScript uses that information and tells us when things might be going off the rails.
 
 ```ts twoslash
