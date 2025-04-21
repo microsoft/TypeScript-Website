@@ -23,10 +23,6 @@ export const addCustomPlugin = (mod: string) => {
   const newPlugins = customPlugins()
   newPlugins.push(mod)
   localStorage.setItem("custom-plugins-playground", JSON.stringify(newPlugins))
-  // @ts-ignore
-  window.appInsights &&
-    // @ts-ignore
-    window.appInsights.trackEvent({ name: "Added Custom Module", properties: { id: mod } })
 }
 
 const customPlugins = (): string[] => {
@@ -147,10 +143,6 @@ export const optionsPlugin: PluginFactory = (i, utils) => {
       const ds = utils.createDesignSystem(div)
       ds.declareRestartRequired(i)
       if (input.checked) {
-        // @ts-ignore
-        window.appInsights &&
-          // @ts-ignore
-          window.appInsights.trackEvent({ name: "Added Registry Plugin", properties: { id: key } })
         localStorage.setItem(key, "true")
       } else {
         localStorage.removeItem(key)
