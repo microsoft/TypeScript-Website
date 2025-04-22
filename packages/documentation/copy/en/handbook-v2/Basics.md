@@ -365,7 +365,7 @@ Notice two things here:
 2. Our "template string" - that string that used backticks (the `` ` `` character) - was converted to plain strings with concatenations.
 
 More on that second point later, but let's now focus on that first point.
-Type annotations aren't part of JavaScript (or ECMAScript to be pedantic), so there really aren't any browsers or other runtimes that can just run TypeScript unmodified.
+Type annotations aren't part of JavaScript (or ECMAScript to be pedantic), so in reality, no browser or runtime can directly execute unmodified TypeScript unless it's [TypeScript 7](https://devblogs.microsoft.com/typescript/typescript-native-port/).
 That's why TypeScript needs a compiler in the first place - it needs some way to strip out or transform any TypeScript-specific code so that you can run it.
 Most TypeScript-specific code gets erased away, and likewise, here our type annotations were completely erased.
 
