@@ -377,10 +377,10 @@ let version = myConfigA.version;
 import * as myConfigB from "./myConfig.json" with { type: "json" };
 
 // ❌ This is not:
-let version = myConfig.version;
+let version = myConfigB.version;
 
 // ✅ This is okay:
-let version = myConfig.default.version;
+let version = myConfigB.default.version;
 ```
 
 [See here](https://github.com/microsoft/TypeScript/pull/60019) for more information on this change.
