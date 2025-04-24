@@ -1279,7 +1279,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Does something</p>
+<p>Rewrite <code>.ts</code>, <code>.tsx</code>, <code>.mts</code>, and <code>.cts</code> file extensions in relative import paths to their JavaScript equivalent in output files.</p>
 </td></tr>
 
 <tr class='even' name='rootDir'>

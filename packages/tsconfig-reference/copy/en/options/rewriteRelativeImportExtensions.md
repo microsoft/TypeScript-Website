@@ -1,6 +1,6 @@
 ---
 display: "rewriteRelativeImportExtensions"
-oneline: "Does something"
+oneline: "Rewrite `.ts`, `.tsx`, `.mts`, and `.cts` file extensions in relative import paths to their JavaScript equivalent in output files."
 ---
 
 Rewrite `.ts`, `.tsx`, `.mts`, and `.cts` file extensions in relative import paths to their JavaScript equivalent in output files.

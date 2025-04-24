@@ -1039,10 +1039,10 @@
               "markdownDescription": "Built-in iterators are instantiated with a TReturn type of undefined instead of any.\n\nSee more: https://www.typescriptlang.org/tsconfig#strictBuiltinIteratorReturn"
             },
             "rewriteRelativeImportExtensions": {
-              "description": "Does something",
+              "description": "Rewrite `.ts`, `.tsx`, `.mts`, and `.cts` file extensions in relative import paths to their JavaScript equivalent in output files.",
               "type": "boolean",
               "default": false,
-              "markdownDescription": "Does something\n\nSee more: https://www.typescriptlang.org/tsconfig#rewriteRelativeImportExtensions"
+              "markdownDescription": "Rewrite `.ts`, `.tsx`, `.mts`, and `.cts` file extensions in relative import paths to their JavaScript equivalent in output files.\n\nSee more: https://www.typescriptlang.org/tsconfig#rewriteRelativeImportExtensions"
             }
           }
         }
