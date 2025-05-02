@@ -17,8 +17,8 @@ const createDefaultKeyboard = (modelID: number) => {
 Parameters declaration with names starting with an underscore _ are exempt from the unused parameter checking. e.g.:
 
 ```ts twoslash
-function returnNull(_a) {
-  // OK
-  return null;
-}
+// @noUnusedParameters
+const createDefaultKeyboard = (_modelID: number) => {
+  return { type: "keyboard" };
+};
 ```
