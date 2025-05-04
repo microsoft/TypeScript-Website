@@ -48,6 +48,19 @@
     flex-direction: row;
     width: 100%;
 
+    aside.handbook-toc {
+      @media (max-width: $screen-xs) {
+        padding: 0 0.5rem;
+        box-sizing: border-box;
+      }
+    }
+
+    .whitespace.raised {
+      width: fill-available;
+      width: -moz-available;
+      width: -webkit-fill-available;
+    }
+
     @media (max-width: 999px) {
       flex-direction: column;
     }

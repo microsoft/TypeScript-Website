@@ -38,5 +38,5 @@ const CustomColorSwitcherCode = () => {
 }
 
 exports.onRenderBody = ({ setPreBodyComponents }) => {
-  setPreBodyComponents(<CustomColorSwitcherCode />)
+  setPreBodyComponents(<CustomColorSwitcherCode key="CustomColorSwitcherCode" />)
 }
