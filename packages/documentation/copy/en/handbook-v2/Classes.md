@@ -155,7 +155,7 @@ class Point {
 
   // Constructor overloads
   constructor(x: number, y: number);
-  constructor(xy: string);
+  constructor(x: string);
   constructor(x: string | number, y: number = 0) {
     // Code logic here
   }
