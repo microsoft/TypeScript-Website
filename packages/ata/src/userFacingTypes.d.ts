@@ -20,6 +20,8 @@ export interface ATABootstrapConfig {
   fetcher?: typeof fetch
   /** If you need a custom logger instead of the console global */
   logger?: Logger
+  /** Whether to use package.json as the source of truth for transitive dependencies' versions */
+  resolveDependenciesFromPackageJson?: boolean;
 }
 
 type ModuleMeta = { state: "loading" }

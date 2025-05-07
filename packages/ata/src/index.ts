@@ -29,9 +29,22 @@ export interface ATABootstrapConfig {
   fetcher?: typeof fetch
   /** If you need a custom logger instead of the console global */
   logger?: Logger
+  /** Whether to use package.json as the source of truth for transitive dependencies' versions */
+  resolveDependenciesFromPackageJson?: boolean
 }
 
-type ModuleMeta = { state: "loading" }
+type PackageJsonDependencies = {
+  [packageName: string]: string;
+};
+
+type PackageJson = { 
+  dependencies?: PackageJsonDependencies;
+  devDependencies?: PackageJsonDependencies;
+  peerDependencies?: PackageJsonDependencies;
+  optionalDependencies? :PackageJsonDependencies;
+}
+
+type ModuleMeta = { state: "loading", typesPackageJson?: PackageJson }
 
 /**
  * The function which starts up type acquisition,
@@ -60,8 +73,8 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     })
   }
 
-  async function resolveDeps(initialSourceFile: string, depth: number) {
-    const depsToGet = getNewDependencies(config, moduleMap, initialSourceFile)
+  async function resolveDeps(initialSourceFile: string, depth: number, parentPackageJson?: PackageJson) {
+    const depsToGet = getNewDependencies(config, moduleMap, initialSourceFile, parentPackageJson)
 
     // Make it so it won't get re-downloaded
     depsToGet.forEach(dep => moduleMap.set(dep.module, { state: "loading" }))
@@ -100,6 +113,12 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
 
       if (typeof pkgJSON == "string") {
         fsMap.set(path, pkgJSON)
+
+        const moduleMeta = moduleMap.get(tree.moduleName);
+        if (moduleMeta) {
+          moduleMeta.typesPackageJson = JSON.parse(pkgJSON) as PackageJson
+        }
+
         config.delegate.receivedFile?.(pkgJSON, path)
       } else {
         config.logger?.error(`Could not download package.json for ${tree.moduleName}`)
@@ -124,7 +143,11 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
           }
 
           // Recurse through deps
-          await resolveDeps(dtsCode, depth + 1)
+          let typesPackageJson
+          if (config.resolveDependenciesFromPackageJson){
+            typesPackageJson = moduleMap.get(dts.moduleName)?.typesPackageJson
+          }
+          await resolveDeps(dtsCode, depth + 1, typesPackageJson)
         }
       })
     )
@@ -154,11 +177,23 @@ function treeToDTSFiles(tree: NPMTreeMeta, vfsPrefix: string) {
   return dtsRefs
 }
 
+function hasSemverOperator(version: string) {
+  return /^[\^~>=<]/.test(version);
+}
+
+function findModuleVersionInPackageJson(packageJson: PackageJson, moduleName: string): string | undefined {
+  const depTypes = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'] as const;
+  
+  return depTypes
+      .map(type => packageJson[type]?.[moduleName])
+      .find(version => version !== undefined);
+}
+
 /**
  * Pull out any potential references to other modules (including relatives) with their
  * npm versioning strat too if someone opts into a different version via an inline end of line comment
  */
-export const getReferencesForModule = (ts: typeof import("typescript"), code: string) => {
+export const getReferencesForModule = (ts: typeof import("typescript"), code: string, parentPackageJson?: PackageJson) => {
   const meta = ts.preProcessFile(code)
 
   // Ensure we don't try download TypeScript lib references
@@ -178,7 +213,12 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
     if (!r.fileName.startsWith(".")) {
       version = "latest"
       const line = code.slice(r.end).split("\n")[0]!
-      if (line.includes("// types:")) version = line.split("// types: ")[1]!.trim()
+      if (line.includes("// types:")) {
+        version = line.split("// types: ")[1]!.trim()
+      } else if (parentPackageJson) {
+        const moduleName = mapModuleNameToModule(r.fileName)
+        version =  findModuleVersionInPackageJson(parentPackageJson, moduleName) ?? version
+      }
     }
 
     return {
@@ -189,8 +229,8 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
 }
 
 /** A list of modules from the current sourcefile which we don't have existing files for */
-export function getNewDependencies(config: ATABootstrapConfig, moduleMap: Map<string, ModuleMeta>, code: string) {
-  const refs = getReferencesForModule(config.typescript, code).map(ref => ({
+export function getNewDependencies(config: ATABootstrapConfig, moduleMap: Map<string, ModuleMeta>, code: string, parentPackageJson?: PackageJson) {
+  const refs = getReferencesForModule(config.typescript, code, parentPackageJson).map(ref => ({
     ...ref,
     module: mapModuleNameToModule(ref.module),
   }))
@@ -210,7 +250,7 @@ export const getFileTreeForModuleWithTag = async (
 
   // I think having at least 2 dots is a reasonable approx for being a semver and not a tag,
   // we can skip an API request, TBH this is probably rare
-  if (toDownload.split(".").length < 2) {
+  if (toDownload.split(".").length < 2 || hasSemverOperator(toDownload)) {
     // The jsdelivr API needs a _version_ not a tag. So, we need to switch out
     // the tag to the version via an API request.
     const response = await getNPMVersionForModuleReference(config, moduleName, toDownload)
