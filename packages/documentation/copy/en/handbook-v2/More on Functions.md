@@ -292,7 +292,7 @@ const b = firstElement2([1, 2, 3]);
 ```
 
 These might seem identical at first glance, but `firstElement1` is a much better way to write this function.
-Its inferred return type is `Type`, but `firstElement2`'s inferred return type is `any` because TypeScript has to resolve the `arr[0]` expression using the constraint type, rather than "waiting" to resolve the element during a call.
+Its inferred return type is `Type`, but `firstElement2`'s inferred return type is `any` because TypeScript uses the constraint type `any[]`, rather than `Type`, when resolving the `arr[0]` expression.
 
 > **Rule**: When possible, use the type parameter itself rather than constraining it
 
