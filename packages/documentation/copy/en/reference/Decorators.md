@@ -107,14 +107,14 @@ If we were to use [decorator factories](#decorator-factories), we can observe th
 // @experimentalDecorators
 function first() {
   console.log("first(): factory evaluated");
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (_target: any, _propertyKey: string, _descriptor: PropertyDescriptor) {
     console.log("first(): called");
   };
 }
 
 function second() {
   console.log("second(): factory evaluated");
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (_target: any, _propertyKey: string, _descriptor: PropertyDescriptor) {
     console.log("second(): called");
   };
 }
@@ -244,7 +244,7 @@ The following is an example of a method decorator (`@enumerable`) applied to a m
 ```ts twoslash
 // @experimentalDecorators
 function enumerable(value: boolean) {
-  return function (target: any,propertyKey: string,descriptor: PropertyDescriptor) {
+  return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     descriptor.enumerable = value;
   };
 }
