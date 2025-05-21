@@ -173,19 +173,21 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
     .filter(f => !isDtsFile(f.fileName))
     .filter(d => !libMap.has(d.fileName))
 
-  return references.map(r => {
-    let version = undefined
-    if (!r.fileName.startsWith(".")) {
-      version = "latest"
-      const line = code.slice(r.end).split("\n")[0]!
-      if (line.includes("// types:")) version = line.split("// types: ")[1]!.trim()
-    }
+  return references
+    .map(r => {
+      let version = undefined
+      if (!r.fileName.startsWith(".")) {
+        version = "latest"
+        const line = code.slice(r.end).split("\n")[0]!
+        if (line.includes("// types:")) version = line.split("// types: ")[1]!.trim()
+      }
 
-    return {
-      module: r.fileName,
-      version,
-    }
-  })
+      return {
+        module: r.fileName,
+        version,
+      }
+    })
+    .filter((r, index, self) => self.findIndex(m => m.module === r.module && m.version === r.version) === index)
 }
 
 /** A list of modules from the current sourcefile which we don't have existing files for */

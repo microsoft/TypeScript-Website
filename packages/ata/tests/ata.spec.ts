@@ -16,6 +16,11 @@ describe(getReferencesForModule, () => {
     const code = "import {asda} from '123' // types: 1.2.3"
     expect(getReferencesForModule(ts, code)[0]).toEqual({ module: "123", version: "1.2.3" })
   })
+
+  it("removes duplicate imports", () => {
+    const code = "import 'abc'; import {asda} from 'abc'"
+    expect(getReferencesForModule(ts, code).map(m => m.module)).toEqual(["abc"])
+  })
 })
 
 describe("ignores lib references", () => {
