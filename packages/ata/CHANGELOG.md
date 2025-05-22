@@ -1,5 +1,11 @@
 # @typescript/ata
 
+## 0.9.8
+
+### Patch Changes
+
+- [#3391](https://github.com/microsoft/TypeScript-Website/pull/3391) [`5e10fd0`](https://github.com/microsoft/TypeScript-Website/commit/5e10fd05e4fd5ac42ac4e95baecaa7b8b0e8fa19) Thanks [@ChaseMalik](https://github.com/ChaseMalik)! - Remove duplicate modules from getReferencesForModule
+
 ## 0.9.7
 
 ### Patch Changes
