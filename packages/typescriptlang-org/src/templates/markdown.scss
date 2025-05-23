@@ -132,9 +132,17 @@
     font-size: 1.2rem;
   }
 
-  .black-tick {
-    color: $ts-muted-green;
+  .tick-if-not-strict {
+    color: $ts-main-blue-color;
     font-size: 1.2rem;
+  }
+
+  .tick-if-not-strict:after {
+    content: "*";
+  }
+
+  td > .tick-if-not-strict:after {
+    position: absolute;
   }
 
   .red-cross {
