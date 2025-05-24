@@ -394,7 +394,7 @@ f(undefined);
 Once you've learned about optional parameters and function type expressions, it's very easy to make the following mistakes when writing functions that invoke callbacks:
 
 ```ts twoslash
-function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+function myForEach<T>(arr: T[], callback: (arg: T, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
     callback(arr[i], i);
   }
@@ -419,7 +419,7 @@ In other words, the function definition says that the implementation might look 
 
 ```ts twoslash
 // @errors: 2532 18048
-function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+function myForEach<T>(arr: T[], callback: (arg: T, index?: number) => void) {
   for (let i = 0; i < arr.length; i++) {
     // I don't feel like providing the index today
     callback(arr[i]);
