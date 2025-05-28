@@ -165,11 +165,15 @@ pre .error {
   position: absolute;
   background-color: #fee;
   border-left: 2px solid #bf1818;
-  margin-right: -2px;
-  /* Give the space to the error code */
   display: flex;
   align-items: center;
   color: black;
+  padding-left: 12px;
+  padding-right: 8px;
+}
+
+pre .error > span {
+  margin-right: 12px;
 }
 
 pre .error .code {
