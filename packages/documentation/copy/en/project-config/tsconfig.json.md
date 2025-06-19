@@ -104,4 +104,4 @@ To learn more about the hundreds of configuration options in the [TSConfig Refer
 
 ## Schema
 
-The `tsconfig.json` Schema can be found at [the JSON Schema Store](http://json.schemastore.org/tsconfig).
+The `tsconfig.json` Schema can be found at [the JSON Schema Store](https://json.schemastore.org/tsconfig).
