@@ -380,7 +380,7 @@ export default {
 One thing to note is that `const` assertions can only be applied immediately on simple literal expressions.
 
 ```ts
-// Error! A 'const' assertion can only be applied to a
+// Error! A 'const' assertion can only be applied
 // to a string, number, boolean, array, or object literal.
 let a = (Math.random() < 0.5 ? 0 : 1) as const;
 let b = (60 * 60 * 1000) as const;
