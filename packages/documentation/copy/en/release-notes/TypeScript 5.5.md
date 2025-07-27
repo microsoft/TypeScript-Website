@@ -644,7 +644,7 @@ For example, imagine the following `tsconfig.base.json`:
 {
     "compilerOptions": {
         "typeRoots": [
-            "./node_modules/@types"
+            "./node_modules/@types",
             "./custom-types"
         ],
         "outDir": "dist"
@@ -670,7 +670,7 @@ This means that the above `tsconfig.base.json` could be rewritten as:
 {
     "compilerOptions": {
         "typeRoots": [
-            "${configDir}/node_modules/@types"
+            "${configDir}/node_modules/@types",
             "${configDir}/custom-types"
         ],
         "outDir": "${configDir}/dist"
