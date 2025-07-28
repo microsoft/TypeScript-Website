@@ -58,6 +58,7 @@ export function getDefaultSandboxCompilerOptions(
     target: monaco.languages.typescript.ScriptTarget.ES2017,
     jsx: monaco.languages.typescript.JsxEmit.React,
     module: monaco.languages.typescript.ModuleKind.ESNext,
+    baseUrl: "file:///",
   }
 
   if (major >= 5) {
