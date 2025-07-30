@@ -1,3 +1,5 @@
+import { CommandLineOption, CommandLineOptionOfBooleanType } from "typescript"
+
 type Sandbox = import("@typescript/sandbox").Sandbox
 type Monaco = typeof import("monaco-editor")
 
@@ -11,14 +13,6 @@ type OptionsSummary = {
 
 // This is where all the localized descriptions come from
 declare const optionsSummary: OptionsSummary[]
-
-type CompilerOptStub = {
-  name: string
-  type: string
-  isCommandLineOnly: boolean
-  category: any
-  description: any
-}
 
 const notCompilerOptions = ["Project_Files_0", "Watch_Options_999", "Command_line_Options_6171"]
 const notRelevantToPlayground = [
@@ -56,15 +50,15 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   container.id = "boolean-options-container"
   configContainer.appendChild(container)
 
-  // @ts-ignore
-  const allOptions: CompilerOptStub[] = sandbox.ts.optionDeclarations
+  const allOptions = sandbox.ts.optionDeclarations
 
   const boolOptions = allOptions.filter(
-    k =>
+    (k): k is CommandLineOptionOfBooleanType & Required<Pick<CommandLineOption, "category" | "description">> =>
       !notRelevantToPlayground.includes(k.name) &&
       k.type === "boolean" &&
       !k.isCommandLineOnly &&
-      k.category &&
+      !!k.category &&
+      !!k.description &&
       !notCompilerOptions.includes(k.category.key)
   )
 

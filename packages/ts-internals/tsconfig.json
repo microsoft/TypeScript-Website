@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ES5",
+    "strict": true,
+    "skipLibCheck": false,
+    "noEmit": true
+  }
+}

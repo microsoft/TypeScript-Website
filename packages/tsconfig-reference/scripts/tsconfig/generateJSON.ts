@@ -10,7 +10,6 @@ console.log("TSConfig Ref: JSON for TSConfig");
 
 import ts from "typescript";
 
-import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";
 import { join } from "path";
 import prettier from "prettier";
@@ -40,7 +39,7 @@ const writeString = (name, text) =>
     prettier.format(text, { filepath: name })
   );
 
-export interface CompilerOptionJSON extends CommandLineOptionBase {
+export interface CompilerOptionJSON extends ts.CommandLineOptionBase {
   releaseVersion?: string;
   allowedValues?: string[];
   categoryCode?: number;
@@ -54,13 +53,9 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
 
 // These are all
 const options = [
-  // @ts-ignore
   ...ts.optionDeclarations,
-  // @ts-ignore
   ...ts.optionsForWatch,
-  // @ts-ignore
   ...ts.buildOpts,
-  // @ts-ignore
   ...ts.typeAcquisitionDeclarations,
 ].filter((item, pos, arr) => arr.indexOf(item) == pos) as CompilerOptionJSON[];
 
@@ -73,7 +68,6 @@ const filteredOptions = options
 
 // The import from TS isn't 'clean'
 const buildOpts = ["build", "verbose", "dry", "clean", "force"];
-// @ts-ignore
 const watchOpts = [...ts.optionsForWatch.map((opt) => opt.name), "watch"];
 
 // We don't get structured data for all compiler flags (especially ones which aren't in 'compilerOptions')
@@ -233,6 +227,6 @@ categoryMap["999"] = {
 
 writeJSON("tsconfigCategories.json", categoryMap);
 
-// @ts-ignore - Print the defaults for a TS Config file
+// Print the defaults for a TS Config file
 const defaults = ts.defaultInitCompilerOptions;
 writeJSON("tsconfigDefaults.json", defaults);

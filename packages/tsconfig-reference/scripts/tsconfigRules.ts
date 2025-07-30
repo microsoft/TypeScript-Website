@@ -3,28 +3,6 @@ import remark from "remark";
 import remarkHTML from "remark-html";
 import ts from "typescript";
 
-declare module "typescript" {
-  const optionDeclarations: CommandLineOption[];
-  const optionsForWatch: CommandLineOption[];
-  const typeAcquisitionDeclarations: CommandLineOption[];
-  const defaultInitCompilerOptions: ts.CompilerOptions;
-}
-
-export interface CommandLineOption {
-  name: string;
-  type:
-  | "string"
-  | "number"
-  | "boolean"
-  | "object"
-  | "list"
-  | Map<string, number | string>;
-  defaultValueDescription?: string | number | boolean | ts.DiagnosticMessage;
-  category?: ts.DiagnosticMessage;
-  strictFlag?: true;
-  element: CommandLineOption;
-}
-
 /**
  * Changes to these rules should be reflected in the following files:
  * https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/tsconfig.json
@@ -56,17 +34,12 @@ export const deprecated: CompilerOptionName[] = [
 /** Things which people really shouldn't use, but need to document  */
 export const internal: CompilerOptionName[] = ["preserveWatchOutput", "stripInternal"];
 
-// @ts-ignore
-// prettier-ignore
-export const typeAcquisitionCompilerOptNames: string[] = ts.typeAcquisitionDeclarations.map((c) => c.name);
+export const typeAcquisitionCompilerOptNames = ts.typeAcquisitionDeclarations.map((c) => c.name);
 
-// @ts-ignore
-export const watchOptionCompilerOptNames: string[] = ts.optionsForWatch.map((c) => c.name);
+export const watchOptionCompilerOptNames = ts.optionsForWatch.map((c) => c.name);
 
-// @ts-ignore
 const common = ts.commonOptionsWithBuild;
-// @ts-ignore
-export const buildOptionCompilerOptNames: string[] = ts.buildOpts
+export const buildOptionCompilerOptNames = ts.buildOpts
   .filter((c) => !common.includes(c))
   .map((c) => c.name);
 
@@ -274,8 +247,8 @@ export const defaultsForOptions = {
 };
 
 function formatDefaultValue(
-  defaultValue: CommandLineOption["defaultValueDescription"],
-  type: CommandLineOption["type"]
+  defaultValue: ts.CommandLineOption["defaultValueDescription"],
+  type: ts.CommandLineOption["type"]
 ) {
   if (defaultValue === undefined || typeof type !== "object")
     return defaultValue;
@@ -301,7 +274,7 @@ export const allowedValues = {
   lib: undefined,
 };
 
-function formatAllowedValues(type: CommandLineOption["type"]) {
+function formatAllowedValues(type: ts.CommandLineOption["type"]) {
   if (typeof type !== "object") return;
   // Group and format synonyms: `es6`/`es2015`
   const inverted: { [value: string]: string[] } = {};

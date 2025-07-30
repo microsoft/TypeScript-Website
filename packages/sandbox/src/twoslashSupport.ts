@@ -5,6 +5,7 @@ const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
+type CommandLineOption = import("typescript").CommandLineOption
 
 /**
  * This is a port of the twoslash bit which grabs compiler options
@@ -12,12 +13,11 @@ type CompilerOptions = import("typescript").CompilerOptions
  */
 
 export const extractTwoSlashCompilerOptions = (ts: TS) => {
-  let optMap = new Map<string, any>()
+  const optMap = new Map<string, CommandLineOption>()
 
   if (!("optionDeclarations" in ts)) {
     console.error("Could not get compiler options from ts.optionDeclarations - skipping twoslash support.")
   } else {
-    // @ts-ignore - optionDeclarations is not public API
     for (const opt of ts.optionDeclarations) {
       optMap.set(opt.name.toLowerCase(), opt)
     }
@@ -45,7 +45,7 @@ export const extractTwoSlashCompilerOptions = (ts: TS) => {
   }
 }
 
-function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, any>) {
+function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, CommandLineOption>) {
   const opt = optMap.get(name.toLowerCase())
 
   if (!opt) return
@@ -161,7 +161,6 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
     "noErrorValidation",
     "filename",
   ]
-  // @ts-ignore - ts.optionDeclarations is private
   const optsNames = ts.optionDeclarations.map(o => o.name)
   knowns.concat(optsNames).forEach(name => {
     if (name.startsWith(word.slice(1))) {

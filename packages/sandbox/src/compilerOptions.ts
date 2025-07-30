@@ -94,7 +94,6 @@ export const getCompilerOptionsFromParams = (
       if (toSet !== undefined) returnedOptions[key] = toSet
     } else {
       // If that doesn't work, double check that the flag exists and allow it through
-      // @ts-ignore
       const flagExists = ts.optionDeclarations.find(opt => opt.name === key)
       if (flagExists) {
         let realValue: number | boolean = true

@@ -17,17 +17,6 @@ import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem 
 
 const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
-// Hacking in some internal stuff
-declare module "typescript" {
-  type Option = {
-    name: string
-    type: "list" | "boolean" | "number" | "string" | Map<string, any>
-    element?: Option
-  }
-
-  const optionDeclarations: Array<Option>
-}
-
 type QueryPosition = {
   kind: "query" | "completion"
   offset: number

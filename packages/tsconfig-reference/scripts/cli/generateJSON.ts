@@ -9,7 +9,6 @@ console.log("TSConfig Ref: JSON for CLI Opts");
 
 import ts from "typescript";
 
-import { CommandLineOptionBase } from "../types";
 import { writeFileSync, readFileSync } from "fs";
 import { join } from "path";
 import prettier from "prettier";
@@ -32,7 +31,7 @@ const writeString = (name, text) =>
     prettier.format(text, { filepath: name })
   );
 
-export interface CompilerOptionJSON extends CommandLineOptionBase {
+export interface CompilerOptionJSON extends ts.CommandLineOptionBase {
   releaseVersion?: string;
   allowedValues?: string[];
   categoryCode?: number;
@@ -46,20 +45,13 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
 
 const tsconfigOpts = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
 
-const notCompilerFlags = [
-  // @ts-ignore
-  ...ts.optionsForWatch,
-  // @ts-ignore
-  ...ts.buildOpts,
-];
+const notCompilerFlags = [...ts.optionsForWatch, ...ts.buildOpts];
 
-// @ts-ignore
 const allFlags = ts.optionDeclarations.concat(notCompilerFlags) as CompilerOptionJSON[];
 const allOptions = Array.from(new Set(allFlags)).sort((l, r) => l.name.localeCompare(r.name));
 
 // The import from TS isn't 'clean'
 const buildOpts = ["build", "verbose", "dry", "clean", "force"];
-// @ts-ignore
 const watchOpts = [...ts.optionsForWatch.map((opt) => opt.name), "watch"];
 
 // Cut down the list
@@ -105,9 +97,7 @@ filteredOptions.forEach((option) => {
 
   const inTSConfigOpts = !!tsconfigOpts.find((opt) => opt.name === option.name);
 
-  // @ts-ignore
   const inWatchOrTypeAcquisition = !!ts.optionsForWatch
-    // @ts-ignore
     .concat(ts.typeAcquisitionDeclarations)
     .find((opt) => opt.name === option.name);
 
