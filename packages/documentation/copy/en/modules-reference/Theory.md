@@ -105,7 +105,7 @@ The `module` compiler option provides this information to the compiler. Its prim
 
 The available `module` settings are
 
-- [**`node16`**](/docs/handbook/modules/reference.html#node16-node18-nodenext): Reflects the module system of Node.js v16+, which supports ES modules and CJS modules side-by-side with particular interoperability and detection rules.
+- [**`node16`**](/docs/handbook/modules/reference.html#node16-node18-node20-nodenext): Reflects the module system of Node.js v16+, which supports ES modules and CJS modules side-by-side with particular interoperability and detection rules.
 - [**`node18`**](/docs/handbook/modules/reference.html#node16-node18-nodenext): Reflects the module system of Node.js v18+, which adds support for import attributes.
 - [**`nodenext`**](/docs/handbook/modules/reference.html#node16-node18-nodenext): A moving target reflecting the latest Node.js versions as Node.js’s module system evolves. As of TypeScript 5.8, `nodenext` supports `require` of ECMAScript modules.
 - [**`es2015`**](/docs/handbook/modules/reference.html#es2015-es2020-es2022-esnext): Reflects the ES2015 language specification for JavaScript modules (the version that first introduced `import` and `export` to the language).

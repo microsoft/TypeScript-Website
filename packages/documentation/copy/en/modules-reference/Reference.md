@@ -201,7 +201,7 @@ declare module "*.html" {
 
 This section discusses the details of each `module` compiler option value. See the [_Module output format_](/docs/handbook/modules/theory.html#the-module-output-format) theory section for more background on what the option is and how it fits into the overall compilation process. In brief, the `module` compiler option was historically only used to control the output module format of emitted JavaScript files. The more recent `node16`, `node18`, and `nodenext` values, however, describe a wide range of characteristics of Node.js’s module system, including what module formats are supported, how the module format of each file is determined, and how different module formats interoperate.
 
-### `node16`, `node18`, `nodenext`
+### `node16`, `node18`, `node20`, `nodenext`
 
 Node.js supports both CommonJS and ECMAScript modules, with specific rules for which format each file can be and how the two formats are allowed to interoperate. `node16`, `node18`, and `nodenext` describe the full range of behavior for Node.js’s dual-format module system, and **emit files in either CommonJS or ESM format**. This is different from every other `module` option, which are runtime-agnostic and force all output files into a single format, leaving it to the user to ensure the output is valid for their runtime.
 
