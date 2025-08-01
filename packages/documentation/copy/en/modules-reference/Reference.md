@@ -1121,7 +1121,7 @@ import mod = require("./mod");        // `require` algorithm due to syntax (emit
 
 #### Implied and enforced options
 
-- `--moduleResolution node16` and `nodenext` must be paired with [`--module node16`, `node18`, or `nodenext`](#node16-node18-nodenext). 
+- `--moduleResolution node16` and `nodenext` must be paired with [`--module node16`, `node18`, `node20`, or `nodenext`](#node16-node18-node20-nodenext).
 
 #### Supported features
 

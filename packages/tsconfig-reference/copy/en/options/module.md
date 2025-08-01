@@ -89,7 +89,7 @@ In addition to the base functionality of `ES2015`/`ES6`, `ES2020` adds support f
 
 #### `node16`/`node18`/`node20`/`nodenext`
 
-The `node16`, `node18`, `node20`, and `nodenext` modes integrate with Node's [native ECMAScript Module support](https://nodejs.org/api/esm.html). The emitted JavaScript uses either `CommonJS` or `ES2020` output depending on the file extension and the value of the `type` setting in the nearest `package.json`. Module resolution also works differently. You can learn more in the [handbook](/docs/handbook/esm-node.html) and [Modules Reference](/docs/handbook/modules/reference.html#node16-node18-nodenext).
+The `node16`, `node18`, `node20`, and `nodenext` modes integrate with Node's [native ECMAScript Module support](https://nodejs.org/api/esm.html). The emitted JavaScript uses either `CommonJS` or `ES2020` output depending on the file extension and the value of the `type` setting in the nearest `package.json`. Module resolution also works differently. You can learn more in the [handbook](/docs/handbook/esm-node.html) and [Modules Reference](/docs/handbook/modules/reference.html#node16-node18-node20-nodenext).
 
 - `node16` is available from TypeScript 4.7
 - `node18` is available from TypeScript 5.8 as a replacement for `node16`, with added support for import attributes.
