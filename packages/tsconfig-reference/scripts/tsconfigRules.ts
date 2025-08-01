@@ -240,6 +240,7 @@ export const defaultsForOptions = {
   moduleResolution: [
     "`Node10` if [`module`](#module) is `CommonJS`;",
     "`Node16` if [`module`](#module) is `Node16` or `Node18`;",
+    "`Node20` if [`module`](#module) is `Node20`;",
     "`NodeNext` if [`module`](#module) is `NodeNext`;",
     "`Bundler` if [`module`](#module) is `Preserve`;",
     "`Classic` otherwise.",
@@ -265,7 +266,11 @@ export const defaultsForOptions = {
   useUnknownInCatchVariables: trueIf("strict"),
   strictPropertyInitialization: trueIf("strict"),
   strictNullChecks: trueIf("strict"),
-  target: "ES5",
+  target: [
+    "`es2023` if [`module`](#module) is `node20`;",
+    "`esnext` if [`module`](#module) is `nodenext`;",
+    "`ES5` otherwise.",
+  ],
   useDefineForClassFields: [
     "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",

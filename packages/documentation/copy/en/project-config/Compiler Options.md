@@ -868,7 +868,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
-  <td><p><code>Node10</code> if <a href="#module"><code>module</code></a> is <code>CommonJS</code>; <code>Node16</code> if <a href="#module"><code>module</code></a> is <code>Node16</code> or <code>Node18</code>; <code>NodeNext</code> if <a href="#module"><code>module</code></a> is <code>NodeNext</code>; <code>Bundler</code> if <a href="#module"><code>module</code></a> is <code>Preserve</code>; <code>Classic</code> otherwise.</p>
+  <td><p><code>Node10</code> if <a href="#module"><code>module</code></a> is <code>CommonJS</code>; <code>Node16</code> if <a href="#module"><code>module</code></a> is <code>Node16</code> or <code>Node18</code>; <code>Node20</code> if <a href="#module"><code>module</code></a> is <code>Node20</code>; <code>NodeNext</code> if <a href="#module"><code>module</code></a> is <code>NodeNext</code>; <code>Bundler</code> if <a href="#module"><code>module</code></a> is <code>Preserve</code>; <code>Classic</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1462,7 +1462,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
   <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, <code>es2023</code>, <code>es2024</code>, or <code>esnext</code></p>
 </td>
-  <td><p><code>ES5</code></p>
+  <td><p><code>es2023</code> if <a href="#module"><code>module</code></a> is <code>node20</code>; <code>esnext</code> if <a href="#module"><code>module</code></a> is <code>nodenext</code>; <code>ES5</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
