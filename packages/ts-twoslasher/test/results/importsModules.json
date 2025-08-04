@@ -78,7 +78,7 @@
     },
     {
       "text": "(method) Console.log(...data: any[]): void",
-      "docs": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/console/log_static)",
+      "docs": "The **`console.log()`** static method outputs a message to the console.\n\n[MDN Reference](https://developer.mozilla.org/docs/Web/API/console/log_static)",
       "start": 214,
       "length": 3,
       "line": 13,
