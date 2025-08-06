@@ -131,6 +131,7 @@ export type AllDocsPages =
   | "release-notes/TypeScript 5.6.md"
   | "release-notes/TypeScript 5.7.md"
   | "release-notes/TypeScript 5.8.md"
+  | "release-notes/TypeScript 5.9.md"
   | "tutorials/ASP.NET Core.md"
   | "tutorials/Angular.md"
   | "tutorials/Babel with TypeScript.md"
