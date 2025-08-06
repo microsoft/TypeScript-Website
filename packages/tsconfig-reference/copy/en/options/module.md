@@ -93,8 +93,8 @@ The `node16`, `node18`, `node20`, and `nodenext` modes integrate with Node's [na
 
 - `node16` is available from TypeScript 4.7
 - `node18` is available from TypeScript 5.8 as a replacement for `node16`, with added support for import attributes.
-- `node20` is available from TypeScript 5.9 and provides a stable option intended to model the behavior of Node.js v20. Unlike `nodenext`, this option is unlikely to have new behaviors in the future. Also unlike `nodenext`, specifying `--module node20` will imply `--target es2023` unless otherwise configured.
-- `nodenext` is available from TypeScript 4.7, but its behavior changes with the latest stable versions of Node.js. As of TypeScript 5.8, `nodenext` supports `require` of ECMAScript modules. `--module nodenext` implies the floating `--target esnext`.
+- `node20` adds support for require(ESM).
+- `nodenext` is available from TypeScript 4.7, but its behavior changes with the latest stable versions of Node.js. `--module nodenext` implies the floating `--target esnext`.
 
 #### `preserve`
 
