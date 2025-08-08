@@ -239,7 +239,7 @@ export const defaultsForOptions = {
   ],
   moduleResolution: [
     "`Node10` if [`module`](#module) is `CommonJS`;",
-    "`Node16` if [`module`](#module) is `Node16` or `Node18` or `Node20`;",
+    "`Node16` if [`module`](#module) is `Node16`, `Node18`, or `Node20`;",
     "`NodeNext` if [`module`](#module) is `NodeNext`;",
     "`Bundler` if [`module`](#module) is `Preserve`;",
     "`Classic` otherwise.",
