@@ -1,1 +1,7 @@
 name : CodeQL Configuration
+
+paths-ignore:
+  # Contains syntax errors.
+  - 'packages/ts-twoslasher/test/fixtures/**'
+  # Contains code examples with syntax errors.
+  - '**/copy/en/**'
