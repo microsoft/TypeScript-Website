@@ -17,14 +17,9 @@ interface LocalStorageLike {
 declare var localStorage: LocalStorageLike | undefined;
 declare var fetch: FetchLike | undefined;
 
-let hasLocalStorage = false
-try {
-  hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
+import Debug from 'debug'
 
-const hasProcess = typeof process !== `undefined`
-const shouldDebug = (hasLocalStorage && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
-const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
+const debugLog = Debug("typescript:vfs")
 
 export interface VirtualTypeScriptEnvironment {
   sys: System
