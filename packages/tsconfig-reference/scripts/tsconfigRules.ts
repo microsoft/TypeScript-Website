@@ -136,8 +136,9 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["esModuleInterop", ["allowSyntheticDefaultImports"]],
 
   ["out", ["outDir", "outFile"]],
-  ["outDir", ["out", "outFile"]],
+  ["outDir", ["declarationDir", "out", "outFile", "rootDir"]],
   ["outFile", ["out", "outDir"]],
+  ["rootDir", ["outDir"]],
 
   ["diagnostics", ["extendedDiagnostics"]],
   ["extendedDiagnostics", ["diagnostics"]],
@@ -166,7 +167,7 @@ export const relatedTo: [AnOption, AnOption[]][] = [
   ["allowJs", ["checkJs", "emitDeclarationOnly"]],
   ["checkJs", ["allowJs", "emitDeclarationOnly"]],
   ["declaration", ["declarationDir", "emitDeclarationOnly"]],
-  ["declarationDir", ["declaration"]],
+  ["declarationDir", ["declaration", "outDir"]],
   ["emitDeclarationOnly", ["declaration"]],
 
   ["module", ["moduleResolution", "esModuleInterop", "allowImportingTsExtensions", "allowArbitraryExtensions", "resolveJsonModule"]],
@@ -218,6 +219,7 @@ export const defaultsForOptions = {
   ],
   alwaysStrict: trueIf("strict"),
   declaration: trueIf("composite"),
+  declarationDir: "The same directory as [`outDir`](#outDir).",
   esModuleInterop: [
     "`true` if [`module`](#module) is `node16`, `nodenext`, or `preserve`;",
     "`false` otherwise.",
@@ -247,6 +249,7 @@ export const defaultsForOptions = {
   newLine: "`lf`",
   noImplicitAny: trueIf("strict"),
   noImplicitThis: trueIf("strict"),
+  outDir: "The same directory as [`rootDir`](#rootDir).",
   preserveConstEnums: trueIf("isolatedModules"),
   reactNamespace: "React",
   resolvePackageJsonExports: [
