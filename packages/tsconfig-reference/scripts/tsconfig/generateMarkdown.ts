@@ -248,7 +248,7 @@ languages.forEach((lang) => {
           mdTableRows.push(["Internal"]);
         }
 
-        if (option.defaultValue) {
+        if (option.defaultValue !== undefined) {
           mdTableRows.push(["Default", String(option.defaultValue)]);
         }
 
