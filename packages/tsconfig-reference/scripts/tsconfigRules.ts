@@ -186,6 +186,10 @@ export const relatedTo: [AnOption, AnOption[]][] = [
 
   ["preserveValueImports", ["isolatedModules", "importsNotUsedAsValues", "verbatimModuleSyntax"]],
   ["importsNotUsedAsValues", ["preserveValueImports", "verbatimModuleSyntax"]],
+
+  ["erasableSyntaxOnly", ["isolatedModules", "verbatimModuleSyntax"]],
+  ["isolatedModules", ["erasableSyntaxOnly", "verbatimModuleSyntax"]],
+  ["verbatimModuleSyntax", ["erasableSyntaxOnly", "isolatedModules"]],
 ];
 
 /**
@@ -320,6 +324,7 @@ function formatAllowedValues(type: CommandLineOption["type"]) {
 }
 
 export const releaseToConfigsMap: { [key: string]: AnOption[] } = {
+  "5.8": ["erasableSyntaxOnly"],
   "5.7": ["rewriteRelativeImportExtensions"],
   "5.6": ["strictBuiltinIteratorReturn", "noUncheckedSideEffectImports", "noCheck"],
   "5.5": ["isolatedDeclarations"],
