@@ -107,7 +107,7 @@ languages.forEach((lang) => {
       markdownChunks.push(`  <td>${parseMarkdown(optType)}</td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
+        markdownChunks.push(`  <td>${parseMarkdown(JSON.stringify(option.defaultValue))}</td>`);
       }
       markdownChunks.push(`</tr>`);
 
