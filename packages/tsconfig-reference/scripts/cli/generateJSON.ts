@@ -40,7 +40,7 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   deprecated?: string;
   internal?: true;
   recommended?: true;
-  defaultValue?: string;
+  defaultValue?: string | number | boolean;
   hostObj: string;
 }
 
