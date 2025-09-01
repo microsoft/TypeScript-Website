@@ -249,11 +249,11 @@ languages.forEach((lang) => {
         }
 
         if (option.defaultValue !== undefined) {
-          mdTableRows.push(["Default", String(option.defaultValue)]);
+          mdTableRows.push(["Default", JSON.stringify(option.defaultValue)]);
         }
 
         if (option.allowedValues) {
-          mdTableRows.push(["Allowed", option.allowedValues]);
+          mdTableRows.push(["Allowed", option.allowedValues.map(JSON.stringify)]);
         }
 
         if (option.related) {
