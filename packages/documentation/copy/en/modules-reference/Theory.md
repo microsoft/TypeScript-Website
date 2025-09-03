@@ -184,7 +184,7 @@ Can an ES module `import` a CommonJS module? If so, does a default import link t
 
 TypeScript needs to know which of these rule sets to assume in order to provide correct types on (particularly `default`) imports and to error on imports that will crash at runtime. When the `module` compiler option is set to `node16`, `node18`, or `nodenext`, Node.js’s version-specific rules are enforced.[^1] All other `module` settings, combined with the [`esModuleInterop`](/docs/handbook/modules/reference.html#esModuleInterop) option, result in bundler-like interop in TypeScript. (While using `--module esnext` does prevent you from _writing_ CommonJS modules, it does not prevent you from _importing_ them as dependencies. There’s currently no TypeScript setting that can guard against an ES module importing a CommonJS module, as would be appropriate for direct-to-browser code.)
 
-[^1]: In Node.js v22.12.0 and later, a `require` of an ES module is allowed, but only if the resolved module and its top-level imports don’t use top-level `await`. TypeScript does not try to enforce this rule, as it lacks the ability to tell from a declaration file whether the corresponding JavaScript file contains top-level `await`.
+[^1]: In Node.js v20.19.0 and later, a `require` of an ES module is allowed, but only if the resolved module and its top-level imports don’t use top-level `await`. TypeScript does not try to enforce this rule, as it lacks the ability to tell from a declaration file whether the corresponding JavaScript file contains top-level `await`.
 
 ### Module specifiers are not transformed by default
 
@@ -341,7 +341,7 @@ import { add } from "./math.ts";
 This restriction applies since TypeScript [won’t rewrite the extension](#module-specifiers-are-not-transformed) to `.js`, and if `"./math.ts"` appears in an output JS file, that import won’t resolve to another JS file at runtime. TypeScript really wants to prevent you from generating an unsafe output JS file. But what if there _is_ no output JS file? What if you’re in one of these situations:
 
 - You’re bundling this code, the bundler is configured to transpile TypeScript files in-memory, and it will eventually consume and erase all the imports you’ve written to produce a bundle.
-- You’re running this code directly in a TypeScript runtime like Deno or Bun.
+- You’re running this code directly in a TypeScript runtime like Node, Deno or Bun.
 - You’re using `ts-node`, `tsx`, or another transpiling loader for Node.
 
 In these cases, you can turn on `noEmit` (or `emitDeclarationOnly`) and `allowImportingTsExtensions` to disable emitting unsafe JavaScript files and silence the error on `.ts`-extensioned imports.
