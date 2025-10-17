@@ -23,7 +23,7 @@ try {
 } catch (error) { }
 
 const hasProcess = typeof process !== `undefined`
-const shouldDebug = (hasLocalStorage && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
+const shouldDebug = (hasLocalStorage && typeof localStorage!.getItem === 'function' && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
 export interface VirtualTypeScriptEnvironment {
