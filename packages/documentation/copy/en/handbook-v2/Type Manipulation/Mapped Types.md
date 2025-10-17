@@ -30,7 +30,7 @@ type OptionsFlags<Type> = {
 };
 ```
 
-In this example, `OptionsFlags` will take all the properties from the type `Type` and change their values to be a boolean.
+In this example, `OptionsFlags` will take all the properties from the type `Features` and change their values to be a boolean.
 
 ```ts twoslash
 type OptionsFlags<Type> = {
