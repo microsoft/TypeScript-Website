@@ -1,5 +1,11 @@
 # @typescript/vfs
 
+## 1.6.2
+
+### Patch Changes
+
+- [#3450](https://github.com/microsoft/TypeScript-Website/pull/3450) [`1843cf4`](https://github.com/microsoft/TypeScript-Website/commit/1843cf45e06193b3dc072088785fe2bfad477de5) Thanks [@yamcodes](https://github.com/yamcodes)! - Modify localStorage check to prevent crashes in Node 25
+
 ## 1.6.1
 
 ### Patch Changes
