@@ -188,6 +188,8 @@ function longest<Type extends { length: number }>(a: Type, b: Type) {
 const longerArray = longest([1, 2], [1, 2, 3]);
 // longerString is of type 'alice' | 'bob'
 const longerString = longest("alice", "bob");
+// Error! An array of numbers and a string can't be compared
+const alsoNotOK = longest([1, 2], 'alice');
 // Error! Numbers don't have a 'length' property
 const notOK = longest(10, 100);
 ```
@@ -200,7 +202,7 @@ Because we constrained `Type` to `{ length: number }`, we were allowed to access
 Without the type constraint, we wouldn't be able to access those properties because the values might have been some other type without a length property.
 
 The types of `longerArray` and `longerString` were inferred based on the arguments.
-Remember, generics are all about relating two or more values with the same type!
+Remember, generics are all about relating two or more values with the same type! That’s why the call to longest([1, 2], 'alice') is rejected, since the arguments are of different types, breaking the generic constraint that both must match.
 
 Finally, just as we'd like, the call to `longest(10, 100)` is rejected because the `number` type doesn't have a `.length` property.
 
@@ -887,3 +889,4 @@ const f3 = function (): void {
 For more on `void` please refer to these other documentation entries:
 
 - [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+
