@@ -190,6 +190,8 @@ const longerArray = longest([1, 2], [1, 2, 3]);
 const longerString = longest("alice", "bob");
 // Error! Numbers don't have a 'length' property
 const notOK = longest(10, 100);
+// Error! An array of numbers and a string can't be compared
+const alsoNotOK = longest([1, 2], 'alice');
 ```
 
 There are a few interesting things to note in this example.
@@ -887,3 +889,4 @@ const f3 = function (): void {
 For more on `void` please refer to these other documentation entries:
 
 - [FAQ - "Why are functions returning non-void assignable to function returning void?"](https://github.com/Microsoft/TypeScript/wiki/FAQ#why-are-functions-returning-non-void-assignable-to-function-returning-void)
+
