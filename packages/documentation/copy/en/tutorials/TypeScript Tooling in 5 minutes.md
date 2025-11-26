@@ -125,7 +125,8 @@ TypeScript supports new features in JavaScript, like support for class-based obj
 Here we're going to create a `Student` class with a constructor and a few public fields.
 Notice that classes and interfaces play well together, letting the programmer decide on the right level of abstraction.
 
-Also of note, the use of `public` on parameters to the constructor is a shorthand that allows us to automatically create properties with that name.
+Also of note, the use of `public` on constructor parameters is a shorthand that automatically creates properties with those names.
+
 
 ```ts twoslash
 class Student {
