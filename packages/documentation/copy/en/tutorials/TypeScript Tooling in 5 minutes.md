@@ -5,6 +5,7 @@ permalink: /docs/handbook/typescript-tooling-in-5-minutes.html
 oneline: A tutorial to understand how to create a small website with TypeScript
 translatable: true
 ---
+##done
 
 Let's get started by building a simple web application with TypeScript.
 
