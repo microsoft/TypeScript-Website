@@ -13,6 +13,7 @@ That means the following constructs are not supported:
 * `namespace`s and `module`s with runtime code
 * parameter properties in classes
 * Non-ECMAScript `import =` and `export =` assignments
+* `<prefix>`-style type assertions
 
 ```ts
 // ❌ error: An `import ... = require(...)` alias
@@ -43,6 +44,9 @@ enum Direction {
     Left,
     Right,
 }
+
+// ❌ error: <prefix>-style type assertion.
+const num = <number>1;
 ```
 
 Similar tools like [ts-blank-space](https://github.com/bloomberg/ts-blank-space) or [Amaro](https://github.com/nodejs/amaro) (the underlying library for type-stripping in Node.js) have the same limitations.
