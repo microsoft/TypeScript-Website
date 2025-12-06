@@ -67,6 +67,19 @@ export interface StringFormatOptions {
 /*~ For example, declaring a method on the module (in addition to its global side effects) */
 export function doSomething(): void;
 
-/*~ If your module exports nothing, you'll need this line. Otherwise, delete it */
+/*~ 
+ If your module does not export anything, include this line to explicitly mark the file as a module.
+
+ By default, TypeScript treats files without any import or export statements as scripts, 
+ meaning their declarations are considered global. This can cause conflicts, such as 
+ duplicate identifier errors, especially when you are augmenting or extending global types.
+
+ Adding `export {}` tells TypeScript that this file is a module. This scopes the declarations 
+ to the module, preventing them from leaking into the global scope and avoiding naming conflicts.
+
+ For more information on how TypeScript distinguishes between scripts and modules, see:
+ https://www.typescriptlang.org/docs/handbook/modules.html#code-organization
+*/
 export {};
+
 ```
