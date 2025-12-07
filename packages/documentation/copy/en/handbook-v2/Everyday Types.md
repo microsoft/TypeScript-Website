@@ -54,6 +54,8 @@ const n: number = obj;
 
 The `any` type is useful when you don't want to write out a long type just to convince TypeScript that a particular line of code is okay.
 
+After all, remember that all the convenience of `any` comes at the cost of losing type safety. Type safety is one of the main motivations for using TypeScript and you should try to avoid using `any` when not necessary.
+
 ### `noImplicitAny`
 
 When you don't specify a type, and TypeScript can't infer it from context, the compiler will typically default to `any`.
@@ -735,3 +737,4 @@ if (firstName === secondName) {
 ```
 
 You can learn more about them in [Symbols reference page](/docs/handbook/symbols.html).
+
