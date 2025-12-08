@@ -20,6 +20,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.repository == 'microsoft/TypeScript-Website'
     steps:
       - name: Get PR/workflow run info
         id: get-info

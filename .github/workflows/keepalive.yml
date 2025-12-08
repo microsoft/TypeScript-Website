@@ -6,6 +6,7 @@ on:
 jobs:
   keepalive:
     runs-on: ubuntu-latest
+    if: github.repository == 'microsoft/TypeScript-Website'
 
     permissions:
       contents: write
