@@ -17,7 +17,7 @@ This tutorial provides a brief overview of TypeScript, focusing on its type syst
 ## Types by Inference
 
 TypeScript knows the JavaScript language and will generate types for you in many cases.
-For example in creating a variable and assigning it to a particular value, TypeScript will use the value as its type.
+For example in creating a variable and assigning it to a particular value, TypeScript will use the value to infer its type.
 
 ```ts twoslash
 let helloWorld = "Hello World";
