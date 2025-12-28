@@ -617,7 +617,26 @@ declare const staffer: Staff;
 staffer.name;
 //       ^?
 ```
+
 In this case, Staff would require the name property to be both a string and a number, which results in property being of type `never`.
+
+
+
+In comparison, extending interfaces with incompatible properties produces a compile-time error:
+```ts twoslash
+interface Person1 {
+  name: string;
+}
+
+interface Person2 {
+  name: number;
+}
+
+interface Staff extends Person1 , Person2 {}
+```
+Unlike intersection types, interface extension requires properties with the same name to have compatible types.
+
+
 
 ## Generic Object Types
 
