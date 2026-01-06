@@ -189,23 +189,24 @@ export const setupPlayground = (
   sandbox.monaco.languages.registerCodeLensProvider(sandbox.language, {
     provideCodeLenses: function (model, token) {
       // If you have @filename on the first line, don't show the implicit filename
-      const lenses = !showFileCodeLens && !model.getLineContent(1).startsWith("// @filename")
-        ? []
-        : [
-            {
-              range: {
-                startLineNumber: 1,
-                startColumn: 1,
-                endLineNumber: 2,
-                endColumn: 1,
+      const lenses =
+        !showFileCodeLens && !model.getLineContent(1).startsWith("// @filename")
+          ? []
+          : [
+              {
+                range: {
+                  startLineNumber: 1,
+                  startColumn: 1,
+                  endLineNumber: 2,
+                  endColumn: 1,
+                },
+                id: "implicit-filename-first",
+                command: {
+                  id: "noop",
+                  title: `// @filename: ${sandbox.filepath}`,
+                },
               },
-              id: "implicit-filename-first",
-              command: {
-                id: "noop",
-                title: `// @filename: ${sandbox.filepath}`,
-              },
-            },
-          ]
+            ]
       return { lenses, dispose: () => {} }
     },
   })
@@ -267,7 +268,9 @@ export const setupPlayground = (
         ui.flashInfo(i("play_esm_mode"))
       }, 300)
 
-      const nextRes = (moduleNumber === 199 || moduleNumber === 100 ? 99 : 2) as import("monaco-editor").languages.typescript.ModuleResolutionKind
+      const nextRes = (
+        moduleNumber === 199 || moduleNumber === 100 ? 99 : 2
+      ) as import("monaco-editor").languages.typescript.ModuleResolutionKind
       sandbox.setCompilerSettings({ target: 99, moduleResolution: nextRes, module: moduleNumber })
       sandbox.addLibraryToRuntime(JSON.stringify({ name: "playground", type: "module" }), "/package.json")
     }
@@ -301,7 +304,15 @@ export const setupPlayground = (
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
     const a = document.createElement("a")
-    a.textContent = v
+    let display = v
+    if (v.includes("-dev.")) {
+      const match = v.match(/-dev\.(\d{4})(\d{2})(\d{2})$/)
+      if (match) {
+        const date = `${match[1]}-${match[2]}-${match[3]}`
+        display = v + " (" + date + ")"
+      }
+    }
+    a.textContent = display
     a.href = "#"
 
     if (v === "Nightly") {
