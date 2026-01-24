@@ -1,5 +1,5 @@
 {
-  "include": ["src", "src/vendor/lzstring.min.js"],
+  "include": ["src", "src/vendor/lzstring.min.js", "../ts-internals"],
 
   "compilerOptions": {
     "outDir": "../typescriptlang-org/static/js/sandbox",

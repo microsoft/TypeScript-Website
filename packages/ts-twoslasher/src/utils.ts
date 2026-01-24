@@ -23,7 +23,15 @@ export function fileNameToUrlName(s: string) {
   return s.replace(/ /g, "-").replace(/#/g, "sharp").toLowerCase()
 }
 
-export function parsePrimitive(value: string, type: string): any {
+export function parsePrimitive<T extends string>(
+  value: string,
+  type: T
+): {
+  number: number
+  string: string
+  boolean: boolean
+  [type: string]: number | string | boolean
+}[T] {
   switch (type) {
     case "number":
       return +value
@@ -38,6 +46,18 @@ export function parsePrimitive(value: string, type: string): any {
     `The only recognized primitives are number, string and boolean. Got ${type} with ${value}.`,
     `This is likely a typo.`
   )
+}
+
+export function parseObject(value: string, name: string) {
+  try {
+    return JSON.parse(value)
+  } catch (e) {
+    throw new TwoslashError(
+      `Invalid inline compiler value`,
+      `Got ${JSON.stringify(value)} for ${name} but could not parse the string as JSON.`,
+      e instanceof Error ? e.message : ``
+    )
+  }
 }
 
 export function cleanMarkdownEscaped(code: string) {

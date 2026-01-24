@@ -4,7 +4,8 @@ const booleanConfigRegexp = /^\/\/\s?@(\w+)$/
 const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
 
 type TS = typeof import("typescript")
-type CompilerOptions = import("typescript").CompilerOptions
+type CompilerOptions = import("monaco-editor").languages.typescript.CompilerOptions
+type CommandLineOption = import("typescript").CommandLineOption
 
 /**
  * This is a port of the twoslash bit which grabs compiler options
@@ -12,12 +13,11 @@ type CompilerOptions = import("typescript").CompilerOptions
  */
 
 export const extractTwoSlashCompilerOptions = (ts: TS) => {
-  let optMap = new Map<string, any>()
+  const optMap = new Map<string, CommandLineOption>()
 
   if (!("optionDeclarations" in ts)) {
     console.error("Could not get compiler options from ts.optionDeclarations - skipping twoslash support.")
   } else {
-    // @ts-ignore - optionDeclarations is not public API
     for (const opt of ts.optionDeclarations) {
       optMap.set(opt.name.toLowerCase(), opt)
     }
@@ -25,7 +25,7 @@ export const extractTwoSlashCompilerOptions = (ts: TS) => {
 
   return (code: string) => {
     const codeLines = code.split("\n")
-    const options = {} as any
+    const options: CompilerOptions = {}
 
     codeLines.forEach(_line => {
       let match
@@ -45,7 +45,7 @@ export const extractTwoSlashCompilerOptions = (ts: TS) => {
   }
 }
 
-function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, any>) {
+function setOption(name: string, value: string, opts: CompilerOptions, optMap: Map<string, CommandLineOption>) {
   const opt = optMap.get(name.toLowerCase())
 
   if (!opt) return
@@ -57,27 +57,50 @@ function setOption(name: string, value: string, opts: CompilerOptions, optMap: M
       break
 
     case "list":
-      const elementType = opt.element!.type
+    case "listOrElement":
+      const elementType = opt.element.type
       const strings = value.split(",")
-      if (typeof elementType === "string") {
-        opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
-      } else {
-        opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>)!).filter(Boolean)
+      switch (elementType) {
+        case "string":
+        case "number":
+          opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
+          break
+        case "object":
+          opts[opt.name] = strings.map(v => parseObject(v, opt.name))
+          break
+        case "boolean":
+          console.log(`List of ${elementType} is not yet supported.`)
+          break
+        default:
+          opts[opt.name] = strings
+            .map(v => getOptionValueFromMap(opt.name, v, elementType))
+            .filter(v => v !== undefined)
       }
       break
 
-    default:          // It's a map!
-      const optMap = opt.type as Map<string, string>
+    case "object":
+      opts[opt.name] = parseObject(value, opt.name)
+      break
+    default: // It's a map!
+      const optMap = opt.type
       opts[opt.name] = getOptionValueFromMap(opt.name, value, optMap)
   }
 
-  if (opts[opt.name] === undefined) {
-    const keys = Array.from(opt.type.keys() as any)
+  if (opts[opt.name] === undefined && opt.type instanceof Map) {
+    const keys = Array.from(opt.type.keys())
     console.log(`Invalid value ${value} for ${opt.name}. Allowed values: ${keys.join(",")}`)
   }
 }
 
-export function parsePrimitive(value: string, type: string): any {
+export function parsePrimitive<T extends string>(
+  value: string,
+  type: T
+): {
+  number: number
+  string: string
+  boolean: boolean
+  [type: string]: number | string | boolean | undefined
+}[T] {
   switch (type) {
     case "number":
       return +value
@@ -89,11 +112,18 @@ export function parsePrimitive(value: string, type: string): any {
   console.log(`Unknown primitive type ${type} with - ${value}`)
 }
 
+function parseObject(value: string, name: string) {
+  try {
+    return JSON.parse(value)
+  } catch {
+    console.log(`Invalid JSON value ${value} for ${name}.`)
+  }
+}
 
-function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string>) {
+function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string | number>) {
   const result = optMap.get(key.toLowerCase())
   if (result === undefined) {
-    const keys = Array.from(optMap.keys() as any)
+    const keys = Array.from(optMap.keys())
 
     console.error(
       `Invalid inline compiler value`,
@@ -161,7 +191,6 @@ export const twoslashCompletions = (ts: TS, monaco: typeof import("monaco-editor
     "noErrorValidation",
     "filename",
   ]
-  // @ts-ignore - ts.optionDeclarations is private
   const optsNames = ts.optionDeclarations.map(o => o.name)
   knowns.concat(optsNames).forEach(name => {
     if (name.startsWith(word.slice(1))) {

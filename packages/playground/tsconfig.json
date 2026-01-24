@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src", "../ts-internals"],
   "compilerOptions": {
     "outDir": "../typescriptlang-org/static/js/playground",
     "jsx": "react",
@@ -13,6 +13,6 @@
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }

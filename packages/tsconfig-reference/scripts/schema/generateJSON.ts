@@ -9,7 +9,6 @@
 console.log("TSConfig Ref: JSON schema");
 
 import matter from "gray-matter";
-import { CommandLineOptionBase } from "../types";
 import { writeFileSync, readFileSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
@@ -17,14 +16,13 @@ import prettier from "prettier";
 import { CompilerOptionName } from "../../data/_types";
 import ts from "typescript";
 import type { JSONSchema7 } from "json-schema";
-import type { CommandLineOption } from "../tsconfigRules.js";
 
 const toJSONString = (obj) =>
   prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
 const writeJSON = (name, obj) =>
   writeFileSync(new URL(`result/${name}`, import.meta.url), toJSONString(obj));
 
-export interface CompilerOptionJSON extends CommandLineOptionBase {
+export interface CompilerOptionJSON extends ts.CommandLineOptionBase {
   releaseVersion?: string;
   allowedValues?: string[];
   categoryCode?: number;
@@ -154,7 +152,7 @@ for (const [properties, options] of [
 
 // Update optionSchema or optionSchema.items, depending on whether
 // option is a CommandLineOptionOfListType.
-function updateItemsSchema(itemsSchema: JSONSchema7, type: CommandLineOption["type"]) {
+function updateItemsSchema(itemsSchema: JSONSchema7, type: ts.CommandLineOption["type"]) {
   const newEnum = typeof type !== "object" ? undefined : [...type.keys()];
   // Update { enum: ... } if found in itemsSchema.anyOf, or
   // itemsSchema.enum otherwise.

@@ -162,8 +162,8 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
   const meta = ts.preProcessFile(code)
 
   // Ensure we don't try download TypeScript lib references
-  // @ts-ignore - private but likely to never change
-  const libMap: Map<string, string> = ts.libMap || new Map()
+  // private but likely to never change
+  const libMap = ts.libMap || new Map()
 
   // TODO: strip /// <reference path='X' />?
 

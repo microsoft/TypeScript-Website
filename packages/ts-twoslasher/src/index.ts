@@ -10,23 +10,19 @@ type TS = typeof import("typescript")
 type CompilerOptions = import("typescript").CompilerOptions
 type CustomTransformers = import("typescript").CustomTransformers
 
-import { parsePrimitive, cleanMarkdownEscaped, typesToExtension, getIdentifierTextSpans, getClosestWord } from "./utils"
+import {
+  parsePrimitive,
+  parseObject,
+  cleanMarkdownEscaped,
+  typesToExtension,
+  getIdentifierTextSpans,
+  getClosestWord,
+} from "./utils"
 import { validateInput, validateCodeForErrors } from "./validation"
 
 import { createSystem, createVirtualTypeScriptEnvironment, createFSBackedSystem } from "@typescript/vfs"
 
 const log = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
-
-// Hacking in some internal stuff
-declare module "typescript" {
-  type Option = {
-    name: string
-    type: "list" | "boolean" | "number" | "string" | Map<string, any>
-    element?: Option
-  }
-
-  const optionDeclarations: Array<Option>
-}
 
 type QueryPosition = {
   kind: "query" | "completion"
@@ -151,7 +147,7 @@ function filterHighlightLines(codeLines: string[]): { highlights: HighlightPosit
   return { highlights, queries }
 }
 
-function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string>) {
+function getOptionValueFromMap(name: string, key: string, optMap: Map<string, string | number>) {
   const result = optMap.get(key.toLowerCase())
   log(`Get ${name} mapped option: ${key} => ${result}`)
   if (result === undefined) {
@@ -179,18 +175,30 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
           break
 
         case "list":
-          const elementType = opt.element!.type
+        case "listOrElement":
+          const elementType = opt.element.type
           const strings = value.split(",")
-          if (typeof elementType === "string") {
-            opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
-          } else {
-            opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType as Map<string, string>))
+          switch (elementType) {
+            case "string":
+            case "number":
+              opts[opt.name] = strings.map(v => parsePrimitive(v, elementType))
+              break
+            case "object":
+              opts[opt.name] = strings.map(v => parseObject(v, opt.name))
+              break
+            case "boolean":
+              throw new TwoslashError(`Invalid list element type`, `List of ${elementType} is not yet supported.`, ``)
+            default:
+              opts[opt.name] = strings.map(v => getOptionValueFromMap(opt.name, v, elementType))
           }
           break
 
+        case "object":
+          opts[opt.name] = parseObject(value, opt.name)
+          break
         default:
           // It's a map!
-          const optMap = opt.type as Map<string, string>
+          const optMap = opt.type
           opts[opt.name] = getOptionValueFromMap(opt.name, value, optMap)
           break
       }

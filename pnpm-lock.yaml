@@ -242,6 +242,12 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  packages/ts-internals:
+    devDependencies:
+      typescript:
+        specifier: 5.8.1-rc
+        version: 5.8.1-rc
+
   packages/ts-twoslasher:
     dependencies:
       '@typescript/vfs':
