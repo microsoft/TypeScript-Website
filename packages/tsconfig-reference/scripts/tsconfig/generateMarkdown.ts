@@ -248,12 +248,12 @@ languages.forEach((lang) => {
           mdTableRows.push(["Internal"]);
         }
 
-        if (option.defaultValue) {
-          mdTableRows.push(["Default", String(option.defaultValue)]);
+        if (option.defaultValue !== undefined) {
+          mdTableRows.push(["Default", JSON.stringify(option.defaultValue)]);
         }
 
         if (option.allowedValues) {
-          mdTableRows.push(["Allowed", option.allowedValues]);
+          mdTableRows.push(["Allowed", option.allowedValues.map(JSON.stringify)]);
         }
 
         if (option.related) {

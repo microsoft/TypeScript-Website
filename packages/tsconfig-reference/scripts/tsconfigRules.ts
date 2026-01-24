@@ -202,7 +202,7 @@ function trueIf(name: string) {
 
 export const defaultsForOptions = {
   ...Object.fromEntries(
-    ts.optionDeclarations.map((option) => [
+    [...ts.optionDeclarations, ...ts.optionsForWatch].map((option) => [
       option.name,
       typeof option.defaultValueDescription === "object"
         ? option.defaultValueDescription.message

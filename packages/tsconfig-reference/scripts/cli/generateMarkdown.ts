@@ -94,11 +94,11 @@ languages.forEach((lang) => {
           // @ts-ignore
           const or = new Intl.ListFormat(lang, { type: "disjunction" });
           optType = or.format(
-            option.allowedValues.map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`$&`"))
+            option.allowedValues.map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`"$&"`"))
           );
         } else {
           optType = option.allowedValues
-            .map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`$&`"))
+            .map((v) => v.replace(/^[-.0-9_a-z]+$/i, "`"$&"`"))
             .join(", ");
         }
       } else {
@@ -107,7 +107,7 @@ languages.forEach((lang) => {
       markdownChunks.push(`  <td>${parseMarkdown(optType)}</td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
+        markdownChunks.push(`  <td>${parseMarkdown(JSON.stringify(option.defaultValue))}</td>`);
       }
       markdownChunks.push(`</tr>`);
 
