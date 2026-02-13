@@ -60,7 +60,7 @@ it("can import files in the virtual fs", () => {
 })
 
 it("searches node_modules/@types", () => {
-  const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true }
+  const compilerOpts: ts.CompilerOptions = { target: ts.ScriptTarget.ES2016, esModuleInterop: true, types: ["*"] }
   const monorepoRoot = __dirname
 
   const fsMap = new Map<string, string>()
