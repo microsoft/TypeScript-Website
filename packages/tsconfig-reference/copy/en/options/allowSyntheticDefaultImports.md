@@ -26,7 +26,6 @@ For example, without `allowSyntheticDefaultImports` as true:
 // @esModuleInterop: false
 // @filename: utilFunctions.js
 // @noImplicitAny: false
-// @ignoreDeprecations: 6.0
 const getStringLength = (str) => str.length;
 
 module.exports = {

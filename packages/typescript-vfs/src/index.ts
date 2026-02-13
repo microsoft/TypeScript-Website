@@ -477,6 +477,7 @@ const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOption
     skipLibCheck: true,
     skipDefaultLibCheck: true,
     moduleResolution: ts.ModuleResolutionKind.Bundler,
+    ...(ts.versionMajorMinor && Number(ts.versionMajorMinor.split(".")[0]) >= 6 ? { ignoreDeprecations: "6.0" } : {}),
   }
 }
 

@@ -33,7 +33,6 @@ With `esModuleInterop` disabled:
 // @showEmit
 // @esModuleInterop: false
 // @module: commonjs
-// @ignoreDeprecations: 6.0
 import * as fs from "fs";
 import _ from "lodash";
 

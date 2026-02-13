@@ -393,7 +393,6 @@ export const twoPi = valueOfPi * 2;
 // @showEmit
 // @module: umd
 // @moduleResolution: node
-// @ignoreDeprecations: 6.0
 // @resolveJsonModule: false
 // @noErrors
 import { valueOfPi } from "./constants.js";

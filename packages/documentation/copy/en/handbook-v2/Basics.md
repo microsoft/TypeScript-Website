@@ -352,7 +352,6 @@ Let's take a look at what happens when we compile the above function `greet` wit
 ```ts twoslash
 // @showEmit
 // @target: es5
-// @ignoreDeprecations: 6.0
 function greet(person: string, date: Date) {
   console.log(`Hello ${person}, today is ${date.toDateString()}!`);
 }
