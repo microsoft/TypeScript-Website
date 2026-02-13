@@ -19,6 +19,7 @@ Which creates quite a lot of JavaScript:
 ```ts twoslash
 // @showEmit
 // @target: ES5
+// @ignoreDeprecations: 6.0
 const getAPI = async (url: string) => {
   // Get API
   return {};
@@ -30,6 +31,7 @@ Which can be switched out with your own globals via this flag:
 ```ts twoslash
 // @showEmit
 // @target: ES5
+// @ignoreDeprecations: 6.0
 // @noEmitHelpers
 const getAPI = async (url: string) => {
   // Get API

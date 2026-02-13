@@ -24,6 +24,7 @@ Without `downlevelIteration` enabled, a `for / of` loop on any object is downlev
 
 ```ts twoslash
 // @target: ES5
+// @ignoreDeprecations: 6.0
 // @showEmit
 const str = "Hello!";
 for (const s of str) {
@@ -40,6 +41,7 @@ If this implementation is missing, you'll fall back to index-based iteration.
 
 ```ts twoslash
 // @target: ES5
+// @ignoreDeprecations: 6.0
 // @downlevelIteration
 // @showEmit
 const str = "Hello!";
@@ -52,6 +54,7 @@ You can use [tslib](https://www.npmjs.com/package/tslib) via [`importHelpers`](#
 
 ```ts twoslash
 // @target: ES5
+// @ignoreDeprecations: 6.0
 // @downlevelIteration
 // @importHelpers
 // @showEmit

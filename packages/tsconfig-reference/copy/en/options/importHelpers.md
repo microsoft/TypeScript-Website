@@ -24,6 +24,7 @@ Turning on [`downlevelIteration`](#downlevelIteration) and `importHelpers` is st
 ```ts twoslash
 // @showEmit
 // @target: ES5
+// @ignoreDeprecations: 6.0
 // @downleveliteration
 export function fn(arr: number[]) {
   const arr2 = [1, ...arr];
@@ -35,6 +36,7 @@ Then turning on both [`downlevelIteration`](#downlevelIteration) and `importHelp
 ```ts twoslash
 // @showEmit
 // @target: ES5
+// @ignoreDeprecations: 6.0
 // @downleveliteration
 // @importhelpers
 // @noErrors
