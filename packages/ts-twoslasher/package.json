@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "@types/prettier": "^1.19.0",
+    "@types/prettier": "^2.7.3",
     "dts-cli": "^2.0.5",
     "jest": "^29.5.0",
     "jest-file-snapshot": "^0.3.8",
