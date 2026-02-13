@@ -7,9 +7,9 @@ import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import prettier from "prettier";
 
-const toJSONString = (obj) =>
+const toJSONString = (obj: any) =>
   prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
-const writeJSON = (name, obj) =>
+const writeJSON = (name: string, obj: any) =>
   writeFileSync(
     new URL(`../../data/${name}`, import.meta.url),
     toJSONString(obj)
@@ -34,10 +34,10 @@ if (!config) {
 
 const skip = ["TypeScriptCodePage", "TypeScriptExperimentalAsyncFunctions", "TypeScriptOutFile"];
 
-const json = config.TypeScriptBuildConfigurations.map((config) => {
+const json = config.TypeScriptBuildConfigurations!.map((config) => {
   const tscCLIName =
     config._text.includes("--") && config._text.trim().slice(2).split("--")[1].split(" ")[0];
-  const configName = config._attributes.Condition.split("(")[1].split(")")[0];
+  const configName = config._attributes!.Condition.split("(")[1].split(")")[0];
 
   return {
     tscCLIName,

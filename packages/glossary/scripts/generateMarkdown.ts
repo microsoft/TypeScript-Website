@@ -32,7 +32,7 @@ languages.forEach((lang) => {
   const locale = join(__dirname, "..", "copy", lang);
   const fallbackLocale = join(__dirname, "..", "copy", "en");
 
-  const languageMeta = { terms: [] };
+  const languageMeta: { terms: { display: string; id: string }[] } = { terms: [] };
   const markdownChunks: string[] = [];
 
   const glossaryTerms = readdirSync(join(__dirname, "..", "copy", "en")).filter(

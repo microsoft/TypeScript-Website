@@ -30,6 +30,7 @@ export type CompilerOptionName =
   | "project"
   | "showConfig"
   | "listFilesOnly"
+  | "ignoreConfig"
   | "target"
   | "module"
   | "lib"

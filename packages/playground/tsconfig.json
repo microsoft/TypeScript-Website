@@ -1,6 +1,7 @@
 {
   "include": ["src"],
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "outDir": "../typescriptlang-org/static/js/playground",
     "jsx": "react",
     "target": "ES2016",

@@ -37,8 +37,8 @@
       "@types/estree": "0.0.46",
       "@types/eslint": "7.29.0",
       "assert": "2.0.0",
-      "rollup-plugin-typescript2": "0.34.1",
-      "typescript": "5.9.2",
+      "rollup-plugin-typescript2": "0.36.0",
+      "typescript": "6.0.0-dev.20260204",
       "tslib": "^2.6.2",
       "prettier": "^2.0.2",
       "sharp": "0.28.1"
