@@ -2,4 +2,4 @@
 "@typescript/vfs": patch
 ---
 
-Update lib files list
+Update for compatibility with TypeScript 6.0.
