@@ -30,6 +30,7 @@ Enabling the option allows importing JSON, and validating the types in that JSON
 // @resolveJsonModule
 // @module: commonjs
 // @moduleResolution: node
+// @ignoreDeprecations: 6.0
 // @filename: settings.json
 {
     "repo": "TypeScript",
