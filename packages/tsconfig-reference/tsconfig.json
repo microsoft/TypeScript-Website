@@ -5,6 +5,6 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2019",
-    "types": ["node"]
+    "types": ["*"]
   }
 }

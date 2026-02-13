@@ -26,6 +26,6 @@
     },
     "jsx": "react",
     "esModuleInterop": true,
-    "types": ["node"]
+    "types": ["*"]
   }
 }
