@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ToolsPage from "../templates/pages/tools.tsx";
+---
+
+<BaseLayout
+  title="Reference Tools"
+  description="Online tooling to help you understand TypeScript"
+  lang="en"
+>
+  <ToolsPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

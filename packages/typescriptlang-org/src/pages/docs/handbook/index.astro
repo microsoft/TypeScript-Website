@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import HandbookIndexPage from "../../../templates/pages/docs/handbook/index.tsx";
+---
+
+<BaseLayout
+  title="The TypeScript Handbook"
+  description="Your first step to learn TypeScript"
+  lang="en"
+>
+  <HandbookIndexPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

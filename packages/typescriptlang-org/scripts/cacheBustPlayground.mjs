@@ -31,9 +31,9 @@ function copyFolderSync(from, to) {
 // Create a sha copy of the playground and sandbox folders. We want to have
 // a copy (and not just move) because folks rely on the un-prefixed URLs.
 
-copyFolderSync("static/js/playground", `static/js/${gitSha}/playground`)
-copyFolderSync("static/js/sandbox", `static/js/${gitSha}/sandbox`)
+copyFolderSync("public/js/playground", `public/js/${gitSha}/playground`)
+copyFolderSync("public/js/sandbox", `public/js/${gitSha}/sandbox`)
 copyFolderSync(
-  "static/js/playground-worker",
-  `static/js/${gitSha}/playground-worker`
+  "public/js/playground-worker",
+  `public/js/${gitSha}/playground-worker`
 )

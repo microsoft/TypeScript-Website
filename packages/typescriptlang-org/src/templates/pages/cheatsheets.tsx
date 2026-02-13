@@ -32,21 +32,21 @@ const Index: React.FC<Props> = (props) => {
      </div>
 
      <div className="sheet-container">
-        <a className="sheet cs-1" href={require("../../../static/images/cheatsheets/TypeScript Control Flow Analysis.png").default} title={i("cht_cfa") + " " + i("cht_layout_title")}>
-            <img src={require("../../../static/images/cheatsheets/TypeScript Control Flow Analysis.png").default} alt="Control Flow Analysis Cheat Sheet" />
+        <a className="sheet cs-1" href="/images/cheatsheets/TypeScript Control Flow Analysis.png" title={i("cht_cfa") + " " + i("cht_layout_title")}>
+            <img src="/images/cheatsheets/TypeScript Control Flow Analysis.png" alt="Control Flow Analysis Cheat Sheet" />
             <div className="description">{i("cht_cfa")}</div>
         </a>
-        <a className="sheet cs-2" href={require("../../../static/images/cheatsheets/TypeScript Interfaces.png").default} title={i("cht_interfaces") + " " + i("cht_layout_title")}>
-            <img src={require("../../../static/images/cheatsheets/TypeScript Interfaces.png").default} alt="Interfaces Cheat Sheet" />
+        <a className="sheet cs-2" href="/images/cheatsheets/TypeScript Interfaces.png" title={i("cht_interfaces") + " " + i("cht_layout_title")}>
+            <img src="/images/cheatsheets/TypeScript Interfaces.png" alt="Interfaces Cheat Sheet" />
             <div className="description">{i("cht_interfaces")}</div>
 
         </a>
-        <a className="sheet cs-3" href={require("../../../static/images/cheatsheets/TypeScript Types.png").default} title={i("cht_types") + " " + i("cht_layout_title")}>
-            <img src={require("../../../static/images/cheatsheets/TypeScript Types.png").default} alt="Types Cheat Sheet" />
+        <a className="sheet cs-3" href="/images/cheatsheets/TypeScript Types.png" title={i("cht_types") + " " + i("cht_layout_title")}>
+            <img src="/images/cheatsheets/TypeScript Types.png" alt="Types Cheat Sheet" />
             <div className="description">{i("cht_types")}</div>
         </a>
-        <a className="sheet cs-4" href={require("../../../static/images/cheatsheets/TypeScript Classes.png").default} title={i("cht_classes") + " " + i("cht_layout_title")}>
-            <img src={require("../../../static/images/cheatsheets/TypeScript Classes.png").default} alt="Classes Cheat Sheet" />
+        <a className="sheet cs-4" href="/images/cheatsheets/TypeScript Classes.png" title={i("cht_classes") + " " + i("cht_layout_title")}>
+            <img src="/images/cheatsheets/TypeScript Classes.png" alt="Classes Cheat Sheet" />
             <div className="description">{i("cht_classes")}</div>
         </a>
 

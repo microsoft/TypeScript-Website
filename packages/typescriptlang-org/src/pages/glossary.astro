@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GlossaryPage from "../templates/glossary.tsx";
+import { loadGlossaryPage } from "../lib/astro/loadGlossaryData";
+
+const data = await loadGlossaryPage("en");
+---
+
+<BaseLayout
+  title="TypeScript Glossary"
+  description="A glossary of common TypeScript terms"
+  lang="en"
+>
+  <GlossaryPage client:load pageContext={data} />
+</BaseLayout>

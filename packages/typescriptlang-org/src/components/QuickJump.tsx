@@ -6,7 +6,7 @@ import { createIntlLink } from "./IntlLink";
 
 // Automatic metadata from npm and VS Marketplace
 import releaseInfo from "../lib/release-info.json";
-import { withPrefix } from "gatsby";
+import { withPrefix } from "../lib/withPrefix";
 
 export type Props = {
   title: string;

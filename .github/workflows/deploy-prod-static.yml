@@ -49,7 +49,7 @@ jobs:
       - name: Makes the site
         run: |
           pnpm build-site
-          cp -r packages/typescriptlang-org/public site
+          cp -r packages/typescriptlang-org/dist site
 
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5

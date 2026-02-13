@@ -1,5 +1,5 @@
-type PluginFactory = import("../../../../static/js/playground").PluginFactory
-type PluginUtils = import("../../../../static/js/playground").PluginUtils
+type PluginFactory = import("../../../../public/js/playground").PluginFactory
+type PluginUtils = import("../../../../public/js/playground").PluginUtils
 
 export const workbenchMarkdownPlugin: PluginFactory = (i, utils) => {
   let pluginContainer: HTMLDivElement

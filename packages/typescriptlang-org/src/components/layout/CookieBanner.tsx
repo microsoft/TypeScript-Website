@@ -2,21 +2,30 @@
 
 import * as React from "react"
 import "./cookie.scss"
-import { useState } from "react"
-import { Helmet } from "react-helmet"
+import { useState, useEffect } from "react"
 
 declare const WcpConsent: any
 
 export const CookieBanner = (props: { lang: string }) => {
   const [scriptLoaded, setScriptLoaded] = useState(typeof window !== 'undefined' && typeof WcpConsent !== 'undefined')
-  const handleChangeClientState = (newState, addedTags) => {
-    if (addedTags && addedTags.scriptTags) {
-      const foundScript = addedTags.scriptTags.find(({ src }) => src === "https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js")
-      if (foundScript) {
-        foundScript.addEventListener('load', () => setScriptLoaded(true), { once: true })
-      }
+
+  useEffect(() => {
+    if (typeof WcpConsent !== 'undefined') {
+      setScriptLoaded(true)
+      return
     }
-  }
+
+    const script = document.createElement('script')
+    script.src = "https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js"
+    script.async = true
+    script.onload = () => setScriptLoaded(true)
+    document.head.appendChild(script)
+
+    const link = document.createElement('link')
+    link.rel = 'preconnect'
+    link.href = 'https://consentdeliveryfd.azurefd.net/'
+    document.head.appendChild(link)
+  }, [])
 
   const verboseCookieLogging = () => {
     let siteConsent
@@ -42,12 +51,6 @@ export const CookieBanner = (props: { lang: string }) => {
 
   return (
     <>
-      <Helmet htmlAttributes={{ lang: props.lang }} onChangeClientState={handleChangeClientState}>
-        {typeof window !== 'undefined' && typeof WcpConsent === 'undefined'
-          && <script src="https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js" async />}
-        <link rel="preconnect" href="https://consentdeliveryfd.azurefd.net/" />
-      </Helmet>
-
       <div id="cookie-banner" className="openx"></div>
       {(scriptLoaded && verboseCookieLogging(), "")}
     </>

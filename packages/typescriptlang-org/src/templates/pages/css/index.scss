@@ -506,15 +506,44 @@ $headline-foreground-bg: white;
 
           pre {
             margin: 0;
+            padding: 12px;
             background-color: #235a97;
             border: none;
             code {
               font-size: 14px;
               line-height: 16px;
+              white-space: pre;
+            }
+            .line {
+              min-height: 1rem;
+            }
+            .error,
+            .error-behind {
+              margin-left: -14px;
+              margin-top: 8px;
+              margin-bottom: 4px;
+              padding: 6px;
+              padding-left: 14px;
+              width: calc(100% - 20px);
+              white-space: pre-wrap;
+              display: block;
             }
             .error {
+              position: absolute;
               background-color: #ff000026;
               color: #ffc5c5;
+              display: flex;
+              align-items: center;
+              padding-left: 12px;
+              padding-right: 8px;
+            }
+            .error .code {
+              display: none;
+            }
+            .error-behind {
+              user-select: none;
+              visibility: hidden;
+              color: transparent;
             }
           }
 

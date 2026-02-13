@@ -1,5 +1,4 @@
 import React from "react"
-import { graphql } from "gatsby"
 
 import { Layout } from "../components/layout"
 
@@ -11,18 +10,12 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./glossary.scss"
 
-type Props = { pageContext: any, data: GatsbyTypes.TSConfigReferenceTemplateQuery, path: string }
+type Props = { pageContext: { locale: string; html: string; languageMeta: { terms: { id: string; display: string }[] } } }
 
-const GlossaryTemplateComponent = (props) => {
+const GlossaryTemplateComponent = (props: Props) => {
   const i = createInternational<typeof headCopy>(useIntl())
 
-  const post = props.data.markdownRemark
-  if (!post) {
-    console.log("Could not render:", JSON.stringify(props))
-    return <div></div>
-  }
-
-  const meta = props.pageContext.languageMeta as typeof import("../../../glossary/output/en.json")
+  const meta = props.pageContext.languageMeta
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
       <div id="glossary">
@@ -33,22 +26,10 @@ const GlossaryTemplateComponent = (props) => {
             meta.terms.map(t => <li key={t.id}><a href={"#" + t.id}>{t.display}</a></li>)
           }
         </ul>
-        <div dangerouslySetInnerHTML={{ __html: post.html! }} />
+        <div dangerouslySetInnerHTML={{ __html: props.pageContext.html }} />
       </div>
     </Layout>
   )
 }
-
-export const pageQuery = graphql`
-  query GlossaryTemplate($glossaryPath: String!) {
-    markdownRemark(fileAbsolutePath: {eq: $glossaryPath} ) {
-      id
-      html
-      frontmatter {
-        permalink
-      }
-    }
-  }
-`
 
 export default (props: Props) => <Intl locale={props.pageContext.locale}><GlossaryTemplateComponent {...props} /></Intl>

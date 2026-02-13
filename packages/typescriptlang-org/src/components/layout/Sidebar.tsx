@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useEffect } from "react"
-import { Link } from "gatsby"
+/* Link replaced with <a> */
 
 import "./Sidebar.scss"
 import { onAnchorKeyDown, onButtonKeydown } from "./Sidebar-keyboard"
@@ -84,7 +84,7 @@ export const Sidebar = (props: Props) => {
 
       const href = item.permalink!
       return <li key={item.id} {...aria}>
-        <Link to={href} onKeyDown={onAnchorKeyDown}>{item.title}</Link>
+        <a href={href} onKeyDown={onAnchorKeyDown}>{item.title}</a>
       </li>
     } else {
       // Has children

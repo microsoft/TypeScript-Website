@@ -45,7 +45,7 @@ jobs:
         if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
         with:
           name: site
-          path: packages/typescriptlang-org/public
+          path: packages/typescriptlang-org/dist
 
       # Run all the package's tests
       - run: pnpm test

@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "esbuild index.ts --outdir=../typescriptlang-org/static/js/playground-worker  --format=esm --target=es2020 --bundle"
+    "build": "esbuild index.ts --outdir=../typescriptlang-org/public/js/playground-worker  --format=esm --target=es2020 --bundle"
   },
   "dependencies": {
     "esbuild": "^0.17.8"

@@ -15,7 +15,7 @@ const getFileAndStoreLocally = async (url, path, editFunc) => {
 const go = async () => {
   await getFileAndStoreLocally(
     "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js",
-    "static/js/docsearch.js",
+    "public/js/docsearch.js",
     js => {
       const fixAriaByDroppingCustomText = js.replace(
         'aria-label="Link to the result"',
@@ -37,7 +37,7 @@ const go = async () => {
   // Remove the mapping reference
   await getFileAndStoreLocally(
     "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css",
-    "static/css/docsearch.css",
+    "public/css/docsearch.css",
     css => {
       return css.replace("/*# sourceMappingURL=docsearch.min.css.map */", "")
     }

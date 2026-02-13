@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
-import { withPrefix } from "gatsby"
+import { withPrefix } from "../lib/withPrefix"
 import "./ShowExamples.scss"
 
 // @ts-ignore - this is a fallback to english
-import english from "../../static/js/examples/en"
+import english from "../data/examples/en.json"
 import { hasLocalStorage } from "../lib/hasLocalStorage"
 
 interface SamplesJSON {
@@ -35,7 +35,8 @@ const hrefForExample = (example: Example, lang: string) => {
   const prefix = isJS ? "useJavaScript=true" : ""
   const hash = "example/" + example.id
   const params = example.compilerSettings || {}
-  params.q = Math.floor(Math.random() * 512)
+  // Use a fixed cache-bust value for deterministic SSR/client rendering (avoids hydration mismatch)
+  params.q = 0
   const queryParams = Object.keys(params).map(key => key + '=' + params[key]).join('&');
   const langPrefix = lang === "en" ? "" : lang
   return withPrefix(`${langPrefix}/play/?${prefix + queryParams}#${hash}`)
@@ -77,7 +78,7 @@ export type Props = {
 
   locale?: string
   /** DI'd copy of the examples, or fallback to eng */
-  examples?: typeof import("../../static/js/examples/en.json")
+  examples?: typeof import("../data/examples/en.json")
 }
 
 export const RenderExamples = (props: Props) => {

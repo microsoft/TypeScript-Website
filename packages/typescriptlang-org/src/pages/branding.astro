@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BrandingPage from "./_branding.tsx";
+---
+
+<BaseLayout
+  title="Branding"
+  description="Logos and design assets"
+  lang="en"
+>
+  <BrandingPage client:load />
+</BaseLayout>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { graphql } from "gatsby"
+
 import { Layout } from "../components/layout"
 import { Sidebar, SidebarToggleButton } from "../components/layout/Sidebar"
 import { getDocumentationNavForLanguage } from "../lib/documentationNavigation"
@@ -20,7 +20,6 @@ import { Contributors } from "../components/handbook/Contributors"
 import { overrideSubNavLinksWithSmoothScroll, updateSidebarOnScroll } from "./scripts/setupSubNavigationSidebar"
 import { setupLikeDislikeButtons } from "./scripts/setupLikeDislikeButtons"
 import { DislikeUnfilledSVG, LikeUnfilledSVG } from "../components/svgs/documentation"
-import Helmet from "react-helmet"
 
 type Props = {
   pageContext: {
@@ -32,19 +31,39 @@ type Props = {
     slug: string
     lang: string
     modifiedTime: string
+    // Pre-processed data (replaces GraphQL)
+    html: string
+    title: string
+    oneline?: string
+    headings: { value: string; depth: number }[]
+    frontmatter: {
+      permalink?: string
+      title?: string
+      disable_toc?: boolean
+      handbook?: boolean
+      oneline?: string
+      preamble?: string
+      deprecated_by?: string
+      deprecation_redirects?: string[]
+      experimental?: boolean
+    }
+    prev?: { title: string; oneline: string; permalink: string }
+    next?: { title: string; oneline: string; permalink: string }
   }
-  data: GatsbyTypes.GetDocumentBySlugQuery
-  path: string
 }
 
 const HandbookTemplate: React.FC<Props> = (props) => {
-  const post = props.data.markdownRemark
-  if (!post) {
+  const post = {
+    html: props.pageContext.html,
+    frontmatter: props.pageContext.frontmatter,
+    headings: props.pageContext.headings,
+  }
+  if (!post.html) {
     console.log("Could not render:", JSON.stringify(props))
     return <div></div>
   }
 
-  const [deprecationURL, setDeprecationURL] = useState(post.frontmatter!.deprecated_by)
+  const [deprecationURL, setDeprecationURL] = useState(post.frontmatter?.deprecated_by)
 
   const i = createInternational<typeof handbookCopy>(useIntl())
   const IntlLink = createIntlLink(props.pageContext.lang)
@@ -74,8 +93,8 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   }, [])
 
 
-  if (!post.frontmatter) throw new Error(`No front-matter found for the file with props: ${props}`)
-  if (!post.html) throw new Error(`No html found for the file with props: ${props}`)
+  if (!post.frontmatter) throw new Error(`No front-matter found for the file`)
+  if (!post.html) throw new Error(`No html found for the file`)
 
   const selectedID = props.pageContext.id || "NO-ID"
   const sidebarHeaders = post.headings?.filter(h => (h?.depth || 0) <= 3) || []
@@ -113,9 +132,6 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         <div id="handbook-content" role="article">
           {deprecationURL &&
             <>
-              <Helmet>
-                <link rel="canonical" href={`https://www.typescriptlang.org${post.frontmatter.deprecated_by}`} />
-              </Helmet>
               <div id="deprecated-header">
                 <div id="deprecated-content">
                   <div id="deprecated-icon">
@@ -174,7 +190,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
             }
           </article>
 
-          <NextPrev next={props.data.next as any} prev={props.data.prev as any} i={i} IntlLink={IntlLink as any} />
+          <NextPrev next={props.pageContext.prev} prev={props.pageContext.next} i={i} IntlLink={IntlLink as any} />
           <Contributors lang={props.pageContext.lang} i={i} path={props.pageContext.repoPath} lastEdited={props.pageContext.modifiedTime} />
         </div>
       </section>
@@ -188,7 +204,7 @@ type MarkdownHeadingTreeNode = {
   children?: MarkdownHeadingTreeNode[]
 }
 
-function headerListToTree(sidebarHeaders: GatsbyTypes.Maybe<Pick<GatsbyTypes.MarkdownHeading, "value" | "depth">>[]) {
+function headerListToTree(sidebarHeaders: { value?: string; depth?: number }[]) {
   const tree: MarkdownHeadingTreeNode[] = []
   const stack: { node: MarkdownHeadingTreeNode; depth: number }[] = []
 
@@ -237,48 +253,3 @@ function MarkdownHeadingTree(props: { tree: MarkdownHeadingTreeNode[], slug: typ
 }
 
 export default (props: Props) => <Intl locale={props.pageContext.lang}><HandbookTemplate {...props} /></Intl>
-
-export const pageQuery = graphql`
-  query GetDocumentBySlug($slug: String!, $previousID: String, $nextID: String) {    
-    markdownRemark(frontmatter: { permalink: {eq: $slug}}) {
-      id
-      excerpt(pruneLength: 160)
-      html
-      headings {
-        value
-        depth
-      }
-      frontmatter {
-        permalink
-        title
-        disable_toc
-        handbook
-        oneline
-        preamble
-        deprecated_by
-        deprecation_redirects
-        experimental
-      }
-    }
-
-    prev: file(id: { eq: $previousID } ) {
-      childMarkdownRemark  {
-        frontmatter {
-          title
-          oneline
-          permalink
-        }
-      }
-    }
-
-    next: file(id: { eq: $nextID } ) {
-      childMarkdownRemark  {
-        frontmatter {
-          title
-          oneline
-          permalink
-        }
-      }
-    }
-  }
-`

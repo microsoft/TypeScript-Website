@@ -1,0 +1,61 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  lang: string;
+  ogTags?: Record<string, string>;
+}
+
+const { title, description, lang, ogTags } = Astro.props;
+
+const allOgTags = {
+  ...ogTags,
+  "og:title": title,
+  "og:description": description,
+  "twitter:site": "typescriptlang",
+};
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{`TypeScript: ${title}`}</title>
+    <meta name="description" content={description} />
+    {Object.entries(allOgTags).map(([key, value]) => (
+      <meta property={key} content={value} />
+    ))}
+    <link rel="preload" href="/css/docsearch.css" as="style" />
+    <style is:inline>{`
+pre data-err {
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c94824'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat-x 0 100%;
+  padding-bottom: 3px;
+}`}</style>
+    <link rel="manifest" href="/manifest.json" />
+  </head>
+  <body>
+    <script is:inline>
+    (function() {
+      let hasLocalStorage = false
+      try {
+        hasLocalStorage = typeof localStorage !== "undefined"
+      } catch (error) {}
+    
+      const systemIsDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      const hasSetColorTheme = hasLocalStorage && localStorage.getItem("force-color-theme")
+      const customThemeOverride = hasLocalStorage && localStorage.getItem("force-color-theme")
+    
+      if (!hasSetColorTheme && systemIsDark) {
+        document.documentElement.classList.add("dark-theme")
+      } else if (customThemeOverride) {
+        document.documentElement.classList.add(customThemeOverride.replace("force-", "") + "-theme")
+      }
+    
+      const customFontOverride = hasLocalStorage && localStorage.getItem("force-font") || "cascadia"
+      document.documentElement.classList.add('font-' + customFontOverride)
+    })()
+    </script>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BugWorkbenchPage from "./_bug-workbench.tsx";
+---
+
+<BaseLayout
+  title="Bug Workbench"
+  description="Create reproductions of TypeScript bugs"
+  lang="en"
+>
+  <BugWorkbenchPage client:load />
+</BaseLayout>

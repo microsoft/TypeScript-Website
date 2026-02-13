@@ -45,7 +45,7 @@ module.exports = {
         background_color: `white`,
         theme_color: `#3178C6`,
         display: `standalone`,
-        icon: `static/icons/ts-logo-512.png`,
+        icon: `public/icons/ts-logo-512.png`,
       },
     },
 

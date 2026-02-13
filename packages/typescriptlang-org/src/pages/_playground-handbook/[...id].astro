@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlaygroundHandbookPage from "../../templates/playgroundHandbook.tsx";
+import { loadPlaygroundHandbookPages } from "../../lib/astro/loadPlaygroundData";
+
+export async function getStaticPaths() {
+  const pages = await loadPlaygroundHandbookPages();
+
+  return pages.map((page) => ({
+    params: { id: page.slug },
+    props: {
+      pageContext: {
+        title: page.title,
+        lang: "en",
+        html: page.html,
+      },
+    },
+  }));
+}
+
+const { pageContext } = Astro.props;
+---
+
+<BaseLayout
+  title={`Playground - ${pageContext.title}`}
+  description=""
+  lang={pageContext.lang}
+>
+  <PlaygroundHandbookPage client:load pageContext={pageContext} />
+</BaseLayout>

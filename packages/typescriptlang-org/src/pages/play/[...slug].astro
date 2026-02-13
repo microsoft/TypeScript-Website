@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlayExamplePage from "../../templates/play-example.tsx";
+import { loadPlaygroundExamplePages } from "../../lib/astro/loadPlaygroundData";
+
+export async function getStaticPaths() {
+  const pages = loadPlaygroundExamplePages("en");
+
+  return pages.map((page) => ({
+    params: { slug: page.slug },
+    props: {
+      pageContext: {
+        lang: page.lang,
+        name: page.name,
+        title: page.title,
+        html: page.html,
+        redirectHref: page.redirectHref,
+      },
+    },
+  }));
+}
+
+const { pageContext } = Astro.props;
+---
+
+<BaseLayout
+  title={`Playground Example - ${pageContext.title}`}
+  description={pageContext.title}
+  lang={pageContext.lang}
+>
+  <PlayExamplePage client:load pageContext={pageContext} />
+</BaseLayout>

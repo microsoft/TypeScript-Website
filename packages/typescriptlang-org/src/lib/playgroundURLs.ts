@@ -1,4 +1,4 @@
-import { withPrefix } from "gatsby"
+import { withPrefix } from "./withPrefix"
 
 export const getPlaygroundUrls = () => {
   // This will get switched out in CI by:

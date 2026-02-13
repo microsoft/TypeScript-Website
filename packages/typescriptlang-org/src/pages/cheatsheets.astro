@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CheatsheetsPage from "../templates/pages/cheatsheets.tsx";
+---
+
+<BaseLayout
+  title="Cheat Sheets"
+  description="Downloadable syntax reference pages for different parts of everyday TypeScript code"
+  lang="en"
+>
+  <CheatsheetsPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

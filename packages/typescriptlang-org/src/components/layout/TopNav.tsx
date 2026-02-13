@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
-import { withPrefix } from "gatsby"
 
 import "./TopNav.scss"
 import { setupStickyNavigation } from "./stickyNavigation";
 import { useIntl } from "react-intl";
 import { createIntlLink } from "../IntlLink";
+import { withPrefix } from "../../lib/withPrefix";
 
 export type Props = {
   lang: string
@@ -54,16 +54,7 @@ export const SiteNav = (props: Props) => {
     searchScript.async = true;
     searchScript.onload = async () => {
       // @ts-ignore this comes from the script above
-      let universalDocSearch = window.docsearch;
-  
-      if (global.require) {
-        universalDocSearch = await new Promise(resolve => {
-          const re: any = global.require;
-          re(['/js/docsearch.js'], (docsearch) => {
-            resolve(docsearch);
-          });
-        });
-      }
+      const universalDocSearch = window.docsearch;
   
       if (universalDocSearch) {
         loadDocSearch(universalDocSearch);

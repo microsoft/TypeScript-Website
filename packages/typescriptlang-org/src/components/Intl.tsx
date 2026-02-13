@@ -1,5 +1,11 @@
 import * as React from "react"
 import { IntlProvider } from 'react-intl';
+import { lang as enMessages } from "../copy/en/en";
+
+// Static message map - add languages here as needed
+const messagesByLocale: Record<string, Record<string, string>> = {
+  en: enMessages,
+};
 
 type IntlProps = {
   locale: string
@@ -8,12 +14,7 @@ type IntlProps = {
 
 export const Intl = (props: IntlProps) => {
   const { children, locale } = props
-  let messages = require("../copy/en/en").lang
-  try {
-    messages = require("../copy/" + locale + "/" + locale).lang
-  } catch (error) {
-    // NOOP
-  }
+  const messages = messagesByLocale[locale] || messagesByLocale.en
   return (
     <IntlProvider locale={locale || "en"} messages={messages} >
       {children}

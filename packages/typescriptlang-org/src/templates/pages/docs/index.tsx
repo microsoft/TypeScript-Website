@@ -12,7 +12,7 @@ import { useIntl } from "react-intl";
 import { QuickJump } from "../../../components/QuickJump";
 import { getDocumentationNavForLanguage } from "../../../lib/documentationNavigation"
 
-import { Link } from "gatsby"
+/* Link replaced with <a> */
 
 import "../css/documentation.scss"
 import "../../documentation.scss"
@@ -35,22 +35,22 @@ const Index: React.FC<Props> = (props) => {
       {
         id: "1",
         title: i("cht_cfa"),
-        permalink: require("../../../../static/images/cheatsheets/TypeScript Control Flow Analysis.png").default
+        permalink: "/images/cheatsheets/TypeScript Control Flow Analysis.png"
       },
       {
         id: "2",
         title: i("cht_classes"),
-        permalink: require("../../../../static/images/cheatsheets/TypeScript Classes.png").default
+        permalink: "/images/cheatsheets/TypeScript Classes.png"
       },
       {
         id: "3",
         title: i("cht_interfaces"),
-        permalink: require("../../../../static/images/cheatsheets/TypeScript Interfaces.png").default
+        permalink: "/images/cheatsheets/TypeScript Interfaces.png"
       },
       {
         id: "4",
         title: i("cht_types"),
-        permalink: require("../../../../static/images/cheatsheets/TypeScript Types.png").default
+        permalink: "/images/cheatsheets/TypeScript Types.png"
       },
       {
         id: "5",
@@ -75,7 +75,7 @@ const Index: React.FC<Props> = (props) => {
       return <li key={item.id}>
         { path.endsWith(".png") || path.endsWith(".zip") ?
           <a href={path}>{item.title}</a> :
-          <Link to={path}>{item.title}</Link>
+          <a href={path}>{item.title}</a>
         }
        </li>
       }

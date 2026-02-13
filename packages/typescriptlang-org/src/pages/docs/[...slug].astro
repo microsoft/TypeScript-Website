@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DocumentationPage from "../../templates/documentation.tsx";
+import {
+  loadAllDocPages,
+  docPermalinkToSlug,
+} from "../../lib/astro/loadDocPages";
+
+export async function getStaticPaths() {
+  const pages = await loadAllDocPages("en");
+
+  return pages.map((page) => {
+    const slug = docPermalinkToSlug(page.permalink);
+
+    return {
+      params: { slug },
+      props: {
+        pageContext: {
+          id: page.id,
+          nextID: "",
+          previousID: "",
+          repoPath: page.repoPath,
+          slug: page.permalink,
+          lang: page.lang,
+          modifiedTime: page.modifiedTime,
+          html: page.html,
+          title: page.title,
+          oneline: page.oneline,
+          headings: page.headings,
+          frontmatter: page.frontmatter,
+          prev: page.prev,
+          next: page.next,
+        },
+      },
+    };
+  });
+}
+
+const { pageContext } = Astro.props;
+const isHandbook = pageContext.frontmatter?.handbook;
+const prefix = isHandbook ? "Handbook" : "Documentation";
+const title = `${prefix} - ${pageContext.title}`;
+const description = pageContext.frontmatter?.oneline || "";
+---
+
+<BaseLayout title={title} description={description} lang={pageContext.lang}>
+  <DocumentationPage client:load pageContext={pageContext} />
+</BaseLayout>

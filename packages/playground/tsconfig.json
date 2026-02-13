@@ -1,7 +1,7 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "outDir": "../typescriptlang-org/static/js/playground",
+    "outDir": "../typescriptlang-org/public/js/playground",
     "jsx": "react",
     "target": "ES2016",
     "module": "AMD",

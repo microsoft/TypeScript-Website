@@ -7,7 +7,7 @@ import { useIntl } from "react-intl";
 import { createInternational } from "../lib/createInternational"
 import { headCopy } from "../copy/en/head-seo"
 import { Intl } from "../components/Intl"
-import { withPrefix } from "gatsby";
+import { withPrefix } from "../lib/withPrefix"
 
 type Props = {
   pageContext: {

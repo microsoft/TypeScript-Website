@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DTSearchPage from "../../templates/pages/dt/search.tsx";
+---
+
+<BaseLayout
+  title="Search for typed packages"
+  description="Search across all of the typed packages on DefinitelyTyped"
+  lang="en"
+>
+  <DTSearchPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

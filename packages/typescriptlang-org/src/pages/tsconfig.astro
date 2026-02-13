@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TSConfigRefPage from "../templates/tsconfigReference.tsx";
+import { loadTSConfigReference } from "../lib/astro/loadTSConfigData";
+
+const data = await loadTSConfigReference("en");
+---
+
+<BaseLayout
+  title="TSConfig Reference"
+  description="The TSConfig reference for every option available"
+  lang="en"
+>
+  <TSConfigRefPage client:load pageContext={data} />
+</BaseLayout>

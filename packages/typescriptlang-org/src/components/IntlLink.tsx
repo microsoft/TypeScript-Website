@@ -1,36 +1,25 @@
 import * as React from "react"
-import { GatsbyLinkProps, Link } from "gatsby"
-import { allFiles } from "../__generated__/allPages"
 
 /** 
- * Creates a <Link> which supports gradual migration, you provide a link to the english page and
+ * Creates a <a> link which supports gradual migration, you provide a link to the english page and
  * if the page supports the same version but in your language, it opts for that.
  */
 export const createIntlLink = (currentLocale: string) => {
-  const paths = allFiles
+  // paths list for locale support - in the future this could be populated
+  const paths: string[] = []
 
-  return (linkProps: GatsbyLinkProps<{}>) => {
+  return (linkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }) => {
     let to = linkProps.to
 
     // /thing -> /ja/thing
     // This occurs when we want URL compat with old site
-
     const localeVersion = "/" + currentLocale + to
     if (currentLocale !== "en" && paths.includes(localeVersion)) {
       to = localeVersion
     }
 
-    // This effectively needs to be duplicated in gatsby-config.js too
-    const blocklistIncludes = ["/play", "sandbox", "/dev"]
-    const blocklisted = blocklistIncludes.find(blocked => to.includes(blocked))
-
-    if (blocklisted) {
-      // @ts-ignore
-      return <a {...linkProps} href={to} />
-    } else {
-      // @ts-ignore
-      return <Link {...linkProps} to={to} />
-    }
+    const { to: _to, ...rest } = linkProps
+    return <a {...rest} href={to} />
   }
 }
 

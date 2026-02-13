@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import IndexPage from "../templates/pages/index.tsx";
+---
+
+<BaseLayout
+  title="JavaScript With Syntax For Types"
+  description="TypeScript extends JavaScript by adding types to the language. TypeScript speeds up your development experience by catching errors and providing fixes before you even run your code."
+  lang="en"
+>
+  <IndexPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

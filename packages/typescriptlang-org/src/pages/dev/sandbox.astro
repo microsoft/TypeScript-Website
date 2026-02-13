@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SandboxPage from "./_sandbox.tsx";
+---
+
+<BaseLayout
+  title="TypeScript Sandbox"
+  description="The TypeScript Sandbox"
+  lang="en"
+>
+  <SandboxPage client:load />
+</BaseLayout>

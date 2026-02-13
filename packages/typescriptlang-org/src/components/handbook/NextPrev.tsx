@@ -1,11 +1,10 @@
 import * as React from "react"
-import { Link } from "gatsby"
 
 interface NextPrevProps {
-  prev: { childMarkdownRemark: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined
-  next: { childMarkdownRemark: { frontmatter: { title: string, oneline: string, permalink: string } } } | undefined,
+  prev: { title: string, oneline: string, permalink: string } | undefined
+  next: { title: string, oneline: string, permalink: string } | undefined,
   i: (string) => string,
-  IntlLink: typeof Link
+  IntlLink: any
 }
 
 const Row = (props: { children: any, className?: string }) => <div className={[props.className, "row"].join(" ")}>{props.children}</div>
@@ -13,8 +12,8 @@ const Row = (props: { children: any, className?: string }) => <div className={[p
 
 export const NextPrev = (props: NextPrevProps) => {
   if (!props.prev && !props.next) return null
-  const prev = props.prev && props.prev.childMarkdownRemark.frontmatter
-  const next = props.next && props.next.childMarkdownRemark.frontmatter
+  const prev = props.prev
+  const next = props.next
 
   return (
     <div className="whitespace-tight raised">
@@ -32,12 +31,12 @@ const EmptyLink = () => <div className="prev-next"></div>
 interface Section {
   data: { title: string, oneline: string, permalink: string }
   i: (string) => string,
-  InltLink: typeof Link
+  InltLink: any
   type: string
 }
 
 const LinkSection = (props: Section) =>
-  <Link className="navigation-link" rel={props.type} to={props.data.permalink}>
+  <a className="navigation-link" rel={props.type} href={props.data.permalink}>
     <Row className={"prev-next " + props.type}>
       <div className="arrow">
         <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,4 +50,4 @@ const LinkSection = (props: Section) =>
         <p>{props.data.oneline}</p>
       </div>
     </Row>
-  </Link >
+  </a>

@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import WhyPage from "../templates/pages/why-create-typescript.tsx";
+---
+
+<BaseLayout
+  title="Why Create TypeScript"
+  description="Why TypeScript was created and how it helps developers"
+  lang="en"
+>
+  <WhyPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

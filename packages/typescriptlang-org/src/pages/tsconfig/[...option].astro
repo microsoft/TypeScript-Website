@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TSConfigOptionPage from "../../templates/tsconfigOptionOnePage.tsx";
+import { loadTSConfigOptionPages } from "../../lib/astro/loadTSConfigData";
+
+export async function getStaticPaths() {
+  const pages = await loadTSConfigOptionPages();
+
+  return pages.map((page) => ({
+    params: { option: page.name },
+    props: {
+      pageContext: {
+        lang: "en",
+        title: page.name,
+        name: page.name,
+        html: page.html,
+        redirectHref: page.redirectHref,
+      },
+    },
+  }));
+}
+
+const { pageContext } = Astro.props;
+---
+
+<BaseLayout
+  title={`TSConfig Option: ${pageContext.title}`}
+  description={`Details about the ${pageContext.title} compiler option`}
+  lang={pageContext.lang}
+>
+  <TSConfigOptionPage client:load pageContext={pageContext} />
+</BaseLayout>

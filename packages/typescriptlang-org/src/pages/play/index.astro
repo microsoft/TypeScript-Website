@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PlayPage from "../../templates/play.tsx";
+import { loadPlaygroundData } from "../../lib/astro/loadPlaygroundData";
+
+const data = loadPlaygroundData("en");
+---
+
+<BaseLayout
+  title="Playground"
+  description="An online editor for exploring TypeScript and JavaScript"
+  lang="en"
+>
+  <PlayPage
+    client:load
+    pageContext={{
+      lang: data.lang,
+      examplesTOC: data.examplesTOC,
+      optionsSummary: data.optionsSummary,
+      playgroundHandbookTOC: data.playgroundHandbookTOC,
+    }}
+  />
+</BaseLayout>

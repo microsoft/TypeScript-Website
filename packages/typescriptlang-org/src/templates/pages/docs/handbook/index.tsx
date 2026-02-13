@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Layout } from "../../../../components/layout"
-import { Link } from "gatsby"
+/* Link replaced with <a> */
 
 import "../../css/documentation.scss"
 import "../../../documentation.scss"
@@ -45,7 +45,7 @@ const HandbookIndex: React.FC<Props> = (props) => {
                     if (item.items) return null
 
                     return <li key={item.id}>
-                      <Link to={path}>{item.title}</Link>
+                      <a href={path}>{item.title}</a>
                     </li>
                   })}
                 </ul>

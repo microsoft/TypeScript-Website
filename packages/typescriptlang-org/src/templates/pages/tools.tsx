@@ -22,14 +22,14 @@ const Index: React.FC<Props> = (props) => {
       <Row>
         <Col>
           <a className="cropper" href="/play">
-            <img src={require("../../../static/images/tools/play.png").default} alt="Preview of the TypeScript Playground screenshot" />
+            <img src="/images/tools/play.png" alt="Preview of the TypeScript Playground screenshot" />
             <p>Playground</p>
           </a>
           <p>A live environment for exploring, learning and sharing TypeScript code. Try different compiler flags, run through extensive code samples to learn specifics about how TypeScript works.</p>
         </Col>
         <Col>
           <Link className="cropper" to="/tsconfig" aria-label="Preview of the TypeScript TSConfig Reference screenshot">
-            <img src={require("../../../static/images/tools/tsconfig-ref.png").default} aria-hidden="true" />
+            <img src="/images/tools/tsconfig-ref.png" aria-hidden="true" />
             <p>TSConfig Reference</p>
           </Link>
           <p>An annotated reference to more than a hundred compiler options available in a <code>tsconfig.json</code> or <code>jsconfig.json</code>.</p>
@@ -38,7 +38,7 @@ const Index: React.FC<Props> = (props) => {
       <Row>
         <Col>
           <a className="cropper" href="/cheatsheets">
-            <img src={require("../../../static/images/tools/cheat-sheets.png").default} alt="Preview of the cheat sheets page" />
+            <img src="/images/tools/cheat-sheets.png" alt="Preview of the cheat sheets page" />
             <p>Cheat Sheets</p>
           </a>
           <p>Quickly look up the syntax for common TypeScript code.</p>

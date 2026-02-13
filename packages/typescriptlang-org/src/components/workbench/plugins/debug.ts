@@ -1,5 +1,5 @@
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
-type PluginFactory = import("../../../../static/js/playground").PluginFactory
+type PluginFactory = import("../../../../public/js/playground").PluginFactory
 
 export const workbenchDebugPlugin: PluginFactory = (i, utils) => {
   let pluginContainer: HTMLDivElement

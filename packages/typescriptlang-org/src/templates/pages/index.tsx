@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import {withPrefix} from "gatsby"
+import { withPrefix } from "../../lib/withPrefix"
 import { Layout } from "../../components/layout"
 import { Intl } from "../../components/Intl"
 import { VersionBar } from "../../components/VersionBar"

@@ -318,7 +318,7 @@ languages.forEach((lang) => {
     JSON.stringify({ options: optionsSummary })
   );
 
-  const jsonDir = new URL("../../../typescriptlang-org/static/js/json/", import.meta.url);
+  const jsonDir = new URL("../../../typescriptlang-org/public/js/json/", import.meta.url);
   if (!existsSync(jsonDir)) mkdirSync(jsonDir);
 
   // This is used by the tsconfig popups

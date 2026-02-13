@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
-import { withPrefix } from "gatsby"
+import { withPrefix } from "../lib/withPrefix"
 
 import "./play.scss"
 import { RenderExamples } from "../components/ShowExamples"
@@ -18,7 +18,7 @@ import "reflect-metadata"
 import playgroundReleases from "../../../sandbox/src/releases.json"
 import { getPlaygroundUrls } from "../lib/playgroundURLs"
 
-import type * as playgroundPackage from "../../static/js/playground";
+import type * as playgroundPackage from "../../public/js/playground";
 
 // This gets set by the playground
 declare const playground: playgroundPackage.Playground;
@@ -26,7 +26,7 @@ declare const playground: playgroundPackage.Playground;
 type Props = {
   pageContext: {
     lang: string
-    examplesTOC: typeof import("../../static/js/examples/en.json")
+    examplesTOC: typeof import("../data/examples/en.json")
     optionsSummary: any // this is just passed through to the playground JS library at this point
     playgroundHandbookTOC: { docs: any[] }
   }
@@ -141,8 +141,8 @@ const Play: React.FC<Props> = (props) => {
       // Allow prod builds to set a custom commit prefix to bust caches
       const { sandboxRoot, playgroundRoot, playgroundWorker } = getPlaygroundUrls()
 
-      // @ts-ignore
-      const re: any = global.require
+      // @ts-ignore - vs.loader.js sets window.require
+      const re: any = window.require
       re.config({
         paths: {
           vs: urlForMonaco,
@@ -166,7 +166,7 @@ const Play: React.FC<Props> = (props) => {
 
       re(["vs/editor/editor.main", "vs/language/typescript/tsWorker", "typescript-sandbox/index", "typescript-playground/index"], async (main: typeof import("monaco-editor"), tsWorker: any, sandbox: typeof import("@typescript/sandbox"), playground: typeof playgroundPackage) => {
         // Importing "vs/language/typescript/tsWorker" will set ts as a global
-        const ts = (global as any).ts || tsWorker.typescript
+        const ts = (window as any).ts || tsWorker.typescript
         const isOK = main && ts && sandbox && playground
         if (isOK) {
           document.getElementById("loader")!.parentNode?.removeChild(document.getElementById("loader")!)

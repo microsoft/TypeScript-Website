@@ -58,6 +58,9 @@ typings/
 .cache/
 public
 
+# astro
+.astro/
+
 # Mac files
 .DS_Store
 
@@ -73,14 +76,14 @@ schema.json
 apollo.config.js
 
 # Build artifacts
-static/js/sandbox/
-!static/js/sandbox/.gitkeep
-static/js/playground/
-!static/js/playground/.gitkeep
-static/js/examples/
-!static/js/examples/.gitkeep
-static/js/json
-static/js/playground-worker/
+public/js/sandbox/
+!public/js/sandbox/.gitkeep
+public/js/playground/
+!public/js/playground/.gitkeep
+public/js/examples/
+!public/js/examples/.gitkeep
+public/js/json
+public/js/playground-worker/
 
 .now
 
@@ -88,8 +91,8 @@ static/js/playground-worker/
 src/__generated__/*
 # gatsby-plugin-typegen doesn't create this file when CI=true
 !src/__generated__/gatsby-types.ts
-static/assets/typescript-handbook.epub
-static/assets/typescript-handbook.pdf
+public/assets/typescript-handbook.epub
+public/assets/typescript-handbook.pdf
 
 /src/lib/release-info.json
 

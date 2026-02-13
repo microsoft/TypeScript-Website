@@ -7,9 +7,9 @@ const fse = require("fs-extra");
 
 const copyDir = join(__dirname, "..", "copy");
 const jsonDir = join(__dirname, "..", "generated");
-const outDir = join(__dirname, "..", "..", "typescriptlang-org", "static", "js", "examples");
+const outDir = join(__dirname, "..", "..", "typescriptlang-org", "public", "js", "examples");
 
-if (!existsSync(outDir)) execSync(`mkdir ${outDir}`);
+if (!existsSync(outDir)) execSync(`mkdir -p ${outDir}`);
 
 // Move samples
 fse.copySync(copyDir, outDir);

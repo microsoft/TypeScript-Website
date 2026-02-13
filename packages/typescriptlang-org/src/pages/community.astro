@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CommunityPage from "../templates/pages/community.tsx";
+---
+
+<BaseLayout
+  title="Community"
+  description="Connect with other TypeScript users online and offline."
+  lang="en"
+>
+  <CommunityPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

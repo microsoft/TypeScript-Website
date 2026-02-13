@@ -24,7 +24,7 @@ const handbookRedirects = {
   "/docs/bootstrap": "/docs/"
 }
 
-import { NodePluginArgs } from "gatsby"
+
 
 export const setupRedirects = (
   createRedirect: NodePluginArgs["actions"]["createRedirect"]

@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DownloadPage from "../templates/pages/download.tsx";
+---
+
+<BaseLayout
+  title="Download TypeScript"
+  description="Find TypeScript install options and configure your development environment."
+  lang="en"
+>
+  <DownloadPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

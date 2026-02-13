@@ -1,7 +1,8 @@
 import * as React from "react"
 
-import { GatsbyLinkProps } from "gatsby";
+type LinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }
 
-export const Link = (props: GatsbyLinkProps<{}>) => {
-  return <a {...props} href={props.to} />
+export const Link = (props: LinkProps) => {
+  const { to, ...rest } = props
+  return <a {...rest} href={to} />
 }

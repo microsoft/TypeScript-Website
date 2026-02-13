@@ -1,6 +1,6 @@
 type TwoSlashReturns = import("@typescript/twoslash").TwoSlashReturn
 
-export const workbenchAssertionsPlugin: import("../../../../static/js/playground").PluginFactory = (
+export const workbenchAssertionsPlugin: import("../../../../public/js/playground").PluginFactory = (
   i,
   utils
 ) => {

@@ -88,3 +88,5 @@ packages/typescriptlang-org/src/lib/documentationNavigation.ts
 !**/.vscode/extensions.json
 
 *.tsbuildinfo
+# astro
+.astro/

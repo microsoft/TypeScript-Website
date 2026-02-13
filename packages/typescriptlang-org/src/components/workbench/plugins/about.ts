@@ -1,6 +1,6 @@
 type Sandbox = import("@typescript/sandbox").Sandbox
-type Factory = import("../../../../static/js/playground").PluginFactory
-type PluginUtils = import("../../../../static/js/playground").PluginUtils
+type Factory = import("../../../../public/js/playground").PluginFactory
+type PluginUtils = import("../../../../public/js/playground").PluginUtils
 
 const intro = `
 The bug workbench uses <a href='https://www.npmjs.com/package/@typescript/twoslash'>Twoslash</a> to help you create accurate bug reports. 

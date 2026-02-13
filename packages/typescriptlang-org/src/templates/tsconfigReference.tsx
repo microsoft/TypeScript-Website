@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { graphql } from "gatsby"
+
 
 import { Layout } from "../components/layout"
 
@@ -16,7 +16,7 @@ type Category = { anchor: string, display: string, options: Array<{ anchor: stri
 type Props = {
   pageContext: {
     categories: Category[],
-    tsconfigMDPath: string,
+    html: string,
     intro: {
       html: string
       header: string
@@ -24,18 +24,10 @@ type Props = {
     },
     locale: string
   },
-  data: GatsbyTypes.TSConfigReferenceTemplateQuery,
-  path: string
 }
 
 const TSConfigReferenceTemplateComponent = (props: Props) => {
   const i = createInternational<typeof headCopy>(useIntl())
-
-  const post = props.data.markdownRemark
-  if (!post) {
-    console.log("Could not render:", JSON.stringify(props))
-    return <div></div>
-  }
 
   useEffect(() => {
     const calculateOffset = (
@@ -200,25 +192,11 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
       </div>
 
 
-      <div dangerouslySetInnerHTML={{ __html: post.html! }} />
+      <div dangerouslySetInnerHTML={{ __html: props.pageContext.html }} />
 
     </Layout >
   )
 }
-
-
-export const pageQuery = graphql`
-query TSConfigReferenceTemplate($tsconfigMDPath: String!) {
-
-  markdownRemark(fileAbsolutePath: {eq: $tsconfigMDPath} ) {
-    id
-    html
-    frontmatter {
-      permalink
-    }
-  }
-}
-`
 
 
 export default (props: Props) => <Intl locale={props.pageContext.locale}><TSConfigReferenceTemplateComponent {...props} /></Intl>

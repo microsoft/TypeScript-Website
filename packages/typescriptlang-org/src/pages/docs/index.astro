@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DocsIndexPage from "../../templates/pages/docs/index.tsx";
+---
+
+<BaseLayout
+  title="Documentation"
+  description="Find TypeScript starter projects: from Angular to React or Node.js and CLIs."
+  lang="en"
+>
+  <DocsIndexPage client:load pageContext={{ lang: "en" }} />
+</BaseLayout>

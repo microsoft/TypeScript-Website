@@ -1,5 +1,5 @@
 import * as React from "react"
-import { withPrefix } from "gatsby"
+import { withPrefix } from "../../lib/withPrefix"
 
 export type Props = {
   href: string

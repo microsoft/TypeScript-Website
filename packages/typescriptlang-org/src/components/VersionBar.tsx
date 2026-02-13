@@ -1,5 +1,5 @@
 import * as React from "react"
-import { withPrefix } from "gatsby"
+import { withPrefix } from "../lib/withPrefix"
 import releaseInfo from "../lib/release-info.json"
 
 import { navCopy } from "../copy/en/nav"

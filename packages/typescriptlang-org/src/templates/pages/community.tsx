@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Layout } from "../../components/layout"
-import { graphql } from "gatsby"
+
 import { createInternational } from "../../lib/createInternational"
 import { useIntl } from "react-intl"
 import { Intl } from "../../components/Intl"
@@ -18,8 +18,8 @@ const conferences =
       url: "https://tsconf.eu",
       date: "March 31st, 2020",
       country: "Austria",
-      logo: require("../../assets/community/conferences/tsconf-eu-2020-logo.png"),
-      headline: require("../../assets/community/conferences/tsconf-eu-2020-logo.png"),
+      logo: "/assets/community/conferences/tsconf-eu-2020-logo.png",
+      headline: "/assets/community/conferences/tsconf-eu-2020-logo.png",
       bio: "TSConf:EU 2020 is the first conference for the TypeScript community. Join us for an unforgettable day in the heart of Europe!",
     }
   ]
@@ -186,7 +186,7 @@ export const Comm: React.FC<Props> = props => {
           <div className="callouts">
             {meetups.map(({ meetup }, index) => (
               <Col className="callout" key={index}>
-                <img src={require("../../assets/community/meetup-logos/" + meetup.image).default} className="icon img-square" alt={"logo of " + meetup.title} />
+                <img src={"/assets/community/meetup-logos/" + meetup.image} className="icon img-square" alt={"logo of " + meetup.title} />
                 <div>
                   <h4 className="community-callout-headline">{meetup.title}</h4>
                   <div className="text">{meetup.country}<br />

@@ -1,16 +1,20 @@
 {
-  "include": ["./src/**/*"],
+  "extends": "astro/tsconfigs/strict",
+  "include": ["./src/**/*", "./*.mjs"],
   "exclude": ["./src/components/index/twoslash/**.*"],
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
-    "lib": ["dom", "es2017"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["dom", "dom.iterable", "es2020"],
     "strict": true,
     "esModuleInterop": true,
     "noEmit": true,
-    "jsx": "react",
-    "skipLibCheck": true,
+    "jsx": "react-jsx",
     "noImplicitAny": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "noUncheckedSideEffectImports": false
   }
 }
