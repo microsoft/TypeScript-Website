@@ -2,9 +2,9 @@ import { CompilerOptionName } from "../data/_types";
 import remark from "remark";
 // @ts-ignore - no types available
 import remarkHTML from "remark-html";
-import ts from "typescript";
+import ts from "typescript-for-docs";
 
-declare module "typescript" {
+declare module "typescript-for-docs" {
   const optionDeclarations: CommandLineOption[];
   const optionsForWatch: CommandLineOption[];
   const typeAcquisitionDeclarations: CommandLineOption[];

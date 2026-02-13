@@ -299,6 +299,9 @@ importers:
       typescript:
         specifier: 6.0.0-dev.20260204
         version: 6.0.0-dev.20260204
+      typescript-for-docs:
+        specifier: npm:typescript@5.9.3
+        version: typescript@5.9.3
       xml-js:
         specifier: ^1.6.11
         version: 1.6.11
@@ -9937,6 +9940,11 @@ packages:
 
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
   typescript@6.0.0-dev.20260204:
     resolution: {integrity: sha512-A8e1FQRu9GiXAZdv/+uYrp7cZgxTAK7VeNLqXU8KG1Yj2CosA5de38rBWnYrIaoinR5R/bAgFc1YCadCKZPjRQ==}
@@ -22978,6 +22986,8 @@ snapshots:
       is-typedarray: 1.0.0
 
   typedarray@0.0.6: {}
+
+  typescript@5.9.3: {}
 
   typescript@6.0.0-dev.20260204: {}
 

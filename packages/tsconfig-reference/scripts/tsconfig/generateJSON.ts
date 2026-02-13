@@ -8,7 +8,7 @@
 
 console.log("TSConfig Ref: JSON for TSConfig");
 
-import ts from "typescript";
+import ts from "typescript-for-docs";
 
 import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";

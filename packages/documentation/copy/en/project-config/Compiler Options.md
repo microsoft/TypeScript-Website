@@ -63,66 +63,57 @@ tsc app.ts util.ts --target esnext --outfile index.js
 <p>Gives local information for help on the CLI.</p>
 </td></tr>
 
-<tr class='odd' name='ignoreConfig'>
-  <td><code>--ignoreConfig</code></td>
-  <td><p><code>boolean</code></p>
-</td>
-</tr>
-<tr class="option-description odd"><td colspan="3">
-<p>Ignore the tsconfig found and build with commandline options and files.</p>
-</td></tr>
-
-<tr class='even' name='init'>
+<tr class='odd' name='init'>
   <td><code>--init</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Initializes a TypeScript project and creates a tsconfig.json file.</p>
 </td></tr>
 
-<tr class='odd' name='listFilesOnly'>
+<tr class='even' name='listFilesOnly'>
   <td><code>--listFilesOnly</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Print names of files that are part of the compilation and then stop processing.</p>
 </td></tr>
 
-<tr class='even' name='locale'>
+<tr class='odd' name='locale'>
   <td><code>--locale</code></td>
   <td><p><code>string</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Set the language of the messaging from TypeScript. This does not affect emit.</p>
 </td></tr>
 
-<tr class='odd' name='project'>
+<tr class='even' name='project'>
   <td><code>--project</code></td>
   <td><p><code>string</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.</p>
 </td></tr>
 
-<tr class='even' name='showConfig'>
+<tr class='odd' name='showConfig'>
   <td><code>--showConfig</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description even"><td colspan="3">
+<tr class="option-description odd"><td colspan="3">
 <p>Print the final configuration instead of building.</p>
 </td></tr>
 
-<tr class='odd' name='version'>
+<tr class='even' name='version'>
   <td><code>--version</code></td>
   <td><p><code>boolean</code></p>
 </td>
 </tr>
-<tr class="option-description odd"><td colspan="3">
+<tr class="option-description even"><td colspan="3">
 <p>Print the compiler's version.</p>
 </td></tr>
 
@@ -294,7 +285,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowJs'>--allowJs</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code>, unless <code>checkJs</code> is set</p>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -800,7 +791,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#libReplacement'>--libReplacement</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>false</code></p>
+  <td><p><code>true</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1086,7 +1077,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#noUncheckedSideEffectImports'>--noUncheckedSideEffectImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code></p>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
@@ -1372,7 +1363,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#strict'>--strict</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code></p>
+  <td><p><code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">

@@ -27,6 +27,7 @@
     "@types/json-schema": "^7.0.15",
     "ts-node": "*",
     "typescript": "*",
+    "typescript-for-docs": "npm:typescript@5.9.3",
     "xml-js": "^1.6.11"
   },
   "type": "module"

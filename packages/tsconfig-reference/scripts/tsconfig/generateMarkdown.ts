@@ -25,7 +25,7 @@ import { fileURLToPath } from "url";
 import * as assert from "assert";
 import matter from "gray-matter";
 import prettier from "prettier";
-import ts from "typescript";
+import ts from "typescript-for-docs";
 import { CompilerOptionJSON } from "./generateJSON.js";
 
 import {

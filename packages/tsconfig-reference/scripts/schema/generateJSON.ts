@@ -15,7 +15,7 @@ import { join } from "path";
 import { fileURLToPath } from "url";
 import prettier from "prettier";
 import { CompilerOptionName } from "../../data/_types";
-import ts from "typescript";
+import ts from "typescript-for-docs";
 import type { JSONSchema7 } from "json-schema";
 import type { CommandLineOption } from "../tsconfigRules.js";
 
