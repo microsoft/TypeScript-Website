@@ -22,7 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
     "paths": {
-      "*": ["./src/*", "./node_modules/*"]
+      "*": ["./src/*"]
     },
     "jsx": "react",
     "esModuleInterop": true
