@@ -243,5 +243,5 @@ it("moduleDetection options", async () => {
     host: host.compilerHost,
   })
   program.emit()
-  expect(fsMap.get("index.js")).toEqual(`define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    var foo = 'foo';\n});\n`)
+  expect(fsMap.get("index.js")).toEqual(`define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    let foo = 'foo';\n});\n`)
 })
