@@ -230,6 +230,7 @@ const createSelect = (title: string, id: string, blurb: string, sandbox: Sandbox
     .forEach(key => {
       // hide Latest
       if (key === "Latest") return
+      if (key === "LatestStandard") return
 
       const option = document.createElement("option")
       option.value = key
