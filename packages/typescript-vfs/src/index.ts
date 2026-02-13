@@ -476,8 +476,11 @@ const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOption
     suppressOutputPathCheck: true,
     skipLibCheck: true,
     skipDefaultLibCheck: true,
-    moduleResolution: ts.ModuleResolutionKind.Bundler,
-    ...(ts.versionMajorMinor && Number(ts.versionMajorMinor.split(".")[0]) >= 6 ? { ignoreDeprecations: "6.0" } : {}),
+    ...(ts.versionMajorMinor && Number(ts.versionMajorMinor.split(".")[0]) >= 6 ? {
+      ignoreDeprecations: "6.0" ,
+    } : {
+      moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    }),
   }
 }
 
