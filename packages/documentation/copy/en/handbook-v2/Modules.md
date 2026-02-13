@@ -392,6 +392,8 @@ export const twoPi = valueOfPi * 2;
 ```ts twoslash
 // @showEmit
 // @module: umd
+// @moduleResolution: node
+// @resolveJsonModule: false
 // @noErrors
 import { valueOfPi } from "./constants.js";
 

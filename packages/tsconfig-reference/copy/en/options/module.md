@@ -35,6 +35,8 @@ export const twoPi = valueOfPi * 2;
 ```ts twoslash
 // @showEmit
 // @module: umd
+// @moduleResolution: node
+// @resolveJsonModule: false
 // @noErrors
 import { valueOfPi } from "./constants";
 
@@ -46,6 +48,7 @@ export const twoPi = valueOfPi * 2;
 ```ts twoslash
 // @showEmit
 // @module: amd
+// @moduleResolution: node
 // @noErrors
 import { valueOfPi } from "./constants";
 
@@ -57,6 +60,8 @@ export const twoPi = valueOfPi * 2;
 ```ts twoslash
 // @showEmit
 // @module: system
+// @moduleResolution: node
+// @resolveJsonModule: false
 // @noErrors
 import { valueOfPi } from "./constants";
 
@@ -119,6 +124,8 @@ While it’s rare to need to mix imports and require calls in the same file, thi
 ```ts twoslash
 // @showEmit
 // @module: none
+// @moduleResolution: node
+// @resolveJsonModule: false
 // @noErrors
 import { valueOfPi } from "./constants";
 
