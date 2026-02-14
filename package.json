@@ -17,7 +17,7 @@
     "cross-env": "^7.0.2",
     "danger": "^13.0.5",
     "danger-plugin-lighthouse": "^0.5.2",
-    "danger-plugin-spellcheck": "^1.5.0",
+    "danger-plugin-spellcheck": "^2.1.0",
     "fb-watchman": "^2.0.1",
     "glob": "^7.2.3",
     "gray-matter": "4.0.3",
