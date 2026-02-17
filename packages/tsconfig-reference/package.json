@@ -25,8 +25,8 @@
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.15",
-    "ts-node": "*",
-    "typescript": "*",
+    "ts-node": "^10.9.2",
+    "typescript": "6.0.0-dev.20260213",
     "typescript-for-docs": "npm:typescript@5.9.3",
     "xml-js": "^1.6.11"
   },

@@ -135,7 +135,7 @@ it("creates a map from the CDN and stores it in local storage cache", async () =
 
   libs.forEach(l => expect(map.get("/" + l)).toBeDefined())
 
-  expect(store.setItem).toBeCalledTimes(libs.length)
+  expect(store.setItem).toHaveBeenCalledTimes(libs.length)
 })
 
 it("creates a map from the CDN and uses the existing local storage cache", async () => {
@@ -160,7 +160,7 @@ it("creates a map from the CDN and uses the existing local storage cache", async
   libs.forEach(l => expect(map.get("/" + l)).toBeDefined())
 
   // Should be one less fetch, and the first item would be from the cache instead
-  expect(store.setItem).toBeCalledTimes(libs.length - 1)
+  expect(store.setItem).toHaveBeenCalledTimes(libs.length - 1)
   expect(map.get("/" + libs[0])).toMatchInlineSnapshot(`"// From Cache"`)
 })
 

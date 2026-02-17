@@ -140,7 +140,7 @@ const Play: React.FC<Props> = (props) => {
           if (dtsMap) runTwoslash()
         }, 1000)
 
-        sandboxEnv.editor.onDidChangeModelContent(debouncedTwoslash)
+        sandboxEnv.editor.onDidChangeModelContent(() => debouncedTwoslash())
 
         let currentTwoslashResults: Error | TwoSlashReturn | undefined = undefined
         let currentDTSMap: Map<string, string> | undefined = undefined

@@ -180,7 +180,7 @@ const Index: React.FC<Props> = props => {
             }
 
             const debouncedTwoslash = debounce(runTwoslash, 500)
-            sandbox.editor.onDidChangeModelContent(debouncedTwoslash)
+            sandbox.editor.onDidChangeModelContent(() => debouncedTwoslash())
             runTwoslash()
 
             setTimeout(() => {

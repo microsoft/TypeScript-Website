@@ -19,6 +19,8 @@ config.onPostBootstrap = () => writeAllPathsToFixture();
 // see: https://github.com/gatsbyjs/gatsby/issues/17661
 
 config.onCreateWebpackConfig = ({ loaders, actions, plugins, stage }) => {
+  const isSSR = stage === `build-html` || stage === `develop-html`;
+
   actions.setWebpackConfig({
     module: {
       rules: [
@@ -32,6 +34,10 @@ config.onCreateWebpackConfig = ({ loaders, actions, plugins, stage }) => {
       pnpapi: "commonjs pnpapi",
       fs: "commonjs fs",
       module: "commonjs module",
+      // In SSR stages, use Node's native util module instead of the browser
+      // polyfill (util@0.12.5), which lacks TextEncoder and breaks react-dom
+      // server rendering on Node >= 19.
+      ...(isSSR ? { util: "commonjs util" } : {}),
     },
     resolve: {
       fallback: {

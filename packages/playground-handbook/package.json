@@ -7,6 +7,6 @@
     "build": "node scripts/generateJSON.mjs"
   },
   "devDependencies": {
-    "typescript": "*"
+    "typescript": "6.0.0-dev.20260213"
   }
 }
