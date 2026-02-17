@@ -2,7 +2,7 @@
   "private": true,
   "name": "root",
   "engines": {
-    "node": ">=18"
+    "node": ">= 20.19"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.2",
