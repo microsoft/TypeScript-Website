@@ -1,2 +1,5 @@
 packages:
   - 'packages/*'
+
+shellEmulator: true
+publishBranch: v2
