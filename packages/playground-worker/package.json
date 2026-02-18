@@ -10,6 +10,6 @@
     "esbuild": "^0.27.3"
   },
   "devDependencies": {
-    "typescript": "6.0.0-dev.20260213"
+    "typescript": "*"
   }
 }

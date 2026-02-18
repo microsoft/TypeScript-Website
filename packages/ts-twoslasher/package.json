@@ -36,7 +36,7 @@
     "preact": "^10.28.3",
     "ts-jest": "^29.4.6",
     "tslib": "^2.8.1",
-    "typescript": "6.0.0-dev.20260213"
+    "typescript": "*"
   },
   "jest": {
     "preset": "ts-jest",

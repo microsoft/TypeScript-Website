@@ -55,6 +55,6 @@
     "monaco-editor": "^0.32.1",
     "monaco-typescript": "^4.10.0",
     "ts-jest": "^29.4.6",
-    "typescript": "6.0.0-dev.20260213"
+    "typescript": "*"
   }
 }
