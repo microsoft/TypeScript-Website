@@ -23,6 +23,6 @@ export const messages = {
   ...cheatCopy
 }
 
-export const lang = defineMessages(messages as any)
+export const lang = defineMessages(messages)
 
-export type Copy = typeof messages
+export type Copy = typeof lang
