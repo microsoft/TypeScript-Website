@@ -53,14 +53,14 @@
       "es5-ext",
       "lmdb",
       "msgpackr-extract",
-      "sharp",
       "spawn-sync",
       "unrs-resolver"
     ],
     "onlyBuiltDependencies": [
       "esbuild",
       "gatsby",
-      "gatsby-cli"
+      "gatsby-cli",
+      "sharp"
     ]
   },
   "jest": {
