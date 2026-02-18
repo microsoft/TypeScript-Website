@@ -1,5 +1,11 @@
 # @typescript/sandbox
 
+## 0.1.13
+
+### Patch Changes
+
+- [#3505](https://github.com/microsoft/TypeScript-Website/pull/3505) [`2072484`](https://github.com/microsoft/TypeScript-Website/commit/20724842b6eaf09f5c5d0ee40272c5569fe5c37d) Thanks [@DanielRosenwasser](https://github.com/DanielRosenwasser)! - Fix Ctrl+arrow keys in Firefox.
+
 ## 0.1.12
 
 ### Patch Changes
