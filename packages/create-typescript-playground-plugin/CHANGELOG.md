@@ -1,5 +1,11 @@
 # create-typescript-playground-plugin
 
+## 1.3.3
+
+### Patch Changes
+
+- [#3509](https://github.com/microsoft/TypeScript-Website/pull/3509) [`0daa298`](https://github.com/microsoft/TypeScript-Website/commit/0daa298f2f4526f8c66baff00b8df0290e37a4d4) Thanks [@jakebailey](https://github.com/jakebailey)! - Bump dependencies
+
 ## 1.3.2
 
 ### Patch Changes
