@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.29.0",
-    "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/react-helmet": "^6.1.11",
     "@typescript/playground": "workspace:*",
     "@typescript/sandbox": "workspace:*",
@@ -51,7 +50,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
-    "react-intl": "^3.12.1",
+    "react-intl": "^7.1.14",
     "sass": "^1.97.3",
     "shiki-twoslash": "^3.1.2",
     "ts-debounce": "^4.0.0",
