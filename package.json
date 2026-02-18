@@ -44,7 +44,8 @@
       "sharp": "0.28.1"
     },
     "patchedDependencies": {
-      "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch"
+      "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch",
+      "react-intl@3.12.1": "patches/react-intl@3.12.1.patch"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher",
