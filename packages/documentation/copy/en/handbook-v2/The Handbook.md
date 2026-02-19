@@ -31,7 +31,7 @@ The handbook is split into two sections:
   - Explain the effects of important compiler options
   - Correctly predict type system behavior in most cases
 
-  In the interests of clarity and brevity, the main content of the Handbook will not explore every edge case or minutiae of the features being covered. You can find more details on particular concepts in the reference articles.
+  In the interests of clarity and brevity, the main content of the Handbook will not explore every edge case of the features being covered. You can find more details on particular concepts in the reference articles.
 
 - **Reference Files**
 
