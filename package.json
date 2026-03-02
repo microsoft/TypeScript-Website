@@ -9,7 +9,7 @@
     "@changesets/cli": "^2.29.8",
     "@oss-docs/sync": "^1.1.4",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.3.3",
     "@types/prettier": "^2.7.3",
     "@types/react": "^18.3.28",
     "chalk": "^4.1.2",
@@ -19,7 +19,7 @@
     "danger-plugin-lighthouse": "^0.5.2",
     "danger-plugin-spellcheck": "^2.1.0",
     "fb-watchman": "^2.0.2",
-    "glob": "^13.0.5",
+    "glob": "^13.0.6",
     "gray-matter": "4.0.3",
     "prettier": "^2.8.8",
     "reflect-metadata": "^0.2.2",
@@ -89,5 +89,5 @@
     ],
     "onlyPublishWithReleaseLabel": true
   },
-  "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937"
+  "packageManager": "pnpm@10.30.3+sha512.c961d1e0a2d8e354ecaa5166b822516668b7f44cb5bd95122d590dd81922f606f5473b6d23ec4a5be05e7fcd18e8488d47d978bbe981872f1145d06e9a740017"
 }
