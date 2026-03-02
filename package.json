@@ -48,7 +48,8 @@
       "gatsby>eslint-plugin-import": "-",
       "gatsby>eslint-plugin-jsx-a11y": "-",
       "gatsby>eslint-plugin-react": "-",
-      "gatsby>eslint-plugin-react-hooks": "-"
+      "gatsby>eslint-plugin-react-hooks": "-",
+      "webpack": "^5.105.3"
     },
     "patchedDependencies": {
       "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch"
