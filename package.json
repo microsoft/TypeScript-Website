@@ -39,16 +39,6 @@
       "typescript": "6.0.0-dev.20260213",
       "tslib": "^2.6.2",
       "sharp": "0.28.1",
-      "gatsby>eslint": "-",
-      "gatsby>eslint-config-react-app": "-",
-      "gatsby>eslint-webpack-plugin": "-",
-      "gatsby>@babel/eslint-parser": "-",
-      "gatsby>@typescript-eslint/eslint-plugin": "-",
-      "gatsby>eslint-plugin-flowtype": "-",
-      "gatsby>eslint-plugin-import": "-",
-      "gatsby>eslint-plugin-jsx-a11y": "-",
-      "gatsby>eslint-plugin-react": "-",
-      "gatsby>eslint-plugin-react-hooks": "-",
       "webpack": "^5.105.3"
     },
     "patchedDependencies": {
