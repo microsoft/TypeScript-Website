@@ -318,8 +318,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowUnreachableCode'>--allowUnreachableCode</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Disable error reporting for unreachable code.</p>
@@ -329,8 +328,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowUnusedLabels'>--allowUnusedLabels</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Disable error reporting for unused labels.</p>
@@ -362,8 +360,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#baseUrl'>--baseUrl</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify the base directory to resolve bare specifier module names.</p>
@@ -406,8 +403,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#customConditions'>--customConditions</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Conditions to set in addition to the resolver-specific defaults when resolving imports.</p>
@@ -428,8 +424,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#declarationDir'>--declarationDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify the output directory for generated declaration files.</p>
@@ -637,8 +632,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#generateTrace'>--generateTrace</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Generates an event trace and a list of types.</p>
@@ -725,8 +719,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#jsx'>--jsx</a></code></td>
   <td><p><code>preserve</code>, <code>react</code>, <code>react-native</code>, <code>react-jsx</code>, or <code>react-jsxdev</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Specify what JSX code is generated.</p>
@@ -780,8 +773,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#lib'>--lib</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify a set of bundled library declaration files that describe the target runtime environment.</p>
@@ -824,8 +816,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#mapRoot'>--mapRoot</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify the location where debugger should locate map files instead of generated locations.</p>
@@ -879,8 +870,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#moduleSuffixes'>--moduleSuffixes</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>List of file name suffixes to search when resolving a module.</p>
@@ -1110,8 +1100,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#out'>--out</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Deprecated setting. Use <a href="#outFile"><code>outFile</code></a> instead.</p>
@@ -1121,8 +1110,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#outDir'>--outDir</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Specify an output folder for all emitted files.</p>
@@ -1132,8 +1120,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#outFile'>--outFile</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify a file that bundles all outputs into one JavaScript file. If <a href="#declaration"><code>declaration</code></a> is true, also designates a file that bundles all .d.ts output.</p>
@@ -1143,8 +1130,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#paths'>--paths</a></code></td>
   <td><p><code>object</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Specify a set of entries that re-map imports to additional lookup locations.</p>
@@ -1154,8 +1140,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#plugins'>--plugins</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify a list of language service plugins to include.</p>
@@ -1341,8 +1326,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#sourceRoot'>--sourceRoot</a></code></td>
   <td><p><code>string</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Specify the root path for debuggers to find the reference source code.</p>
@@ -1352,8 +1336,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#stopBuildOnErrors'>--stopBuildOnErrors</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Skip building downstream projects on error in upstream project.</p>
@@ -1495,8 +1478,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#typeRoots'>--typeRoots</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
 <p>Specify multiple folders that act like <code>./node_modules/@types</code>.</p>
@@ -1506,8 +1488,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#types'>--types</a></code></td>
   <td><p><code>list</code></p>
 </td>
-  <td>
-</td>
+  <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
 <p>Specify type package names to be included without being referenced in a source file.</p>
