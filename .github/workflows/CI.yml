@@ -50,12 +50,6 @@ jobs:
       # Run all the package's tests
       - run: pnpm test
 
-      # danger for PR builds
-      - if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id && matrix.os == 'ubuntu-latest'
-        run: "pnpm danger ci"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - run: |
           git add .
           if ! git diff --staged --exit-code --quiet; then
