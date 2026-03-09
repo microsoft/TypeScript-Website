@@ -7,13 +7,13 @@ import lzstring from "./vendor/lzstring.min"
  */
 export const getInitialCode = (fallback: string, location: Location) => {
   // Old school support
-  if (location.hash.startsWith("#src")) {
+  if (location.hash.startsWith("#src=")) {
     const code = location.hash.replace("#src=", "").trim()
     return decodeURIComponent(code)
   }
 
   // New school support
-  if (location.hash.startsWith("#code")) {
+  if (location.hash.startsWith("#code/")) {
     const code = location.hash.replace("#code/", "").trim()
     let userCode = lzstring.decompressFromEncodedURIComponent(code)
     // Fallback incase there is an extra level of decoding:
