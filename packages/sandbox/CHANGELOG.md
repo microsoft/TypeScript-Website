@@ -1,5 +1,11 @@
 # @typescript/sandbox
 
+## 0.1.14
+
+### Patch Changes
+
+- [#3523](https://github.com/microsoft/TypeScript-Website/pull/3523) [`9953d5b`](https://github.com/microsoft/TypeScript-Website/commit/9953d5bf9168335e3ddad7b1752b3213f3f9a636) Thanks [@Josh-Cena](https://github.com/Josh-Cena)! - getInitialCode should not use URL hash without full prefix
+
 ## 0.1.13
 
 ### Patch Changes
