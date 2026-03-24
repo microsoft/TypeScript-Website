@@ -35,7 +35,7 @@
       "@types/eslint": "7.29.0",
       "assert": "2.0.0",
       "rollup-plugin-typescript2": "0.36.0",
-      "typescript": "6.0.0-dev.20260213",
+      "typescript": "6.0.2",
       "tslib": "^2.6.2",
       "sharp": "0.34.5",
       "webpack": "^5.105.3"
