@@ -63,6 +63,7 @@ const okToSkip = [
   "out",
   "references",
   "typeAcquisition",
+  "stableTypeOrdering",
 ];
 
 filteredOptions.forEach((option) => {
