@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "ESNext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "strict": true,
         "noUncheckedIndexedAccess": true,
         "target": "ES2015",

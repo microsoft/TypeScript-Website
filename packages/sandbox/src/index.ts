@@ -77,7 +77,7 @@ const sharedEditorOptions: import("monaco-editor").editor.IEditorOptions = {
   },
   acceptSuggestionOnCommitCharacter: !isAndroid,
   acceptSuggestionOnEnter: !isAndroid ? "on" : "off",
-  accessibilitySupport: !isAndroid ? "on" : "off",
+  accessibilitySupport: !isAndroid ? "auto" : "off",
   inlayHints: {
     enabled: true,
   },

@@ -106,7 +106,11 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
     .forEach(categoryID => {
       const categoryDiv = document.createElement("div")
       const header = document.createElement("h4")
+      const headerId = "category-header-" + categoryID
+      header.id = headerId
       const ol = document.createElement("ol")
+      ol.setAttribute("role", "group")
+      ol.setAttribute("aria-labelledby", headerId)
 
       Object.keys(categoryMap[categoryID]).forEach(optID => {
         const optSummary = categoryMap[categoryID][optID]
@@ -230,6 +234,7 @@ const createSelect = (title: string, id: string, blurb: string, sandbox: Sandbox
     .forEach(key => {
       // hide Latest
       if (key === "Latest") return
+      if (key === "LatestStandard") return
 
       const option = document.createElement("option")
       option.value = key

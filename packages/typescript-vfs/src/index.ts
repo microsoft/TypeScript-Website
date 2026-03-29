@@ -221,13 +221,23 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.es2024.regexp.d.ts",
     "lib.es2024.sharedmemory.d.ts",
     "lib.es2024.string.d.ts",
+    "lib.es2025.collection.d.ts",
+    "lib.es2025.d.ts",
+    "lib.es2025.float16.d.ts",
+    "lib.es2025.full.d.ts",
+    "lib.es2025.intl.d.ts",
+    "lib.es2025.iterator.d.ts",
+    "lib.es2025.promise.d.ts",
+    "lib.es2025.regexp.d.ts",
     "lib.esnext.array.d.ts",
     "lib.esnext.asynciterable.d.ts",
     "lib.esnext.bigint.d.ts",
     "lib.esnext.collection.d.ts",
     "lib.esnext.d.ts",
+    "lib.esnext.date.d.ts",
     "lib.esnext.decorators.d.ts",
     "lib.esnext.disposable.d.ts",
+    "lib.esnext.error.d.ts",
     "lib.esnext.float16.d.ts",
     "lib.esnext.full.d.ts",
     "lib.esnext.intl.d.ts",
@@ -235,8 +245,11 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.esnext.object.d.ts",
     "lib.esnext.promise.d.ts",
     "lib.esnext.regexp.d.ts",
+    "lib.esnext.sharedmemory.d.ts",
     "lib.esnext.string.d.ts",
     "lib.esnext.symbol.d.ts",
+    "lib.esnext.temporal.d.ts",
+    "lib.esnext.typedarrays.d.ts",
     "lib.esnext.weakref.d.ts"
   ]
 
@@ -463,7 +476,11 @@ const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOption
     suppressOutputPathCheck: true,
     skipLibCheck: true,
     skipDefaultLibCheck: true,
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    ...(ts.versionMajorMinor && Number(ts.versionMajorMinor.split(".")[0]) >= 6 ? {
+      ignoreDeprecations: "6.0" ,
+    } : {
+      moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    }),
   }
 }
 

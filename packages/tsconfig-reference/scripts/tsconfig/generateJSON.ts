@@ -8,7 +8,7 @@
 
 console.log("TSConfig Ref: JSON for TSConfig");
 
-import ts from "typescript";
+import ts from "typescript-for-docs";
 
 import { CommandLineOptionBase } from "../types";
 import { writeFileSync } from "fs";
@@ -27,14 +27,14 @@ import {
 } from "../tsconfigRules.js";
 import { CompilerOptionName } from "../../data/_types";
 
-const toJSONString = (obj) =>
+const toJSONString = (obj: any) =>
   prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
-const writeJSON = (name, obj) =>
+const writeJSON = (name: string, obj: any) =>
   writeFileSync(
     new URL(`../../data/${name}`, import.meta.url),
     toJSONString(obj)
   );
-const writeString = (name, text) =>
+const writeString = (name: string, text: string) =>
   writeFileSync(
     new URL(`../../data/${name}`, import.meta.url),
     prettier.format(text, { filepath: name })
@@ -147,7 +147,7 @@ allOptions.forEach((option) => {
   // Convert JS Map types to a JSONable obj
   if ("type" in option && typeof option.type === "object" && "get" in option.type) {
     // Option definitely has a map obj, need to resolve it
-    const newOptions = {};
+    const newOptions: Record<string, any> = {};
     option.type.forEach((v, k) => (newOptions[k] = v));
     // @ts-ignore
     option.type = newOptions;
@@ -155,8 +155,8 @@ allOptions.forEach((option) => {
 
   // Convert categories to be something which can be looked up
   if ("category" in option) {
-    categories.add(option.category);
-    option.categoryCode = option.category.code;
+    categories.add(option.category!);
+    option.categoryCode = option.category!.code;
     option.category = undefined;
   } else if (option.name in additionalOptionDescriptors) {
     // Set category code manually because some options have no category
@@ -182,15 +182,15 @@ allOptions.forEach((option) => {
   }
 
   if (name in allowedValues) {
-    option.allowedValues = allowedValues[name];
+    option.allowedValues = (allowedValues as any)[name];
   }
 
   if (name in configToRelease) {
-    option.releaseVersion = configToRelease[name];
+    option.releaseVersion = (configToRelease as any)[name];
   }
 
   if (name in defaultsForOptions) {
-    const defaultValue = defaultsForOptions[name];
+    const defaultValue = (defaultsForOptions as any)[name];
     option.defaultValue = Array.isArray(defaultValue) ? defaultValue.join(" ") : defaultValue;
   }
 
@@ -213,7 +213,7 @@ writeString(
     .join("' | '")}'`
 );
 
-const categoryMap = {};
+const categoryMap: Record<string, any> = {};
 categories.forEach((c) => (categoryMap[c.code] = c));
 
 // Add custom categories, for custom compiler flags

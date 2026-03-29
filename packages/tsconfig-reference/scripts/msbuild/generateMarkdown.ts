@@ -15,6 +15,7 @@ import matter from "gray-matter";
 import prettier from "prettier";
 
 import remark from "remark";
+// @ts-ignore - no types available
 import remarkHTML from "remark-html";
 
 // @ts-ignore
@@ -46,7 +47,7 @@ languages.forEach((lang) => {
     );
   };
 
-  function renderTable(title: string, options: { tscCLIName: string; configName }[]) {
+  function renderTable(title: string, options: { tscCLIName: string; configName: string }[]) {
     markdownChunks.push(`<h3>${title}</h3>`);
 
     markdownChunks.push(`

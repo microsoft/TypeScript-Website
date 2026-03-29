@@ -1,9 +1,10 @@
 import { CompilerOptionName } from "../data/_types";
 import remark from "remark";
+// @ts-ignore - no types available
 import remarkHTML from "remark-html";
-import ts from "typescript";
+import ts from "typescript-for-docs";
 
-declare module "typescript" {
+declare module "typescript-for-docs" {
   const optionDeclarations: CommandLineOption[];
   const optionsForWatch: CommandLineOption[];
   const typeAcquisitionDeclarations: CommandLineOption[];
@@ -67,8 +68,8 @@ export const watchOptionCompilerOptNames: string[] = ts.optionsForWatch.map((c) 
 const common = ts.commonOptionsWithBuild;
 // @ts-ignore
 export const buildOptionCompilerOptNames: string[] = ts.buildOpts
-  .filter((c) => !common.includes(c))
-  .map((c) => c.name);
+  .filter((c: any) => !common.includes(c))
+  .map((c: any) => c.name);
 
 export const rootOptNames = ["files", "extends", "include", "exclude", "references"];
 
@@ -456,18 +457,19 @@ export const additionalOptionDescriptors: Record<string, { categoryCode: number 
 };
 
 /** When a particular compiler flag (or CLI command...) was added  */
-export const configToRelease = {};
+export const configToRelease: Record<string, string> = {};
 Object.keys(releaseToConfigsMap).forEach((v) => {
   releaseToConfigsMap[v].forEach((key) => {
     configToRelease[key] = v;
   });
 });
 
-export const parseMarkdown = (value: string | string[]) =>
+export const parseMarkdown = (value: string | string[]): string =>
   Array.isArray(value)
     ? `<ul>${value
-      .map((element) => `<li>${parseMarkdown(element)}</li>`)
+      .map((element: string) => `<li>${parseMarkdown(element)}</li>`)
       .join("")}</ul>`
     : remark()
       .use(remarkHTML)
-      .processSync(value !== undefined ? String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`") : undefined);
+      .processSync(String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`"))
+      .toString();

@@ -5,7 +5,7 @@
 
 ### Getting Started
 
-This repo uses pnpm workspaces with node 18+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
+This repo uses pnpm workspaces with node 20+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
 
 With those set up, clone this repo and run `pnpm install`.
 

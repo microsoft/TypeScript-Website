@@ -7,7 +7,7 @@
 */
 console.log("TSConfig Ref: JSON for CLI Opts");
 
-import ts from "typescript";
+import ts from "typescript-for-docs";
 
 import { CommandLineOptionBase } from "../types";
 import { writeFileSync, readFileSync } from "fs";
@@ -22,11 +22,11 @@ import {
 } from "../tsconfigRules.js";
 import { CompilerOptionName } from "../../data/_types";
 
-const toJSONString = (obj) =>
+const toJSONString = (obj: any) =>
   prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
-const writeJSON = (name, obj) =>
+const writeJSON = (name: string, obj: any) =>
   writeFileSync(new URL(`../../data/${name}`, import.meta.url), toJSONString(obj));
-const writeString = (name, text) =>
+const writeString = (name: string, text: string) =>
   writeFileSync(
     new URL(`../../data/${name}`, import.meta.url),
     prettier.format(text, { filepath: name })
@@ -44,7 +44,7 @@ export interface CompilerOptionJSON extends CommandLineOptionBase {
   hostObj: string;
 }
 
-const tsconfigOpts = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
+const tsconfigOpts: CompilerOptionJSON[] = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
 
 const notCompilerFlags = [
   // @ts-ignore
@@ -73,7 +73,7 @@ filteredOptions.forEach((option) => {
   // Convert JS Map types to a JSONable obj
   if ("type" in option && typeof option.type === "object" && "get" in option.type) {
     // Option definitely has a map obj, need to resolve it
-    const newOptions = {};
+    const newOptions: Record<string, any> = {};
     option.type.forEach((v, k) => (newOptions[k] = v));
     // @ts-ignore
     option.type = newOptions;
@@ -88,15 +88,15 @@ filteredOptions.forEach((option) => {
   }
 
   if (name in allowedValues) {
-    option.allowedValues = allowedValues[name];
+    option.allowedValues = (allowedValues as any)[name];
   }
 
   if (name in configToRelease) {
-    option.releaseVersion = configToRelease[name];
+    option.releaseVersion = (configToRelease as any)[name];
   }
 
   if (name in defaultsForOptions) {
-    const defaultValue = defaultsForOptions[name];
+    const defaultValue = (defaultsForOptions as any)[name];
     option.defaultValue = Array.isArray(defaultValue) ? defaultValue.join(" ") : defaultValue;
   }
 

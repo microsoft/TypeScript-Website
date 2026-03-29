@@ -15,7 +15,7 @@ import prettier from "prettier";
 import { CompilerOptionJSON } from "./generateJSON.js";
 import { parseMarkdown } from "../tsconfigRules.js";
 
-const cliOpts = JSON.parse(readFileSync(join("data", "cliOpts.json"), "utf8"));
+const cliOpts: Record<string, CompilerOptionJSON[]> = JSON.parse(readFileSync(join("data", "cliOpts.json"), "utf8"));
 
 const knownTypes: Record<string, string> = {};
 
@@ -107,14 +107,14 @@ languages.forEach((lang) => {
       markdownChunks.push(`  <td>${parseMarkdown(optType)}</td>`);
 
       if (!opts?.noDefaults) {
-        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue)}</td>`);
+        markdownChunks.push(`  <td>${parseMarkdown(option.defaultValue ?? "")}</td>`);
       }
       markdownChunks.push(`</tr>`);
 
       // Add a new row under the current one for the description, this uses the 'odd' / 'even' classes
       // to fake looking like a single row
       markdownChunks.push(`<tr class="option-description ${oddEvenClass}"><td colspan="3">`);
-      markdownChunks.push(`${parseMarkdown(description)}`.trim());
+      markdownChunks.push(`${parseMarkdown(description ?? "")}`.trim());
       markdownChunks.push(`</td></tr>\n`);
     });
     markdownChunks.push(`</tbody></table>\n`);

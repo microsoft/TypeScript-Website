@@ -1,5 +1,31 @@
 # @typescript/sandbox
 
+## 0.1.14
+
+### Patch Changes
+
+- [#3523](https://github.com/microsoft/TypeScript-Website/pull/3523) [`9953d5b`](https://github.com/microsoft/TypeScript-Website/commit/9953d5bf9168335e3ddad7b1752b3213f3f9a636) Thanks [@Josh-Cena](https://github.com/Josh-Cena)! - getInitialCode should not use URL hash without full prefix
+
+## 0.1.13
+
+### Patch Changes
+
+- [#3505](https://github.com/microsoft/TypeScript-Website/pull/3505) [`2072484`](https://github.com/microsoft/TypeScript-Website/commit/20724842b6eaf09f5c5d0ee40272c5569fe5c37d) Thanks [@DanielRosenwasser](https://github.com/DanielRosenwasser)! - Fix Ctrl+arrow keys in Firefox.
+
+## 0.1.12
+
+### Patch Changes
+
+- Updated dependencies [[`0daa298`](https://github.com/microsoft/TypeScript-Website/commit/0daa298f2f4526f8c66baff00b8df0290e37a4d4)]:
+  - @typescript/vfs@1.6.4
+
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`5e2b828`](https://github.com/microsoft/TypeScript-Website/commit/5e2b8285e01edffd888aa97002d082f6975f7bc1)]:
+  - @typescript/vfs@1.6.3
+
 ## 0.1.10
 
 ### Patch Changes

@@ -4,14 +4,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "generate:json:tsconfig": "tsc --build && node --experimental-json-modules scripts/tsconfig/generateJSON",
-    "generate:json:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateJSON",
-    "generate:json:schema": "tsc --build && node --experimental-json-modules scripts/schema/generateJSON",
-    "generate:json:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateJSON",
+    "generate:json:tsconfig": "tsc --build && node scripts/tsconfig/generateJSON",
+    "generate:json:cli": "tsc --build && node scripts/cli/generateJSON",
+    "generate:json:schema": "tsc --build && node scripts/schema/generateJSON",
+    "generate:json:msbuild": "tsc --build && node scripts/msbuild/generateJSON",
     "generate:json": "pnpm generate:json:tsconfig && pnpm generate:json:cli && pnpm generate:json:schema && pnpm generate:json:msbuild",
-    "generate:md:tsconfig": "tsc --build && node --experimental-json-modules scripts/tsconfig/generateMarkdown",
-    "generate:md:cli": "tsc --build && node --experimental-json-modules scripts/cli/generateMarkdown",
-    "generate:md:msbuild": "tsc --build && node --experimental-json-modules scripts/msbuild/generateMarkdown",
+    "generate:md:tsconfig": "tsc --build && node scripts/tsconfig/generateMarkdown",
+    "generate:md:cli": "tsc --build && node scripts/cli/generateMarkdown",
+    "generate:md:msbuild": "tsc --build && node scripts/msbuild/generateMarkdown",
     "generate:md": "pnpm generate:md:tsconfig && pnpm generate:md:cli && pnpm generate:md:tsconfig",
     "download": "node scripts/schema/downloadSchemaBase.js",
     "bootstrap": "pnpm generate:json",
@@ -25,8 +25,9 @@
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.15",
-    "ts-node": "*",
+    "ts-node": "^10.9.2",
     "typescript": "*",
+    "typescript-for-docs": "npm:typescript@6.0.2",
     "xml-js": "^1.6.11"
   },
   "type": "module"

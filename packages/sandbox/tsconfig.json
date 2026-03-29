@@ -2,6 +2,7 @@
   "include": ["src", "src/vendor/lzstring.min.js"],
 
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "outDir": "../typescriptlang-org/static/js/sandbox",
     "target": "ES2016",
     "module": "AMD",
@@ -14,6 +15,7 @@
     "allowJs": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["*"]
   }
 }

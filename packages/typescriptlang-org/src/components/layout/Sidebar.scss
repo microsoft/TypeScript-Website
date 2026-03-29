@@ -183,7 +183,7 @@ nav#sidebar {
     bottom: 120px;
     padding: 10px;
     margin-bottom: env(safe-area-inset-bottom);
-    background-color: #c4c4c4;
+    background-color: #808080;
     border-radius: 6px;
 
     z-index: $z-index-for-handbook-nav-button;
@@ -209,6 +209,7 @@ nav#sidebar {
     z-index: $z-index-for-handbook-nav;
     margin-left: -800px;
     width: 90%;
+    visibility: hidden;
 
     ul {
       padding-bottom: 200px;
@@ -223,6 +224,7 @@ nav#sidebar {
 
     &.show {
       margin-left: 0px;
+      visibility: visible;
     }
 
     & > ul > li,

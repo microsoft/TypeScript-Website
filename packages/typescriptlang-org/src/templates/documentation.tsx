@@ -91,7 +91,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       <section id="doc-layout" >
         <SidebarToggleButton />
 
-        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0, display: "none" }}>
+        <div className="page-popup" id="page-helpful-popup" role="status" aria-live="polite" style={{ opacity: 0, display: "none" }}>
           <p>Was this page helpful?</p>
           <div>
             <button className="first" id="like-button-popup" title="Like this page"><LikeUnfilledSVG /></button>
@@ -161,7 +161,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                     <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
                   </>
                   }
-                  <div id="like-dislike-subnav">
+                  <div id="like-dislike-subnav" role="status" aria-live="polite">
                     <h5>{i("handb_like_dislike_title")}</h5>
                     <div>
                       <button title="Like this page" id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>

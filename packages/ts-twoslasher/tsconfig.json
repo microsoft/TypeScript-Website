@@ -20,12 +20,12 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "baseUrl": "./src",
+    "moduleResolution": "bundler",
     "paths": {
-      "*": ["src/*", "node_modules/*"]
+      "*": ["./src/*"]
     },
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["*"]
   }
 }

@@ -11,6 +11,8 @@
     "jsx": "react",
     "skipLibCheck": true,
     "noImplicitAny": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["*"],
+    "noUncheckedSideEffectImports": false
   }
 }

@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2019"
+    "target": "es2019",
+    "types": ["*"]
   }
 }

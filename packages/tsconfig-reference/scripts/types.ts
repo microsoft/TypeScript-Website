@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "typescript-for-docs";
 
 // These are all copy-pasta'd from the TS codebase
 

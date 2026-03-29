@@ -49,9 +49,6 @@ module.exports = {
       },
     },
 
-    // Support for downloading or pre-caching pages, needed for PWAs
-    // "gatsby-plugin-offline",
-
     // Creates TS types for queries during `gatsby dev`
     {
       resolve: "gatsby-plugin-typegen",

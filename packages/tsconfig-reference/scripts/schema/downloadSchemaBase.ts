@@ -5,8 +5,8 @@
 import { writeFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
-const getFileAndStoreLocally = async (url, path, editFunc) => {
-  const editingFunc = editFunc ? editFunc : (text) => text;
+const getFileAndStoreLocally = async (url: string, path: string, editFunc?: (text: string) => string) => {
+  const editingFunc = editFunc ? editFunc : (text: string) => text;
   const packageJSON = await fetch(url);
   const contents = await packageJSON.text();
   writeFileSync(new URL(path, import.meta.url), editingFunc(contents), "utf8");

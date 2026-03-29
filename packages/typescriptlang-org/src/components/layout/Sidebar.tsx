@@ -44,17 +44,21 @@ const toggleNavigationSection: MouseEventHandler = (event) => {
 export const SidebarToggleButton = () => {
   const toggleClick = () => {
     const navSidebar = document.getElementById("sidebar")
+    const toggleButton = document.getElementById("small-device-button-sidebar")
     const isOpen = navSidebar?.classList.contains("show")
     if (isOpen) {
       navSidebar?.classList.remove("show")
+      navSidebar?.setAttribute("inert", "")
+      toggleButton?.focus()
     } else {
       navSidebar?.classList.add("show")
+      navSidebar?.removeAttribute("inert")
     }
   }
 
 
   return (
-    <button id="small-device-button-sidebar" onClick={toggleClick}>
+    <button id="small-device-button-sidebar" aria-label="Toggle sidebar navigation" onClick={toggleClick}>
       <svg fill="none" height="26" viewBox="0 0 26 26" width="26" xmlns="http://www.w3.org/2000/svg"><g fill="#fff"><path d="m0 1c0-.552285.447715-1 1-1h24c.5523 0 1 .447715 1 1v3h-26z" /><path d="m0 11h13 13v4h-26z" /><path d="m0 22h26v3c0 .5523-.4477 1-1 1h-24c-.552284 0-1-.4477-1-1z" /></g></svg>
     </button>
   )
@@ -126,6 +130,23 @@ export const Sidebar = (props: Props) => {
       )
     }
   }
+
+  useEffect(() => {
+    const sidebar = document.getElementById("sidebar")
+    if (!sidebar) return
+
+    const mq = window.matchMedia("(max-width: 800px)")
+    const sync = () => {
+      if (mq.matches && !sidebar.classList.contains("show")) {
+        sidebar.setAttribute("inert", "")
+      } else {
+        sidebar.removeAttribute("inert")
+      }
+    }
+    sync()
+    mq.addEventListener("change", sync)
+    return () => mq.removeEventListener("change", sync)
+  }, [])
 
   return (
     <nav aria-label="sidebar" id="sidebar">

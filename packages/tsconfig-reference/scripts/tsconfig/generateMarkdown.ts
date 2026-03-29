@@ -25,7 +25,7 @@ import { fileURLToPath } from "url";
 import * as assert from "assert";
 import matter from "gray-matter";
 import prettier from "prettier";
-import ts from "typescript";
+import ts from "typescript-for-docs";
 import { CompilerOptionJSON } from "./generateJSON.js";
 
 import {
@@ -36,8 +36,8 @@ import {
   parseMarkdown,
 } from "../tsconfigRules.js";
 
-const options = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
-const categories = JSON.parse(readFileSync(join("data", "tsconfigCategories.json"), "utf8"));
+const options: CompilerOptionJSON[] = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
+const categories: Record<string, ts.DiagnosticMessage> = JSON.parse(readFileSync(join("data", "tsconfigCategories.json"), "utf8"));
 
 const orderedCategories = [
   "Project_Files_0",
@@ -67,12 +67,15 @@ assert.deepEqual(got, expected, `Expected to find everything in ${orderedCategor
 const notCompilerOptions = ["Project_Files_0", "Watch_Options_999"];
 const categoriesForCompilerOpts = orderedCategories.filter((c) => !notCompilerOptions.includes(c));
 
+const hiddenOptions = ["stableTypeOrdering"];
+
 const compilerOptions = options.filter(
   (o) =>
     !typeAcquisitionCompilerOptNames.includes(o.name) &&
     !watchOptionCompilerOptNames.includes(o.name) &&
     !buildOptionCompilerOptNames.includes(o.name) &&
-    !rootOptNames.includes(o.name)
+    !rootOptNames.includes(o.name) &&
+    !hiddenOptions.includes(o.name)
 );
 
 // The TSConfig Reference is a collection of sections which have options or
@@ -130,7 +133,7 @@ languages.forEach((lang) => {
     );
 
     // Intro to the section
-    const sectionsPath = getPathInLocale(join("sections", section.name + ".md"));
+    const sectionsPath = getPathInLocale(join("sections", section.name + ".md"))!;
     const sectionsFile = matter.read(fileURLToPath(sectionsPath));
     mdChunks.push("\n" + sectionsFile.content + "\n");
 
@@ -138,7 +141,7 @@ languages.forEach((lang) => {
     if (sectionCategories.length > 1) {
       mdChunks.push(`<nav id="sticky" aria-label="Compiler options"><ul>`);
       sectionCategories.forEach((categoryID) => {
-        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
+        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"))!;
         const categoryFile = matter.read(fileURLToPath(categoryPath));
 
         mdChunks.push(`<li><a href="#${categoryID}">${categoryFile.data.display}</a></li>`);
@@ -156,7 +159,7 @@ languages.forEach((lang) => {
       let categoryName = categoryID;
 
       if (category) {
-        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"));
+        const categoryPath = getPathInLocale(join("categories", categoryID + ".md"))!;
         const categoryFile = matter.read(fileURLToPath(categoryPath));
 
         assert.ok(categoryFile.data.display, "No display data for category: " + categoryID); // Must have a display title in the front-matter
@@ -181,8 +184,8 @@ languages.forEach((lang) => {
               // if (!richOpt) throw new Error(`Could not find an option for ${opt} in ${section.name}`);
               return richOpt;
             })
-            .filter(Boolean)
-        : compilerOptions.filter((o) => o.categoryCode === category.code);
+            .filter((opt): opt is CompilerOptionJSON => Boolean(opt))
+        : compilerOptions.filter((o) => o.categoryCode === category!.code);
 
       // prettier-ignore
       assert.ok(optionsForCategory, "Could not find options for " + categoryID + " in " + JSON.stringify(categories));
@@ -202,7 +205,7 @@ languages.forEach((lang) => {
         const optionPath = getPathInLocale(mdPath, exampleOptionContent, true);
         const scopedOptionPath = getPathInLocale(scopedMDPath, exampleOptionContent, true);
 
-        const optionFile = matter.read(fileURLToPath(scopedOptionPath || optionPath));
+        const optionFile = matter.read(fileURLToPath(scopedOptionPath || optionPath!));
 
         // prettier-ignore
         assert.ok(optionFile, "Could not find an optionFile: " + optionName);
@@ -277,7 +280,7 @@ languages.forEach((lang) => {
           "<ul class='compiler-option-md'>" +
           mdTableRows
             .map(
-              (r) => `<li><span>${r[0]}${r.length > 1 ? ":" : ""}</span>${parseMarkdown(r[1])}</li>`
+              (r) => `<li><span>${r[0]}${r.length > 1 ? ":" : ""}</span>${parseMarkdown(r[1] ?? "")}</li>`
             )
             .join("\n") +
           "</ul>";

@@ -15,13 +15,13 @@ import { join } from "path";
 import { fileURLToPath } from "url";
 import prettier from "prettier";
 import { CompilerOptionName } from "../../data/_types";
-import ts from "typescript";
+import ts from "typescript-for-docs";
 import type { JSONSchema7 } from "json-schema";
 import type { CommandLineOption } from "../tsconfigRules.js";
 
-const toJSONString = (obj) =>
+const toJSONString = (obj: any) =>
   prettier.format(JSON.stringify(obj, null, "  "), { filepath: "thing.json" });
-const writeJSON = (name, obj) =>
+const writeJSON = (name: string, obj: any) =>
   writeFileSync(new URL(`result/${name}`, import.meta.url), toJSONString(obj));
 
 export interface CompilerOptionJSON extends CommandLineOptionBase {
@@ -40,7 +40,7 @@ const schemaBase = JSON.parse(
   readFileSync(join("scripts", "schema", "vendor", "base.json"), "utf8")
 ) as typeof import("./vendor/base.json");
 
-const tsconfigOpts = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8")) as any;
+const tsconfigOpts: CompilerOptionJSON[] = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
 
 // Cut down the list
 const filteredOptions = tsconfigOpts
@@ -63,6 +63,7 @@ const okToSkip = [
   "out",
   "references",
   "typeAcquisition",
+  "stableTypeOrdering",
 ];
 
 filteredOptions.forEach((option) => {
@@ -70,10 +71,10 @@ filteredOptions.forEach((option) => {
   if (okToSkip.includes(name)) return;
   const sectionsPath = new URL(`../../copy/en/options/${name}.md`, import.meta.url);
 
-  let section;
-  if (schemaCompilerOpts[name]) section = schemaCompilerOpts;
-  if (schemaWatchOpts[name]) section = schemaWatchOpts;
-  if (schemaBuildOpts[name]) section = schemaBuildOpts;
+  let section: Record<string, any> | undefined;
+  if ((schemaCompilerOpts as Record<string, any>)[name]) section = schemaCompilerOpts;
+  if ((schemaWatchOpts as Record<string, any>)[name]) section = schemaWatchOpts;
+  if ((schemaBuildOpts as Record<string, any>)[name]) section = schemaBuildOpts;
 
   if (!section) {
     const title = `Issue creating JSON Schema for tsconfig`;
@@ -81,14 +82,14 @@ filteredOptions.forEach((option) => {
     const msg = `You need to add it to the file: packages/tsconfig-reference/scripts/schema/vendor/base.json - something like:
 
             "${name}": {
-              "description": "${option.description.message}",
+              "description": "${option.description?.message}",
               "type": "boolean",
               "default": false
             },
 
 You're also probably going to need to make the new Markdown file for the compiler flag, run:
 
-\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description.message}\\n ' > ${fileURLToPath(sectionsPath)}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n
+\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something"\\n---\\n${option.description?.message}\\n ' > ${fileURLToPath(sectionsPath)}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n
     `;
 
     throw new Error([title, headline, msg, ""].join("\n\n"));
@@ -100,7 +101,7 @@ You're also probably going to need to make the new Markdown file for the compile
     } catch (error) {
       // prettier-ignore
       throw new Error(
-        `\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something" \\n---\\n${option.description.message.replace(/'/g, "`")}\\n ' > ${fileURLToPath(sectionsPath)}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n`
+        `\n    echo '---\\ndisplay: "${option.name}"\\noneline: "Does something" \\n---\\n${option.description?.message.replace(/'/g, "`")}\\n ' > ${fileURLToPath(sectionsPath)}\n\nThen add some docs and run: \n>  pnpm run --filter=tsconfig-reference build\n\n`
       );
     }
 
@@ -140,7 +141,7 @@ for (const [properties, options] of [
       (option) => option.name === name && option.category?.key !== "Command_line_Options_6171"
     );
     if (!option) {
-      properties[name] = undefined;
+      (properties as Record<string, any>)[name] = undefined;
     } else if (option.type === "list") {
       updateItemsSchema(
         ((optionSchema as Extract<typeof optionSchema, { items?: unknown }>).items as never) || [],
