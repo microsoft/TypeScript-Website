@@ -5,41 +5,6 @@ permalink: /docs/handbook/release-notes/typescript-6-0.html
 oneline: TypeScript 6.0 Release Notes
 ---
 
-Today we are excited to announce the availability of TypeScript 6.0!
-
-If you are not familiar with TypeScript, it's a language that builds on JavaScript by adding syntax for types, which enables type-checking to catch errors, and provide rich editor tooling.
-You can learn more about TypeScript and how to get started on the [TypeScript website](https://www.typescriptlang.org/).
-
-But if you're already familiar with the language, you can get TypeScript 6.0 through npm with the following command:
-
-```sh
-npm install -D typescript
-```
-
-TypeScript 6.0 is a unique release in that we intend for it to be the last release based on the current JavaScript codebase.
-[As announced last year](https://devblogs.microsoft.com/typescript/typescript-native-port/) (with [recent updates here](https://devblogs.microsoft.com/typescript/progress-on-typescript-7-december-2025/)), we are working on a new codebase for the TypeScript compiler and language service written in Go that takes advantage of the speed of native code and shared-memory multi-threading.
-That new codebase will be the foundation of TypeScript 7.0 and beyond.
-
-TypeScript 6.0 acts as the bridge between TypeScript 5.9 and 7.0.
-As such, most changes in TypeScript 6.0 are meant to help align and prepare for adopting TypeScript 7.0.
-It may seem surprising to say, but TypeScript 7.0 **is actually extremely close to completion**.
-You can [try it out in Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.native-preview) or [install it from npm](https://npmx.dev/package/@typescript/native-preview).
-In fact, if you're able to adopt TypeScript 6.0, we encourage you to try out the native previews of TypeScript 7.0.
-
-With that said, there are some new features and improvements in TypeScript 6.0s that are not just about alignment.
-Let's take a look at some of the highlights of this release, followed by a more detailed look at what's changing for 7.0 and how to prepare for it.
-
-## What's New Since the Beta and RC?
-
-Since TypeScript 6.0 beta, we have made a few noteworthy changes - mostly to align with the behavior of TypeScript 7.0.
-
-One adjustment is in type-checking for function expressions in generic calls, especially those occurring in generic JSX expressions ([see this pull request](https://github.com/microsoft/TypeScript/pull/63163)).
-This will typically catch more bugs in existing code, though you may find that some generic calls may need an explicit type argument.
-
-We have also extended our deprecation of import assertion syntax (i.e. `import ... assert {...}`) [to `import()` calls](https://github.com/microsoft/TypeScript/pull/63172) like `import(..., { assert: {...}})`
-
-Finally, we have updated the DOM types to reflect the latest web standards, including some adjustments to the Temporal APIs as well.
-
 ## Less Context-Sensitivity on `this`-less Functions
 
 When parameters don't have explicit types written out, TypeScript can usually infer them based on an expected type, or even through other arguments in the same function call.
