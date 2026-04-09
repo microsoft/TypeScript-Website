@@ -249,3 +249,35 @@ Use `declare function` to declare functions.
 declare function greet(greeting: string): void;
 ```
 
+## Global augmentation with `declare global`
+
+_Documentation_
+
+> The `magic-string-time` module adds a `startsWithHello()` method to every string when it is imported.
+
+_Code_
+
+```ts
+import "magic-string-time";
+
+"hello world".startsWithHello();
+```
+
+_Declaration_
+
+If a library is imported but adds types to the global scope, put those declarations inside `declare global {}`.
+This is how you describe global-modifying modules and other cases where module code augments existing global types.
+
+```ts
+export {};
+
+declare global {
+  interface String {
+    startsWithHello(): boolean;
+  }
+}
+```
+
+`declare global` only works from inside a module, so the declaration file needs at least one `import` or `export`.
+If the file already has an `import` or `export`, you can remove the `export {}` line.
+For more about how global augmentation works, see [Declaration Merging](/docs/handbook/declaration-merging.html#global-augmentation) and the [global-modifying module template](/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html).
