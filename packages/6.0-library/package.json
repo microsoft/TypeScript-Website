@@ -1,0 +1,32 @@
+{
+    "name": "@typescript/6.0-library",
+    "version": "6.0.0-0",
+    "author": "Microsoft Corp.",
+    "homepage": "https://www.typescriptlang.org/",
+    "license": "Apache-2.0",
+    "description": "TypeScript is a language for application scale JavaScript development",
+    "keywords": [
+        "TypeScript",
+        "Microsoft",
+        "compiler",
+        "language",
+        "javascript"
+    ],
+    "bugs": {
+        "url": "https://github.com/microsoft/TypeScript/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/TypeScript.git"
+    },
+    "main": "./lib/typescript.js",
+    "types": "./lib/typescript.d.ts",
+    "files": [
+        "lib",
+        "LICENSE.txt",
+        "README.md"
+    ],
+    "dependencies": {
+        "typescript": "<=6"
+    }
+}
