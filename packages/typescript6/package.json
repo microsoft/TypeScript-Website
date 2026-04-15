@@ -25,6 +25,7 @@
         "tsc6": "./bin/tsc6"
     },
     "files": [
+        "bin",
         "lib",
         "LICENSE.txt",
         "README.md"
