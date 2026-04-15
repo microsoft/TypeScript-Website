@@ -1,5 +1,5 @@
 {
-    "name": "@typescript/6.0-library",
+    "name": "@typescript/typescript6",
     "version": "6.0.0-0",
     "author": "Microsoft Corp.",
     "homepage": "https://www.typescriptlang.org/",
@@ -21,12 +21,15 @@
     },
     "main": "./lib/typescript.js",
     "types": "./lib/typescript.d.ts",
+    "bin": {
+        "tsc6": "./bin/tsc6"
+    },
     "files": [
         "lib",
         "LICENSE.txt",
         "README.md"
     ],
     "dependencies": {
-        "typescript": "<=6"
+        "typescript": "^6"
     }
 }
