@@ -1,5 +1,5 @@
 ---
-"@typescript/6.0-library": patch
+"@typescript/typescript6": patch
 ---
 
 Initial release
