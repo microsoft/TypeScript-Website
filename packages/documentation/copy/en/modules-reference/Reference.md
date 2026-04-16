@@ -551,7 +551,7 @@ This section describes module resolution features and processes shared by multip
 
 #### File extension substitution
 
-TypeScript always wants to resolve internally to a file that can provide type information, while ensuring that the runtime or bundler can use the same path to resolve to a file that provides a JavaScript implementation. For any module specifier that would, according to the `moduleResolution` algorithm specified, trigger a lookup of a JavaScript file in the runtime or bundler, TypeScript will first try to find a TypeScript implementation file or type declaration file with the same name and analagous file extension.
+TypeScript always wants to resolve internally to a file that can provide type information, while ensuring that the runtime or bundler can use the same path to resolve to a file that provides a JavaScript implementation. For any module specifier that would, according to the `moduleResolution` algorithm specified, trigger a lookup of a JavaScript file in the runtime or bundler, TypeScript will first try to find a TypeScript implementation file or type declaration file with the same name and analogous file extension.
 
 | Runtime lookup | TypeScript lookup #1 | TypeScript lookup #2 | TypeScript lookup #3 | TypeScript lookup #4 | TypeScript lookup #5 |
 | -------------- | -------------------- | -------------------- | -------------------- | -------------------- | -------------------- |
