@@ -242,7 +242,7 @@ function printAll(strs: string | string[] | null) {
         //            ^?
         console.log(s);
       }
-    } else if (typeof strs === "string") {
+    } else {
       console.log(strs);
       //          ^?
     }
