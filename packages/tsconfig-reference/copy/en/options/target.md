@@ -7,9 +7,10 @@ oneline: "Set the JavaScript language version for emitted JavaScript and include
 
 Modern runtimes support newer ECMAScript features, so a recent target is a good choice.
 You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code is guaranteed to run in newer environments.
+The lowest supported target is `ES2015`.
 
 The `target` setting changes which JS features are downleveled and which are left intact.
-For example, an arrow function `() => this` will be turned into an equivalent `function` expression if `target` is ES5 or lower.
+For example, an arrow function `() => this` will be left as-is when targeting `ES2015` or higher.
 
 Changing `target` also changes the default value of [`lib`](#lib).
 You may "mix and match" `target` and `lib` settings as desired, but you could just set `target` for convenience.

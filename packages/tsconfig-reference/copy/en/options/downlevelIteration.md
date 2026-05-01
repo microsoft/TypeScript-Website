@@ -3,6 +3,9 @@ display: "Downlevel Iteration"
 oneline: "Emit more compliant, but verbose and less performant JavaScript for iteration."
 ---
 
+This option is deprecated in TypeScript 6.0 and later.
+It only affects ES5 emit, and `target: "es5"` is also deprecated.
+
 Downleveling is TypeScript's term for transpiling to an older version of JavaScript.
 This flag is to enable support for a more accurate implementation of how modern JavaScript iterates through new concepts in older JavaScript runtimes.
 

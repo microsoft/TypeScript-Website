@@ -87,7 +87,7 @@ In the project root, `proj`, create the file `tsconfig.json`:
   "compilerOptions": {
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "es5"
+    "target": "es2015"
   }
 }
 ```
@@ -144,7 +144,7 @@ Finally, add `src/greet.ts` to `tsconfig.json`:
   "compilerOptions": {
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "es5"
+    "target": "es2015"
   }
 }
 ```
