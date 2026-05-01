@@ -8,7 +8,7 @@ building of larger TypeScript codebases. You can read more about composite proje
 
 The default depends on a combination of other settings:
 
-- If `outFile` is set, the default is `<outFile>.tsbuildinfo`.
+- In TypeScript versions before 6.0, if `outFile` is set, the default is `<outFile>.tsbuildinfo`.
 - If `rootDir` and `outDir` are set, then the file is `<outDir>/<relative path to config from rootDir>/<config name>.tsbuildinfo`
   For example, if `rootDir` is `src`, `outDir` is `dest`, and the config is
   `./tsconfig.json`, then the default is `./tsconfig.tsbuildinfo`

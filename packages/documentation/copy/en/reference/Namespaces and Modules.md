@@ -31,7 +31,7 @@ Thus, for new projects modules would be the recommended code organization mechan
 Namespaces are a TypeScript-specific way to organize code.  
 Namespaces are simply named JavaScript objects in the global namespace.
 This makes namespaces a very simple construct to use.
-Unlike modules, they can span multiple files, and can be concatenated using [`outFile`](/tsconfig#outFile).
+Unlike modules, they can span multiple files.
 Namespaces can be a good way to structure your code in a Web Application, with all dependencies included as `<script>` tags in your HTML page.
 
 Just like all global namespace pollution, it can be hard to identify component dependencies, especially in a large application.

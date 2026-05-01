@@ -467,7 +467,6 @@ System.register(["mod"], function (exports_1, context_1) {
 - Designed for AMD loaders like RequireJS.
 - You probably shouldn’t use this. Use a bundler instead.
 - Emitted files are AMD modules, but dependencies may be any format.
-- Supports `outFile`.
 
 #### Examples
 

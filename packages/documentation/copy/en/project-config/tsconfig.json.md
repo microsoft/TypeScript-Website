@@ -61,11 +61,11 @@ Example `tsconfig.json` files:
   ```json  tsconfig
   {
     "compilerOptions": {
-      "module": "system",
+      "module": "commonjs",
       "noImplicitAny": true,
       "removeComments": true,
       "preserveConstEnums": true,
-      "outFile": "../../built/local/tsc.js",
+      "outDir": "../../built/local",
       "sourceMap": true
     },
     "include": ["src/**/*"],

@@ -28,8 +28,8 @@ tsc --project tsconfig.production.json
 # Emit d.ts files for a js file with showing compiler options which are booleans
 tsc --ignoreConfig index.js --declaration --emitDeclarationOnly
 
-# Emit a single .js file from two files via compiler options which take string arguments
-tsc --ignoreConfig app.ts util.ts --target esnext --outfile index.js
+# Emit JavaScript files to a specific folder via compiler options which take string arguments
+tsc --ignoreConfig app.ts util.ts --target esnext --outDir dist
 ```
 
 ## Compiler Options
@@ -1112,7 +1112,7 @@ tsc --ignoreConfig app.ts util.ts --target esnext --outfile index.js
   <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Deprecated setting. Use <a href="#outFile"><code>outFile</code></a> instead.</p>
+<p>Deprecated setting. Use an external bundler instead.</p>
 </td></tr>
 
 <tr class='odd' name='outDir'>
@@ -1132,7 +1132,7 @@ tsc --ignoreConfig app.ts util.ts --target esnext --outfile index.js
   <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify a file that bundles all outputs into one JavaScript file. If <a href="#declaration"><code>declaration</code></a> is true, also designates a file that bundles all .d.ts output.</p>
+<p>Removed in TypeScript 6.0. Use an external bundler instead.</p>
 </td></tr>
 
 <tr class='odd' name='paths'>

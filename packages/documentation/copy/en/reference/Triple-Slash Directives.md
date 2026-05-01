@@ -22,8 +22,7 @@ It serves as a declaration of _dependency_ between files.
 
 Triple-slash references instruct the compiler to include additional files in the compilation process.
 
-They also serve as a method to order the output when using [`out`](/tsconfig#out) or [`outFile`](/tsconfig#outFile).
-Files are emitted to the output file location in the same order as the input after preprocessing pass.
+In TypeScript versions before 6.0, they also served as a method to order concatenated output when using `outFile`.
 
 ### Preprocessing input files
 
