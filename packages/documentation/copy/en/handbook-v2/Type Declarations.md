@@ -85,7 +85,8 @@ For example, if you installed the `react` npm package, you can install its corre
 npm install --save-dev @types/react
 ```
 
-TypeScript automatically finds type definitions under `node_modules/@types`, so there's no other step needed to get these types available in your program.
+When you import a package in your source code, TypeScript will automatically look for its type definitions, including definitions under `node_modules/@types`.
+If an `@types` package provides globals that you use without importing, such as `process` from `@types/node` or `describe` from `@types/jest`, add the package name to the [`types`](/tsconfig#types) field of your `tsconfig.json`.
 
 ### Your Own Definitions
 

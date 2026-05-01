@@ -3,19 +3,33 @@ display: "Type Roots"
 oneline: "Specify multiple folders that act like `./node_modules/@types`."
 ---
 
-By default all _visible_ "`@types`" packages are included in your compilation.
-Packages in `node_modules/@types` of any enclosing folder are considered _visible_.
-For example, that means packages within `./node_modules/@types/`, `../node_modules/@types/`, `../../node_modules/@types/`, and so on.
+The `typeRoots` option specifies folders that act like `./node_modules/@types`.
+It changes where TypeScript looks when resolving type package names from [`types`](#types) and `/// <reference types="..." />` directives.
 
-If `typeRoots` is specified, _only_ packages under `typeRoots` will be included. For example:
+In TypeScript 6.0 and later, [`types`](#types) defaults to `[]`, so specifying `typeRoots` does not by itself include every package under those folders.
+List the packages you need in `types`, or specify `"types": ["*"]` to include all packages under the configured `typeRoots`.
+
+For example:
 
 ```json tsconfig
 {
   "compilerOptions": {
-    "typeRoots": ["./typings", "./vendor/types"]
+    "typeRoots": ["./typings", "./vendor/types"],
+    "types": ["node"]
   }
 }
 ```
 
-This config file will include _all_ packages under `./typings` and `./vendor/types`, and no packages from `./node_modules/@types`.
+This config file will look for the `node` type package under `./typings` and `./vendor/types`, and will not look for it under `./node_modules/@types`.
 All paths are relative to the `tsconfig.json`.
+
+To include _all_ packages under `./typings` and `./vendor/types`, use:
+
+```json tsconfig
+{
+  "compilerOptions": {
+    "typeRoots": ["./typings", "./vendor/types"],
+    "types": ["*"]
+  }
+}
+```
