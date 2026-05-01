@@ -72,7 +72,6 @@ The `path` property of each reference can point to a directory containing a `tsc
 When you reference a project, new things happen:
 
 - Importing modules from a referenced project will instead load its _output_ declaration file (`.d.ts`)
-- If the referenced project produces an [`outFile`](/tsconfig#outFile), the output file `.d.ts` file's declarations will be visible in this project
 - Build mode (see below) will automatically build the referenced project if needed
 
 By separating into multiple projects, you can greatly improve the speed of typechecking and compiling, reduce memory usage when using an editor, and improve enforcement of the logical groupings of your program.
@@ -179,11 +178,6 @@ You can see these patterns in the TypeScript repo - see `src/tsconfig-base.json`
 In general, not much is needed to transition a repo using relative modules.
 Simply place a `tsconfig.json` file in each subdirectory of a given parent folder, and add `reference`s to these config files to match the intended layering of the program.
 You will need to either set the [`outDir`](/tsconfig#outDir) to an explicit subfolder of the output folder, or set the [`rootDir`](/tsconfig#rootDir) to the common root of all project folders.
-
-### Structuring for outFiles
-
-Layout for compilations using [`outFile`](/tsconfig#outFile) is more flexible because relative paths don't matter as much.
-The TypeScript repo itself is a good reference here - we have some "library" projects and some "endpoint" projects; "endpoint" projects are kept as small as possible and pull in only the libraries they need.
 
 <!--
 ### Structuring for monorepos
