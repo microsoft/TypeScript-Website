@@ -368,7 +368,7 @@ export default "default export";
 
 #### Examples
 
-> Output is shown with `esModuleInterop: false`.
+> Output is shown with `esModuleInterop` enabled.
 
 ```ts
 // @Filename: main.ts
