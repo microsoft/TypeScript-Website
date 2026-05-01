@@ -372,7 +372,7 @@ tsc --ignoreConfig app.ts util.ts --target esnext --outDir dist
   <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify the base directory to resolve bare specifier module names.</p>
+<p>Deprecated in TypeScript 6.0. Use <a href="#paths"><code>paths</code></a> entries instead.</p>
 </td></tr>
 
 <tr class='odd' name='charset'>
@@ -846,7 +846,7 @@ tsc --ignoreConfig app.ts util.ts --target esnext --outDir dist
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
   <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>node18</code>, <code>node20</code>, <code>nodenext</code>, or <code>preserve</code></p>
 </td>
-  <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
+  <td><p><code>esnext</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1465,7 +1465,7 @@ tsc --ignoreConfig app.ts util.ts --target esnext --outDir dist
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
   <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, <code>es2023</code>, <code>es2024</code>, <code>es2025</code>, or <code>esnext</code></p>
 </td>
-  <td><p><code>es2023</code> if <a href="#module"><code>module</code></a> is <code>node20</code>; <code>esnext</code> if <a href="#module"><code>module</code></a> is <code>nodenext</code>; <code>ES5</code> otherwise.</p>
+  <td><p>The most recent stable ECMAScript version.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
