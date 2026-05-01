@@ -747,17 +747,16 @@ Multiple file paths can be provided for a path mapping. If resolution fails for 
 
 #### `baseUrl`
 
-> `baseUrl` was designed for use with AMD module loaders. If you aren’t using an AMD module loader, you probably shouldn’t use `baseUrl`. Since TypeScript 4.1, `baseUrl` is no longer required to use [`paths`](#paths) and should not be used just to set the directory `paths` values are resolved from.
+> `baseUrl` was designed for use with AMD module loaders. If you aren’t using an AMD module loader, you probably shouldn’t use `baseUrl`. Since TypeScript 4.1, `baseUrl` is no longer required to use [`paths`](#paths), and in TypeScript 6.0 it is deprecated.
 
-The `baseUrl` compiler option can be combined with any `moduleResolution` mode and specifies a directory that bare specifiers (module specifiers that don’t begin with `./`, `../`, or `/`) are resolved from. `baseUrl` has a higher precedence than [`node_modules` package lookups](#node_modules-package-lookups) in `moduleResolution` modes that support them.
-
-When performing a `baseUrl` lookup, resolution proceeds with the same rules as other relative path resolutions. For example, in a `moduleResolution` mode that supports [extensionless relative paths](#extensionless-relative-paths) a module specifier `"some-file"` may resolve to `/src/some-file.ts` if `baseUrl` is set to `/src`.
+For code that used `baseUrl` as a common prefix for [`paths`](#paths), remove `baseUrl` and add that prefix to each `paths` entry.
+For code that used `baseUrl` as a lookup root for arbitrary bare specifiers, use an explicit catch-all `paths` entry instead.
 
 Resolution of relative module specifiers are never affected by the `baseUrl` option.
 
 #### `node_modules` package lookups
 
-Node.js treats module specifiers that aren’t relative paths, absolute paths, or URLs as references to packages that it looks up in `node_modules` subdirectories. Bundlers conveniently adopted this behavior to allow their users to use the same dependency management system, and often even the same dependencies, as they would in Node.js. All of TypeScript’s `moduleResolution` options except `classic` support `node_modules` lookups. (`classic` supports lookups in `node_modules/@types` when other means of resolution fail, but never looks for packages in `node_modules` directly.) Every `node_modules` package lookup has the following structure (beginning after higher precedence bare specifier rules, like `paths`, `baseUrl`, self-name imports, and package.json `"imports"` lookups have been exhausted):
+Node.js treats module specifiers that aren’t relative paths, absolute paths, or URLs as references to packages that it looks up in `node_modules` subdirectories. Bundlers conveniently adopted this behavior to allow their users to use the same dependency management system, and often even the same dependencies, as they would in Node.js. All of TypeScript’s module resolution modes for modern code support `node_modules` lookups. Every `node_modules` package lookup has the following structure (beginning after higher precedence bare specifier rules, like `paths`, self-name imports, and package.json `"imports"` lookups have been exhausted):
 
 1. For each ancestor directory of the importing file, if a `node_modules` directory exists within it:
    1. If a directory with the same name as the package exists within `node_modules`:
@@ -1153,7 +1152,7 @@ import { foo } from "pkg";
 
 Recall that in `--module nodenext --moduleResolution nodenext`, the `--module` setting first [determines](#module-format-detection) whether the import will be emitted to the `.js` file as an `import` or `require` call, then passes that information to TypeScript’s module resolver, which decides whether to match `"import"` or `"require"` conditions in `"pkg"`’s package.json `"exports"` accordingly. Let’s assume that there’s no package.json in scope of this file. The file extension is `.ts`, so the output file extension will be `.js`, which Node.js will interpret as CommonJS, so TypeScript will emit this `import` as a `require` call. So, the module resolver will use the `require` condition as it resolves `"exports"` from `"pkg"`.
 
-The same process happens in `--moduleResolution bundler`, but the rules for deciding whether to emit an `import` or `require` call for this import statement will be different, since `--moduleResolution bundler` necessitates using [`--module esnext`](#es2015-es2020-es2022-esnext) or [`--module preserve`](#preserve). In both of those modes, ESM `import` declarations always emit as ESM `import` declarations, so TypeScript’s module resolver will receive that information and use the `"import"` condition as it resolves `"exports"` from `"pkg"`.
+The same process happens in `--moduleResolution bundler`, but the rules for deciding whether to emit an `import` or `require` call for this import statement will be different. If `--moduleResolution bundler` is paired with [`--module esnext`](#es2015-es2020-es2022-esnext) or [`--module preserve`](#preserve), ESM `import` declarations emit as ESM `import` declarations, so TypeScript’s module resolver will receive that information and use the `"import"` condition as it resolves `"exports"` from `"pkg"`.
 
 This explanation may be somewhat unintuitive, since `--moduleResolution bundler` is usually used in combination with `--noEmit`—bundlers typically process raw `.ts` files and perform module resolution on untransformed `import`s or `require`s. However, for consistency, TypeScript still uses the hypothetical emit decided by `module` to inform module resolution and type checking. This makes [`--module preserve`](#preserve) the best choice whenever a runtime or bundler is operating on raw `.ts` files, since it implies no transformation. Under `--module preserve --moduleResolution bundler`, you can write imports and requires in the same file that will resolve with the `import` and `require` conditions, respectively:
 
@@ -1166,7 +1165,7 @@ import pkg2 = require("pkg"); // Resolved with "require" condition
 
 #### Implied and enforced options
 
-- `--moduleResolution bundler` must be paired with `--module esnext` or `--module preserve`.
+- `--moduleResolution bundler` can be paired with `--module esnext`, `--module preserve`, or `--module commonjs`.
 - `--moduleResolution bundler` implies `--allowSyntheticDefaultImports`.
 
 #### Supported features
@@ -1184,7 +1183,7 @@ import pkg2 = require("pkg"); // Resolved with "require" condition
 
 ### `node10` (formerly known as `node`)
 
-`--moduleResolution node` was renamed to `node10` (keeping `node` as an alias for backward compatibility) in TypeScript 5.0. It reflects the CommonJS module resolution algorithm as it existed in Node.js versions earlier than v12. It should no longer be used.
+`--moduleResolution node` was renamed to `node10` (keeping `node` as an alias for backward compatibility) in TypeScript 5.0. It reflects the CommonJS module resolution algorithm as it existed in Node.js versions earlier than v12. It is deprecated in TypeScript 6.0 and should no longer be used.
 
 #### Supported features
 

@@ -3,24 +3,18 @@ display: "Base URL"
 oneline: "Specify the base directory to resolve bare specifier module names."
 ---
 
-Sets a base directory from which to resolve bare specifier module names. For example, in the directory structure:
+This option is deprecated in TypeScript 6.0 and later.
+It was designed for use in conjunction with AMD module loaders in the browser, and is not recommended in any other context.
+As of TypeScript 4.1, `baseUrl` is no longer required to be set when using [`paths`](#paths).
 
+If you previously used `baseUrl` as a common prefix for paths, move the prefix into the `paths` entries instead:
+
+```json tsconfig
+{
+  "compilerOptions": {
+    "paths": {
+      "hello/*": ["./hello/*"]
+    }
+  }
+}
 ```
-project
-├── ex.ts
-├── hello
-│   └── world.ts
-└── tsconfig.json
-```
-
-With `"baseUrl": "./"`, TypeScript will look for files starting at the same folder as the `tsconfig.json`:
-
-```ts
-import { helloWorld } from "hello/world";
-
-console.log(helloWorld);
-```
-
-This resolution has higher priority than lookups from `node_modules`.
-
-This feature was designed for use in conjunction with AMD module loaders in the browser, and is not recommended in any other context. As of TypeScript 4.1, `baseUrl` is no longer required to be set when using [`paths`](#paths).

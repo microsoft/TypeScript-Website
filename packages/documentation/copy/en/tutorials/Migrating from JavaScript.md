@@ -219,7 +219,7 @@ If TypeScript complains about a package like `lodash`, you can just write
 npm install -S @types/lodash
 ```
 
-If you're using a module option other than `commonjs`, you'll need to set your [`moduleResolution`](/tsconfig#moduleResolution) option to `node`.
+If you're using a modern module option, set your [`moduleResolution`](/tsconfig#moduleResolution) option to match your runtime or bundler.
 
 After that, you'll be able to import lodash with no issues, and get accurate completions.
 
