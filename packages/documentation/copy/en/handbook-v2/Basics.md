@@ -391,8 +391,8 @@ Template strings are a feature from a version of ECMAScript called ECMAScript 20
 TypeScript has the ability to rewrite code from newer versions of ECMAScript to older ones such as ECMAScript 3 or ECMAScript 5 (a.k.a. ES5).
 This process of moving from a newer or "higher" version of ECMAScript down to an older or "lower" one is sometimes called _downleveling_.
 
-By default TypeScript targets ES5, an extremely old version of ECMAScript.
-We could have chosen something a little bit more recent by using the [`target`](/tsconfig#target) option.
+By default TypeScript targets the most recent supported ECMAScript version.
+We could have chosen something older by using the [`target`](/tsconfig#target) option.
 Running with `--target es2015` changes TypeScript to target ECMAScript 2015, meaning code should be able to run wherever ECMAScript 2015 is supported.
 So running `tsc --target es2015 hello.ts` gives us the following output:
 
@@ -403,15 +403,14 @@ function greet(person, date) {
 greet("Maddison", new Date());
 ```
 
-> While the default target is ES5, the great majority of current browsers support ES2015.
-> Most developers can therefore safely specify ES2015 or above as a target, unless compatibility with certain ancient browsers is important.
+> Modern runtimes support ES2015 and newer.
+> Most developers can therefore safely use a recent target unless compatibility with older browsers is important.
 
 ## Strictness
 
 Different users come to TypeScript looking for different things in a type-checker.
 Some people are looking for a more loose opt-in experience which can help validate only some parts of their program, and still have decent tooling.
-This is the default experience with TypeScript, where types are optional, inference takes the most lenient types, and there's no checking for potentially `null`/`undefined` values.
-Much like how `tsc` emits in the face of errors, these defaults are put in place to stay out of your way.
+You can configure TypeScript for a looser opt-in experience where types are optional, inference takes more lenient types, and there's less checking for potentially `null`/`undefined` values.
 If you're migrating existing JavaScript, that might be a desirable first step.
 
 In contrast, a lot of users prefer to have TypeScript validate as much as it can straight away, and that's why the language provides strictness settings as well.

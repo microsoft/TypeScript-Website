@@ -3,7 +3,9 @@ display: "Target"
 oneline: "Set the JavaScript language version for emitted JavaScript and include compatible library declarations."
 ---
 
-Modern browsers support all ES6 features, so `ES6` is a good choice.
+**Default**: The most recent supported ECMAScript version.
+
+Modern runtimes support newer ECMAScript features, so a recent target is a good choice.
 You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code is guaranteed to run in newer environments.
 
 The `target` setting changes which JS features are downleveled and which are left intact.

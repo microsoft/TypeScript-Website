@@ -86,6 +86,7 @@ In the project root, `proj`, create the file `tsconfig.json`:
   "files": ["src/main.ts"],
   "compilerOptions": {
     "noImplicitAny": true,
+    "module": "commonjs",
     "target": "es5"
   }
 }
@@ -142,6 +143,7 @@ Finally, add `src/greet.ts` to `tsconfig.json`:
   "files": ["src/main.ts", "src/greet.ts"],
   "compilerOptions": {
     "noImplicitAny": true,
+    "module": "commonjs",
     "target": "es5"
   }
 }
@@ -155,14 +157,14 @@ node dist/main.js
 ```
 
 Notice that even though we used ES2015 module syntax, TypeScript emitted CommonJS modules that Node uses.
-We'll stick with CommonJS for this tutorial, but you could set `module` in the options object to change this.
+We'll stick with CommonJS for this tutorial, but you could set `module` to another value to change this.
 
 ## Browserify
 
 Now let's move this project from Node to the browser.
 To do this, we'd like to bundle all our modules into one JavaScript file.
 Fortunately, that's exactly what Browserify does.
-Even better, it lets us use the CommonJS module system used by Node, which is the default TypeScript emit.
+Even better, it lets us use the CommonJS module system used by Node.
 That means our TypeScript and Node setup will transfer to the browser basically unchanged.
 
 First, install browserify, [tsify](https://www.npmjs.com/package/tsify), and vinyl-source-stream.
