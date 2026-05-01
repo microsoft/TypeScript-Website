@@ -3,7 +3,7 @@ display: "Root Dir"
 oneline: "Specify the root folder within your source files."
 ---
 
-**Default**: The longest common path of all non-declaration input files. If [`composite`](#composite) is set, the default is instead the directory containing the `tsconfig.json` file.
+**Default**: The directory containing the `tsconfig.json` file. If compiling files from the command line without a `tsconfig.json`, the default is the longest common path of all non-declaration input files.
 
 When TypeScript compiles files, it keeps the same directory structure in the output directory as exists in the input directory.
 
@@ -20,21 +20,7 @@ MyProj
 ├── types.d.ts
 ```
 
-The inferred value for `rootDir` is the longest common path of all non-declaration input files, which in this case is `core/`.
-
 If your [`outDir`](#outDir) was `dist`, TypeScript would write this tree:
-
-```
-MyProj
-├── dist
-│   ├── a.js
-│   ├── b.js
-│   ├── sub
-│   │   ├── c.js
-```
-
-However, you may have intended for `core` to be part of the output directory structure.
-By setting `rootDir: "."` in `tsconfig.json`, TypeScript would write this tree:
 
 ```
 MyProj
@@ -44,6 +30,18 @@ MyProj
 │   │   ├── b.js
 │   │   ├── sub
 │   │   │   ├── c.js
+```
+
+If you want `core` to be treated as the root of your source tree, set `rootDir: "core"` in `tsconfig.json`.
+TypeScript would then write this tree:
+
+```
+MyProj
+├── dist
+│   ├── a.js
+│   ├── b.js
+│   ├── sub
+│   │   ├── c.js
 ```
 
 Importantly, `rootDir` **does not affect which files become part of the compilation**.
