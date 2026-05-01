@@ -388,7 +388,7 @@ to
 Why did this happen?
 
 Template strings are a feature from a version of ECMAScript called ECMAScript 2015 (a.k.a. ECMAScript 6, ES2015, ES6, etc. - _don't ask_).
-TypeScript has the ability to rewrite code from newer versions of ECMAScript to older ones such as ECMAScript 3 or ECMAScript 5 (a.k.a. ES5).
+TypeScript has the ability to rewrite code from newer versions of ECMAScript to older supported versions such as ECMAScript 2015.
 This process of moving from a newer or "higher" version of ECMAScript down to an older or "lower" one is sometimes called _downleveling_.
 
 By default TypeScript targets the most recent supported ECMAScript version.

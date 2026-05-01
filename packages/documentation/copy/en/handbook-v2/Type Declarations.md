@@ -53,7 +53,7 @@ Being aware of what version of JavaScript your code ultimately runs on is import
 This is one function of the [`target`](/tsconfig#target) compiler setting.
 
 TypeScript helps with this problem by varying which `lib` files are included by default based on your [`target`](/tsconfig#target) setting.
-For example, if [`target`](/tsconfig#target) is `ES5`, you will see an error if trying to use the `startsWith` method, because that method is only available in `ES6` or later.
+For example, if [`target`](/tsconfig#target) is `ES2015`, you will see an error if trying to use the `replaceAll` method, because that method is only available in `ES2021` or later.
 
 ### `lib` setting
 

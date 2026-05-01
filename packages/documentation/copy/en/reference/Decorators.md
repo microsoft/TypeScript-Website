@@ -22,7 +22,7 @@ To enable experimental support for decorators, you must enable the [`experimenta
 **Command Line**:
 
 ```shell
-tsc --target ES5 --experimentalDecorators
+tsc --target ES2015 --experimentalDecorators
 ```
 
 **tsconfig.json**:
@@ -30,7 +30,7 @@ tsc --target ES5 --experimentalDecorators
 ```json tsconfig
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES2015",
     "experimentalDecorators": true
   }
 }
@@ -232,11 +232,11 @@ The expression for the method decorator will be called as a function at runtime,
 2. The name of the member.
 3. The _Property Descriptor_ for the member.
 
-> NOTE&emsp; The _Property Descriptor_ will be `undefined` if your script target is less than `ES5`.
+> NOTE&emsp; In TypeScript versions that support targets below `ES5`, the _Property Descriptor_ will be `undefined` for those targets.
 
 If the method decorator returns a value, it will be used as the _Property Descriptor_ for the method.
 
-> NOTE&emsp; The return value is ignored if your script target is less than `ES5`.
+> NOTE&emsp; In TypeScript versions that support targets below `ES5`, the return value is ignored for those targets.
 
 The following is an example of a method decorator (`@enumerable`) applied to a method on the `Greeter` class:
 
@@ -292,11 +292,11 @@ The expression for the accessor decorator will be called as a function at runtim
 2. The name of the member.
 3. The _Property Descriptor_ for the member.
 
-> NOTE&emsp; The _Property Descriptor_ will be `undefined` if your script target is less than `ES5`.
+> NOTE&emsp; In TypeScript versions that support targets below `ES5`, the _Property Descriptor_ will be `undefined` for those targets.
 
 If the accessor decorator returns a value, it will be used as the _Property Descriptor_ for the member.
 
-> NOTE&emsp; The return value is ignored if your script target is less than `ES5`.
+> NOTE&emsp; In TypeScript versions that support targets below `ES5`, the return value is ignored for those targets.
 
 The following is an example of an accessor decorator (`@configurable`) applied to a member of the `Point` class:
 
@@ -497,7 +497,7 @@ To enable this experimental support, you must set the [`emitDecoratorMetadata`](
 **Command Line**:
 
 ```shell
-tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
+tsc --target ES2015 --experimentalDecorators --emitDecoratorMetadata
 ```
 
 **tsconfig.json**:
@@ -505,7 +505,7 @@ tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
 ```json tsconfig
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES2015",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }

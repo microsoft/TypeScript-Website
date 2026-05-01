@@ -71,12 +71,12 @@ for (let pet of pets) {
 
 ### Code generation
 
-#### Targeting ES5
+#### Targeting ES5 in older TypeScript versions
 
-When targeting an ES5-compliant engine, iterators are only allowed on values of `Array` type.
+In TypeScript versions before 6.0, when targeting an ES5-compliant engine, iterators were only allowed on values of `Array` type.
 It is an error to use `for..of` loops on non-Array values, even if these non-Array values implement the `Symbol.iterator` property.
 
-The compiler will generate a simple `for` loop for a `for..of` loop, for instance:
+The compiler generated a simple `for` loop for a `for..of` loop, for instance:
 
 ```ts
 let numbers = [1, 2, 3];
