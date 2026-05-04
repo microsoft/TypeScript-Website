@@ -88,4 +88,4 @@ If absent, then "main" is used
 
 ## Tips
 
-If you'd like to write tests for your .d.ts files, try [tsd](https://github.com/SamVerschueren/tsd) or [TSTyche](https://github.com/tstyche/tstyche).
+If you'd like to write tests for your .d.ts files, try [tsd](https://github.com/SamVerschueren/tsd) (CLI + assertions runtime) or [TSTyche](https://github.com/tstyche/tstyche) (CLI + BDD-like runtime) or [$mol_type_assert](https://www.npmjs.com/package/mol_type_all#assertions) (types only w/o runtime).
