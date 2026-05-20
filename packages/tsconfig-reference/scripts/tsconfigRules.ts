@@ -266,11 +266,7 @@ export const defaultsForOptions = {
   useUnknownInCatchVariables: trueIf("strict"),
   strictPropertyInitialization: trueIf("strict"),
   strictNullChecks: trueIf("strict"),
-  target: [
-    "`es2023` if [`module`](#module) is `node20`;",
-    "`esnext` if [`module`](#module) is `nodenext`;",
-    "`ES5` otherwise.",
-  ],
+  target: "`es2025`",
   useDefineForClassFields: [
     "`true` if [`target`](#target) is `ES2022` or higher, including `ESNext`;",
     "`false` otherwise.",
