@@ -75,3 +75,12 @@ type Person = { age: number; name: string; alive: boolean };
 type key = "age";
 type Age = Person[key];
 ```
+
+Or you could utilize the typeof operator on the const:
+
+```ts twoslash
+type Person = { age: number; name: string; alive: boolean };
+// ---cut---
+const key = "age";
+type Age = Person[typeof key];
+```
