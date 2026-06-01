@@ -240,6 +240,24 @@ It can also contain bug fixes that are functionally improvements, but which can 
 Types generated for the DOM may have an impact on type-checking your codebase.
 For more information, [see linked issues related to DOM and `lib.d.ts` updates for this version of TypeScript](https://github.com/microsoft/TypeScript/issues/60985).
 
+### JSX Children Under `--jsx react-jsx` and `--jsx react-jsxdev`
+
+When using the automatic JSX runtimes, JSX children are always passed to the runtime through a `children` prop.
+TypeScript 5.8 now mirrors that runtime behavior during type checking.
+When `--jsx` is set to `react-jsx` or `react-jsxdev`, TypeScript always checks JSX children against a `children` prop and ignores `JSX.ElementChildrenAttribute` for choosing a different prop name.
+
+If you maintain JSX typings for the automatic runtime, make sure components and intrinsic elements that accept children include a `children` property in their props.
+
+```tsx
+declare namespace JSX {
+    interface IntrinsicElements {
+        h1: { children?: string };
+    }
+}
+```
+
+For more information, [see the implementing pull request](https://github.com/microsoft/TypeScript/pull/60880).
+
 ### Restrictions on Import Assertions Under `--module nodenext`
 
 Import assertions were a proposed addition to ECMAScript to ensure certain properties of an import (e.g. "this module is JSON, and is not intended to be executable JavaScript code").
