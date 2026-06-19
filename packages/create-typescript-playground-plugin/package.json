@@ -1,6 +1,6 @@
 {
   "name": "create-typescript-playground-plugin",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "bin": "index.js",
   "author": "TypeScript team",
   "license": "MIT",
