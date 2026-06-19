@@ -9,6 +9,6 @@ export const requireURL = (path: string) => {
 /** Use this to make a few dumb element generation funcs */
 export const el = (str: string, el: string, container: Element) => {
   const para = document.createElement(el)
-  para.innerHTML = str
+  para.textContent = str
   container.appendChild(para)
 }

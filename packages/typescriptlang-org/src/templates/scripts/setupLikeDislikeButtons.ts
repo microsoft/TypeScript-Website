@@ -9,8 +9,15 @@ export const setupLikeDislikeButtons = (slug: string, i: any) => {
     const textSectionNav = document.getElementById("like-dislike-subnav")!
     const popoverPopup = document.getElementById("page-helpful-popup")!
 
-    textSectionNav.innerHTML = `<h5>${newContent}</h5>`
-    popoverPopup.innerHTML = `<p>${newContent}</p>`
+    textSectionNav.textContent = ""
+    const thanksHeader = document.createElement("h5")
+    thanksHeader.textContent = newContent
+    textSectionNav.appendChild(thanksHeader)
+
+    popoverPopup.textContent = ""
+    const thanksParagraph = document.createElement("p")
+    thanksParagraph.textContent = newContent
+    popoverPopup.appendChild(thanksParagraph)
   }
 
   likeButton.onclick = clicked("Liked Page")
