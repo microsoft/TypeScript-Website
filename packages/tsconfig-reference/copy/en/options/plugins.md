@@ -14,4 +14,16 @@ For example:
 - [typescript-eslint-language-service](https://github.com/Quramy/typescript-eslint-language-service) &mdash; Provides eslint error messaging and fix-its inside the compiler's output.
 - [ts-graphql-plugin](https://github.com/Quramy/ts-graphql-plugin) &mdash; Provides validation and auto-completion inside GraphQL query template strings.
 
+You enable a plugin by adding it to the `plugins` array in your `tsconfig.json`. Each entry is an object with the plugin's package `name`, plus any options that plugin accepts:
+
+```json tsconfig
+{
+  "compilerOptions": {
+    "plugins": [
+      { "name": "ts-sql-plugin" }
+    ]
+  }
+}
+```
+
 VS Code has the ability for a extension to [automatically include language service plugins](https://code.visualstudio.com/api/references/contribution-points#contributes.typescriptServerPlugins), and so you may have some running in your editor without needing to define them in your `tsconfig.json`.
