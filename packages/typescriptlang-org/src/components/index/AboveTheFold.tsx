@@ -9,8 +9,8 @@ const Row = (props: { children: any, className?: string }) => <div className={[p
 const Col = (props: { children: any, className?: string }) => <div className={[props.className, "col1"].join(" ")}>{props.children}</div>
 const Col2 = (props: { children: any }) => <div className="col2">{props.children}</div>
 
-const FluidButton = (props: { href?: string, onClick?: any, title: string, subtitle?: string, icon: JSX.Element, className?: string }) => (
-  <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick}>
+const FluidButton = (props: { href?: string, onClick?: any, title: string, subtitle?: string, icon: JSX.Element, className?: string, role?: string }) => (
+  <a className={"fluid-button " + props.className || ""} href={props.href} onClick={props.onClick} role={props.role}>
     <div>
       <div className="fluid-button-title">{props.title}</div>
       <div className="fluid-button-subtitle">{props.subtitle}</div>
@@ -43,6 +43,7 @@ export const AboveTheFold = () => {
             subtitle={i("index_2_cta_install_subtitle")}
             href="/download"
             onClick={onclick}
+            role="button"
             icon={
               <svg width="21" height="5" viewBox="0 0 21 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="0.5" width="4" height="4" stroke="black" />
@@ -122,11 +123,11 @@ export const AboveTheFold = () => {
     const Content = window.innerWidth < 600 ? CTAHeadlineMobile : CTAHeadlines
     return (
       <div className="cta">
-        <a className="transparent-button" onClick={() => setShowCTALinks(false)}  href="#">
+        <button className="transparent-button" onClick={() => setShowCTALinks(false)}>
           <svg width="21" height="14" viewBox="0 0 21 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.25 7.75L1.75 7.75M1.75 7.75L7.75 1.25M1.75 7.75L7.75 13.25" stroke="white" strokeWidth="2" />
           </svg>
-          Back</a>
+          Back</button>
         <Content />
       </div>
     )

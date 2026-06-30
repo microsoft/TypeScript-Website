@@ -70,9 +70,8 @@ export const EditorExamples = () => {
 
       </div>
 
-      <a
+      <button
         className="next-headline-button"
-        href="#"
         onClick={next}
         aria-label="Show code sample"
       >
@@ -85,7 +84,7 @@ export const EditorExamples = () => {
         >
           <path d="M0 14.5V0.5L10.5 7L0 14.5Z" />
         </svg>
-      </a>
+      </button>
     </div>
   );
 };

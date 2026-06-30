@@ -50,6 +50,9 @@ $headline-foreground-bg: white;
   padding: 1rem 1rem;
   text-decoration: none;
   cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
 
   @media screen and (-ms-high-contrast: active) {
     border: 2px solid grey;
@@ -1281,6 +1284,9 @@ $headline-foreground-bg: white;
   width: 80px;
   padding: 10px;
   cursor: pointer;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
   svg {
     margin-right: 8px;
   }
