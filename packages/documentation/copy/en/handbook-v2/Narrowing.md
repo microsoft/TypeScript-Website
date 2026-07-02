@@ -736,7 +736,7 @@ function getArea(shape: Shape) {
   }
 }
 
-function assertNever(value: never) {
+function assertNever(value: never): never {
   throw new Error(`Missing case for value: ${value}`);
 }
 ```
@@ -773,7 +773,7 @@ function getArea(shape: Shape) {
   }
 }
 
-function assertNever(value: never) {
+function assertNever(value: never): never {
   throw new Error(`Missing case for value: ${value}`);
 }
 ```
