@@ -31,7 +31,7 @@
         "README.md"
     ],
     "dependencies": {
-        "typescript": "^6"
+        "@typescript/old": "npm:typescript@^6"
     },
     "publishConfig": {
         "access": "public"

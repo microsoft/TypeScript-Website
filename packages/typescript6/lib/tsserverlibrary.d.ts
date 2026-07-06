@@ -1,2 +1,2 @@
-import ts = require("typescript");
+import ts = require("@typescript/old");
 export = ts;

@@ -327,9 +327,9 @@ importers:
 
   packages/typescript6:
     dependencies:
-      typescript:
-        specifier: 6.0.2
-        version: 6.0.2
+      '@typescript/old':
+        specifier: npm:typescript@^6
+        version: typescript@6.0.2
 
   packages/typescriptlang-org:
     dependencies:
