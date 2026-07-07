@@ -400,7 +400,7 @@ printCoord({ x: 100, y: 100 });
 
 Just like when we used a type alias above, the example works just as if we had used an anonymous object type.
 TypeScript is only concerned with the _structure_ of the value we passed to `printCoord` - it only cares that it has the expected properties.
-Being concerned only with the structure and capabilities of types is why we call TypeScript a _structurally typed_ type system.
+Being concerned only with the structure and capabilities of types is why we call TypeScript a _structurally typed_ type system; the opposite is a _nominally typed_ type system, where type compatibility is based on the names of the types rather than their structure.
 
 ### Differences Between Type Aliases and Interfaces
 
