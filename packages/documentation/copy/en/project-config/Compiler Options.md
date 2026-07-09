@@ -868,7 +868,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
-  <td><p><code>Node10</code> if <a href="#module"><code>module</code></a> is <code>CommonJS</code>; <code>Node16</code> if <a href="#module"><code>module</code></a> is <code>Node16</code>, <code>Node18</code>, or <code>Node20</code>; <code>NodeNext</code> if <a href="#module"><code>module</code></a> is <code>NodeNext</code>; <code>Bundler</code> if <a href="#module"><code>module</code></a> is <code>Preserve</code>; <code>Classic</code> otherwise.</p>
+  <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>None</code>, <code>AMD</code>, <code>UMD</code>, or <code>System</code>; <code>NodeNext</code> if <a href="#module"><code>module</code></a> is <code>NodeNext</code>; <code>Node16</code> if <a href="#module"><code>module</code></a> is <code>Node16</code> or higher; <code>Bundler</code> otherwise.</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
