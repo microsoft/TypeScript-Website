@@ -235,8 +235,11 @@ export const defaultsForOptions = {
   jsxFactory: "React.createElement",
   locale: "Platform specific.",
   module: [
-    "`CommonJS` if [`target`](#target) is `ES5`;",
-    "`ES6`/`ES2015` otherwise.",
+    "`ESNext` if [`target`](#target) is `ESNext`;",
+    "`ES2022` if [`target`](#target) is `ES2022` or higher;",
+    "`ES2020` if [`target`](#target) is `ES2020` or higher;",
+    "`ES2015` if [`target`](#target) is `ES2015` or higher;",
+    "`CommonJS` otherwise.",
   ],
   moduleResolution: [
     "`Node10` if [`module`](#module) is `CommonJS`;",
