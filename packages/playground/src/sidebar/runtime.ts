@@ -1,6 +1,12 @@
 import { PlaygroundPlugin, PluginFactory } from ".."
 import { createUI } from "../createUI"
 import { localize } from "../localizeWithFallback"
+import {
+  createLoopProtection,
+  insertLoopProtection,
+  loopProtectionBudgetMS,
+  loopProtectionGlobalName,
+} from "./loopProtection"
 
 type LogEntry = {
   id: string
@@ -134,7 +140,7 @@ export const clearLogs = () => {
   }
 }
 
-export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
+export const runWithCustomLogs = (closure: Promise<string>, i: Function, tsModule?: typeof import("typescript")) => {
   const noLogs = document.getElementById("empty-message-container")
   const logContainer = document.getElementById("log-container")!
   const logToolsContainer = document.getElementById("log-tools")!
@@ -144,10 +150,17 @@ export const runWithCustomLogs = (closure: Promise<string>, i: Function) => {
     logToolsContainer.style.display = "flex"
   }
 
+  // The instrumentation happens out here so that rewireLoggingToElement's
+  // scope, which the direct eval below can see, gains no new bindings
+  const loopProtected =
+    tsModule && !localStorage.getItem("disable-loop-protection")
+      ? closure.then(js => insertLoopProtection(tsModule, js))
+      : closure
+
   rewireLoggingToElement(
     () => document.getElementById("log")!,
     () => document.getElementById("log-container")!,
-    closure,
+    loopProtected,
     true,
     i
   )
@@ -173,6 +186,15 @@ function rewireLoggingToElement(
     bindLoggingFunc(replace, rawConsole, "error", "ERR")
     replace["clear"] = clearLogs
     const console = Object.assign({}, rawConsole, replace)
+    if (!localStorage.getItem("disable-loop-protection")) {
+      ;(globalThis as any)[loopProtectionGlobalName] = createLoopProtection(
+        loopProtectionBudgetMS,
+        (line, isFirstInBurst) => {
+          const key = isFirstInBurst ? "play_run_js_loop_protection" : "play_run_js_loop_protection_skipped"
+          console.error(i(key, { line, budget: loopProtectionBudgetMS }))
+        }
+      )
+    }
     try {
       const safeJS = sanitizeJS(js)
       eval(safeJS)
