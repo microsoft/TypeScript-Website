@@ -55,7 +55,7 @@ export function createVirtualTypeScriptEnvironment(
 ): VirtualTypeScriptEnvironment {
   const mergedCompilerOpts = { ...defaultCompilerOptions(ts), ...compilerOptions }
 
-  const { languageServiceHost, updateFile, deleteFile } = createVirtualLanguageServiceHost(
+  const { languageServiceHost, updateFileText, deleteFile } = createVirtualLanguageServiceHost(
     sys,
     rootFiles,
     mergedCompilerOpts,
@@ -78,7 +78,7 @@ export function createVirtualTypeScriptEnvironment(
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
-      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
+      updateFileText(fileName, content)
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
       const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
@@ -93,12 +93,8 @@ export function createVirtualTypeScriptEnvironment(
         prevFullContents.slice(0, prevTextSpan.start) +
         content +
         prevFullContents.slice(prevTextSpan.start + prevTextSpan.length)
-      const newSourceFile = ts.updateSourceFile(prevSourceFile, newText, {
-        span: prevTextSpan,
-        newLength: content.length,
-      })
 
-      updateFile(newSourceFile)
+      updateFileText(fileName, newText)
     },
     deleteFile(fileName) {
       const sourceFile = languageService.getProgram()!.getSourceFile(fileName)
@@ -618,6 +614,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
     compilerHost: CompilerHost
     updateFile: (sourceFile: SourceFile) => boolean
     deleteFile: (sourceFile: SourceFile) => boolean
+    writeFileText: (fileName: string, text: string) => boolean
   }
 
   const vHost: Return = {
@@ -653,6 +650,16 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       sourceFiles.delete(sourceFile.fileName)
       sys.deleteFile!(sourceFile.fileName)
       return alreadyExists
+    },
+    // Writes a file's contents without keeping a parsed SourceFile for it. Callers which parse
+    // their own SourceFiles (like the language service) would otherwise keep a second AST per
+    // file alive for the lifetime of the host. Any previously cached AST is dropped so that
+    // getSourceFile re-parses the new contents.
+    writeFileText: (fileName, text) => {
+      const alreadyExists = sourceFiles.has(fileName)
+      sourceFiles.delete(fileName)
+      sys.writeFile(fileName, text)
+      return alreadyExists
     }
   }
   return vHost
@@ -669,7 +676,7 @@ export function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
-  const { compilerHost, updateFile, deleteFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
+  const { compilerHost, writeFileText, deleteFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
   const fileVersions = new Map<string, string>()
   let projectVersion = 0
   const languageServiceHost: LanguageServiceHost = {
@@ -702,19 +709,26 @@ export function createVirtualLanguageServiceHost(
   type Return = {
     languageServiceHost: LanguageServiceHost
     updateFile: (sourceFile: import("typescript").SourceFile) => void
+    updateFileText: (fileName: string, text: string) => void
     deleteFile: (sourceFile: import("typescript").SourceFile) => void
+  }
+
+  // Only the text of a file is stored: the language service reads it back through
+  // getScriptSnapshot and parses (and caches) its own SourceFile, so holding on to a parsed
+  // copy here would keep a second AST per file alive for the lifetime of the host.
+  const updateFileText = (fileName: string, text: string) => {
+    projectVersion++
+    fileVersions.set(fileName, projectVersion.toString())
+    if (!fileNames.includes(fileName)) {
+      fileNames.push(fileName)
+    }
+    writeFileText(fileName, text)
   }
 
   const lsHost: Return = {
     languageServiceHost,
-    updateFile: sourceFile => {
-      projectVersion++
-      fileVersions.set(sourceFile.fileName, projectVersion.toString())
-      if (!fileNames.includes(sourceFile.fileName)) {
-        fileNames.push(sourceFile.fileName)
-      }
-      updateFile(sourceFile)
-    },
+    updateFile: sourceFile => updateFileText(sourceFile.fileName, sourceFile.text),
+    updateFileText,
     deleteFile: sourceFile => {
       projectVersion++
       fileVersions.set(sourceFile.fileName, projectVersion.toString())

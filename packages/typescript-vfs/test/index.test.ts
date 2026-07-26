@@ -100,6 +100,58 @@ it("emits new files to the fsMap", () => {
   expect(Array.from(fsMap.keys())).toContain("index.js")
 })
 
+it("creates, updates and re-updates a file through the environment", () => {
+  const fsMap = createDefaultMapFromNodeModules({})
+  fsMap.set("index.ts", "const hello = 'hi'")
+
+  const system = createSystem(fsMap)
+  const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], ts, {})
+
+  env.createFile("other.ts", "export const n: number = 'no'")
+  const errors = env.languageService
+    .getSemanticDiagnostics("other.ts")
+    .map(d => ts.flattenDiagnosticMessageText(d.messageText, "\n"))
+  expect(errors).toEqual(["Type 'string' is not assignable to type 'number'."])
+
+  env.updateFile("other.ts", "export const n: number = 1")
+  expect(env.getSourceFile("other.ts")!.text).toEqual("export const n: number = 1")
+  expect(env.languageService.getSemanticDiagnostics("other.ts").length).toBe(0)
+
+  // Passing a text span replaces only that range of the previous contents
+  env.updateFile("other.ts", "5", ts.createTextSpan("export const n: number = ".length, 1))
+  expect(env.getSourceFile("other.ts")!.text).toEqual("export const n: number = 5")
+  expect(system.readFile("other.ts")).toEqual("export const n: number = 5")
+  expect(env.languageService.getSemanticDiagnostics("other.ts").length).toBe(0)
+})
+
+// The language service parses and caches a SourceFile for every file it reads through
+// getScriptSnapshot, so anything the environment parses on top of that is a second AST which
+// is kept alive for as long as the environment is.
+it("does not parse SourceFiles of its own when files are created or updated", () => {
+  const fsMap = createDefaultMapFromNodeModules({})
+  fsMap.set("index.ts", "const hello = 'hi'")
+
+  let parses = 0
+  const countingTS: typeof ts = new Proxy(ts, {
+    get: (target: any, key) =>
+      key === "createSourceFile" || key === "updateSourceFile"
+        ? (...args: any[]) => {
+            parses++
+            return target[key](...args)
+          }
+        : target[key],
+  })
+
+  const system = createSystem(fsMap)
+  const env = createVirtualTypeScriptEnvironment(system, ["index.ts"], countingTS, {})
+
+  env.createFile("other.ts", "export const n = 1")
+  env.updateFile("other.ts", "export const n = 2")
+  expect(env.languageService.getSemanticDiagnostics("other.ts").length).toBe(0)
+
+  expect(parses).toEqual(0)
+})
+
 it("creates a map from the CDN without cache", async () => {
   const fetcher = jest.fn()
   fetcher.mockResolvedValue({ text: () => Promise.resolve("// Contents of file") })
@@ -226,6 +278,24 @@ it("empty file content", async () => {
     options,
     host: host.compilerHost,
   })
+})
+
+it("writes file contents without leaving a stale SourceFile in the compiler host", () => {
+  const options = { target: ts.ScriptTarget.ES2020 }
+  const fsMap = createDefaultMapFromNodeModules(options, ts)
+  fsMap.set("index.ts", "const a = 1")
+  const system = createSystem(fsMap)
+  const host = createVirtualCompilerHost(system, options, ts)
+
+  // Reading it once caches a parsed SourceFile in the host
+  expect(host.compilerHost.getSourceFile("index.ts", ts.ScriptTarget.ES2020)!.text).toEqual("const a = 1")
+
+  expect(host.writeFileText("index.ts", "const a = 2")).toEqual(true)
+  expect(system.readFile("index.ts")).toEqual("const a = 2")
+  expect(host.compilerHost.getSourceFile("index.ts", ts.ScriptTarget.ES2020)!.text).toEqual("const a = 2")
+
+  expect(host.writeFileText("new.ts", "const b = 1")).toEqual(false)
+  expect(system.readFile("new.ts")).toEqual("const b = 1")
 })
 
 it("moduleDetection options", async () => {
