@@ -1,0 +1,14 @@
+---
+import { renderRootSemanticHtml } from "../lib/root-semantics.mjs"
+
+interface Props { pathname: string; locale: string; title: string; allRoutes: Array<any> }
+const { pathname } = Astro.props
+const semanticHtml = renderRootSemanticHtml(pathname)
+---
+<section class="content-width root-semantic-content" set:html={semanticHtml} />
+
+<style>
+  .root-semantic-content { padding-block: 2rem 4rem; }
+  .root-semantic-content :global(img) { max-width: 100%; height: auto; }
+  .root-semantic-content :global(pre) { overflow: auto; padding: 1rem; }
+</style>

@@ -1,0 +1,29 @@
+---
+const assetPack = "/branding/typescript-design-assets.zip"
+const recommendations = [
+  "Please use the blue TypeScript mark above as the primary logo for TypeScript.",
+  "This is the right logo for blog posts, news articles, giveaway stickers and general marketing for yourself.",
+  "The “TS” in the logo is white, not transparent by default.",
+  "There is a capital “S” in TypeScript, just like in JavaScript.",
+]
+const donts = [
+  "Use the TypeScript logos for your application/product.",
+  "Modify the shape of the logos when used.",
+  "Integrate the TypeScript logo into your application's logo.",
+  "Name a product which implies TypeScript's endorsement of the product.",
+]
+---
+<div id="branding" class="content-width">
+  <header><h1>Branding</h1><h2>Logos and design assets for TypeScript</h2></header>
+  <a class="raised main-content-block branding-download" href={assetPack} download>
+    <img src="/images/branding/logo-grouping.svg" alt="Examples of the TypeScript logos" />
+    <strong>Click to download the asset pack</strong>
+  </a>
+  <h2>Recommendations</h2><div class="branding-grid recommendations">{recommendations.map(text => <p>{text}</p>)}</div>
+  <h2>Alternatives</h2><div class="branding-alternatives">
+    <a class="raised" href={assetPack} download><img src="/images/branding/two-colors.svg" alt="Single-color TypeScript logo variants" /><span>Single color variant which has the “TS” cut out, useful for when you need a single color design.</span></a>
+    <a class="raised" href={assetPack} download><img src="/images/branding/two-longform.svg" alt="Long-form TypeScript logo variants" /><span>Full lettermark version of the TypeScript logo.</span></a>
+  </div>
+  <h2>Palette</h2><div class="raised main-content-block branding-art"><img src="/images/branding/palette.svg" alt="TypeScript design palette on a light background" /></div><div class="raised main-content-block branding-art"><img src="/images/branding/palette-bg.svg" alt="TypeScript design palette on a dark background" /></div>
+  <h2>Please Don't</h2><div class="branding-grid donts">{donts.map(text => <p>{text}</p>)}</div>
+</div>

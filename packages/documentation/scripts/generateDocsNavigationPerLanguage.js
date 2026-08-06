@@ -220,6 +220,54 @@ for (const lang of langs) {
   }
 }
 
+function createNavEntry(lang, sectionIndex, item) {
+  if ("href" in item) {
+    return {
+      title: item.title,
+      id: toID(sectionIndex, item.title),
+      permalink: item.href,
+      oneline: item.oneliner,
+    };
+  }
+
+  if ("items" in item) {
+    const entry = {
+      title: item.title,
+      id: toID(sectionIndex, item.title),
+      oneline: item.oneliner,
+      chronological: item.chronological || false,
+    };
+
+    if (item.items?.length) {
+      entry.items = item.items.map((subItem) => createNavEntry(lang, sectionIndex, subItem));
+    }
+
+    return entry;
+  }
+
+  const subNavInfo = langInfo[lang].get(item.file) || langInfo["en"].get(item.file);
+  if (!subNavInfo) throwForUnfoundFile(item, lang, langInfo["en"]);
+
+  return {
+    title: subNavInfo.data.short || subNavInfo.data.title,
+    id: toID(sectionIndex, subNavInfo.data.title),
+    permalink: subNavInfo.data.permalink,
+    oneline: subNavInfo.data.oneline,
+  };
+}
+
+function createNavigationForLanguage(lang) {
+  return handbookPages.map((section, sectionIndex) => ({
+    title: section.title,
+    oneline: section.summary,
+    id: section.title.toLowerCase().replace(/\s/g, "-"),
+    chronological: section.chronological || false,
+    items: section.items.map((item) => createNavEntry(lang, sectionIndex, item)),
+  }));
+}
+
+const navigationArtifacts = Object.fromEntries(langs.map((lang) => [lang, createNavigationForLanguage(lang)]));
+
 const codeForTheHandbook = [
   `
   /* This function is completely auto-generated via the \`pnpm bootstrap\` phase of
@@ -327,6 +375,9 @@ writeFileSync(
   pathToFileWeEdit,
   format(newCode, { filepath: pathToFileWeEdit })
 );
+
+const pathToNavigationArtifact = join(__dirname, "..", "output", "navigation.json");
+writeFileSync(pathToNavigationArtifact, JSON.stringify(navigationArtifacts, null, 2) + "\n");
 
 /**
  * @typedef {Object} HandbookNavSubItem

@@ -1,0 +1,104 @@
+---
+import Layout from "../layouts/Layout.astro"
+import BrandingPage from "../components/BrandingPage.astro"
+import DocumentationPage from "../components/DocumentationPage.astro"
+import DeveloperPage from "../components/DeveloperPage.astro"
+import GlossaryPage from "../components/GlossaryPage.astro"
+import GatsbyPageParity from "../components/GatsbyPageParity.astro"
+import HomePage from "../components/GatsbyHomeParity.astro"
+import PlaygroundPage from "../components/PlaygroundPage.astro"
+import RootPage from "../components/RootSemanticPage.astro"
+import TSConfigPage from "../components/TSConfigPage.astro"
+import { readDocumentationCache } from "../lib/documentation-cache.mjs"
+import { headingsFromHtml, renderMarkdown } from "../lib/markdown.mjs"
+import { getRouteMetadata } from "../lib/metadata.mjs"
+import { createRoutes, documentationNavigation, getDocumentationPrevNext } from "../lib/routes.mjs"
+import fs from "node:fs"
+import path from "node:path"
+import matter from "gray-matter"
+
+interface Page {
+  pathname: string
+  family: string
+  locale: string
+  title: string
+  description?: string
+  markdown?: string
+  code?: string
+  prose?: string
+  exampleCode?: string
+  seoHtml?: string
+  redirect?: string
+  source?: string
+  frontmatter?: Record<string, any>
+  repoPath?: string
+  modifiedTime?: string
+  attribution?: { top: Array<{ name: string; gravatar: string; count: number }>; total: number } | null
+}
+
+export function getStaticPaths() {
+  const pages = createRoutes() as Page[]
+  return pages.map(page => ({ params: { path: page.pathname || undefined }, props: { page } }))
+}
+
+const { page } = Astro.props as { page: Page }
+const allRoutes = createRoutes() as Page[]
+const sourceRouteMap = new Map(allRoutes.flatMap(item => item.source ? [[path.normalize(path.resolve(item.source)).toLowerCase(), `/${item.pathname}`]] : []))
+const pagePath = `/${page.pathname}`
+const usesGeneratedMarkdownPipeline = ["tsconfig", "glossary", "tsconfig-option", "playground-handbook"].includes(page.family)
+const renderedMarkdown = page.family === "documentation"
+  ? readDocumentationCache(pagePath)
+  : page.markdown ? await renderMarkdown(page.markdown, { routePath: pagePath, sourcePath: page.source, sourceRouteMap, twoslash: usesGeneratedMarkdownPipeline }) : ""
+const headingList = headingsFromHtml(renderedMarkdown)
+const titleByFamily: Record<string, string> = {
+  root: page.pathname ? page.title.replaceAll("-", " ") : "TypeScript",
+  documentation: page.title,
+  tsconfig: "TSConfig Reference",
+  glossary: "TypeScript Glossary",
+  playground: "TypeScript Playground",
+  "playground-example": page.title,
+  "tsconfig-option": page.title,
+  "playground-handbook": page.title,
+  developer: page.title.replaceAll("-", " "),
+}
+const pageHeading = titleByFamily[page.family]
+const { previous, next } = page.family === "documentation" ? getDocumentationPrevNext(page.locale, page.pathname) : { previous: undefined, next: undefined }
+const metadataRoot = page.source ? path.dirname(page.source) : ""
+const tsconfigMetaPath = page.family === "tsconfig" ? path.join(metadataRoot, `${page.locale}.json`) : ""
+const tsconfigMeta = tsconfigMetaPath && fs.existsSync(tsconfigMetaPath) ? JSON.parse(fs.readFileSync(tsconfigMetaPath, "utf8")) : { categories: [] }
+const localizedTsconfigIntroPath = page.family === "tsconfig" ? path.resolve(metadataRoot, `../copy/${page.locale}/intro.md`) : ""
+const tsconfigIntroPath = localizedTsconfigIntroPath && fs.existsSync(localizedTsconfigIntroPath)
+  ? localizedTsconfigIntroPath
+  : page.family === "tsconfig" ? path.resolve(metadataRoot, "../copy/en/intro.md") : ""
+const tsconfigIntro = tsconfigIntroPath && fs.existsSync(tsconfigIntroPath) ? matter(fs.readFileSync(tsconfigIntroPath, "utf8")).data : {}
+const glossaryMetaPath = page.family === "glossary" && page.source ? path.join(path.dirname(page.source), "en.json") : ""
+const glossaryMeta = glossaryMetaPath && fs.existsSync(glossaryMetaPath) ? JSON.parse(fs.readFileSync(glossaryMetaPath, "utf8")) : { terms: [] }
+const metadata = getRouteMetadata(page, allRoutes)
+const layoutLocale = page.pathname === "ja/download" ? "ja" : page.locale
+const canonical = page.family === "documentation" && page.frontmatter?.deprecated_by
+  ? new URL(page.frontmatter.deprecated_by, "https://www.typescriptlang.org/").href
+  : undefined
+---
+<Layout title={pageHeading} description={metadata.description} ogTitle={metadata.ogTitle} lang={layoutLocale} canonical={canonical} ogType={page.family === "documentation" ? "article" : "website"} compactFooter={false} suppressCustomization={page.family === "root" && !page.pathname} suppressPopularFooter={page.family === "root" && !page.pathname} suppressFooter={page.family === "root" && !page.pathname} skipTo={page.family === "documentation" ? "#handbook-content" : undefined}>
+  <div data-route-family={page.family}>
+    {page.family === "root" && !page.pathname && <HomePage locale={page.locale} />}
+    {page.family === "root" && page.pathname === "ja/download" && <GatsbyPageParity page="downloadJa" locale="ja" />}
+    {page.family === "root" && page.pathname === "docs" && <GatsbyPageParity page="docs" />}
+    {page.family === "root" && page.pathname && page.pathname !== "ja/download" && page.pathname !== "docs" && <RootPage pathname={page.pathname} locale={page.locale} title={pageHeading} allRoutes={allRoutes} />}
+    {page.family === "documentation" && <DocumentationPage title={pageHeading} rendered={renderedMarkdown} navigation={documentationNavigation(allRoutes, page.locale, page.pathname)} headings={headingList} previous={previous} next={next} frontmatter={page.frontmatter} repoPath={page.repoPath} modifiedTime={page.modifiedTime} attribution={page.attribution} />}
+    {page.family === "tsconfig" && <TSConfigPage rendered={renderedMarkdown} categories={tsconfigMeta.categories || []} introHeader={tsconfigIntro.header} introPreview={tsconfigIntro.firstLine} />}
+    {page.family === "glossary" && <GlossaryPage rendered={renderedMarkdown} terms={glossaryMeta.terms || []} />}
+    {page.family === "playground" && <PlaygroundPage locale={page.locale} />}
+    {page.family === "developer" && page.pathname === "branding" && <BrandingPage />}
+    {page.family === "developer" && page.pathname === "dev/playground-plugins" && <div class="developer-parity-shell"><GatsbyPageParity page="developerPlugins" /><div class="developer-runtime"><DeveloperPage pathname={page.pathname} /></div></div>}
+    {page.family === "developer" && page.pathname !== "branding" && page.pathname !== "dev/playground-plugins" && <DeveloperPage pathname={page.pathname} />}
+    {page.family === "playground-example" && <article class="raised main-content-block markdown"><h2>{pageHeading}</h2><div class="playground-example-content" set:html={page.seoHtml || ""} /></article>}
+    {page.family === "tsconfig-option" && <article class="raised main-content-block markdown"><h1>TSConfig</h1><h2>{pageHeading}</h2><div set:html={renderedMarkdown} /></article>}
+    {page.family === "playground-handbook" && <article class="raised main-content-block markdown" set:html={renderedMarkdown} />}
+  </div>
+  {page.redirect && <script is:inline define:vars={{ redirect: page.redirect }}>if (!/bot|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|crawler|spider|crawling/i.test(navigator.userAgent)) location.replace(redirect)</script>}
+</Layout>
+
+<style>
+  .developer-runtime { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+</style>

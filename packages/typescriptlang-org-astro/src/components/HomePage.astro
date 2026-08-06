@@ -1,0 +1,28 @@
+---
+import { getHomePageContent } from "../lib/root-pages.mjs"
+
+interface Props { locale: string }
+const { locale } = Astro.props
+const text = getHomePageContent(locale)
+const prefix = locale === "en" ? "" : `/${locale}`
+type HomeFeature = { title: string; bodyHtml: string }
+type HomeCard = { title: string; body: string; href: string }
+---
+<section class="hero">
+  <h1 set:html={text.headingHtml}></h1>
+  <p>{text.byline}</p><p>{text.summary}</p>
+  <div class="button-row"><a class="button primary" href={`${prefix}/play/`}>{text.tryNow}</a><a class="button" href={`${prefix}/download`}>{text.installCta}</a></div>
+</section>
+<section class="content-width">
+  <h2>{text.whatIs}</h2>
+  <div class="feature-grid">
+    {text.features.map((feature: HomeFeature) => <article class="feature-card raised"><h2>{feature.title}</h2><p set:html={feature.bodyHtml}></p></article>)}
+  </div>
+  <div class="raised main-content-block"><h2>{text.describeTitle}</h2><pre><code>{`interface User {
+  name: string
+  id: number
+}
+
+const user: User = { name: "Ada", id: 1 }`}</code></pre><p set:html={text.describeBodyHtml}></p></div>
+  <div class="feature-grid">{text.startedCards.map((card: HomeCard) => <article class="feature-card"><h2>{card.title}</h2><p><a href={`${prefix}${card.href}`}>{card.body}</a></p></article>)}</div>
+</section>

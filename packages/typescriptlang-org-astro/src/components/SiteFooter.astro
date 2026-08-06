@@ -1,0 +1,54 @@
+---
+interface Props { lang: string; compact?: boolean; suppressCustomization?: boolean; suppressPopular?: boolean; localizeHref: (href: string) => string }
+const { compact = false, suppressCustomization = false, suppressPopular = false, localizeHref: local } = Astro.props
+const popular = [
+  ["Everyday Types", "/docs/handbook/2/everyday-types.html", "All of the common types in TypeScript"],
+  ["Creating Types from Types", "/docs/handbook/2/types-from-types.html", "Techniques to make more elegant types"],
+  ["More on Functions", "/docs/handbook/2/functions.html", "How to provide types to functions in JavaScript"],
+  ["More on Objects", "/docs/handbook/2/objects.html", "How to provide a type shape to JavaScript objects"],
+  ["Narrowing", "/docs/handbook/2/narrowing.html", "How TypeScript infers types based on runtime behavior"],
+  ["Variable Declarations", "/docs/handbook/variable-declarations.html", "How to create and type JavaScript variables"],
+  ["TypeScript in 5 minutes", "/docs/handbook/typescript-in-5-minutes.html", "An overview of building a TypeScript web app"],
+  ["TSConfig Options", "/tsconfig", "All the configuration options for a project"],
+  ["Classes", "/docs/handbook/2/classes.html", "How to provide types to JavaScript ES6 classes"],
+]
+const using = [["Get Started", "/docs"], ["Download", "/download"], ["Community", "/community"], ["Playground", "/play/"], ["TSConfig Ref", "/tsconfig"], ["Code Samples", "/play/#show-examples"], ["Why TypeScript", "/why-create-typescript"], ["Design", "/branding"]]
+const community = [["Get Help", "/community"], ["Blog", "https://devblogs.microsoft.com/typescript/"], ["GitHub Repo", "https://github.com/microsoft/TypeScript/#readme"], ["Community Chat", "https://discord.gg/typescript"], ["@TypeScript", "https://twitter.com/TypeScript"], ["Mastodon", "https://fosstodon.org/@TypeScript"], ["Stack Overflow", "https://stackoverflow.com/questions/tagged/typescript"], ["Web Repo", "https://github.com/microsoft/TypeScript-Website"]]
+const fonts = [["cascadia", "Cascadia"], ["cascadia-ligatures", "Cascadia (ligatures)"], ["consolas", "Consolas"], ["dank-mono", "Dank Mono"], ["fira-code", "Fira Code"], ["jetbrains-mono", "JetBrains Mono"], ["open-dyslexic", "OpenDyslexic"], ["sf-mono", "SF Mono"], ["source-code-pro", "Source Code Pro"]]
+---
+<footer id="site-footer" role="contentinfo">
+  {!suppressCustomization && <section id="customize" class="content-width customize" aria-labelledby="customize-title">
+    <article>
+      <h3 id="customize-title">Customize</h3>
+      <label><p>Site Colours:</p><span class="switch-wrap"><select id="theme-select"><option value="system">System</option><option value="force-light">Always Light</option><option value="force-dark">Always Dark</option></select></span></label>
+      <label><p>Code Font:</p><span class="switch-wrap"><select id="font-select">{fonts.map(([value, title]) => <option value={value}>{title}</option>)}</select></span></label>
+    </article>
+  </section>}
+  {!compact && !suppressPopular && <section id="popular" class="content-width"><h3>Popular Documentation Pages</h3><ul>{popular.map(([title, href, description]) => <li><a href={local(href)}>{title}</a><p>{description}</p></li>)}</ul></section>}
+  <section id="community" class="footer-grid">
+    <article id="logos"><div><span class="ts-logo">TS</span><strong>TypeScript</strong></div><p>Made with ♥ in Redmond, Boston, SF &amp; Dublin</p><strong>▦ Microsoft</strong><p>© 2012-{new Date().getFullYear()} Microsoft<br/><a href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy</a><a href="https://go.microsoft.com/fwlink/?LinkID=206977">Terms of Use</a></p></article>
+    <article id="using-typescript"><h3>Using TypeScript</h3><ul>{using.map(([title, href]) => <li><a href={local(href)}>{title}</a></li>)}</ul></article>
+    <article id="community-links"><h3>Community</h3><ul>{community.map(([title, href]) => <li><a href={href.startsWith("/") ? local(href) : href}>{title}</a></li>)}</ul></article>
+  </section>
+</footer>
+<script>
+  const root = document.documentElement
+  const theme = document.querySelector<HTMLSelectElement>("#theme-select")
+  const font = document.querySelector<HTMLSelectElement>("#font-select")
+  if (theme) {
+    theme.value = "system"
+    theme.addEventListener("change", () => {
+      root.classList.remove("light-theme", "dark-theme")
+      if (theme.value !== "system") root.classList.add(theme.value === "force-light" ? "light-theme" : "dark-theme")
+      try { if (theme.value === "system") localStorage.removeItem("force-color-theme"); else localStorage.setItem("force-color-theme", theme.value) } catch {}
+    })
+  }
+  if (font) {
+    try { font.value = localStorage.getItem("force-font") || "cascadia" } catch { font.value = "cascadia" }
+    font.addEventListener("change", () => {
+      for (const name of [...root.classList]) if (name.startsWith("font-")) root.classList.remove(name)
+      root.classList.add(`font-${font.value}`)
+      try { localStorage.setItem("force-font", font.value) } catch {}
+    })
+  }
+</script>

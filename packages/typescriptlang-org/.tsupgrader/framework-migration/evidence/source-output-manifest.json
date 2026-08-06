@@ -1,0 +1,3987 @@
+{
+  "schemaVersion": 1,
+  "provenance": {
+    "sourceFramework": "Gatsby",
+    "outputRoot": "packages/typescriptlang-org/public",
+    "targetOutputUsed": false
+  },
+  "summary": {
+    "outputFileCount": 2540,
+    "outputBytes": 225248348,
+    "htmlFileCount": 944,
+    "applicationHtmlCount": 920,
+    "redirectHtmlCount": 22,
+    "staticHtmlCount": 1,
+    "internalSliceHtmlCount": 1,
+    "unclassifiedHtmlCount": 0,
+    "pageDataCount": 920
+  },
+  "applicationOutput": {
+    "declaredCount": 920,
+    "generatedCount": 920,
+    "missingDeclaredRoutes": [],
+    "extraApplicationLikeRoutes": [],
+    "pageDataMissingDeclaredRoutes": [],
+    "pageDataExtraRoutes": []
+  },
+  "discrepancies": {
+    "current": {
+      "missingDeclaredApplicationRoutes": [],
+      "extraApplicationLikeRoutes": [],
+      "unclassifiedHtml": [],
+      "missingPageDataRoutes": [],
+      "extraPageDataRoutes": []
+    },
+    "inventoryRecordedBeforeLatestSourceBuild": {
+      "description": "Inventory recorded 902 application page-data entries and 926 HTML files, missing these 18 localized roots. The current retained Gatsby public output is re-evaluated here rather than preserving that stale count as current fact.",
+      "routeChecks": [
+        {
+          "route": "/es/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/es/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/fa/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/fr/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/fr/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/id/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/id/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/it/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/ja/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/ja/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/ko/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/ko/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/pt/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/pt/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/vo/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/vo/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/zh/play",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        },
+        {
+          "route": "/zh/tsconfig",
+          "presentInCurrentPublic": true,
+          "presentInCurrentPageData": true
+        }
+      ],
+      "resolvedInCurrentPublic": true
+    }
+  },
+  "htmlClassification": {
+    "application": [
+      {
+        "relativePath": "_playground-handbook/compiler-settings.html",
+        "route": "/_playground-handbook/compiler-settings.html"
+      },
+      {
+        "relativePath": "_playground-handbook/examples.html",
+        "route": "/_playground-handbook/examples.html"
+      },
+      {
+        "relativePath": "_playground-handbook/exporting-your-code.html",
+        "route": "/_playground-handbook/exporting-your-code.html"
+      },
+      {
+        "relativePath": "_playground-handbook/js---dts-sidebars.html",
+        "route": "/_playground-handbook/js---dts-sidebars.html"
+      },
+      {
+        "relativePath": "_playground-handbook/localization.html",
+        "route": "/_playground-handbook/localization.html"
+      },
+      {
+        "relativePath": "_playground-handbook/overview.html",
+        "route": "/_playground-handbook/overview.html"
+      },
+      {
+        "relativePath": "_playground-handbook/running-code.html",
+        "route": "/_playground-handbook/running-code.html"
+      },
+      {
+        "relativePath": "_playground-handbook/settings-panel.html",
+        "route": "/_playground-handbook/settings-panel.html"
+      },
+      {
+        "relativePath": "_playground-handbook/twoslash-annotations.html",
+        "route": "/_playground-handbook/twoslash-annotations.html"
+      },
+      {
+        "relativePath": "_playground-handbook/type-acquisition.html",
+        "route": "/_playground-handbook/type-acquisition.html"
+      },
+      {
+        "relativePath": "_playground-handbook/typescript-versions.html",
+        "route": "/_playground-handbook/typescript-versions.html"
+      },
+      {
+        "relativePath": "_playground-handbook/url-structure.html",
+        "route": "/_playground-handbook/url-structure.html"
+      },
+      {
+        "relativePath": "_playground-handbook/writing-dts-files.html",
+        "route": "/_playground-handbook/writing-dts-files.html"
+      },
+      {
+        "relativePath": "_playground-handbook/writing-javascript.html",
+        "route": "/_playground-handbook/writing-javascript.html"
+      },
+      {
+        "relativePath": "branding/index.html",
+        "route": "/branding"
+      },
+      {
+        "relativePath": "cheatsheets/index.html",
+        "route": "/cheatsheets"
+      },
+      {
+        "relativePath": "community/index.html",
+        "route": "/community"
+      },
+      {
+        "relativePath": "dev/bug-workbench/index.html",
+        "route": "/dev/bug-workbench"
+      },
+      {
+        "relativePath": "dev/playground-plugins/index.html",
+        "route": "/dev/playground-plugins"
+      },
+      {
+        "relativePath": "dev/sandbox/index.html",
+        "route": "/dev/sandbox"
+      },
+      {
+        "relativePath": "dev/twoslash/index.html",
+        "route": "/dev/twoslash"
+      },
+      {
+        "relativePath": "dev/typescript-vfs/index.html",
+        "route": "/dev/typescript-vfs"
+      },
+      {
+        "relativePath": "docs/handbook/2/basic-types.html",
+        "route": "/docs/handbook/2/basic-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/classes.html",
+        "route": "/docs/handbook/2/classes.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/conditional-types.html",
+        "route": "/docs/handbook/2/conditional-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/everyday-types.html",
+        "route": "/docs/handbook/2/everyday-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/functions.html",
+        "route": "/docs/handbook/2/functions.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/generics.html",
+        "route": "/docs/handbook/2/generics.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/indexed-access-types.html",
+        "route": "/docs/handbook/2/indexed-access-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/keyof-types.html",
+        "route": "/docs/handbook/2/keyof-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/mapped-types.html",
+        "route": "/docs/handbook/2/mapped-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/modules.html",
+        "route": "/docs/handbook/2/modules.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/narrowing.html",
+        "route": "/docs/handbook/2/narrowing.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/objects.html",
+        "route": "/docs/handbook/2/objects.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/template-literal-types.html",
+        "route": "/docs/handbook/2/template-literal-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/type-declarations.html",
+        "route": "/docs/handbook/2/type-declarations.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/typeof-types.html",
+        "route": "/docs/handbook/2/typeof-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/types-from-types.html",
+        "route": "/docs/handbook/2/types-from-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/2/understanding-errors.html",
+        "route": "/docs/handbook/2/understanding-errors.html"
+      },
+      {
+        "relativePath": "docs/handbook/advanced-types.html",
+        "route": "/docs/handbook/advanced-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/angular.html",
+        "route": "/docs/handbook/angular.html"
+      },
+      {
+        "relativePath": "docs/handbook/asp-net-core.html",
+        "route": "/docs/handbook/asp-net-core.html"
+      },
+      {
+        "relativePath": "docs/handbook/babel-with-typescript.html",
+        "route": "/docs/handbook/babel-with-typescript.html"
+      },
+      {
+        "relativePath": "docs/handbook/basic-types.html",
+        "route": "/docs/handbook/basic-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/classes.html",
+        "route": "/docs/handbook/classes.html"
+      },
+      {
+        "relativePath": "docs/handbook/compiler-options-in-msbuild.html",
+        "route": "/docs/handbook/compiler-options-in-msbuild.html"
+      },
+      {
+        "relativePath": "docs/handbook/compiler-options.html",
+        "route": "/docs/handbook/compiler-options.html"
+      },
+      {
+        "relativePath": "docs/handbook/configuring-watch.html",
+        "route": "/docs/handbook/configuring-watch.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/by-example.html",
+        "route": "/docs/handbook/declaration-files/by-example.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/consumption.html",
+        "route": "/docs/handbook/declaration-files/consumption.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/deep-dive.html",
+        "route": "/docs/handbook/declaration-files/deep-dive.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/do-s-and-don-ts.html",
+        "route": "/docs/handbook/declaration-files/do-s-and-don-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/dts-from-js.html",
+        "route": "/docs/handbook/declaration-files/dts-from-js.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/introduction.html",
+        "route": "/docs/handbook/declaration-files/introduction.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/library-structures.html",
+        "route": "/docs/handbook/declaration-files/library-structures.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/publishing.html",
+        "route": "/docs/handbook/declaration-files/publishing.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates.html",
+        "route": "/docs/handbook/declaration-files/templates.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/global-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/global-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/global-plugin-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/global-plugin-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/module-class-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/module-class-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/module-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/module-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/module-function-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/module-function-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-files/templates/module-plugin-d-ts.html",
+        "route": "/docs/handbook/declaration-files/templates/module-plugin-d-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/declaration-merging.html",
+        "route": "/docs/handbook/declaration-merging.html"
+      },
+      {
+        "relativePath": "docs/handbook/decorators.html",
+        "route": "/docs/handbook/decorators.html"
+      },
+      {
+        "relativePath": "docs/handbook/dom-manipulation.html",
+        "route": "/docs/handbook/dom-manipulation.html"
+      },
+      {
+        "relativePath": "docs/handbook/enums.html",
+        "route": "/docs/handbook/enums.html"
+      },
+      {
+        "relativePath": "docs/handbook/functions.html",
+        "route": "/docs/handbook/functions.html"
+      },
+      {
+        "relativePath": "docs/handbook/generics.html",
+        "route": "/docs/handbook/generics.html"
+      },
+      {
+        "relativePath": "docs/handbook/gulp.html",
+        "route": "/docs/handbook/gulp.html"
+      },
+      {
+        "relativePath": "docs/handbook/index.html",
+        "route": "/docs/handbook"
+      },
+      {
+        "relativePath": "docs/handbook/integrating-with-build-tools.html",
+        "route": "/docs/handbook/integrating-with-build-tools.html"
+      },
+      {
+        "relativePath": "docs/handbook/interfaces.html",
+        "route": "/docs/handbook/interfaces.html"
+      },
+      {
+        "relativePath": "docs/handbook/intro-to-js-ts.html",
+        "route": "/docs/handbook/intro-to-js-ts.html"
+      },
+      {
+        "relativePath": "docs/handbook/intro.html",
+        "route": "/docs/handbook/intro.html"
+      },
+      {
+        "relativePath": "docs/handbook/iterators-and-generators.html",
+        "route": "/docs/handbook/iterators-and-generators.html"
+      },
+      {
+        "relativePath": "docs/handbook/jsdoc-supported-types.html",
+        "route": "/docs/handbook/jsdoc-supported-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/jsx.html",
+        "route": "/docs/handbook/jsx.html"
+      },
+      {
+        "relativePath": "docs/handbook/literal-types.html",
+        "route": "/docs/handbook/literal-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/migrating-from-javascript.html",
+        "route": "/docs/handbook/migrating-from-javascript.html"
+      },
+      {
+        "relativePath": "docs/handbook/mixins.html",
+        "route": "/docs/handbook/mixins.html"
+      },
+      {
+        "relativePath": "docs/handbook/modules/appendices/esm-cjs-interop.html",
+        "route": "/docs/handbook/modules/appendices/esm-cjs-interop.html"
+      },
+      {
+        "relativePath": "docs/handbook/modules/guides/choosing-compiler-options.html",
+        "route": "/docs/handbook/modules/guides/choosing-compiler-options.html"
+      },
+      {
+        "relativePath": "docs/handbook/modules/introduction.html",
+        "route": "/docs/handbook/modules/introduction.html"
+      },
+      {
+        "relativePath": "docs/handbook/modules/reference.html",
+        "route": "/docs/handbook/modules/reference.html"
+      },
+      {
+        "relativePath": "docs/handbook/modules/theory.html",
+        "route": "/docs/handbook/modules/theory.html"
+      },
+      {
+        "relativePath": "docs/handbook/namespaces-and-modules.html",
+        "route": "/docs/handbook/namespaces-and-modules.html"
+      },
+      {
+        "relativePath": "docs/handbook/namespaces.html",
+        "route": "/docs/handbook/namespaces.html"
+      },
+      {
+        "relativePath": "docs/handbook/nightly-builds.html",
+        "route": "/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "docs/handbook/project-references.html",
+        "route": "/docs/handbook/project-references.html"
+      },
+      {
+        "relativePath": "docs/handbook/react.html",
+        "route": "/docs/handbook/react.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-1.html",
+        "route": "/docs/handbook/release-notes/typescript-1-1.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-3.html",
+        "route": "/docs/handbook/release-notes/typescript-1-3.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-4.html",
+        "route": "/docs/handbook/release-notes/typescript-1-4.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-5.html",
+        "route": "/docs/handbook/release-notes/typescript-1-5.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-6.html",
+        "route": "/docs/handbook/release-notes/typescript-1-6.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-7.html",
+        "route": "/docs/handbook/release-notes/typescript-1-7.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-1-8.html",
+        "route": "/docs/handbook/release-notes/typescript-1-8.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-0.html",
+        "route": "/docs/handbook/release-notes/typescript-2-0.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-1.html",
+        "route": "/docs/handbook/release-notes/typescript-2-1.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-2.html",
+        "route": "/docs/handbook/release-notes/typescript-2-2.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-3.html",
+        "route": "/docs/handbook/release-notes/typescript-2-3.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-4.html",
+        "route": "/docs/handbook/release-notes/typescript-2-4.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-5.html",
+        "route": "/docs/handbook/release-notes/typescript-2-5.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-6.html",
+        "route": "/docs/handbook/release-notes/typescript-2-6.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-7.html",
+        "route": "/docs/handbook/release-notes/typescript-2-7.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-8.html",
+        "route": "/docs/handbook/release-notes/typescript-2-8.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-2-9.html",
+        "route": "/docs/handbook/release-notes/typescript-2-9.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-0.html",
+        "route": "/docs/handbook/release-notes/typescript-3-0.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-1.html",
+        "route": "/docs/handbook/release-notes/typescript-3-1.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-2.html",
+        "route": "/docs/handbook/release-notes/typescript-3-2.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-3.html",
+        "route": "/docs/handbook/release-notes/typescript-3-3.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-4.html",
+        "route": "/docs/handbook/release-notes/typescript-3-4.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-5.html",
+        "route": "/docs/handbook/release-notes/typescript-3-5.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-6.html",
+        "route": "/docs/handbook/release-notes/typescript-3-6.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-7.html",
+        "route": "/docs/handbook/release-notes/typescript-3-7.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-8.html",
+        "route": "/docs/handbook/release-notes/typescript-3-8.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-3-9.html",
+        "route": "/docs/handbook/release-notes/typescript-3-9.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-0.html",
+        "route": "/docs/handbook/release-notes/typescript-4-0.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-1.html",
+        "route": "/docs/handbook/release-notes/typescript-4-1.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-2.html",
+        "route": "/docs/handbook/release-notes/typescript-4-2.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-3.html",
+        "route": "/docs/handbook/release-notes/typescript-4-3.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-4.html",
+        "route": "/docs/handbook/release-notes/typescript-4-4.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-5.html",
+        "route": "/docs/handbook/release-notes/typescript-4-5.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-6.html",
+        "route": "/docs/handbook/release-notes/typescript-4-6.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-7.html",
+        "route": "/docs/handbook/release-notes/typescript-4-7.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-8.html",
+        "route": "/docs/handbook/release-notes/typescript-4-8.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-4-9.html",
+        "route": "/docs/handbook/release-notes/typescript-4-9.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-0.html",
+        "route": "/docs/handbook/release-notes/typescript-5-0.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-1.html",
+        "route": "/docs/handbook/release-notes/typescript-5-1.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-2.html",
+        "route": "/docs/handbook/release-notes/typescript-5-2.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-3.html",
+        "route": "/docs/handbook/release-notes/typescript-5-3.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-4.html",
+        "route": "/docs/handbook/release-notes/typescript-5-4.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-5.html",
+        "route": "/docs/handbook/release-notes/typescript-5-5.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-6.html",
+        "route": "/docs/handbook/release-notes/typescript-5-6.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-7.html",
+        "route": "/docs/handbook/release-notes/typescript-5-7.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-8.html",
+        "route": "/docs/handbook/release-notes/typescript-5-8.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-5-9.html",
+        "route": "/docs/handbook/release-notes/typescript-5-9.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/typescript-6-0.html",
+        "route": "/docs/handbook/release-notes/typescript-6-0.html"
+      },
+      {
+        "relativePath": "docs/handbook/symbols.html",
+        "route": "/docs/handbook/symbols.html"
+      },
+      {
+        "relativePath": "docs/handbook/triple-slash-directives.html",
+        "route": "/docs/handbook/triple-slash-directives.html"
+      },
+      {
+        "relativePath": "docs/handbook/tsconfig-json.html",
+        "route": "/docs/handbook/tsconfig-json.html"
+      },
+      {
+        "relativePath": "docs/handbook/type-checking-javascript-files.html",
+        "route": "/docs/handbook/type-checking-javascript-files.html"
+      },
+      {
+        "relativePath": "docs/handbook/type-compatibility.html",
+        "route": "/docs/handbook/type-compatibility.html"
+      },
+      {
+        "relativePath": "docs/handbook/type-inference.html",
+        "route": "/docs/handbook/type-inference.html"
+      },
+      {
+        "relativePath": "docs/handbook/typescript-from-scratch.html",
+        "route": "/docs/handbook/typescript-from-scratch.html"
+      },
+      {
+        "relativePath": "docs/handbook/typescript-in-5-minutes-func.html",
+        "route": "/docs/handbook/typescript-in-5-minutes-func.html"
+      },
+      {
+        "relativePath": "docs/handbook/typescript-in-5-minutes-oop.html",
+        "route": "/docs/handbook/typescript-in-5-minutes-oop.html"
+      },
+      {
+        "relativePath": "docs/handbook/typescript-in-5-minutes.html",
+        "route": "/docs/handbook/typescript-in-5-minutes.html"
+      },
+      {
+        "relativePath": "docs/handbook/typescript-tooling-in-5-minutes.html",
+        "route": "/docs/handbook/typescript-tooling-in-5-minutes.html"
+      },
+      {
+        "relativePath": "docs/handbook/unions-and-intersections.html",
+        "route": "/docs/handbook/unions-and-intersections.html"
+      },
+      {
+        "relativePath": "docs/handbook/utility-types.html",
+        "route": "/docs/handbook/utility-types.html"
+      },
+      {
+        "relativePath": "docs/handbook/variable-declarations.html",
+        "route": "/docs/handbook/variable-declarations.html"
+      },
+      {
+        "relativePath": "docs/index.html",
+        "route": "/docs"
+      },
+      {
+        "relativePath": "download/index.html",
+        "route": "/download"
+      },
+      {
+        "relativePath": "dt/search/index.html",
+        "route": "/dt/search"
+      },
+      {
+        "relativePath": "empty/index.html",
+        "route": "/empty"
+      },
+      {
+        "relativePath": "es/cheatsheets/index.html",
+        "route": "/es/cheatsheets"
+      },
+      {
+        "relativePath": "es/community/index.html",
+        "route": "/es/community"
+      },
+      {
+        "relativePath": "es/docs/handbook/index.html",
+        "route": "/es/docs/handbook"
+      },
+      {
+        "relativePath": "es/docs/index.html",
+        "route": "/es/docs"
+      },
+      {
+        "relativePath": "es/download/index.html",
+        "route": "/es/download"
+      },
+      {
+        "relativePath": "es/dt/search/index.html",
+        "route": "/es/dt/search"
+      },
+      {
+        "relativePath": "es/empty/index.html",
+        "route": "/es/empty"
+      },
+      {
+        "relativePath": "es/index.html",
+        "route": "/es"
+      },
+      {
+        "relativePath": "es/play/index.html",
+        "route": "/es/play"
+      },
+      {
+        "relativePath": "es/play/javascript/external-apis/typescript-with-deno.ts.html",
+        "route": "/es/play/javascript/external-apis/typescript-with-deno.ts.html"
+      },
+      {
+        "relativePath": "es/play/javascript/external-apis/typescript-with-node.js.html",
+        "route": "/es/play/javascript/external-apis/typescript-with-node.js.html"
+      },
+      {
+        "relativePath": "es/play/javascript/external-apis/typescript-with-web.js.html",
+        "route": "/es/play/javascript/external-apis/typescript-with-web.js.html"
+      },
+      {
+        "relativePath": "es/play/javascript/functions-with-javascript/function-chaining.ts.html",
+        "route": "/es/play/javascript/functions-with-javascript/function-chaining.ts.html"
+      },
+      {
+        "relativePath": "es/play/javascript/functions-with-javascript/generic-functions.ts.html",
+        "route": "/es/play/javascript/functions-with-javascript/generic-functions.ts.html"
+      },
+      {
+        "relativePath": "es/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/es/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "es/play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/es/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/language/soundness.ts.html",
+        "route": "/es/play/typescript/language/soundness.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/language/structural-typing.ts.html",
+        "route": "/es/play/typescript/language/structural-typing.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/language/type-guards.ts.html",
+        "route": "/es/play/typescript/language/type-guards.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/language/type-widening-and-narrowing.ts.html",
+        "route": "/es/play/typescript/language/type-widening-and-narrowing.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/meta-types/conditional-types.ts.html",
+        "route": "/es/play/typescript/meta-types/conditional-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/meta-types/discriminate-types.ts.html",
+        "route": "/es/play/typescript/meta-types/discriminate-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/meta-types/indexed-types.ts.html",
+        "route": "/es/play/typescript/meta-types/indexed-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/meta-types/mapped-types.ts.html",
+        "route": "/es/play/typescript/meta-types/mapped-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/primitives/any.ts.html",
+        "route": "/es/play/typescript/primitives/any.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/primitives/literals.ts.html",
+        "route": "/es/play/typescript/primitives/literals.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/primitives/union-and-intersection-types.ts.html",
+        "route": "/es/play/typescript/primitives/union-and-intersection-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/primitives/unknown-and-never.ts.html",
+        "route": "/es/play/typescript/primitives/unknown-and-never.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/type-primitives/built-in-utility-types.ts.html",
+        "route": "/es/play/typescript/type-primitives/built-in-utility-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/type-primitives/nullable-types.ts.html",
+        "route": "/es/play/typescript/type-primitives/nullable-types.ts.html"
+      },
+      {
+        "relativePath": "es/play/typescript/type-primitives/tuples.ts.html",
+        "route": "/es/play/typescript/type-primitives/tuples.ts.html"
+      },
+      {
+        "relativePath": "es/tools/index.html",
+        "route": "/es/tools"
+      },
+      {
+        "relativePath": "es/tsconfig/index.html",
+        "route": "/es/tsconfig"
+      },
+      {
+        "relativePath": "es/why-create-typescript/index.html",
+        "route": "/es/why-create-typescript"
+      },
+      {
+        "relativePath": "fa/play/index.html",
+        "route": "/fa/play"
+      },
+      {
+        "relativePath": "fa/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/fa/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "fr/cheatsheets/index.html",
+        "route": "/fr/cheatsheets"
+      },
+      {
+        "relativePath": "fr/community/index.html",
+        "route": "/fr/community"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/basic-types.html",
+        "route": "/fr/docs/handbook/2/basic-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/classes.html",
+        "route": "/fr/docs/handbook/2/classes.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/conditional-types.html",
+        "route": "/fr/docs/handbook/2/conditional-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/everyday-types.html",
+        "route": "/fr/docs/handbook/2/everyday-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/functions.html",
+        "route": "/fr/docs/handbook/2/functions.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/generics.html",
+        "route": "/fr/docs/handbook/2/generics.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/indexed-access-types.html",
+        "route": "/fr/docs/handbook/2/indexed-access-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/keyof-types.html",
+        "route": "/fr/docs/handbook/2/keyof-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/mapped-types.html",
+        "route": "/fr/docs/handbook/2/mapped-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/modules.html",
+        "route": "/fr/docs/handbook/2/modules.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/narrowing.html",
+        "route": "/fr/docs/handbook/2/narrowing.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/objects.html",
+        "route": "/fr/docs/handbook/2/objects.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/template-literal-types.html",
+        "route": "/fr/docs/handbook/2/template-literal-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/type-declarations.html",
+        "route": "/fr/docs/handbook/2/type-declarations.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/typeof-types.html",
+        "route": "/fr/docs/handbook/2/typeof-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/types-from-types.html",
+        "route": "/fr/docs/handbook/2/types-from-types.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/2/understanding-errors.html",
+        "route": "/fr/docs/handbook/2/understanding-errors.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/angular.html",
+        "route": "/fr/docs/handbook/angular.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/index.html",
+        "route": "/fr/docs/handbook"
+      },
+      {
+        "relativePath": "fr/docs/handbook/intro.html",
+        "route": "/fr/docs/handbook/intro.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/nightly-builds.html",
+        "route": "/fr/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/react.html",
+        "route": "/fr/docs/handbook/react.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/typescript-from-scratch.html",
+        "route": "/fr/docs/handbook/typescript-from-scratch.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/typescript-in-5-minutes-oop.html",
+        "route": "/fr/docs/handbook/typescript-in-5-minutes-oop.html"
+      },
+      {
+        "relativePath": "fr/docs/handbook/typescript-in-5-minutes.html",
+        "route": "/fr/docs/handbook/typescript-in-5-minutes.html"
+      },
+      {
+        "relativePath": "fr/docs/index.html",
+        "route": "/fr/docs"
+      },
+      {
+        "relativePath": "fr/download/index.html",
+        "route": "/fr/download"
+      },
+      {
+        "relativePath": "fr/dt/search/index.html",
+        "route": "/fr/dt/search"
+      },
+      {
+        "relativePath": "fr/empty/index.html",
+        "route": "/fr/empty"
+      },
+      {
+        "relativePath": "fr/index.html",
+        "route": "/fr"
+      },
+      {
+        "relativePath": "fr/play/3-7/fixits/big-number-literals.ts.html",
+        "route": "/fr/play/3-7/fixits/big-number-literals.ts.html"
+      },
+      {
+        "relativePath": "fr/play/3-7/fixits/const-to-let.ts.html",
+        "route": "/fr/play/3-7/fixits/const-to-let.ts.html"
+      },
+      {
+        "relativePath": "fr/play/3-7/fixits/infer-from-usage-changes.ts.html",
+        "route": "/fr/play/3-7/fixits/infer-from-usage-changes.ts.html"
+      },
+      {
+        "relativePath": "fr/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html",
+        "route": "/fr/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html"
+      },
+      {
+        "relativePath": "fr/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html",
+        "route": "/fr/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "fr/play/3-7/syntax-and-messaging/optional-chaining.ts.html",
+        "route": "/fr/play/3-7/syntax-and-messaging/optional-chaining.ts.html"
+      },
+      {
+        "relativePath": "fr/play/index.html",
+        "route": "/fr/play"
+      },
+      {
+        "relativePath": "fr/tools/index.html",
+        "route": "/fr/tools"
+      },
+      {
+        "relativePath": "fr/tsconfig/index.html",
+        "route": "/fr/tsconfig"
+      },
+      {
+        "relativePath": "fr/why-create-typescript/index.html",
+        "route": "/fr/why-create-typescript"
+      },
+      {
+        "relativePath": "glossary/index.html",
+        "route": "/glossary"
+      },
+      {
+        "relativePath": "id/cheatsheets/index.html",
+        "route": "/id/cheatsheets"
+      },
+      {
+        "relativePath": "id/community/index.html",
+        "route": "/id/community"
+      },
+      {
+        "relativePath": "id/docs/handbook/babel-with-typescript.html",
+        "route": "/id/docs/handbook/babel-with-typescript.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/configuring-watch.html",
+        "route": "/id/docs/handbook/configuring-watch.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/declaration-files/dts-from-js.html",
+        "route": "/id/docs/handbook/declaration-files/dts-from-js.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/decorators.html",
+        "route": "/id/docs/handbook/decorators.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/dom-manipulation.html",
+        "route": "/id/docs/handbook/dom-manipulation.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/index.html",
+        "route": "/id/docs/handbook"
+      },
+      {
+        "relativePath": "id/docs/handbook/intro-to-js-ts.html",
+        "route": "/id/docs/handbook/intro-to-js-ts.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/iterators-and-generators.html",
+        "route": "/id/docs/handbook/iterators-and-generators.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/jsdoc-supported-types.html",
+        "route": "/id/docs/handbook/jsdoc-supported-types.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/jsx.html",
+        "route": "/id/docs/handbook/jsx.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/mixins.html",
+        "route": "/id/docs/handbook/mixins.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/nightly-builds.html",
+        "route": "/id/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/react.html",
+        "route": "/id/docs/handbook/react.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/symbols.html",
+        "route": "/id/docs/handbook/symbols.html"
+      },
+      {
+        "relativePath": "id/docs/handbook/typescript-tooling-in-5-minutes.html",
+        "route": "/id/docs/handbook/typescript-tooling-in-5-minutes.html"
+      },
+      {
+        "relativePath": "id/docs/index.html",
+        "route": "/id/docs"
+      },
+      {
+        "relativePath": "id/download/index.html",
+        "route": "/id/download"
+      },
+      {
+        "relativePath": "id/dt/search/index.html",
+        "route": "/id/dt/search"
+      },
+      {
+        "relativePath": "id/empty/index.html",
+        "route": "/id/empty"
+      },
+      {
+        "relativePath": "id/index.html",
+        "route": "/id"
+      },
+      {
+        "relativePath": "id/play/3-7/fixits/big-number-literals.ts.html",
+        "route": "/id/play/3-7/fixits/big-number-literals.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/fixits/const-to-let.ts.html",
+        "route": "/id/play/3-7/fixits/const-to-let.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/fixits/infer-from-usage-changes.ts.html",
+        "route": "/id/play/3-7/fixits/infer-from-usage-changes.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html",
+        "route": "/id/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html",
+        "route": "/id/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/syntax-and-messaging/optional-chaining.ts.html",
+        "route": "/id/play/3-7/syntax-and-messaging/optional-chaining.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/types-and-code-flow/assertion-functions.ts.html",
+        "route": "/id/play/3-7/types-and-code-flow/assertion-functions.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/types-and-code-flow/recursive-type-references.ts.html",
+        "route": "/id/play/3-7/types-and-code-flow/recursive-type-references.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html",
+        "route": "/id/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html",
+        "route": "/id/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html",
+        "route": "/id/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html"
+      },
+      {
+        "relativePath": "id/play/3-8/syntax-and-messaging/export-modules-from.ts.html",
+        "route": "/id/play/3-8/syntax-and-messaging/export-modules-from.ts.html"
+      },
+      {
+        "relativePath": "id/play/3-8/syntax-and-messaging/private-class-fields.ts.html",
+        "route": "/id/play/3-8/syntax-and-messaging/private-class-fields.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-checks/class-constructor-code-flow.ts.html",
+        "route": "/id/play/4-0/new-checks/class-constructor-code-flow.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-js-features/jsdoc-deprecated.ts.html",
+        "route": "/id/play/4-0/new-js-features/jsdoc-deprecated.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-js-features/logical-operators-and-assignment.ts.html",
+        "route": "/id/play/4-0/new-js-features/logical-operators-and-assignment.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-js-features/nullish-coalescing.ts.html",
+        "route": "/id/play/4-0/new-js-features/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-ts-features/named-tuples.ts.html",
+        "route": "/id/play/4-0/new-ts-features/named-tuples.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-ts-features/unknown-in-catch.ts.html",
+        "route": "/id/play/4-0/new-ts-features/unknown-in-catch.ts.html"
+      },
+      {
+        "relativePath": "id/play/4-0/new-ts-features/variadic-tuples.ts.html",
+        "route": "/id/play/4-0/new-ts-features/variadic-tuples.ts.html"
+      },
+      {
+        "relativePath": "id/play/index.html",
+        "route": "/id/play"
+      },
+      {
+        "relativePath": "id/play/javascript/external-apis/typescript-with-deno.ts.html",
+        "route": "/id/play/javascript/external-apis/typescript-with-deno.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/external-apis/typescript-with-node.js.html",
+        "route": "/id/play/javascript/external-apis/typescript-with-node.js.html"
+      },
+      {
+        "relativePath": "id/play/javascript/external-apis/typescript-with-web.js.html",
+        "route": "/id/play/javascript/external-apis/typescript-with-web.js.html"
+      },
+      {
+        "relativePath": "id/play/javascript/external-apis/typescript-with-webgl.js.html",
+        "route": "/id/play/javascript/external-apis/typescript-with-webgl.js.html"
+      },
+      {
+        "relativePath": "id/play/javascript/functions-with-javascript/function-chaining.ts.html",
+        "route": "/id/play/javascript/functions-with-javascript/function-chaining.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/functions-with-javascript/generic-functions.ts.html",
+        "route": "/id/play/javascript/functions-with-javascript/generic-functions.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/functions-with-javascript/typing-functions.ts.html",
+        "route": "/id/play/javascript/functions-with-javascript/typing-functions.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/helping-with-javascript/errors.ts.html",
+        "route": "/id/play/javascript/helping-with-javascript/errors.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/helping-with-javascript/quick-fixes.ts.html",
+        "route": "/id/play/javascript/helping-with-javascript/quick-fixes.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/javascript-essentials/code-flow.ts.html",
+        "route": "/id/play/javascript/javascript-essentials/code-flow.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/javascript-essentials/functions.ts.html",
+        "route": "/id/play/javascript/javascript-essentials/functions.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/id/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/id/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/modern-javascript/async-await.ts.html",
+        "route": "/id/play/javascript/modern-javascript/async-await.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/modern-javascript/immutability.ts.html",
+        "route": "/id/play/javascript/modern-javascript/immutability.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/modern-javascript/import-export.ts.html",
+        "route": "/id/play/javascript/modern-javascript/import-export.ts.html"
+      },
+      {
+        "relativePath": "id/play/javascript/modern-javascript/jsdoc-support.js.html",
+        "route": "/id/play/javascript/modern-javascript/jsdoc-support.js.html"
+      },
+      {
+        "relativePath": "id/tools/index.html",
+        "route": "/id/tools"
+      },
+      {
+        "relativePath": "id/tsconfig/index.html",
+        "route": "/id/tsconfig"
+      },
+      {
+        "relativePath": "id/why-create-typescript/index.html",
+        "route": "/id/why-create-typescript"
+      },
+      {
+        "relativePath": "index.html",
+        "route": "/"
+      },
+      {
+        "relativePath": "it/tsconfig/index.html",
+        "route": "/it/tsconfig"
+      },
+      {
+        "relativePath": "ja/cheatsheets/index.html",
+        "route": "/ja/cheatsheets"
+      },
+      {
+        "relativePath": "ja/community/index.html",
+        "route": "/ja/community"
+      },
+      {
+        "relativePath": "ja/docs/handbook/declaration-files/dts-from-js.html",
+        "route": "/ja/docs/handbook/declaration-files/dts-from-js.html"
+      },
+      {
+        "relativePath": "ja/docs/handbook/index.html",
+        "route": "/ja/docs/handbook"
+      },
+      {
+        "relativePath": "ja/docs/handbook/intro-to-js-ts.html",
+        "route": "/ja/docs/handbook/intro-to-js-ts.html"
+      },
+      {
+        "relativePath": "ja/docs/handbook/jsdoc-supported-types.html",
+        "route": "/ja/docs/handbook/jsdoc-supported-types.html"
+      },
+      {
+        "relativePath": "ja/docs/handbook/nightly-builds.html",
+        "route": "/ja/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "ja/docs/handbook/type-checking-javascript-files.html",
+        "route": "/ja/docs/handbook/type-checking-javascript-files.html"
+      },
+      {
+        "relativePath": "ja/docs/index.html",
+        "route": "/ja/docs"
+      },
+      {
+        "relativePath": "ja/download/index.html",
+        "route": "/ja/download"
+      },
+      {
+        "relativePath": "ja/dt/search/index.html",
+        "route": "/ja/dt/search"
+      },
+      {
+        "relativePath": "ja/empty/index.html",
+        "route": "/ja/empty"
+      },
+      {
+        "relativePath": "ja/index.html",
+        "route": "/ja"
+      },
+      {
+        "relativePath": "ja/play/3-7/fixits/big-number-literals.ts.html",
+        "route": "/ja/play/3-7/fixits/big-number-literals.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/fixits/const-to-let.ts.html",
+        "route": "/ja/play/3-7/fixits/const-to-let.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/fixits/infer-from-usage-changes.ts.html",
+        "route": "/ja/play/3-7/fixits/infer-from-usage-changes.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html",
+        "route": "/ja/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html",
+        "route": "/ja/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/syntax-and-messaging/optional-chaining.ts.html",
+        "route": "/ja/play/3-7/syntax-and-messaging/optional-chaining.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/types-and-code-flow/assertion-functions.ts.html",
+        "route": "/ja/play/3-7/types-and-code-flow/assertion-functions.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/types-and-code-flow/recursive-type-references.ts.html",
+        "route": "/ja/play/3-7/types-and-code-flow/recursive-type-references.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html",
+        "route": "/ja/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html",
+        "route": "/ja/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html",
+        "route": "/ja/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html"
+      },
+      {
+        "relativePath": "ja/play/3-8/syntax-and-messaging/export-modules-from.ts.html",
+        "route": "/ja/play/3-8/syntax-and-messaging/export-modules-from.ts.html"
+      },
+      {
+        "relativePath": "ja/play/3-8/syntax-and-messaging/private-class-fields.ts.html",
+        "route": "/ja/play/3-8/syntax-and-messaging/private-class-fields.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-checks/class-constructor-code-flow.ts.html",
+        "route": "/ja/play/4-0/new-checks/class-constructor-code-flow.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-js-features/jsdoc-deprecated.ts.html",
+        "route": "/ja/play/4-0/new-js-features/jsdoc-deprecated.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-js-features/logical-operators-and-assignment.ts.html",
+        "route": "/ja/play/4-0/new-js-features/logical-operators-and-assignment.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-js-features/nullish-coalescing.ts.html",
+        "route": "/ja/play/4-0/new-js-features/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-ts-features/named-tuples.ts.html",
+        "route": "/ja/play/4-0/new-ts-features/named-tuples.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-ts-features/unknown-in-catch.ts.html",
+        "route": "/ja/play/4-0/new-ts-features/unknown-in-catch.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-0/new-ts-features/variadic-tuples.ts.html",
+        "route": "/ja/play/4-0/new-ts-features/variadic-tuples.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-1/new-js-features/see-in-jsdoc.ts.html",
+        "route": "/ja/play/4-1/new-js-features/see-in-jsdoc.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-1/template-literals/intro-to-template-literals.ts.html",
+        "route": "/ja/play/4-1/template-literals/intro-to-template-literals.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-1/template-literals/mapped-types-with-template-literals.ts.html",
+        "route": "/ja/play/4-1/template-literals/mapped-types-with-template-literals.ts.html"
+      },
+      {
+        "relativePath": "ja/play/4-1/template-literals/string-manipulation-with-template-literals.ts.html",
+        "route": "/ja/play/4-1/template-literals/string-manipulation-with-template-literals.ts.html"
+      },
+      {
+        "relativePath": "ja/play/index.html",
+        "route": "/ja/play"
+      },
+      {
+        "relativePath": "ja/play/javascript/external-apis/typescript-with-deno.ts.html",
+        "route": "/ja/play/javascript/external-apis/typescript-with-deno.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/language-extensions/enums.ts.html",
+        "route": "/ja/play/typescript/language-extensions/enums.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/language-extensions/nominal-typing.ts.html",
+        "route": "/ja/play/typescript/language-extensions/nominal-typing.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/language-extensions/types-vs-interfaces.ts.html",
+        "route": "/ja/play/typescript/language-extensions/types-vs-interfaces.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/meta-types/conditional-types.ts.html",
+        "route": "/ja/play/typescript/meta-types/conditional-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/meta-types/discriminate-types.ts.html",
+        "route": "/ja/play/typescript/meta-types/discriminate-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/meta-types/indexed-types.ts.html",
+        "route": "/ja/play/typescript/meta-types/indexed-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/meta-types/mapped-types.ts.html",
+        "route": "/ja/play/typescript/meta-types/mapped-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/primitives/any.ts.html",
+        "route": "/ja/play/typescript/primitives/any.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/primitives/literals.ts.html",
+        "route": "/ja/play/typescript/primitives/literals.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/primitives/union-and-intersection-types.ts.html",
+        "route": "/ja/play/typescript/primitives/union-and-intersection-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/primitives/unknown-and-never.ts.html",
+        "route": "/ja/play/typescript/primitives/unknown-and-never.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/type-primitives/built-in-utility-types.ts.html",
+        "route": "/ja/play/typescript/type-primitives/built-in-utility-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/type-primitives/nullable-types.ts.html",
+        "route": "/ja/play/typescript/type-primitives/nullable-types.ts.html"
+      },
+      {
+        "relativePath": "ja/play/typescript/type-primitives/tuples.ts.html",
+        "route": "/ja/play/typescript/type-primitives/tuples.ts.html"
+      },
+      {
+        "relativePath": "ja/tools/index.html",
+        "route": "/ja/tools"
+      },
+      {
+        "relativePath": "ja/tsconfig/index.html",
+        "route": "/ja/tsconfig"
+      },
+      {
+        "relativePath": "ja/why-create-typescript/index.html",
+        "route": "/ja/why-create-typescript"
+      },
+      {
+        "relativePath": "ko/cheatsheets/index.html",
+        "route": "/ko/cheatsheets"
+      },
+      {
+        "relativePath": "ko/community/index.html",
+        "route": "/ko/community"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/basic-types.html",
+        "route": "/ko/docs/handbook/2/basic-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/conditional-types.html",
+        "route": "/ko/docs/handbook/2/conditional-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/everyday-types.html",
+        "route": "/ko/docs/handbook/2/everyday-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/functions.html",
+        "route": "/ko/docs/handbook/2/functions.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/generics.html",
+        "route": "/ko/docs/handbook/2/generics.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/indexed-access-types.html",
+        "route": "/ko/docs/handbook/2/indexed-access-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/keyof-types.html",
+        "route": "/ko/docs/handbook/2/keyof-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/mapped-types.html",
+        "route": "/ko/docs/handbook/2/mapped-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/typeof-types.html",
+        "route": "/ko/docs/handbook/2/typeof-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/2/understanding-errors.html",
+        "route": "/ko/docs/handbook/2/understanding-errors.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/asp-net-core.html",
+        "route": "/ko/docs/handbook/asp-net-core.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/babel-with-typescript.html",
+        "route": "/ko/docs/handbook/babel-with-typescript.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/compiler-options-in-msbuild.html",
+        "route": "/ko/docs/handbook/compiler-options-in-msbuild.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/compiler-options.html",
+        "route": "/ko/docs/handbook/compiler-options.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/configuring-watch.html",
+        "route": "/ko/docs/handbook/configuring-watch.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/by-example.html",
+        "route": "/ko/docs/handbook/declaration-files/by-example.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/consumption.html",
+        "route": "/ko/docs/handbook/declaration-files/consumption.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/deep-dive.html",
+        "route": "/ko/docs/handbook/declaration-files/deep-dive.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/do-s-and-don-ts.html",
+        "route": "/ko/docs/handbook/declaration-files/do-s-and-don-ts.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/dts-from-js.html",
+        "route": "/ko/docs/handbook/declaration-files/dts-from-js.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/introduction.html",
+        "route": "/ko/docs/handbook/declaration-files/introduction.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/library-structures.html",
+        "route": "/ko/docs/handbook/declaration-files/library-structures.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/publishing.html",
+        "route": "/ko/docs/handbook/declaration-files/publishing.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/templates.html",
+        "route": "/ko/docs/handbook/declaration-files/templates.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/templates/module-class-d-ts.html",
+        "route": "/ko/docs/handbook/declaration-files/templates/module-class-d-ts.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-files/templates/module-function-d-ts.html",
+        "route": "/ko/docs/handbook/declaration-files/templates/module-function-d-ts.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/declaration-merging.html",
+        "route": "/ko/docs/handbook/declaration-merging.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/decorators.html",
+        "route": "/ko/docs/handbook/decorators.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/dom-manipulation.html",
+        "route": "/ko/docs/handbook/dom-manipulation.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/enums.html",
+        "route": "/ko/docs/handbook/enums.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/gulp.html",
+        "route": "/ko/docs/handbook/gulp.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/index.html",
+        "route": "/ko/docs/handbook"
+      },
+      {
+        "relativePath": "ko/docs/handbook/integrating-with-build-tools.html",
+        "route": "/ko/docs/handbook/integrating-with-build-tools.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/intro-to-js-ts.html",
+        "route": "/ko/docs/handbook/intro-to-js-ts.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/intro.html",
+        "route": "/ko/docs/handbook/intro.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/iterators-and-generators.html",
+        "route": "/ko/docs/handbook/iterators-and-generators.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/jsdoc-supported-types.html",
+        "route": "/ko/docs/handbook/jsdoc-supported-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/jsx.html",
+        "route": "/ko/docs/handbook/jsx.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/migrating-from-javascript.html",
+        "route": "/ko/docs/handbook/migrating-from-javascript.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/module-resolution.html",
+        "route": "/ko/docs/handbook/module-resolution.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/modules.html",
+        "route": "/ko/docs/handbook/modules.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/namespaces-and-modules.html",
+        "route": "/ko/docs/handbook/namespaces-and-modules.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/namespaces.html",
+        "route": "/ko/docs/handbook/namespaces.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/nightly-builds.html",
+        "route": "/ko/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/project-references.html",
+        "route": "/ko/docs/handbook/project-references.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/react.html",
+        "route": "/ko/docs/handbook/react.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/release-notes/typescript-3-8.html",
+        "route": "/ko/docs/handbook/release-notes/typescript-3-8.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/release-notes/typescript-3-9.html",
+        "route": "/ko/docs/handbook/release-notes/typescript-3-9.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/release-notes/typescript-4-0.html",
+        "route": "/ko/docs/handbook/release-notes/typescript-4-0.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/release-notes/typescript-4-9.html",
+        "route": "/ko/docs/handbook/release-notes/typescript-4-9.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/symbols.html",
+        "route": "/ko/docs/handbook/symbols.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/triple-slash-directives.html",
+        "route": "/ko/docs/handbook/triple-slash-directives.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/tsconfig-json.html",
+        "route": "/ko/docs/handbook/tsconfig-json.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/type-checking-javascript-files.html",
+        "route": "/ko/docs/handbook/type-checking-javascript-files.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/type-compatibility.html",
+        "route": "/ko/docs/handbook/type-compatibility.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/type-inference.html",
+        "route": "/ko/docs/handbook/type-inference.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/typescript-from-scratch.html",
+        "route": "/ko/docs/handbook/typescript-from-scratch.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/typescript-in-5-minutes-func.html",
+        "route": "/ko/docs/handbook/typescript-in-5-minutes-func.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/typescript-in-5-minutes-oop.html",
+        "route": "/ko/docs/handbook/typescript-in-5-minutes-oop.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/typescript-in-5-minutes.html",
+        "route": "/ko/docs/handbook/typescript-in-5-minutes.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/typescript-tooling-in-5-minutes.html",
+        "route": "/ko/docs/handbook/typescript-tooling-in-5-minutes.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/utility-types.html",
+        "route": "/ko/docs/handbook/utility-types.html"
+      },
+      {
+        "relativePath": "ko/docs/handbook/variable-declarations.html",
+        "route": "/ko/docs/handbook/variable-declarations.html"
+      },
+      {
+        "relativePath": "ko/docs/index.html",
+        "route": "/ko/docs"
+      },
+      {
+        "relativePath": "ko/download/index.html",
+        "route": "/ko/download"
+      },
+      {
+        "relativePath": "ko/dt/search/index.html",
+        "route": "/ko/dt/search"
+      },
+      {
+        "relativePath": "ko/empty/index.html",
+        "route": "/ko/empty"
+      },
+      {
+        "relativePath": "ko/index.html",
+        "route": "/ko"
+      },
+      {
+        "relativePath": "ko/play/3-7/fixits/big-number-literals.ts.html",
+        "route": "/ko/play/3-7/fixits/big-number-literals.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-7/fixits/const-to-let.ts.html",
+        "route": "/ko/play/3-7/fixits/const-to-let.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-7/fixits/infer-from-usage-changes.ts.html",
+        "route": "/ko/play/3-7/fixits/infer-from-usage-changes.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html",
+        "route": "/ko/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-7/syntax-and-messaging/optional-chaining.ts.html",
+        "route": "/ko/play/3-7/syntax-and-messaging/optional-chaining.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-7/types-and-code-flow/assertion-functions.ts.html",
+        "route": "/ko/play/3-7/types-and-code-flow/assertion-functions.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html",
+        "route": "/ko/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html",
+        "route": "/ko/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-8/syntax-and-messaging/export-modules-from.ts.html",
+        "route": "/ko/play/3-8/syntax-and-messaging/export-modules-from.ts.html"
+      },
+      {
+        "relativePath": "ko/play/3-8/syntax-and-messaging/private-class-fields.ts.html",
+        "route": "/ko/play/3-8/syntax-and-messaging/private-class-fields.ts.html"
+      },
+      {
+        "relativePath": "ko/play/4-0/new-checks/class-constructor-code-flow.ts.html",
+        "route": "/ko/play/4-0/new-checks/class-constructor-code-flow.ts.html"
+      },
+      {
+        "relativePath": "ko/play/4-0/new-js-features/jsdoc-deprecated.ts.html",
+        "route": "/ko/play/4-0/new-js-features/jsdoc-deprecated.ts.html"
+      },
+      {
+        "relativePath": "ko/play/4-0/new-js-features/logical-operators-and-assignment.ts.html",
+        "route": "/ko/play/4-0/new-js-features/logical-operators-and-assignment.ts.html"
+      },
+      {
+        "relativePath": "ko/play/4-0/new-ts-features/unknown-in-catch.ts.html",
+        "route": "/ko/play/4-0/new-ts-features/unknown-in-catch.ts.html"
+      },
+      {
+        "relativePath": "ko/play/index.html",
+        "route": "/ko/play"
+      },
+      {
+        "relativePath": "ko/play/javascript/external-apis/typescript-with-node.js.html",
+        "route": "/ko/play/javascript/external-apis/typescript-with-node.js.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/external-apis/typescript-with-web.js.html",
+        "route": "/ko/play/javascript/external-apis/typescript-with-web.js.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/functions-with-javascript/function-chaining.ts.html",
+        "route": "/ko/play/javascript/functions-with-javascript/function-chaining.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/functions-with-javascript/generic-functions.ts.html",
+        "route": "/ko/play/javascript/functions-with-javascript/generic-functions.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/functions-with-javascript/typing-functions.ts.html",
+        "route": "/ko/play/javascript/functions-with-javascript/typing-functions.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/helping-with-javascript/errors.ts.html",
+        "route": "/ko/play/javascript/helping-with-javascript/errors.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/helping-with-javascript/quick-fixes.ts.html",
+        "route": "/ko/play/javascript/helping-with-javascript/quick-fixes.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/javascript-essentials/code-flow.ts.html",
+        "route": "/ko/play/javascript/javascript-essentials/code-flow.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/javascript-essentials/functions.ts.html",
+        "route": "/ko/play/javascript/javascript-essentials/functions.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/ko/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/ko/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/modern-javascript/async-await.ts.html",
+        "route": "/ko/play/javascript/modern-javascript/async-await.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/modern-javascript/immutability.ts.html",
+        "route": "/ko/play/javascript/modern-javascript/immutability.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/modern-javascript/import-export.ts.html",
+        "route": "/ko/play/javascript/modern-javascript/import-export.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/working-with-classes/classes-101.ts.html",
+        "route": "/ko/play/javascript/working-with-classes/classes-101.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/working-with-classes/generic-classes.ts.html",
+        "route": "/ko/play/javascript/working-with-classes/generic-classes.ts.html"
+      },
+      {
+        "relativePath": "ko/play/javascript/working-with-classes/mixins.ts.html",
+        "route": "/ko/play/javascript/working-with-classes/mixins.ts.html"
+      },
+      {
+        "relativePath": "ko/play/playground/config/javascript-playgrounds.js.html",
+        "route": "/ko/play/playground/config/javascript-playgrounds.js.html"
+      },
+      {
+        "relativePath": "ko/play/playground/language/fixits.ts.html",
+        "route": "/ko/play/playground/language/fixits.ts.html"
+      },
+      {
+        "relativePath": "ko/play/playground/tooling/mobile-support.ts.html",
+        "route": "/ko/play/playground/tooling/mobile-support.ts.html"
+      },
+      {
+        "relativePath": "ko/play/playground/tooling/typescript-versions.ts.html",
+        "route": "/ko/play/playground/tooling/typescript-versions.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/language-extensions/enums.ts.html",
+        "route": "/ko/play/typescript/language-extensions/enums.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/language-extensions/nominal-typing.ts.html",
+        "route": "/ko/play/typescript/language-extensions/nominal-typing.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/language-extensions/types-vs-interfaces.ts.html",
+        "route": "/ko/play/typescript/language-extensions/types-vs-interfaces.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/language/structural-typing.ts.html",
+        "route": "/ko/play/typescript/language/structural-typing.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/language/type-guards.ts.html",
+        "route": "/ko/play/typescript/language/type-guards.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/meta-types/conditional-types.ts.html",
+        "route": "/ko/play/typescript/meta-types/conditional-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/meta-types/discriminate-types.ts.html",
+        "route": "/ko/play/typescript/meta-types/discriminate-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/meta-types/indexed-types.ts.html",
+        "route": "/ko/play/typescript/meta-types/indexed-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/meta-types/mapped-types.ts.html",
+        "route": "/ko/play/typescript/meta-types/mapped-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/primitives/any.ts.html",
+        "route": "/ko/play/typescript/primitives/any.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/primitives/literals.ts.html",
+        "route": "/ko/play/typescript/primitives/literals.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/primitives/union-and-intersection-types.ts.html",
+        "route": "/ko/play/typescript/primitives/union-and-intersection-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/primitives/unknown-and-never.ts.html",
+        "route": "/ko/play/typescript/primitives/unknown-and-never.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/type-primitives/built-in-utility-types.ts.html",
+        "route": "/ko/play/typescript/type-primitives/built-in-utility-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/type-primitives/nullable-types.ts.html",
+        "route": "/ko/play/typescript/type-primitives/nullable-types.ts.html"
+      },
+      {
+        "relativePath": "ko/play/typescript/type-primitives/tuples.ts.html",
+        "route": "/ko/play/typescript/type-primitives/tuples.ts.html"
+      },
+      {
+        "relativePath": "ko/tools/index.html",
+        "route": "/ko/tools"
+      },
+      {
+        "relativePath": "ko/tsconfig/index.html",
+        "route": "/ko/tsconfig"
+      },
+      {
+        "relativePath": "ko/why-create-typescript/index.html",
+        "route": "/ko/why-create-typescript"
+      },
+      {
+        "relativePath": "pl/cheatsheets/index.html",
+        "route": "/pl/cheatsheets"
+      },
+      {
+        "relativePath": "pl/community/index.html",
+        "route": "/pl/community"
+      },
+      {
+        "relativePath": "pl/docs/handbook/index.html",
+        "route": "/pl/docs/handbook"
+      },
+      {
+        "relativePath": "pl/docs/handbook/intro.html",
+        "route": "/pl/docs/handbook/intro.html"
+      },
+      {
+        "relativePath": "pl/docs/handbook/nightly-builds.html",
+        "route": "/pl/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "pl/docs/index.html",
+        "route": "/pl/docs"
+      },
+      {
+        "relativePath": "pl/download/index.html",
+        "route": "/pl/download"
+      },
+      {
+        "relativePath": "pl/dt/search/index.html",
+        "route": "/pl/dt/search"
+      },
+      {
+        "relativePath": "pl/empty/index.html",
+        "route": "/pl/empty"
+      },
+      {
+        "relativePath": "pl/index.html",
+        "route": "/pl"
+      },
+      {
+        "relativePath": "pl/tools/index.html",
+        "route": "/pl/tools"
+      },
+      {
+        "relativePath": "pl/why-create-typescript/index.html",
+        "route": "/pl/why-create-typescript"
+      },
+      {
+        "relativePath": "play/3-7/fixits/big-number-literals.ts.html",
+        "route": "/play/3-7/fixits/big-number-literals.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/fixits/const-to-let.ts.html",
+        "route": "/play/3-7/fixits/const-to-let.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/fixits/infer-from-usage-changes.ts.html",
+        "route": "/play/3-7/fixits/infer-from-usage-changes.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html",
+        "route": "/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/syntax-and-messaging/nullish-coalescing.ts.html",
+        "route": "/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/syntax-and-messaging/optional-chaining.ts.html",
+        "route": "/play/3-7/syntax-and-messaging/optional-chaining.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/types-and-code-flow/assertion-functions.ts.html",
+        "route": "/play/3-7/types-and-code-flow/assertion-functions.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/types-and-code-flow/recursive-type-references.ts.html",
+        "route": "/play/3-7/types-and-code-flow/recursive-type-references.ts.html"
+      },
+      {
+        "relativePath": "play/3-7/types-and-code-flow/uncalled-function-checks.ts.html",
+        "route": "/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html"
+      },
+      {
+        "relativePath": "play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html",
+        "route": "/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html"
+      },
+      {
+        "relativePath": "play/3-8/jsdoc-improvements/accessibility-modifiers.js.html",
+        "route": "/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html"
+      },
+      {
+        "relativePath": "play/3-8/syntax-and-messaging/export-modules-from.ts.html",
+        "route": "/play/3-8/syntax-and-messaging/export-modules-from.ts.html"
+      },
+      {
+        "relativePath": "play/3-8/syntax-and-messaging/private-class-fields.ts.html",
+        "route": "/play/3-8/syntax-and-messaging/private-class-fields.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-checks/class-constructor-code-flow.ts.html",
+        "route": "/play/4-0/new-checks/class-constructor-code-flow.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-js-features/jsdoc-deprecated.ts.html",
+        "route": "/play/4-0/new-js-features/jsdoc-deprecated.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-js-features/logical-operators-and-assignment.ts.html",
+        "route": "/play/4-0/new-js-features/logical-operators-and-assignment.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-js-features/nullish-coalescing.ts.html",
+        "route": "/play/4-0/new-js-features/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-ts-features/named-tuples.ts.html",
+        "route": "/play/4-0/new-ts-features/named-tuples.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-ts-features/unknown-in-catch.ts.html",
+        "route": "/play/4-0/new-ts-features/unknown-in-catch.ts.html"
+      },
+      {
+        "relativePath": "play/4-0/new-ts-features/variadic-tuples.ts.html",
+        "route": "/play/4-0/new-ts-features/variadic-tuples.ts.html"
+      },
+      {
+        "relativePath": "play/4-1/new-js-features/see-in-jsdoc.ts.html",
+        "route": "/play/4-1/new-js-features/see-in-jsdoc.ts.html"
+      },
+      {
+        "relativePath": "play/4-1/template-literals/intro-to-template-literals.ts.html",
+        "route": "/play/4-1/template-literals/intro-to-template-literals.ts.html"
+      },
+      {
+        "relativePath": "play/4-1/template-literals/mapped-types-with-template-literals.ts.html",
+        "route": "/play/4-1/template-literals/mapped-types-with-template-literals.ts.html"
+      },
+      {
+        "relativePath": "play/4-1/template-literals/string-manipulation-with-template-literals.ts.html",
+        "route": "/play/4-1/template-literals/string-manipulation-with-template-literals.ts.html"
+      },
+      {
+        "relativePath": "play/4-2/fixits/create-function-from-call.ts.html",
+        "route": "/play/4-2/fixits/create-function-from-call.ts.html"
+      },
+      {
+        "relativePath": "play/4-2/new-ts-features/abstract-class-constructors.ts.html",
+        "route": "/play/4-2/new-ts-features/abstract-class-constructors.ts.html"
+      },
+      {
+        "relativePath": "play/4-2/new-ts-features/rest-elements-in-tuple-types.ts.html",
+        "route": "/play/4-2/new-ts-features/rest-elements-in-tuple-types.ts.html"
+      },
+      {
+        "relativePath": "play/4-2/new-ts-features/smarter-type-alias-preservation.ts.html",
+        "route": "/play/4-2/new-ts-features/smarter-type-alias-preservation.ts.html"
+      },
+      {
+        "relativePath": "play/4-2/new-ts-features/use-index-accessors-for-index-signatures.ts.html",
+        "route": "/play/4-2/new-ts-features/use-index-accessors-for-index-signatures.ts.html"
+      },
+      {
+        "relativePath": "play/4-3/new-ts-features/no-implicit-class-overrides.ts.html",
+        "route": "/play/4-3/new-ts-features/no-implicit-class-overrides.ts.html"
+      },
+      {
+        "relativePath": "play/4-3/new-ts-features/separate-write-vs-read-on-properties.ts.html",
+        "route": "/play/4-3/new-ts-features/separate-write-vs-read-on-properties.ts.html"
+      },
+      {
+        "relativePath": "play/4-4/new-js-features/control-flow-improvements.ts.html",
+        "route": "/play/4-4/new-js-features/control-flow-improvements.ts.html"
+      },
+      {
+        "relativePath": "play/4-4/new-js-features/errors-for-high-confidence-errors.ts.html",
+        "route": "/play/4-4/new-js-features/errors-for-high-confidence-errors.ts.html"
+      },
+      {
+        "relativePath": "play/4-4/new-ts-features/exact-optional-properties.ts.html",
+        "route": "/play/4-4/new-ts-features/exact-optional-properties.ts.html"
+      },
+      {
+        "relativePath": "play/4-4/new-ts-features/use-unknown-for-catch-variables.ts.html",
+        "route": "/play/4-4/new-ts-features/use-unknown-for-catch-variables.ts.html"
+      },
+      {
+        "relativePath": "play/4-7/new-js-features/control-flow-improvements.ts.html",
+        "route": "/play/4-7/new-js-features/control-flow-improvements.ts.html"
+      },
+      {
+        "relativePath": "play/4-7/new-js-features/improved-function-inference.ts.html",
+        "route": "/play/4-7/new-js-features/improved-function-inference.ts.html"
+      },
+      {
+        "relativePath": "play/4-7/new-ts-features/extends-constraints.ts.html",
+        "route": "/play/4-7/new-ts-features/extends-constraints.ts.html"
+      },
+      {
+        "relativePath": "play/4-7/new-ts-features/instantiation-expressions.ts.html",
+        "route": "/play/4-7/new-ts-features/instantiation-expressions.ts.html"
+      },
+      {
+        "relativePath": "play/index.html",
+        "route": "/play"
+      },
+      {
+        "relativePath": "play/javascript/external-apis/typescript-with-deno.ts.html",
+        "route": "/play/javascript/external-apis/typescript-with-deno.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/external-apis/typescript-with-node.js.html",
+        "route": "/play/javascript/external-apis/typescript-with-node.js.html"
+      },
+      {
+        "relativePath": "play/javascript/external-apis/typescript-with-web.js.html",
+        "route": "/play/javascript/external-apis/typescript-with-web.js.html"
+      },
+      {
+        "relativePath": "play/javascript/external-apis/typescript-with-webgl.js.html",
+        "route": "/play/javascript/external-apis/typescript-with-webgl.js.html"
+      },
+      {
+        "relativePath": "play/javascript/functions-with-javascript/function-chaining.ts.html",
+        "route": "/play/javascript/functions-with-javascript/function-chaining.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/functions-with-javascript/generic-functions.ts.html",
+        "route": "/play/javascript/functions-with-javascript/generic-functions.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/functions-with-javascript/typing-functions.ts.html",
+        "route": "/play/javascript/functions-with-javascript/typing-functions.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/helping-with-javascript/errors.ts.html",
+        "route": "/play/javascript/helping-with-javascript/errors.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/helping-with-javascript/quick-fixes.ts.html",
+        "route": "/play/javascript/helping-with-javascript/quick-fixes.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/javascript-essentials/code-flow.ts.html",
+        "route": "/play/javascript/javascript-essentials/code-flow.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/javascript-essentials/functions.ts.html",
+        "route": "/play/javascript/javascript-essentials/functions.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/modern-javascript/async-await.ts.html",
+        "route": "/play/javascript/modern-javascript/async-await.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/modern-javascript/immutability.ts.html",
+        "route": "/play/javascript/modern-javascript/immutability.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/modern-javascript/import-export.ts.html",
+        "route": "/play/javascript/modern-javascript/import-export.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/modern-javascript/jsdoc-support.js.html",
+        "route": "/play/javascript/modern-javascript/jsdoc-support.js.html"
+      },
+      {
+        "relativePath": "play/javascript/working-with-classes/classes-101.ts.html",
+        "route": "/play/javascript/working-with-classes/classes-101.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/working-with-classes/generic-classes.ts.html",
+        "route": "/play/javascript/working-with-classes/generic-classes.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/working-with-classes/mixins.ts.html",
+        "route": "/play/javascript/working-with-classes/mixins.ts.html"
+      },
+      {
+        "relativePath": "play/javascript/working-with-classes/this.ts.html",
+        "route": "/play/javascript/working-with-classes/this.ts.html"
+      },
+      {
+        "relativePath": "play/playground/config/javascript-playgrounds.js.html",
+        "route": "/play/playground/config/javascript-playgrounds.js.html"
+      },
+      {
+        "relativePath": "play/playground/config/new-compiler-defaults.ts.html",
+        "route": "/play/playground/config/new-compiler-defaults.ts.html"
+      },
+      {
+        "relativePath": "play/playground/language/automatic-type-acquisition.ts.html",
+        "route": "/play/playground/language/automatic-type-acquisition.ts.html"
+      },
+      {
+        "relativePath": "play/playground/language/fixits.ts.html",
+        "route": "/play/playground/language/fixits.ts.html"
+      },
+      {
+        "relativePath": "play/playground/tooling/mobile-support.ts.html",
+        "route": "/play/playground/tooling/mobile-support.ts.html"
+      },
+      {
+        "relativePath": "play/playground/tooling/sharable-urls.ts.html",
+        "route": "/play/playground/tooling/sharable-urls.ts.html"
+      },
+      {
+        "relativePath": "play/playground/tooling/typescript-versions.ts.html",
+        "route": "/play/playground/tooling/typescript-versions.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language-extensions/enums.ts.html",
+        "route": "/play/typescript/language-extensions/enums.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language-extensions/nominal-typing.ts.html",
+        "route": "/play/typescript/language-extensions/nominal-typing.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language-extensions/types-vs-interfaces.ts.html",
+        "route": "/play/typescript/language-extensions/types-vs-interfaces.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language/soundness.ts.html",
+        "route": "/play/typescript/language/soundness.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language/structural-typing.ts.html",
+        "route": "/play/typescript/language/structural-typing.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language/type-guards.ts.html",
+        "route": "/play/typescript/language/type-guards.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/language/type-widening-and-narrowing.ts.html",
+        "route": "/play/typescript/language/type-widening-and-narrowing.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/meta-types/conditional-types.ts.html",
+        "route": "/play/typescript/meta-types/conditional-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/meta-types/discriminate-types.ts.html",
+        "route": "/play/typescript/meta-types/discriminate-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/meta-types/indexed-types.ts.html",
+        "route": "/play/typescript/meta-types/indexed-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/meta-types/mapped-types.ts.html",
+        "route": "/play/typescript/meta-types/mapped-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/primitives/any.ts.html",
+        "route": "/play/typescript/primitives/any.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/primitives/literals.ts.html",
+        "route": "/play/typescript/primitives/literals.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/primitives/union-and-intersection-types.ts.html",
+        "route": "/play/typescript/primitives/union-and-intersection-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/primitives/unknown-and-never.ts.html",
+        "route": "/play/typescript/primitives/unknown-and-never.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/type-primitives/built-in-utility-types.ts.html",
+        "route": "/play/typescript/type-primitives/built-in-utility-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/type-primitives/nullable-types.ts.html",
+        "route": "/play/typescript/type-primitives/nullable-types.ts.html"
+      },
+      {
+        "relativePath": "play/typescript/type-primitives/tuples.ts.html",
+        "route": "/play/typescript/type-primitives/tuples.ts.html"
+      },
+      {
+        "relativePath": "pt/cheatsheets/index.html",
+        "route": "/pt/cheatsheets"
+      },
+      {
+        "relativePath": "pt/community/index.html",
+        "route": "/pt/community"
+      },
+      {
+        "relativePath": "pt/docs/handbook/Decorators.html",
+        "route": "/pt/docs/handbook/Decorators.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/babel-with-typescript.html",
+        "route": "/pt/docs/handbook/babel-with-typescript.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/configuring-watch.html",
+        "route": "/pt/docs/handbook/configuring-watch.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/by-example.html",
+        "route": "/pt/docs/handbook/declaration-files/by-example.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/consumption.html",
+        "route": "/pt/docs/handbook/declaration-files/consumption.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/deep-dive.html",
+        "route": "/pt/docs/handbook/declaration-files/deep-dive.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/do-s-and-don-ts.html",
+        "route": "/pt/docs/handbook/declaration-files/do-s-and-don-ts.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/dts-from-js.html",
+        "route": "/pt/docs/handbook/declaration-files/dts-from-js.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/introduction.html",
+        "route": "/pt/docs/handbook/declaration-files/introduction.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html",
+        "route": "/pt/docs/handbook/declaration-files/templates/global-modifying-module-d-ts.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/declaration-merging.html",
+        "route": "/pt/docs/handbook/declaration-merging.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/index.html",
+        "route": "/pt/docs/handbook"
+      },
+      {
+        "relativePath": "pt/docs/handbook/intro-to-js-ts.html",
+        "route": "/pt/docs/handbook/intro-to-js-ts.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/iterators-and-generators.html",
+        "route": "/pt/docs/handbook/iterators-and-generators.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/jsdoc-supported-types.html",
+        "route": "/pt/docs/handbook/jsdoc-supported-types.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/jsx.html",
+        "route": "/pt/docs/handbook/jsx.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/manipulacao-dom.html",
+        "route": "/pt/docs/handbook/manipulacao-dom.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/mixins.html",
+        "route": "/pt/docs/handbook/mixins.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/module-resolution.html",
+        "route": "/pt/docs/handbook/module-resolution.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/modules.html",
+        "route": "/pt/docs/handbook/modules.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/namespaces-and-modules.html",
+        "route": "/pt/docs/handbook/namespaces-and-modules.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/namespaces.html",
+        "route": "/pt/docs/handbook/namespaces.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/nightly-builds.html",
+        "route": "/pt/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/project-references.html",
+        "route": "/pt/docs/handbook/project-references.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/react.html",
+        "route": "/pt/docs/handbook/react.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/symbols.html",
+        "route": "/pt/docs/handbook/symbols.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/triple-slash-directives.html",
+        "route": "/pt/docs/handbook/triple-slash-directives.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/tsconfig-json.html",
+        "route": "/pt/docs/handbook/tsconfig-json.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/type-checking-javascript-files.html",
+        "route": "/pt/docs/handbook/type-checking-javascript-files.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/type-compatibility.html",
+        "route": "/pt/docs/handbook/type-compatibility.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/type-inference.html",
+        "route": "/pt/docs/handbook/type-inference.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/typescript-from-scratch.html",
+        "route": "/pt/docs/handbook/typescript-from-scratch.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/typescript-in-5-minutes-func.html",
+        "route": "/pt/docs/handbook/typescript-in-5-minutes-func.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/typescript-in-5-minutes-oop.html",
+        "route": "/pt/docs/handbook/typescript-in-5-minutes-oop.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/typescript-in-5-minutes.html",
+        "route": "/pt/docs/handbook/typescript-in-5-minutes.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/typescript-tooling-in-5-minutes.html",
+        "route": "/pt/docs/handbook/typescript-tooling-in-5-minutes.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/utility-types.html",
+        "route": "/pt/docs/handbook/utility-types.html"
+      },
+      {
+        "relativePath": "pt/docs/handbook/variable-declarations.html",
+        "route": "/pt/docs/handbook/variable-declarations.html"
+      },
+      {
+        "relativePath": "pt/docs/index.html",
+        "route": "/pt/docs"
+      },
+      {
+        "relativePath": "pt/download/index.html",
+        "route": "/pt/download"
+      },
+      {
+        "relativePath": "pt/dt/search/index.html",
+        "route": "/pt/dt/search"
+      },
+      {
+        "relativePath": "pt/empty/index.html",
+        "route": "/pt/empty"
+      },
+      {
+        "relativePath": "pt/index.html",
+        "route": "/pt"
+      },
+      {
+        "relativePath": "pt/play/3-7/fixits/big-number-literals.ts.html",
+        "route": "/pt/play/3-7/fixits/big-number-literals.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/fixits/const-to-let.ts.html",
+        "route": "/pt/play/3-7/fixits/const-to-let.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/fixits/infer-from-usage-changes.ts.html",
+        "route": "/pt/play/3-7/fixits/infer-from-usage-changes.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html",
+        "route": "/pt/play/3-7/syntax-and-messaging/flattened-error-reporting.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html",
+        "route": "/pt/play/3-7/syntax-and-messaging/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/syntax-and-messaging/optional-chaining.ts.html",
+        "route": "/pt/play/3-7/syntax-and-messaging/optional-chaining.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/types-and-code-flow/assertion-functions.ts.html",
+        "route": "/pt/play/3-7/types-and-code-flow/assertion-functions.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/types-and-code-flow/recursive-type-references.ts.html",
+        "route": "/pt/play/3-7/types-and-code-flow/recursive-type-references.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html",
+        "route": "/pt/play/3-7/types-and-code-flow/uncalled-function-checks.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html",
+        "route": "/pt/play/3-8/breaking-changes/checking-unions-with-index-signatures.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html",
+        "route": "/pt/play/3-8/jsdoc-improvements/accessibility-modifiers.js.html"
+      },
+      {
+        "relativePath": "pt/play/3-8/syntax-and-messaging/export-modules-from.ts.html",
+        "route": "/pt/play/3-8/syntax-and-messaging/export-modules-from.ts.html"
+      },
+      {
+        "relativePath": "pt/play/3-8/syntax-and-messaging/private-class-fields.ts.html",
+        "route": "/pt/play/3-8/syntax-and-messaging/private-class-fields.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-checks/class-constructor-code-flow.ts.html",
+        "route": "/pt/play/4-0/new-checks/class-constructor-code-flow.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-js-features/jsdoc-deprecated.ts.html",
+        "route": "/pt/play/4-0/new-js-features/jsdoc-deprecated.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-js-features/logical-operators-and-assignment.ts.html",
+        "route": "/pt/play/4-0/new-js-features/logical-operators-and-assignment.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-js-features/nullish-coalescing.ts.html",
+        "route": "/pt/play/4-0/new-js-features/nullish-coalescing.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-ts-features/named-tuples.ts.html",
+        "route": "/pt/play/4-0/new-ts-features/named-tuples.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-ts-features/unknown-in-catch.ts.html",
+        "route": "/pt/play/4-0/new-ts-features/unknown-in-catch.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-0/new-ts-features/variadic-tuples.ts.html",
+        "route": "/pt/play/4-0/new-ts-features/variadic-tuples.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-1/new-js-features/see-in-jsdoc.ts.html",
+        "route": "/pt/play/4-1/new-js-features/see-in-jsdoc.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-1/template-literals/intro-to-template-literals.ts.html",
+        "route": "/pt/play/4-1/template-literals/intro-to-template-literals.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-1/template-literals/mapped-types-with-template-literals.ts.html",
+        "route": "/pt/play/4-1/template-literals/mapped-types-with-template-literals.ts.html"
+      },
+      {
+        "relativePath": "pt/play/4-1/template-literals/string-manipulation-with-template-literals.ts.html",
+        "route": "/pt/play/4-1/template-literals/string-manipulation-with-template-literals.ts.html"
+      },
+      {
+        "relativePath": "pt/play/index.html",
+        "route": "/pt/play"
+      },
+      {
+        "relativePath": "pt/play/javascript/external-apis/typescript-with-deno.ts.html",
+        "route": "/pt/play/javascript/external-apis/typescript-with-deno.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/external-apis/typescript-with-node.js.html",
+        "route": "/pt/play/javascript/external-apis/typescript-with-node.js.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/external-apis/typescript-with-web.js.html",
+        "route": "/pt/play/javascript/external-apis/typescript-with-web.js.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/external-apis/typescript-with-webgl.js.html",
+        "route": "/pt/play/javascript/external-apis/typescript-with-webgl.js.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/functions-with-javascript/function-chaining.ts.html",
+        "route": "/pt/play/javascript/functions-with-javascript/function-chaining.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/functions-with-javascript/generic-functions.ts.html",
+        "route": "/pt/play/javascript/functions-with-javascript/generic-functions.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/functions-with-javascript/typing-functions.ts.html",
+        "route": "/pt/play/javascript/functions-with-javascript/typing-functions.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/helping-with-javascript/errors.ts.html",
+        "route": "/pt/play/javascript/helping-with-javascript/errors.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/helping-with-javascript/quick-fixes.ts.html",
+        "route": "/pt/play/javascript/helping-with-javascript/quick-fixes.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/javascript-essentials/code-flow.ts.html",
+        "route": "/pt/play/javascript/javascript-essentials/code-flow.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/javascript-essentials/functions.ts.html",
+        "route": "/pt/play/javascript/javascript-essentials/functions.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/pt/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/pt/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/modern-javascript/async-await.ts.html",
+        "route": "/pt/play/javascript/modern-javascript/async-await.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/modern-javascript/immutability.ts.html",
+        "route": "/pt/play/javascript/modern-javascript/immutability.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/modern-javascript/import-export.ts.html",
+        "route": "/pt/play/javascript/modern-javascript/import-export.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/modern-javascript/jsdoc-support.js.html",
+        "route": "/pt/play/javascript/modern-javascript/jsdoc-support.js.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/working-with-classes/classes-101.ts.html",
+        "route": "/pt/play/javascript/working-with-classes/classes-101.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/working-with-classes/generic-classes.ts.html",
+        "route": "/pt/play/javascript/working-with-classes/generic-classes.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/working-with-classes/mixins.ts.html",
+        "route": "/pt/play/javascript/working-with-classes/mixins.ts.html"
+      },
+      {
+        "relativePath": "pt/play/javascript/working-with-classes/this.ts.html",
+        "route": "/pt/play/javascript/working-with-classes/this.ts.html"
+      },
+      {
+        "relativePath": "pt/play/playground/config/javascript-playgrounds.js.html",
+        "route": "/pt/play/playground/config/javascript-playgrounds.js.html"
+      },
+      {
+        "relativePath": "pt/play/playground/config/new-compiler-defaults.ts.html",
+        "route": "/pt/play/playground/config/new-compiler-defaults.ts.html"
+      },
+      {
+        "relativePath": "pt/play/playground/language/automatic-type-acquisition.ts.html",
+        "route": "/pt/play/playground/language/automatic-type-acquisition.ts.html"
+      },
+      {
+        "relativePath": "pt/play/playground/language/fixits.ts.html",
+        "route": "/pt/play/playground/language/fixits.ts.html"
+      },
+      {
+        "relativePath": "pt/play/playground/tooling/mobile-support.ts.html",
+        "route": "/pt/play/playground/tooling/mobile-support.ts.html"
+      },
+      {
+        "relativePath": "pt/play/playground/tooling/sharable-urls.ts.html",
+        "route": "/pt/play/playground/tooling/sharable-urls.ts.html"
+      },
+      {
+        "relativePath": "pt/play/playground/tooling/typescript-versions.ts.html",
+        "route": "/pt/play/playground/tooling/typescript-versions.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language-extensions/enums.ts.html",
+        "route": "/pt/play/typescript/language-extensions/enums.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language-extensions/nominal-typing.ts.html",
+        "route": "/pt/play/typescript/language-extensions/nominal-typing.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language-extensions/types-vs-interfaces.ts.html",
+        "route": "/pt/play/typescript/language-extensions/types-vs-interfaces.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language/soundness.ts.html",
+        "route": "/pt/play/typescript/language/soundness.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language/structural-typing.ts.html",
+        "route": "/pt/play/typescript/language/structural-typing.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language/type-guards.ts.html",
+        "route": "/pt/play/typescript/language/type-guards.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/language/type-widening-and-narrowing.ts.html",
+        "route": "/pt/play/typescript/language/type-widening-and-narrowing.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/meta-types/conditional-types.ts.html",
+        "route": "/pt/play/typescript/meta-types/conditional-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/meta-types/discriminate-types.ts.html",
+        "route": "/pt/play/typescript/meta-types/discriminate-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/meta-types/indexed-types.ts.html",
+        "route": "/pt/play/typescript/meta-types/indexed-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/meta-types/mapped-types.ts.html",
+        "route": "/pt/play/typescript/meta-types/mapped-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/primitives/any.ts.html",
+        "route": "/pt/play/typescript/primitives/any.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/primitives/literals.ts.html",
+        "route": "/pt/play/typescript/primitives/literals.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/primitives/union-and-intersection-types.ts.html",
+        "route": "/pt/play/typescript/primitives/union-and-intersection-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/primitives/unknown-and-never.ts.html",
+        "route": "/pt/play/typescript/primitives/unknown-and-never.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/type-primitives/built-in-utility-types.ts.html",
+        "route": "/pt/play/typescript/type-primitives/built-in-utility-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/type-primitives/nullable-types.ts.html",
+        "route": "/pt/play/typescript/type-primitives/nullable-types.ts.html"
+      },
+      {
+        "relativePath": "pt/play/typescript/type-primitives/tuples.ts.html",
+        "route": "/pt/play/typescript/type-primitives/tuples.ts.html"
+      },
+      {
+        "relativePath": "pt/tools/index.html",
+        "route": "/pt/tools"
+      },
+      {
+        "relativePath": "pt/tsconfig/index.html",
+        "route": "/pt/tsconfig"
+      },
+      {
+        "relativePath": "pt/why-create-typescript/index.html",
+        "route": "/pt/why-create-typescript"
+      },
+      {
+        "relativePath": "tools/index.html",
+        "route": "/tools"
+      },
+      {
+        "relativePath": "tsconfig/allowArbitraryExtensions.html",
+        "route": "/tsconfig/allowArbitraryExtensions.html"
+      },
+      {
+        "relativePath": "tsconfig/allowImportingTsExtensions.html",
+        "route": "/tsconfig/allowImportingTsExtensions.html"
+      },
+      {
+        "relativePath": "tsconfig/allowJs.html",
+        "route": "/tsconfig/allowJs.html"
+      },
+      {
+        "relativePath": "tsconfig/allowSyntheticDefaultImports.html",
+        "route": "/tsconfig/allowSyntheticDefaultImports.html"
+      },
+      {
+        "relativePath": "tsconfig/allowUmdGlobalAccess.html",
+        "route": "/tsconfig/allowUmdGlobalAccess.html"
+      },
+      {
+        "relativePath": "tsconfig/allowUnreachableCode.html",
+        "route": "/tsconfig/allowUnreachableCode.html"
+      },
+      {
+        "relativePath": "tsconfig/allowUnusedLabels.html",
+        "route": "/tsconfig/allowUnusedLabels.html"
+      },
+      {
+        "relativePath": "tsconfig/alwaysStrict.html",
+        "route": "/tsconfig/alwaysStrict.html"
+      },
+      {
+        "relativePath": "tsconfig/assumeChangesOnlyAffectDirectDependencies.html",
+        "route": "/tsconfig/assumeChangesOnlyAffectDirectDependencies.html"
+      },
+      {
+        "relativePath": "tsconfig/baseUrl.html",
+        "route": "/tsconfig/baseUrl.html"
+      },
+      {
+        "relativePath": "tsconfig/charset.html",
+        "route": "/tsconfig/charset.html"
+      },
+      {
+        "relativePath": "tsconfig/checkJs.html",
+        "route": "/tsconfig/checkJs.html"
+      },
+      {
+        "relativePath": "tsconfig/clean.html",
+        "route": "/tsconfig/clean.html"
+      },
+      {
+        "relativePath": "tsconfig/composite.html",
+        "route": "/tsconfig/composite.html"
+      },
+      {
+        "relativePath": "tsconfig/customConditions.html",
+        "route": "/tsconfig/customConditions.html"
+      },
+      {
+        "relativePath": "tsconfig/declaration.html",
+        "route": "/tsconfig/declaration.html"
+      },
+      {
+        "relativePath": "tsconfig/declarationDir.html",
+        "route": "/tsconfig/declarationDir.html"
+      },
+      {
+        "relativePath": "tsconfig/declarationMap.html",
+        "route": "/tsconfig/declarationMap.html"
+      },
+      {
+        "relativePath": "tsconfig/diagnostics.html",
+        "route": "/tsconfig/diagnostics.html"
+      },
+      {
+        "relativePath": "tsconfig/disableFilenameBasedTypeAcquisition.html",
+        "route": "/tsconfig/disableFilenameBasedTypeAcquisition.html"
+      },
+      {
+        "relativePath": "tsconfig/disableReferencedProjectLoad.html",
+        "route": "/tsconfig/disableReferencedProjectLoad.html"
+      },
+      {
+        "relativePath": "tsconfig/disableSizeLimit.html",
+        "route": "/tsconfig/disableSizeLimit.html"
+      },
+      {
+        "relativePath": "tsconfig/disableSolutionSearching.html",
+        "route": "/tsconfig/disableSolutionSearching.html"
+      },
+      {
+        "relativePath": "tsconfig/disableSourceOfProjectReferenceRedirect.html",
+        "route": "/tsconfig/disableSourceOfProjectReferenceRedirect.html"
+      },
+      {
+        "relativePath": "tsconfig/downlevelIteration.html",
+        "route": "/tsconfig/downlevelIteration.html"
+      },
+      {
+        "relativePath": "tsconfig/emitBOM.html",
+        "route": "/tsconfig/emitBOM.html"
+      },
+      {
+        "relativePath": "tsconfig/emitDeclarationOnly.html",
+        "route": "/tsconfig/emitDeclarationOnly.html"
+      },
+      {
+        "relativePath": "tsconfig/emitDecoratorMetadata.html",
+        "route": "/tsconfig/emitDecoratorMetadata.html"
+      },
+      {
+        "relativePath": "tsconfig/enable.html",
+        "route": "/tsconfig/enable.html"
+      },
+      {
+        "relativePath": "tsconfig/erasableSyntaxOnly.html",
+        "route": "/tsconfig/erasableSyntaxOnly.html"
+      },
+      {
+        "relativePath": "tsconfig/esModuleInterop.html",
+        "route": "/tsconfig/esModuleInterop.html"
+      },
+      {
+        "relativePath": "tsconfig/exactOptionalPropertyTypes.html",
+        "route": "/tsconfig/exactOptionalPropertyTypes.html"
+      },
+      {
+        "relativePath": "tsconfig/exclude.html",
+        "route": "/tsconfig/exclude.html"
+      },
+      {
+        "relativePath": "tsconfig/excludeDirectories.html",
+        "route": "/tsconfig/excludeDirectories.html"
+      },
+      {
+        "relativePath": "tsconfig/excludeFiles.html",
+        "route": "/tsconfig/excludeFiles.html"
+      },
+      {
+        "relativePath": "tsconfig/experimentalDecorators.html",
+        "route": "/tsconfig/experimentalDecorators.html"
+      },
+      {
+        "relativePath": "tsconfig/explainFiles.html",
+        "route": "/tsconfig/explainFiles.html"
+      },
+      {
+        "relativePath": "tsconfig/extendedDiagnostics.html",
+        "route": "/tsconfig/extendedDiagnostics.html"
+      },
+      {
+        "relativePath": "tsconfig/extends.html",
+        "route": "/tsconfig/extends.html"
+      },
+      {
+        "relativePath": "tsconfig/fallbackPolling.html",
+        "route": "/tsconfig/fallbackPolling.html"
+      },
+      {
+        "relativePath": "tsconfig/files.html",
+        "route": "/tsconfig/files.html"
+      },
+      {
+        "relativePath": "tsconfig/force.html",
+        "route": "/tsconfig/force.html"
+      },
+      {
+        "relativePath": "tsconfig/forceConsistentCasingInFileNames.html",
+        "route": "/tsconfig/forceConsistentCasingInFileNames.html"
+      },
+      {
+        "relativePath": "tsconfig/generateCpuProfile.html",
+        "route": "/tsconfig/generateCpuProfile.html"
+      },
+      {
+        "relativePath": "tsconfig/generateTrace.html",
+        "route": "/tsconfig/generateTrace.html"
+      },
+      {
+        "relativePath": "tsconfig/importHelpers.html",
+        "route": "/tsconfig/importHelpers.html"
+      },
+      {
+        "relativePath": "tsconfig/importsNotUsedAsValues.html",
+        "route": "/tsconfig/importsNotUsedAsValues.html"
+      },
+      {
+        "relativePath": "tsconfig/include.html",
+        "route": "/tsconfig/include.html"
+      },
+      {
+        "relativePath": "tsconfig/incremental.html",
+        "route": "/tsconfig/incremental.html"
+      },
+      {
+        "relativePath": "tsconfig/index.html",
+        "route": "/tsconfig"
+      },
+      {
+        "relativePath": "tsconfig/inlineSourceMap.html",
+        "route": "/tsconfig/inlineSourceMap.html"
+      },
+      {
+        "relativePath": "tsconfig/inlineSources.html",
+        "route": "/tsconfig/inlineSources.html"
+      },
+      {
+        "relativePath": "tsconfig/isolatedDeclarations.html",
+        "route": "/tsconfig/isolatedDeclarations.html"
+      },
+      {
+        "relativePath": "tsconfig/isolatedModules.html",
+        "route": "/tsconfig/isolatedModules.html"
+      },
+      {
+        "relativePath": "tsconfig/jsx.html",
+        "route": "/tsconfig/jsx.html"
+      },
+      {
+        "relativePath": "tsconfig/jsxFactory.html",
+        "route": "/tsconfig/jsxFactory.html"
+      },
+      {
+        "relativePath": "tsconfig/jsxFragmentFactory.html",
+        "route": "/tsconfig/jsxFragmentFactory.html"
+      },
+      {
+        "relativePath": "tsconfig/jsxImportSource.html",
+        "route": "/tsconfig/jsxImportSource.html"
+      },
+      {
+        "relativePath": "tsconfig/keyofStringsOnly.html",
+        "route": "/tsconfig/keyofStringsOnly.html"
+      },
+      {
+        "relativePath": "tsconfig/lib.html",
+        "route": "/tsconfig/lib.html"
+      },
+      {
+        "relativePath": "tsconfig/libReplacement.html",
+        "route": "/tsconfig/libReplacement.html"
+      },
+      {
+        "relativePath": "tsconfig/listEmittedFiles.html",
+        "route": "/tsconfig/listEmittedFiles.html"
+      },
+      {
+        "relativePath": "tsconfig/listFiles.html",
+        "route": "/tsconfig/listFiles.html"
+      },
+      {
+        "relativePath": "tsconfig/locale.html",
+        "route": "/tsconfig/locale.html"
+      },
+      {
+        "relativePath": "tsconfig/mapRoot.html",
+        "route": "/tsconfig/mapRoot.html"
+      },
+      {
+        "relativePath": "tsconfig/maxNodeModuleJsDepth.html",
+        "route": "/tsconfig/maxNodeModuleJsDepth.html"
+      },
+      {
+        "relativePath": "tsconfig/module.html",
+        "route": "/tsconfig/module.html"
+      },
+      {
+        "relativePath": "tsconfig/moduleDetection.html",
+        "route": "/tsconfig/moduleDetection.html"
+      },
+      {
+        "relativePath": "tsconfig/moduleResolution.html",
+        "route": "/tsconfig/moduleResolution.html"
+      },
+      {
+        "relativePath": "tsconfig/moduleSuffixes.html",
+        "route": "/tsconfig/moduleSuffixes.html"
+      },
+      {
+        "relativePath": "tsconfig/newLine.html",
+        "route": "/tsconfig/newLine.html"
+      },
+      {
+        "relativePath": "tsconfig/noCheck.html",
+        "route": "/tsconfig/noCheck.html"
+      },
+      {
+        "relativePath": "tsconfig/noEmit.html",
+        "route": "/tsconfig/noEmit.html"
+      },
+      {
+        "relativePath": "tsconfig/noEmitHelpers.html",
+        "route": "/tsconfig/noEmitHelpers.html"
+      },
+      {
+        "relativePath": "tsconfig/noEmitOnError.html",
+        "route": "/tsconfig/noEmitOnError.html"
+      },
+      {
+        "relativePath": "tsconfig/noErrorTruncation.html",
+        "route": "/tsconfig/noErrorTruncation.html"
+      },
+      {
+        "relativePath": "tsconfig/noFallthroughCasesInSwitch.html",
+        "route": "/tsconfig/noFallthroughCasesInSwitch.html"
+      },
+      {
+        "relativePath": "tsconfig/noImplicitAny.html",
+        "route": "/tsconfig/noImplicitAny.html"
+      },
+      {
+        "relativePath": "tsconfig/noImplicitOverride.html",
+        "route": "/tsconfig/noImplicitOverride.html"
+      },
+      {
+        "relativePath": "tsconfig/noImplicitReturns.html",
+        "route": "/tsconfig/noImplicitReturns.html"
+      },
+      {
+        "relativePath": "tsconfig/noImplicitThis.html",
+        "route": "/tsconfig/noImplicitThis.html"
+      },
+      {
+        "relativePath": "tsconfig/noImplicitUseStrict.html",
+        "route": "/tsconfig/noImplicitUseStrict.html"
+      },
+      {
+        "relativePath": "tsconfig/noLib.html",
+        "route": "/tsconfig/noLib.html"
+      },
+      {
+        "relativePath": "tsconfig/noPropertyAccessFromIndexSignature.html",
+        "route": "/tsconfig/noPropertyAccessFromIndexSignature.html"
+      },
+      {
+        "relativePath": "tsconfig/noResolve.html",
+        "route": "/tsconfig/noResolve.html"
+      },
+      {
+        "relativePath": "tsconfig/noStrictGenericChecks.html",
+        "route": "/tsconfig/noStrictGenericChecks.html"
+      },
+      {
+        "relativePath": "tsconfig/noUncheckedIndexedAccess.html",
+        "route": "/tsconfig/noUncheckedIndexedAccess.html"
+      },
+      {
+        "relativePath": "tsconfig/noUncheckedSideEffectImports.html",
+        "route": "/tsconfig/noUncheckedSideEffectImports.html"
+      },
+      {
+        "relativePath": "tsconfig/noUnusedLocals.html",
+        "route": "/tsconfig/noUnusedLocals.html"
+      },
+      {
+        "relativePath": "tsconfig/noUnusedParameters.html",
+        "route": "/tsconfig/noUnusedParameters.html"
+      },
+      {
+        "relativePath": "tsconfig/out.html",
+        "route": "/tsconfig/out.html"
+      },
+      {
+        "relativePath": "tsconfig/outDir.html",
+        "route": "/tsconfig/outDir.html"
+      },
+      {
+        "relativePath": "tsconfig/outFile.html",
+        "route": "/tsconfig/outFile.html"
+      },
+      {
+        "relativePath": "tsconfig/paths.html",
+        "route": "/tsconfig/paths.html"
+      },
+      {
+        "relativePath": "tsconfig/plugins.html",
+        "route": "/tsconfig/plugins.html"
+      },
+      {
+        "relativePath": "tsconfig/preserveConstEnums.html",
+        "route": "/tsconfig/preserveConstEnums.html"
+      },
+      {
+        "relativePath": "tsconfig/preserveSymlinks.html",
+        "route": "/tsconfig/preserveSymlinks.html"
+      },
+      {
+        "relativePath": "tsconfig/preserveValueImports.html",
+        "route": "/tsconfig/preserveValueImports.html"
+      },
+      {
+        "relativePath": "tsconfig/preserveWatchOutput.html",
+        "route": "/tsconfig/preserveWatchOutput.html"
+      },
+      {
+        "relativePath": "tsconfig/pretty.html",
+        "route": "/tsconfig/pretty.html"
+      },
+      {
+        "relativePath": "tsconfig/reactNamespace.html",
+        "route": "/tsconfig/reactNamespace.html"
+      },
+      {
+        "relativePath": "tsconfig/references.html",
+        "route": "/tsconfig/references.html"
+      },
+      {
+        "relativePath": "tsconfig/removeComments.html",
+        "route": "/tsconfig/removeComments.html"
+      },
+      {
+        "relativePath": "tsconfig/resolveJsonModule.html",
+        "route": "/tsconfig/resolveJsonModule.html"
+      },
+      {
+        "relativePath": "tsconfig/resolvePackageJsonExports.html",
+        "route": "/tsconfig/resolvePackageJsonExports.html"
+      },
+      {
+        "relativePath": "tsconfig/resolvePackageJsonImports.html",
+        "route": "/tsconfig/resolvePackageJsonImports.html"
+      },
+      {
+        "relativePath": "tsconfig/rewriteRelativeImportExtensions.html",
+        "route": "/tsconfig/rewriteRelativeImportExtensions.html"
+      },
+      {
+        "relativePath": "tsconfig/rootDir.html",
+        "route": "/tsconfig/rootDir.html"
+      },
+      {
+        "relativePath": "tsconfig/rootDirs.html",
+        "route": "/tsconfig/rootDirs.html"
+      },
+      {
+        "relativePath": "tsconfig/skipDefaultLibCheck.html",
+        "route": "/tsconfig/skipDefaultLibCheck.html"
+      },
+      {
+        "relativePath": "tsconfig/skipLibCheck.html",
+        "route": "/tsconfig/skipLibCheck.html"
+      },
+      {
+        "relativePath": "tsconfig/sourceMap.html",
+        "route": "/tsconfig/sourceMap.html"
+      },
+      {
+        "relativePath": "tsconfig/sourceRoot.html",
+        "route": "/tsconfig/sourceRoot.html"
+      },
+      {
+        "relativePath": "tsconfig/stopBuildOnErrors.html",
+        "route": "/tsconfig/stopBuildOnErrors.html"
+      },
+      {
+        "relativePath": "tsconfig/strict.html",
+        "route": "/tsconfig/strict.html"
+      },
+      {
+        "relativePath": "tsconfig/strictBindCallApply.html",
+        "route": "/tsconfig/strictBindCallApply.html"
+      },
+      {
+        "relativePath": "tsconfig/strictBuiltinIteratorReturn.html",
+        "route": "/tsconfig/strictBuiltinIteratorReturn.html"
+      },
+      {
+        "relativePath": "tsconfig/strictFunctionTypes.html",
+        "route": "/tsconfig/strictFunctionTypes.html"
+      },
+      {
+        "relativePath": "tsconfig/strictNullChecks.html",
+        "route": "/tsconfig/strictNullChecks.html"
+      },
+      {
+        "relativePath": "tsconfig/strictPropertyInitialization.html",
+        "route": "/tsconfig/strictPropertyInitialization.html"
+      },
+      {
+        "relativePath": "tsconfig/stripInternal.html",
+        "route": "/tsconfig/stripInternal.html"
+      },
+      {
+        "relativePath": "tsconfig/suppressExcessPropertyErrors.html",
+        "route": "/tsconfig/suppressExcessPropertyErrors.html"
+      },
+      {
+        "relativePath": "tsconfig/suppressImplicitAnyIndexErrors.html",
+        "route": "/tsconfig/suppressImplicitAnyIndexErrors.html"
+      },
+      {
+        "relativePath": "tsconfig/synchronousWatchDirectory.html",
+        "route": "/tsconfig/synchronousWatchDirectory.html"
+      },
+      {
+        "relativePath": "tsconfig/target.html",
+        "route": "/tsconfig/target.html"
+      },
+      {
+        "relativePath": "tsconfig/traceResolution.html",
+        "route": "/tsconfig/traceResolution.html"
+      },
+      {
+        "relativePath": "tsconfig/tsBuildInfoFile.html",
+        "route": "/tsconfig/tsBuildInfoFile.html"
+      },
+      {
+        "relativePath": "tsconfig/typeAcquisition.html",
+        "route": "/tsconfig/typeAcquisition.html"
+      },
+      {
+        "relativePath": "tsconfig/typeRoots.html",
+        "route": "/tsconfig/typeRoots.html"
+      },
+      {
+        "relativePath": "tsconfig/types.html",
+        "route": "/tsconfig/types.html"
+      },
+      {
+        "relativePath": "tsconfig/useDefineForClassFields.html",
+        "route": "/tsconfig/useDefineForClassFields.html"
+      },
+      {
+        "relativePath": "tsconfig/useUnknownInCatchVariables.html",
+        "route": "/tsconfig/useUnknownInCatchVariables.html"
+      },
+      {
+        "relativePath": "tsconfig/verbatimModuleSyntax.html",
+        "route": "/tsconfig/verbatimModuleSyntax.html"
+      },
+      {
+        "relativePath": "tsconfig/verbose.html",
+        "route": "/tsconfig/verbose.html"
+      },
+      {
+        "relativePath": "tsconfig/watchDirectory.html",
+        "route": "/tsconfig/watchDirectory.html"
+      },
+      {
+        "relativePath": "tsconfig/watchFile.html",
+        "route": "/tsconfig/watchFile.html"
+      },
+      {
+        "relativePath": "vo/cheatsheets/index.html",
+        "route": "/vo/cheatsheets"
+      },
+      {
+        "relativePath": "vo/community/index.html",
+        "route": "/vo/community"
+      },
+      {
+        "relativePath": "vo/docs/handbook/basic-types.html",
+        "route": "/vo/docs/handbook/basic-types.html"
+      },
+      {
+        "relativePath": "vo/docs/handbook/index.html",
+        "route": "/vo/docs/handbook"
+      },
+      {
+        "relativePath": "vo/docs/index.html",
+        "route": "/vo/docs"
+      },
+      {
+        "relativePath": "vo/download/index.html",
+        "route": "/vo/download"
+      },
+      {
+        "relativePath": "vo/dt/search/index.html",
+        "route": "/vo/dt/search"
+      },
+      {
+        "relativePath": "vo/empty/index.html",
+        "route": "/vo/empty"
+      },
+      {
+        "relativePath": "vo/index.html",
+        "route": "/vo"
+      },
+      {
+        "relativePath": "vo/play/index.html",
+        "route": "/vo/play"
+      },
+      {
+        "relativePath": "vo/play/javascript/javascript-essentials/code-flow.ts.html",
+        "route": "/vo/play/javascript/javascript-essentials/code-flow.ts.html"
+      },
+      {
+        "relativePath": "vo/play/javascript/javascript-essentials/functions.ts.html",
+        "route": "/vo/play/javascript/javascript-essentials/functions.ts.html"
+      },
+      {
+        "relativePath": "vo/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/vo/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "vo/play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/vo/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "vo/tools/index.html",
+        "route": "/vo/tools"
+      },
+      {
+        "relativePath": "vo/tsconfig/index.html",
+        "route": "/vo/tsconfig"
+      },
+      {
+        "relativePath": "vo/why-create-typescript/index.html",
+        "route": "/vo/why-create-typescript"
+      },
+      {
+        "relativePath": "why-create-typescript/index.html",
+        "route": "/why-create-typescript"
+      },
+      {
+        "relativePath": "zh/cheatsheets/index.html",
+        "route": "/zh/cheatsheets"
+      },
+      {
+        "relativePath": "zh/community/index.html",
+        "route": "/zh/community"
+      },
+      {
+        "relativePath": "zh/docs/handbook/2/basic-types.html",
+        "route": "/zh/docs/handbook/2/basic-types.html"
+      },
+      {
+        "relativePath": "zh/docs/handbook/2/conditional-types.html",
+        "route": "/zh/docs/handbook/2/conditional-types.html"
+      },
+      {
+        "relativePath": "zh/docs/handbook/2/everyday-types.html",
+        "route": "/zh/docs/handbook/2/everyday-types.html"
+      },
+      {
+        "relativePath": "zh/docs/handbook/index.html",
+        "route": "/zh/docs/handbook"
+      },
+      {
+        "relativePath": "zh/docs/handbook/nightly-builds.html",
+        "route": "/zh/docs/handbook/nightly-builds.html"
+      },
+      {
+        "relativePath": "zh/docs/handbook/tsconfig-json.html",
+        "route": "/zh/docs/handbook/tsconfig-json.html"
+      },
+      {
+        "relativePath": "zh/docs/handbook/typescript-from-scratch.html",
+        "route": "/zh/docs/handbook/typescript-from-scratch.html"
+      },
+      {
+        "relativePath": "zh/docs/handbook/typescript-in-5-minutes.html",
+        "route": "/zh/docs/handbook/typescript-in-5-minutes.html"
+      },
+      {
+        "relativePath": "zh/docs/index.html",
+        "route": "/zh/docs"
+      },
+      {
+        "relativePath": "zh/download/index.html",
+        "route": "/zh/download"
+      },
+      {
+        "relativePath": "zh/dt/search/index.html",
+        "route": "/zh/dt/search"
+      },
+      {
+        "relativePath": "zh/empty/index.html",
+        "route": "/zh/empty"
+      },
+      {
+        "relativePath": "zh/index.html",
+        "route": "/zh"
+      },
+      {
+        "relativePath": "zh/play/index.html",
+        "route": "/zh/play"
+      },
+      {
+        "relativePath": "zh/play/javascript/external-apis/typescript-with-deno.ts.html",
+        "route": "/zh/play/javascript/external-apis/typescript-with-deno.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/external-apis/typescript-with-node.js.html",
+        "route": "/zh/play/javascript/external-apis/typescript-with-node.js.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/external-apis/typescript-with-web.js.html",
+        "route": "/zh/play/javascript/external-apis/typescript-with-web.js.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/external-apis/typescript-with-webgl.js.html",
+        "route": "/zh/play/javascript/external-apis/typescript-with-webgl.js.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/functions-with-javascript/function-chaining.ts.html",
+        "route": "/zh/play/javascript/functions-with-javascript/function-chaining.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/functions-with-javascript/generic-functions.ts.html",
+        "route": "/zh/play/javascript/functions-with-javascript/generic-functions.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/functions-with-javascript/typing-functions.ts.html",
+        "route": "/zh/play/javascript/functions-with-javascript/typing-functions.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/helping-with-javascript/errors.ts.html",
+        "route": "/zh/play/javascript/helping-with-javascript/errors.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/helping-with-javascript/quick-fixes.ts.html",
+        "route": "/zh/play/javascript/helping-with-javascript/quick-fixes.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/javascript-essentials/code-flow.ts.html",
+        "route": "/zh/play/javascript/javascript-essentials/code-flow.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/javascript-essentials/functions.ts.html",
+        "route": "/zh/play/javascript/javascript-essentials/functions.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/javascript-essentials/hello-world.ts.html",
+        "route": "/zh/play/javascript/javascript-essentials/hello-world.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/javascript-essentials/objects-and-arrays.ts.html",
+        "route": "/zh/play/javascript/javascript-essentials/objects-and-arrays.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/modern-javascript/async-await.ts.html",
+        "route": "/zh/play/javascript/modern-javascript/async-await.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/modern-javascript/immutability.ts.html",
+        "route": "/zh/play/javascript/modern-javascript/immutability.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/modern-javascript/import-export.ts.html",
+        "route": "/zh/play/javascript/modern-javascript/import-export.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/modern-javascript/jsdoc-support.js.html",
+        "route": "/zh/play/javascript/modern-javascript/jsdoc-support.js.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/working-with-classes/classes-101.ts.html",
+        "route": "/zh/play/javascript/working-with-classes/classes-101.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/working-with-classes/generic-classes.ts.html",
+        "route": "/zh/play/javascript/working-with-classes/generic-classes.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/working-with-classes/mixins.ts.html",
+        "route": "/zh/play/javascript/working-with-classes/mixins.ts.html"
+      },
+      {
+        "relativePath": "zh/play/javascript/working-with-classes/this.ts.html",
+        "route": "/zh/play/javascript/working-with-classes/this.ts.html"
+      },
+      {
+        "relativePath": "zh/play/playground/config/javascript-playgrounds.js.html",
+        "route": "/zh/play/playground/config/javascript-playgrounds.js.html"
+      },
+      {
+        "relativePath": "zh/play/playground/config/new-compiler-defaults.ts.html",
+        "route": "/zh/play/playground/config/new-compiler-defaults.ts.html"
+      },
+      {
+        "relativePath": "zh/play/playground/language/automatic-type-acquisition.ts.html",
+        "route": "/zh/play/playground/language/automatic-type-acquisition.ts.html"
+      },
+      {
+        "relativePath": "zh/play/playground/language/fixits.ts.html",
+        "route": "/zh/play/playground/language/fixits.ts.html"
+      },
+      {
+        "relativePath": "zh/play/playground/tooling/mobile-support.ts.html",
+        "route": "/zh/play/playground/tooling/mobile-support.ts.html"
+      },
+      {
+        "relativePath": "zh/play/playground/tooling/sharable-urls.ts.html",
+        "route": "/zh/play/playground/tooling/sharable-urls.ts.html"
+      },
+      {
+        "relativePath": "zh/play/playground/tooling/typescript-versions.ts.html",
+        "route": "/zh/play/playground/tooling/typescript-versions.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language-extensions/enums.ts.html",
+        "route": "/zh/play/typescript/language-extensions/enums.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language-extensions/nominal-typing.ts.html",
+        "route": "/zh/play/typescript/language-extensions/nominal-typing.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language-extensions/types-vs-interfaces.ts.html",
+        "route": "/zh/play/typescript/language-extensions/types-vs-interfaces.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language/soundness.ts.html",
+        "route": "/zh/play/typescript/language/soundness.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language/structural-typing.ts.html",
+        "route": "/zh/play/typescript/language/structural-typing.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language/type-guards.ts.html",
+        "route": "/zh/play/typescript/language/type-guards.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/language/type-widening-and-narrowing.ts.html",
+        "route": "/zh/play/typescript/language/type-widening-and-narrowing.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/meta-types/conditional-types.ts.html",
+        "route": "/zh/play/typescript/meta-types/conditional-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/meta-types/discriminate-types.ts.html",
+        "route": "/zh/play/typescript/meta-types/discriminate-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/meta-types/indexed-types.ts.html",
+        "route": "/zh/play/typescript/meta-types/indexed-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/meta-types/mapped-types.ts.html",
+        "route": "/zh/play/typescript/meta-types/mapped-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/primitives/any.ts.html",
+        "route": "/zh/play/typescript/primitives/any.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/primitives/literals.ts.html",
+        "route": "/zh/play/typescript/primitives/literals.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/primitives/union-and-intersection-types.ts.html",
+        "route": "/zh/play/typescript/primitives/union-and-intersection-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/primitives/unknown-and-never.ts.html",
+        "route": "/zh/play/typescript/primitives/unknown-and-never.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/type-primitives/built-in-utility-types.ts.html",
+        "route": "/zh/play/typescript/type-primitives/built-in-utility-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/type-primitives/nullable-types.ts.html",
+        "route": "/zh/play/typescript/type-primitives/nullable-types.ts.html"
+      },
+      {
+        "relativePath": "zh/play/typescript/type-primitives/tuples.ts.html",
+        "route": "/zh/play/typescript/type-primitives/tuples.ts.html"
+      },
+      {
+        "relativePath": "zh/tools/index.html",
+        "route": "/zh/tools"
+      },
+      {
+        "relativePath": "zh/tsconfig/index.html",
+        "route": "/zh/tsconfig"
+      },
+      {
+        "relativePath": "zh/why-create-typescript/index.html",
+        "route": "/zh/why-create-typescript"
+      }
+    ],
+    "redirects": [
+      {
+        "relativePath": "Handbook/index.html",
+        "route": "/Handbook"
+      },
+      {
+        "relativePath": "Playground/index.html",
+        "route": "/Playground"
+      },
+      {
+        "relativePath": "Tutorial/index.html",
+        "route": "/Tutorial"
+      },
+      {
+        "relativePath": "docs/bootstrap/index.html",
+        "route": "/docs/bootstrap"
+      },
+      {
+        "relativePath": "docs/handbook/esm-node.html",
+        "route": "/docs/handbook/esm-node.html"
+      },
+      {
+        "relativePath": "docs/handbook/esm-node/index.html",
+        "route": "/docs/handbook/esm-node"
+      },
+      {
+        "relativePath": "docs/handbook/module-resolution.html",
+        "route": "/docs/handbook/module-resolution.html"
+      },
+      {
+        "relativePath": "docs/handbook/module-resolution/index.html",
+        "route": "/docs/handbook/module-resolution"
+      },
+      {
+        "relativePath": "docs/handbook/modules.html",
+        "route": "/docs/handbook/modules.html"
+      },
+      {
+        "relativePath": "docs/handbook/modules/index.html",
+        "route": "/docs/handbook/modules"
+      },
+      {
+        "relativePath": "docs/handbook/react-&-webpack.html",
+        "route": "/docs/handbook/react-&-webpack.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/index.html",
+        "route": "/docs/handbook/release-notes"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/overview.html",
+        "route": "/docs/handbook/release-notes/overview.html"
+      },
+      {
+        "relativePath": "docs/handbook/release-notes/overview/index.html",
+        "route": "/docs/handbook/release-notes/overview"
+      },
+      {
+        "relativePath": "docs/handbook/typings-for-npm-packages/index.html",
+        "route": "/docs/handbook/typings-for-npm-packages"
+      },
+      {
+        "relativePath": "docs/handbook/writing-declaration-files.html",
+        "route": "/docs/handbook/writing-declaration-files.html"
+      },
+      {
+        "relativePath": "docs/handbook/writing-declaration-files/index.html",
+        "route": "/docs/handbook/writing-declaration-files"
+      },
+      {
+        "relativePath": "docs/handbook/writing-definition-files/index.html",
+        "route": "/docs/handbook/writing-definition-files"
+      },
+      {
+        "relativePath": "docs/home.html",
+        "route": "/docs/home.html"
+      },
+      {
+        "relativePath": "docs/home/index.html",
+        "route": "/docs/home"
+      },
+      {
+        "relativePath": "docs/tutorial.html",
+        "route": "/docs/tutorial.html"
+      },
+      {
+        "relativePath": "samples/index.html",
+        "route": "/samples"
+      }
+    ],
+    "static": [
+      {
+        "relativePath": "License.html",
+        "route": "/License.html"
+      }
+    ],
+    "gatsbyInternals": [
+      {
+        "relativePath": "_gatsby/slices/_gatsby-scripts-1.html",
+        "route": "/_gatsby/slices/_gatsby-scripts-1.html"
+      }
+    ],
+    "unclassified": []
+  },
+  "redirects": {
+    "declaredCount": 23,
+    "uniqueCaseInsensitiveOutputPathCount": 22,
+    "emittedUniqueRedirectHtmlCount": 22,
+    "collisionCount": 1,
+    "collisions": [
+      {
+        "outputPathKey": "/playground",
+        "declarations": [
+          "/playground",
+          "Playground"
+        ],
+        "destinations": [
+          "/play/"
+        ]
+      }
+    ]
+  },
+  "assets": {
+    "outputNonHtmlFileCount": 1596,
+    "outputNonHtmlBytes": 44246679,
+    "outputNonHtmlExtensions": {
+      ".config": 1,
+      ".css": 2,
+      ".ico": 1,
+      ".jpg": 10,
+      ".js": 108,
+      ".json": 953,
+      ".map": 30,
+      ".md": 8,
+      ".mov": 1,
+      ".png": 53,
+      ".svg": 29,
+      ".ts": 369,
+      ".tsx": 13,
+      ".txt": 3,
+      ".webmanifest": 1,
+      ".woff": 2,
+      ".woff2": 6,
+      ".xml": 2,
+      ".zip": 2,
+      "[none]": 2
+    },
+    "sourceStaticFileCount": 565,
+    "sourceStaticBytes": 12331827,
+    "sourceStaticExtensions": {
+      ".config": 1,
+      ".css": 1,
+      ".html": 1,
+      ".ico": 1,
+      ".jpg": 4,
+      ".js": 67,
+      ".json": 30,
+      ".map": 1,
+      ".md": 6,
+      ".mov": 1,
+      ".png": 35,
+      ".svg": 23,
+      ".ts": 369,
+      ".tsx": 13,
+      ".woff": 2,
+      ".woff2": 6,
+      ".zip": 2,
+      "[none]": 2
+    },
+    "staticFilesPresentInOutputCount": 565,
+    "missingStaticFiles": []
+  }
+}

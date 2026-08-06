@@ -1,0 +1,31 @@
+---
+import HomePage from "./GatsbyHomeParity.astro"
+interface Props { pathname: string; locale: string; title: string }
+const { pathname, locale, title } = Astro.props
+const prefix = locale === "en" ? "" : `/${locale}`
+const localPath = pathname.replace(new RegExp(`^${locale}/`), "").replace(/^\/+|\/+$/g, "")
+const pages: Record<string, { heading: string; intro: string; cards: Array<[string, string, string]> }> = {
+  download: { heading: "Download TypeScript", intro: "TypeScript can be added to a project through npm, or installed globally for command-line use.", cards: [["For your project", "npm install typescript --save-dev", "Add TypeScript as a development dependency."], ["Globally", "npm install -g typescript", "Use the TypeScript compiler from any directory."], ["With your editor", "npx tsc --init", "Create a TSConfig and get rich editor tooling."]] },
+  community: { heading: "The TypeScript Community", intro: "Connect with TypeScript users and contributors around the world.", cards: [["Get help", "Stack Overflow", "Ask and answer practical TypeScript questions."], ["Contribute", "GitHub", "Report issues and help improve TypeScript."], ["Meet the community", "Discord", "Join conversations with TypeScript developers."]] },
+  tools: { heading: "TypeScript Tools", intro: "Online tools and libraries for understanding and building with TypeScript.", cards: [["Playground", "Explore code", "Try compiler options and inspect JavaScript output."], ["Sandbox", "Embed TypeScript", "Create Monaco-based TypeScript experiences."], ["Twoslash", "Verified code samples", "Use compiler-powered hover and error annotations."]] },
+  cheatsheets: { heading: "TypeScript Cheat Sheets", intro: "Quick syntax references for everyday TypeScript patterns.", cards: [["Types", "Everyday Types", "Primitives, arrays, unions, and object types."], ["Control flow", "Narrowing", "How TypeScript refines values through your code."], ["Type creation", "Type Manipulation", "Generics, mapped types, and conditional types."]] },
+  "why-create-typescript": { heading: "Why TypeScript?", intro: "JavaScript applications grow. TypeScript helps teams understand and safely change them.", cards: [["Better tooling", "Editor intelligence", "Completions, navigation, and refactoring powered by types."], ["Earlier feedback", "Catch mistakes", "Find common errors before code reaches users."], ["JavaScript at heart", "Gradual adoption", "Use existing JavaScript and add types where they help."]] },
+  "dt/search": { heading: "Search for typed packages", intro: "Many npm packages include types. DefinitelyTyped provides community-maintained types for the rest.", cards: [["Install types", "npm install @types/node", "Add declaration packages using the @types scope."], ["Search npm", "TypeSearch", "Find available type declaration packages."], ["Contribute", "DefinitelyTyped", "Improve the type ecosystem on GitHub."]] },
+  "docs": { heading: "TypeScript Documentation", intro: "Learn TypeScript from the basics to advanced type manipulation and project configuration.", cards: [["Get Started", "For new programmers", "Choose an introduction based on your background."], ["Handbook", "The TypeScript Handbook", "A comprehensive guide to the language."], ["Reference", "Deep dives", "Explore utility types, modules, JSX, and more."]] },
+  "docs/handbook": { heading: "The TypeScript Handbook", intro: "Your first stop for learning everyday TypeScript.", cards: [["The Basics", "Start here", "Understand JavaScript behavior and TypeScript's type system."], ["Everyday Types", "Common patterns", "Work with primitives, arrays, functions, and objects."], ["Narrowing", "Control flow", "Learn how TypeScript analyzes runtime checks."]] },
+  empty: { heading: "TypeScript", intro: "JavaScript with syntax for types.", cards: [] },
+}
+const page = pages[localPath] || { heading: title, intro: "TypeScript documentation and resources.", cards: [] }
+const links: Record<string, string[]> = {
+  download: ["/docs/handbook/typescript-from-scratch.html", "/tsconfig", "/play/"],
+  community: ["https://stackoverflow.com/questions/tagged/typescript", "https://github.com/microsoft/TypeScript", "https://discord.gg/typescript"],
+  tools: ["/play/", "/dev/sandbox", "/dev/twoslash"],
+  cheatsheets: ["/docs/handbook/2/everyday-types.html", "/docs/handbook/2/narrowing.html", "/docs/handbook/2/types-from-types.html"],
+  "docs": ["/docs/handbook/typescript-from-scratch.html", "/docs/handbook/intro.html", "/docs/"],
+  "docs/handbook": ["/docs/handbook/2/basic-types.html", "/docs/handbook/2/everyday-types.html", "/docs/handbook/2/narrowing.html"],
+}
+---
+{localPath === "" ? <HomePage locale={locale} /> : <>
+  <section class="hero"><h1>{page.heading}</h1><p>{page.intro}</p></section>
+  <section class="content-width feature-grid">{page.cards.map(([heading, label, body], index) => { const href = links[localPath]?.[index]; return <article class="feature-card raised"><h2>{heading}</h2><p>{href ? <a href={href.startsWith("/") ? `${prefix}${href}` : href}>{label}</a> : <strong>{label}</strong>}</p><p>{body}</p>{localPath === "download" && <pre><code>{label}</code></pre>}</article> })}</section>
+</>}

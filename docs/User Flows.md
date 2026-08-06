@@ -98,3 +98,17 @@ Two main user goals:
 - Get to a specific bit of information I'm looking for
 
 Homepage -> Learn
+
+# Automated migration coverage
+
+The Astro migration keeps these product journeys executable in `packages/typescriptlang-org-astro/browser/m14.spec.mjs` on desktop Chrome and a Pixel 7 viewport:
+
+- **Install:** home → Download → a visible installation heading.
+- **Try:** home → Playground → the real Playground application container.
+- **Learn:** home → Documentation → the documentation landing page.
+- **Find information:** documentation page → deterministic DocSearch result → a same-origin handbook URL; keyboard users can move through results with arrow keys.
+- **Localized learning:** a Japanese Download route with a French browser preference → an offered, existing French Download route; dismissal persists across reloads. Links use a translated route only when that exact route exists and otherwise retain the English destination.
+- **Mobile reference:** documentation → open the sidebar → focus the first navigation link → move with arrow keys → close with Escape and return focus to the toggle.
+- **Settings and privacy:** select dark theme and Consolas → reload → both choices remain applied before interaction; the Microsoft WCP consent API initializes against the `cookie-banner` host.
+
+The deterministic search fixture proves focus, URL rewriting, and result selection without depending on Algolia. A separate ten-second network smoke checks that the exact DocSearch v2 CDN runtime is downloadable; it does not claim that Algolia indexing or query service availability is deterministic.

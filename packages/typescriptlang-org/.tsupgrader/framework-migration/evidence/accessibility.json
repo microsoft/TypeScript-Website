@@ -1,0 +1,847 @@
+{
+  "captured": "2026-08-05T23:29:02.836Z",
+  "engine": "axe-core via @axe-core/playwright",
+  "standard": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "scope": "Astro production preview; representative pages and interactive states in the P23 matrix",
+  "summary": {
+    "scans": 8,
+    "violations": 0,
+    "seriousOrCritical": 0,
+    "seriousOrCriticalIncomplete": 5
+  },
+  "seriousOrCritical": [],
+  "seriousOrCriticalIncomplete": [
+    {
+      "scenario": "playground-loaded",
+      "viewport": "desktop-1440x900",
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "description": "Ensure all ARIA attributes have valid values",
+      "help": "ARIA attributes must conform to valid values",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+      "nodes": [
+        {
+          "target": [
+            "#compiler-options-button"
+          ],
+          "html": "<a id=\"compiler-options-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+          "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#examples-button"
+          ],
+          "html": "<a id=\"examples-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+          "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#exports-dropdown"
+          ],
+          "html": "<a id=\"exports-dropdown\" href=\"#\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\">Export<!-- --> <span class=\"caret\"></span></a>",
+          "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+          "colorsAndContrast": []
+        }
+      ]
+    },
+    {
+      "scenario": "playground-loaded",
+      "viewport": "desktop-1440x900",
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "target": [
+            "span[aria-hidden=\"true\"]"
+          ],
+          "html": "<span aria-hidden=\"true\">⌕</span>",
+          "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#sidebar-toggle"
+          ],
+          "html": "<a id=\"sidebar-toggle\" aria-label=\"Hide Sidebar\" href=\"#\">⇥</a>",
+          "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#customize-title"
+          ],
+          "html": "<h3 id=\"customize-title\">Customize</h3>",
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+          "colorsAndContrast": [
+            "  Element's background color could not be determined because it is overlapped by another element"
+          ]
+        },
+        {
+          "target": [
+            "label:nth-child(2) > p"
+          ],
+          "html": "<p>Site Colours:</p>",
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+          "colorsAndContrast": [
+            "  Element's background color could not be determined because it is overlapped by another element"
+          ]
+        },
+        {
+          "target": [
+            "#theme-select"
+          ],
+          "html": "<select id=\"theme-select\"><option value=\"system\">System</option><option value=\"force-light\">Always Light</option><option value=\"force-dark\">Always Dark</option></select>",
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+          "colorsAndContrast": [
+            "  Element's background color could not be determined because it is overlapped by another element"
+          ]
+        },
+        {
+          "target": [
+            "label:nth-child(3) > p"
+          ],
+          "html": "<p>Code Font:</p>",
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+          "colorsAndContrast": [
+            "  Element's background color could not be determined because it is overlapped by another element"
+          ]
+        },
+        {
+          "target": [
+            "#font-select"
+          ],
+          "html": "<select id=\"font-select\">",
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+          "colorsAndContrast": [
+            "  Element's background color could not be determined because it is overlapped by another element"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "playground-loaded",
+      "viewport": "mobile-412x915",
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "description": "Ensure all ARIA attributes have valid values",
+      "help": "ARIA attributes must conform to valid values",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+      "nodes": [
+        {
+          "target": [
+            "#compiler-options-button"
+          ],
+          "html": "<a id=\"compiler-options-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+          "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#examples-button"
+          ],
+          "html": "<a id=\"examples-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+          "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#exports-dropdown"
+          ],
+          "html": "<a id=\"exports-dropdown\" href=\"#\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\">Export<!-- --> <span class=\"caret\"></span></a>",
+          "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+          "colorsAndContrast": []
+        }
+      ]
+    },
+    {
+      "scenario": "playground-loaded",
+      "viewport": "mobile-412x915",
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "target": [
+            "span[aria-hidden=\"true\"]"
+          ],
+          "html": "<span aria-hidden=\"true\">⌕</span>",
+          "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+          "colorsAndContrast": []
+        },
+        {
+          "target": [
+            "#sidebar-toggle"
+          ],
+          "html": "<a id=\"sidebar-toggle\" aria-label=\"Show Sidebar\" href=\"#\">⇤</a>",
+          "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+          "colorsAndContrast": []
+        }
+      ]
+    },
+    {
+      "scenario": "developer-workbench",
+      "viewport": "mobile-412x915",
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "target": [
+            ".split-fivehundred > p:nth-child(7)"
+          ],
+          "html": "<p>",
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "scenario": "playground-loaded",
+      "path": "/play?strict=true#example/hello-world",
+      "viewport": "desktop-1440x900",
+      "baselineStatus": 200,
+      "targetStatus": 200,
+      "classification": [],
+      "baseline": {
+        "violations": [],
+        "passes": 31,
+        "incomplete": [
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "description": "Ensure all ARIA attributes have valid values",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "#compiler-options-button"
+                ],
+                "html": "<a id=\"compiler-options-button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\" style=\"overflow:hidden;white-space:nowrap\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#examples-button"
+                ],
+                "html": "<a href=\"#\" id=\"examples-button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#handbook-button"
+                ],
+                "html": "<a href=\"#\" id=\"handbook-button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Help<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#versions-button"
+                ],
+                "html": "<a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"versions-dropdown\" id=\"versions-button\" style=\"overflow:hidden;white-space:nowrap\" aria-label=\"Select version of TypeScript, currently 6.0.3\">v6.0.3 <spam class=\"caret\"></spam></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"versions-dropdown\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#exports-dropdown"
+                ],
+                "html": "<a href=\"#\" id=\"exports-dropdown\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\" style=\"overflow:hidden;white-space:nowrap\">Export<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+                "colorsAndContrast": []
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "#sidebar-toggle"
+                ],
+                "html": "<a id=\"sidebar-toggle\" aria-label=\"Hide Sidebar\" href=\"#\">⇥</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#customize > article > h3"
+                ],
+                "html": "<h3>Customize</h3>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "label:nth-child(2) > p"
+                ],
+                "html": "<p>Site Colours<!-- -->:</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "select[name=\"colours\"]"
+                ],
+                "html": "<select name=\"colours\"><option value=\"system\" selected=\"\">System</option><option value=\"force-light\">Always Light</option><option value=\"force-dark\">Always Dark</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "label:nth-child(3) > p"
+                ],
+                "html": "<p>Code Font<!-- -->:</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "select[name=\"font\"]"
+                ],
+                "html": "<select name=\"font\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "target": {
+        "violations": [],
+        "passes": 30,
+        "incomplete": [
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "description": "Ensure all ARIA attributes have valid values",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "#compiler-options-button"
+                ],
+                "html": "<a id=\"compiler-options-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#examples-button"
+                ],
+                "html": "<a id=\"examples-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#exports-dropdown"
+                ],
+                "html": "<a id=\"exports-dropdown\" href=\"#\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\">Export<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+                "colorsAndContrast": []
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌕</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#sidebar-toggle"
+                ],
+                "html": "<a id=\"sidebar-toggle\" aria-label=\"Hide Sidebar\" href=\"#\">⇥</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#customize-title"
+                ],
+                "html": "<h3 id=\"customize-title\">Customize</h3>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "label:nth-child(2) > p"
+                ],
+                "html": "<p>Site Colours:</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "#theme-select"
+                ],
+                "html": "<select id=\"theme-select\"><option value=\"system\">System</option><option value=\"force-light\">Always Light</option><option value=\"force-dark\">Always Dark</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "label:nth-child(3) > p"
+                ],
+                "html": "<p>Code Font:</p>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              },
+              {
+                "target": [
+                  "#font-select"
+                ],
+                "html": "<select id=\"font-select\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+                "colorsAndContrast": [
+                  "  Element's background color could not be determined because it is overlapped by another element"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "violations": [],
+      "passes": 30,
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "#compiler-options-button"
+              ],
+              "html": "<a id=\"compiler-options-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#examples-button"
+              ],
+              "html": "<a id=\"examples-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#exports-dropdown"
+              ],
+              "html": "<a id=\"exports-dropdown\" href=\"#\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\">Export<!-- --> <span class=\"caret\"></span></a>",
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+              "colorsAndContrast": []
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "span[aria-hidden=\"true\"]"
+              ],
+              "html": "<span aria-hidden=\"true\">⌕</span>",
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#sidebar-toggle"
+              ],
+              "html": "<a id=\"sidebar-toggle\" aria-label=\"Hide Sidebar\" href=\"#\">⇥</a>",
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#customize-title"
+              ],
+              "html": "<h3 id=\"customize-title\">Customize</h3>",
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+              "colorsAndContrast": [
+                "  Element's background color could not be determined because it is overlapped by another element"
+              ]
+            },
+            {
+              "target": [
+                "label:nth-child(2) > p"
+              ],
+              "html": "<p>Site Colours:</p>",
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+              "colorsAndContrast": [
+                "  Element's background color could not be determined because it is overlapped by another element"
+              ]
+            },
+            {
+              "target": [
+                "#theme-select"
+              ],
+              "html": "<select id=\"theme-select\"><option value=\"system\">System</option><option value=\"force-light\">Always Light</option><option value=\"force-dark\">Always Dark</option></select>",
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+              "colorsAndContrast": [
+                "  Element's background color could not be determined because it is overlapped by another element"
+              ]
+            },
+            {
+              "target": [
+                "label:nth-child(3) > p"
+              ],
+              "html": "<p>Code Font:</p>",
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+              "colorsAndContrast": [
+                "  Element's background color could not be determined because it is overlapped by another element"
+              ]
+            },
+            {
+              "target": [
+                "#font-select"
+              ],
+              "html": "<select id=\"font-select\">",
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element",
+              "colorsAndContrast": [
+                "  Element's background color could not be determined because it is overlapped by another element"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "developer-workbench",
+      "path": "/dev/playground-plugins",
+      "viewport": "desktop-1440x900",
+      "status": 200,
+      "violations": [],
+      "passes": 26,
+      "incomplete": []
+    },
+    {
+      "scenario": "locale-recommendation",
+      "path": "/ja/download",
+      "viewport": "desktop-1440x900",
+      "status": 200,
+      "violations": [],
+      "passes": 26,
+      "incomplete": []
+    },
+    {
+      "scenario": "redirect-destination",
+      "path": "/Tutorial",
+      "viewport": "desktop-1440x900",
+      "status": 200,
+      "violations": [],
+      "passes": 24,
+      "incomplete": []
+    },
+    {
+      "scenario": "playground-loaded",
+      "path": "/play?strict=true#example/hello-world",
+      "viewport": "mobile-412x915",
+      "baselineStatus": 200,
+      "targetStatus": 200,
+      "classification": [],
+      "baseline": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": [
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "description": "Ensure all ARIA attributes have valid values",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "#compiler-options-button"
+                ],
+                "html": "<a id=\"compiler-options-button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\" style=\"overflow:hidden;white-space:nowrap\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#examples-button"
+                ],
+                "html": "<a href=\"#\" id=\"examples-button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#handbook-button"
+                ],
+                "html": "<a href=\"#\" id=\"handbook-button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Help<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#versions-button"
+                ],
+                "html": "<a href=\"#\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"versions-dropdown\" id=\"versions-button\" style=\"overflow:hidden;white-space:nowrap\" aria-label=\"Select version of TypeScript, currently 6.0.3\">v6.0.3 <spam class=\"caret\"></spam></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"versions-dropdown\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#exports-dropdown"
+                ],
+                "html": "<a href=\"#\" id=\"exports-dropdown\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\" style=\"overflow:hidden;white-space:nowrap\">Export<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+                "colorsAndContrast": []
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "#sidebar-toggle"
+                ],
+                "html": "<a id=\"sidebar-toggle\" aria-label=\"Show Sidebar\" href=\"#\">⇤</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+                "colorsAndContrast": []
+              }
+            ]
+          }
+        ]
+      },
+      "target": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": [
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "description": "Ensure all ARIA attributes have valid values",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "#compiler-options-button"
+                ],
+                "html": "<a id=\"compiler-options-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#examples-button"
+                ],
+                "html": "<a id=\"examples-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#exports-dropdown"
+                ],
+                "html": "<a id=\"exports-dropdown\" href=\"#\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\">Export<!-- --> <span class=\"caret\"></span></a>",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+                "colorsAndContrast": []
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+            "nodes": [
+              {
+                "target": [
+                  "span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌕</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+                "colorsAndContrast": []
+              },
+              {
+                "target": [
+                  "#sidebar-toggle"
+                ],
+                "html": "<a id=\"sidebar-toggle\" aria-label=\"Show Sidebar\" href=\"#\">⇤</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+                "colorsAndContrast": []
+              }
+            ]
+          }
+        ]
+      },
+      "violations": [],
+      "passes": 26,
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "description": "Ensure all ARIA attributes have valid values",
+          "help": "ARIA attributes must conform to valid values",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/aria-valid-attr-value?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "#compiler-options-button"
+              ],
+              "html": "<a id=\"compiler-options-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"compiler-options-dropdown\">TS Config<!-- --> <span class=\"caret\"></span></a>",
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"compiler-options-dropdown\"",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#examples-button"
+              ],
+              "html": "<a id=\"examples-button\" href=\"#\" role=\"button\" aria-haspopup=\"menu\" aria-expanded=\"false\" aria-controls=\"examples\">Examples<!-- --> <span class=\"caret\"></span></a>",
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"examples\"",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#exports-dropdown"
+              ],
+              "html": "<a id=\"exports-dropdown\" href=\"#\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"export-dropdown-menu\">Export<!-- --> <span class=\"caret\"></span></a>",
+              "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"export-dropdown-menu\"",
+              "colorsAndContrast": []
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                "span[aria-hidden=\"true\"]"
+              ],
+              "html": "<span aria-hidden=\"true\">⌕</span>",
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+              "colorsAndContrast": []
+            },
+            {
+              "target": [
+                "#sidebar-toggle"
+              ],
+              "html": "<a id=\"sidebar-toggle\" aria-label=\"Show Sidebar\" href=\"#\">⇤</a>",
+              "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters",
+              "colorsAndContrast": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "developer-workbench",
+      "path": "/dev/playground-plugins",
+      "viewport": "mobile-412x915",
+      "status": 200,
+      "violations": [],
+      "passes": 26,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "target": [
+                ".split-fivehundred > p:nth-child(7)"
+              ],
+              "html": "<p>",
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "locale-recommendation",
+      "path": "/ja/download",
+      "viewport": "mobile-412x915",
+      "status": 200,
+      "violations": [],
+      "passes": 26,
+      "incomplete": []
+    },
+    {
+      "scenario": "redirect-destination",
+      "path": "/Tutorial",
+      "viewport": "mobile-412x915",
+      "status": 200,
+      "violations": [],
+      "passes": 24,
+      "incomplete": []
+    }
+  ]
+}

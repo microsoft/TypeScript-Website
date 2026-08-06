@@ -1,0 +1,18 @@
+---
+import PlaygroundIsland from "./PlaygroundIsland"
+import playgroundCopyData from "../data/playground-copy.json"
+interface Props { locale: string }
+const { locale } = Astro.props
+import fs from "node:fs"
+import path from "node:path"
+const packages = path.resolve(process.cwd(), "..")
+const readJSON = (file: string, fallback: any) => fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : fallback
+const examples = readJSON(path.join(packages, "playground-examples", "generated", `${locale}.json`), { sections: [], examples: [] })
+const optionsFile = path.join(packages, "tsconfig-reference", "output", `${locale}-summary.json`)
+const optionsSummary = readJSON(fs.existsSync(optionsFile) ? optionsFile : path.join(packages, "tsconfig-reference", "output", "en-summary.json"), { options: [] }).options
+const handbook = readJSON(path.join(packages, "playground-handbook", "output", "play-handbook.json"), { docs: [] })
+const playgroundCopy = playgroundCopyData.locales[locale as keyof typeof playgroundCopyData.locales] || playgroundCopyData.locales.en
+---
+<div data-runtime-fragment-prefix="example/">
+	<PlaygroundIsland locale={locale} examples={examples} optionsSummary={optionsSummary} handbook={handbook} copy={playgroundCopy} client:load />
+</div>

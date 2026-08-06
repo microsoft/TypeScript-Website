@@ -1,0 +1,26 @@
+{
+  "captured": "2026-07-30T02:49:45.185Z",
+  "routes": 283,
+  "localeCounts": { "en": 131, "fr": 24, "id": 14, "ja": 5, "ko": 62, "pl": 2, "pt": 37, "vo": 1, "zh": 7 },
+  "checks": {
+    "renderedMarkdown": true,
+    "stableHeadingIdsAndPermalinks": true,
+    "twoslashMarkup": true,
+    "responsiveSidebar": true,
+    "tableOfContents": true,
+    "previousNext": true,
+    "feedbackConfirmation": true,
+    "deprecationCanonical": true,
+    "experimentalNotice": true,
+    "editAttributionLink": true,
+    "semanticParity": {
+      "matched": 283,
+      "mismatched": 0,
+      "fields": ["headingTexts", "localLinks", "imageSources", "codeBlockCount", "twoslashCount", "textHash"]
+    },
+    "desktopJourney": true,
+    "mobileJourney": true
+  },
+  "browserSample": { "path": "/docs/handbook/basic-types.html", "twoslashBlocks": 28, "sidebar": true },
+  "screenshots": ["documentation.png", "documentation-twoslash.png", "playwright/docs/desktop.png", "playwright/docs/mobile.png"]
+}

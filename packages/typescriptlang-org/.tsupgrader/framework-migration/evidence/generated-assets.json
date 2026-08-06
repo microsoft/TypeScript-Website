@@ -1,0 +1,22 @@
+{
+  "captured": "2026-07-31T18:45:07.535Z",
+  "status": "passed",
+  "generatedFileCount": 865,
+  "missingGeneratedFiles": [],
+  "requiredArtifacts": {
+    "manifest.webmanifest": true,
+    "route-manifest.json": true,
+    "robots.txt": true,
+    "sitemap-0.xml": true,
+    "sitemap-index.xml": true,
+    "staticwebapp.config.json": true,
+    "_astro": true,
+    "documentation-assets": true,
+    "js/examples": true,
+    "js/example-index": true,
+    "js/sandbox": true,
+    "playground-handbook": true
+  },
+  "expectedApplicationRoutes": 920,
+  "generatedHtmlFiles": 952
+}

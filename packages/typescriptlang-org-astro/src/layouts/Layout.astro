@@ -1,0 +1,196 @@
+---
+import SiteHeader from "../components/SiteHeader.astro"
+import SiteFooter from "../components/SiteFooter.astro"
+import { createRoutes } from "../lib/routes.mjs"
+import { createLocalizedHref } from "../lib/localization.mjs"
+import "../styles/global.scss"
+
+interface Props {
+  title: string
+  description?: string
+  ogTitle?: string
+  ogDescription?: string
+  lang?: string
+  canonical?: string
+  ogUrl?: string
+  ogType?: "website" | "article"
+  compactFooter?: boolean
+  suppressCustomization?: boolean
+  suppressPopularFooter?: boolean
+  suppressFooter?: boolean
+  skipTo?: string
+}
+const {
+  title,
+  description = "TypeScript is JavaScript with syntax for types.",
+  ogTitle,
+  ogDescription,
+  lang = "en",
+  canonical = new URL(Astro.url.pathname, "https://www.typescriptlang.org/").href,
+  ogUrl = new URL(Astro.url.pathname, "https://www.typescriptlang.org/").href,
+  ogType = "website",
+  compactFooter = false,
+  suppressCustomization = false,
+  suppressPopularFooter = false,
+  suppressFooter = false,
+  skipTo,
+} = Astro.props
+const fullTitle = title === "TypeScript" ? "TypeScript: JavaScript With Syntax For Types." : `TypeScript: ${title}`
+const openGraphTitle = ogTitle || fullTitle
+const openGraphDescription = ogDescription || description
+const routePathnames = createRoutes().map((route: { pathname: string }) => route.pathname ? `/${route.pathname}` : "/")
+const routePathSet = new Set(routePathnames)
+const localizeHref = (href: string) => createLocalizedHref(lang, href, routePathSet)
+const languageMessages = {
+  en: { shorthand: "In En", body: "This page is available in English", open: "Go", cancel: "Don't ask again" },
+  todo: { shorthand: "In XX", body: "This page is available in your language", open: "Go", cancel: "Don't ask again" },
+  es: { shorthand: "En Es", body: "Esta pagina esta disponible en Espanol", open: "Adelante", cancel: "No preguntar de nuevo" },
+  fr: { shorthand: "En Fr", body: "Cette page est disponible en francais", open: "Consulter", cancel: "Ne plus me le rappeler" },
+  ja: { shorthand: "日本語", body: "このページを日本語で利用しますか？", open: "利用する", cancel: "質問を表示しない" },
+  ko: { shorthand: "한국어", body: "해당 페이지를 한국어로 이용할 수 있습니다", open: "이용하기", cancel: "더 이상 묻지 않습니다" },
+  pl: { shorthand: "Po polsku", body: "Ta strona jest dostępna po polsku", open: "Zmien jezyk", cancel: "Nie pytaj ponownie" },
+  pt: { shorthand: "Em Pt", body: "Esta pagina esta disponivel em Portugues", open: "Trocar lingua", cancel: "Nao perguntar novamente" },
+  zh: { shorthand: "中文", body: "当前页面有中文版本", open: "跳转", cancel: "不再询问" },
+}
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#3178c6" />
+    <meta property="og:title" content={openGraphTitle} />
+    <meta property="og:description" content={openGraphDescription} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:site_name" content="TypeScript" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="typescriptlang" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon-32x32.png?v=8944a05a8b601855de116c8a56d3b3ae" type="image/png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preconnect" href="https://consentdeliveryfd.azurefd.net/" />
+    <link rel="apple-touch-icon" sizes="48x48" href="/icons/icon-48x48.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="256x256" href="/icons/icon-256x256.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png?v=8944a05a8b601855de116c8a56d3b3ae" />
+    <title>{fullTitle}</title>
+    <script is:inline>
+      (() => {
+        let storage = false
+        try { storage = typeof localStorage !== "undefined" } catch {}
+        const systemDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches
+        const theme = storage && localStorage.getItem("force-color-theme")
+        if ((!theme && systemDark) || theme === "force-dark") document.documentElement.classList.add("dark-theme")
+        else if (theme === "force-light") document.documentElement.classList.add("light-theme")
+        document.documentElement.classList.add("font-" + ((storage && localStorage.getItem("force-font")) || "cascadia"))
+      })()
+    </script>
+  </head>
+  <body>
+    <SiteHeader lang={lang} pathname={Astro.url.pathname} skipTo={skipTo} routePathnames={routePathnames} />
+    <div id="cookie-banner" aria-live="polite"></div>
+    <div class="page-popup" id="language-recommendation" hidden>
+      <p id="language-recommendation-p">This page is available in your language</p>
+      <div>
+        <button class="first" id="language-recommendation-open" type="button">Go</button>
+        <button id="language-recommendation-no-more" type="button">Don't ask again</button>
+      </div>
+    </div>
+    <main id="site-content"><slot /></main>
+    {!suppressFooter && <SiteFooter lang={lang} compact={compactFooter} suppressCustomization={suppressCustomization} suppressPopular={suppressPopularFooter} localizeHref={localizeHref} />}
+    <script is:inline>
+      document.querySelectorAll("pre, .markdown table").forEach(region => {
+        if (region.scrollWidth > region.clientWidth) region.setAttribute("tabindex", "0")
+      })
+    </script>
+    <script is:inline define:vars={{ routePathnames, languageMessages }}>
+      (() => {
+        if (window.innerWidth < 800) return
+        let storage
+        try { storage = window.localStorage } catch { storage = undefined }
+        const currentPath = window.location.pathname.replace(/\/$/, "") || "/"
+        if (currentPath.startsWith("/dt")) return
+
+        const getLocaleVersionOfPage = () => {
+          const userLocale = navigator.language || navigator.userLanguage || "en-UK"
+          const userLang = userLocale.split("-")[0]
+          const parts = window.location.pathname.replace(/\/$/, "").split("/").filter(Boolean)
+          if (parts.length === 0) return userLang === "en" ? "/" : `/${userLang}`
+          const hasLocalePrefix = parts[0]?.length === 2
+          if (!hasLocalePrefix) return userLang === "en" ? window.location.pathname : `/${userLang}${window.location.pathname}`
+          parts[0] = userLang
+          const nextPath = `/${parts.join("/")}`
+          return userLang === "en" ? nextPath.replace(/^\/en(?=\/|$)/, "") || "/" : nextPath
+        }
+
+        const normalize = path => path.replace(/\/$/, "") || "/"
+        const allPaths = new Set(routePathnames.flatMap(path => {
+          const normalized = normalize(path)
+          return normalized === "/" ? ["/"] : [normalized, `${normalized}/`]
+        }))
+
+        let localePath = normalize(getLocaleVersionOfPage())
+        if (localePath.startsWith("/en/")) localePath = localePath.slice(3)
+        if (localePath === "/en") localePath = "/"
+        if (localePath.startsWith("/dt")) return
+        if (localePath === currentPath) return
+        if (!allPaths.has(localePath) && !allPaths.has(`${localePath}/`)) return
+
+        const userLocale = navigator.language || navigator.userLanguage || "en-UK"
+        const userLang = userLocale.split("-")[0]
+        const copy = languageMessages[userLang] || languageMessages.todo
+
+        const quickJump = document.getElementById("my-lang-quick-jump")
+        if (quickJump instanceof HTMLAnchorElement) {
+          quickJump.textContent = copy.shorthand !== "In XX" ? copy.shorthand : `In ${userLang}`
+          quickJump.href = localePath
+          quickJump.title = copy.body
+          quickJump.style.display = "flex"
+        }
+
+        if (storage?.getItem("dont-recommend-translate")) return
+
+        const popup = document.getElementById("language-recommendation")
+        const popupText = document.getElementById("language-recommendation-p")
+        const open = document.getElementById("language-recommendation-open")
+        const dismiss = document.getElementById("language-recommendation-no-more")
+        if (!(popup instanceof HTMLElement) || !(popupText instanceof HTMLElement) || !(open instanceof HTMLButtonElement) || !(dismiss instanceof HTMLButtonElement)) return
+
+        popupText.textContent = copy.body
+        open.textContent = copy.open
+        dismiss.textContent = copy.cancel
+        open.onclick = () => { window.location.pathname = localePath }
+        dismiss.onclick = () => {
+          storage?.setItem("dont-recommend-translate", "true")
+          popup.hidden = true
+        }
+        popup.hidden = false
+      })()
+    </script>
+    <script is:inline>
+      (() => {
+        const script = document.createElement("script")
+        script.src = "https://consentdeliveryfd.azurefd.net/mscc/lib/v2/wcp-consent.js"
+        script.async = true
+        script.dataset.consent = "microsoft-wcp"
+        script.addEventListener("load", () => {
+          const consent = window.WcpConsent
+          if (!consent?.init) return
+          consent.init("en-US", "cookie-banner", (error, state) => {
+            if (error) console.warn("Microsoft consent initialization failed", error)
+            else window.dispatchEvent(new CustomEvent("typescript:consent-ready", { detail: state }))
+          }, state => window.dispatchEvent(new CustomEvent("typescript:consent-change", { detail: state })))
+        }, { once: true })
+        script.addEventListener("error", () => document.getElementById("cookie-banner")?.setAttribute("data-consent-status", "unavailable"), { once: true })
+        document.body.appendChild(script)
+      })()
+    </script>
+  </body>
+</html>

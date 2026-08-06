@@ -1,0 +1,21 @@
+{
+  "captured": "2026-07-31T18:45:27.933Z",
+  "status": "failed",
+  "htmlPageCount": 952,
+  "localReferenceCount": 84428,
+  "brokenCount": 1,
+  "broken": [
+    {
+      "state": "broken",
+      "kind": "a:href",
+      "rawValue": "/dev/compiler",
+      "currentRoute": "/dev/playground-plugins",
+      "resolvedPath": "/dev/compiler",
+      "candidates": [
+        "dev/compiler",
+        "dev/compiler/index.html",
+        "dev/compiler.html"
+      ]
+    }
+  ]
+}

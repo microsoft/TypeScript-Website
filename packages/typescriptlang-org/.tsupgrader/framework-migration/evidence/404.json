@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-07-30T05:55:32.864Z",
+  "status": "passed",
+  "artifact": {
+    "path": "404.html",
+    "heading": "Page not found",
+    "usableHomeLink": true
+  },
+  "localAstroPreview": {
+    "statusCode": 404,
+    "customArtifactRendered": true,
+    "evidence": "Playwright request and browser navigation assertions in browser/redirects-404.spec.mjs"
+  },
+  "azurePreview": {
+    "statusCode": 404,
+    "config": {
+      "rewrite": "/404.html"
+    },
+    "classification": "status-preserving custom 404 response override; navigationFallback is intentionally absent because Azure documents that it returns 200"
+  },
+  "githubPagesProduction": {
+    "classification": "special root 404.html artifact; GitHub Pages supplies host-level not-found behavior, while the artifact itself was validated deterministically"
+  },
+  "screenshots": [
+    "playwright/404/desktop.png",
+    "playwright/404/mobile.png"
+  ]
+}

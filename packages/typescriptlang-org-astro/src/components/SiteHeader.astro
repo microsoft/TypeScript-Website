@@ -1,0 +1,106 @@
+---
+import { createLocalizedHref } from "../lib/localization.mjs"
+interface Props { lang: string; pathname: string; skipTo?: string; routePathnames: string[] }
+const { lang, pathname, routePathnames, skipTo = "#site-content" } = Astro.props
+const availablePaths = new Set(routePathnames)
+const localized = (href: string) => createLocalizedHref(lang, href, availablePaths)
+const nav = [
+  ["Download", "/download", "nav-download"],
+  ["Docs", "/docs/", ""],
+  ["Handbook", "/docs/handbook/intro.html", "nav-handbook"],
+  ["Community", "/community", "nav-community"],
+  ["Playground", "/play/", "nav-playground"],
+  ["Tools", "/tools", "nav-tools"],
+]
+---
+<header dir="ltr">
+  <a class="skip-to-main" href={skipTo}>Skip to main content</a>
+  <div id="top-menu">
+    <div class="top-left">
+      <a id="home-page-logo" href={localized("/")} aria-label="TypeScript home page">
+        <span class="ts-logo">TS</span><span>TypeScript</span>
+      </a>
+      <button id="top-menu-toggle" type="button" aria-controls="top-menu-links" aria-expanded="false">Menu</button>
+      <nav class="top-nav" id="top-menu-links" aria-label="Top menu">
+        <a id="my-lang-quick-jump" href="#" style="display:none"></a>
+        {nav.map(([label, href, className]) => <a class={className} href={localized(href)} aria-current={pathname === localized(href) ? "page" : undefined}>{label}</a>)}
+      </nav>
+    </div>
+    <form class="search" id="search-form" role="search" action="/dt/search" data-docsearch-app-id="BGCDYOIYZ5" data-docsearch-api-key="37ee06fa68db6aef451a490df6df7c60" data-docsearch-index="typescriptlang">
+      <span aria-hidden="true">⌕</span>
+      <input id="search-box-top" name="q" type="search" placeholder="Search Docs" role="combobox" aria-label="Search the TypeScript site" autocomplete="off" aria-autocomplete="list" aria-controls="docsearch-results" aria-expanded="false" />
+      <div id="docsearch-results" role="listbox" aria-label="Search results" hidden></div>
+    </form>
+  </div>
+</header>
+<script is:inline define:vars={{ routePathnames }}>
+  (() => {
+    const menuButton = document.getElementById("top-menu-toggle")
+    const menu = document.getElementById("top-menu-links")
+    const closeMenu = () => { menu?.classList.remove("open"); menuButton?.setAttribute("aria-expanded", "false") }
+    menuButton?.addEventListener("click", () => {
+      const open = !menu?.classList.contains("open")
+      menu?.classList.toggle("open", open)
+      menuButton.setAttribute("aria-expanded", String(open))
+      if (open) menu?.querySelector("a")?.focus()
+    })
+    addEventListener("keydown", event => { if (event.key === "Escape") { closeMenu(); menuButton?.focus() } })
+
+    const form = document.getElementById("search-form")
+    const input = document.getElementById("search-box-top")
+    const results = document.getElementById("docsearch-results")
+    if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement) || !(results instanceof HTMLElement)) return
+    const normalizeHit = hit => {
+      if (!hit?.url) return hit
+      try { const url = new URL(hit.url, location.origin); return { ...hit, url: `${location.origin}${url.pathname}${url.search}${url.hash}` } } catch { return hit }
+    }
+    const render = hits => {
+      results.replaceChildren(...hits.slice(0, 8).map((hit, index) => {
+        const anchor = document.createElement("a")
+        anchor.href = normalizeHit(hit).url
+        anchor.role = "option"
+        anchor.id = `docsearch-option-${index}`
+        anchor.textContent = hit.title || hit.hierarchy?.lvl1 || hit.url
+        return anchor
+      }))
+      results.hidden = !hits.length
+      input.setAttribute("aria-expanded", String(Boolean(hits.length)))
+    }
+    const fixture = window.__TS_DOCSEARCH_FIXTURE__
+    if (Array.isArray(fixture)) {
+      input.addEventListener("input", () => render(fixture.filter(hit => JSON.stringify(hit).toLowerCase().includes(input.value.toLowerCase()))))
+    } else {
+      const script = document.createElement("script")
+      script.src = "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"
+      script.async = true
+      const stylesheet = document.createElement("link")
+      stylesheet.rel = "stylesheet"
+      stylesheet.href = "https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
+      document.head.appendChild(stylesheet)
+      script.onload = () => window.docsearch?.({
+        appId: form.dataset.docsearchAppId,
+        apiKey: form.dataset.docsearchApiKey,
+        indexName: form.dataset.docsearchIndex,
+        inputSelector: "#search-box-top",
+        transformData: hits => hits.map(normalizeHit),
+      })
+      document.body.appendChild(script)
+    }
+    form.addEventListener("submit", event => {
+      const first = results.querySelector("a")
+      if (first) { event.preventDefault(); location.assign(first.href) }
+      else if (input.value.trim()) { event.preventDefault(); location.assign(`/dt/search?q=${encodeURIComponent(input.value.trim())}`) }
+    })
+    input.addEventListener("keydown", event => {
+      if (event.key === "ArrowDown") { event.preventDefault(); results.querySelector("a")?.focus() }
+      if (event.key === "Escape") { render([]); input.blur() }
+    })
+    results.addEventListener("keydown", event => {
+      const links = [...results.querySelectorAll("a")]
+      const index = links.indexOf(document.activeElement)
+      if (event.key === "ArrowDown") { event.preventDefault(); links[(index + 1) % links.length]?.focus() }
+      if (event.key === "ArrowUp") { event.preventDefault(); (index <= 0 ? input : links[index - 1])?.focus() }
+      if (event.key === "Escape") { render([]); input.focus() }
+    })
+  })()
+</script>

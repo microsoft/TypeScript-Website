@@ -1,0 +1,27 @@
+{
+  "captured": "2026-07-30",
+  "status": "passed",
+  "testFile": "packages/typescriptlang-org-astro/test/documentation-links.test.mjs",
+  "fixtureCount": 14,
+  "checks": {
+    "relativeMarkdownRoutes": true,
+    "inlineCodeHeadingSpaces": true,
+    "punctuationHeadingAliases": true,
+    "smartPunctuation": true,
+    "gfmTables": true,
+    "stableConcurrentTwoslashLanguages": true,
+    "translatedLegacyMarkdownLinks": true,
+    "samePageFragmentAliases": true,
+    "previousNextOrdering": true,
+    "nestedNavigationOrdering": true,
+    "footnotes": true,
+    "rawHtmlUrlPreservation": true,
+    "markdownImageMd5Copy": true,
+    "rawHtmlImageMd5Copy": true
+  },
+  "exhaustiveDocumentationResult": {
+    "routes": 283,
+    "matched": 283,
+    "mismatched": 0
+  }
+}

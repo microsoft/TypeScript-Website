@@ -1,0 +1,1205 @@
+{
+  "generatedFrom": "Gatsby production main regions for the six inventoried filesystem/developer source pages",
+  "routeCount": 6,
+  "sourcePages": [
+    {
+      "route": "/branding",
+      "source": "src/pages/branding.tsx"
+    },
+    {
+      "route": "/dev/bug-workbench",
+      "source": "src/pages/dev/bug-workbench.tsx"
+    },
+    {
+      "route": "/dev/playground-plugins",
+      "source": "src/pages/dev/playground-plugins.tsx"
+    },
+    {
+      "route": "/dev/sandbox",
+      "source": "src/pages/dev/sandbox.tsx"
+    },
+    {
+      "route": "/dev/twoslash",
+      "source": "src/pages/dev/twoslash.tsx"
+    },
+    {
+      "route": "/dev/typescript-vfs",
+      "source": "src/pages/dev/typescript-vfs.tsx"
+    }
+  ],
+  "copiedAssets": [
+    "images/branding/logo-grouping.svg",
+    "images/branding/palette-bg.svg",
+    "images/branding/palette.svg",
+    "images/branding/two-colors.svg",
+    "images/branding/two-longform.svg",
+    "static/playground-plugin-preview-3fa319f7efff676f839a57ad3d8be916.png"
+  ],
+  "content": {
+    "/branding": {
+      "source": "src/pages/branding.tsx",
+      "tokens": [
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "Branding"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Logos and design assets for TypeScript"
+        },
+        {
+          "type": "link",
+          "href": "/branding/typescript-design-assets.zip"
+        },
+        {
+          "type": "image",
+          "src": "/images/branding/logo-grouping.svg",
+          "alt": "Examples of the logos"
+        },
+        {
+          "type": "text",
+          "text": "Click to download the asset pack"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Recommendations"
+        },
+        {
+          "type": "text",
+          "text": "Please use the blue TypeScript mark above as the primary logo for TypeScript."
+        },
+        {
+          "type": "text",
+          "text": "This is the right logo for blog posts, news articles, giveaway stickers and general marketing for yourself."
+        },
+        {
+          "type": "text",
+          "text": "The “TS” in the logo is white, not transparent by default."
+        },
+        {
+          "type": "text",
+          "text": "There is a capital “S” in TypeScript, just like in JavaScript."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Alternatives"
+        },
+        {
+          "type": "link",
+          "href": "/branding/typescript-design-assets.zip"
+        },
+        {
+          "type": "image",
+          "src": "/images/branding/two-colors.svg",
+          "alt": "Examples of the logos as single colors"
+        },
+        {
+          "type": "text",
+          "text": "Single color variant which has the “TS” cut out, useful for when you need a single color design."
+        },
+        {
+          "type": "link",
+          "href": "/branding/typescript-design-assets.zip"
+        },
+        {
+          "type": "image",
+          "src": "/images/branding/two-longform.svg",
+          "alt": "Examples of the logos as long-form. e.g. saying 'TypeScript' and not 'TS'"
+        },
+        {
+          "type": "text",
+          "text": "Full lettermark version of the TypeScript logo. "
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Palette"
+        },
+        {
+          "type": "link",
+          "href": "/branding/typescript-design-assets.zip"
+        },
+        {
+          "type": "image",
+          "src": "/images/branding/palette.svg",
+          "alt": "Examples of the palette, you can get this in ASCII inside the design assets"
+        },
+        {
+          "type": "link",
+          "href": "/branding/typescript-design-assets.zip"
+        },
+        {
+          "type": "image",
+          "src": "/images/branding/palette-bg.svg",
+          "alt": "Examples of the palette, you can get this in ASCII inside the design assets"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Please Don't"
+        },
+        {
+          "type": "text",
+          "text": "Use the TypeScript logos for your application/product."
+        },
+        {
+          "type": "text",
+          "text": "Modify the shape of the logos when used."
+        },
+        {
+          "type": "text",
+          "text": "Integrate the TypeScript logo into your application's logo."
+        },
+        {
+          "type": "text",
+          "text": "Name a product which implies TypeScript's endorsement of the product."
+        }
+      ]
+    },
+    "/dev/bug-workbench": {
+      "source": "src/pages/dev/bug-workbench.tsx",
+      "tokens": [
+        {
+          "type": "text",
+          "text": "Bug Workbench"
+        },
+        {
+          "type": "text",
+          "text": "Downloading TypeScript..."
+        },
+        {
+          "type": "link",
+          "href": "#"
+        },
+        {
+          "type": "text",
+          "text": "Version..."
+        },
+        {
+          "type": "text",
+          "text": "... "
+        },
+        {
+          "type": "link",
+          "href": "#"
+        },
+        {
+          "type": "text",
+          "text": "⇥"
+        }
+      ]
+    },
+    "/dev/playground-plugins": {
+      "source": "src/pages/dev/playground-plugins.tsx",
+      "tokens": [
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Developer Tools"
+        },
+        {
+          "type": "link",
+          "href": "/dev/compiler"
+        },
+        {
+          "type": "text",
+          "text": "Compiler API"
+        },
+        {
+          "type": "link",
+          "href": "/dev/sandbox"
+        },
+        {
+          "type": "text",
+          "text": "Sandbox"
+        },
+        {
+          "type": "link",
+          "href": "/dev/twoslash"
+        },
+        {
+          "type": "text",
+          "text": "Twoslash"
+        },
+        {
+          "type": "link",
+          "href": "/dev/typescript-vfs"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript VFS"
+        },
+        {
+          "type": "link",
+          "href": "/dev/playground-plugins"
+        },
+        {
+          "type": "text",
+          "text": "Playground Plugins"
+        },
+        {
+          "type": "link",
+          "href": "/dev/bug-workbench"
+        },
+        {
+          "type": "text",
+          "text": "Bug Workbench"
+        },
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "Your toys, our sandbox"
+        },
+        {
+          "type": "text",
+          "text": "The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect."
+        },
+        {
+          "type": "text",
+          "text": "The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects."
+        },
+        {
+          "type": "text",
+          "text": "Playground plugins are built via the DOM API and an expansive Design System, however, you're free to use a framework like React or Svelte at runtime."
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "Getting started is easy, we have a plugin template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment."
+        },
+        {
+          "type": "text",
+          "text": "There is a repo of sample plugins at "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/TypeScript-Playground-Samples/"
+        },
+        {
+          "type": "text",
+          "text": "microsoft/TypeScript-Playground-Samples"
+        },
+        {
+          "type": "text",
+          "text": " and there are many existing open source plugins to look at too: "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/orta/playground-slides"
+        },
+        {
+          "type": "text",
+          "text": "Presentation Mode"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/orta/playground-clippy#playground-plugin-clippy"
+        },
+        {
+          "type": "text",
+          "text": "Clippy"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/orta/playground-plugin-tsquery"
+        },
+        {
+          "type": "text",
+          "text": "TSQuery"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/orta/playground-collaborate#typescript-playground-collaborate"
+        },
+        {
+          "type": "text",
+          "text": "Collaborate"
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/orta/playground-transformer-timeline"
+        },
+        {
+          "type": "text",
+          "text": "Transformer"
+        },
+        {
+          "type": "text",
+          "text": " which are available by default for you to investigate and understand."
+        },
+        {
+          "type": "text",
+          "text": "If you have questions as you are working on your plugin, ask in the "
+        },
+        {
+          "type": "link",
+          "href": "https://discord.gg/typescript"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript Community Discord"
+        },
+        {
+          "type": "text",
+          "text": ". When it is polished, ship it to the npm registry and it will make its way into the plugins sidebar."
+        },
+        {
+          "type": "image",
+          "src": "/static/playground-plugin-preview-3fa319f7efff676f839a57ad3d8be916.png",
+          "alt": "Screenshot of the playground showing the plugins tab"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Quick Tutorial"
+        },
+        {
+          "type": "text",
+          "text": "You need about 5 minutes, Node.js, yarn and Firefox/Edge or Chrome."
+        },
+        {
+          "type": "text",
+          "text": "Step 1"
+        },
+        {
+          "type": "text",
+          "text": ": Use the template to bootstrap: "
+        },
+        {
+          "type": "text",
+          "text": "yarn create typescript-playground-plugin playground-my-plugin"
+        },
+        {
+          "type": "text",
+          "text": "Step 2"
+        },
+        {
+          "type": "text",
+          "text": ": Run "
+        },
+        {
+          "type": "text",
+          "text": "yarn start"
+        },
+        {
+          "type": "text",
+          "text": " in the new repo, to start up the local dev server"
+        },
+        {
+          "type": "text",
+          "text": "Step 3"
+        },
+        {
+          "type": "text",
+          "text": ": Open the "
+        },
+        {
+          "type": "link",
+          "href": "/play/"
+        },
+        {
+          "type": "text",
+          "text": "playground"
+        },
+        {
+          "type": "text",
+          "text": " in your browser, click \"Options\" and enable "
+        },
+        {
+          "type": "text",
+          "text": "\"Connect to localhost:5000/index.js\""
+        },
+        {
+          "type": "text",
+          "text": "Step 4"
+        },
+        {
+          "type": "text",
+          "text": ": Refresh, and see the new tab. That's your plugin up and running"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot of clicks. To understand the template's technology, read the "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-typescript-playground-plugin/template/CONTRIBUTING.md"
+        },
+        {
+          "type": "text",
+          "text": "CONTRIBUTING.md"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Alternatives"
+        },
+        {
+          "type": "text",
+          "text": "There are community-run templates for Playground plugins which bootstrap your plugin with well-known view libraries:"
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/gojutin/typescript-playground-plugin-react#typescript-playground-plugin-react"
+        },
+        {
+          "type": "text",
+          "text": "gojutin/typescript-playground-plugin-react"
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/gojutin/typescript-playground-plugin-svelte#typescript-playground-plugin-svelte"
+        },
+        {
+          "type": "text",
+          "text": "gojutin/typescript-playground-plugin-svelte"
+        },
+        {
+          "type": "text",
+          "text": "They have their own up-to-date documentation in their READMEs."
+        }
+      ]
+    },
+    "/dev/sandbox": {
+      "source": "src/pages/dev/sandbox.tsx",
+      "tokens": [
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Developer Tools"
+        },
+        {
+          "type": "link",
+          "href": "/dev/compiler"
+        },
+        {
+          "type": "text",
+          "text": "Compiler API"
+        },
+        {
+          "type": "link",
+          "href": "/dev/sandbox"
+        },
+        {
+          "type": "text",
+          "text": "Sandbox"
+        },
+        {
+          "type": "link",
+          "href": "/dev/twoslash"
+        },
+        {
+          "type": "text",
+          "text": "Twoslash"
+        },
+        {
+          "type": "link",
+          "href": "/dev/typescript-vfs"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript VFS"
+        },
+        {
+          "type": "link",
+          "href": "/dev/playground-plugins"
+        },
+        {
+          "type": "text",
+          "text": "Playground Plugins"
+        },
+        {
+          "type": "link",
+          "href": "/dev/bug-workbench"
+        },
+        {
+          "type": "text",
+          "text": "Bug Workbench"
+        },
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "TypeScript Sandbox"
+        },
+        {
+          "type": "text",
+          "text": "A DOM library for interacting with TypeScript and JavaScript code, which powers the heart of the"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "/play/"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript playground"
+        },
+        {
+          "type": "text",
+          "text": "You can use the TypeScript sandbox for:"
+        },
+        {
+          "type": "text",
+          "text": "Building IDE-like experiences for people to explore your library's API"
+        },
+        {
+          "type": "text",
+          "text": "Building interactive web tools which use TypeScript, with a lot of the Playgrounds developer experience for free"
+        },
+        {
+          "type": "text",
+          "text": "For example, the sandbox to the side has grabbed the Types for"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://danger.systems/js/"
+        },
+        {
+          "type": "text",
+          "text": "DangerJS"
+        },
+        {
+          "type": "text",
+          "text": " with no modifications for this code sample. This is because the Playground's Automatic Type Acquisition is enabled by default. It will also look for the same parameters for code, and selection indexes inside the URL."
+        },
+        {
+          "type": "text",
+          "text": "Try clicking"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "?q=1#code/PTAEBUAsFMGdtAYwPYFtXQHYBdagO7QBOCiJAhttACagCWmo2MEAngA7QDKZd72oAAoAbcqwDmRZAFdM1AFAhQ5OUxiNmCAKoAlADKhI5WJALGkydnRqhkAN2JNkahJmj5QuvfMVgodPAwVPBVWUHYpACtoRAFpWAZxNk4eIj4BWBVqACNkAA84JBVfUGhjOmEw+FUUagRyKVlabGcyxFNkTSJQHxRMWAEYYWFnAF5QACIACWhh5wB1ZCJhagn5PthkYWgAOhHxAAohkYBKIA"
+        },
+        {
+          "type": "text",
+          "text": "this URL"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "to see that in action."
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "This library builds on top of the"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://microsoft.github.io/monaco-editor/"
+        },
+        {
+          "type": "text",
+          "text": "Monaco Editor"
+        },
+        {
+          "type": "text",
+          "text": ", providing a higher level API but offering access to all the lower-level APIs via a single "
+        },
+        {
+          "type": "text",
+          "text": "sandbox"
+        },
+        {
+          "type": "text",
+          "text": " object."
+        },
+        {
+          "type": "text",
+          "text": "You can find the code for the TypeScript Sandbox inside the"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/TypeScript-Website/tree/v2/packages/sandbox#@typescript/sandbox"
+        },
+        {
+          "type": "text",
+          "text": "microsoft/TypeScript-Website"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "mono-repo."
+        },
+        {
+          "type": "text",
+          "text": "Downloading Sandbox..."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Usage"
+        },
+        {
+          "type": "text",
+          "text": "A sandbox uses the same tools as monaco-editor, meaning this library is shipped as an AMD bundle which you can use the"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/vscode-loader/"
+        },
+        {
+          "type": "text",
+          "text": "VSCode Loader"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "to "
+        },
+        {
+          "type": "text",
+          "text": "require"
+        },
+        {
+          "type": "text",
+          "text": "."
+        },
+        {
+          "type": "text",
+          "text": "Because we need it for the TypeScript website, you can use our hosted copy"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://typescriptlang.org/js/vs.loader.js"
+        },
+        {
+          "type": "text",
+          "text": "here."
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Get Started"
+        },
+        {
+          "type": "text",
+          "text": "Create a new file: "
+        },
+        {
+          "type": "text",
+          "text": "index.html"
+        },
+        {
+          "type": "text",
+          "text": " and paste this code into that file."
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " <!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n  </head>\n  <div id=\"loader\">Loading...</div>\n  <div id=\"monaco-editor-embed\" style=\"height: 800px;\" />\n  <script>\n    // First set up the VSCode loader in a script tag\n    const getLoaderScript = document.createElement('script')\n    getLoaderScript.src = 'https://www.typescriptlang.org/js/vs.loader.js'\n    getLoaderScript.async = true\n    getLoaderScript.onload = () => {\n      // Now the loader is ready, tell require where it can get the version of monaco, and the sandbox\n      // This version uses the latest version of the sandbox, which is used on the TypeScript website\n\n      // For the monaco version you can use unpkg or the TypeSCript web infra CDN\n      // You can see the available releases for TypeScript here:\n      // https://playgroundcdn.typescriptlang.org/indexes/releases.json\n      //\n      require.config({\n        paths: {\n          vs: 'https://playgroundcdn.typescriptlang.org/cdn/4.0.5/monaco/min/vs',\n          // vs: 'https://unpkg.com/@typescript-deploys/monaco-editor@4.0.5/min/vs',\n          sandbox: 'https://www.typescriptlang.org/js/sandbox',\n        },\n        // This is something you need for monaco to work\n        ignoreDuplicateModules: ['vs/editor/editor.main'],\n      })\n\n      // Grab a copy of monaco, TypeScript and the sandbox\n      require(['vs/editor/editor.main', 'vs/language/typescript/tsWorker', 'sandbox/index'], (\n        main,\n        _tsWorker,\n        sandboxFactory\n      ) => {\n        const initialCode = `import {markdown, danger} from \"danger\"\n\nexport default async function () {\n    // Check for new @types in devDependencies\n    const packageJSONDiff = await danger.git.JSONDiffForFile(\"package.json\")\n    const newDeps = packageJSONDiff.devDependencies.added\n    const newTypesDeps = newDeps?.filter(d => d.includes(\"@types\")) ?? []\n    if (newTypesDeps.length){\n        markdown(\"Added new types packages \" + newTypesDeps.join(\", \"))\n    }\n}\n`\n\n        const isOK = main && window.ts && sandboxFactory\n        if (isOK) {\n          document.getElementById('loader').parentNode.removeChild(document.getElementById('loader'))\n        } else {\n          console.error('Could not get all the dependencies of sandbox set up!')\n          console.error('main', !!main, 'ts', !!window.ts, 'sandbox', !!sandbox)\n          return\n        }\n\n        // Create a sandbox and embed it into the div #monaco-editor-embed\n        const sandboxConfig = {\n          text: initialCode,\n          compilerOptions: {},\n          domID: 'monaco-editor-embed',\n        }\n\n        const sandbox = sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts)\n        sandbox.editor.focus()\n      })\n    }\n\n    document.body.appendChild(getLoaderScript)\n  </script>\n</html> "
+        },
+        {
+          "type": "text",
+          "text": "Opening the file "
+        },
+        {
+          "type": "text",
+          "text": "index.html"
+        },
+        {
+          "type": "text",
+          "text": " in a web browser will load up the same sandbox up at the top of the page."
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Some examples of the API"
+        },
+        {
+          "type": "text",
+          "text": "Converting the user's TypeScript into JavaScript"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " const sandbox = createTypeScriptSandbox(sandboxConfig, main, ts)\n\n// Async because it needs to go  \nconst js = await sandbox.getRunnableJS()\nconsole.log(js) "
+        },
+        {
+          "type": "text",
+          "text": "Get the DTS for the user's editor"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " const sandbox = createTypeScriptSandbox(sandboxConfig, main, ts)\n\nconst dts = await sandbox.getDTSForCode()\nconsole.log(dts) "
+        },
+        {
+          "type": "text",
+          "text": "Make a request for an LSP response"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " const sandbox = createTypeScriptSandbox(sandboxConfig, main, ts)\n\n// A worker here is a web-worker, set up by monaco-typescript\n// which does the computation in the background \nconst worker = await sandbox.getWorkerProcess()\nconst definitions =  await client.getDefinitionAtPosition(model.uri.toString(), 6) "
+        },
+        {
+          "type": "text",
+          "text": "Change compiler flags using a few different APIs"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " const sandbox = createTypeScriptSandbox(sandboxConfig, main, ts)\n\n// Hook in to all changes to the compiler\nsandbox.setDidUpdateCompilerSettings((newOptions) => {\n  console.log(\"Compiler settings changed: \", newOptions)\n})\n\n// Update via key value\nsandbox.updateCompilerSetting(\"allowJs\", true)\n// Update via an object\nsandbox.updateCompilerSettings({ jsx: 0 })\n// Replace the compiler settings\nsandbox.setCompilerSettings({}) "
+        },
+        {
+          "type": "text",
+          "text": "Highlight some code in the editor"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " const sandbox = createTypeScriptSandbox(sandboxConfig, main, ts)\n\nconst start = {\n  lineNumber: 0,\n  column: 0\n}\n\nconst end = {\n  lineNumber: 0,\n  column: 4\n}\n\nconst decorations = sandbox.editor.deltaDecorations([], [\n  {\n    range: new sandbox.monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column),\n    options: { inlineClassName: 'error-highlight' },\n  },\n]) "
+        },
+        {
+          "type": "text",
+          "text": "Create your own playground."
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " const sandbox = createTypeScriptSandbox(sandboxConfig, main, ts)\n\n// Use a script to make a JSON file like:\n// { \n//   \"file:///node_modules/types/keyboard/index.d.ts\": \"export const enterKey: string\"\n// }\n//\n// Where the keys are the paths, and the values are the source-code. The sandbox\n// will use the node resolution lookup strategy by default.\n\nconst dtsFiles = {} \n\nObject.keys(dtsFiles).forEach(path => {\n  sandbox.languageServiceDefaults.addExtraLib(dts[path], path);\n}); "
+        },
+        {
+          "type": "text",
+          "text": "The API is mainly a light shim over the"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://microsoft.github.io/monaco-editor/docs.html"
+        },
+        {
+          "type": "text",
+          "text": "monaco-editor API"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "text": "with the"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/monaco-typescript"
+        },
+        {
+          "type": "text",
+          "text": "monaco-typescript API"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    "/dev/twoslash": {
+      "source": "src/pages/dev/twoslash.tsx",
+      "tokens": [
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Developer Tools"
+        },
+        {
+          "type": "link",
+          "href": "/dev/compiler"
+        },
+        {
+          "type": "text",
+          "text": "Compiler API"
+        },
+        {
+          "type": "link",
+          "href": "/dev/sandbox"
+        },
+        {
+          "type": "text",
+          "text": "Sandbox"
+        },
+        {
+          "type": "link",
+          "href": "/dev/twoslash"
+        },
+        {
+          "type": "text",
+          "text": "Twoslash"
+        },
+        {
+          "type": "link",
+          "href": "/dev/typescript-vfs"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript VFS"
+        },
+        {
+          "type": "link",
+          "href": "/dev/playground-plugins"
+        },
+        {
+          "type": "text",
+          "text": "Playground Plugins"
+        },
+        {
+          "type": "link",
+          "href": "/dev/bug-workbench"
+        },
+        {
+          "type": "text",
+          "text": "Bug Workbench"
+        },
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "TypeScript Twoslash"
+        },
+        {
+          "type": "text",
+          "text": "A markup format for TypeScript code, ideal for creating self-contained code samples which let the TypeScript compiler do the extra leg-work."
+        },
+        {
+          "type": "text",
+          "text": "If you know TypeScript, you basically know twoslash."
+        },
+        {
+          "type": "text",
+          "text": "Twoslash adds the ability to declare tsconfig options inline, split a sample into multiple files and a few other useful commands. You can see the full API"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/TypeScript-Website/tree/v2/packages/ts-twoslasher"
+        },
+        {
+          "type": "text",
+          "text": "inside the README"
+        },
+        {
+          "type": "text",
+          "text": "The Twoslash markup language helps with:"
+        },
+        {
+          "type": "text",
+          "text": "Enforcing accurate errors from a TypeScript code sample, and leaving the messaging to the compiler"
+        },
+        {
+          "type": "text",
+          "text": "Splitting a code sample to hide distracting code"
+        },
+        {
+          "type": "text",
+          "text": "Declaratively highlighting symbols in your code sample"
+        },
+        {
+          "type": "text",
+          "text": "Replacing code with the results of transpilation to different files, or ancillary files like .d.ts or .map files"
+        },
+        {
+          "type": "text",
+          "text": "Handle multi-file imports in a single code sample"
+        },
+        {
+          "type": "text",
+          "text": "Creating a playground link for the code"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Markup"
+        },
+        {
+          "type": "text",
+          "text": "See how TS Twoslash will grab the highlight information for identifiers in your code"
+        },
+        {
+          "type": "text",
+          "text": "Downloading Sandbox..."
+        },
+        {
+          "type": "text",
+          "text": "Highlights runtime types"
+        },
+        {
+          "type": "text",
+          "text": "Show Errors"
+        },
+        {
+          "type": "text",
+          "text": "Set Compiler Flags"
+        },
+        {
+          "type": "text",
+          "text": "Trims code"
+        },
+        {
+          "type": "text",
+          "text": "Show the JS"
+        },
+        {
+          "type": "text",
+          "text": "Show the DTS"
+        },
+        {
+          "type": "text",
+          "text": "Highlights"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Results"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Usage"
+        },
+        {
+          "type": "text",
+          "text": "Twoslash's usage guide is available on the npm README at"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "https://www.npmjs.com/package/@typescript/twoslash"
+        },
+        {
+          "type": "text",
+          "text": "@typescript/twoslash"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    "/dev/typescript-vfs": {
+      "source": "src/pages/dev/typescript-vfs.tsx",
+      "tokens": [
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Developer Tools"
+        },
+        {
+          "type": "link",
+          "href": "/dev/compiler"
+        },
+        {
+          "type": "text",
+          "text": "Compiler API"
+        },
+        {
+          "type": "link",
+          "href": "/dev/sandbox"
+        },
+        {
+          "type": "text",
+          "text": "Sandbox"
+        },
+        {
+          "type": "link",
+          "href": "/dev/twoslash"
+        },
+        {
+          "type": "text",
+          "text": "Twoslash"
+        },
+        {
+          "type": "link",
+          "href": "/dev/typescript-vfs"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript VFS"
+        },
+        {
+          "type": "link",
+          "href": "/dev/playground-plugins"
+        },
+        {
+          "type": "text",
+          "text": "Playground Plugins"
+        },
+        {
+          "type": "link",
+          "href": "/dev/bug-workbench"
+        },
+        {
+          "type": "text",
+          "text": "Bug Workbench"
+        },
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "Easy access to the compiler API"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript VFS lets you create a self-contained TypeScript environment entirely under your control. This library is used to power the Playground, and provides the underlying tooling for "
+        },
+        {
+          "type": "link",
+          "href": "/dev/twoslash/"
+        },
+        {
+          "type": "text",
+          "text": "twoslash"
+        },
+        {
+          "type": "text",
+          "text": " code samples."
+        },
+        {
+          "type": "text",
+          "text": "There are 3 main uses for TypeScript VFS:"
+        },
+        {
+          "type": "text",
+          "text": "Creating a TypeScript Program as an entry-point to the compiler API"
+        },
+        {
+          "type": "text",
+          "text": "Running TypeScript to emit files like "
+        },
+        {
+          "type": "text",
+          "text": "*.js"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "*.d.ts"
+        },
+        {
+          "type": "text",
+          "text": " or "
+        },
+        {
+          "type": "text",
+          "text": "*.map"
+        },
+        {
+          "type": "text",
+          "text": "Using TypeScript's language service to make the same calls an editor would make"
+        },
+        {
+          "type": "text",
+          "text": "You can learn more in the "
+        },
+        {
+          "type": "link",
+          "href": "https://github.com/microsoft/TypeScript-Website/blob/v2/packages/typescript-vfs/"
+        },
+        {
+          "type": "text",
+          "text": "TypeScript VFS README"
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Setup with TypeScript from node_modules"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " import ts from 'typescript'\nimport tsvfs from '@typescript/vfs'\n\nconst fsMap = tsvfs.createDefaultMapFromNodeModules({ target: ts.ScriptTarget.ES2015 })\nfsMap.set('index.ts', 'console.log(\"Hello World\")')\n\n// ....\n               "
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Use the TypeScript CDN to get your lib.d.ts files"
+        },
+        {
+          "type": "code",
+          "twoslash": false,
+          "text": " import ts from 'typescript'\nimport tsvfs from '@typescript/vfs'\n\nconst fsMap = await tsvfs.createDefaultMapFromCDN(compilerOptions, ts.version, true, ts)\nfsMap.set('index.ts', 'console.log(\"Hello World\")')\n\nconst system = tsvfs.createSystem(fsMap)\nconst host = tsvfs.createVirtualCompilerHost(system, compilerOptions, ts)\n\nconst program = ts.createProgram({\n  rootNames: [...fsMap.keys()],\n  options: compilerOptions,\n  host: host.compilerHost,\n})\n\n// This will update the fsMap with new files\n// for the .d.ts and .js files\nprogram.emit()\n\n// Now I can look at the AST for the .ts file too\nconst index = program.getSourceFile('index.ts')\n               "
+        }
+      ]
+    }
+  }
+}

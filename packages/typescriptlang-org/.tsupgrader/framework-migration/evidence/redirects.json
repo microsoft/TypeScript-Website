@@ -1,0 +1,559 @@
+{
+  "generatedAt": "2026-07-30T05:55:32.864Z",
+  "status": "passed",
+  "declarationCount": 23,
+  "uniqueCaseInsensitiveOutputPathCount": 22,
+  "destinationTypeCounts": {
+    "internal": 18,
+    "external": 1,
+    "internal-fragment": 4
+  },
+  "collisions": [
+    {
+      "outputPathKey": "/playground",
+      "declarations": [
+        "/Playground",
+        "/playground"
+      ],
+      "destinations": [
+        "/play/"
+      ]
+    }
+  ],
+  "hostBehavior": {
+    "githubPagesProduction": "22 case-insensitive output identities are emitted as static redirect documents; all 23 declarations are emitted on case-sensitive hosts. Responses are ordinary static 200 documents and navigation is client/meta based.",
+    "azurePreview": "All 23 declarations are exact permanent HTTP 301 route rules. Azure evaluates configured routes before static fallback documents.",
+    "localAstroPreview": "Static redirect documents were browser-tested because Astro preview does not emulate Azure route rules."
+  },
+  "matrix": [
+    {
+      "from": "/Playground",
+      "to": "/play/",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/playground",
+      "githubPages": {
+        "artifact": "Playground/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/Playground",
+        "destination": "/play/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "play/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/Tutorial",
+      "to": "/docs",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/tutorial",
+      "githubPages": {
+        "artifact": "Tutorial/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/Tutorial",
+        "destination": "/docs",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/Handbook",
+      "to": "/docs",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/handbook",
+      "githubPages": {
+        "artifact": "Handbook/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/Handbook",
+        "destination": "/docs",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/samples",
+      "to": "/docs",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/samples",
+      "githubPages": {
+        "artifact": "samples/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/samples",
+        "destination": "/docs",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/home.html",
+      "to": "/docs/home",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/home.html",
+      "githubPages": {
+        "artifact": "docs/home.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/home.html",
+        "destination": "/docs/home",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/home/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/playground",
+      "to": "/play/",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/playground",
+      "githubPages": {
+        "artifact": "playground/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/playground",
+        "destination": "/play/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "play/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/home",
+      "to": "/docs",
+      "group": "veryOldRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/home",
+      "githubPages": {
+        "artifact": "docs/home/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/home",
+        "destination": "/docs",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/writing-declaration-files",
+      "to": "/docs/handbook/declaration-files/introduction.html",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/writing-declaration-files",
+      "githubPages": {
+        "artifact": "docs/handbook/writing-declaration-files/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/writing-declaration-files",
+        "destination": "/docs/handbook/declaration-files/introduction.html",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/declaration-files/introduction.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/writing-declaration-files.html",
+      "to": "/docs/handbook/declaration-files/introduction.html",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/writing-declaration-files.html",
+      "githubPages": {
+        "artifact": "docs/handbook/writing-declaration-files.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/writing-declaration-files.html",
+        "destination": "/docs/handbook/declaration-files/introduction.html",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/declaration-files/introduction.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/writing-definition-files",
+      "to": "/docs/handbook/declaration-files/introduction.html",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/writing-definition-files",
+      "githubPages": {
+        "artifact": "docs/handbook/writing-definition-files/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/writing-definition-files",
+        "destination": "/docs/handbook/declaration-files/introduction.html",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/declaration-files/introduction.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/typings-for-npm-packages",
+      "to": "/docs/handbook/declaration-files/publishing.html",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/typings-for-npm-packages",
+      "githubPages": {
+        "artifact": "docs/handbook/typings-for-npm-packages/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/typings-for-npm-packages",
+        "destination": "/docs/handbook/declaration-files/publishing.html",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/declaration-files/publishing.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/tutorial.html",
+      "to": "/docs/",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/tutorial.html",
+      "githubPages": {
+        "artifact": "docs/tutorial.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/tutorial.html",
+        "destination": "/docs/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/release-notes",
+      "to": "/docs/",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/release-notes",
+      "githubPages": {
+        "artifact": "docs/handbook/release-notes/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/release-notes",
+        "destination": "/docs/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/release-notes/overview",
+      "to": "/docs/",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/release-notes/overview",
+      "githubPages": {
+        "artifact": "docs/handbook/release-notes/overview/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/release-notes/overview",
+        "destination": "/docs/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/release-notes/overview.html",
+      "to": "/docs",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/release-notes/overview.html",
+      "githubPages": {
+        "artifact": "docs/handbook/release-notes/overview.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/release-notes/overview.html",
+        "destination": "/docs",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/react-&-webpack.html",
+      "to": "https://webpack.js.org/guides/typescript/",
+      "group": "handbookRedirects",
+      "destinationType": "external",
+      "outputPathKey": "/docs/handbook/react-&-webpack.html",
+      "githubPages": {
+        "artifact": "docs/handbook/react-&-webpack.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/react-&-webpack.html",
+        "destination": "https://webpack.js.org/guides/typescript/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": null,
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/bootstrap",
+      "to": "/docs/",
+      "group": "handbookRedirects",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/bootstrap",
+      "githubPages": {
+        "artifact": "docs/bootstrap/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/bootstrap",
+        "destination": "/docs/",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/index.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/esm-node",
+      "to": "/docs/handbook/modules/reference.html#node16-node18-node20-nodenext",
+      "group": "currentHandbookAliases",
+      "destinationType": "internal-fragment",
+      "outputPathKey": "/docs/handbook/esm-node",
+      "githubPages": {
+        "artifact": "docs/handbook/esm-node/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/esm-node",
+        "destination": "/docs/handbook/modules/reference.html#node16-node18-node20-nodenext",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/modules/reference.html",
+      "fragmentTarget": true
+    },
+    {
+      "from": "/docs/handbook/esm-node.html",
+      "to": "/docs/handbook/modules/reference.html#node16-node18-node20-nodenext",
+      "group": "currentHandbookAliases",
+      "destinationType": "internal-fragment",
+      "outputPathKey": "/docs/handbook/esm-node.html",
+      "githubPages": {
+        "artifact": "docs/handbook/esm-node.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/esm-node.html",
+        "destination": "/docs/handbook/modules/reference.html#node16-node18-node20-nodenext",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/modules/reference.html",
+      "fragmentTarget": true
+    },
+    {
+      "from": "/docs/handbook/modules",
+      "to": "/docs/handbook/modules/introduction.html",
+      "group": "currentHandbookAliases",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/modules",
+      "githubPages": {
+        "artifact": "docs/handbook/modules/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/modules",
+        "destination": "/docs/handbook/modules/introduction.html",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/modules/introduction.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/modules.html",
+      "to": "/docs/handbook/modules/introduction.html",
+      "group": "currentHandbookAliases",
+      "destinationType": "internal",
+      "outputPathKey": "/docs/handbook/modules.html",
+      "githubPages": {
+        "artifact": "docs/handbook/modules.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/modules.html",
+        "destination": "/docs/handbook/modules/introduction.html",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/modules/introduction.html",
+      "fragmentTarget": null
+    },
+    {
+      "from": "/docs/handbook/module-resolution",
+      "to": "/docs/handbook/modules/theory.html#module-resolution",
+      "group": "currentHandbookAliases",
+      "destinationType": "internal-fragment",
+      "outputPathKey": "/docs/handbook/module-resolution",
+      "githubPages": {
+        "artifact": "docs/handbook/module-resolution/index.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/module-resolution",
+        "destination": "/docs/handbook/modules/theory.html#module-resolution",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/modules/theory.html",
+      "fragmentTarget": true
+    },
+    {
+      "from": "/docs/handbook/module-resolution.html",
+      "to": "/docs/handbook/modules/theory.html#module-resolution",
+      "group": "currentHandbookAliases",
+      "destinationType": "internal-fragment",
+      "outputPathKey": "/docs/handbook/module-resolution.html",
+      "githubPages": {
+        "artifact": "docs/handbook/module-resolution.html",
+        "staticResponseStatus": 200,
+        "metaRefresh": true,
+        "clientReplace": true,
+        "exactDestination": true,
+        "classification": "static HTML response followed by meta refresh or client-side location.replace; GitHub Pages cannot emit a redirect status from this artifact"
+      },
+      "azurePreview": {
+        "route": "/docs/handbook/module-resolution.html",
+        "destination": "/docs/handbook/modules/theory.html#module-resolution",
+        "statusCode": 301,
+        "classification": "native Azure Static Web Apps permanent redirect configured in staticwebapp.config.json"
+      },
+      "destinationArtifact": "docs/handbook/modules/theory.html",
+      "fragmentTarget": true
+    }
+  ]
+}

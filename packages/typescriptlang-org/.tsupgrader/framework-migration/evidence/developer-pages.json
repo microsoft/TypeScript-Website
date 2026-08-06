@@ -1,0 +1,72 @@
+{
+  "captured": "2026-07-30T04:47:46.941Z",
+  "status": "passed",
+  "inventory": {
+    "routeCount": 6,
+    "routes": [
+      "/branding",
+      "/dev/bug-workbench",
+      "/dev/playground-plugins",
+      "/dev/sandbox",
+      "/dev/twoslash",
+      "/dev/typescript-vfs"
+    ],
+    "sourcePages": [
+      {
+        "route": "/branding",
+        "source": "src/pages/branding.tsx"
+      },
+      {
+        "route": "/dev/bug-workbench",
+        "source": "src/pages/dev/bug-workbench.tsx"
+      },
+      {
+        "route": "/dev/playground-plugins",
+        "source": "src/pages/dev/playground-plugins.tsx"
+      },
+      {
+        "route": "/dev/sandbox",
+        "source": "src/pages/dev/sandbox.tsx"
+      },
+      {
+        "route": "/dev/twoslash",
+        "source": "src/pages/dev/twoslash.tsx"
+      },
+      {
+        "route": "/dev/typescript-vfs",
+        "source": "src/pages/dev/typescript-vfs.tsx"
+      }
+    ]
+  },
+  "implementation": {
+    "structuredData": "packages/typescriptlang-org-astro/src/data/developer-semantics.json",
+    "extractedRouteCount": 6,
+    "copiedAssets": [
+      "images/branding/logo-grouping.svg",
+      "images/branding/palette-bg.svg",
+      "images/branding/palette.svg",
+      "images/branding/two-colors.svg",
+      "images/branding/two-longform.svg",
+      "static/playground-plugin-preview-3fa319f7efff676f839a57ad3d8be916.png"
+    ],
+    "interactiveIsland": "DeveloperWorkbenchIsland.tsx",
+    "targetBuildRuntimeGatsbyImports": 0,
+    "generatedHtmlSnapshots": false
+  },
+  "before": {
+    "matched": 1,
+    "mismatched": 5,
+    "fields": {
+      "headingTexts": 5,
+      "localLinks": 5,
+      "textHash": 5,
+      "codeBlockCount": 4,
+      "imageSources": 1
+    }
+  },
+  "after": {
+    "matched": 6,
+    "mismatched": 0,
+    "fields": {}
+  }
+}

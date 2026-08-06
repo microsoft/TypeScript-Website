@@ -1,0 +1,52 @@
+{
+  "name": "typescriptlang-org-astro",
+  "private": true,
+  "description": "The TypeScript website migrated to Astro",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/extract-gatsby-home.mjs && node scripts/extract-p23-pages.mjs && node scripts/compile-documentation.mjs && astro build && node scripts/postbuild.mjs",
+    "build:dependencies": "pnpm --dir ../typescript-vfs exec dts build && pnpm --dir ../ts-twoslasher exec dts build && pnpm --dir ../sandbox exec dts build --tsconfig tsconfig.lib.json",
+    "build:site": "pnpm build:dependencies && pnpm sync-assets && pnpm build",
+    "test:browser": "playwright test",
+    "test:p23": "playwright test --config playwright.p23.config.mjs",
+    "test:docsearch-network": "node scripts/docsearch-network-smoke.mjs",
+    "check": "astro check",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "preview": "astro preview",
+    "extract:developer-semantics": "node scripts/extract-developer-semantics.mjs",
+    "sync-assets": "node scripts/sync-assets.mjs",
+    "evidence:developer": "node scripts/developer-evidence.mjs",
+    "evidence:redirects-404": "node scripts/redirect-404-evidence.mjs",
+    "evidence:tsconfig": "node scripts/tsconfig-evidence.mjs",
+    "test": "node --test test/*.test.mjs",
+    "validate:structure": "node scripts/validate-structure.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.6.0",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
+    "astro": "^5.18.2",
+    "github-slugger": "^1.5.0",
+    "gray-matter": "4.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remark": "^13.0.0",
+    "remark-footnotes": "3.0.0",
+    "remark-gfm": "1.0.0",
+    "remark-html": "^13.0.2",
+    "remark-shiki-twoslash": "^3.1.3",
+    "remark-smartypants": "2.1.0",
+    "sass": "^1.97.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.62.0",
+    "pixelmatch": "^7.2.0",
+    "pngjs": "^7.0.0",
+    "typescript": "*"
+  }
+}

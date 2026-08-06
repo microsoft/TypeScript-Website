@@ -1,0 +1,34 @@
+---
+import extracted from "../generated/gatsby-home.json"
+interface Props { locale: string }
+const { locale } = Astro.props
+const prefix = locale === "en" ? "" : `/${locale}`
+let html = extracted.html
+let footer = extracted.footer
+if (prefix) {
+  html = html.replace(/href="\/(?!\/|#)/g, `href="${prefix}/`)
+  footer = footer.replace(/href="\/(?!\/|#)/g, `href="${prefix}/`)
+}
+---
+<Fragment set:html={html} />
+<Fragment set:html={footer} />
+<style is:global set:html={extracted.styles}></style>
+<style is:global>
+  /* The retained output contains Gatsby's server-rendered static homepage. Hide
+     controls that required Gatsby hydration rather than presenting inert UI. */
+  #index-2 [role="tab"] { pointer-events: none; }
+  #index-2 .next-headline-button { display: none; }
+  #index-2 img { max-width: 100%; }
+  /* Gatsby hydrates this server-rendered sequence and shows only the active
+     step. Astro keeps the same initial state without requiring React. */
+  #index-2 .adopt-step:not(:first-child) { display: none; }
+  @media (min-width: 801px) {
+    #index-2 #get-started .container { min-height: 1475px; }
+  }
+  @media (max-width: 800px) {
+    #index-2 #get-started .container { min-height: 2660px; }
+  }
+  /* Keep source light surfaces under the persisted dark-theme control. */
+  .dark-theme #index-2 .white, .dark-theme #index-2 .light-grey { color: #000; }
+  .dark-theme #index-2 .white a, .dark-theme #index-2 .light-grey a { color: #235a97; }
+</style>

@@ -1,0 +1,14 @@
+---
+import parity from "../generated/gatsby-p23-pages.json"
+interface Props { page: keyof typeof parity.pages; locale?: string }
+const { page, locale = "en" } = Astro.props
+const extracted = parity.pages[page]
+let html = extracted.html
+if (locale !== "en") html = html.replace(/(href|src)=(['"])\/(?!\/|ja\/)/g, `$1=$2/${locale}/`)
+---
+<Fragment set:html={html} />
+<style is:global set:html={extracted.styles}></style>
+<style is:global>
+  main script { display:none; }
+  main img { max-width:100%; height:auto; }
+</style>

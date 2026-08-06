@@ -1,0 +1,9 @@
+{
+  "sourcePackageRemoved": true,
+  "runAt": "2026-07-30T01:53:01.7739055-07:00",
+  "status": "passed",
+  "node": "v20.19.5",
+  "pnpm": "10.30.3",
+  "htmlCount": 952,
+  "nodeOptions": "--max-old-space-size=8192"
+}

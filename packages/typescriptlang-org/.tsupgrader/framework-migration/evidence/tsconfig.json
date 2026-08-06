@@ -1,0 +1,9 @@
+{
+  "captured": "2026-07-29",
+  "rootRoutes": 10,
+  "seoOptionRoutes": 135,
+  "browserSample": { "path": "/tsconfig", "renderedCompilerOptions": 131, "quickLinks": 131, "allowJsAnchor": true },
+  "humanOptionRedirect": true,
+  "botOptionContent": true,
+  "screenshot": "tsconfig.png"
+}

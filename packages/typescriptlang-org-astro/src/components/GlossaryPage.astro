@@ -1,0 +1,9 @@
+---
+interface Props { rendered: string; terms: Array<{ id: string; display: string }> }
+const { rendered, terms } = Astro.props
+---
+<div id="glossary" class="content-width">
+  <div class="whitespace raised content main-content-block subheadline" style="padding: 1rem; text-align: center">This page is a work in progress, congrats on finding it!</div>
+  <ul class="filterable-quicklinks main-content-block">{terms.map(term => <li><a href={`#${term.id}`}>{term.display}</a></li>)}</ul>
+  <div class="markdown" set:html={rendered} />
+</div>

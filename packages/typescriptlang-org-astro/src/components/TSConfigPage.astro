@@ -1,0 +1,135 @@
+---
+interface Category { display: string; anchor: string; options: Array<{ anchor: string; name: string }> }
+interface Props { rendered: string; categories: Category[]; introHeader?: string; introPreview?: string }
+const { rendered, categories, introHeader, introPreview } = Astro.props
+
+const categoryPrefixes = new Map([
+  ["watchOptions", "watch"],
+  ["typeAcquisition", "type"],
+])
+
+const legacyCategoryAliases = new Map([
+  ["Project_Files_0", "Projects_6255"],
+])
+
+const toKebabCase = (value: string) => value.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
+
+const canonicalOptionAnchor = (categoryAnchor: string, optionAnchor: string) => {
+  const prefix = categoryPrefixes.get(categoryAnchor)
+  return prefix ? `${prefix}-${optionAnchor}` : optionAnchor
+}
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+const aliasAnchorMarkup = (alias: string) => `<span id="${alias}" aria-hidden="true"></span>`
+const joiner = (index: number, length: number) => index === length - 1 ? "" : index === length - 2 ? " and " : ", "
+const quickNavId = (anchor: string) => `quick-nav-${anchor.replace(/[^a-zA-Z0-9_-]+/g, "-")}`
+const rootCategories = categories.filter(category => category.anchor === "Top Level")
+const watchCategories = categories.filter(category => category.anchor === "watchOptions")
+const typeAcquisitionCategories = categories.filter(category => category.anchor === "typeAcquisition")
+const compilerCategories = categories.filter(category => !["Top Level", "watchOptions", "typeAcquisition"].includes(category.anchor))
+const categoryGroups = [
+  { categories: rootCategories },
+  { title: "compilerOptions", categories: compilerCategories },
+  { title: "watchOptions", categories: watchCategories },
+  { title: "typeAcquisition", categories: typeAcquisitionCategories },
+]
+
+const withLegacyAliasAnchors = (() => {
+  let html = rendered
+
+  for (const [legacyAnchor, canonicalAnchor] of legacyCategoryAliases) {
+    html = html.replace(
+      new RegExp(`(<h2[^>]*id=['\"]${escapeRegExp(canonicalAnchor)}['\"][^>]*>)`),
+      `${aliasAnchorMarkup(legacyAnchor)}$1`
+    )
+  }
+
+  for (const category of categories) {
+    for (const option of category.options) {
+      const canonicalAnchor = canonicalOptionAnchor(category.anchor, option.anchor)
+      const aliases = new Set([option.anchor, option.anchor.toLowerCase(), toKebabCase(option.anchor)])
+      aliases.delete(canonicalAnchor)
+
+      for (const alias of aliases) {
+        html = html.replace(
+          new RegExp(`(<h3[^>]*><a[^>]*id=['\"]${escapeRegExp(canonicalAnchor)}['\"][^>]*>)`),
+          `${aliasAnchorMarkup(alias)}$1`
+        )
+      }
+    }
+  }
+
+  return html
+})()
+---
+<h1 class="tsconfig-page-title">TSConfig Reference</h1>
+<div class="tsconfig raised main-content-block markdown button closed">
+  <a href="#" aria-expanded="false" role="button"><h2>{introHeader}</h2><div class="preview">{introPreview}</div></a>
+</div>
+<div class="tsconfig main-content-block">
+  <h2>Compiler Options</h2>
+  {categoryGroups.map(group => <div class:list={["tsconfig-quick-nav", group.title && "grouped"]}>
+    {group.title ? <h3><code><a href={`#${group.title}`}>&quot;&nbsp;{group.title}&nbsp;&quot;</a></code></h3> : <div></div>}
+    {group.categories.map(category => <div class="tsconfig-quick-nav-category">
+      {group.title ? <h4 id={quickNavId(category.anchor)}>{category.display}</h4> : <h3 id={quickNavId(category.anchor)}>{category.display}</h3>}
+      <ol aria-labelledby={quickNavId(category.anchor)}>{category.options.map((option, index) => <li><code><a href={`#${canonicalOptionAnchor(category.anchor, option.anchor)}`}>{option.anchor}</a>{joiner(index, category.options.length)}</code></li>)}</ol>
+    </div>)}
+  </div>)}
+</div>
+<div class="markdown" set:html={withLegacyAliasAnchors} />
+<script>
+  const intro = document.querySelector<HTMLElement>(".tsconfig.button")
+  const introLink = intro?.querySelector<HTMLAnchorElement>(":scope > a")
+  introLink?.addEventListener("click", event => {
+    event.preventDefault()
+    const open = intro?.classList.toggle("open") || false
+    intro?.classList.toggle("closed", !open)
+    introLink.setAttribute("aria-expanded", String(open))
+  })
+
+  const navigationGroups = [
+    ...document.querySelectorAll<HTMLElement>(".tsconfig-quick-nav"),
+    ...document.querySelectorAll<HTMLElement>(".tsconfig article nav"),
+  ]
+  const hashLinks = [...document.querySelectorAll<HTMLAnchorElement>(".tsconfig a[href^='#']")]
+    .filter(link => link.hash.length > 1)
+  const targetFor = (link: HTMLAnchorElement) => {
+    try { return document.querySelector<HTMLElement>(link.hash) } catch { return null }
+  }
+  const updateActiveSections = () => {
+    const activationLine = innerWidth < 800 ? 240 : 150
+    for (const navigation of navigationGroups) {
+      const links = [...navigation.querySelectorAll<HTMLAnchorElement>("a[href^='#']")]
+      let current: HTMLAnchorElement | undefined
+      for (const link of links) {
+        const target = targetFor(link)
+        if (target && target.getBoundingClientRect().top <= activationLine) current = link
+        link.classList.remove("current")
+        link.removeAttribute("aria-current")
+      }
+      if (current) {
+        current.classList.add("current")
+        current.setAttribute("aria-current", "location")
+      }
+    }
+  }
+  for (const link of hashLinks) link.addEventListener("click", event => {
+    const target = targetFor(link)
+    if (!target) return
+    event.preventDefault()
+    history.pushState(null, "", link.hash)
+    const navigation = link.closest<HTMLElement>(".tsconfig-quick-nav, .tsconfig article nav")
+    for (const sibling of navigation?.querySelectorAll<HTMLAnchorElement>("a[href^='#']") || []) {
+      sibling.classList.toggle("current", sibling === link)
+      if (sibling === link) sibling.setAttribute("aria-current", "location")
+      else sibling.removeAttribute("aria-current")
+    }
+    target.scrollIntoView({ behavior: "smooth", block: "start" })
+    requestAnimationFrame(updateActiveSections)
+  })
+  addEventListener("scroll", updateActiveSections, { passive: true })
+  addEventListener("hashchange", updateActiveSections)
+  addEventListener("pageshow", updateActiveSections)
+  requestAnimationFrame(updateActiveSections)
+</script>

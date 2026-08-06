@@ -1,0 +1,4 @@
+revision=c8170c35bda4811c9516cbb69c39241ae4beb6d9
+node=v26.4.0
+pnpm=10.30.3
+workingTreeCaptured=2026-07-29T15:21:06.2224515-07:00

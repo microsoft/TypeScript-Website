@@ -1,0 +1,11 @@
+{
+  "captured": "2026-07-29",
+  "preview": "http://127.0.0.1:4321/",
+  "checks": [
+    { "path": "/", "title": "TypeScript: JavaScript With Syntax For Types.", "result": "passed" },
+    { "path": "/docs/handbook/intro.html", "sidebar": true, "toc": true, "headingIds": 4, "result": "passed" },
+    { "path": "/docs/handbook/basic-types.html", "twoslashBlocks": 28, "result": "passed" },
+    { "path": "/tsconfig", "compilerOptions": 131, "quickLinks": 131, "result": "passed" },
+    { "path": "/play/", "monacoVisible": true, "pageErrors": [], "result": "passed", "note": "The observed extensionless-model worker race was fixed with a stable file:///index.ts model URI, rebuilt, and rerun." }
+  ]
+}

@@ -1,0 +1,41 @@
+---
+import DeveloperWorkbenchIsland from "./DeveloperWorkbenchIsland"
+import { renderDeveloperSemanticHtml } from "../lib/developer-semantics.mjs"
+
+interface Props { pathname: string }
+const { pathname } = Astro.props
+const slug = pathname.split("/").at(-1) as "bug-workbench" | "playground-plugins" | "sandbox" | "twoslash" | "typescript-vfs"
+const semanticHtml = renderDeveloperSemanticHtml(`/${pathname}`)
+const isPlugins = slug === "playground-plugins"
+---
+<div id="dev" class="content-width">
+  {isPlugins ? <>
+    <nav aria-label="Developer tools" class="dev-nav"><h3>Developer Tools</h3><a href="/dev/sandbox">Sandbox</a><a href="/dev/twoslash">Twoslash</a><a href="/dev/typescript-vfs">TypeScript VFS</a><a href="/dev/playground-plugins">Playground Plugins</a><a href="/dev/bug-workbench">Bug Workbench</a></nav>
+    <section class="raised plugin-intro">
+      <div><h1>Your toys, our sandbox</h1><p>The new TypeScript Playground allows people to hook into the Playground and extend it in ways in which the TypeScript team don't expect.</p><p>The sidebar of the Playground uses the same plugin infrastructure as external plugins, so you have the same level of access as the playground to build interesting projects.</p><p>Playground plugins are built via the DOM API and an expansive Design System, however, you're free to use a framework like React or Svelte at runtime.</p><br/><p>Getting started is easy, we have a plugin template, and the Playground has a dev-mode for hooking directly to your local server, so you don't need to run a copy of the TypeScript website to have a working development environment.</p><p>There is a repo of sample plugins at <a href="https://github.com/microsoft/TypeScript-Playground-Samples/">microsoft/TypeScript-Playground-Samples</a> and there are many existing open source plugins to look at too: <a href="https://github.com/orta/playground-slides">Presentation Mode</a>, <a href="https://github.com/orta/playground-clippy">Clippy</a>, <a href="https://github.com/orta/playground-plugin-tsquery">TSQuery</a>, <a href="https://github.com/orta/playground-collaborate">Collaborate</a> and <a href="https://github.com/orta/playground-transformer-timeline">Transformer</a> which are available by default for you to investigate and understand.</p><p>If you have questions as you are working on your plugin, ask in the <a href="https://discord.gg/typescript">TypeScript Community Discord</a>. When it is polished, ship it to the npm registry and it will make its way into the plugins sidebar.</p></div>
+      <img src="/static/playground-plugin-preview-3fa319f7efff676f839a57ad3d8be916.png" alt="Screenshot of the playground showing the plugins tab" />
+    </section>
+    <section class="raised plugin-tutorial"><h2>Quick Tutorial</h2><p>You need about 5 minutes, Node.js, yarn and Firefox/Edge or Chrome.</p><p><b>Step 1</b>: Use the template to bootstrap: <code>yarn create typescript-playground-plugin playground-my-plugin</code></p><p><b>Step 2</b>: Run <code>yarn start</code> in the new repo, to start up the local dev server</p><p><b>Step 3</b>: Open the <a href="/play/">playground</a> in your browser, click “Options” and enable <code>"Connect to localhost:5000/index.js"</code></p><p><b>Step 4</b>: Refresh, and see the new tab. That's your plugin up and running</p><br/><p>That's all the pieces working in tandem, now you can make changes to the template and build out your plugin. The plugin in dev mode will always become forefront when connected, so you can re-load without a lot of clicks. To understand the template's technology, read the <a href="https://github.com/microsoft/TypeScript-Website/blob/v2/packages/create-typescript-playground-plugin/template/CONTRIBUTING.md">CONTRIBUTING.md</a></p><h2>Alternatives</h2><p>There are community-run templates for Playground plugins which bootstrap your plugin with well-known view libraries:</p><ul><li><a href="https://github.com/gojutin/typescript-playground-plugin-react">gojutin/typescript-playground-plugin-react</a></li><li><a href="https://github.com/gojutin/typescript-playground-plugin-svelte">gojutin/typescript-playground-plugin-svelte</a></li></ul><p>They have their own up-to-date documentation in their READMEs.</p></section>
+    <div class="workbench-anchor"><DeveloperWorkbenchIsland mode={slug} client:load /></div>
+  </> : <><section id="developer-semantic-content" class="developer-semantic-content" set:html={semanticHtml} /><DeveloperWorkbenchIsland mode={slug} client:load /></>}
+</div>
+
+<style>
+  .developer-semantic-content :global(img) { max-width: 100%; height: auto; }
+  .developer-semantic-content :global(pre) { overflow: auto; padding: 1rem; }
+  .dev-nav { display:flex; align-items:center; gap:1.35rem; margin-bottom:1rem; }
+  .dev-nav h3 { margin:0 auto 0 0; font-size:1.35rem; }
+  .plugin-intro { display:grid; grid-template-columns:1fr 1fr; padding:2rem; }
+  .plugin-intro h1 { margin-top:0; }
+  .plugin-intro img { width:100%; border-left:1px solid gray; }
+  .plugin-tutorial { padding:2rem; margin-top:1rem; }
+  .workbench-anchor { height:1px; overflow:hidden; }
+  @media(max-width:700px) {
+    #dev { width:100%; margin:0; }
+    .dev-nav { display:block; padding:1rem; }
+    .dev-nav h3 { width:100%; margin-bottom:1rem; font-weight:400; }
+    .dev-nav a { display:block; width:max-content; margin:0 0 1.5rem; padding:0; background:transparent; color:inherit; }
+    .plugin-intro,.plugin-tutorial { display:block; margin:0 0 1rem; padding:2rem; border:0; box-shadow:0 1.6px 3.6px rgba(0,0,0,.13); }
+    .plugin-intro img { border-left:1px solid gray; }
+  }
+</style>

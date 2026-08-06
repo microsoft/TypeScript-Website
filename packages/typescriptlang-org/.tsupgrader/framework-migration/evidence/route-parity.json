@@ -1,0 +1,24 @@
+{
+  "captured": "2026-07-29",
+  "expectedApplicationRoutes": 920,
+  "generatedApplicationRoutes": 920,
+  "missing": [],
+  "extra": [],
+  "families": {
+    "root": 100,
+    "documentation": 283,
+    "tsconfig": 10,
+    "glossary": 1,
+    "playground": 10,
+    "playground-example": 361,
+    "tsconfig-option": 135,
+    "playground-handbook": 14,
+    "developer": 6
+  },
+  "redirectDeclarations": 23,
+  "uniqueRedirectPaths": 22,
+  "errorPages": 1,
+  "staticHtml": ["/License.html"],
+  "totalHtml": 944,
+  "evidence": ["target-build.log", "target-test.log"]
+}

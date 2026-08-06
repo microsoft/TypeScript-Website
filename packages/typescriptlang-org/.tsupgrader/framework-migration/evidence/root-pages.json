@@ -1,0 +1,52 @@
+{
+  "captured": "2026-07-30T04:36:56.123Z",
+  "status": "passed",
+  "before": {
+    "matched": 16,
+    "routes": 100,
+    "mismatched": 84,
+    "fields": {
+      "codeBlockCount": 30,
+      "headingTexts": 84,
+      "imageSources": 40,
+      "localLinks": 59,
+      "textHash": 84,
+      "twoslashCount": 10
+    }
+  },
+  "after": {
+    "matched": 100,
+    "routes": 100,
+    "mismatched": 0,
+    "fields": {}
+  },
+  "templates": [
+    "home",
+    "cheatsheets",
+    "community",
+    "docs",
+    "docs/handbook",
+    "download",
+    "dt/search",
+    "empty",
+    "tools",
+    "why-create-typescript"
+  ],
+  "locales": [
+    "en",
+    "es",
+    "fr",
+    "id",
+    "ja",
+    "ko",
+    "pl",
+    "pt",
+    "vo",
+    "zh"
+  ],
+  "extractedRouteCount": 100,
+  "generatedSource": "packages/typescriptlang-org-astro/src/data/root-semantics.json",
+  "targetRuntimeImportsFromGatsby": false,
+  "copiedReferencedAssets": 15,
+  "remaining": []
+}
