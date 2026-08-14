@@ -487,7 +487,5 @@ const markdownNodeToPlainText = (node: MarkdownNode): string => {
   return node.children?.map(markdownNodeToPlainText).join("") ?? "";
 };
 
-export const parseMarkdownToPlainText = (value: string | string[]): string =>
-  Array.isArray(value)
-    ? value.map(parseMarkdownToPlainText).join(" ")
-    : markdownNodeToPlainText(remark().parse(String(value)) as MarkdownNode);
+export const parseMarkdownToPlainText = (value: string): string =>
+  markdownNodeToPlainText(remark().parse(value) as MarkdownNode);

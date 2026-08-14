@@ -220,7 +220,7 @@ languages.forEach((lang) => {
         optionsSummary.push({
           id: optionName,
           display: optionFile.data.display,
-          oneliner: parseMarkdownToPlainText(optionFile.data.oneline),
+          oneliner: parseMarkdownToPlainText(String(optionFile.data.oneline)),
           categoryID: categoryID,
           categoryDisplay: categoryName,
         });
