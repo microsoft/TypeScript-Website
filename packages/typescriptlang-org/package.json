@@ -18,7 +18,7 @@
     "test": "pnpm tsc && jest"
   },
   "dependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^7.29.6",
     "@types/react-helmet": "^6.1.11",
     "@typescript/playground": "workspace:*",
     "@typescript/sandbox": "workspace:*",
