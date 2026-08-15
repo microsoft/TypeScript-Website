@@ -1,11 +1,13 @@
 ---
 display: "Out File"
-oneline: "Specify a file that bundles all outputs into one JavaScript file. If [`declaration`](#declaration) is true, also designates a file that bundles all .d.ts output."
+oneline: "Deprecated setting. Use a bundler instead."
 ---
 
-If specified, all _global_ (non-module) files will be concatenated into the single output file specified.
+This option is removed in TypeScript 6.0 and later.
+Use a bundler like esbuild, Rollup, Vite, or webpack instead.
 
-If `module` is `system` or `amd`, all module files will also be concatenated into this file after all global content.
+In earlier TypeScript versions, specifying this option concatenated all _global_ (non-module) files into the single output file specified.
 
-Note: `outFile` cannot be used unless `module` is `None`, `System`, or `AMD`.
-This option _cannot_ be used to bundle CommonJS or ES6 modules.
+If `module` was `system` or `amd`, all module files were also concatenated into this file after all global content.
+
+This option could not be used to bundle CommonJS or ES6 modules.

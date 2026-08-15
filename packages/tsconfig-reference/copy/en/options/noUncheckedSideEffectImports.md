@@ -11,10 +11,11 @@ import "some-module";
 
 These imports are often called *side effect imports* because the only useful behavior they can provide is by executing some side effect (like registering a global variable, or adding a polyfill to a prototype).
 
-By default, TypeScript will not check these imports for validity. If the import resolves to a valid source file, TypeScript will load and check the file.
-If no source file is found, TypeScript will silently ignore the import.
+By default, TypeScript checks these imports for validity. If the import resolves to a valid source file, TypeScript will load and check the file.
+If no source file is found, TypeScript will issue an error.
 
-This is surprising behavior, but it partially stems from modeling patterns in the JavaScript ecosystem.
+Older versions of TypeScript silently ignored unresolved side effect imports, but that behavior could hide typos.
+It partially stemmed from modeling patterns in the JavaScript ecosystem.
 For example, this syntax has also been used with special loaders in bundlers to load CSS or other assets.
 Your bundler might be configured in such a way where you can include specific `.css` files by writing something like the following:
 

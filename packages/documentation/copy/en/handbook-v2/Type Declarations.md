@@ -53,7 +53,7 @@ Being aware of what version of JavaScript your code ultimately runs on is import
 This is one function of the [`target`](/tsconfig#target) compiler setting.
 
 TypeScript helps with this problem by varying which `lib` files are included by default based on your [`target`](/tsconfig#target) setting.
-For example, if [`target`](/tsconfig#target) is `ES5`, you will see an error if trying to use the `startsWith` method, because that method is only available in `ES6` or later.
+For example, if [`target`](/tsconfig#target) is `ES2015`, you will see an error if trying to use the `replaceAll` method, because that method is only available in `ES2021` or later.
 
 ### `lib` setting
 
@@ -85,7 +85,8 @@ For example, if you installed the `react` npm package, you can install its corre
 npm install --save-dev @types/react
 ```
 
-TypeScript automatically finds type definitions under `node_modules/@types`, so there's no other step needed to get these types available in your program.
+When you import a package in your source code, TypeScript will automatically look for its type definitions, including definitions under `node_modules/@types`.
+If an `@types` package provides globals that you use without importing, such as `process` from `@types/node` or `describe` from `@types/jest`, add the package name to the [`types`](/tsconfig#types) field of your `tsconfig.json`.
 
 ### Your Own Definitions
 

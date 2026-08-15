@@ -359,12 +359,8 @@ function greet(person: string, date: Date) {
 greet("Maddison", new Date());
 ```
 
-Notice two things here:
+Notice that our `person` and `date` parameters no longer have type annotations.
 
-1. Our `person` and `date` parameters no longer have type annotations.
-2. Our "template string" - that string that used backticks (the `` ` `` character) - was converted to plain strings with concatenations.
-
-More on that second point later, but let's now focus on that first point.
 Type annotations aren't part of JavaScript (or ECMAScript to be pedantic), so there really aren't any browsers or other runtimes that can just run TypeScript unmodified.
 That's why TypeScript needs a compiler in the first place - it needs some way to strip out or transform any TypeScript-specific code so that you can run it.
 Most TypeScript-specific code gets erased away, and likewise, here our type annotations were completely erased.
@@ -373,45 +369,50 @@ Most TypeScript-specific code gets erased away, and likewise, here our type anno
 
 ## Downleveling
 
-One other difference from the above was that our template string was rewritten from
+One difference you might notice is how the template string is emitted depending on your compilation target.
 
-```js
+Our original code used a template string:
+
+```ts
 `Hello ${person}, today is ${date.toDateString()}!`;
 ```
 
-to
+If you compile with an older target such as ES5, TypeScript rewrites it to equivalent JavaScript using string concatenation:
 
 ```js
 "Hello ".concat(person, ", today is ").concat(date.toDateString(), "!");
 ```
 
-Why did this happen?
+Why does this happen?
 
-Template strings are a feature from a version of ECMAScript called ECMAScript 2015 (a.k.a. ECMAScript 6, ES2015, ES6, etc. - _don't ask_).
-TypeScript has the ability to rewrite code from newer versions of ECMAScript to older ones such as ECMAScript 3 or ECMAScript 5 (a.k.a. ES5).
-This process of moving from a newer or "higher" version of ECMAScript down to an older or "lower" one is sometimes called _downleveling_.
+Template strings were introduced in ECMAScript 2015 (also known as ES2015 or ES6). Older JavaScript environments don't understand this syntax, so TypeScript can rewrite it into an equivalent form that those environments do support.
 
-By default TypeScript targets ES5, an extremely old version of ECMAScript.
-We could have chosen something a little bit more recent by using the [`target`](/tsconfig#target) option.
-Running with `--target es2015` changes TypeScript to target ECMAScript 2015, meaning code should be able to run wherever ECMAScript 2015 is supported.
-So running `tsc --target es2015 hello.ts` gives us the following output:
+This process of transforming code written for a newer version of ECMAScript into code that runs on an older version is called downleveling.
+
+The default compilation target is a modern version of ECMAScript, so template strings are preserved by default. However, if you explicitly specify an older target, such as `--target es5`, TypeScript will downlevel features like template strings as needed.
+
+For example, running:
+
+```sh
+tsc --target es5 hello.ts
+```
+
+produces:
 
 ```js
 function greet(person, date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+  console.log("Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"));
 }
 greet("Maddison", new Date());
 ```
 
-> While the default target is ES5, the great majority of current browsers support ES2015.
-> Most developers can therefore safely specify ES2015 or above as a target, unless compatibility with certain ancient browsers is important.
+Choosing a newer target allows TypeScript to emit more modern JavaScript, while choosing an older target increases compatibility with older JavaScript environments by downleveling newer language features where possible.
 
 ## Strictness
 
 Different users come to TypeScript looking for different things in a type-checker.
 Some people are looking for a more loose opt-in experience which can help validate only some parts of their program, and still have decent tooling.
-This is the default experience with TypeScript, where types are optional, inference takes the most lenient types, and there's no checking for potentially `null`/`undefined` values.
-Much like how `tsc` emits in the face of errors, these defaults are put in place to stay out of your way.
+You can configure TypeScript for a looser opt-in experience where types are optional, inference takes more lenient types, and there's less checking for potentially `null`/`undefined` values.
 If you're migrating existing JavaScript, that might be a desirable first step.
 
 In contrast, a lot of users prefer to have TypeScript validate as much as it can straight away, and that's why the language provides strictness settings as well.

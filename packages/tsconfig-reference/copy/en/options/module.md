@@ -3,6 +3,8 @@ display: "Module"
 oneline: "Specify what module code is generated."
 ---
 
+**Default**: `esnext`
+
 Sets the module system for the program. See the [theory behind TypeScript’s `module` option](/docs/handbook/modules/theory.html#the-module-output-format) and [its reference page](/docs/handbook/modules/reference.html#the-module-compiler-option) for more information. You very likely want `"nodenext"` for modern Node.js projects and `preserve` or `esnext` for code that will be bundled.
 
 Changing `module` affects [`moduleResolution`](#moduleResolution) which [also has a reference page](/docs/handbook/modules/reference.html#the-moduleresolution-compiler-option).
@@ -32,6 +34,8 @@ export const twoPi = valueOfPi * 2;
 
 #### `UMD`
 
+This module kind is deprecated in TypeScript 6.0 and later.
+
 ```ts twoslash
 // @showEmit
 // @module: umd
@@ -43,6 +47,8 @@ export const twoPi = valueOfPi * 2;
 
 #### `AMD`
 
+This module kind is deprecated in TypeScript 6.0 and later.
+
 ```ts twoslash
 // @showEmit
 // @module: amd
@@ -53,6 +59,8 @@ export const twoPi = valueOfPi * 2;
 ```
 
 #### `System`
+
+This module kind is deprecated in TypeScript 6.0 and later.
 
 ```ts twoslash
 // @showEmit
@@ -115,6 +123,8 @@ While it’s rare to need to mix imports and require calls in the same file, thi
 > Why care about TypeScript’s `module` emit with a bundler or with Bun, where you’re likely also setting `noEmit`? TypeScript’s type checking and module resolution behavior are affected by the module format that it _would_ emit. Setting `module` gives TypeScript information about how your bundler or runtime will process imports and exports, which ensures that the types you see on imported values accurately reflect what will happen at runtime or after bundling.
 
 #### `None`
+
+This module kind is deprecated in TypeScript 6.0 and later.
 
 ```ts twoslash
 // @showEmit

@@ -3,7 +3,7 @@ display: "Allow Synthetic Default Imports"
 oneline: "Allow 'import x from y' when a module doesn't have a default export."
 ---
 
-When set to true, `allowSyntheticDefaultImports` allows you to write an import like:
+`allowSyntheticDefaultImports` allows you to write an import like:
 
 ```ts
 import React from "react";
@@ -17,13 +17,11 @@ import * as React from "react";
 
 When the module **does not** explicitly specify a default export.
 
-For example, without `allowSyntheticDefaultImports` as true:
+For example, this import is allowed even though `./utilFunctions` does not explicitly declare a default export:
 
 ```ts twoslash
-// @errors: 1259 1192
 // @checkJs
 // @allowJs
-// @esModuleInterop: false
 // @filename: utilFunctions.js
 // @noImplicitAny: false
 const getStringLength = (str) => str.length;
@@ -38,7 +36,6 @@ import utils from "./utilFunctions";
 const count = utils.getStringLength("Check JS");
 ```
 
-This code raises an error because there isn't a `default` object which you can import. Even though it feels like it should.
 For convenience, transpilers like Babel will automatically create a default if one isn't created. Making the module look a bit more like:
 
 ```js

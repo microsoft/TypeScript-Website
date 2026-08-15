@@ -22,8 +22,7 @@ It serves as a declaration of _dependency_ between files.
 
 Triple-slash references instruct the compiler to include additional files in the compilation process.
 
-They also serve as a method to order the output when using [`out`](/tsconfig#out) or [`outFile`](/tsconfig#outFile).
-Files are emitted to the output file location in the same order as the input after preprocessing pass.
+In TypeScript versions before 6.0, they also served as a method to order concatenated output when using `outFile`.
 
 ### Preprocessing input files
 
@@ -78,11 +77,11 @@ For example, adding `/// <reference lib="es2017.string" />` to one of the files 
 
 ## `/// <reference no-default-lib="true"/>`
 
-This directive marks a file as a _default library_.
-You will see this comment at the top of `lib.d.ts` and its different variants.
+This directive is deprecated in TypeScript 6.0.
+It was used to mark a file as a _default library_.
+You may still see this comment at the top of `lib.d.ts` and its different variants.
 
-This directive instructs the compiler to _not_ include the default library (i.e. `lib.d.ts`) in the compilation.
-The impact here is similar to passing [`noLib`](/tsconfig#noLib) on the command line.
+Use [`noLib`](/tsconfig#noLib) instead when you need to compile without the default library (i.e. `lib.d.ts`).
 
 Also note that when passing [`skipDefaultLibCheck`](/tsconfig#skipDefaultLibCheck), the compiler will only skip checking files with `/// <reference no-default-lib="true"/>`.
 

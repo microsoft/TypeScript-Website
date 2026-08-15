@@ -9,11 +9,12 @@ translatable: true
 > **A note about terminology:**
 > It's important to note that in TypeScript 1.5, the nomenclature has changed.
 > "Internal modules" are now "namespaces".
-> "External modules" are now simply "modules", as to align with [ECMAScript 2015](https://www.ecma-international.org/ecma-262/6.0/)'s terminology, (namely that `module X {` is equivalent to the now-preferred `namespace X {`).
+> "External modules" are now simply "modules", to align with [ECMAScript 2015](https://www.ecma-international.org/ecma-262/6.0/)'s terminology.
+> Use `namespace X {` when declaring a namespace; the old `module X {` spelling is deprecated in TypeScript 6.0.
 
 This post outlines the various ways to organize your code using namespaces (previously "internal modules") in TypeScript.
 As we alluded in our note about terminology, "internal modules" are now referred to as "namespaces".
-Additionally, anywhere the `module` keyword was used when declaring an internal module, the `namespace` keyword can and should be used instead.
+Additionally, anywhere the `module` keyword was used when declaring an internal module, the `namespace` keyword should be used instead.
 This avoids confusing new users by overloading them with similarly named terms.
 
 ## First steps
@@ -193,19 +194,7 @@ for (let s of strings) {
 Once there are multiple files involved, we'll need to make sure all of the compiled code gets loaded.
 There are two ways of doing this.
 
-First, we can use concatenated output using the [`outFile`](/tsconfig#outFile) option to compile all of the input files into a single JavaScript output file:
-
-```Shell
-tsc --outFile sample.js Test.ts
-```
-
-The compiler will automatically order the output file based on the reference tags present in the files. You can also specify each file individually:
-
-```Shell
-tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.ts Test.ts
-```
-
-Alternatively, we can use per-file compilation (the default) to emit one JavaScript file for each input file.
+We can use per-file compilation (the default) to emit one JavaScript file for each input file.
 If multiple JS files get produced, we'll need to use `<script>` tags on our webpage to load each emitted file in the appropriate order, for example:
 
 ##### MyTestPage.html (excerpt)

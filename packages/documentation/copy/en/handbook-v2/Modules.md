@@ -28,7 +28,7 @@ Before we start, it's important to understand what TypeScript considers a module
 The JavaScript specification declares that any JavaScript files without an `import` declaration, `export`, or top-level `await` should be considered a script and not a module.
 
 
-Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll either use the [`outFile`](/tsconfig#outFile) compiler option to join multiple input files into one output file, or use multiple `<script>` tags in your HTML to load these files (in the correct order!).
+Inside a script file variables and types are declared to be in the shared global scope, and it's assumed that you'll use multiple `<script>` tags in your HTML to load these files in the correct order.
 
 If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
 
@@ -404,4 +404,4 @@ You can see all of the available options and what their emitted JavaScript code 
 
 ## TypeScript namespaces
 
-TypeScript has its own module format called `namespaces` which pre-dates the ES Modules standard. This syntax has a lot of useful features for creating complex definition files, and still sees active use [in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). While not deprecated, the majority of the features in namespaces exist in ES Modules and we recommend you use that to align with JavaScript's direction. You can learn more about namespaces in [the namespaces reference page](/docs/handbook/namespaces.html).
+TypeScript has its own module format called `namespaces` which pre-dates the ES Modules standard. This syntax has a lot of useful features for creating complex definition files, and still sees active use [in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). While the `namespace` keyword is not deprecated, the legacy `module` keyword for namespaces is deprecated in TypeScript 6.0. The majority of the features in namespaces exist in ES Modules and we recommend you use that to align with JavaScript's direction. You can learn more about namespaces in [the namespaces reference page](/docs/handbook/namespaces.html).

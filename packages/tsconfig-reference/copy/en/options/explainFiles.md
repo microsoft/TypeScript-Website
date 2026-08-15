@@ -19,7 +19,7 @@ Using a `tsconfig.json` which has `explainFiles` set to true:
 ```json
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "commonjs",
     "explainFiles": true
   }
@@ -31,9 +31,9 @@ Running TypeScript against this folder would have output like this:
 ```
 ❯ tsc
 node_modules/typescript/lib/lib.d.ts
-  Default library for target 'es5'
-node_modules/typescript/lib/lib.es5.d.ts
-  Library referenced via 'es5' from file 'node_modules/typescript/lib/lib.d.ts'
+  Default library for target 'es2015'
+node_modules/typescript/lib/lib.es2015.d.ts
+  Library referenced via 'es2015' from file 'node_modules/typescript/lib/lib.d.ts'
 node_modules/typescript/lib/lib.dom.d.ts
   Library referenced via 'dom' from file 'node_modules/typescript/lib/lib.d.ts'
 node_modules/typescript/lib/lib.webworker.importscripts.d.ts

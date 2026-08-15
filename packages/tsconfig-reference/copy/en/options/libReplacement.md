@@ -18,5 +18,4 @@ For example, you could lock your `dom` libraries onto a specific version of [the
 When installed, a package called `@typescript/lib-dom` should exist, and TypeScript would always look there when searching for `lib.dom.d.ts`.
 
 The `--libReplacement` flag allows you to disable this behavior.
-If you're not using any `@typescript/lib-*` packages, you can now disable those package lookups with `--libReplacement false`.
-In the future, `--libReplacement false` may become the default, so if you currently rely on the behavior you should consider explicitly enabling it with `--libReplacement true`.
+If you are using `@typescript/lib-*` packages, explicitly enable those package lookups with `--libReplacement true`.

@@ -8,28 +8,28 @@ disable_toc: true
 
 ## Using the CLI
 
-Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, or you can compile a set of TypeScript
-files by passing in a glob of files you want. When input files are specified on the command line, `tsconfig.json` files are
-ignored.
+Running `tsc` locally will compile the closest project defined by a `tsconfig.json`.
+You can compile specific files by passing them on the command line, but in TypeScript 6.0 and later this is an error if a `tsconfig.json` would otherwise be loaded.
+Use `--ignoreConfig` when you want to compile command-line files with only the options passed on the command line.
 
 ```sh
 # Run a compile based on a backwards look through the fs for a tsconfig.json
 tsc
 
 # Emit JS for just the index.ts with the compiler defaults
-tsc index.ts
+tsc --ignoreConfig index.ts
 
 # Emit JS for any .ts files in the folder src, with the default settings
-tsc src/*.ts
+tsc --ignoreConfig src/*.ts
 
 # Emit files referenced in with the compiler settings from tsconfig.production.json
 tsc --project tsconfig.production.json
 
 # Emit d.ts files for a js file with showing compiler options which are booleans
-tsc index.js --declaration --emitDeclarationOnly
+tsc --ignoreConfig index.js --declaration --emitDeclarationOnly
 
-# Emit a single .js file from two files via compiler options which take string arguments
-tsc app.ts util.ts --target esnext --outfile index.js
+# Emit JavaScript files to a specific folder via compiler options which take string arguments
+tsc --ignoreConfig app.ts util.ts --target esnext --outDir dist
 ```
 
 ## Compiler Options
@@ -305,7 +305,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#allowSyntheticDefaultImports'>--allowSyntheticDefaultImports</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> if <a href="#esModuleInterop"><code>esModuleInterop</code></a> is enabled, <a href="#module"><code>module</code></a> is <code>system</code>, or <a href="#module-resolution"><code>moduleResolution</code></a> is <code>bundler</code>; <code>false</code> otherwise.</p>
+  <td><p><code>true</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -372,7 +372,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify the base directory to resolve bare specifier module names.</p>
+<p>Deprecated in TypeScript 6.0. Use <a href="#paths"><code>paths</code></a> entries instead.</p>
 </td></tr>
 
 <tr class='odd' name='charset'>
@@ -846,7 +846,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#module'>--module</a></code></td>
   <td><p><code>none</code>, <code>commonjs</code>, <code>amd</code>, <code>umd</code>, <code>system</code>, <code>es6</code>/<code>es2015</code>, <code>es2020</code>, <code>es2022</code>, <code>esnext</code>, <code>node16</code>, <code>node18</code>, <code>node20</code>, <code>nodenext</code>, or <code>preserve</code></p>
 </td>
-  <td><p><code>CommonJS</code> if <a href="#target"><code>target</code></a> is <code>ES5</code>; <code>ES6</code>/<code>ES2015</code> otherwise.</p>
+  <td><p><code>esnext</code></p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
@@ -1112,7 +1112,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Deprecated setting. Use <a href="#outFile"><code>outFile</code></a> instead.</p>
+<p>Deprecated setting. Use an external bundler instead.</p>
 </td></tr>
 
 <tr class='odd' name='outDir'>
@@ -1132,7 +1132,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td></td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify a file that bundles all outputs into one JavaScript file. If <a href="#declaration"><code>declaration</code></a> is true, also designates a file that bundles all .d.ts output.</p>
+<p>Removed in TypeScript 6.0. Use an external bundler instead.</p>
 </td></tr>
 
 <tr class='odd' name='paths'>
@@ -1465,7 +1465,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#target'>--target</a></code></td>
   <td><p><code>es3</code>, <code>es5</code>, <code>es6</code>/<code>es2015</code>, <code>es2016</code>, <code>es2017</code>, <code>es2018</code>, <code>es2019</code>, <code>es2020</code>, <code>es2021</code>, <code>es2022</code>, <code>es2023</code>, <code>es2024</code>, <code>es2025</code>, or <code>esnext</code></p>
 </td>
-  <td><p><code>es2023</code> if <a href="#module"><code>module</code></a> is <code>node20</code>; <code>esnext</code> if <a href="#module"><code>module</code></a> is <code>nodenext</code>; <code>ES5</code> otherwise.</p>
+  <td><p>The most recent stable ECMAScript version.</p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">

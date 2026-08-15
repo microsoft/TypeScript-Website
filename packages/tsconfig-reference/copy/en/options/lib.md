@@ -30,16 +30,19 @@ In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in
 | `ES2021`     | Additional APIs available in ES2021 - `promise.any`, `string.replaceAll` etc.                                                                     |
 | `ES2022`     | Additional APIs available in ES2022 - `array.at`, `RegExp.hasIndices`, etc.                                                                       |
 | `ES2023`     | Additional APIs available in ES2023 - `array.with`, `array.findLast`, `array.findLastIndex`, `array.toSorted`, `array.toReversed`, etc.           |
+| `ES2024`     | Additional APIs available in ES2024 - `Object.groupBy`, `Map.groupBy`, `Promise.withResolvers`, `ArrayBuffer`, `SharedArrayBuffer`, etc.          |
+| `ES2025`     | Additional APIs available in ES2025 - `RegExp.escape`, `Map` and `WeakMap` upsert methods, etc.                                                   |
 | `ESNext`     | Additional APIs available in ESNext - This changes as the JavaScript specification evolves                                                        |
 | `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc.                                                   |
 | `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts                              |
 | `ScriptHost` | APIs for the [Windows Script Hosting System](https://wikipedia.org/wiki/Windows_Script_Host)                                                      |
 
+In TypeScript 6.0 and later, `DOM` includes the contents that were previously split into `DOM.Iterable` and `DOM.AsyncIterable`.
+
 ### Individual library components
 
 | Name                      |
 | ------------------------- |
-| `DOM.Iterable`            |
 | `ES2015.Core`             |
 | `ES2015.Collection`       |
 | `ES2015.Generator`        |

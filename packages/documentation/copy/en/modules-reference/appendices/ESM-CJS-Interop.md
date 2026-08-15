@@ -280,7 +280,7 @@ In a TypeScript _application_ (as opposed to a library that others may consume) 
 
 In an application that gets processed by a third-party transpiler or bundler, on the other hand, enabling `esModuleInterop` is more important. All major bundlers and transpilers use an `esModuleInterop`-like emit strategy, so TypeScript needs to adjust its checking to match. (The compiler always reasons about what will happen in the JavaScript files that `tsc` would emit, so even if another tool is being used in place of `tsc`, emit-affecting compiler options should still be set to match the output of that tool as closely as possible.)
 
-`allowSyntheticDefaultImports` without `esModuleInterop` should be avoided. It changes the compiler’s checking behavior without changing the code emitted by `tsc`, allowing potentially unsafe JavaScript to be emitted. Additionally, the checking changes it introduces are an incomplete version of the ones introduced by `esModuleInterop`. Even if `tsc` isn’t being used for emit, it’s better to enable `esModuleInterop` than `allowSyntheticDefaultImports`.
+Before TypeScript 6.0, `allowSyntheticDefaultImports` without `esModuleInterop` changed the compiler’s checking behavior without changing the code emitted by `tsc`, allowing potentially unsafe JavaScript to be emitted. TypeScript 6.0 and later always enables `esModuleInterop` and `allowSyntheticDefaultImports`.
 
 Some people object to the inclusion of the `__importDefault` and `__importStar` helper functions included in `tsc`’s JavaScript output when `esModuleInterop` is enabled, either because it marginally increases the output size on disk or because the interop algorithm employed by the helpers seems to misrepresent Node.js’s interop behavior by checking for `__esModule`, leading to the hazards discussed earlier. Both of these objections can be addressed, at least partially, without accepting the flawed checking behavior exhibited with `esModuleInterop` disabled. First, the `importHelpers` compiler option can be used to import the helper functions from `tslib` rather than inlining them into each file that needs them. To discuss the second objection, let’s look at a final example:
 
@@ -357,7 +357,7 @@ import express = require("express");
 // ...
 ```
 
-Examples like this have led to conventional wisdom that says libraries should _not_ enable `esModuleInterop`. This advice is a reasonable start, but we’ve looked at examples where the type of a namespace import changes, potentially _introducing_ an error, when enabling `esModuleInterop`. So whether libraries compile with or without `esModuleInterop`, they run the risk of writing syntax that makes their choice infectious.
+Examples like this led to conventional wisdom that libraries should _not_ enable `esModuleInterop`. In TypeScript 6.0 and later, `esModuleInterop` is always enabled, so libraries should avoid namespace imports for callable CommonJS exports and prefer syntax that remains portable for consumers.
 
 Library authors who want to go above and beyond to ensure maximum compatibility would do well to validate their declaration files against a matrix of compiler options. But using `verbatimModuleSyntax` completely sidesteps the issue with `esModuleInterop` by forcing CommonJS-emitting files to use CommonJS-style import and export syntax. Additionally, since `esModuleInterop` only affects CommonJS, as more libraries move to ESM-only publishing over time, the relevance of this issue will decline.
 
