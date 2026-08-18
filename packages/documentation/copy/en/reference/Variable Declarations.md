@@ -867,7 +867,7 @@ class DatabaseTransaction implements AsyncDisposable {
 
   async [Symbol.asyncDispose]() {
     if (this.db) {
-      const db = this.db:
+      const db = this.db;
       this.db = undefined;
       if (this.success) {
         await db.execAsync("COMMIT TRANSACTION");
