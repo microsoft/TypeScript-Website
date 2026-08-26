@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/compile-documentation.mjs && astro build && node scripts/postbuild.mjs",
-    "build:dependencies": "pnpm --dir ../typescript-vfs exec dts build && pnpm --dir ../ts-twoslasher exec dts build && pnpm --dir ../sandbox exec dts build --tsconfig tsconfig.lib.json",
+    "build:dependencies": "pnpm --dir ../typescript-vfs build && pnpm --dir ../ata build && pnpm --dir ../sandbox bootstrap && pnpm --dir ../ts-twoslasher build && pnpm --dir ../sandbox build",
     "generate:content": "pnpm --dir ../documentation bootstrap && pnpm --dir ../glossary build && pnpm --dir ../playground-examples build && pnpm --dir ../playground-handbook build && pnpm --dir ../tsconfig-reference generate:site",
     "build:site": "pnpm generate:content && pnpm build:dependencies && pnpm sync-assets && pnpm build",
     "test:browser": "playwright test",
