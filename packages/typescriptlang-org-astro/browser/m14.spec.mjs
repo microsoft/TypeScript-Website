@@ -1,4 +1,8 @@
+import fs from "node:fs"
 import { test, expect } from "@playwright/test"
+
+const hasLocalizedTSConfig = fs.existsSync(new URL("../../tsconfig-reference/copy/ja/", import.meta.url))
+const hasLocalizedPlayground = fs.existsSync(new URL("../../playground-examples/copy/zh/", import.meta.url))
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
@@ -74,11 +78,14 @@ test("documentation ToC, hash, previous-next and feedback work", async ({ page }
   await expect(feedback).toHaveText("Thanks for the feedback")
 })
 
-test("TSConfig reference quick navigation, active section, hash, and localized root work", async ({ page }, testInfo) => {
+test("localized TSConfig root works", async ({ page }) => {
+  test.skip(!hasLocalizedTSConfig, "requires synchronized TSConfig translations")
   await page.goto("/ja/tsconfig")
   await expect(page.locator("html")).toHaveAttribute("lang", "ja")
   await expect(page.locator('[data-route-family="tsconfig"]')).toBeVisible()
+})
 
+test("TSConfig reference quick navigation, active section, and hash work", async ({ page }) => {
   await page.goto("/tsconfig")
   const quickLink = page.locator('.tsconfig-quick-nav a[href="#allowJs"]')
   await expect(quickLink).toBeVisible()
@@ -179,6 +186,7 @@ test("developer routes preserve useful content and workbenches", async ({ page }
 })
 
 test("localized Playground semantics preserve settings, fragment, and independent runtime", async ({ page }) => {
+  test.skip(!hasLocalizedPlayground, "requires synchronized Playground translations")
   await page.goto("/zh/play?strict=true&jsx=2&target=7#example/hello-world")
   await expect(page.locator("#compiler-options-button")).toHaveText("配置")
   await expect(page.locator("#compiler-options-dropdown h3")).toHaveText("配置")

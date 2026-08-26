@@ -60,9 +60,10 @@ test("renders concurrent Twoslash documents without losing the language registry
   }
 })
 
-test("resolves translated relative Markdown links from source paths", () => {
+const koreanModuleResolution = path.resolve("..", "documentation", "copy", "ko", "reference", "Module Resolution.md")
+test("resolves translated relative Markdown links from source paths", { skip: !fs.existsSync(koreanModuleResolution) }, () => {
   const sourceRouteMap = new Map([
-    [path.resolve("..", "documentation", "copy", "ko", "reference", "Module Resolution.md").toLowerCase(), "/ko/docs/handbook/module-resolution.html"],
+    [koreanModuleResolution.toLowerCase(), "/ko/docs/handbook/module-resolution.html"],
   ])
 
   assert.equal(

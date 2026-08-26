@@ -3,13 +3,15 @@ import { fileURLToPath } from "node:url"
 
 import { updateDocumentationCache, writeDocumentationCache } from "../src/lib/documentation-cache.mjs"
 import { renderMarkdown } from "../src/lib/markdown.mjs"
-import { createRoutes, expectedCounts } from "../src/lib/routes.mjs"
+import { createRoutes, minimumDocumentationCount } from "../src/lib/routes.mjs"
 
 const pages = createRoutes()
 const linkedAssetRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.generated-public")
 const documentationPages = pages.filter(page => page.family === "documentation")
-if (documentationPages.length !== expectedCounts.documentation) {
-  throw new Error(`Expected ${expectedCounts.documentation} documentation pages, found ${documentationPages.length}`)
+if (documentationPages.length < minimumDocumentationCount) {
+  throw new Error(
+    `Expected at least ${minimumDocumentationCount} documentation pages, found ${documentationPages.length}`
+  )
 }
 
 const requestedSources = new Set(

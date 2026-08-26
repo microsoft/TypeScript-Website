@@ -200,7 +200,9 @@ for (const lang of langs) {
   const langMap = new Map();
   langInfo[lang] = langMap;
 
-  const allEnPages = getFilePaths(enRoot).filter((f) => !/[\\/]modules-reference[\\/]diagrams[\\/]/.test(f));
+  const allEnPages = getFilePaths(enRoot).filter(
+    (f) => !/[\\/]modules-reference[\\/]diagrams[\\/]/.test(f)
+  );
   for (const page of allEnPages) {
     const relativeToLangPath = page.replace(enRoot, "");
     const localPage = join(copyPath, lang + relativeToLangPath);
@@ -235,13 +237,16 @@ function createNavEntry(lang, sectionIndex, item) {
     };
 
     if (item.items?.length) {
-      entry.items = item.items.map((subItem) => createNavEntry(lang, sectionIndex, subItem));
+      entry.items = item.items.map((subItem) =>
+        createNavEntry(lang, sectionIndex, subItem)
+      );
     }
 
     return entry;
   }
 
-  const subNavInfo = langInfo[lang].get(item.file) || langInfo["en"].get(item.file);
+  const subNavInfo =
+    langInfo[lang].get(item.file) || langInfo["en"].get(item.file);
   if (!subNavInfo) throwForUnfoundFile(item, lang, langInfo["en"]);
 
   return {
@@ -258,14 +263,31 @@ function createNavigationForLanguage(lang) {
     oneline: section.summary,
     id: section.title.toLowerCase().replace(/\s/g, "-"),
     chronological: section.chronological || false,
-    items: section.items.map((item) => createNavEntry(lang, sectionIndex, item)),
+    items: section.items.map((item) =>
+      createNavEntry(lang, sectionIndex, item)
+    ),
   }));
 }
 
-const navigationArtifacts = Object.fromEntries(langs.map((lang) => [lang, createNavigationForLanguage(lang)]));
-
-const pathToNavigationArtifact = join(__dirname, "..", "output", "navigation.json");
-writeFileSync(pathToNavigationArtifact, JSON.stringify(navigationArtifacts, null, 2) + "\n");
+const pathToNavigationArtifact = join(
+  __dirname,
+  "..",
+  "output",
+  "navigation.json"
+);
+const existingNavigationArtifacts = existsSync(pathToNavigationArtifact)
+  ? JSON.parse(readFileSync(pathToNavigationArtifact, "utf8"))
+  : {};
+const navigationArtifacts = {
+  ...existingNavigationArtifacts,
+  ...Object.fromEntries(
+    langs.map((lang) => [lang, createNavigationForLanguage(lang)])
+  ),
+};
+writeFileSync(
+  pathToNavigationArtifact,
+  JSON.stringify(navigationArtifacts, null, 2) + "\n"
+);
 
 /**
  * @typedef {Object} HandbookNavSubItem

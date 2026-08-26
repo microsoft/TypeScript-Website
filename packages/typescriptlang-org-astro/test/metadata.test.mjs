@@ -19,9 +19,15 @@ test("derives documentation metadata from independent frontmatter", () => {
 })
 
 test("derives localized Playground metadata", () => {
-  assert.equal(metadataFor("zh/play").ogTitle, "演练场 - 一个用于 TypeScript 和 JavaScript 的在线编辑器")
-  assert.match(metadataFor("fr/play").description, /Le playground/)
-  assert.equal(metadataFor("id/play/3-7/fixits/big-number-literals.ts.html").ogTitle, "Contoh Area Bermain - Big number literals")
+  assert.match(metadataFor("play").description, /Playground/)
+  if (routes.some(route => route.pathname === "zh/play")) {
+    assert.equal(metadataFor("zh/play").ogTitle, "演练场 - 一个用于 TypeScript 和 JavaScript 的在线编辑器")
+    assert.match(metadataFor("fr/play").description, /Le playground/)
+    assert.equal(
+      metadataFor("id/play/3-7/fixits/big-number-literals.ts.html").ogTitle,
+      "Contoh Area Bermain - Big number literals"
+    )
+  }
 })
 
 test("derives TSConfig and developer metadata", () => {
