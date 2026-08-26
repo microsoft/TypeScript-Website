@@ -22,9 +22,62 @@ pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 pnpm start
 ```
 
-`pnpm start` generates the required site inputs and starts Astro on port `4321`.
-Use `pnpm build` to create a production build and
-`pnpm --dir packages/typescriptlang-org-astro preview` to test that build locally.
+### Local website development
+
+Run `pnpm start` from the repository root and open <http://localhost:4321>.
+
+On the first run after cloning, `pnpm start` generates the content, dependencies,
+browser assets, and documentation cache required by the Astro development server.
+This preparation can take several minutes. Later runs reuse those generated artifacts
+and normally start within a few seconds.
+
+Keep the command running while you work. Astro hot reloads its source files. Saving a
+Markdown file under `packages/documentation/copy` also regenerates the documentation
+navigation, recompiles the changed page, and reloads Astro. You do not need to update
+`packages/documentation/output/navigation.json` manually.
+
+If generated content or dependencies appear stale, force a complete refresh before
+starting the development server:
+
+```sh
+pnpm --dir packages/typescriptlang-org-astro dev:fresh
+```
+
+### Validate a website change
+
+Run the checks relevant to your change before opening a pull request:
+
+```sh
+# Astro and TypeScript diagnostics
+pnpm compile
+
+# Content and generated-output tests
+pnpm --dir packages/typescriptlang-org-astro test
+
+# Complete production build
+pnpm build-site
+
+# Browser tests on the production build, using desktop and mobile projects
+pnpm --dir packages/typescriptlang-org-astro test:browser
+```
+
+`pnpm build-site` always regenerates all content, dependencies, and assets. It then
+pre-renders and bundles the production website into
+`packages/typescriptlang-org-astro/dist`, creates redirects and 404 configuration,
+repairs compatibility links and anchors, and writes the sitemap and route manifest.
+It does not start a persistent server or run the test suites listed above. The browser
+tests temporarily serve the completed `dist` directory themselves.
+
+To inspect the completed production build locally, run:
+
+```sh
+pnpm --dir packages/typescriptlang-org-astro preview
+```
+
+The usual contribution flow is to run `pnpm start`, make and inspect the change,
+run the relevant validation commands, review `git status` and `git diff`, commit the
+intended files, push the branch, and open a pull request. CI repeats the required build
+and validation before a reviewed change is merged and deployed.
 
 Some useful knowledge you need to know:
 
