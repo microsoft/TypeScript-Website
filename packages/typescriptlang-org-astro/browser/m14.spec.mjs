@@ -124,6 +124,13 @@ test("theme and font persist and consent initializes", async ({ page }) => {
 
 test("documented marketing journeys reach useful outcomes", async ({ page }, testInfo) => {
   await page.goto("/")
+  await expect(page.locator("#index-2")).toBeVisible()
+  await expect(page.locator("#above-the-fold-headline-code")).toBeVisible()
+  await expect(page.getByText(/is now available/).first()).toBeVisible()
+  const editorTabs = page.locator("#index-2 .editor-tabs [role=tab]")
+  await editorTabs.nth(1).click()
+  await expect(editorTabs.nth(1)).toHaveAttribute("aria-selected", "true")
+  await expect(page.locator("#above-the-fold-headline-code")).toHaveAttribute("data-selected-example", "1")
   await page.locator('main a[href="/download"]').first().click()
   await expect(page).toHaveURL(/\/download\/?$/)
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
@@ -135,6 +142,14 @@ test("documented marketing journeys reach useful outcomes", async ({ page }, tes
   await page.locator('main a[href^="/docs/"]').first().click()
   await expect(page).toHaveURL(/\/docs\//)
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
+})
+
+test("docs landing preserves its established card layout", async ({ page }) => {
+  await page.goto("/docs/")
+  await expect(page).toHaveTitle("TypeScript: The starting point for learning TypeScript")
+  await expect(page.locator("#docs-landing .columns.wide")).toBeVisible()
+  await expect(page.locator("#docs-landing .item.raised")).toHaveCount(13)
+  await expect(page.locator("#docs-landing .root-semantic-content")).toHaveCount(0)
 })
 
 test("developer routes preserve useful content and workbenches", async ({ page }) => {

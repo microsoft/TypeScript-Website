@@ -1,0 +1,12 @@
+---
+import layouts from "../generated/static-page-layouts.json"
+
+const { html, styles } = layouts.pages.docs
+---
+<div id="docs-landing"><Fragment set:html={html} /></div>
+<style is:global set:html={styles}></style>
+<style is:global>
+  #docs-landing .main-content-block { box-sizing: content-box; }
+  main script { display: none; }
+  main img { max-width: 100%; height: auto; }
+</style>

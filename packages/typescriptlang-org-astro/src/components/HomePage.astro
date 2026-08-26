@@ -1,28 +1,89 @@
 ---
-import { getHomePageContent } from "../lib/root-pages.mjs"
-
+import extracted from "../generated/homepage.json"
+import { Code as ShowErrorsExample } from "./home-editor-examples/showErrors"
+import { Code as TypeDefinitionsExample } from "./home-editor-examples/typeDefinitions"
+import { Code as InterfaceExample } from "./home-editor-examples/interface"
+import { Code as ReactExample } from "./home-editor-examples/react"
 interface Props { locale: string }
 const { locale } = Astro.props
-const text = getHomePageContent(locale)
 const prefix = locale === "en" ? "" : `/${locale}`
-type HomeFeature = { title: string; bodyHtml: string }
-type HomeCard = { title: string; body: string; href: string }
----
-<section class="hero">
-  <h1 set:html={text.headingHtml}></h1>
-  <p>{text.byline}</p><p>{text.summary}</p>
-  <div class="button-row"><a class="button primary" href={`${prefix}/play/`}>{text.tryNow}</a><a class="button" href={`${prefix}/download`}>{text.installCta}</a></div>
-</section>
-<section class="content-width">
-  <h2>{text.whatIs}</h2>
-  <div class="feature-grid">
-    {text.features.map((feature: HomeFeature) => <article class="feature-card raised"><h2>{feature.title}</h2><p set:html={feature.bodyHtml}></p></article>)}
-  </div>
-  <div class="raised main-content-block"><h2>{text.describeTitle}</h2><pre><code>{`interface User {
-  name: string
-  id: number
+let html = extracted.html
+let footer = extracted.footer
+if (prefix) {
+  html = html.replace(/href="\/(?!\/|#)/g, `href="${prefix}/`)
+  footer = footer.replace(/href="\/(?!\/|#)/g, `href="${prefix}/`)
 }
+---
+<Fragment set:html={html} />
+<Fragment set:html={footer} />
+<template data-home-editor-example="0"><ShowErrorsExample /></template>
+<template data-home-editor-example="1"><TypeDefinitionsExample /></template>
+<template data-home-editor-example="2"><InterfaceExample /></template>
+<template data-home-editor-example="3"><ReactExample /></template>
+<style is:global set:html={extracted.styles}></style>
+<style is:global>
+  #index-2 img { max-width: 100%; }
+  /* Keep the server-rendered sequence in its initial state without client hydration. */
+  #index-2 .adopt-step:not(:first-child) { display: none; }
+  @media (min-width: 801px) {
+    #index-2 #get-started .container { min-height: 1475px; }
+  }
+  @media (max-width: 800px) {
+    #index-2 #get-started .container { min-height: 2660px; }
+  }
+  /* Keep source light surfaces under the persisted dark-theme control. */
+  .dark-theme #index-2 .white, .dark-theme #index-2 .light-grey { color: #000; }
+  .dark-theme #index-2 .white a, .dark-theme #index-2 .light-grey a { color: #235a97; }
+</style>
+<script is:inline>
+  (() => {
+    const root = document.getElementById("index-2")
+    if (!root) return
 
-const user: User = { name: "Ada", id: 1 }`}</code></pre><p set:html={text.describeBodyHtml}></p></div>
-  <div class="feature-grid">{text.startedCards.map((card: HomeCard) => <article class="feature-card"><h2>{card.title}</h2><p><a href={`${prefix}${card.href}`}>{card.body}</a></p></article>)}</div>
-</section>
+    const tabs = [...root.querySelectorAll(".editor-tabs [role=tab]")]
+    const examples = [...document.querySelectorAll("template[data-home-editor-example]")].map(template => template.innerHTML)
+    const panel = root.querySelector("#above-the-fold-headline-code")
+    const code = panel?.querySelector(".text")
+    const tablist = root.querySelector(".editor-tabs[role=tablist]")
+    tablist?.setAttribute("aria-label", "TypeScript code examples")
+    panel?.setAttribute("role", "tabpanel")
+    panel?.setAttribute("tabindex", "0")
+    tabs.forEach(tab => tab.setAttribute("aria-controls", "above-the-fold-headline-code"))
+
+    const selectTab = index => {
+      tabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === index
+        tab.classList.toggle("selected", selected)
+        tab.setAttribute("aria-selected", String(selected))
+        tab.tabIndex = selected ? 0 : -1
+      })
+      if (code && examples[index]) code.innerHTML = `<div>${examples[index]}</div>`
+      panel?.setAttribute("data-selected-example", String(index))
+      panel?.setAttribute("aria-labelledby", tabs[index]?.id || "")
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectTab(index))
+      tab.addEventListener("keydown", event => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return
+        event.preventDefault()
+        const direction = event.key === "ArrowRight" ? 1 : -1
+        const next = (index + direction + tabs.length) % tabs.length
+        selectTab(next)
+        tabs[next]?.focus()
+      })
+    })
+
+    const showNextExample = event => {
+      event.preventDefault()
+      const selected = Math.max(0, tabs.findIndex(tab => tab.getAttribute("aria-selected") === "true"))
+      selectTab((selected + 1) % tabs.length)
+    }
+    const nextButton = root.querySelector(".next-headline-button")
+    nextButton?.addEventListener("click", showNextExample)
+    nextButton?.addEventListener("keydown", event => {
+      if (event.key === " ") showNextExample(event)
+    })
+    selectTab(0)
+  })()
+</script>

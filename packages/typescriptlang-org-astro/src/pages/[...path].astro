@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro"
 import BrandingPage from "../components/BrandingPage.astro"
 import CheatsheetsPage from "../components/CheatsheetsPage.astro"
 import CommunityPage from "../components/CommunityPage.astro"
+import DocsLandingPage from "../components/DocsLandingPage.astro"
 import DocumentationPage from "../components/DocumentationPage.astro"
 import DeveloperPage from "../components/DeveloperPage.astro"
 import DownloadPage from "../components/DownloadPage.astro"
@@ -85,19 +86,21 @@ const tsconfigIntroHtml = tsconfigIntroDocument ? await renderMarkdown(tsconfigI
 const glossaryMetaPath = page.family === "glossary" && page.source ? path.join(path.dirname(page.source), "en.json") : ""
 const glossaryMeta = glossaryMetaPath && fs.existsSync(glossaryMetaPath) ? JSON.parse(fs.readFileSync(glossaryMetaPath, "utf8")) : { terms: [] }
 const metadata = getRouteMetadata(page, allRoutes)
+const layoutTitle = page.family === "root" && page.pathname === "docs" ? metadata.ogTitle : pageHeading
 const layoutLocale = page.pathname === "ja/download" ? "ja" : page.locale
 const canonical = page.family === "documentation" && page.frontmatter?.deprecated_by
   ? new URL(page.frontmatter.deprecated_by, "https://www.typescriptlang.org/").href
   : undefined
 ---
-<Layout title={pageHeading} description={metadata.description} ogTitle={metadata.ogTitle} lang={layoutLocale} canonical={canonical} ogType={page.family === "documentation" ? "article" : "website"} compactFooter={false} suppressCustomization={page.family === "root" && !page.pathname} suppressPopularFooter={page.family === "root" && !page.pathname} skipTo={page.family === "documentation" ? "#handbook-content" : undefined}>
+<Layout title={layoutTitle} description={metadata.description} ogTitle={metadata.ogTitle} lang={layoutLocale} canonical={canonical} ogType={page.family === "documentation" ? "article" : "website"} compactFooter={false} suppressCustomization={page.family === "root" && !page.pathname} suppressPopularFooter={page.family === "root" && !page.pathname} suppressFooter={page.family === "root" && !page.pathname} skipTo={page.family === "documentation" ? "#handbook-content" : undefined}>
   <div data-route-family={page.family}>
     {page.family === "root" && !page.pathname && <HomePage locale={page.locale} />}
     {page.family === "root" && /(^|\/)download$/.test(page.pathname) && <DownloadPage locale={page.locale} />}
     {page.family === "root" && /(^|\/)cheatsheets$/.test(page.pathname) && <CheatsheetsPage />}
     {page.family === "root" && /(^|\/)community$/.test(page.pathname) && <CommunityPage />}
     {page.family === "root" && /(^|\/)tools$/.test(page.pathname) && <ToolsPage />}
-    {page.family === "root" && page.pathname && !/(^|\/)(download|cheatsheets|community|tools)$/.test(page.pathname) && <RootPage pathname={page.pathname} locale={page.locale} title={pageHeading} allRoutes={allRoutes} />}
+    {page.family === "root" && page.pathname === "docs" && <DocsLandingPage />}
+    {page.family === "root" && page.pathname && !/(^|\/)(download|cheatsheets|community|tools)$/.test(page.pathname) && page.pathname !== "docs" && <RootPage pathname={page.pathname} locale={page.locale} title={pageHeading} allRoutes={allRoutes} />}
     {page.family === "documentation" && <DocumentationPage title={pageHeading} rendered={renderedMarkdown} navigation={documentationNavigation(allRoutes, page.locale, page.pathname)} headings={headingList} previous={previous} next={next} frontmatter={page.frontmatter} repoPath={page.repoPath} modifiedTime={page.modifiedTime} attribution={page.attribution} />}
     {page.family === "tsconfig" && <TSConfigPage rendered={renderedMarkdown} categories={tsconfigMeta.categories || []} introHeader={tsconfigIntro.header} introPreview={tsconfigIntro.firstLine} introHtml={tsconfigIntroHtml} />}
     {page.family === "glossary" && <GlossaryPage rendered={renderedMarkdown} terms={glossaryMeta.terms || []} />}
