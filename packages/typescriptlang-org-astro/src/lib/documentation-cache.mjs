@@ -23,10 +23,27 @@ export function writeDocumentationCache(entries, root = documentationCacheRoot) 
   return manifest
 }
 
+export function updateDocumentationCache(entries, root = documentationCacheRoot) {
+  fs.mkdirSync(root, { recursive: true })
+  const manifestPath = path.join(root, "manifest.json")
+  const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, "utf8")) : {}
+
+  for (const [pathname, html] of entries) {
+    const filename = cacheFilename(pathname)
+    fs.writeFileSync(path.join(root, filename), html)
+    manifest[pathname] = filename
+  }
+
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+  return manifest
+}
+
 export function readDocumentationCache(pathname, root = documentationCacheRoot) {
   const manifestPath = path.join(root, "manifest.json")
   if (!fs.existsSync(manifestPath)) {
-    throw new Error(`Documentation cache is missing. Run the documentation precompiler before building: ${manifestPath}`)
+    throw new Error(
+      `Documentation cache is missing. Run the documentation precompiler before building: ${manifestPath}`
+    )
   }
 
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"))

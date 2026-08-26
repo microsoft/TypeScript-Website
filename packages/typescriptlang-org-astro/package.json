@@ -11,7 +11,7 @@
     "build:site": "pnpm generate:content && pnpm build:dependencies && pnpm sync-assets && pnpm build",
     "test:browser": "playwright test",
     "check": "astro check",
-    "dev": "pnpm generate:content && pnpm build:dependencies && pnpm sync-assets && astro dev",
+    "dev": "pnpm generate:content && pnpm build:dependencies && pnpm sync-assets && node scripts/compile-documentation.mjs && astro dev",
     "start": "pnpm dev",
     "preview": "astro preview",
     "sync-assets": "node scripts/sync-assets.mjs",
