@@ -5,7 +5,7 @@
 
 ### Getting Started
 
-This repo uses pnpm workspaces with node 20+, and [watchman](https://facebook.github.io/watchman/docs/install.html). (Windows users can install [watchman via chocolatey](https://chocolatey.org/packages/watchman))
+This repo uses pnpm workspaces with Node.js 20 or newer.
 
 With those set up, clone this repo and run `pnpm install`.
 
@@ -15,17 +15,16 @@ cd TypeScript-website
 pnpm install
 code .
 
-# Then:
-pnpm bootstrap
 # Optional, grab the translations:
 pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
-# Now you can start up the website
+# Start the Astro development server
 pnpm start
 ```
 
-Working on this repo is done by running `pnpm start` - this starts up the website on port `8000` and creates a
-builder worker for every package in the repo, so if you make a change outside of the site it will compile and lint etc.
+`pnpm start` generates the required site inputs and starts Astro on port `4321`.
+Use `pnpm build` to create a production build and
+`pnpm --dir packages/typescriptlang-org-astro preview` to test that build locally.
 
 Some useful knowledge you need to know:
 
@@ -59,7 +58,7 @@ CI will fail if a PR modifies a public package but is missing a changeset. To ad
 
 ```console
 $ pnpm changeset
-🦋  Which packages would you like to include? … 
+🦋  Which packages would you like to include? …
 ◯ changed packages
   ◯ create-typescript-playground-plugin
   ◯ @typescript/vfs
@@ -75,15 +74,13 @@ If you are making a change to a published package but are not affecting publishe
 
 # Website Packages
 
-## TypeScriptLang-Org
+## TypeScriptLang-Org Astro
 
-The main website for TypeScript, a Gatsby website which is statically deployed. You can run it via:
+The main TypeScript website is statically built with Astro. Run it via:
 
 ```sh
 pnpm start
 ```
-
-To optimize even more, the env var `NO_TRANSLATIONS` as truthy will make the website only load pages for English.
 
 ## Sandbox
 

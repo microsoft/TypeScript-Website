@@ -1,14 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import BrandingPage from "../components/BrandingPage.astro"
+import CheatsheetsPage from "../components/CheatsheetsPage.astro"
+import CommunityPage from "../components/CommunityPage.astro"
 import DocumentationPage from "../components/DocumentationPage.astro"
 import DeveloperPage from "../components/DeveloperPage.astro"
+import DownloadPage from "../components/DownloadPage.astro"
 import GlossaryPage from "../components/GlossaryPage.astro"
-import GatsbyPageParity from "../components/GatsbyPageParity.astro"
-import HomePage from "../components/GatsbyHomeParity.astro"
+import HomePage from "../components/HomePage.astro"
 import PlaygroundPage from "../components/PlaygroundPage.astro"
 import RootPage from "../components/RootSemanticPage.astro"
 import TSConfigPage from "../components/TSConfigPage.astro"
+import ToolsPage from "../components/ToolsPage.astro"
 import { readDocumentationCache } from "../lib/documentation-cache.mjs"
 import { headingsFromHtml, renderMarkdown } from "../lib/markdown.mjs"
 import { getRouteMetadata } from "../lib/metadata.mjs"
@@ -53,7 +56,7 @@ const headingList = headingsFromHtml(renderedMarkdown)
 const titleByFamily: Record<string, string> = {
   root: page.pathname ? page.title.replaceAll("-", " ") : "TypeScript",
   documentation: page.title,
-  tsconfig: "TSConfig Reference",
+  tsconfig: "TSConfig Reference - Docs on every TSConfig option",
   glossary: "TypeScript Glossary",
   playground: "TypeScript Playground",
   "playground-example": page.title,
@@ -61,7 +64,13 @@ const titleByFamily: Record<string, string> = {
   "playground-handbook": page.title,
   developer: page.title.replaceAll("-", " "),
 }
-const pageHeading = titleByFamily[page.family]
+const pageHeading = page.family === "root" && /(^|\/)download$/.test(page.pathname)
+  ? "How to set up TypeScript"
+  : page.family === "root" && /(^|\/)community$/.test(page.pathname)
+    ? "TypeScript Community Resources"
+    : page.family === "root" && /(^|\/)tools$/.test(page.pathname)
+      ? "Reference Tools"
+    : titleByFamily[page.family]
 const { previous, next } = page.family === "documentation" ? getDocumentationPrevNext(page.locale, page.pathname) : { previous: undefined, next: undefined }
 const metadataRoot = page.source ? path.dirname(page.source) : ""
 const tsconfigMetaPath = page.family === "tsconfig" ? path.join(metadataRoot, `${page.locale}.json`) : ""
@@ -70,7 +79,9 @@ const localizedTsconfigIntroPath = page.family === "tsconfig" ? path.resolve(met
 const tsconfigIntroPath = localizedTsconfigIntroPath && fs.existsSync(localizedTsconfigIntroPath)
   ? localizedTsconfigIntroPath
   : page.family === "tsconfig" ? path.resolve(metadataRoot, "../copy/en/intro.md") : ""
-const tsconfigIntro = tsconfigIntroPath && fs.existsSync(tsconfigIntroPath) ? matter(fs.readFileSync(tsconfigIntroPath, "utf8")).data : {}
+const tsconfigIntroDocument = tsconfigIntroPath && fs.existsSync(tsconfigIntroPath) ? matter(fs.readFileSync(tsconfigIntroPath, "utf8")) : null
+const tsconfigIntro = tsconfigIntroDocument?.data || {}
+const tsconfigIntroHtml = tsconfigIntroDocument ? await renderMarkdown(tsconfigIntroDocument.content, { routePath: pagePath, sourcePath: tsconfigIntroPath, sourceRouteMap }) : ""
 const glossaryMetaPath = page.family === "glossary" && page.source ? path.join(path.dirname(page.source), "en.json") : ""
 const glossaryMeta = glossaryMetaPath && fs.existsSync(glossaryMetaPath) ? JSON.parse(fs.readFileSync(glossaryMetaPath, "utf8")) : { terms: [] }
 const metadata = getRouteMetadata(page, allRoutes)
@@ -79,18 +90,20 @@ const canonical = page.family === "documentation" && page.frontmatter?.deprecate
   ? new URL(page.frontmatter.deprecated_by, "https://www.typescriptlang.org/").href
   : undefined
 ---
-<Layout title={pageHeading} description={metadata.description} ogTitle={metadata.ogTitle} lang={layoutLocale} canonical={canonical} ogType={page.family === "documentation" ? "article" : "website"} compactFooter={false} suppressCustomization={page.family === "root" && !page.pathname} suppressPopularFooter={page.family === "root" && !page.pathname} suppressFooter={page.family === "root" && !page.pathname} skipTo={page.family === "documentation" ? "#handbook-content" : undefined}>
+<Layout title={pageHeading} description={metadata.description} ogTitle={metadata.ogTitle} lang={layoutLocale} canonical={canonical} ogType={page.family === "documentation" ? "article" : "website"} compactFooter={false} suppressCustomization={page.family === "root" && !page.pathname} suppressPopularFooter={page.family === "root" && !page.pathname} skipTo={page.family === "documentation" ? "#handbook-content" : undefined}>
   <div data-route-family={page.family}>
     {page.family === "root" && !page.pathname && <HomePage locale={page.locale} />}
-    {page.family === "root" && page.pathname === "ja/download" && <GatsbyPageParity page="downloadJa" locale="ja" />}
-    {page.family === "root" && page.pathname === "docs" && <GatsbyPageParity page="docs" />}
-    {page.family === "root" && page.pathname && page.pathname !== "ja/download" && page.pathname !== "docs" && <RootPage pathname={page.pathname} locale={page.locale} title={pageHeading} allRoutes={allRoutes} />}
+    {page.family === "root" && /(^|\/)download$/.test(page.pathname) && <DownloadPage locale={page.locale} />}
+    {page.family === "root" && /(^|\/)cheatsheets$/.test(page.pathname) && <CheatsheetsPage />}
+    {page.family === "root" && /(^|\/)community$/.test(page.pathname) && <CommunityPage />}
+    {page.family === "root" && /(^|\/)tools$/.test(page.pathname) && <ToolsPage />}
+    {page.family === "root" && page.pathname && !/(^|\/)(download|cheatsheets|community|tools)$/.test(page.pathname) && <RootPage pathname={page.pathname} locale={page.locale} title={pageHeading} allRoutes={allRoutes} />}
     {page.family === "documentation" && <DocumentationPage title={pageHeading} rendered={renderedMarkdown} navigation={documentationNavigation(allRoutes, page.locale, page.pathname)} headings={headingList} previous={previous} next={next} frontmatter={page.frontmatter} repoPath={page.repoPath} modifiedTime={page.modifiedTime} attribution={page.attribution} />}
-    {page.family === "tsconfig" && <TSConfigPage rendered={renderedMarkdown} categories={tsconfigMeta.categories || []} introHeader={tsconfigIntro.header} introPreview={tsconfigIntro.firstLine} />}
+    {page.family === "tsconfig" && <TSConfigPage rendered={renderedMarkdown} categories={tsconfigMeta.categories || []} introHeader={tsconfigIntro.header} introPreview={tsconfigIntro.firstLine} introHtml={tsconfigIntroHtml} />}
     {page.family === "glossary" && <GlossaryPage rendered={renderedMarkdown} terms={glossaryMeta.terms || []} />}
     {page.family === "playground" && <PlaygroundPage locale={page.locale} />}
     {page.family === "developer" && page.pathname === "branding" && <BrandingPage />}
-    {page.family === "developer" && page.pathname === "dev/playground-plugins" && <div class="developer-parity-shell"><GatsbyPageParity page="developerPlugins" /><div class="developer-runtime"><DeveloperPage pathname={page.pathname} /></div></div>}
+    {page.family === "developer" && page.pathname === "dev/playground-plugins" && <DeveloperPage pathname={page.pathname} />}
     {page.family === "developer" && page.pathname !== "branding" && page.pathname !== "dev/playground-plugins" && <DeveloperPage pathname={page.pathname} />}
     {page.family === "playground-example" && <article class="raised main-content-block markdown"><h2>{pageHeading}</h2><div class="playground-example-content" set:html={page.seoHtml || ""} /></article>}
     {page.family === "tsconfig-option" && <article class="raised main-content-block markdown"><h1>TSConfig</h1><h2>{pageHeading}</h2><div set:html={renderedMarkdown} /></article>}
@@ -98,7 +111,3 @@ const canonical = page.family === "documentation" && page.frontmatter?.deprecate
   </div>
   {page.redirect && <script is:inline define:vars={{ redirect: page.redirect }}>if (!/bot|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|crawler|spider|crawling/i.test(navigator.userAgent)) location.replace(redirect)</script>}
 </Layout>
-
-<style>
-  .developer-runtime { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
-</style>

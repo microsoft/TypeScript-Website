@@ -73,7 +73,7 @@ const go = async () => {
   await getFileAndStoreLocally(host + "/js/playground/index.d.ts", join(vendor, "/playground.d.ts"), text => {
     const replaceSandbox = text.replace('"@typescript/sandbox"', '"./sandbox"')
     const replaceTSVFS = replaceSandbox.replace(
-      /typescriptlang-org\/static\/js\/sandbox\/vendor\/typescript-vfs/g,
+      /(?:[^"']*[\\/])?sandbox[\\/]vendor[\\/]typescript-vfs/g,
       "./typescript-vfs"
     )
     const removedLZ = replaceTSVFS.replace("lzstring: typeof", "// lzstring: typeof")

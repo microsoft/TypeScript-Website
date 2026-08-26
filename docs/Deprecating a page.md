@@ -4,7 +4,7 @@ Start with this question: are you deprecating or deleting? Ideally you're never 
 
 ### Keep or Redirect?
 
-If you don't want the keep the content at all, remove the `.md` file from the repo and add the URI to [setupRedirects.ts](https://github.com/microsoft/TypeScript-website/blob/v2/packages/typescriptlang-org/src/redirects/setupRedirects.ts).
+If you don't want to keep the content at all, remove the `.md` file from the repo and add the URI to [`redirects.mjs`](../packages/typescriptlang-org-astro/src/lib/redirects.mjs).
 
 ### Keep it
 

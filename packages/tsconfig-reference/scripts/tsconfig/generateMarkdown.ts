@@ -19,7 +19,7 @@
 
 console.log("TSConfig Ref: MD for TSConfig");
 
-import { writeFileSync, readdirSync, existsSync, mkdirSync, readFileSync } from "fs";
+import { writeFileSync, readdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import * as assert from "assert";
@@ -321,14 +321,6 @@ languages.forEach((lang) => {
     JSON.stringify({ options: optionsSummary })
   );
 
-  const jsonDir = new URL("../../../typescriptlang-org/static/js/json/", import.meta.url);
-  if (!existsSync(jsonDir)) mkdirSync(jsonDir);
-
-  // This is used by the tsconfig popups
-  writeFileSync(
-    new URL(`${lang}-tsconfig-popup.json`, jsonDir),
-    JSON.stringify(Object.fromEntries(optionsSummary.map((data) => [data.id, data.oneliner])))
-  );
 });
 
 writeFileSync(

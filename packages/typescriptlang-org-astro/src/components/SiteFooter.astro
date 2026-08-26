@@ -36,11 +36,13 @@ const fonts = [["cascadia", "Cascadia"], ["cascadia-ligatures", "Cascadia (ligat
   const theme = document.querySelector<HTMLSelectElement>("#theme-select")
   const font = document.querySelector<HTMLSelectElement>("#font-select")
   if (theme) {
-    theme.value = "system"
+    try { theme.value = localStorage.getItem("force-color-theme") || "system" } catch { theme.value = "system" }
     theme.addEventListener("change", () => {
       root.classList.remove("light-theme", "dark-theme")
-      if (theme.value !== "system") root.classList.add(theme.value === "force-light" ? "light-theme" : "dark-theme")
+      if (theme.value === "system") root.classList.add(matchMedia("(prefers-color-scheme: dark)").matches ? "dark-theme" : "light-theme")
+      else root.classList.add(theme.value === "force-light" ? "light-theme" : "dark-theme")
       try { if (theme.value === "system") localStorage.removeItem("force-color-theme"); else localStorage.setItem("force-color-theme", theme.value) } catch {}
+      if ("playground" in window) location.reload()
     })
   }
   if (font) {
@@ -49,6 +51,7 @@ const fonts = [["cascadia", "Cascadia"], ["cascadia-ligatures", "Cascadia (ligat
       for (const name of [...root.classList]) if (name.startsWith("font-")) root.classList.remove(name)
       root.classList.add(`font-${font.value}`)
       try { localStorage.setItem("force-font", font.value) } catch {}
+      if ("playground" in window) location.reload()
     })
   }
 </script>

@@ -1,0 +1,18 @@
+---
+interface NavItem { pathname?: string; title: string; current?: boolean; items?: NavItem[] }
+interface Props { item: NavItem }
+const { item } = Astro.props
+const hasChildren = Boolean(item.items?.length)
+const containsCurrent = (entry: NavItem): boolean => Boolean(entry.current || entry.items?.some(containsCurrent))
+const open = hasChildren && containsCurrent(item)
+---
+<li class:list={{ open, closed: hasChildren && !open, highlighted: open, highlight: !hasChildren && item.current }}>
+  {hasChildren ? <>
+    <button type="button" aria-expanded={open}>
+      {item.title}
+      <span class="open" aria-hidden="true"><svg fill="none" height="9" viewBox="0 0 14 9" width="14"><path d="m1 1 6 6 6-6" stroke="currentColor" stroke-width="2" /></svg></span>
+      <span class="closed" aria-hidden="true"><svg fill="none" height="14" viewBox="0 0 9 14" width="9"><path d="m1 13 6-6-6-6" stroke="currentColor" stroke-width="2" /></svg></span>
+    </button>
+    <ul>{item.items!.map(child => <Astro.self item={child} />)}</ul>
+  </> : <a href={item.pathname} aria-current={item.current ? "page" : undefined}>{item.title}</a>}
+</li>

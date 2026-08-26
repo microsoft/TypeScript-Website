@@ -13,6 +13,7 @@
     "generate:md:cli": "tsc --build && node scripts/cli/generateMarkdown",
     "generate:md:msbuild": "tsc --build && node scripts/msbuild/generateMarkdown",
     "generate:md": "pnpm generate:md:tsconfig && pnpm generate:md:cli && pnpm generate:md:tsconfig",
+    "generate:site": "node scripts/tsconfig/generateJSON.js && node scripts/cli/generateJSON.js && node scripts/tsconfig/generateMarkdown.js && node scripts/cli/generateMarkdown.js",
     "download": "node scripts/schema/downloadSchemaBase.js",
     "bootstrap": "pnpm generate:json",
     "build": "pnpm generate:json && pnpm generate:md",

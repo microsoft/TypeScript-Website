@@ -17,7 +17,6 @@ const copy = (source, destination) => {
 fs.rmSync(output, { recursive: true, force: true })
 fs.mkdirSync(output, { recursive: true })
 copy(ownedStatic, output)
-copy(path.join(packages, "typescriptlang-org", "static", "images", "index"), path.join(output, "images", "index"))
 copy(path.join(packages, "documentation", "copy"), path.join(output, "documentation-assets"))
 copy(path.join(packages, "documentation", "copy", "en", "modules-reference", "diagrams"), path.join(output, "docs", "handbook", "modules", "diagrams"))
 copy(path.join(packages, "documentation", "copy", "en", "declaration-files", "templates", "global-modifying-module.d.ts.md"), path.join(output, "docs", "handbook", "declaration-files", "templates", "global-modifying-module.d.ts.md"))
@@ -29,9 +28,12 @@ copy(path.join(packages, "playground-examples", "generated"), path.join(output, 
 copy(path.join(packages, "playground-handbook", "output"), path.join(output, "playground-handbook"))
 
 const compile = (packageName, binary, args) => execFileSync(process.execPath, [path.join(packages, packageName, "node_modules", binary), ...args], { cwd: path.join(packages, packageName), stdio: "inherit" })
-compile("sandbox", "typescript/bin/tsc", ["-p", "tsconfig.json", "--outDir", path.join(output, "js", "sandbox")])
-compile("playground", "typescript/bin/tsc", ["-p", "tsconfig.json", "--outDir", path.join(output, "js", "playground")])
-compile("playground-worker", "esbuild/bin/esbuild", ["index.ts", `--outdir=${path.join(output, "js", "playground-worker")}`, "--format=esm", "--target=es2020", "--bundle"])
+compile("sandbox", "typescript/bin/tsc", ["-p", "tsconfig.json"])
+compile("playground", "typescript/bin/tsc", ["-p", "tsconfig.json"])
+compile("playground-worker", "esbuild/bin/esbuild", ["index.ts", "--outdir=.generated/website", "--format=esm", "--target=es2020", "--bundle"])
+copy(path.join(packages, "sandbox", ".generated", "website"), path.join(output, "js", "sandbox"))
+copy(path.join(packages, "playground", ".generated", "website"), path.join(output, "js", "playground"))
+copy(path.join(packages, "playground-worker", ".generated", "website"), path.join(output, "js", "playground-worker"))
 const licensePath = path.join(packages, "typescript6", "LICENSE.txt")
 if (fs.existsSync(licensePath)) {
 	const escaped = fs.readFileSync(licensePath, "utf8").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")

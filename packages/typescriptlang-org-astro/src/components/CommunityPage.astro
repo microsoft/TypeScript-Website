@@ -1,0 +1,98 @@
+---
+const online = [
+  { className: "stackoverflow", title: "Stack Overflow", href: "https://stackoverflow.com/questions/tagged/typescript", description: "Engage with your peers and ask questions about TypeScript using the tag 'typescript'" },
+  { className: "discord", title: "Chat", href: "https://discord.gg/typescript", description: "Chat with other TypeScript users in the TypeScript Community Chat." },
+  { className: "bug", title: "GitHub", href: "https://github.com/microsoft/TypeScript/issues/new/choose", description: "Found a bug, or want to give us constructive feedback?", linkText: "Tell us on GitHub" },
+  { className: "twitter", title: "Twitter", href: "https://twitter.com/typescript", description: "Stay up to date. Follow us on Twitter", linkText: "@typescript", suffix: "!" },
+  { className: "blog", title: "Blog", href: "https://devblogs.microsoft.com/typescript/", description: "Learn about the latest TypeScript developments via our", linkText: "blog", suffix: "!" },
+  { className: "definitelytyped", title: "Definitely Typed", href: "https://github.com/definitelytyped/definitelytyped/#definitelytyped", description: "TypeScript definition files.", linkText: "Browse the thousands of", suffix: " available for common libraries and frameworks." },
+]
+
+const meetups = [
+  { title: "Boston TypeScript Club", url: "https://bostonts.club", image: "boston-ts-club.png", country: "🇺🇸" },
+  { title: "Hamburg TypeScript", url: "https://www.meetup.com/Hamburg-TypeScript-Meetup-Group", image: "hamburg-ts.png", country: "🇩🇪" },
+  { title: "Krakow TypeScript User Group", url: "https://www.meetup.com/typescript-krakow", image: "ktug.jpg", country: "🇵🇱" },
+  { title: "Melbourne TypeScript", url: "https://www.meetup.com/Melbourne-TypeScript-Meetup", image: "melbourne.jpg", country: "🇦🇺" },
+  { title: "Milano TS", url: "https://www.meetup.com/MilanoTS/", twitter: "https://twitter.com/Milano_TS", image: "milano-ts.jpg", country: "🇮🇹" },
+  { title: "Seattle TypeScript", url: "https://www.meetup.com/seattle-ts", image: "seattle.jpg", country: "🇺🇸" },
+  { title: "Sevilla TypeScript", url: "https://www.meetup.com/Sevilla-TypeScript", twitter: "https://twitter.com/SVQTypeScript", image: "sqvts.jpg", country: "🇪🇸" },
+  { title: "San Francisco TypeScript Meetup", url: "https://www.meetup.com/San-Francisco-TypeScript-Meetup", image: "san-fran-ts.jpg", country: "🇺🇸" },
+  { title: "Sydney TypeScript", url: "https://www.meetup.com/Sydney-TypeScript", twitter: "https://twitter.com/SydTypeScript", image: "sydney.jpg", country: "🇦🇺" },
+  { title: "TypeScript NYC", url: "https://www.meetup.com/NYC-Typescript", image: "typescript-nyc.jpg", country: "🇺🇸" },
+  { title: "TypeScript Brazil Meetup", url: "https://www.meetup.com/typescriptbr", twitter: "https://twitter.com/tsbrmeetup", image: "brazil-ts.jpg", country: "🇧🇷" },
+  { title: "TypeScript JP", url: "https://typescript-jp.dev", twitter: "https://twitter.com/typescriptjp", image: "typescript-jp.jpg", country: "🇯🇵" },
+  { title: "Paris TypeScript", url: "https://www.meetup.com/Paris-Typescript", twitter: "https://twitter.com/ParisTypeScript", image: "paris-ts.jpg", country: "🇫🇷" },
+  { title: "Phoenix TypeScript", url: "https://www.meetup.com/Phoenix-TypeScript", image: "phx-ts.jpg", country: "🇺🇸" },
+  { title: "Wroclaw TypeScript", url: "https://typescript.community/", twitter: "https://twitter.com/WrocTypeScript", image: "wroclaw-ts.jpg", country: "🇵🇱" },
+]
+---
+<div class="container community centered"><h1>Connect with us</h1></div>
+
+<div class="raised main-content-block container community online-panel">
+  <div class="row">
+    <div class="col1 sidebar">
+      <h2>Online</h2>
+      <p class="banner-text">Tell us what’s working well, what you want to see added or improved, and find out about new updates.</p>
+    </div>
+    <div class="col2 callouts">
+      {online.map(item => <div class="callout">
+        <span class:list={["icon", "img-circle", item.className]} aria-hidden="true"></span>
+        <div class="text">
+          <a href={item.href}><h3 class="community-callout-headline">{item.title}</h3></a>
+          {item.description}{item.linkText && <> <a href={item.href}>{item.linkText}</a>{item.suffix}</>}
+        </div>
+      </div>)}
+    </div>
+  </div>
+</div>
+
+<div class="container community centered"><h2>Connect in person</h2></div>
+
+<div class="raised main-content-block container community meetup-panel">
+  <h3 class="centered-highlight">Meetups</h3>
+  <div class="events"><div class="callouts">
+    {meetups.map(meetup => <div class="col1 callout">
+      <img src={`/community/meetup-logos/${meetup.image}`} class="icon img-square" alt={`logo of ${meetup.title}`} />
+      <div>
+        <h4 class="community-callout-headline">{meetup.title}</h4>
+        <div class="text">{meetup.country}<br />
+          <a rel="noopener" target="_blank" href={meetup.url}>Website</a>
+          {meetup.twitter && <> <a rel="noopener" target="_blank" href={meetup.twitter}>Twitter</a></>}
+        </div>
+      </div>
+    </div>)}
+  </div></div>
+</div>
+
+<style>
+  .container { width: 960px; max-width: calc(100% - 2rem); margin-inline: auto; }
+  .community, .community * { box-sizing: content-box; }
+  .community { padding: 0; }
+  .community.centered { width: auto; max-width: none; margin-inline: 0; text-align: center; }
+  .centered h2 { margin-top: 120px; }
+  .online-panel { margin-top: 80px; }
+  .row { display: flex; flex-flow: row wrap; }
+  .col1 { min-width: 250px; flex: 1; padding: 1rem; }
+  .col2 { flex: 2; }
+  .sidebar { background-color: rgba(204, 207, 233, .1); }
+  .sidebar h2 { margin: 32px 0 24px; line-height: normal; }
+  .banner-text { margin-top: 20px; }
+  .callouts { margin: 20px 0; display: flex; flex-wrap: wrap; }
+  .callout { width: 48%; display: flex; margin-block: 20px 10px; line-height: 1.4rem; }
+  .callout h3 { margin: 0 0 10px; padding: 0; font-size: 1rem; line-height: normal; }
+  .icon { display: block; width: 5rem; height: 5rem; min-width: 5rem; margin: 0 20px 20px; background-repeat: no-repeat; background-position: center; background-size: auto 3.2rem; transition: background-color .2s ease-out; }
+  .img-circle { border-radius: 50%; }
+  .discord { background: #7289da url('/community/connect-discord.svg') center / auto 3.2rem no-repeat; }
+  .stackoverflow { background: #5016d9 url('/community/connect-stackoverflow-icon.svg') center / auto 3.2rem no-repeat; }
+  .blog { background: #d9a216 url('/community/connect-blog-icon.svg') center / auto 3.2rem no-repeat; }
+  .twitter { background: #00a0d1 url('/community/connect-twitter-icon.svg') center / auto 3.2rem no-repeat; }
+  .definitelytyped { background: #0077d2 url('/community/definitely_typed_logo.png') center / auto 3.2rem no-repeat; }
+  .bug { background: #4d4d4d url('/community/connect-github-icon.png') center / auto 3.2rem no-repeat; }
+  .community-callout-headline { margin-top: 0; }
+  .centered-highlight { margin: 32px 0 24px; padding: 20px; background-color: rgba(204, 207, 233, .1); text-align: center; line-height: normal; }
+  .meetup-panel { margin-bottom: 1rem; }
+  @media (max-width: 767px) {
+    .container { width: 100%; max-width: none; margin-inline: 0; }
+    .container > .row { flex-direction: column; }
+  }
+</style>

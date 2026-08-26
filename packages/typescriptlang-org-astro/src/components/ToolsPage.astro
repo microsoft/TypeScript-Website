@@ -1,0 +1,71 @@
+<div class="tools-page">
+  <div class="raised main-content-block tools-panel">
+    <div class="row">
+      <div class="col1">
+        <a class="cropper" href="/play">
+          <img src="/static/play-03b12a3d83a6a50a7fde7a2b663f482d.png" alt="Preview of the TypeScript Playground screenshot" />
+          <p>Playground</p>
+        </a>
+        <p>A live environment for exploring, learning and sharing TypeScript code. Try different compiler flags, run through extensive code samples to learn specifics about how TypeScript works.</p>
+      </div>
+      <div class="col1">
+        <a class="cropper" href="/tsconfig/" aria-label="Preview of the TypeScript TSConfig Reference screenshot">
+          <img src="/static/tsconfig-ref-cf26083c052d3495a7f06f12850b28f1.png" aria-hidden="true" />
+          <p>TSConfig Reference</p>
+        </a>
+        <p>An annotated reference to more than a hundred compiler options available in a <code>tsconfig.json</code> or <code>jsconfig.json</code>.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col1">
+        <a class="cropper" href="/cheatsheets">
+          <img src="/static/cheat-sheets-30af7529402f347061db3c6eacdf40ab.png" alt="Preview of the cheat sheets page" />
+          <p>Cheat Sheets</p>
+        </a>
+        <p>Quickly look up the syntax for common TypeScript code.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="raised main-content-block developer-panel">
+    <nav aria-label="Developer tools" class="navbar-sub dev-tools">
+      <ul class="nav">
+        <li class="name"><h3>Developer Tools</h3></li>
+        <li class="hidden"><a href="/dev/compiler">Compiler API</a></li>
+        <li><a href="/dev/sandbox">Sandbox</a></li>
+        <li><a href="/dev/twoslash">Twoslash</a></li>
+        <li><a href="/dev/typescript-vfs">TypeScript VFS</a></li>
+        <li><a href="/dev/playground-plugins">Playground Plugins</a></li>
+        <li><a href="/dev/bug-workbench">Bug Workbench</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .tools-page, .tools-page * { box-sizing: content-box; }
+  .tools-panel, .developer-panel { width: 960px; max-width: calc(100% - 4rem); }
+  .tools-panel { padding: .4rem 2rem 2rem; }
+  .row { display: flex; flex-flow: row wrap; }
+  .col1 { min-width: 250px; flex: 1; padding: 1rem; }
+  .cropper { position: relative; display: block; width: 100%; height: 500px; overflow: hidden; background-color: #f9f6f6; }
+  .cropper img { width: auto; max-width: none; height: auto; margin-left: -50px; }
+  .cropper p { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; padding: 0 0 .8rem .8rem; background: linear-gradient(0deg, #fff 0%, rgba(255,255,255,.5) 100%); font-size: 3rem; line-height: 3rem; }
+  .tools-panel code { padding: 2px 4px; font-size: .9rem; line-height: 22.4px; }
+  .developer-panel { padding: .4rem 2rem; }
+  .dev-tools { display: flex; }
+  .dev-tools li { margin: 0 0 10px 10px; }
+  .dev-tools li.name { width: 200px; font-size: 1.2rem; }
+  .dev-tools a { height: 14.8125px; }
+  .dev-tools h3 { height: 28.40625px; margin: .6rem 0 0 1rem; font-size: 1.17em; font-weight: 400; line-height: normal; }
+  .hidden { display: none !important; }
+  @media (max-width: 800px) {
+    .tools-panel, .developer-panel { width: calc(100% - 4rem); max-width: none; }
+    .tools-panel > .row { flex-direction: column; }
+    .tools-panel .col1 { flex: none; width: calc(100% - 2rem); min-width: 0; }
+    .navbar-sub.dev-tools { height: auto; }
+    .navbar-sub.dev-tools .nav { flex-direction: column; }
+    .dev-tools a { height: auto; }
+    .dev-tools h3 { height: 30px; }
+  }
+</style>

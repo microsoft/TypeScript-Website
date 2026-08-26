@@ -3,7 +3,7 @@
 
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
-    "outDir": "../typescriptlang-org/static/js/sandbox",
+    "outDir": ".generated/website",
     "target": "ES2016",
     "module": "AMD",
     "lib": ["DOM", "esnext"],

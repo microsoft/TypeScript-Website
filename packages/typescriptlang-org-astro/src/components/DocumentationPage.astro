@@ -1,4 +1,6 @@
 ---
+import DocumentationSidebarItem from "./DocumentationSidebarItem.astro"
+
 interface NavItem { pathname?: string; title: string; current?: boolean; items?: NavItem[] }
 interface NavGroup { title: string; items: NavItem[] }
 interface Heading { depth: number; id: string; title: string }
@@ -44,46 +46,64 @@ const buildHeadingTree = (source: Heading[]): HeadingTree[] => {
 const headingTree = buildHeadingTree(headings)
 ---
 <section id="doc-layout">
-  <button id="sidebar-toggle" type="button" aria-controls="sidebar" aria-expanded="false">☰ Documentation menu</button>
+  <button id="sidebar-toggle" type="button" aria-label="Toggle sidebar navigation" aria-controls="sidebar" aria-expanded="false"><span aria-hidden="true">☰</span></button>
   <nav id="sidebar" aria-label="Documentation" tabindex="-1">
-    {navigation.map(group => <section><h2>{group.title}</h2><ul>{group.items.map(item => <Fragment>
-      {item.pathname
-        ? <li><a href={item.pathname} aria-current={item.current ? "page" : undefined}>{item.title}</a>{item.items?.length ? <ul>{item.items.map(subItem => <li><a href={subItem.pathname} aria-current={subItem.current ? "page" : undefined}>{subItem.title}</a></li>)}</ul> : undefined}</li>
-        : <li><span>{item.title}</span>{item.items?.length ? <ul>{item.items.map(subItem => <li><a href={subItem.pathname} aria-current={subItem.current ? "page" : undefined}>{subItem.title}</a></li>)}</ul> : undefined}</li>}
-    </Fragment>)}</ul></section>)}
+    <ul>{navigation.map(group => <DocumentationSidebarItem item={group} />)}</ul>
   </nav>
   <div id="handbook-content" role="article">
     {frontmatter.deprecated_by && <aside class="notice"><strong>This page has been deprecated.</strong> See <a href={frontmatter.deprecated_by}>the replacement documentation</a>.</aside>}
     {frontmatter.experimental && <aside class="notice"><strong>This page documents an experimental feature.</strong> Details may change.</aside>}
     <h1>{title}</h1>
     {frontmatter.preamble && <div class="preamble" set:html={frontmatter.preamble} />}
-    <div class="doc-columns">
-      <article class="whitespace raised markdown" set:html={rendered} />
-      {frontmatter.disable_toc !== true && headingTree.length > 0 && <aside class="handbook-toc"><nav aria-label="Table of contents"><h2>On this page</h2><ul>{headingTree.map((heading: HeadingTree) => <Fragment>
+    <article>
+      <div class="whitespace raised"><div class="markdown" set:html={rendered} /></div>
+      {frontmatter.disable_toc !== true && headingTree.length > 0 && <aside class="handbook-toc"><nav aria-label="Table of contents"><h5>On this page</h5><ul>{headingTree.map((heading: HeadingTree) => <Fragment>
         <li class={`depth-${heading.depth}`}><a href={`#${heading.id}`}>{heading.title}</a>{heading.children?.length ? <ul>{heading.children.map((child: HeadingTree) => <li class={`depth-${child.depth}`}><a href={`#${child.id}`}>{child.title}</a></li>)}</ul> : undefined}</li>
-      </Fragment>)}</ul><div id="like-dislike-subnav" role="status" aria-live="polite"><h2>Was this page helpful?</h2><div><button type="button" data-feedback="like" title="Like this page">Yes</button><button type="button" data-feedback="dislike" title="Dislike this page">No</button></div></div></nav></aside>}
-    </div>
-    <nav class="prev-next" aria-label="Previous and next pages">
-      {previous ? <a class="raised" href={`/${previous.pathname}`}><small>Previous</small><br /><strong>{previous.title}</strong></a> : <span />}
-      {next && <a class="raised next" href={`/${next.pathname}`}><small>Next</small><br /><strong>{next.title}</strong></a>}
-    </nav>
-    <footer class="contributors">
-      {repoPath && <a href={`https://github.com/microsoft/TypeScript-Website/edit/v2/packages/${repoPath}`}>Edit this page on GitHub</a>}
-      {attribution?.top?.length ? <span> · Contributors: {attribution.top.slice(0, 3).map(person => person.name).join(", ")}{attribution.total > attribution.top.length ? ` +${attribution.total - attribution.top.length}` : ""}</span> : <span> · The TypeScript contributors</span>}
-      {lastEdited && <span> · Last updated: {lastEdited}</span>}
+      </Fragment>)}</ul><div id="like-dislike-subnav" role="status" aria-live="polite"><h5>Was this page helpful?</h5><div><button type="button" data-feedback="like" title="Like this page">Yes</button><button type="button" data-feedback="dislike" title="Dislike this page">No</button></div></div></nav></aside>}
+    </article>
+    {(previous || next) && <nav class="whitespace-tight raised page-navigation" aria-label="Previous and next pages">
+      <div class="navigation-row">
+        {previous ? <a class="navigation-link" rel="prev" href={`/${previous.pathname}`}><span class="page-link prev"><span class="arrow" aria-hidden="true">◀</span><span class="nav-content"><small>Previous</small><strong>{previous.title}</strong>{previous.description && <span>{previous.description}</span>}</span></span></a> : <span class="navigation-link" />}
+        <span class="vertical-line" aria-hidden="true" />
+        {next ? <a class="navigation-link" rel="next" href={`/${next.pathname}`}><span class="page-link next"><span class="arrow" aria-hidden="true">▶</span><span class="nav-content"><small>Next</small><strong>{next.title}</strong>{next.description && <span>{next.description}</span>}</span></span></a> : <span class="navigation-link" />}
+      </div>
+    </nav>}
+    <footer class="whitespace-tight raised contributors">
+      <div class="contributors-row">
+        <section class="bottom-section-content"><p>The TypeScript docs are an open source project. Help us improve these pages {repoPath && <a href={`https://github.com/microsoft/TypeScript-Website/blob/v2/packages/${repoPath}`}>by sending a Pull Request</a>} ❤</p></section>
+        <span class="vertical-line" aria-hidden="true" />
+        <section class="bottom-section-content">Contributors to this page:<br /><div class="avatars">{attribution?.top?.map(person => <span class="circle-bg" title={`${person.name} (${person.count})`}>{person.name.split(" ").map(part => part[0]).join("").toUpperCase()}<img src={person.gravatar.startsWith("http") ? person.gravatar : `https://gravatar.com/avatar/${person.gravatar}?s=32&&d=blank`} alt={`${person.name} (${person.count})`} /></span>)}{attribution && attribution.total > attribution.top.length && <span class="circle-bg">{attribution.total - attribution.top.length}+</span>}</div></section>
+        <span class="vertical-line" aria-hidden="true" />
+        <section class="bottom-section-content"><p>{lastEdited && `Last updated: ${lastEdited}`}<br /><br /><span aria-hidden="true">&nbsp;</span></p></section>
+      </div>
     </footer>
   </div>
 </section>
 <script>
   const toggle = document.querySelector<HTMLButtonElement>("#sidebar-toggle")
   const sidebar = document.querySelector<HTMLElement>("#sidebar")
+  sidebar?.querySelectorAll<HTMLButtonElement>("li > button").forEach(button => button.addEventListener("click", () => {
+    const item = button.parentElement
+    const open = !item?.classList.contains("open")
+    item?.classList.toggle("open", open)
+    item?.classList.toggle("closed", !open)
+    button.setAttribute("aria-expanded", String(open))
+  }))
   const setSidebar = (open: boolean) => {
     sidebar?.classList.toggle("open", open)
     if (sidebar) sidebar.inert = matchMedia("(max-width: 900px)").matches && !open
     toggle?.setAttribute("aria-expanded", String(open))
   }
   setSidebar(false)
-  toggle?.addEventListener("click", () => { const open = !sidebar?.classList.contains("open"); setSidebar(open); if (open) sidebar?.querySelector("a")?.focus() })
+  toggle?.addEventListener("click", () => {
+    const open = !sidebar?.classList.contains("open")
+    setSidebar(open)
+    if (open) requestAnimationFrame(() => {
+      const current = sidebar?.querySelector<HTMLAnchorElement>('a[aria-current="page"]')
+      const visibleFallback = sidebar?.querySelector<HTMLAnchorElement>("li.open a")
+      ;(current || visibleFallback)?.focus()
+    })
+  })
   addEventListener("keydown", event => {
     if (event.key === "Escape" && sidebar?.classList.contains("open")) { setSidebar(false); toggle?.focus(); return }
     if (!sidebar?.contains(document.activeElement) || !["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return

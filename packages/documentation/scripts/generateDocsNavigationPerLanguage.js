@@ -2,7 +2,6 @@
 // prettier-ignore
 const { readdirSync, statSync, existsSync, readFileSync, writeFileSync } = require("fs");
 const { join } = require("path");
-const { format } = require("prettier");
 const { enRoot, getFilePaths } = require("./generateTypesForFilesInDocs");
 const { read: readMarkdownFile } = require("gray-matter");
 
@@ -15,10 +14,7 @@ const { read: readMarkdownFile } = require("gray-matter");
 // For files we use the same language lookup system the rest of the site uses,
 // to leave titles, hrefs etc to be done on the document itself
 
-// The results are a generated TS function in put into the file:
-// packages/typescriptlang-org/src/lib/documentationNavigation.ts
-// where it's used in the website / epub / etc
-//
+// The results are written to output/navigation.json for the site and other consumers.
 
 /* 
   Run this after any changes to propagate:
@@ -267,114 +263,6 @@ function createNavigationForLanguage(lang) {
 }
 
 const navigationArtifacts = Object.fromEntries(langs.map((lang) => [lang, createNavigationForLanguage(lang)]));
-
-const codeForTheHandbook = [
-  `
-  /* This function is completely auto-generated via the \`pnpm bootstrap\` phase of
-  the app. You can re-run it when adding new localized handbook pages by running:
-
-  pnpm run --filter=documentation create-handbook-nav
-
-  Find the source of truth at packages/documentation/scripts/generateDocsNavigationPerLanguage.js
-*/
-
-import type { SidebarNavItem } from "./documentationNavigationUtils"
-
-
-export function getDocumentationNavForLanguage(langRequest: string): SidebarNavItem[] {
-  const langs = ['${langs.join("', '")}']
-  const lang = langs.includes(langRequest) ? langRequest : "en"
-  const navigations: Record<string, SidebarNavItem[]> = {} 
-`,
-];
-
-for (const lang of langs) {
-  codeForTheHandbook.push(`navigations.${lang} = [`);
-
-  handbookPages.forEach((section, sectionIndex) => {
-    // Section metadata:
-    codeForTheHandbook.push(`{ 
-      title: "${section.title}",
-      oneline: "${section.summary}",
-      id: "${section.title.toLowerCase().replace(/\s/g, "-")}",
-      chronological: ${section.chronological || false},
-    `);
-
-    /** @param {{ items?: HandbookNavSubItem[] }} itemable */
-    function addItems(itemable) {
-      // Lots of 2nd level navs don't have subnav, bail for them
-      if ("items" in itemable === false) return;
-
-      codeForTheHandbook.push("items: [");
-      for (const subItem of itemable.items) {
-        codeForTheHandbook.push(`{ `);
-
-        // Is it a special link?
-        if ("href" in subItem) {
-          codeForTheHandbook.push(`
-        title: "${subItem.title}",
-        id: "${toID(sectionIndex, subItem.title)}",
-        permalink: "${subItem.href}",
-        oneline: "${subItem.oneliner}"
-      },`);
-        } else if ("items" in subItem) {
-          //Is is a sub-sub-section?
-          codeForTheHandbook.push(`
-            title: "${subItem.title}",
-            id: "${toID(sectionIndex, subItem.title)}",
-            oneline: "${subItem.oneliner}",
-            chronological: ${subItem.chronological || false},
-          `);
-          addItems(subItem);
-          codeForTheHandbook.push(",");
-        } else if ("file" in subItem) {
-          // It's a file reference
-          const subNavInfo =
-            langInfo[lang].get(subItem.file) ||
-            langInfo["en"].get(subItem.file);
-
-          if (!subNavInfo) throwForUnfoundFile(subItem, lang, langInfo["en"]);
-
-          codeForTheHandbook.push(`
-            title: "${subNavInfo.data.short || subNavInfo.data.title}",
-            id: "${toID(sectionIndex, subNavInfo.data.title)}",
-            permalink: "${subNavInfo.data.permalink}",
-            oneline: "${subNavInfo.data.oneline}",
-          `);
-
-          const isLast =
-            itemable.items.indexOf(subItem) === itemable.items.length - 1;
-          const suffix = isLast ? "" : ",";
-          codeForTheHandbook.push(`}${suffix} `);
-        }
-      }
-      // closes the outer 'items'
-      codeForTheHandbook.push("]\n }");
-    }
-
-    // Set up the 1st level of recursion for the 2nd level items
-    addItems(section);
-
-    // close subnav items
-    const isLast = handbookPages.indexOf(section) === section.items.length - 1;
-    const suffix = isLast ? "," : ",";
-    codeForTheHandbook.push(`${suffix}`);
-  });
-  // close sections
-  codeForTheHandbook.push(`]`);
-}
-
-codeForTheHandbook.push(`
-  return navigations[lang]
-}`);
-
-// prettier-ignore
-const pathToFileWeEdit = join(__dirname, "..", "..", "typescriptlang-org", "src", "lib", "documentationNavigation.ts");
-const newCode = "\n\n" + codeForTheHandbook.join("\n") + "\n\n";
-writeFileSync(
-  pathToFileWeEdit,
-  format(newCode, { filepath: pathToFileWeEdit })
-);
 
 const pathToNavigationArtifact = join(__dirname, "..", "output", "navigation.json");
 writeFileSync(pathToNavigationArtifact, JSON.stringify(navigationArtifacts, null, 2) + "\n");

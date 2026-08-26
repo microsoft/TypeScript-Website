@@ -55,6 +55,7 @@ test("renders concurrent Twoslash documents without losing the language registry
 
   for (const rendered of documents) {
     assert.match(rendered, /<pre[^>]*\btwoslash\b/)
+    assert.match(rendered, /<div class="code-container" tabindex="0">/)
     assert.doesNotMatch(rendered, /Note from shiki-twoslash/)
   }
 })

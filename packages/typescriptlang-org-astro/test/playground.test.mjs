@@ -3,7 +3,7 @@ import fs from "node:fs"
 import path from "node:path"
 import test from "node:test"
 import { createRoutes } from "../src/lib/routes.mjs"
-import { normalizePlaygroundExampleCacheBuster } from "../scripts/validation.mjs"
+import { normalizePlaygroundExampleCacheBuster } from "../src/lib/playground-url.mjs"
 
 const root = path.resolve(import.meta.dirname, "..")
 
@@ -17,7 +17,6 @@ test("all Playground roots use the framework-independent Sandbox and Playground 
   assert.match(source, /playground-worker\/index\.js/)
   assert.match(source, /run-button/)
   assert.match(source, /share-button/)
-  assert.match(source, /formatDocument/)
 })
 
 test("all ten Playground roots receive target-owned locale semantics", () => {

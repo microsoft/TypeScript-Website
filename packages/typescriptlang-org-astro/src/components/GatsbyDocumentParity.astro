@@ -1,8 +1,0 @@
----
-import parity from "../generated/gatsby-p23-pages.json"
-interface Props { page: keyof typeof parity.pages }
-const { page } = Astro.props
-const extracted = parity.pages[page]
----
-<Fragment set:html={extracted.body} />
-<style is:global set:html={extracted.styles}></style>

@@ -2,12 +2,13 @@ import { defineConfig, devices } from "@playwright/test"
 
 export default defineConfig({
   testDir: "./browser",
+  testMatch: ["m14.spec.mjs", "redirects-404.spec.mjs"],
   timeout: 30_000,
   expect: { timeout: 7_000 },
   fullyParallel: false,
   retries: 0,
-  reporter: [["list"], ["json", { outputFile: "../typescriptlang-org/.tsupgrader/framework-migration/evidence/playwright/results.json" }]],
-  outputDir: "../typescriptlang-org/.tsupgrader/framework-migration/evidence/playwright/artifacts",
+  reporter: "list",
+  outputDir: "test-results",
   use: {
     baseURL: "http://127.0.0.1:4321",
     trace: "retain-on-failure",

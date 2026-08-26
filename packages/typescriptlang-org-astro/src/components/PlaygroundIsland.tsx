@@ -25,20 +25,31 @@ const copy: Record<string, string> = {
   play_subnav_settings: "Settings", play_settings_tabs_settings: "Sidebar Tabs",
   play_sidebar_options_disable_ata: "Disable ATA", play_sidebar_options_disable_ata_copy: "Disable the automatic acquisition of types for imports and requires.",
   play_sidebar_options_disable_save: "Disable Save-On-Type", play_sidebar_options_disable_save_copy: "Disable changing the URL when you type.",
-  play_sidebar_js: ".JS", play_sidebar_dts: ".D.TS", play_sidebar_errors: "Errors", play_sidebar_logs: "Logs",
+  play_sidebar_js: ".JS", play_sidebar_dts: ".D.TS", play_sidebar_errors: "Errors", play_sidebar_logs: "Logs", play_sidebar_logs_no_logs: "No logs",
   play_sidebar_plugins: "Plugins", play_sidebar_featured_plugins: "Featured Plugins", play_sidebar_plugins_options_external: "3rd Party Plugins from npm",
   play_sidebar_plugins_options_external_warning: "Warning: Code from plugins comes from third-parties.", play_sidebar_plugins_options_modules: "Custom npm Modules",
   play_sidebar_plugins_options_modules_placeholder: "Module name from npm.", play_sidebar_plugins_plugin_dev: "Plugin Dev", play_sidebar_plugins_plugin_dev_option: "Connect to localhost:5000", play_sidebar_plugins_plugin_dev_copy: "Connect to a Playground plugin in development mode.",
   play_sidebar_js_title: "JavaScript", play_sidebar_js_blurb: "Shows the transpiled JS", play_sidebar_dts_title: "Definition Files", play_sidebar_dts_blurb: "Shows the .d.ts output of your code",
   play_sidebar_err_title: "Compiler Errors", play_sidebar_err_blurb: "Shows compiler errors in full", play_sidebar_run_title: "Run JavaScript in Browser", play_sidebar_run_blurb: "Shows the output of running the JavaScript in the editor",
-  play_sidebar_plugins_title: "Manage Playground Plugins", play_sidebar_plugins_blurb: "Handles adding/removing third party extensions to the Playground", play_sidebar_ast_title: "[WIP] AST Viewer", play_sidebar_ast_blurb: "Inspect the TypeScript AST",
+  play_sidebar_plugins_title: "Manage Playground Plugins", play_sidebar_plugins_blurb: "Handles adding/removing 3rd party extensions to the playground", play_sidebar_ast_title: "[WIP] AST Viewer", play_sidebar_ast_blurb: "Inspect the TypeScript AST",
   play_sidebar_tools_filter_placeholder: "Filter", play_export_clipboard: "URL copied to clipboard", play_esm_mode: "Switched to ESM mode", play_clear_logs: "Logs cleared", play_run_js: "Executed JavaScript", play_run_ts: "Executed transpiled TypeScript", play_run_js_fail: "Executed JavaScript Failed:",
 }
 
-const defaultCode = `// Welcome to the TypeScript Playground, a place to write, share and learn TypeScript.
+const defaultCode = `// Welcome to the TypeScript Playground, this is a website
+// which gives you a chance to write, share and learn TypeScript.
+
+// You could think of it in three ways:
+//
+//  - A location to learn TypeScript where nothing can break
+//  - A place to experiment with TypeScript syntax, and share the URLs with others
+//  - A sandbox to experiment with different compiler features of TypeScript
+
 const anExampleVariable = "Hello World"
 console.log(anExampleVariable)
-`
+
+// To learn more about the language, click above in "Examples" or "What's New".
+// Otherwise, get started by removing these comments and the world is your playground.
+  `
 const latestRelease = "6.0.3"
 const exampleHref = (example: Example, locale: string) => {
   const params = { ...(example.compilerSettings || {}), q: Math.floor(Math.random() * 512) }
@@ -85,10 +96,17 @@ export default function PlaygroundIsland({ locale, examples, optionsSummary, han
           const playground = playgroundPackage.setupPlayground(sandbox, monaco, { lang: locale, prefix: "/", supportCustomPlugins: true }, window.i, React)
           window.sandbox = sandbox
           window.playground = playground
+          setTimeout(() => {
+            const navigation = document.getElementById("navigation-container")
+            if (!disposed && location.hash.startsWith("#handbook") && !navigation?.classList.contains("handbook")) {
+              document.getElementById("handbook-button")?.click()
+            }
+          }, 200)
           if (document.documentElement.classList.contains("dark-theme")) monaco.editor.setTheme("sandbox-dark")
           const container = document.getElementById("playground-container")!
           const layout = () => {
-            container.style.height = `${Math.max(innerHeight, 600) - Math.round(container.getBoundingClientRect().top) - 18}px`
+            const bottomOffset = matchMedia("(max-width: 620px)").matches ? 13 : 18
+            container.style.height = `${Math.max(innerHeight, 600) - Math.round(container.getBoundingClientRect().top) - bottomOffset}px`
             sandbox.editor.layout()
           }
           addEventListener("resize", layout)
@@ -97,7 +115,14 @@ export default function PlaygroundIsland({ locale, examples, optionsSummary, han
         }, (error: unknown) => fail("The Playground modules could not be downloaded. Check your network connection and try again.", error))
       } catch (error) { fail("The TypeScript compiler or Monaco editor could not be downloaded. Check your network connection and try again.", error) }
     }
-    window.optionsSummary = optionsSummary; window.playgroundHandbookTOC = handbook; window.react = React; window.reactDOM = ReactDOM
+    window.optionsSummary = optionsSummary.map(option => {
+      if (!option || typeof option !== "object" || !("oneliner" in option)) return option
+      const summary = (option as { oneliner?: unknown }).oneliner
+      if (typeof summary !== "string") return option
+      const parsed = new DOMParser().parseFromString(summary, "text/html")
+      return { ...option, oneliner: parsed.body.textContent?.trim() || "" }
+    })
+    window.playgroundHandbookTOC = handbook; window.react = React; window.reactDOM = ReactDOM
     window.i = window.__tsLocalize = key => copy[key] || key
     const existing = document.querySelector<HTMLScriptElement>("script[data-playground-loader]")
     if (window.require) void boot()
@@ -126,7 +151,7 @@ export default function PlaygroundIsland({ locale, examples, optionsSummary, han
       <li className="dropdown"><a id="handbook-button" href="#" role="button" aria-haspopup="menu" aria-expanded="false">{label("help", "Help")} <span className="caret" /></a></li></ul><ul className="nav navbar-right"><li><a id="playground-settings" href="#" role="button">{label("settings", "Settings")}</a></li></ul></nav>
     {status && <div id="loader"><div className="loader-dots" aria-hidden="true">{Array.from({ length: 9 }, (_, index) => <i key={index} />)}</div><p id="loading-message" className="loading" role="status">{status}</p></div>}
     <div id="playground-container" style={{ display: status ? "none" : "flex" }}><div id="editor-container"><div id="story-container" style={{ display: "none" }} />
-      <div id="editor-toolbar" className="navbar-sub playground-toolbar"><ul><li id="versions" className="dropdown"><a href="#" id="versions-button" role="button" aria-haspopup="menu" aria-expanded="false">{label("version", "Version...")} ... <span className="caret" /></a><ul className="dropdown-menu versions" /></li><li><a id="run-button" href="#" role="button">{label("run", "Run")}</a></li><li className="dropdown"><a id="exports-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{label("export", "Export")} <span className="caret" /></a><ul id="export-dropdown-menu" className="dropdown-menu"><li><a href="#" onClick={exportAction("exportAsTweet")}>{label("tweet", "Tweet link to Playground")}</a></li><li><a href="#" onClick={exportAction("copyAsMarkdownIssue")}>{label("copyIssue", "Copy as Markdown Issue")}</a></li><li><a href="#" onClick={exportAction("copyForChat")}>{label("copyLink", "Copy as Markdown Link")}</a></li><li><a href="#" onClick={exportAction("copyForChatWithPreview")}>{label("copyPreview", "Copy as Markdown Link with Preview")}</a></li><li><a href="#" onClick={exportAction("openInTSAST")}>{label("ast", "Open in TypeScript AST Viewer")}</a></li><li><a href="#" onClick={exportAction("openInBugWorkbench")}>{label("bugWorkbench", "Open in Bug Workbench")}</a></li><li><a href="#" onClick={exportAction("openInVSCodeDev")}>{label("vscode", "Open in VSCode TS Playground (alpha)")}</a></li><li><a href="#" onClick={exportAction("openProjectInCodeSandbox")}>{label("codeSandbox", "Open in CodeSandbox")}</a></li><li><a href="#" onClick={exportAction("openProjectInStackBlitz")}>{label("stackBlitz", "Open in StackBlitz")}</a></li></ul></li><li><a id="share-button" href="#" role="button">{label("share", "Share")}</a></li></ul><ul className="right"><li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">⇥</a></li></ul></div>
+      <div id="editor-toolbar" className="navbar-sub playground-toolbar"><ul><li id="versions" className="dropdown"><a href="#" id="versions-button" role="button" aria-haspopup="menu" aria-expanded="false">{label("version", "Version...")} ... <span className="caret" /></a><ul className="dropdown-menu versions" /></li><li><a id="run-button" href="#" role="button">{label("run", "Run")}</a></li><li className="dropdown"><a id="exports-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" aria-controls="export-dropdown-menu">{label("export", "Export")} <span className="caret" /></a><ul id="export-dropdown-menu" className="dropdown-menu"><li><a href="#" onClick={exportAction("exportAsTweet")}>{label("tweet", "Tweet link to Playground")}</a></li><li className="divider" role="separator" /><li><a href="#" onClick={exportAction("copyAsMarkdownIssue")}>{label("copyIssue", "Copy as Markdown Issue")}</a></li><li><a href="#" onClick={exportAction("copyForChat")}>{label("copyLink", "Copy as Markdown Link")}</a></li><li><a href="#" onClick={exportAction("copyForChatWithPreview")}>{label("copyPreview", "Copy as Markdown Link with Preview")}</a></li><li className="divider" role="separator" /><li><a href="#" onClick={exportAction("openInTSAST")}>{label("ast", "Open in TypeScript AST Viewer")}</a></li><li><a href="#" onClick={exportAction("openInBugWorkbench")}>{label("bugWorkbench", "Open in Bug Workbench")}</a></li><li><a href="#" onClick={exportAction("openInVSCodeDev")}>{label("vscode", "Open in VSCode TS Playground (alpha)")}</a></li><li className="divider" role="separator" /><li><a href="#" onClick={exportAction("openProjectInCodeSandbox")}>{label("codeSandbox", "Open in CodeSandbox")}</a></li><li><a href="#" onClick={exportAction("openProjectInStackBlitz")}>{label("stackBlitz", "Open in StackBlitz")}</a></li></ul></li><li><a id="share-button" href="#" role="button">{label("share", "Share")}</a></li></ul><ul className="right"><li><a id="sidebar-toggle" aria-label="Hide Sidebar" href="#">⇥</a></li></ul></div>
       <div id="monaco-editor-embed" /></div></div>
   </section>
 }

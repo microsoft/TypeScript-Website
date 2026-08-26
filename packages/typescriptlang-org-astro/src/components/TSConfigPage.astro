@@ -1,7 +1,7 @@
 ---
 interface Category { display: string; anchor: string; options: Array<{ anchor: string; name: string }> }
-interface Props { rendered: string; categories: Category[]; introHeader?: string; introPreview?: string }
-const { rendered, categories, introHeader, introPreview } = Astro.props
+interface Props { rendered: string; categories: Category[]; introHeader?: string; introPreview?: string; introHtml?: string }
+const { rendered, categories, introHeader, introPreview, introHtml } = Astro.props
 
 const categoryPrefixes = new Map([
   ["watchOptions", "watch"],
@@ -65,7 +65,8 @@ const withLegacyAliasAnchors = (() => {
 ---
 <h1 class="tsconfig-page-title">TSConfig Reference</h1>
 <div class="tsconfig raised main-content-block markdown button closed">
-  <a href="#" aria-expanded="false" role="button"><h2>{introHeader}</h2><div class="preview">{introPreview}</div></a>
+  <a href="#" aria-expanded="false" role="button"><h2><svg width="22" height="13" viewBox="0 0 22 13" fill="none" aria-hidden="true"><path d="M.5 1 11 11.5 21.5 1" /></svg>{introHeader}</h2><div class="preview">{introPreview}</div></a>
+  <div class="content" set:html={introHtml || ""} />
 </div>
 <div class="tsconfig main-content-block">
   <h2>Compiler Options</h2>
@@ -78,6 +79,68 @@ const withLegacyAliasAnchors = (() => {
   </div>)}
 </div>
 <div class="markdown" set:html={withLegacyAliasAnchors} />
+<style is:global>
+  .tsconfig-page-title { margin-bottom: 1.5rem; text-align: center; font-size: 2rem; font-weight: 700; }
+  .tsconfig, .tsconfig * { box-sizing: content-box; }
+  .tsconfig { width: 960px; max-width: calc(100% - 4rem); margin-bottom: 6rem; }
+  .tsconfig.main-content-block { display: block; margin-right: auto; margin-left: auto; padding: .4rem 2rem 2rem; border: 0; font-weight: 400; }
+  .tsconfig.button { margin-bottom: 2rem; text-decoration: none; }
+  .tsconfig.button > a { display: block; }
+  .tsconfig.button h2 svg { margin-top: .8rem; margin-right: .3rem; transform: rotate(270deg); }
+  .tsconfig.button h2 svg path { stroke: var(--text-color); }
+  .tsconfig.button.open h2 svg { transform: none; }
+  .tsconfig.button.open > a { color: var(--text-color); text-decoration: none; }
+  .tsconfig.button.closed .content, .tsconfig.button.open .preview { display: none; }
+  .tsconfig.button .content ul,
+  .tsconfig .compiler-content > .markdown ul { padding-left: 10px; }
+  .tsconfig.button .content li,
+  .tsconfig .compiler-content > .markdown li { margin: 0 0 10px 10px; }
+  .tsconfig .tsconfig-quick-nav { margin-left: -1rem; padding: 0 0 0 1rem; }
+  .tsconfig .tsconfig-quick-nav.grouped { margin-bottom: 3rem; border-left: 1px solid var(--text-color); }
+  .tsconfig .tsconfig-quick-nav h3 { margin-bottom: .1rem; font-weight: 400; }
+  .tsconfig .tsconfig-quick-nav h3 a { color: var(--text-color); }
+  .tsconfig .tsconfig-quick-nav-category { display: flex; align-items: flex-start; }
+  .tsconfig .tsconfig-quick-nav-category h3,
+  .tsconfig .tsconfig-quick-nav-category h4 { width: 160px; flex: 0 0 auto; }
+  .tsconfig .tsconfig-quick-nav-category ol { display: block; max-width: 100%; flex: 1 1 auto; margin-block: 1em; padding-left: 40px; }
+  .tsconfig .tsconfig-quick-nav-category li { display: inline-block; margin-left: 8px; list-style: none; }
+  .tsconfig .tsconfig-quick-nav code { padding: 0; background: transparent; font-family: monospace; }
+  .tsconfig .tsconfig-quick-nav-category li a { color: var(--text-color); text-decoration: none; }
+  .tsconfig .tsconfig-quick-nav-category li a:hover { text-decoration: underline; }
+  .tsconfig article { width: 100%; }
+  .tsconfig a[id]::before { display: block; height: 80px; margin-top: -80px; visibility: hidden; content: ""; scroll-margin-top: 121px; }
+  .tsconfig .indent { padding: 2rem; }
+  .tsconfig article nav { position: sticky; top: 0; z-index: 99999; display: flex; flex-direction: row; justify-content: center; padding: 4px 0 10px; border-bottom: 1px solid lightgray; background-color: var(--raised-background-color); }
+  .tsconfig article nav ul { display: flex; flex-wrap: wrap; justify-content: center; margin: 0; padding-left: 10px; }
+  .tsconfig article nav li { display: block; margin: 6px; }
+  .tsconfig article nav a { text-decoration: none; }
+  .tsconfig .category { margin-top: 80px; margin-bottom: 40px; }
+  .tsconfig .compiler-option { margin-bottom: 80px; }
+  .tsconfig .compiler-option > h3 { margin-bottom: 0; overflow-wrap: break-word; white-space: pre-wrap; word-break: break-word; }
+  .tsconfig .compiler-option > h3 > a { padding-right: 10px; scroll-margin-top: 65px; }
+  .tsconfig .compiler-content { display: flex; max-width: none; overflow: visible; }
+  .tsconfig .compiler-content > .markdown { width: calc(100% - 250px); flex-shrink: 1; padding-right: 20px; border-right: 1px solid gray; overflow: visible; word-wrap: break-word; }
+  .tsconfig .compiler-content > ul.compiler-option-md { width: 220px; min-width: 200px; max-width: 220px; float: right; margin-left: 20px; padding: 0; overflow-x: hidden; }
+  .tsconfig .compiler-content > ul.compiler-option-md span { display: block; width: 100px; font-weight: 600; }
+  .tsconfig .compiler-content > ul.compiler-option-md li { margin: 0 0 12px 10px; list-style: none; }
+  .tsconfig .compiler-content > ul.compiler-option-md ul { margin-bottom: 18px; padding: 0; }
+  .tsconfig .compiler-content > ul.compiler-option-md li li { margin: 0 0 12px; }
+  .tsconfig .compiler-content > ul.compiler-option-md li > p { display: inline-block; margin: 0; }
+  .tsconfig pre.tsconfig { margin-bottom: 6rem; }
+  @media (max-width: 900px) {
+    .tsconfig .tsconfig-quick-nav-category { flex-direction: column; }
+  }
+  @media (max-width: 800px) {
+    .tsconfig article nav { position: static; }
+    .tsconfig article nav li { min-width: 120px; }
+    .tsconfig .compiler-content { flex-direction: column; }
+    .tsconfig .compiler-content > .markdown { width: 100%; padding-right: 0; border-right: 0; }
+    .tsconfig .compiler-content > ul.compiler-option-md { width: 100%; margin-left: 0; }
+  }
+  @media (max-width: 600px) {
+    .tsconfig.raised { width: calc(100% - 4rem); max-width: none; margin-right: 0; margin-left: 0; padding: 2rem; }
+  }
+</style>
 <script>
   const intro = document.querySelector<HTMLElement>(".tsconfig.button")
   const introLink = intro?.querySelector<HTMLAnchorElement>(":scope > a")

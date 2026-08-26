@@ -34,18 +34,14 @@ jobs:
       # Grab localizations
       - run: pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
-      # Build the packages
-      - run: pnpm bootstrap
-      - run: pnpm build
-
-      # Verify it compiles
+      # Generate the required content and build the Astro site
       - run: pnpm build-site
       
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: github.event_name == 'pull_request' && matrix.os == 'ubuntu-latest'
         with:
           name: site
-          path: packages/typescriptlang-org/public
+          path: packages/typescriptlang-org-astro/dist
 
       # Run all the package's tests
       - run: pnpm test

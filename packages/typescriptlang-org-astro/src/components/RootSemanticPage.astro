@@ -4,11 +4,40 @@ import { renderRootSemanticHtml } from "../lib/root-semantics.mjs"
 interface Props { pathname: string; locale: string; title: string; allRoutes: Array<any> }
 const { pathname } = Astro.props
 const semanticHtml = renderRootSemanticHtml(pathname)
+const localPath = pathname.replace(/^[a-z]{2}\//, "")
 ---
 <section class="content-width root-semantic-content" set:html={semanticHtml} />
+{localPath === "download" && <section class="content-width raised root-controls" aria-label="Package manager commands">
+  <h2>TypeScript in Your Project</h2>
+  <p>Choose your package manager:</p>
+  <code id="code-example">npm install typescript --save-dev</code>
+  <div class="button-row" data-command-target="code-example"><button type="button" data-command="npm install typescript --save-dev">npm</button><button type="button" data-command="yarn add typescript --dev">yarn</button><button type="button" data-command="pnpm add typescript -D">pnpm</button></div>
+  <h3>Run the compiler</h3>
+  <code id="code-run">npx tsc</code>
+  <div class="button-row" data-command-target="code-run"><button type="button" data-command="npx tsc">npm</button><button type="button" data-command="yarn tsc">yarn</button><button type="button" data-command="pnpm tsc">pnpm</button></div>
+</section>}
+{localPath === "cheatsheets" && <nav class="content-width raised root-controls" aria-label="Cheat sheet downloads"><a class="button primary" href="/assets/typescript-cheat-sheets.zip" download>Download the TypeScript cheat sheets</a></nav>}
+{localPath === "community" && <nav class="content-width raised root-controls root-link-grid" aria-label="Community resources"><a href="https://stackoverflow.com/questions/tagged/typescript">Stack Overflow</a><a href="https://github.com/microsoft/TypeScript">GitHub</a><a href="https://discord.gg/typescript">Community Chat</a></nav>}
+{localPath === "tools" && <nav class="content-width raised root-controls root-link-grid" aria-label="TypeScript tools"><a href="/play/">Playground</a><a href="/tsconfig">TSConfig Reference</a><a href="/cheatsheets">Cheat Sheets</a></nav>}
 
 <style>
   .root-semantic-content { padding-block: 2rem 4rem; }
   .root-semantic-content :global(img) { max-width: 100%; height: auto; }
   .root-semantic-content :global(pre) { overflow: auto; padding: 1rem; }
+  .root-controls { margin-block: 1rem; padding: 2rem; }
+  .root-controls code { display:block; padding:1rem; background:var(--inline-code-background-color); }
+  .button-row { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 2rem; }
+  .button-row button,.root-controls .button { padding:.65rem 1rem; border:1px solid var(--border-color); background:var(--background-color); color:var(--text-color); cursor:pointer; }
+  .root-link-grid { display:flex; flex-wrap:wrap; gap:1rem; }
+  .root-link-grid a { padding:1rem; }
 </style>
+<script is:inline>
+  document.querySelectorAll("[data-command-target]").forEach(group => {
+    group.addEventListener("click", event => {
+      const button = event.target.closest("button[data-command]")
+      if (!button) return
+      const output = document.getElementById(group.dataset.commandTarget)
+      if (output) output.textContent = button.dataset.command
+    })
+  })
+</script>

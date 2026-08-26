@@ -1,5 +1,34 @@
 packages:
   - 'packages/*'
 
+overrides:
+  remark-shiki-twoslash>@typescript/twoslash: link:./packages/ts-twoslasher
+  remark-shiki-twoslash>@typescript/vfs: link:./packages/typescript-vfs
+  shiki-twoslash>@typescript/twoslash: link:./packages/ts-twoslasher
+  shiki-twoslash>@typescript/vfs: link:./packages/typescript-vfs
+  '@types/react': ^18.3.28
+  '@types/estree': 0.0.46
+  '@types/eslint': 7.29.0
+  assert: 2.0.0
+  rollup-plugin-typescript2: 0.36.0
+  typescript: 6.0.2
+  tslib: ^2.6.2
+  sharp: 0.34.5
+  webpack: ^5.105.3
+
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - core-js
+  - core-js-pure
+  - es5-ext
+  - lmdb
+  - msgpackr-extract
+  - spawn-sync
+  - unrs-resolver
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+
 shellEmulator: true
 publishBranch: v2

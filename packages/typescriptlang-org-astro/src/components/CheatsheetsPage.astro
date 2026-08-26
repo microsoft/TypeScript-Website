@@ -1,0 +1,76 @@
+---
+const sheets = [
+  { className: "cs-1", name: "Control Flow Analysis", file: "TypeScript Control Flow Analysis-8a549253ad8470850b77c4c5c351d457.png", alt: "Control Flow Analysis Cheat Sheet" },
+  { className: "cs-2", name: "Interfaces", file: "TypeScript Interfaces-34f1ad12132fb463bd1dfe5b85c5b2e6.png", alt: "Interfaces Cheat Sheet" },
+  { className: "cs-3", name: "Types", file: "TypeScript Types-ae199d69aeecf7d4a2704a528d0fd3f9.png", alt: "Types Cheat Sheet" },
+  { className: "cs-4", name: "Classes", file: "TypeScript Classes-83cc6f8e42ba2002d5e2c04221fa78f9.png", alt: "Classes Cheat Sheet" },
+]
+---
+<nav class="navbar-sub cheatsheets-subnav" aria-label="Cheat sheet downloads">
+  <ul>
+    <li class="name hide-small"><span>Cheat Sheets</span></li>
+    <li><a href="/assets/typescript-cheat-sheets.zip" title="Download the zip file">Download Zip</a></li>
+  </ul>
+</nav>
+<div class="raised main-content-block cheatsheets">
+  <h2>TypeScript Cheat Sheets</h2>
+  <div class="intro-row">
+    <p>Downloadable syntax reference pages for different parts of everyday TypeScript code</p>
+    <p>Learn more about Classes, Interfaces, Types and Control Flow Analysis</p>
+  </div>
+  <div class="sheet-container">
+    {sheets.map(sheet => <a class={`sheet ${sheet.className}`} href={`/static/${sheet.file}`} title={`${sheet.name} Cheat Sheets`}>
+      <img src={`/static/${sheet.file}`} alt={sheet.alt} />
+      <span class="description">{sheet.name}</span>
+    </a>)}
+  </div>
+  <a class="fluid-button" href="/assets/typescript-cheat-sheets.zip" download>
+    <span><strong>Download PDFs and PNGs</strong><small>To read later or print</small></span>
+    <span class="fluid-button-icon" aria-hidden="true"><svg width="15" height="27" viewBox="0 0 15 27" fill="none"><path d="M7.5.5V19M7.5 19 1 13M7.5 19 13 13" stroke="currentColor" stroke-width="1.5"/><path d="M.5 25h14" stroke="currentColor" stroke-width="4"/></svg></span>
+  </a>
+</div>
+
+<style>
+  .cheatsheets-subnav { display: flex; height: 3rem; }
+  .cheatsheets-subnav .name { align-items: center; min-width: 200px; padding-left: .7rem; }
+  .cheatsheets-subnav a { padding: .95rem .5em .7em; }
+  .cheatsheets { box-sizing: content-box; max-width: 960px; padding: .4rem 2rem 2rem; }
+  .cheatsheets h2 { margin: 2rem 0 1.5rem; font-size: 2.5rem; font-weight: 400; line-height: normal; text-align: center; }
+  .intro-row { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+  .intro-row p { flex: 1; max-width: 320px; margin: 10px; line-height: 1.4rem; }
+  .sheet-container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; }
+  .sheet { position: relative; display: block; }
+  .sheet img { box-sizing: content-box; max-width: 360px; border: 1px solid #000; box-shadow: 0 4px 20px -6px rgba(0,0,0,.25); transition: .15s all ease; }
+  .sheet:hover, .sheet:active { z-index: 100; }
+  .sheet:hover img, .sheet:active img { z-index: 100; margin: -2px; border-color: #3178c6; box-shadow: 0 4px 20px -2px rgba(0,0,0,.25); }
+  .description { display: none; box-sizing: border-box; position: absolute; top: 0; width: 100%; height: 100%; padding-top: 30%; background: rgba(0,0,0,.5); color: #fff; font-size: 2.5rem; text-align: center; }
+  .sheet:hover .description, .sheet:active .description, .sheet:focus .description { display: block; }
+  .cs-1 { transform: rotate(-1.1deg); }
+  .cs-2 { transform: rotate(1.2deg); }
+  .cs-3 { margin-top: -40px; transform: rotate(3deg); }
+  .cs-4 { margin-top: -40px; transform: rotate(-2deg); }
+  .fluid-button { box-sizing: content-box; display: flex; max-width: 260px; margin: 3rem auto 0; padding: .5rem 1rem; border: 1px solid #000; background: #fff; color: #000; text-decoration: none; }
+  .fluid-button > span:first-child { flex: 1; }
+  .fluid-button strong, .fluid-button small { display: block; }
+  .fluid-button strong { font-weight: 600; }
+  .fluid-button small { font-size: 1rem; }
+  .fluid-button-icon { display: flex; min-width: 4rem; align-items: center; justify-content: center; margin-right: -1rem; margin-left: 1rem; border-left: 2px solid #000; text-align: center; }
+  .fluid-button:hover, .fluid-button:focus { background: #eee; }
+  .fluid-button:active { background: #ddd; }
+  @media (max-width: 767px) {
+    .hide-small { display: none !important; }
+    .cs-2 { margin-top: -40px; }
+  }
+  @media (min-width: 768px) {
+    .sheet-container { min-height: 550px; margin: 0; }
+    .cs-1 .description { padding-top: 20%; }
+  }
+  @media (min-width: 1200px) {
+    .sheet-container { min-height: 780px; margin: 0 -80px; }
+    .sheet img { max-width: 550px; }
+    .cs-1 .description { padding-top: 30%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet img { transition: none; }
+  }
+</style>

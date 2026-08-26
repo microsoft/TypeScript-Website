@@ -147,12 +147,13 @@ const languageMessages = {
         const userLang = userLocale.split("-")[0]
         const copy = languageMessages[userLang] || languageMessages.todo
 
-        const quickJump = document.getElementById("my-lang-quick-jump")
+        const quickJumpContainer = document.getElementById("my-lang-quick-jump")
+        const quickJump = quickJumpContainer?.querySelector("a")
         if (quickJump instanceof HTMLAnchorElement) {
           quickJump.textContent = copy.shorthand !== "In XX" ? copy.shorthand : `In ${userLang}`
           quickJump.href = localePath
           quickJump.title = copy.body
-          quickJump.style.display = "flex"
+          quickJumpContainer.style.display = "flex"
         }
 
         if (storage?.getItem("dont-recommend-translate")) return

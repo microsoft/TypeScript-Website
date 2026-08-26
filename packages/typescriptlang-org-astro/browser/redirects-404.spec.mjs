@@ -1,16 +1,6 @@
 import { test, expect } from "@playwright/test"
-import fs from "node:fs"
-import path from "node:path"
 
-const evidence = path.resolve("../typescriptlang-org/.tsupgrader/framework-migration/evidence/playwright")
-
-const saveScreenshot = async (page, project, name) => {
-  const directory = path.join(evidence, name)
-  fs.mkdirSync(directory, { recursive: true })
-  await page.screenshot({ path: path.join(directory, `${project}.png`), fullPage: true })
-}
-
-test("static redirect documents preserve internal, fragment, and case-collision behavior", async ({ page }, testInfo) => {
+test("static redirect documents preserve internal, fragment, and case-collision behavior", async ({ page }) => {
   await page.goto("/Tutorial")
   await expect(page).toHaveURL(/\/docs\/?$/)
 
@@ -22,7 +12,6 @@ test("static redirect documents preserve internal, fragment, and case-collision 
     await page.goto(route)
     await expect(page).toHaveURL(/\/play\/?$/)
   }
-  await saveScreenshot(page, testInfo.project.name, "redirects")
 })
 
 test("external redirect requests the exact Webpack destination without relying on that service", async ({ page }) => {
@@ -45,5 +34,4 @@ test("unknown production-preview routes return and render the custom 404", async
   expect(navigation?.status()).toBe(404)
   await expect(page.getByRole("heading", { level: 1, name: "Page not found" })).toBeVisible()
   await expect(page.getByRole("link", { name: "Return to the TypeScript home page" })).toHaveAttribute("href", "/")
-  await saveScreenshot(page, testInfo.project.name, "404")
 })
