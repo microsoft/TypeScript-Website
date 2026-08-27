@@ -599,7 +599,7 @@ import * as someModule from "someModule.js";
 TypeScript will probably resolve this to `src/someModule.js`, even if the developer only intended to add mappings for modules starting with `@app/` and `@lib/`.
 
 In the best case, this also often leads to "worse-looking" paths that bundlers would ignore;
-but it often meant that that many import paths that would never have worked at runtime are considered "just fine" by TypeScript.
+but it often meant that many import paths that would never have worked at runtime are considered "just fine" by TypeScript.
 
 `path` mappings have not required specifying `baseUrl` for a long time, and in practice, most projects that use `baseUrl` only use it as a prefix for their `paths` entries.
 In TypeScript 6.0, `baseUrl` is deprecated and will no longer be considered a look-up root for module resolution.
