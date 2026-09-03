@@ -9,6 +9,8 @@ experimental: false
 
 TypeScript supports [JSX](/docs/handbook/jsx.html) and can correctly model the patterns used in React codebases like `useState`.
 
+For a practical comparison of the classic and automatic JSX runtimes, including how Babel and TypeScript transform JSX, see [How JSX is transformed in React](https://frontendatlas.com/react/trivia/react-jsx-transform-and-why-not-required).
+
 ### Getting Set Up With a React Project
 
 Today there are many frameworks which support TypeScript out of the box:
