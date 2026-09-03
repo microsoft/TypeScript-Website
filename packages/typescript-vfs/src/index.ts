@@ -290,14 +290,18 @@ export const createDefaultMapFromNodeModules = (
   const path = requirePath()
   const fs = requireFS()
 
+  // Resolve the lib dir from the compiler, which follows re-export wrappers (e.g. @typescript/typescript6)
+  // to the real stdlib; require.resolve would point at the wrapper's own lib/, which has no lib.*.d.ts.
+  const ts = _ts ?? (require("typescript") as typeof import("typescript"))
+  const libDir = tsLibDirectory || path.dirname(ts.getDefaultLibFilePath(_compilerOptions))
+
   const getLib = (name: string) => {
-    const lib = tsLibDirectory || path.dirname(require.resolve("typescript"))
-    return fs.readFileSync(path.join(lib, name), "utf8")
+    return fs.readFileSync(path.join(libDir, name), "utf8")
   }
 
   const isDtsFile = (file: string) => /\.d\.([^\.]+\.)?[cm]?ts$/i.test(file)
 
-  const libFiles = fs.readdirSync(tsLibDirectory || path.dirname(require.resolve("typescript")))
+  const libFiles = fs.readdirSync(libDir)
   const knownLibFiles = libFiles.filter(f => f.startsWith("lib.") && isDtsFile(f))
 
   const fsMap = new Map<string, string>()
