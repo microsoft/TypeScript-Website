@@ -31,7 +31,7 @@ A direct way to do this is to open or create your workspace's `.vscode/settings.
 "typescript.tsdk": "<path to your folder>/node_modules/typescript/lib"
 ```
 
-Alternatively, if you simply want to run the nightly editing experience for JavaScript and TypeScript in Visual Studio Code without changing your workspace version, you can run the [JavaScript and TypeScript Nightly Extension](https://marketplace.visualstudio.com/items?itemName%253Dms-vscode.vscode-typescript-next)
+Alternatively, if you simply want to run the nightly editing experience for JavaScript and TypeScript in Visual Studio Code without changing your workspace version, you can run the [JavaScript and TypeScript Nightly Extension](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.vscode-typescript-nightly)
 
 ### Sublime Text
 
