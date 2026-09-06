@@ -13,7 +13,7 @@ base config file, and that circularity between configuration files is not allowe
 
 Currently, the only top-level property that is excluded from inheritance is [`references`](#references).
 
-##### Example
+#### Example
 
 `configs/base.json`:
 

@@ -352,10 +352,9 @@ $headline-foreground-bg: white;
         li {
           list-style: none;
           padding: 10px;
-          a {
-            text-decoration: none;
-            color: white;
-          }
+          cursor: pointer;
+          text-decoration: none;
+          color: white;
           &.selected {
             text-decoration: underline;
           }

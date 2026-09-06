@@ -2,14 +2,40 @@ import { PlaygroundPlugin, PluginFactory } from ".."
 import { createUI } from "../createUI"
 import { localize } from "../localizeWithFallback"
 
-let allLogs: string[] = []
+type LogEntry = {
+  id: string
+  name: string
+  text: string
+}
+
+let allLogs: LogEntry[] = []
 let addedClearAction = false
-const cancelButtonSVG = `
-<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="6" cy="7" r="5" stroke-width="2"/>
-<line x1="0.707107" y1="1.29289" x2="11.7071" y2="12.2929" stroke-width="2"/>
-</svg>
-`
+
+const createCancelButtonSVG = () => {
+  const svgNamespace = "http://www.w3.org/2000/svg"
+  const svg = document.createElementNS(svgNamespace, "svg")
+  svg.setAttribute("width", "13")
+  svg.setAttribute("height", "13")
+  svg.setAttribute("viewBox", "0 0 13 13")
+  svg.setAttribute("fill", "none")
+
+  const circle = document.createElementNS(svgNamespace, "circle")
+  circle.setAttribute("cx", "6")
+  circle.setAttribute("cy", "7")
+  circle.setAttribute("r", "5")
+  circle.setAttribute("stroke-width", "2")
+  svg.appendChild(circle)
+
+  const line = document.createElementNS(svgNamespace, "line")
+  line.setAttribute("x1", "0.707107")
+  line.setAttribute("y1", "1.29289")
+  line.setAttribute("x2", "11.7071")
+  line.setAttribute("y2", "12.2929")
+  line.setAttribute("stroke-width", "2")
+  svg.appendChild(line)
+
+  return svg
+}
 
 export const runPlugin: PluginFactory = (i, utils) => {
   const plugin: PlaygroundPlugin = {
@@ -43,7 +69,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
 
       const logs = document.createElement("div")
       logs.id = "log"
-      logs.innerHTML = allLogs.join("<hr />")
+      renderLogs(logs, allLogs)
       errorUL.appendChild(logs)
 
       const logToolsContainer = document.createElement("div")
@@ -52,7 +78,7 @@ export const runPlugin: PluginFactory = (i, utils) => {
 
       const clearLogsButton = document.createElement("div")
       clearLogsButton.id = "clear-logs-button"
-      clearLogsButton.innerHTML = cancelButtonSVG
+      clearLogsButton.appendChild(createCancelButtonSVG())
       clearLogsButton.onclick = e => {
         e.preventDefault()
         clearLogsAction.run()
@@ -69,12 +95,10 @@ export const runPlugin: PluginFactory = (i, utils) => {
         const inputText = e.target.value
 
         const eleLog = document.getElementById("log")!
-        eleLog.innerHTML = allLogs
-          .filter(log => {
-            const userLoggedText = log.substring(log.indexOf(":") + 1, log.indexOf("&nbsp;<br>"))
-            return userLoggedText.includes(inputText)
-          })
-          .join("<hr />")
+        renderLogs(
+          eleLog,
+          allLogs.filter(log => log.text.includes(inputText))
+        )
 
         if (inputText === "") {
           const logContainer = document.getElementById("log-container")!
@@ -168,10 +192,9 @@ function rewireLoggingToElement(
     obj[name] = function (...objs: any[]) {
       const output = produceOutput(objs)
       const eleLog = eleLocator()
-      const prefix = `[<span class="log-${name}">${id}</span>]: `
       const eleContainerLog = eleOverflowLocator()
-      allLogs.push(`${prefix}${output}<br>`)
-      eleLog.innerHTML = allLogs.join("<hr />")
+      allLogs.push({ id, name, text: output })
+      renderLogs(eleLog, allLogs)
       if (autoScroll && eleContainerLog) {
         eleContainerLog.scrollTop = eleContainerLog.scrollHeight
       }
@@ -179,44 +202,35 @@ function rewireLoggingToElement(
     }
   }
 
-  // Inline constants which are switched out at the end of processing
-  const replacers = {
-    "<span class='literal'>null</span>": "1231232131231231423434534534",
-    "<span class='literal'>undefined</span>": "4534534534563567567567",
-    "<span class='comma'>, </span>": "785y8345873485763874568734y535438",
-  }
-
   const objectToText = (arg: any): string => {
     const isObj = typeof arg === "object"
     let textRep = ""
     if (arg && arg.stack && arg.message) {
-      // special case for err
-      textRep = htmlEscape(arg.message)
+      textRep = arg.message
     } else if (arg === null) {
-      textRep = replacers["<span class='literal'>null</span>"]
+      textRep = "null"
     } else if (arg === undefined) {
-      textRep = replacers["<span class='literal'>undefined</span>"]
+      textRep = "undefined"
     } else if (typeof arg === "symbol") {
-      textRep = `<span class='literal'>${htmlEscape(String(arg))}</span>`
+      textRep = String(arg)
     } else if (Array.isArray(arg)) {
-      textRep = "[" + arg.map(objectToText).join(replacers["<span class='comma'>, </span>"]) + "]"
+      textRep = "[" + arg.map(objectToText).join(", ") + "]"
     } else if (arg instanceof Set) {
       const setIter = [...arg]
-      textRep = `Set (${arg.size}) {` + setIter.map(objectToText).join(replacers["<span class='comma'>, </span>"]) + "}"
+      textRep = `Set (${arg.size}) {` + setIter.map(objectToText).join(", ") + "}"
     } else if (arg instanceof Map) {
       const mapIter = [...arg.entries()]
       textRep =
         `Map (${arg.size}) {` +
         mapIter
           .map(([k, v]) => `${objectToText(k)} => ${objectToText(v)}`)
-          .join(replacers["<span class='comma'>, </span>"]) +
+          .join(", ") +
         "}"
     } else if (typeof arg === "string") {
-      textRep = '"' + htmlEscape(arg) + '"'
+      textRep = '"' + arg + '"'
     } else if (isObj) {
       const name = arg.constructor && arg.constructor.name || ""
-      // No one needs to know an obj is an obj
-      const nameWithoutObject = name && name === "Object" ? "" : htmlEscape(name)
+      const nameWithoutObject = name && name === "Object" ? "" : name
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
 
       textRep =
@@ -231,27 +245,19 @@ function rewireLoggingToElement(
           },
           2
         ).replace(/"__undefined__"/g, "undefined")
-
-      textRep = htmlEscape(textRep)
     } else {
-      textRep = htmlEscape(String(arg))
+      textRep = String(arg)
     }
     return textRep
   }
 
   function produceOutput(args: any[]) {
-    let result: string = args.reduce((output: any, arg: any, index) => {
+    return args.reduce((output: any, arg: any, index) => {
       const textRep = objectToText(arg)
       const showComma = index !== args.length - 1
-      const comma = showComma ? "<span class='comma'>, </span>" : ""
+      const comma = showComma ? ", " : ""
       return output + textRep + comma + " "
     }, "")
-
-    Object.keys(replacers).forEach(k => {
-      result = result.replace(new RegExp((replacers as any)[k], "g"), k)
-    })
-
-    return result
   }
 }
 
@@ -260,6 +266,20 @@ function sanitizeJS(code: string) {
   return code.replace(`import "reflect-metadata"`, "").replace(`require("reflect-metadata")`, "")
 }
 
-function htmlEscape(str: string) {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+function renderLogs(container: Element, logs: LogEntry[]) {
+  container.textContent = ""
+
+  logs.forEach((log, index) => {
+    if (index > 0) container.appendChild(document.createElement("hr"))
+
+    container.appendChild(document.createTextNode("["))
+
+    const id = document.createElement("span")
+    id.className = "log-" + log.name
+    id.textContent = log.id
+    container.appendChild(id)
+
+    container.appendChild(document.createTextNode("]: " + log.text))
+    container.appendChild(document.createElement("br"))
+  })
 }

@@ -1,5 +1,11 @@
 # create-typescript-playground-plugin
 
+## 1.3.4
+
+### Patch Changes
+
+- [#3587](https://github.com/microsoft/TypeScript-Website/pull/3587) [`bb4cfb4`](https://github.com/microsoft/TypeScript-Website/commit/bb4cfb458f9f4009849e2459b3449dcb0c4ca90f) Thanks [@jakebailey](https://github.com/jakebailey)! - Remove innerHTML uses
+
 ## 1.3.3
 
 ### Patch Changes

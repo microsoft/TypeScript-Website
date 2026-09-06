@@ -473,3 +473,19 @@ export const parseMarkdown = (value: string | string[]): string =>
       .use(remarkHTML)
       .processSync(String(value).replace(/^[-.0-9_a-z]+$/i, "`$&`"))
       .toString();
+
+type MarkdownNode = {
+  type: string;
+  value?: unknown;
+  alt?: unknown;
+  children?: MarkdownNode[];
+};
+
+const markdownNodeToPlainText = (node: MarkdownNode): string => {
+  if (node.type === "image" && typeof node.alt === "string") return node.alt;
+  if (typeof node.value === "string") return node.value;
+  return node.children?.map(markdownNodeToPlainText).join("") ?? "";
+};
+
+export const parseMarkdownToPlainText = (value: string): string =>
+  markdownNodeToPlainText(remark().parse(value) as MarkdownNode);

@@ -1,1 +1,1 @@
-require("typescript/lib/tsc.js");
+require("@typescript/old/lib/tsc.js");

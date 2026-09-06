@@ -5,10 +5,3 @@ export const requireURL = (path: string) => {
   const prefix = isDev ? 'local/' : 'unpkg/typescript-playground-presentation-mode/dist/'
   return prefix + path
 }
-
-/** Use this to make a few dumb element generation funcs */
-export const el = (str: string, el: string, container: Element) => {
-  const para = document.createElement(el)
-  para.innerHTML = str
-  container.appendChild(para)
-}

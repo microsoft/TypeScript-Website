@@ -106,7 +106,7 @@ Users with enough experience might not be surprised, but not everyone has run in
 
 This might be a good segue into what we'll call "truthiness" checking.
 
-# Truthiness narrowing
+## Truthiness narrowing
 
 Truthiness might not be a word you'll find in the dictionary, but it's very much something you'll hear about in JavaScript.
 

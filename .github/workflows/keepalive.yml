@@ -12,11 +12,11 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: |
           if [[ $(git log --format="%H" --since "50 days" | head -c1 | wc -c) == 0 ]]; then
-            git config user.email "typescriptbot@microsoft.com"
-            git config user.name "TypeScript Bot"
+            git config user.email "290192711+typescript-automation[bot]@users.noreply.github.com"
+            git config user.name "typescript-automation[bot]"
             git commit --allow-empty -m "Automated commit to keep GitHub Actions active"
             git push
           fi

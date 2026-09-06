@@ -41,7 +41,7 @@ export const Contributors = (props: ContributorsProps) => {
     if (!t) return;
 
     const pageLoadIndicator = document.querySelector("#page-loaded-time");
-    if (pageLoadIndicator?.innerHTML.includes("This page")) return;
+    if (pageLoadIndicator?.textContent?.includes("This page")) return;
 
     const start = t.navigationStart;
     const end = t.domInteractive;
@@ -51,8 +51,8 @@ export const Contributors = (props: ContributorsProps) => {
     if (loadTime < 0) return;
 
     if (pageLoadIndicator) {
-      pageLoadIndicator.innerHTML = "This page loaded in " + loadTime +
-        " seconds.</p>";
+      pageLoadIndicator.textContent = "This page loaded in " + loadTime +
+        " seconds.";
     }
   }, []);
 

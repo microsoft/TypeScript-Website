@@ -1,5 +1,5 @@
 import type { Sandbox } from "@typescript/sandbox"
-import type { DiagnosticRelatedInformation, Node } from "typescript"
+import type { DiagnosticRelatedInformation, Node as TSNode } from "typescript"
 
 export type LocalStorageOption = {
   blurb: string
@@ -17,9 +17,24 @@ export type OptionsListConfig = {
   requireRestart?: true
 }
 
+type ElementChild = string | Node
+
+const appendChildren = (el: Element, children: ElementChild[]) => {
+  children.forEach(child => {
+    el.appendChild(typeof child === "string" ? document.createTextNode(child) : child)
+  })
+}
+
 const el = (str: string, elementType: string, container: Element) => {
   const el = document.createElement(elementType)
-  el.innerHTML = str
+  el.textContent = str
+  container.appendChild(el)
+  return el
+}
+
+const elWithChildren = (children: ElementChild[], elementType: string, container: Element) => {
+  const el = document.createElement(elementType)
+  appendChildren(el, children)
   container.appendChild(el)
   return el
 }
@@ -102,8 +117,11 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
       const li = document.createElement("li")
       const label = document.createElement("label")
-      const split = setting.oneline ? "" : "<br/>"
-      label.innerHTML = `<span>${setting.display}</span>${split}${setting.blurb}`
+      const display = document.createElement("span")
+      display.textContent = setting.display
+      label.appendChild(display)
+      if (!setting.oneline) label.appendChild(document.createElement("br"))
+      label.appendChild(document.createTextNode(setting.blurb))
 
       const key = setting.flag
       const input = document.createElement("input")
@@ -185,6 +203,32 @@ export const createDesignSystem = (sandbox: Sandbox) => {
 
       container.appendChild(noErrorsMessage)
       return noErrorsMessage
+    }
+
+    const link = (href: string, text: string) => {
+      const a = document.createElement("a")
+      a.href = href
+      a.textContent = text
+      return a
+    }
+
+    const inlineCode = (text: string) => {
+      const code = document.createElement("code")
+      code.textContent = text
+      return code
+    }
+
+    const lineBreak = () => document.createElement("br")
+
+    const unorderedList = (...items: ElementChild[][]) => {
+      const ul = document.createElement("ul")
+      items.forEach(item => {
+        const li = document.createElement("li")
+        appendChildren(li, item)
+        ul.appendChild(li)
+      })
+      container.appendChild(ul)
+      return ul
     }
 
     const createTabBar = () => {
@@ -305,13 +349,13 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       container.appendChild(ol)
     }
 
-    const createASTTree = (node: Node, settings?: { closedByDefault?: true }) => {
+    const createASTTree = (node: TSNode, settings?: { closedByDefault?: true }) => {
       const autoOpen = !settings || !settings.closedByDefault
 
       const div = document.createElement("div")
       div.className = "ast"
 
-      const infoForNode = (node: Node) => {
+      const infoForNode = (node: TSNode) => {
         const name = ts.SyntaxKind[node.kind]
 
         return {
@@ -337,20 +381,21 @@ export const createDesignSystem = (sandbox: Sandbox) => {
         return li
       }
 
-      const renderSingleChild = (key: string, value: Node, depth: number) => {
+      const renderSingleChild = (key: string, value: TSNode, depth: number) => {
         const li = document.createElement("li")
-        li.innerHTML = `${key}: `
+        li.textContent = `${key}: `
 
         renderItem(li, value, depth + 1)
         return li
       }
 
-      const renderManyChildren = (key: string, nodes: Node[], depth: number) => {
+      const renderManyChildren = (key: string, nodes: TSNode[], depth: number) => {
         const children = document.createElement("div")
         children.classList.add("ast-children")
 
         const li = document.createElement("li")
-        li.innerHTML = `${key}: [<br/>`
+        li.textContent = `${key}: [`
+        li.appendChild(document.createElement("br"))
         children.appendChild(li)
 
         nodes.forEach(node => {
@@ -358,12 +403,12 @@ export const createDesignSystem = (sandbox: Sandbox) => {
         })
 
         const liEnd = document.createElement("li")
-        liEnd.innerHTML += "]"
+        liEnd.textContent = "]"
         children.appendChild(liEnd)
         return children
       }
 
-      const renderItem = (parentElement: Element, node: Node, depth: number) => {
+      const renderItem = (parentElement: Element, node: TSNode, depth: number) => {
         const itemDiv = document.createElement("div")
         parentElement.appendChild(itemDiv)
         itemDiv.className = "ast-tree-start"
@@ -497,6 +542,18 @@ export const createDesignSystem = (sandbox: Sandbox) => {
       subtitle: (subtitle: string) => el(subtitle, "h4", container),
       /** Used to show a paragraph */
       p: (subtitle: string) => el(subtitle, "p", container),
+      /** Used to show a paragraph with safe DOM children */
+      pWithChildren: (...children: ElementChild[]) => elWithChildren(children, "p", container),
+      /** Used to show a section heading with safe DOM children */
+      subtitleWithChildren: (...children: ElementChild[]) => elWithChildren(children, "h4", container),
+      /** Creates an unattached anchor with safe text */
+      link,
+      /** Creates an unattached inline code element with safe text */
+      inlineCode,
+      /** Creates an unattached line break */
+      lineBreak,
+      /** Appends an unordered list with safe DOM children */
+      unorderedList,
       /** When you can't do something, or have nothing to show */
       showEmptyScreen,
       /**

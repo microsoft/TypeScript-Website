@@ -6,27 +6,30 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  id-token: write
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: azure
+      deployment: false
     if: github.repository == 'microsoft/TypeScript-Website'
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           filter: blob:none
-          token: ${{ secrets.TS_BOT_TOKEN }}
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "20.x"
+          node-version: "22.x"
           registry-url: "https://registry.npmjs.org/"
-      - uses: pnpm/action-setup@903f9c1a6ebcba6cf41d87230be49611ac97822e # v6.0.3
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
 
       - name: Prepare website v2
         run: |
@@ -34,9 +37,34 @@ jobs:
           pnpm bootstrap
           pnpm build
 
-      - uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1.7.0
+      - uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca # v3.0.1
         with:
-          publish: pnpm ci:publish
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create GitHub App token
+        id: app-token
+        uses: microsoft/create-github-app-token-via-key-vault@5ba0d436e9c3cac52feff4d1f2f66f9698ce4a2d # v1
+        with:
+          client-id: ${{ vars.TYPESCRIPT_AUTOMATION_GITHUB_APP_CLIENT_ID }}
+          key-id: ${{ vars.TYPESCRIPT_AUTOMATION_GITHUB_APP_KEY_ID }}
+          owner: microsoft
+          repositories: TypeScript-Website
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Configure git for GitHub App token
+        shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.TS_BOT_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }} 
+          GITHUB_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          basic_auth="$(node -e 'process.stdout.write(Buffer.from("x-access-token:" + process.env.GITHUB_APP_TOKEN).toString("base64"))')"
+          echo "::add-mask::$basic_auth"
+          git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${basic_auth}"
+      - uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          publish-script: pnpm ci:publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

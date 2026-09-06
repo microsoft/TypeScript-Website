@@ -15,7 +15,7 @@ export const createUtils = (sb: any, react: typeof React) => {
 
   const el = (str: string, elementType: string, container: Element) => {
     const el = document.createElement(elementType)
-    el.innerHTML = str
+    el.textContent = str
     container.appendChild(el)
     return el
   }

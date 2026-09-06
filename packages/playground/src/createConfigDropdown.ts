@@ -50,6 +50,40 @@ const notRelevantToPlayground = [
   "forceConsistentCasingInFileNames",
 ]
 
+const createInfoIcon = () => {
+  const svgNamespace = "http://www.w3.org/2000/svg"
+  const svg = document.createElementNS(svgNamespace, "svg")
+  svg.setAttribute("width", "20px")
+  svg.setAttribute("height", "20px")
+  svg.setAttribute("viewBox", "0 0 20 20")
+  svg.setAttribute("version", "1.1")
+
+  const g = document.createElementNS(svgNamespace, "g")
+  g.setAttribute("stroke", "none")
+  g.setAttribute("stroke-width", "1")
+  g.setAttribute("fill", "none")
+  g.setAttribute("fill-rule", "evenodd")
+  svg.appendChild(g)
+
+  const circle = document.createElementNS(svgNamespace, "circle")
+  circle.setAttribute("stroke", "#0B6F57")
+  circle.setAttribute("cx", "10")
+  circle.setAttribute("cy", "10")
+  circle.setAttribute("r", "9")
+  g.appendChild(circle)
+
+  const path = document.createElementNS(svgNamespace, "path")
+  path.setAttribute(
+    "d",
+    "M9.99598394,6 C10.2048193,6 10.4243641,5.91700134 10.6546185,5.75100402 C10.8848728,5.58500669 11,5.33601071 11,5.00401606 C11,4.66666667 10.8848728,4.41499331 10.6546185,4.24899598 C10.4243641,4.08299866 10.2048193,4 9.99598394,4 C9.79250335,4 9.57563588,4.08299866 9.34538153,4.24899598 C9.11512718,4.41499331 9,4.66666667 9,5.00401606 C9,5.33601071 9.11512718,5.58500669 9.34538153,5.75100402 C9.57563588,5.91700134 9.79250335,6 9.99598394,6 Z M10.6877323,16 L10.6877323,14.8898836 L10.6877323,8 L9.30483271,8 L9.30483271,9.11011638 L9.30483271,16 L10.6877323,16 Z"
+  )
+  path.setAttribute("fill", "#0B6F57")
+  path.setAttribute("fill-rule", "nonzero")
+  g.appendChild(path)
+
+  return svg
+}
+
 export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
   const configContainer = document.getElementById("config-container")!
   const container = document.createElement("div")
@@ -121,13 +155,21 @@ export const createConfigDropdown = (sandbox: Sandbox, monaco: Monaco) => {
         label.style.position = "relative"
         label.style.width = "100%"
 
-        const svg = `<?xml version="1.0" encoding="UTF-8"?><svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-            <circle stroke="#0B6F57" cx="10" cy="10" r="9"></circle>
-            <path d="M9.99598394,6 C10.2048193,6 10.4243641,5.91700134 10.6546185,5.75100402 C10.8848728,5.58500669 11,5.33601071 11,5.00401606 C11,4.66666667 10.8848728,4.41499331 10.6546185,4.24899598 C10.4243641,4.08299866 10.2048193,4 9.99598394,4 C9.79250335,4 9.57563588,4.08299866 9.34538153,4.24899598 C9.11512718,4.41499331 9,4.66666667 9,5.00401606 C9,5.33601071 9.11512718,5.58500669 9.34538153,5.75100402 C9.57563588,5.91700134 9.79250335,6 9.99598394,6 Z M10.6877323,16 L10.6877323,14.8898836 L10.6877323,8 L9.30483271,8 L9.30483271,9.11011638 L9.30483271,16 L10.6877323,16 Z" fill="#0B6F57" fill-rule="nonzero"></path>
-          </g>
-      </svg>`
-        label.innerHTML = `<span>${optSummary.id}</span><a href='../tsconfig#${optSummary.id}' class='compiler_info_link' alt='Look up ${optSummary.id} in the TSConfig Reference' target='_blank'>${svg}</a><br/>${optSummary.oneliner}`
+        const optionName = document.createElement("span")
+        optionName.textContent = optSummary.id
+        label.appendChild(optionName)
+
+        const optionReference = document.createElement("a")
+        optionReference.href = `../tsconfig#${optSummary.id}`
+        optionReference.className = "compiler_info_link"
+        optionReference.setAttribute("aria-label", `Look up ${optSummary.id} in the TSConfig Reference`)
+        optionReference.target = "_blank"
+        optionReference.rel = "noopener noreferrer"
+        optionReference.appendChild(createInfoIcon())
+        label.appendChild(optionReference)
+
+        label.appendChild(document.createElement("br"))
+        label.appendChild(document.createTextNode(optSummary.oneliner))
 
         const input = document.createElement("input")
         input.value = optSummary.id
@@ -244,7 +286,7 @@ const createSelect = (title: string, id: string, blurb: string, sandbox: Sandbox
     })
 
   const span = document.createElement("span")
-  span.innerHTML = blurb
+  span.textContent = blurb
   span.classList.add("compiler-flag-blurb")
   label.appendChild(span)
 

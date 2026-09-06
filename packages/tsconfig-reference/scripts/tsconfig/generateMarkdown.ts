@@ -34,6 +34,7 @@ import {
   watchOptionCompilerOptNames,
   rootOptNames,
   parseMarkdown,
+  parseMarkdownToPlainText,
 } from "../tsconfigRules.js";
 
 const options: CompilerOptionJSON[] = JSON.parse(readFileSync(join("data", "tsconfigOpts.json"), "utf8"));
@@ -219,7 +220,7 @@ languages.forEach((lang) => {
         optionsSummary.push({
           id: optionName,
           display: optionFile.data.display,
-          oneliner: String(parseMarkdown(optionFile.data.oneline)),
+          oneliner: parseMarkdownToPlainText(String(optionFile.data.oneline)),
           categoryID: categoryID,
           categoryDisplay: categoryName,
         });
