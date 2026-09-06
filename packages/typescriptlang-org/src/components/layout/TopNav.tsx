@@ -99,13 +99,13 @@ export const SiteNav = (props: Props) => {
           </IntlLink>
 
           <nav aria-label="top menu">
-            <ul role="tablist" aria-owns="tab1 tab2 tab3 tab4 tab5 tab6" aria-busy="true">
-            <li className="nav-item hide-small" role="none presentation" ><IntlLink id="tab1" role="tab" to="/download">{i("nav_download")}</IntlLink></li>
-              <li className="nav-item" role="none presentation"><IntlLink id="tab2" role="tab" to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
-              <li className="nav-item show-only-large" role="none presentation"><IntlLink id="tab3" role="tab" to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
-              <li className="nav-item" role="none presentation"><IntlLink id="tab4" role="tab" to="/community">{i("nav_community")}</IntlLink></li>
-              <li className="nav-item show-only-largest" role="none presentation"><IntlLink id="tab5" role="tab" to="/play/">{i("nav_playground")}</IntlLink></li>
-              <li className="nav-item" role="none presentation"><IntlLink id="tab6" role="tab" to="/tools">{i("nav_tools")}</IntlLink></li>
+            <ul>
+            <li className="nav-item hide-small"><IntlLink id="tab1" to="/download">{i("nav_download")}</IntlLink></li>
+              <li className="nav-item"><IntlLink id="tab2" to="/docs/"><span>{i("nav_documentation_short")}</span></IntlLink></li>
+              <li className="nav-item show-only-large"><IntlLink id="tab3" to="/docs/handbook/intro.html">{i("nav_handbook")}</IntlLink></li>
+              <li className="nav-item"><IntlLink id="tab4" to="/community">{i("nav_community")}</IntlLink></li>
+              <li className="nav-item show-only-largest"><IntlLink id="tab5" to="/play/">{i("nav_playground")}</IntlLink></li>
+              <li className="nav-item"><IntlLink id="tab6" to="/tools">{i("nav_tools")}</IntlLink></li>
             </ul>
           </nav>
 

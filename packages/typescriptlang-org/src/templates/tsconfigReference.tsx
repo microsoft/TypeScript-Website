@@ -151,11 +151,12 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
   }
 
   const showCategories = (categories: Category[], sectionName?: string) => {
+    const CategoryHeading = sectionName ? "h4" : "h3"
     return <div className={sectionName ? "tsconfig-quick-nav grouped" : "tsconfig-quick-nav"}>
-      {sectionName ? <h4><code><a href={`#${sectionName}`}>"{sectionName}"</a></code></h4> : <div />}
+      {sectionName ? <h3><code><a href={`#${sectionName}`}>"{sectionName}"</a></code></h3> : <div />}
       {
         categories.map(c => <div className="tsconfig-quick-nav-category" key={c.display}>
-          <h5 id={`quick-nav-${c.anchor}`}>{c.display}</h5>
+          <CategoryHeading id={`quick-nav-${c.anchor}`}>{c.display}</CategoryHeading>
           <ol aria-labelledby={`quick-nav-${c.anchor}`}>
             {c.options.map(o => <li key={o.name}><code><a href={anchor(sectionName, o.anchor)}>{o.anchor}</a>{joiner(c.options, o)}</code></li>)}
           </ol>
@@ -177,6 +178,8 @@ const TSConfigReferenceTemplateComponent = (props: Props) => {
 
   return (
     <Layout title={i("tsconfig_title")} description={i("tsconfig_description")} lang={props.pageContext.locale}>
+
+      <h1 className="tsconfig-page-title">TSConfig Reference</h1>
 
       <div className={`tsconfig raised main-content-block markdown button ${openInfo ? "open" : "closed"}`} >
         <a href="#" onClick={toggleInfoState} aria-expanded={openInfo} role="button">

@@ -867,7 +867,7 @@ class DatabaseTransaction implements AsyncDisposable {
 
   async [Symbol.asyncDispose]() {
     if (this.db) {
-      const db = this.db:
+      const db = this.db;
       this.db = undefined;
       if (this.success) {
         await db.execAsync("COMMIT TRANSACTION");
@@ -880,7 +880,7 @@ class DatabaseTransaction implements AsyncDisposable {
 }
 
 async function transfer(db: Database, account1: Account, account2: Account, amount: number) {
-  using tx = await DatabaseTransaction.create(db);
+  await using tx = await DatabaseTransaction.create(db);
   if (await debitAccount(db, account1, amount)) {
     await creditAccount(db, account2, amount);
   }
