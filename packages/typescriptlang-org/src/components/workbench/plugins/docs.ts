@@ -4,12 +4,18 @@ type PluginUtils = import("../../../../static/js/playground").PluginUtils
 
 import tsconfigOptions from "../../../../../tsconfig-reference/output/en-summary.json"
 
+type DesignSystem = ReturnType<PluginUtils["createDesignSystem"]>
+
 const examples = [
   {
     issue: 37231,
     name: "Incorrect Type Inference Example",
-    blurb:
-      "Using <code>// ^?</code> to highlight how inference gives different results at different locations",
+    blurb: (ds: DesignSystem) =>
+      ds.pWithChildren(
+        "Using ",
+        ds.inlineCode("// ^?"),
+        " to highlight how inference gives different results at different locations"
+      ),
     code: `// @noImplicitAny: false
 
 type Entity = {
@@ -44,21 +50,33 @@ const reference: {
   content: (
     sandbox: Sandbox,
     container: HTMLDivElement,
-    ds: ReturnType<PluginUtils["createDesignSystem"]>
+    ds: DesignSystem
   ) => void
 }[] = [
   {
     name: "Compiler Options",
     content: (sandbox, container, ds) => {
-      ds.p(`
-You can set compiler flags via <code>// @[option]</code> comments inside the sample.
-<ul>
-  <li>Booleans: <code>// @strict: true</code> or <code>// @strict: false</code>.<br/>You can omit <code>: true</code> to get the same behavior.</li>
-  <li>Strings: <code>// @target: ES2015</code></li>
-  <li>Numbers: <code>// @target: 4</code></li>
-  <li>Lists: <code>// @types: ['jest']</code></li>
-</ul>
-`)
+      ds.pWithChildren(
+        "You can set compiler flags via ",
+        ds.inlineCode("// @[option]"),
+        " comments inside the sample."
+      )
+      ds.unorderedList(
+        [
+          "Booleans: ",
+          ds.inlineCode("// @strict: true"),
+          " or ",
+          ds.inlineCode("// @strict: false"),
+          ".",
+          ds.lineBreak(),
+          "You can omit ",
+          ds.inlineCode(": true"),
+          " to get the same behavior.",
+        ],
+        ["Strings: ", ds.inlineCode("// @target: ES2015")],
+        ["Numbers: ", ds.inlineCode("// @target: 4")],
+        ["Lists: ", ds.inlineCode("// @types: ['jest']")]
+      )
 
       ds.subtitle("Compiler Option Reference")
       tsconfigOptions.options
@@ -67,15 +85,17 @@ You can set compiler flags via <code>// @[option]</code> comments inside the sam
           const skip = ["Project_Files_0", "Watch_Options_999"]
           if (skip.includes(opt.categoryID)) return
 
-          ds.p(`<code>// @${opt.id}</code><br>${opt.oneliner}.`)
+          ds.pWithChildren(ds.inlineCode(`// @${opt.id}`), ds.lineBreak(), `${opt.oneliner}.`)
         })
     },
   },
   {
     name: "Multi File",
     content: (sandbox, container, ds) => {
-      ds.p(
-        "The code file can be converted into multiple files behind the scenes. This is done by chopping the code sample whenever there is a <code>// @filename: [path]</code>."
+      ds.pWithChildren(
+        "The code file can be converted into multiple files behind the scenes. This is done by chopping the code sample whenever there is a ",
+        ds.inlineCode("// @filename: [path]"),
+        "."
       )
 
       ds.code(
@@ -164,11 +184,14 @@ document.body.appendChild(button);
   {
     name: "Emitter",
     content: (sandbox, container, ds) => {
-      ds.p(
-        `
-There are ways to have your test repro be about the output of running TypeScript. There are two comment types which can be used to highlight these files.
-<br/><br/><code>// @showEmit</code> is a shortcut for showing the <code>.js</code> file for a single file code sample:
-`.trim()
+      ds.pWithChildren(
+        "There are ways to have your test repro be about the output of running TypeScript. There are two comment types which can be used to highlight these files.",
+        ds.lineBreak(),
+        ds.lineBreak(),
+        ds.inlineCode("// @showEmit"),
+        " is a shortcut for showing the ",
+        ds.inlineCode(".js"),
+        " file for a single file code sample:"
       )
       ds.code(
         `
@@ -176,8 +199,10 @@ There are ways to have your test repro be about the output of running TypeScript
 export const helloWorld: string = "Hi"
 `.trim()
       )
-      ds.p(
-        `The long-form is <code>// @showEmittedFile: [filename]</code> which allows for showing any emitted file`
+      ds.pWithChildren(
+        "The long-form is ",
+        ds.inlineCode("// @showEmittedFile: [filename]"),
+        " which allows for showing any emitted file"
       )
       ds.code(
         `
@@ -220,8 +245,10 @@ const abc = ""
   }
 `)
       })
-      ds.p(
-        "You may need to undo <code>strict</code> for some samples, but the others shouldn't affect most code repros."
+      ds.pWithChildren(
+        "You may need to undo ",
+        ds.inlineCode("strict"),
+        " for some samples, but the others shouldn't affect most code repros."
       )
     },
   },
@@ -232,9 +259,12 @@ const abc = ""
         "Note: this section is tricky to document... These bugs may have been fixed since the docs were created. Consider theses as ideas in how to make repros rather than useful bug reproductions."
       )
       examples.forEach(e => {
-        // prettier-ignore
-        ds.subtitle(e.name + ` <a href='https://github.com/microsoft/TypeScript/issues/${e.issue}'>${e.issue}</a>`)
-        ds.p(e.blurb)
+        ds.subtitleWithChildren(
+          e.name,
+          " ",
+          ds.link(`https://github.com/microsoft/TypeScript/issues/${e.issue}`, String(e.issue))
+        )
+        e.blurb(ds)
         const button = document.createElement("button")
         button.textContent = "Show example"
         button.onclick = () => sandbox.setText(e.code)

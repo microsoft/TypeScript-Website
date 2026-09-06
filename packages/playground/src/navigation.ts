@@ -6,6 +6,45 @@ type StoryContent =
 
 import type { Sandbox } from "@typescript/sandbox"
 
+const createStoryIcon = (type: "code" | "html") => {
+  const svgNamespace = "http://www.w3.org/2000/svg"
+  const svg = document.createElementNS(svgNamespace, "svg")
+  svg.setAttribute("fill", "none")
+
+  if (type === "code") {
+    svg.setAttribute("width", "7")
+    svg.setAttribute("height", "7")
+    svg.setAttribute("viewBox", "0 0 7 7")
+
+    const rect = document.createElementNS(svgNamespace, "rect")
+    rect.setAttribute("width", "7")
+    rect.setAttribute("height", "7")
+    rect.setAttribute("fill", "#187ABF")
+    svg.appendChild(rect)
+  } else {
+    svg.setAttribute("width", "9")
+    svg.setAttribute("height", "11")
+    svg.setAttribute("viewBox", "0 0 9 11")
+
+    const path = document.createElementNS(svgNamespace, "path")
+    path.setAttribute("d", "M8 5.5V3.25L6 1H4M8 5.5V10H1V1H4M8 5.5H4V1")
+    path.setAttribute("stroke", "#C4C4C4")
+    svg.appendChild(path)
+  }
+
+  return svg
+}
+
+const createLocalDevStoryMessage = () => {
+  const p = document.createElement("p")
+  p.appendChild(document.createTextNode("Because the gatsby dev server uses JS to build your pages, and not statically, the page will not load during dev. It does work in prod though - use "))
+  const code = document.createElement("code")
+  code.textContent = "pnpm build-site"
+  p.appendChild(code)
+  p.appendChild(document.createTextNode(" to test locally with a static build."))
+  return p
+}
+
 /** Use the handbook TOC which is injected into the globals to create a sidebar  */
 export const showNavForHandbook = (sandbox: Sandbox, escapeFunction: () => void) => {
   // @ts-ignore
@@ -73,16 +112,10 @@ const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], 
         li.classList.add("selectable")
         const a = document.createElement("a")
 
-        let logo: string
-        if (element.type === "code") {
-          logo = `<svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="7" height="7" fill="#187ABF"/></svg>`
-        } else if (element.type === "html") {
-          logo = `<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5.5V3.25L6 1H4M8 5.5V10H1V1H4M8 5.5H4V1" stroke="#C4C4C4"/></svg>`
-        } else {
-          logo = ""
+        if (element.type === "code" || element.type === "html") {
+          a.appendChild(createStoryIcon(element.type))
         }
-
-        a.innerHTML = `${logo}${element.title}`
+        a.appendChild(document.createTextNode(element.title))
         a.href = `/play#${prefix}-${i}`
 
         a.onclick = e => {
@@ -164,12 +197,14 @@ const setStoryViaHref = (href: string, sandbox: Sandbox) => {
       }
 
       if (document.location.host === "localhost:8000") {
-        setStory("<p>Because the gatsby dev server uses JS to build your pages, and not statically, the page will not load during dev. It does work in prod though - use <code>pnpm build-site</code> to test locally with a static build.</p>", sandbox)
+        setStory(createLocalDevStoryMessage(), sandbox)
       } else {
         setStory(text, sandbox)
       }
     } else {
-      setStory(`<p>Failed to load the content at ${href}. Reason: ${req.status} ${req.statusText}</p>`, sandbox)
+      const errorMessage = document.createElement("p")
+      errorMessage.textContent = `Failed to load the content at ${href}. Reason: ${req.status} ${req.statusText}`
+      setStory(errorMessage, sandbox)
     }
   })
 }

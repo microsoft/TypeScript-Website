@@ -1,1 +1,1 @@
-module.exports = require("typescript");
+module.exports = require("@typescript/old");

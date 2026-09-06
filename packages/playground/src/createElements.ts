@@ -119,8 +119,8 @@ export const createSidebar = () => {
   return sidebar
 }
 
-const toggleIconWhenOpen = "&#x21E5;"
-const toggleIconWhenClosed = "&#x21E4;"
+const toggleIconWhenOpen = "\u21E5"
+const toggleIconWhenClosed = "\u21E4"
 
 export const setupSidebarToggle = () => {
   const toggle = document.getElementById("sidebar-toggle")!
@@ -129,7 +129,7 @@ export const setupSidebarToggle = () => {
     const sidebar = window.document.querySelector(".playground-sidebar") as HTMLDivElement
     const sidebarShowing = sidebar.style.display !== "none"
 
-    toggle.innerHTML = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
+    toggle.textContent = sidebarShowing ? toggleIconWhenOpen : toggleIconWhenClosed
     toggle.setAttribute("aria-label", sidebarShowing ? "Hide Sidebar" : "Show Sidebar")
   }
 

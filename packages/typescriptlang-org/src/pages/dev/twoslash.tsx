@@ -127,8 +127,6 @@ const Index: React.FC<Props> = props => {
 
                 document.getElementById("twoslash-failure")!.style.display =
                   "none"
-                document.getElementById("twoslash-results")!.innerHTML = html
-
                 // Remove all the kids
                 while (results.firstChild) {
                   results.removeChild(results.firstChild)
