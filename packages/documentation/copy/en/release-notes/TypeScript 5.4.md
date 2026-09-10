@@ -340,7 +340,7 @@ TypeScript 5.0 deprecated the following options and behaviors:
 
  To continue using them, developers using TypeScript 5.0 and other more recent versions have had to specify a new option called `ignoreDeprecations` with the value `"5.0"`.
  
- However, TypScript 5.4 will be the last version in which these will continue to function as normal.
+ However, TypeScript 5.4 will be the last version in which these will continue to function as normal.
  By TypeScript 5.5 (likely June 2024), these will become hard errors, and code using them will need to be migrated away.
 
  For more information, you can [read up on this plan on GitHub](https://github.com/microsoft/TypeScript/issues/51909), which contains suggestions in how to best adapt your codebase.
