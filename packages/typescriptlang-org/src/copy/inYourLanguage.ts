@@ -26,6 +26,12 @@ export const inYourLanguage: Record<
      open: "Consulter",
      cancel: "Ne plus me le rappeler",
   },
+  id: {
+    shorthand: "Dalam bahasa Indonesia",
+    body: "Halaman ini tersedia dalam bahasa Indonesia",
+    open: "Lihat",
+    cancel: "Jangan tanya lagi",
+  },
   ja: {
     shorthand: "日本語",
     body: "このページを日本語で利用しますか？",
