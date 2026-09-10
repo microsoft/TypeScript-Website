@@ -102,6 +102,30 @@ The `"compilerOptions"` property can be omitted, in which case the compiler's de
 
 To learn more about the hundreds of configuration options in the [TSConfig Reference](/tsconfig).
 
+## File format
+
+`tsconfig.json` files are interpreted as JSON with some exceptions:
+
+* Both single line `//` and multiline `/* ... */` comments are allowed.
+* Trailing commas are allowed as well.
+
+```json tsconfig
+{
+  /**
+   * This is a valid tsconfig.json
+   */
+  "extends": "@tsconfig/node12/tsconfig.json",
+
+  "compilerOptions": {
+    "preserveConstEnums": true, // Do not erase const enum declarations in generated code.
+  },
+
+  "include": ["src/**/*"],
+  "exclude": ["**/*.spec.ts"],
+}
+```
+
+
 ## Schema
 
 The `tsconfig.json` Schema can be found at [the JSON Schema Store](https://json.schemastore.org/tsconfig).
