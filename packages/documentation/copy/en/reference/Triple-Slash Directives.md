@@ -58,7 +58,6 @@ For example, including `/// <reference types="node" />` in a declaration file de
 and thus, this package needs to be included in the compilation along with the declaration file.
 
 For declaring a dependency on an `@types` package in a `.ts` file, use [`types`](/tsconfig#types) on the command line or in your `tsconfig.json` instead.
-See [using `@types`, `typeRoots` and `types` in `tsconfig.json` files](/docs/handbook/tsconfig-json.html#types-typeroots-and-types) for more details.
 
 ## `/// <reference lib="..." />`
 
