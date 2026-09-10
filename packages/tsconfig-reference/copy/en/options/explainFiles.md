@@ -16,7 +16,7 @@ example
 
 Using a `tsconfig.json` which has `explainFiles` set to true:
 
-```json
+```json tsconfig
 {
   "compilerOptions": {
     "target": "es5",
