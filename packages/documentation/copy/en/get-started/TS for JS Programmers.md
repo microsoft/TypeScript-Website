@@ -159,11 +159,16 @@ To learn the type of a variable, use `typeof`:
 | string    | `typeof s === "string"`            |
 | number    | `typeof n === "number"`            |
 | boolean   | `typeof b === "boolean"`           |
+| null      | `typeof null === "object"`         |
 | undefined | `typeof undefined === "undefined"` |
+| object    | `typeof o === "object"`            |
 | function  | `typeof f === "function"`          |
 | array     | `Array.isArray(a)`                 |
+| symbol    | `typeof s === "symbol"`            |
+| bigint    | `typeof b === "bigint"`            |
 
-For example, you can make a function return different values depending on whether it is passed a string or an array:
+You might be wondering why `typeof null` is `object` in JavaScript, and that is an historical accident which will be mentioned again later.
+Back to unions, you can make a function return different values depending on whether it is passed a string or an array:
 
 <!-- prettier-ignore -->
 ```ts twoslash
