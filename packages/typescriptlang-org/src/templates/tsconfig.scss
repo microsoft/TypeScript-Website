@@ -1,4 +1,4 @@
-@import "../style/globals.scss";
+@use "../style/globals.scss";
 
 .tsconfig-page-title {
   margin-bottom: 1.5rem;
@@ -8,7 +8,7 @@
   margin-bottom: 6rem;
   // Drastically reduce the padding and margins to make it fit phones
   &.raised {
-    @media (max-width: $screen-xs) {
+    @media (max-width: globals.$screen-xs) {
       margin: 0;
       padding: 2rem;
 
@@ -68,7 +68,7 @@
       display: flex;
       align-items: flex-start;
 
-      @media (max-width: $screen-md) {
+      @media (max-width: globals.$screen-md) {
         flex-direction: column;
       }
       h3, h4 {
@@ -124,7 +124,7 @@
       margin: 0 8px 8px 0; /* Some gutter */
       width: 30%;
 
-      @media (max-width: $screen-xs) {
+      @media (max-width: globals.$screen-xs) {
         width: 46%;
         h5 {
           overflow-wrap: break-word;
@@ -144,7 +144,7 @@
         padding: 0;
       }
       li {
-        font-family: $font-code;
+        font-family: globals.$font-code;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -169,7 +169,7 @@
       margin: 0;
     }
 
-    @media (max-width: $screen-sm) {
+    @media (max-width: globals.$screen-sm) {
       position: static;
       ul {
         flex-wrap: wrap;
@@ -191,7 +191,7 @@
       text-decoration: none;
 
       &.current {
-        border-bottom: 1px solid $ts-main-blue-color;
+        border-bottom: 1px solid globals.$ts-main-blue-color;
       }
     }
 
@@ -225,7 +225,7 @@
       overflow-wrap: break-word;
       offset-anchor: -30px;
 
-      @media (max-width: $screen-sm) {
+      @media (max-width: globals.$screen-sm) {
         display: block;
       }
 
@@ -250,7 +250,7 @@
         padding-right: 20px;
         word-wrap: break-word;
 
-        @media (max-width: $screen-xs) {
+        @media (max-width: globals.$screen-xs) {
           border-right: none;
           padding-right: 0;
         }
@@ -291,7 +291,7 @@
         }
       }
 
-      @media (max-width: $screen-sm) {
+      @media (max-width: globals.$screen-sm) {
         flex-direction: column;
 
         .markdown {

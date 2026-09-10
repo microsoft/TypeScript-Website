@@ -1,4 +1,6 @@
-@import "./grid.scss";
+@use "sass:color";
+@use "grid.scss";
+@use "../../../style/globals";
 
 .community {
   padding: 0;
@@ -28,7 +30,7 @@
     flex-wrap: wrap;
 
     .callout {
-      @media (max-width: $screen-sm) {
+      @media (max-width: globals.$screen-sm) {
         width: 90%;
       }
       margin-top: 20px;
@@ -102,7 +104,7 @@
 
       &.bug {
         background-image: url("../../../assets/community/connect-github-icon.png");
-        background-color: lighten(black, 30%);
+        background-color: color.adjust(black, $lightness: 30%);
       }
     }
   }

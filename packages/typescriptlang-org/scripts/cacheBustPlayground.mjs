@@ -17,6 +17,10 @@ if (!content.includes(gitSha)) throw new Error("Could not run cache busting")
 fs.writeFileSync(toChange, content)
 
 // https://stackoverflow.com/posts/52338335/revisions
+/**
+ * @param {string} from
+ * @param {string} to
+ */
 function copyFolderSync(from, to) {
   fs.mkdirSync(to, { recursive: true })
   fs.readdirSync(from).forEach(element => {

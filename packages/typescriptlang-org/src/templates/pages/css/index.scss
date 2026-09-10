@@ -1,11 +1,11 @@
-@import "../../../style/globals.scss";
-@import "./grid.scss";
+@use "../../../style/globals.scss";
+@use "grid.scss";
 
-$headline-background-bg: $ts-main-blue-color;
+$headline-background-bg: globals.$ts-main-blue-color;
 $headline-foreground-bg: white;
 
 .version-bar {
-  background-color: $ts-dark-bg-color;
+  background-color: globals.$ts-dark-bg-color;
   text-align: center;
   color: white;
   padding: 0.7rem 2rem;
@@ -14,7 +14,7 @@ $headline-foreground-bg: white;
   p {
     margin: 0;
     a {
-      color: $ts-main-blue-lightest-color;
+      color: globals.$ts-main-blue-lightest-color;
     }
   }
 }
@@ -69,7 +69,7 @@ $headline-foreground-bg: white;
   }
 }
 
-@media (max-width: $screen-sm) {
+@media (max-width: globals.$screen-sm) {
   main #index-2 {
     h2 {
       font-size: 1.8rem;
@@ -168,7 +168,7 @@ $headline-foreground-bg: white;
   }
 }
 
-@media (max-width: $screen-md) {
+@media (max-width: globals.$screen-md) {
   .tag-container {
     .twoslash-annotation.left {
       position: static;
@@ -190,7 +190,7 @@ $headline-foreground-bg: white;
   display: none;
 }
 
-@media (max-width: $screen-xs) {
+@media (max-width: globals.$screen-xs) {
   .show-only-small {
     display: block !important;
   }
@@ -242,17 +242,17 @@ $headline-foreground-bg: white;
   }
 
   .darkblue {
-    background-color: $ts-main-blue-darkest-color;
+    background-color: globals.$ts-main-blue-darkest-color;
     color: white;
   }
 
   .blue {
-    background-color: $ts-main-blue-color;
+    background-color: globals.$ts-main-blue-color;
     color: white;
   }
 
   .purple {
-    background-color: $ts-muted-purple;
+    background-color: globals.$ts-muted-purple;
     color: white;
   }
 
@@ -275,7 +275,7 @@ $headline-foreground-bg: white;
   }
 
   .light-grey {
-    background-color: $ts-light-bg-sandy-color;
+    background-color: globals.$ts-light-bg-sandy-color;
     color: black;
   }
 
@@ -405,7 +405,7 @@ $headline-foreground-bg: white;
         left: 0;
         height: 20px;
         width: 22px;
-        background-color: $ts-muted-red;
+        background-color: globals.$ts-muted-red;
       }
 
       .underline-error {
@@ -417,7 +417,7 @@ $headline-foreground-bg: white;
       .error-message {
         color: #444d80;
         font-size: 0.8rem;
-        font-family: $font-code;
+        font-family: globals.$font-code;
       }
 
       .error-behind {
@@ -434,7 +434,7 @@ $headline-foreground-bg: white;
           background-color: white;
           color: grey;
 
-          font-family: $font-code;
+          font-family: globals.$font-code;
           font-size: 0.8rem;
           margin: 0;
           padding: 0;
@@ -491,7 +491,7 @@ $headline-foreground-bg: white;
 
         .text {
           border-top: 1px solid #7fa2c9;
-          font-family: $font-code;
+          font-family: globals.$font-code;
           font-size: 0.8rem;
           line-height: 0.95rem;
           height: 260px;
@@ -572,7 +572,7 @@ $headline-foreground-bg: white;
 
     // One of these has to be set
     &.short {
-      background: $ts-main-blue-color;
+      background: globals.$ts-main-blue-color;
       background-position-y: bottom -180px;
       height: 260px;
       outline: 1px solid white;
@@ -611,14 +611,14 @@ $headline-foreground-bg: white;
 
       &:focus-visible,
       &:hover {
-        outline-color: $ts-main-blue-color;
+        outline-color: globals.$ts-main-blue-color;
         outline-width: 2px;
-        color: $ts-main-blue-color;
+        color: globals.$ts-main-blue-color;
         box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
         margin-bottom: 0px;
 
         svg path {
-          stroke: $ts-main-blue-color;
+          stroke: globals.$ts-main-blue-color;
         }
       }
       &:active {
@@ -791,13 +791,13 @@ $headline-foreground-bg: white;
   .beta {
     width: 28%;
     .bar {
-      background-color: $ts-main-blue-color;
+      background-color: globals.$ts-main-blue-color;
     }
   }
   .rc {
     width: 17%;
     .bar {
-      background-color: $ts-main-blue-darker-color;
+      background-color: globals.$ts-main-blue-darker-color;
     }
   }
 
@@ -852,11 +852,11 @@ $headline-foreground-bg: white;
     }
 
     .copy {
-      background: $ts-light-bg-sandy-color;
+      background: globals.$ts-light-bg-sandy-color;
       background: linear-gradient(
         90deg,
-        $ts-light-bg-sandy-color 48%,
-        $ts-light-bg-sandy-color-20 100%
+        globals.$ts-light-bg-sandy-color 48%,
+        globals.$ts-light-bg-sandy-color-20 100%
       );
       p {
         font-size: 1rem;
@@ -1047,7 +1047,7 @@ $headline-foreground-bg: white;
       text-align: center;
       padding: 5px 8px;
       border-radius: 2px;
-      font-family: $font-code;
+      font-family: globals.$font-code;
       font-size: 14px;
       white-space: pre-wrap;
       border-radius: 2px;
@@ -1158,7 +1158,7 @@ $headline-foreground-bg: white;
         width: 20%;
         left: 0;
         height: 13px;
-        background-color: $ts-main-blue-color;
+        background-color: globals.$ts-main-blue-color;
       }
 
       &.yellow-lot-blue:after {
@@ -1218,7 +1218,7 @@ $headline-foreground-bg: white;
 
   .dt-background {
     font-size: 1.2rem;
-    font-family: $font-code;
+    font-family: globals.$font-code;
     opacity: 0.2;
     position: absolute;
     top: 20px;

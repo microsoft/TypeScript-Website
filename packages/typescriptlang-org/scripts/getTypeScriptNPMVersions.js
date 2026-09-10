@@ -16,6 +16,8 @@ const get = async url => {
 /**
  * Queries the VS marketplace for typescript extensions, returns
  * only official extensions
+ * 
+ * @param {string} latest
  */
 const getLatestVSExtensions = async latest => {
   const headers = {
@@ -56,7 +58,11 @@ const getLatestVSExtensions = async latest => {
   return officialExtensions
 }
 
-/** Gets VS Marketplace info for a particular semver */
+/**
+ * Gets VS Marketplace info for a particular semver
+ * 
+ * @param {string} semver
+ */
 const getVSInfo = async semver => {
   // console.log(
   //   `Grabbing the VS TypeScript extension for ${semver} from the marketplace`

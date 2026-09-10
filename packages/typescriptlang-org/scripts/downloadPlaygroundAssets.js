@@ -5,6 +5,10 @@
 const { writeFileSync, readFileSync } = require("fs")
 const { join } = require("path")
 
+/**
+ * @param {string} url
+ * @param {string} path
+ */
 const getFileAndStoreLocally = async (url, path) => {
   const packageJSON = await fetch(url)
   const contents = await packageJSON.text()
@@ -21,7 +25,7 @@ const go = async () => {
     "//# sourceMappingURL=../../min-maps/vs/loader.js.map",
     "//# sourceMappingURL=vs.loader.js.map"
   )
-  new writeFileSync("static/js/vs.loader.js", newLoader)
+  writeFileSync("static/js/vs.loader.js", newLoader)
 
   await getFileAndStoreLocally(
     "https://unpkg.com/monaco-editor@0.19.0/min-maps/vs/loader.js.map",
@@ -33,7 +37,7 @@ const go = async () => {
     "utf8"
   ).replace('"sources":["vs/vs/loader.js"]', '"sources":["vs.loader.js"]')
 
-  new writeFileSync("static/js/vs.loader.js.map", newLoaderMap)
+  writeFileSync("static/js/vs.loader.js.map", newLoaderMap)
 }
 
 go()

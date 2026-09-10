@@ -1,4 +1,4 @@
-@import "../../style/globals.scss";
+@use "../../style/globals.scss";
 
 #small-device-button-sidebar {
   display: none;
@@ -72,7 +72,7 @@ nav#sidebar {
       background-color: var(--sidebar-list-active-background-color);
 
       svg path {
-        stroke: $ts-main-blue-color;
+        stroke: globals.$ts-main-blue-color;
       }
     }
 
@@ -143,8 +143,8 @@ nav#sidebar {
       }
 
       &.highlight a {
-        color: $ts-sidebar-link;
-        border-left: 2px solid $ts-main-blue-color;
+        color: globals.$ts-sidebar-link;
+        border-left: 2px solid globals.$ts-main-blue-color;
         margin-left: 0.5rem;
         margin-right: -0.5rem;
         font-weight: 500;
@@ -154,7 +154,7 @@ nav#sidebar {
 
   // Only set max-height and overflow rules for direct ul children to prevent scrolling in subnav uls
   & > ul {
-    @media (min-width: $screen-sm) {
+    @media (min-width: globals.$screen-sm) {
       max-height: calc(100vh - 10px);
       overflow-y: auto;
       overflow-x: hidden;
@@ -162,7 +162,7 @@ nav#sidebar {
   }
 }
 
-@media (max-width: $screen-sm) {
+@media (max-width: globals.$screen-sm) {
   // This is a button which will scroll off and on with the nav
   button#small-device-button-sidebar {
     display: flex;
@@ -186,7 +186,7 @@ nav#sidebar {
     background-color: #808080;
     border-radius: 6px;
 
-    z-index: $z-index-for-handbook-nav-button;
+    z-index: globals.$z-index-for-handbook-nav-button;
 
     // Reset the button
     -webkit-appearance: none;
@@ -206,7 +206,7 @@ nav#sidebar {
 
     -webkit-overflow-scrolling: touch;
 
-    z-index: $z-index-for-handbook-nav;
+    z-index: globals.$z-index-for-handbook-nav;
     margin-left: -800px;
     width: 90%;
     visibility: hidden;

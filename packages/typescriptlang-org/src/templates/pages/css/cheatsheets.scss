@@ -1,4 +1,4 @@
-@import "../../../style/globals.scss";
+@use "../../../style/globals.scss";
 
 .cheatsheets {
   .row {
@@ -33,7 +33,7 @@
       img {
         margin: -2px;
         z-index: 100;
-        border-color: $ts-main-blue-color;
+        border-color: globals.$ts-main-blue-color;
         box-shadow: 0px 4px 20px -2px rgba(0, 0, 0, 0.25);
       }
       .description {
@@ -82,7 +82,7 @@
     color: black;
   }
 
-  @media (max-width: $screen-sm) {
+  @media (max-width: globals.$screen-sm) {
     // The single column needs this to make all of the pages fold under each other
     .cs-2 {
       margin-top: -40px;
