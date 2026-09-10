@@ -7,7 +7,7 @@ import {
 } from "./compilerOptions"
 import lzstring from "./vendor/lzstring.min"
 
-import { supportedReleases } from "./release_data"
+import { supportedReleases, releaseInfo } from "./release_data"
 import { getInitialCode } from "./getInitialCode"
 import { extractTwoSlashCompilerOptions, twoslashCompletions } from "./twoslashSupport"
 import * as tsvfs from "./vendor/typescript-vfs"
@@ -389,6 +389,8 @@ export const createTypeScriptSandbox = (
     config,
     /** A list of TypeScript versions you can use with the TypeScript sandbox */
     supportedVersions,
+    /** Release information including dates for each supported version */
+    releaseInfo,
     /** The monaco editor instance */
     editor,
     /** Either "typescript" or "javascript" depending on your config */
