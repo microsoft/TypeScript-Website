@@ -708,9 +708,9 @@ In those cases, TypeScript will use a `never` type to represent a state which sh
 
 # Exhaustiveness checking
 
-The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a `switch` statement.
+The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). It is good practice to create a `assertNever` helper function that would raise a runtime error when called. This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a `switch` statement.
 
-For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will not raise an error when every possible case has been handled.
+For example, adding a `default` to our `getArea` function which tries to call our `assertNever` function that expects shape to be `never` will not raise an error when every possible case has been handled.
 
 ```ts twoslash
 interface Circle {
@@ -732,9 +732,12 @@ function getArea(shape: Shape) {
     case "square":
       return shape.sideLength ** 2;
     default:
-      const _exhaustiveCheck: never = shape;
-      return _exhaustiveCheck;
+      assertNever(shape);
   }
+}
+
+function assertNever(value: never): never {
+  throw new Error(`Missing case for value: ${value}`);
 }
 ```
 
@@ -766,8 +769,11 @@ function getArea(shape: Shape) {
     case "square":
       return shape.sideLength ** 2;
     default:
-      const _exhaustiveCheck: never = shape;
-      return _exhaustiveCheck;
+      assertNever(shape);
   }
+}
+
+function assertNever(value: never): never {
+  throw new Error(`Missing case for value: ${value}`);
 }
 ```
