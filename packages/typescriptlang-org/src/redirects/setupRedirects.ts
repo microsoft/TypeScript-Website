@@ -4,9 +4,9 @@ const veryOldRedirects = {
   Tutorial: "/docs",
   Handbook: "/docs",
   samples: "/docs",
-  "/docs/home.html": "/docs/home",
+  "/docs/home.html": "/docs/",
   "/playground": "/play/",
-  "/docs/home": "/docs",
+  "/docs/home": "/docs/",
 }
 
 // These were .html files in the handbook with some redirection work
