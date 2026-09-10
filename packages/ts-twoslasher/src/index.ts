@@ -208,7 +208,7 @@ function setOption(name: string, value: string, opts: CompilerOptions, ts: TS) {
 const booleanConfigRegexp = /^\/\/\s?@(\w+)$/
 
 // https://regex101.com/r/8B2Wwh/1
-const valuedConfigRegexp = /^\/\/\s?@(\w+):\s?(.+)$/
+const valuedConfigRegexp = /^\s?\/\/\s?@(\w+):\s?(.+)$/
 
 function filterCompilerOptions(codeLines: string[], defaultCompilerOptions: CompilerOptions, ts: TS) {
   const options = { ...defaultCompilerOptions }
