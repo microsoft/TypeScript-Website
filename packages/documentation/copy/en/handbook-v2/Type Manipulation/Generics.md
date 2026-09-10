@@ -122,7 +122,7 @@ You can read the type of `loggingIdentity` as "the generic function `loggingIden
 If we passed in an array of numbers, we'd get an array of numbers back out, as `Type` would bind to `number`.
 This allows us to use our generic type variable `Type` as part of the types we're working with, rather than the whole type, giving us greater flexibility.
 
-We can alternatively write the sample example this way:
+We can alternatively write the same example this way:
 
 ```ts twoslash {1}
 function loggingIdentity<Type>(arg: Array<Type>): Array<Type> {
