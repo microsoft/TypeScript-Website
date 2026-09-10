@@ -5,6 +5,8 @@ permalink: /docs/handbook/release-notes/typescript-2-3.html
 oneline: TypeScript 2.3 Release Notes
 ---
 
+Release date: [April 27, 2017](https://devblogs.microsoft.com/typescript/announcing-typescript-2-3/)
+
 ## Generators and Iteration for ES5/ES3
 
 _First some ES2016 terminology:_
