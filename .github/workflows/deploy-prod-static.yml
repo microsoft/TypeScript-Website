@@ -37,7 +37,7 @@ jobs:
 
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
 
-      # Builds the modules, and boostraps the other modules
+      # Builds the modules, and bootstraps the other modules
       - name: Build website
         run: |
           pnpm install
