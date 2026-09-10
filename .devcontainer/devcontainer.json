@@ -1,6 +1,16 @@
 {
   "name": "TypeScript Website codespace",
   "dockerFile": "Dockerfile",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {}
+  },
+  
+  // Pre-fetch packages
+  "updateContentCommand": "pnpm fetch",
+  // Might as well get started on this right away
+  "postCreateCommand": "pnpm install && pnpm bootstrap",
+  // Don't block editor startup on fetching packages
+  "waitFor": "onCreateCommand",
 
   "features": {
     "ghcr.io/devcontainers/features/github-cli": "latest",
