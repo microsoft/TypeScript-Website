@@ -206,7 +206,7 @@ function doSomething(myValue) {
 ```
 
 `SomeType` won't exist at runtime, so the import will fail.
-Developers can instead use a namespace import instead.
+Developers can instead use a namespace import.
 
 ```js
 import * as someModule from "./some-module";
@@ -1054,3 +1054,4 @@ export declare const myPath: path.ParsedPath;
 Adding `preserve="true"` is backwards compatible with older versions of TypeScript as unknown attributes are ignored.
 
 This change also improved performance; in our benchmarks, the emit stage saw a 1-4% improvement in projects with declaration emit enabled.
+
