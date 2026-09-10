@@ -578,6 +578,20 @@ draw({ color: "blue", radius: 42 });
 draw({ color: "red", raidus: 42 });
 ```
 
+> The `&` operator is ignored when used before the first element, so you could also write this:
+> ```ts twoslash
+> function draw(
+>   circle:
+>     & Colorful
+>     & Circle
+>     & Coordinates
+> ) {
+>   console.log(`Color was ${circle.color}`);
+>   console.log(`Radius was ${circle.radius}`);
+>   console.log(`Coordinates was ${circle.coordinates}`);
+> }
+> ```
+
 ## Interface Extension vs. Intersection
 
 We just looked at two ways to combine types which are similar, but are actually subtly different.
