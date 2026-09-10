@@ -469,7 +469,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Reduce the number of projects loaded automatically by TypeScript.</p>
+<p>Avoid searching for symbols across referenced projects in code editors.</p>
 </td></tr>
 
 <tr class='even' name='disableSizeLimit'>
@@ -502,7 +502,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Disable preferring source files instead of declaration files when referencing composite projects.</p>
+<p>When editing code, only consult declaration files from referenced projects.</p>
 </td></tr>
 
 <tr class='odd' name='downlevelIteration'>
