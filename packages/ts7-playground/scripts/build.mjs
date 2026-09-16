@@ -2,13 +2,10 @@ import { context } from "esbuild"
 import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises"
 import { basename, dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
-import { spawnSync } from "node:child_process"
 
 const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const websiteDirectory = resolve(packageDirectory, "../..")
-const typescriptDirectory = resolve(
-  process.env.TYPESCRIPT_REPO || resolve(websiteDirectory, "../TypeScript"),
-)
+const vendorDirectory = resolve(packageDirectory, "vendor")
 const outputDirectory = resolve(packageDirectory, "dist")
 const websiteStaticDirectory = resolve(
   websiteDirectory,
@@ -16,22 +13,13 @@ const websiteStaticDirectory = resolve(
 )
 const serve = process.argv.includes("--serve")
 
-const typescriptAPI = resolve(typescriptDirectory, "packages/typescript/dist/api/sync/api.js")
-const wasmPackage = resolve(typescriptDirectory, "packages/typescript-wasip1-wasm/dist/index.js")
-const wasmFile = resolve(typescriptDirectory, "packages/typescript-wasip1-wasm/dist/tsc.wasm")
-const libDirectory = resolve(typescriptDirectory, "built/local")
+const wasmFile = resolve(vendorDirectory, "typescript-wasip1-wasm/dist/tsc.wasm")
+const libDirectory = resolve(vendorDirectory, "lib")
 const editorWorker = fileURLToPath(
   import.meta.resolve("monaco-editor/editor/editor.worker"),
 )
 
-const versionResult = spawnSync(
-  resolve(typescriptDirectory, "built/local/tsc"),
-  ["--version"],
-  { encoding: "utf8" },
-)
-const version = versionResult.status === 0
-  ? versionResult.stdout.trim().replace(/^Version\s+/, "")
-  : "7.1.0-dev"
+const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
 
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })
@@ -72,21 +60,6 @@ const buildContext = await context({
   },
   outdir: outputDirectory,
   platform: "browser",
-  plugins: [
-    {
-      name: "local-typescript-wasip1",
-      setup(build) {
-        build.onResolve(
-          { filter: /^@typescript\/typescript\/unstable\/sync$/ },
-          () => ({ path: typescriptAPI }),
-        )
-        build.onResolve(
-          { filter: /^@typescript\/typescript-wasip1-wasm$/ },
-          () => ({ path: wasmPackage }),
-        )
-      },
-    },
-  ],
   sourcemap: true,
   target: ["es2022"],
 })
@@ -98,7 +71,7 @@ if (serve) {
     port: 4173,
     servedir: outputDirectory,
   })
-  console.log(`TypeScript 7.1 playground: http://${server.host}:${server.port}`)
+  console.log(`TypeScript 7 playground: http://${server.host}:${server.port}`)
 }
 else {
   await buildContext.rebuild()

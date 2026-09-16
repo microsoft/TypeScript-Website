@@ -1,0 +1,25 @@
+{
+  "name": "@typescript/typescript-wasip1-wasm",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE.txt",
+    "NOTICE.txt"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@typescript/source": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./tsc.wasm": "./dist/tsc.wasm"
+  },
+  "imports": {
+    "#wasmURL": {
+      "@typescript/source": "./src/wasmURL.source.ts",
+      "default": "./dist/wasmURL.js"
+    }
+  }
+}

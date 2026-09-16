@@ -49,7 +49,7 @@ const defaultSource = `type Gopher<T> = {
 }
 
 const result = {
-  value: "hello from TS 7.1",
+  value: "hello from TS 7",
   concurrent: true,
 } satisfies Gopher<string>
 //    ^?
@@ -172,7 +172,7 @@ async function initializeCompiler() {
   catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     setStatus(message, "error")
-    outputModel.setValue(`// Failed to initialize TypeScript 7.1\n// ${message}`)
+    outputModel.setValue(`// Failed to initialize TypeScript 7\n// ${message}`)
     console.error(error)
   }
 }

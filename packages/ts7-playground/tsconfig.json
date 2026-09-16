@@ -6,15 +6,7 @@
     "lib": ["DOM", "ES2022"],
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@typescript/typescript/unstable/sync": [
-        "../../../TypeScript/packages/typescript/dist/api/sync/api.d.ts"
-      ],
-      "@typescript/typescript-wasip1-wasm": [
-        "../../../TypeScript/packages/typescript-wasip1-wasm/dist/index.d.ts"
-      ]
-    }
+    "skipLibCheck": true
   },
   "include": ["src"]
 }

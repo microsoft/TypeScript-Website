@@ -1,26 +1,22 @@
 import assert from "node:assert/strict"
 import { readFile, readdir } from "node:fs/promises"
 import { resolve } from "node:path"
-import { pathToFileURL } from "node:url"
+import { API } from "@typescript/typescript/unstable/sync"
+import {
+  instantiateWasm,
+  WasmTransport,
+  wasmURL,
+} from "@typescript/typescript-wasip1-wasm"
 
 const packageDirectory = resolve(import.meta.dirname, "..")
-const typescriptDirectory = resolve(
-  process.env.TYPESCRIPT_REPO || resolve(packageDirectory, "../../..", "TypeScript"),
-)
-const apiModule = await import(
-  pathToFileURL(resolve(typescriptDirectory, "packages/typescript/dist/api/sync/api.js"))
-)
-const wasmModule = await import(
-  pathToFileURL(resolve(typescriptDirectory, "packages/typescript-wasip1-wasm/dist/index.js"))
-)
-const wasm = await readFile(resolve(packageDirectory, "dist/tsc.wasm"))
+const wasm = await readFile(wasmURL)
 const module = await WebAssembly.compile(wasm)
-const instance = await wasmModule.instantiateWasm(module)
-const transport = new wasmModule.WasmTransport({ instance, cwd: "/" })
-const api = new apiModule.API({ transport })
+const instance = await instantiateWasm(module)
+const transport = new WasmTransport({ instance, cwd: "/" })
+const api = new API({ transport })
 
 try {
-  const libDirectory = resolve(typescriptDirectory, "built/local")
+  const libDirectory = resolve(packageDirectory, "vendor/lib")
   const libFileNames = (await readdir(libDirectory))
     .filter(fileName => /^lib(?:\..+)?\.d\.ts$/.test(fileName))
   for (const fileName of libFileNames) {
