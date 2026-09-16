@@ -25,7 +25,7 @@ const coiServiceWorker = fileURLToPath(
 
 const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
 const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
-  .replace("__PLAYGROUND_BASE__", playgroundBase)
+  .replaceAll("__PLAYGROUND_BASE__", playgroundBase)
   .replace("<title>", `<title data-typescript-version="${version}">`)
 
 await rm(outputDirectory, { force: true, recursive: true })

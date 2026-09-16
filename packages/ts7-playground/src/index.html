@@ -2,6 +2,17 @@
 <html lang="en">
   <head>
     <base href="__PLAYGROUND_BASE__" />
+    <script>
+      const playgroundBase = "__PLAYGROUND_BASE__"
+      if (
+        playgroundBase !== "/"
+        && location.pathname === playgroundBase.slice(0, -1)
+      ) {
+        const url = new URL(location.href)
+        url.pathname = playgroundBase
+        location.replace(url)
+      }
+    </script>
     <script src="./coi-serviceworker.min.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
