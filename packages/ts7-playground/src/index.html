@@ -1,13 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <base href="__PLAYGROUND_BASE__" />
     <script>
       const playgroundBase = "__PLAYGROUND_BASE__"
-      if (
-        playgroundBase !== "/"
-        && location.pathname === playgroundBase.slice(0, -1)
-      ) {
+      if (playgroundBase !== "/" && location.pathname === playgroundBase.slice(0, -1)) {
         const url = new URL(location.href)
         url.pathname = playgroundBase
         location.replace(url)
@@ -27,24 +24,57 @@
           <h1>TypeScript 7 Playground</h1>
           <p>Native TypeScript, compiled to WebAssembly</p>
         </div>
-        <output id="status" class="status">Loading compiler...</output>
+        <div class="toolbar-actions">
+          <button id="run-button" type="button" disabled>Run</button>
+          <output id="status" class="status">Loading compiler...</output>
+        </div>
       </header>
-      <section class="editors" aria-label="TypeScript playground">
+      <section class="workspace" aria-label="TypeScript playground">
+        <nav class="file-explorer" aria-label="Project files">
+          <div class="file-explorer-heading">
+            <h2>Project</h2>
+            <span>/workspace</span>
+          </div>
+          <div id="file-list" class="file-list"></div>
+        </nav>
         <div class="editor-panel">
           <div class="panel-heading">
-            <h2>TypeScript</h2>
-            <span>Twoslash: align <code>^?</code> below an expression</span>
+            <h2 id="current-file">index.ts</h2>
+            <span id="editor-hint">Twoslash: align <code>^?</code> below an expression</span>
           </div>
           <div id="input-editor" class="editor"></div>
         </div>
-        <div class="editor-panel">
+        <aside class="output-panel">
           <div class="panel-heading">
-            <h2>JavaScript</h2>
-            <span>Emitted by the TS 7 <code>wasip1</code> build</span>
+            <h2>Emit</h2>
+            <span id="emit-summary">Waiting for the compiler</span>
           </div>
-          <div id="output-editor" class="editor"></div>
-        </div>
+          <div id="emit-output" class="emit-output"></div>
+          <section id="run-output" class="run-output" aria-live="polite">
+            <header>
+              <h2>Run output</h2>
+              <button id="clear-run-output" type="button">Clear</button>
+            </header>
+            <div id="run-log" class="run-log">
+              <p class="empty-message">Run the project to see console output.</p>
+            </div>
+          </section>
+        </aside>
       </section>
+      <div id="loader" class="loading-overlay">
+        <div class="lds-grid" aria-hidden="true">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <p id="loading-message" role="status">Downloading TypeScript...</p>
+      </div>
     </main>
     <script type="module" src="./main.js"></script>
   </body>

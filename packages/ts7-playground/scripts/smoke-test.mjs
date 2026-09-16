@@ -2,50 +2,60 @@ import assert from "node:assert/strict"
 import { readFile, readdir } from "node:fs/promises"
 import { resolve } from "node:path"
 import { API } from "@typescript/typescript/unstable/sync"
-import {
-  instantiateWasm,
-  WasmTransport,
-  wasmURL,
-} from "@typescript/typescript-wasip1-wasm"
+import { instantiateWasm, WasmTransport, wasmURL } from "@typescript/typescript-wasip1-wasm"
 
 const packageDirectory = resolve(import.meta.dirname, "..")
 const wasm = await readFile(wasmURL)
 const module = await WebAssembly.compile(wasm)
 const instance = await instantiateWasm(module)
-const transport = new WasmTransport({ instance, cwd: "/" })
+const transport = new WasmTransport({ instance, cwd: "/workspace" })
 const api = new API({ transport })
 
 try {
   const libDirectory = resolve(packageDirectory, "vendor/lib")
-  const libFileNames = (await readdir(libDirectory))
-    .filter(fileName => /^lib(?:\..+)?\.d\.ts$/.test(fileName))
+  const libFileNames = (await readdir(libDirectory)).filter(fileName => /^lib(?:\..+)?\.d\.ts$/.test(fileName))
   for (const fileName of libFileNames) {
     transport.setFile(`/${fileName}`, await readFile(resolve(libDirectory, fileName), "utf8"))
   }
 
-  const source = "const answers = [40, 41, 42].map(value => value + 1);"
-  const emitted = api.transpileModule(source, {
-    compilerOptions: { module: 99, target: 99 },
-    fileName: "/index.ts",
-    reportDiagnostics: true,
-  })
-  assert.match(emitted.outputText, /const answers = \[40, 41, 42\]\.map/)
-
-  transport.setFile("/index.ts", source)
-  const program = api.createProgram(
-    ["/index.ts"],
-    { compilerOptions: { strict: true, target: 99 } },
-  )
-  try {
-    assert.equal(program.getSyntacticDiagnostics("/index.ts").length, 0)
-    assert.equal(program.getSemanticDiagnostics("/index.ts").length, 0)
-    assert.ok(program.getSourceFile("/index.ts"))
+  const files = {
+    "/workspace/tsconfig.json": JSON.stringify({
+      compilerOptions: {
+        module: "CommonJS",
+        strict: true,
+        target: "ES2022",
+      },
+      include: ["./*.ts"],
+    }),
+    "/workspace/greet.ts": "export const greet = (name: string) => `Hello, ${name}!`;",
+    "/workspace/index.ts": 'import { greet } from "./greet"; console.log(greet("TS7"));',
   }
-  finally {
+  for (const [fileName, source] of Object.entries(files)) {
+    transport.setFile(fileName, source)
+  }
+
+  const config = api.readConfigFile("/workspace/tsconfig.json")
+  assert.equal(config.error, undefined)
+  const parsed = api.parseJsonConfigFileContent(config.config, {
+    configFileName: "/workspace/tsconfig.json",
+  })
+  assert.deepEqual(parsed.fileNames, ["/workspace/greet.ts", "/workspace/index.ts"])
+  const program = api.createProgram(parsed.fileNames, {
+    compilerOptions: parsed.options,
+    projectReferences: parsed.projectReferences,
+    configFileParsingDiagnostics: parsed.errors,
+  })
+  try {
+    assert.equal(program.getSyntacticDiagnostics().length, 0)
+    assert.equal(program.getSemanticDiagnostics().length, 0)
+    const emit = program.emitToString()
+    assert.equal(emit.emitSkipped, false)
+    assert.deepEqual([...emit.outputFiles.keys()], ["/workspace/greet.js", "/workspace/index.js"])
+    assert.match(emit.outputFiles.get("/workspace/index.js").text, /require\("\.\/greet"\)/)
+  } finally {
     program.dispose()
   }
-}
-finally {
+} finally {
   api.close()
 }
 

@@ -16,11 +16,7 @@ const closed = 2
 const signal = 3
 const bufferSize = 4 * 1024 * 1024
 
-export type TsgoStatus =
-  | "loading WebAssembly"
-  | "starting tsc.wasm"
-  | "initializing LSP"
-  | "ready"
+export type TsgoStatus = "loading WebAssembly" | "starting tsc.wasm" | "initializing LSP" | "ready"
 
 type WorkerMessage = {
   type: "lsp" | "drain" | "status" | "stderr" | "error"
@@ -35,7 +31,7 @@ type LspRange = {
 
 type StartTsgoLspOptions = {
   editor: monaco.editor.IStandaloneCodeEditor
-  model: monaco.editor.ITextModel
+  models: readonly monaco.editor.ITextModel[]
   module: WebAssembly.Module
   onError(message: string): void
   onStatus(status: TsgoStatus, serverInfo?: string): void
@@ -62,27 +58,19 @@ class RingBufferWorker {
     this.#worker.addEventListener("message", (event: MessageEvent<WorkerMessage>) => {
       if (event.data.type === "drain") {
         this.#flush()
-      }
-      else if (event.data.type === "status" && event.data.status) {
+      } else if (event.data.type === "status" && event.data.status) {
         this.onStatus?.(event.data.status)
-      }
-      else if (event.data.type === "error") {
+      } else if (event.data.type === "error") {
         this.onError?.(event.data.message)
-      }
-      else if (event.data.type === "stderr") {
+      } else if (event.data.type === "stderr") {
         console.warn("[tsgo]", event.data.message)
-      }
-      else if (event.data.type === "lsp") {
+      } else if (event.data.type === "lsp") {
         void this.#handleLspMessage(event.data.message)
       }
     })
   }
 
-  start(
-    stdin: SharedArrayBuffer,
-    module: WebAssembly.Module,
-    files: Record<string, string>,
-  ) {
+  start(stdin: SharedArrayBuffer, module: WebAssembly.Module, files: Record<string, string>) {
     this.#worker.postMessage({
       type: "init",
       stdin,
@@ -112,9 +100,7 @@ class RingBufferWorker {
 
   addEventListener(type: string, listener: EventListenerOrEventListenerObject) {
     if (type !== "message") return
-    const callback: EventListener = typeof listener === "function"
-      ? listener
-      : event => listener.handleEvent(event)
+    const callback: EventListener = typeof listener === "function" ? listener : event => listener.handleEvent(event)
     this.#listeners.set(listener, callback)
   }
 
@@ -135,10 +121,7 @@ class RingBufferWorker {
       const first = Math.min(length, this.#data.length - start)
       this.#data.set(current.subarray(this.#queueOffset, this.#queueOffset + first), start)
       if (first < length) {
-        this.#data.set(
-          current.subarray(this.#queueOffset + first, this.#queueOffset + length),
-          0,
-        )
+        this.#data.set(current.subarray(this.#queueOffset + first, this.#queueOffset + length), 0)
       }
       this.#queueOffset += length
       Atomics.store(this.#state, writePosition, writePos + length)
@@ -190,19 +173,35 @@ export function registerPlaygroundLanguages() {
   monaco.languages.register({ id: "javascript", extensions: [".js"] })
   monaco.languages.setLanguageConfiguration("javascript", javascriptConfiguration)
   monaco.languages.setMonarchTokensProvider("javascript", javascriptLanguage)
+  monaco.languages.register({ id: "json", extensions: [".json"] })
+  monaco.languages.setLanguageConfiguration("json", {
+    brackets: [
+      ["{", "}"],
+      ["[", "]"],
+    ],
+    comments: { lineComment: "//", blockComment: ["/*", "*/"] },
+  })
+  monaco.languages.setMonarchTokensProvider("json", {
+    tokenizer: {
+      root: [
+        [/"(?:\\.|[^"\\])*"(?=\s*:)/, "string.key.json"],
+        [/"(?:\\.|[^"\\])*"/, "string.value.json"],
+        [/\b(?:true|false|null)\b/, "keyword.json"],
+        [/-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/, "number"],
+        [/[{}\[\],:]/, "delimiter"],
+        [/\/\/.*$/, "comment"],
+      ],
+    },
+  })
 }
 
 export function startTsgoLsp(options: StartTsgoLspOptions) {
   if (!crossOriginIsolated) {
-    throw new Error(
-      "The TypeScript language server requires cross-origin isolation; reload once to activate it.",
-    )
+    throw new Error("The TypeScript language server requires cross-origin isolation; reload once to activate it.")
   }
 
   activeEditor = options.editor
-  const stdin = new SharedArrayBuffer(
-    headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize,
-  )
+  const stdin = new SharedArrayBuffer(headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize)
   const worker = new RingBufferWorker(stdin)
   let serverInfo: string | undefined
   worker.onStatus = status => options.onStatus(status, serverInfo)
@@ -210,9 +209,11 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     serverInfo = info
   }
   worker.onError = options.onError
-  worker.start(stdin, options.module, {
-    [options.model.uri.path]: options.model.getValue(),
-  })
+  worker.start(
+    stdin,
+    options.module,
+    Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()]))
+  )
 
   const transport = createTransportToWorker(worker as unknown as Worker)
   new MonacoLspClient(transport)
@@ -242,16 +243,13 @@ async function ensureLibraryModels(result: unknown) {
 
 function isLibraryUri(uri: string) {
   const parsed = monaco.Uri.parse(uri)
-  return parsed.scheme === "file"
-    && /^\/typescript\/lib\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)
+  return parsed.scheme === "file" && /^\/typescript\/lib\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)
 }
 
 function getLibraryFiles() {
   libraryFilesPromise ??= fetch(new URL("./lib-files.json", import.meta.url)).then(response => {
     if (!response.ok) {
-      throw new Error(
-        `Could not load TypeScript libraries: ${response.status} ${response.statusText}`,
-      )
+      throw new Error(`Could not load TypeScript libraries: ${response.status} ${response.statusText}`)
     }
     return response.json() as Promise<Record<string, string>>
   })
@@ -279,7 +277,7 @@ function navigateToDefinition(result: unknown) {
     range.start.line + 1,
     range.start.character + 1,
     range.end.line + 1,
-    range.end.character + 1,
+    range.end.character + 1
   )
   activeEditor.setModel(model)
   activeEditor.setSelection(monacoRange)
