@@ -15,6 +15,7 @@
   --selected: #e4e6f1;
   --sidebar: #f3f3f3;
   --toolbar: #3178c6;
+  --tree-guide: #b7b7b7;
 }
 
 * {
@@ -117,7 +118,7 @@ body {
 .workspace {
   min-height: 0;
   display: grid;
-  grid-template-columns: 11rem minmax(24rem, 1fr) minmax(20rem, 0.9fr);
+  grid-template-columns: 13rem minmax(24rem, 1fr) minmax(20rem, 0.9fr);
 }
 
 .file-explorer {
@@ -194,22 +195,39 @@ body {
   list-style: none;
 }
 
-.file-tree ul {
-  padding-left: 0.8rem;
+.file-tree .file-tree {
+  margin-left: 1rem;
+  border-left: 1px solid var(--tree-guide);
+}
+
+.file-tree .file-tree > li {
+  position: relative;
+}
+
+.file-tree .file-tree > li::before {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 0.65rem;
+  border-top: 1px solid var(--tree-guide);
+  content: "";
 }
 
 .file-tree-folder {
-  padding: 0.3rem 0.75rem;
-  color: var(--muted);
+  padding: 0.35rem 0.65rem 0.35rem 0.85rem;
+  color: inherit;
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 600;
   list-style: none;
   user-select: none;
 }
 
 .file-tree-folder::before {
+  display: inline-block;
+  width: 0.8rem;
   margin-right: 0.35rem;
+  color: var(--muted);
   content: "▾";
 }
 
@@ -219,7 +237,7 @@ body {
 
 .file-list button {
   width: 100%;
-  padding: 0.45rem 0.75rem;
+  padding: 0.42rem 0.65rem 0.42rem 0.85rem;
   overflow: hidden;
   border: 0;
   color: inherit;
@@ -234,7 +252,7 @@ body {
 
 .file-list button::before {
   display: inline-block;
-  width: 1.8rem;
+  width: 1.65rem;
   color: var(--muted);
   font-family: Hack, monospace;
   font-size: 0.65rem;
@@ -542,7 +560,7 @@ code {
 
 @media (max-width: 1000px) {
   .workspace {
-    grid-template-columns: 9rem minmax(20rem, 1fr);
+    grid-template-columns: 11rem minmax(20rem, 1fr);
     grid-template-rows: minmax(20rem, 1fr) minmax(16rem, 0.8fr);
   }
 
@@ -574,5 +592,6 @@ code {
     --selected: #37373d;
     --sidebar: #252526;
     --toolbar: #235a97;
+    --tree-guide: #5c5c5c;
   }
 }
