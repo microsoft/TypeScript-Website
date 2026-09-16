@@ -272,6 +272,9 @@ importers:
 
   packages/ts7-playground:
     dependencies:
+      '@bjorn3/browser_wasi_shim':
+        specifier: ^0.4.2
+        version: 0.4.2
       '@fontsource/nunito-sans':
         specifier: ^5.2.6
         version: 5.3.0
@@ -281,10 +284,19 @@ importers:
       '@typescript/typescript-wasip1-wasm':
         specifier: file:vendor/typescript-wasip1-wasm
         version: file:packages/ts7-playground/vendor/typescript-wasip1-wasm
+      '@vscode/monaco-lsp-client':
+        specifier: file:vendor/vscode-monaco-lsp-client-0.1.0.tgz
+        version: file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz(monaco-editor-core@0.56.0)(ws@8.19.0)
+      coi-serviceworker:
+        specifier: ^0.1.7
+        version: 0.1.7
       hack-font:
         specifier: ^3.3.0
         version: 3.3.0
       monaco-editor:
+        specifier: 0.56.0
+        version: 0.56.0
+      monaco-editor-core:
         specifier: 0.56.0
         version: 0.56.0
     devDependencies:
@@ -1228,6 +1240,9 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
+  '@bjorn3/browser_wasi_shim@0.4.2':
+    resolution: {integrity: sha512-/iHkCVUG3VbcbmEHn5iIUpIrh7a7WPiwZ3sHy4HZKZzBdSadwdddYDZAII2zBvQYV0Lfi8naZngPCN7WPHI/hA==}
+
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
@@ -1749,6 +1764,15 @@ packages:
 
   '@hapi/topo@5.1.0':
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
+
+  '@hediet/json-rpc-browser@0.5.1':
+    resolution: {integrity: sha512-iR+WrTdM7WozRJ/MElfeT8CmH2f911Y8P6xfcj5RCfywp7kjnnqKPUV/VnNnzToxRZUO8WAfJtLvmhDBsSjMtA==}
+
+  '@hediet/json-rpc-websocket@0.5.1':
+    resolution: {integrity: sha512-1H9UjKyR00ZjwcReQdzTxyEoZKaEubeOvxBVrwHGo4n9HeQt6SvQgtef+1AJ9MT7/sV2Qfe0VWarYivx6BWgIA==}
+
+  '@hediet/json-rpc@0.5.0':
+    resolution: {integrity: sha512-SApO7NbKJztClcznEqg46ZGQzO2v3Q3gVIuRVC9QE/m75J/5AipJdclxEXgT++7j4x4LI2JjEpf2xhi67Ngu9A==}
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -2872,6 +2896,9 @@ packages:
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
 
+  '@types/ws@6.0.4':
+    resolution: {integrity: sha512-PpPrX7SZW9re6+Ha8ojZG4Se8AZXgf0GK6zmfqEuCsY49LFDNXO3SByp44X3dFEqtB73lkCDAdUazhAjVPiNwg==}
+
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
 
@@ -3056,6 +3083,12 @@ packages:
 
   '@vercel/webpack-asset-relocator-loader@1.7.3':
     resolution: {integrity: sha512-vizrI18v8Lcb1PmNNUBz7yxPxxXoOeuaVEjTG9MjvDrphjiSxFZrRJ5tIghk+qdLFRCXI5HBCshgobftbmrC5g==}
+
+  '@vscode/monaco-lsp-client@file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz':
+    resolution: {integrity: sha512-crEhIeX0sU8QT2b1ZpMxAkutNIcP+mne6HbwBCFIGHE/QLe3X7cm4kCtrrzFXbCwWlrvtyOd4V21dTYmST+LGw==, tarball: file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz}
+    version: 0.1.0
+    peerDependencies:
+      monaco-editor-core: '*'
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -4011,6 +4044,9 @@ packages:
   co@4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+
+  coi-serviceworker@0.1.7:
+    resolution: {integrity: sha512-bjSUqEngCPOkErY2vbyWsaIGCNRODYzlNycaREVw5s12/C8SM+RnRUUeX6pZbTtov6C52ZLY/+tvHK+BDxuUuA==}
 
   collect-v8-coverage@1.0.3:
     resolution: {integrity: sha512-1L5aqIkwPfiodaMgQunkF1zRhNqifHBmtbbbxcr6yVxxBnliw4TDOW6NxpO8DJLgJ16OT+Y4ztZqP6p/FtXnAw==}
@@ -6350,6 +6386,11 @@ packages:
     resolution: {integrity: sha512-u4sej9B1LPSxTGKB/HiuzvEQnXH0ECYkSVQU39koSwmFAxhlEAFl9RdTvLv4TOTQUgBS5O3O5fwUxk6byBZ+IQ==}
     engines: {node: '>=10'}
 
+  isomorphic-ws@5.0.0:
+    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
+    peerDependencies:
+      ws: '*'
+
   istanbul-lib-coverage@3.2.2:
     resolution: {integrity: sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==}
     engines: {node: '>=8'}
@@ -7261,6 +7302,9 @@ packages:
 
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+
+  monaco-editor-core@0.56.0:
+    resolution: {integrity: sha512-zuY3UTjedTxWnEUDs84Us/6tvYH9mG89fkHMpzXuvrqTdyWgybn536GR/TG6XNyG5N5heYICRMxT1ox5hZ7rxQ==}
 
   monaco-editor@0.32.1:
     resolution: {integrity: sha512-LUt2wsUvQmEi2tfTOK+tjAPvt7eQ+K5C4rZPr6SeuyzjAuAHrIvlUloTcOiGjZW3fn3a/jFQCONrEJbNOaCqbA==}
@@ -10912,6 +10956,8 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
+  '@bjorn3/browser_wasi_shim@0.4.2': {}
+
   '@bramus/specificity@2.4.2':
     dependencies:
       css-tree: 3.1.0
@@ -11534,6 +11580,20 @@ snapshots:
   '@hapi/topo@5.1.0':
     dependencies:
       '@hapi/hoek': 9.3.0
+
+  '@hediet/json-rpc-browser@0.5.1':
+    dependencies:
+      '@hediet/json-rpc': 0.5.0
+
+  '@hediet/json-rpc-websocket@0.5.1(ws@8.19.0)':
+    dependencies:
+      '@hediet/json-rpc': 0.5.0
+      '@types/ws': 6.0.4
+      isomorphic-ws: 5.0.0(ws@8.19.0)
+    transitivePeerDependencies:
+      - ws
+
+  '@hediet/json-rpc@0.5.0': {}
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
@@ -12908,6 +12968,10 @@ snapshots:
 
   '@types/unist@2.0.11': {}
 
+  '@types/ws@6.0.4':
+    dependencies:
+      '@types/node': 25.3.3
+
   '@types/yargs-parser@21.0.3': {}
 
   '@types/yargs@15.0.20':
@@ -13072,6 +13136,15 @@ snapshots:
   '@vercel/webpack-asset-relocator-loader@1.7.3':
     dependencies:
       resolve: 1.22.11
+
+  '@vscode/monaco-lsp-client@file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz(monaco-editor-core@0.56.0)(ws@8.19.0)':
+    dependencies:
+      '@hediet/json-rpc': 0.5.0
+      '@hediet/json-rpc-browser': 0.5.1
+      '@hediet/json-rpc-websocket': 0.5.1(ws@8.19.0)
+      monaco-editor-core: 0.56.0
+    transitivePeerDependencies:
+      - ws
 
   '@webassemblyjs/ast@1.14.1':
     dependencies:
@@ -14259,6 +14332,8 @@ snapshots:
   clone@2.1.2: {}
 
   co@4.6.0: {}
+
+  coi-serviceworker@0.1.7: {}
 
   collect-v8-coverage@1.0.3: {}
 
@@ -17561,6 +17636,10 @@ snapshots:
 
   isomorphic-timers-promises@1.0.1: {}
 
+  isomorphic-ws@5.0.0(ws@8.19.0):
+    dependencies:
+      ws: 8.19.0
+
   istanbul-lib-coverage@3.2.2: {}
 
   istanbul-lib-instrument@5.2.1:
@@ -19051,6 +19130,11 @@ snapshots:
       moment: 2.30.1
 
   moment@2.30.1: {}
+
+  monaco-editor-core@0.56.0:
+    dependencies:
+      dompurify: 3.4.8
+      marked: 14.0.0
 
   monaco-editor@0.32.1: {}
 

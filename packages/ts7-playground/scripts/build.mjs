@@ -9,7 +9,7 @@ const vendorDirectory = resolve(packageDirectory, "vendor")
 const outputDirectory = resolve(packageDirectory, "dist")
 const websiteStaticDirectory = resolve(
   websiteDirectory,
-  "packages/typescriptlang-org/static/ts7-playground",
+  "packages/typescriptlang-org/static/play/7",
 )
 const serve = process.argv.includes("--serve")
 
@@ -17,6 +17,9 @@ const wasmFile = resolve(vendorDirectory, "typescript-wasip1-wasm/dist/tsc.wasm"
 const libDirectory = resolve(vendorDirectory, "lib")
 const editorWorker = fileURLToPath(
   import.meta.resolve("monaco-editor/editor/editor.worker"),
+)
+const coiServiceWorker = fileURLToPath(
+  import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"),
 )
 
 const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
@@ -36,6 +39,7 @@ const libFiles = Object.fromEntries(
 )
 await Promise.all([
   cp(resolve(packageDirectory, "src/index.html"), resolve(outputDirectory, "index.html")),
+  cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
   cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
   writeFile(resolve(outputDirectory, "lib-files.json"), JSON.stringify(libFiles)),
 ])
@@ -51,6 +55,7 @@ const buildContext = await context({
   entryPoints: {
     main: resolve(packageDirectory, "src/main.ts"),
     "editor.worker": editorWorker,
+    "tsgo-lsp.worker": resolve(packageDirectory, "src/tsgo-lsp.worker.ts"),
   },
   format: "esm",
   loader: {

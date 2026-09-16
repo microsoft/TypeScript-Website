@@ -15,7 +15,12 @@ const libDirectory = resolve(typescriptDirectory, "built/local")
 const packageNames = ["typescript", "typescript-wasip1-wasm"]
 const legalFiles = ["LICENSE.txt", "NOTICE.txt"]
 
-await rm(vendorDirectory, { force: true, recursive: true })
+await Promise.all([
+  rm(resolve(vendorDirectory, "lib"), { force: true, recursive: true }),
+  rm(resolve(vendorDirectory, "typescript"), { force: true, recursive: true }),
+  rm(resolve(vendorDirectory, "typescript-wasip1-wasm"), { force: true, recursive: true }),
+  rm(resolve(vendorDirectory, "version.txt"), { force: true }),
+])
 await Promise.all(
   packageNames.map(packageName => mkdir(resolve(vendorDirectory, packageName), { recursive: true })),
 )

@@ -78,7 +78,7 @@ packages/documentation/output/attribution.json
 packages/sandbox/src/releases.json
 packages/sandbox/src/release_data.ts
 packages/typescriptlang-org/src/lib/documentationNavigation.ts
-packages/typescriptlang-org/static/ts7-playground/
+packages/typescriptlang-org/static/play/7/
 
 .idea/
 

@@ -1,13 +1,11 @@
-import * as monaco from "monaco-editor/editor/editor.api"
-import "monaco-editor/editor/contrib/find/browser/findController"
-import "monaco-editor/editor/contrib/gotoError/browser/gotoError"
-import "monaco-editor/editor/contrib/hover/browser/hoverContribution"
-import "monaco-editor/editor/contrib/inlayHints/browser/inlayHintsContribution"
-import "monaco-editor/editor/contrib/tokenization/browser/tokenization"
-import "monaco-editor/languages/definitions/typescript/register"
-import "monaco-editor/languages/definitions/javascript/register"
 import { API, DiagnosticCategory, type Diagnostic } from "@typescript/typescript/unstable/sync"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wasm"
+import {
+  monaco,
+  registerPlaygroundLanguages,
+  startTsgoLsp,
+  type TsgoStatus,
+} from "./tsgo-lsp"
 import "./styles.css"
 
 declare const __TS_VERSION__: string
@@ -42,7 +40,7 @@ declare global {
   },
 }
 
-const sourceFileName = "/index.ts"
+const sourceFileName = "/workspace/index.ts"
 const defaultSource = `type Gopher<T> = {
   value: T
   concurrent: true
@@ -60,6 +58,13 @@ console.log(result.value)
 const inputElement = getElement("input-editor")
 const outputElement = getElement("output-editor")
 const status = getElement("status")
+let compilerReady = false
+let lspReady = false
+let lspStatus: TsgoStatus = "loading WebAssembly"
+let lspServerInfo: string | undefined
+let diagnosticCount = 0
+let compilerFailure: string | undefined
+let lspFailure: string | undefined
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -77,10 +82,11 @@ monaco.editor.defineTheme("typescript-playground", {
   },
 })
 
+registerPlaygroundLanguages()
 const inputModel = monaco.editor.createModel(
   localStorage.getItem("ts7-playground-source") ?? defaultSource,
   "typescript",
-  monaco.Uri.file(sourceFileName),
+  monaco.Uri.parse(`file://${sourceFileName}`),
 )
 const outputModel = monaco.editor.createModel("", "javascript", monaco.Uri.file("/index.js"))
 const sharedOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
@@ -155,6 +161,8 @@ async function initializeCompiler() {
       DiagnosticCategory,
       version: __TS_VERSION__,
     })
+    compilerReady = true
+    startLanguageServer(module)
 
     let updateTimer = 0
     const update = () => {
@@ -171,9 +179,34 @@ async function initializeCompiler() {
   }
   catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    setStatus(message, "error")
+    compilerFailure = message
+    renderStatus()
     outputModel.setValue(`// Failed to initialize TypeScript 7\n// ${message}`)
     console.error(error)
+  }
+}
+
+function startLanguageServer(module: WebAssembly.Module) {
+  try {
+    startTsgoLsp({
+      editor: inputEditor,
+      model: inputModel,
+      module,
+      onError(message) {
+        lspFailure = message
+        renderStatus()
+      },
+      onStatus(nextStatus, serverInfo) {
+        lspStatus = nextStatus
+        lspReady = nextStatus === "ready"
+        lspServerInfo = serverInfo ?? lspServerInfo
+        renderStatus()
+      },
+    })
+  }
+  catch (error) {
+    lspFailure = error instanceof Error ? error.message : String(error)
+    renderStatus()
   }
 }
 
@@ -216,15 +249,12 @@ function compile(api: API, transport: WasmTransport) {
         ...program.getSemanticDiagnostics(sourceFileName),
         ...(transpiled.diagnostics ?? []),
       ])
+      diagnosticCount = diagnostics.length
       setDiagnostics(diagnostics)
       typeQueries = collectTypeQueries(source, sourceFile, project.checker)
       inlayEmitter.fire()
-      setStatus(
-        diagnostics.length === 0
-          ? `${__TS_VERSION__} ready`
-          : `${__TS_VERSION__} · ${diagnostics.length} diagnostic${diagnostics.length === 1 ? "" : "s"}`,
-        "ready",
-      )
+      compilerFailure = undefined
+      renderStatus()
     }
     finally {
       program.dispose()
@@ -232,10 +262,12 @@ function compile(api: API, transport: WasmTransport) {
   }
   catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    monaco.editor.setModelMarkers(inputModel, "typescript-7.1", [])
+    diagnosticCount = 0
+    setDiagnostics([])
     typeQueries = []
     inlayEmitter.fire()
-    setStatus(message, "error")
+    compilerFailure = message
+    renderStatus()
     console.error(error)
   }
 }
@@ -308,7 +340,7 @@ function findNodeAtPosition(node: CompilerNode, position: number): CompilerNode 
 function setDiagnostics(diagnostics: readonly Diagnostic[]) {
   monaco.editor.setModelMarkers(
     inputModel,
-    "typescript-7.1",
+    "typescript-7",
     diagnostics
       .filter(diagnostic => diagnostic.fileName === undefined || diagnostic.fileName === sourceFileName)
       .map(diagnostic => {
@@ -339,6 +371,26 @@ function diagnosticSeverity(category: number) {
     default:
       return monaco.MarkerSeverity.Info
   }
+}
+
+function renderStatus() {
+  const failure = compilerFailure ?? lspFailure
+  if (failure) {
+    setStatus(failure, "error")
+    return
+  }
+  if (!compilerReady) {
+    setStatus("Loading compiler API...", "loading")
+    return
+  }
+  if (!lspReady) {
+    setStatus(`LSP: ${lspStatus}`, "loading")
+    return
+  }
+
+  const compiler = lspServerInfo ?? __TS_VERSION__
+  const diagnostics = `${diagnosticCount} diagnostic${diagnosticCount === 1 ? "" : "s"}`
+  setStatus(`${compiler} ready · ${diagnostics}`, "ready")
 }
 
 function setStatus(message: string, state: "loading" | "ready" | "error") {
