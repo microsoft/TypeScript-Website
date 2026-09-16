@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>TypeScript 7.1 Playground</title>
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+  <body>
+    <main class="playground">
+      <header class="toolbar">
+        <div>
+          <h1>TypeScript 7.1 Playground</h1>
+          <p>Native TypeScript, compiled to WebAssembly</p>
+        </div>
+        <output id="status" class="status">Loading compiler...</output>
+      </header>
+      <section class="editors" aria-label="TypeScript playground">
+        <div class="editor-panel">
+          <div class="panel-heading">
+            <h2>TypeScript</h2>
+            <span>Twoslash: align <code>^?</code> below an expression</span>
+          </div>
+          <div id="input-editor" class="editor"></div>
+        </div>
+        <div class="editor-panel">
+          <div class="panel-heading">
+            <h2>JavaScript</h2>
+            <span>Emitted by the TS 7.1 <code>wasip1</code> build</span>
+          </div>
+          <div id="output-editor" class="editor"></div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

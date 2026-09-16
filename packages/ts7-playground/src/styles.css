@@ -1,0 +1,151 @@
+@import "@fontsource/nunito-sans/400.css";
+@import "@fontsource/nunito-sans/600.css";
+@import "hack-font/build/web/hack.css";
+
+:root {
+  color: #1f1f1f;
+  background: #fafafa;
+  font-family: "Nunito Sans", sans-serif;
+  font-synthesis: none;
+  --border: #d6d6d6;
+  --muted: #5f6368;
+  --panel: #ffffff;
+  --toolbar: #3178c6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.playground {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.playground {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.toolbar {
+  min-height: 4.5rem;
+  padding: 0.75rem 1rem;
+  color: white;
+  background: var(--toolbar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.toolbar h1,
+.toolbar p,
+.panel-heading h2 {
+  margin: 0;
+}
+
+.toolbar h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.toolbar p {
+  margin-top: 0.125rem;
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+
+.status {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 0.25rem;
+  font-family: Hack, monospace;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.status[data-state="ready"] {
+  background: rgb(0 0 0 / 12%);
+}
+
+.status[data-state="error"] {
+  background: #a1260d;
+}
+
+.editors {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.editor-panel {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--panel);
+}
+
+.editor-panel + .editor-panel {
+  border-left: 1px solid var(--border);
+}
+
+.panel-heading {
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.panel-heading h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.panel-heading span {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+code {
+  font-family: Hack, monospace;
+}
+
+.editor {
+  min-width: 0;
+  min-height: 0;
+}
+
+@media (max-width: 800px) {
+  .editors {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .editor-panel + .editor-panel {
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f3f3f3;
+    background: #1e1e1e;
+    --border: #414141;
+    --muted: #b7b7b7;
+    --panel: #1e1e1e;
+    --toolbar: #235a97;
+  }
+}

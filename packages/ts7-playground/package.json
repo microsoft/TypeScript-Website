@@ -1,0 +1,20 @@
+{
+  "name": "@typescript/ts7-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --serve",
+    "test": "node scripts/smoke-test.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/nunito-sans": "^5.2.6",
+    "hack-font": "^3.3.0",
+    "monaco-editor": "0.56.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.3",
+    "typescript": "*"
+  }
+}
