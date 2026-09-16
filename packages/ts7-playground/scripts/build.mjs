@@ -1,5 +1,5 @@
 import { context } from "esbuild"
-import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises"
+import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises"
 import { basename, dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -33,12 +33,14 @@ const libFiles = Object.fromEntries(
     ])
   )
 )
+const libFilesJSON = JSON.stringify(libFiles)
+const [wasmStats, schemaStats] = await Promise.all([stat(wasmFile), stat(configSchema)])
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
   cp(configSchema, resolve(outputDirectory, "tsconfig.schema.json")),
   cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
-  writeFile(resolve(outputDirectory, "lib-files.json"), JSON.stringify(libFiles)),
+  writeFile(resolve(outputDirectory, "lib-files.json"), libFilesJSON),
 ])
 
 const buildContext = await context({
@@ -46,6 +48,11 @@ const buildContext = await context({
   bundle: true,
   conditions: ["browser", "default"],
   define: {
+    __LOAD_ASSET_SIZES__: JSON.stringify({
+      libraries: Buffer.byteLength(libFilesJSON),
+      schema: schemaStats.size,
+      wasm: wasmStats.size,
+    }),
     __TS_VERSION__: JSON.stringify(version),
   },
   entryNames: "[name]",

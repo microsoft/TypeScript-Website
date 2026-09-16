@@ -6,6 +6,11 @@ import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoStatus } fr
 import "./styles.css"
 
 declare const __TS_VERSION__: string
+declare const __LOAD_ASSET_SIZES__: {
+  libraries: number
+  schema: number
+  wasm: number
+}
 
 type CompilerNode = {
   forEachChild<T>(visitor: (node: CompilerNode) => T): T | undefined
@@ -100,6 +105,7 @@ console.log(message)
 const inputElement = getElement("input-editor")
 const fileList = getElement("file-list")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
+const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
 const currentFile = getElement("current-file")
 const editorHint = getElement("editor-hint")
 const emitOutput = getElement("emit-output")
@@ -110,10 +116,12 @@ const runLog = getElement("run-log")
 const status = getElement("status")
 const loader = getElement("loader")
 const loadingMessage = getElement("loading-message")
+const loadingProgress = getElement<HTMLProgressElement>("loading-progress")
+const loadingDetail = getElement("loading-detail")
 
 let compilerReady = false
 let lspReady = false
-let lspStatus: TsgoStatus = "loading WebAssembly"
+let lspStatus: TsgoStatus = "mounting files"
 let lspServerInfo: string | undefined
 let diagnosticCount = 0
 let compilerFailure: string | undefined
@@ -122,6 +130,7 @@ let projectFailure: string | undefined
 let compilerTransport: WasmTransport | undefined
 let emittedFiles = new Map<string, string>()
 let emitRenderVersion = 0
+const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -175,6 +184,16 @@ inputEditor.addAction({
   keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
   run: runProject,
 })
+inputEditor.onMouseDown(event => {
+  if (!event.target.position || (!event.event.ctrlKey && !event.event.metaKey)) {
+    return
+  }
+  const position = event.target.position
+  window.setTimeout(() => {
+    inputEditor.setPosition(position)
+    void inputEditor.getAction("editor.action.revealDefinition")?.run()
+  })
+})
 
 const inlayEmitter = new monaco.Emitter<void>()
 const typeQueries = new Map<string, TypeQuery[]>()
@@ -198,6 +217,7 @@ for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
 newFileButton.addEventListener("click", createNewFile)
+resetProjectButton.addEventListener("click", resetProject)
 runButton.addEventListener("click", runProject)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 
@@ -205,35 +225,31 @@ void initializeCompiler()
 
 async function initializeCompiler() {
   try {
-    const [wasmResponse, libFilesResponse, configSchemaResponse] = await Promise.all([
-      fetch(new URL("./tsc.wasm", import.meta.url)),
-      fetch(new URL("./lib-files.json", import.meta.url)),
-      fetch(new URL("./tsconfig.schema.json", import.meta.url)),
+    setLoadingProgress(0, "Downloading TypeScript...", "Preparing downloads")
+    const [wasmBytes, libFilesBytes, configSchemaBytes] = await Promise.all([
+      downloadAsset("wasm", new URL("./tsc.wasm", import.meta.url)),
+      downloadAsset("libraries", new URL("./lib-files.json", import.meta.url)),
+      downloadAsset("schema", new URL("./tsconfig.schema.json", import.meta.url)),
     ])
-    if (!wasmResponse.ok) {
-      throw new Error(`Unable to load tsc.wasm: ${wasmResponse.status} ${wasmResponse.statusText}`)
-    }
-    if (!libFilesResponse.ok) {
-      throw new Error(`Unable to load lib-files.json: ${libFilesResponse.status} ${libFilesResponse.statusText}`)
-    }
-    if (!configSchemaResponse.ok) {
-      throw new Error(
-        `Unable to load tsconfig.schema.json: ${configSchemaResponse.status} ${configSchemaResponse.statusText}`
-      )
-    }
 
-    const [module, libFiles, configSchema] = await Promise.all([
-      WebAssembly.compileStreaming(wasmResponse),
-      libFilesResponse.json() as Promise<Record<string, string>>,
-      configSchemaResponse.json(),
-    ])
+    setLoadingIndeterminate("Compiling TypeScript...", "WebAssembly does not expose compile progress")
+    const module = await WebAssembly.compile(wasmBytes)
+    setLoadingProgress(78, "Starting compiler API...", "Instantiating WebAssembly")
+    const libFiles = JSON.parse(new TextDecoder().decode(libFilesBytes)) as Record<string, string>
+    const configSchema = JSON.parse(new TextDecoder().decode(configSchemaBytes))
     registerConfigSchema(configSchema)
     const instance = await instantiateWasm(module)
     const transport = new WasmTransport({ instance, cwd: projectRoot })
     compilerTransport = transport
     const api = new API({ transport })
-    for (const [fileName, content] of Object.entries(libFiles)) {
+    const libraries = Object.entries(libFiles)
+    for (const [index, [fileName, content]] of libraries.entries()) {
       transport.setFile(fileName, content)
+      setLoadingProgress(
+        82 + ((index + 1) / libraries.length) * 8,
+        "Mounting TypeScript libraries...",
+        `${index + 1} of ${libraries.length} files`
+      )
     }
     window.ts = Object.assign(api, {
       API,
@@ -241,7 +257,7 @@ async function initializeCompiler() {
       version: __TS_VERSION__,
     })
     compilerReady = true
-    startLanguageServer(module)
+    startLanguageServer(module, libFiles)
     compileProject(api)
     inputEditor.focus()
   } catch (error) {
@@ -252,10 +268,11 @@ async function initializeCompiler() {
   }
 }
 
-function startLanguageServer(module: WebAssembly.Module) {
+function startLanguageServer(module: WebAssembly.Module, libraries: Record<string, string>) {
   try {
     startTsgoLsp({
       editor: inputEditor,
+      libraries,
       models: [...projectModels.values()],
       module,
       onError(message) {
@@ -266,6 +283,17 @@ function startLanguageServer(module: WebAssembly.Module) {
         lspStatus = nextStatus
         lspReady = nextStatus === "ready"
         lspServerInfo = serverInfo ?? lspServerInfo
+        const progress = {
+          "mounting files": 92,
+          "starting tsc.wasm": 95,
+          "initializing LSP": 98,
+          ready: 100,
+        }[nextStatus]
+        setLoadingProgress(
+          progress,
+          nextStatus === "ready" ? "TypeScript is ready" : `Starting language server: ${nextStatus}`,
+          nextStatus === "ready" ? lspServerInfo ?? __TS_VERSION__ : ""
+        )
         renderStatus()
       },
     })
@@ -273,6 +301,67 @@ function startLanguageServer(module: WebAssembly.Module) {
     lspFailure = error instanceof Error ? error.message : String(error)
     renderStatus()
   }
+}
+
+async function downloadAsset(name: keyof typeof __LOAD_ASSET_SIZES__, url: URL): Promise<Uint8Array<ArrayBuffer>> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Unable to load ${url.pathname}: ${response.status} ${response.statusText}`)
+  }
+  if (!response.body) {
+    const bytes = new Uint8Array(await response.arrayBuffer())
+    downloadedAssets.set(name, bytes.length)
+    updateDownloadProgress()
+    return bytes
+  }
+
+  const chunks: Uint8Array[] = []
+  const reader = response.body.getReader()
+  let length = 0
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) break
+    chunks.push(value)
+    length += value.length
+    downloadedAssets.set(name, length)
+    updateDownloadProgress()
+  }
+
+  const bytes = new Uint8Array(length)
+  let offset = 0
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset)
+    offset += chunk.length
+  }
+  return bytes
+}
+
+function updateDownloadProgress() {
+  const totalBytes = Object.values(__LOAD_ASSET_SIZES__).reduce((total, value) => total + value, 0)
+  const downloadedBytes = [...downloadedAssets.values()].reduce((total, value) => total + value, 0)
+  setLoadingProgress(
+    Math.min(70, (downloadedBytes / totalBytes) * 70),
+    "Downloading TypeScript...",
+    `${formatBytes(downloadedBytes)} of ${formatBytes(totalBytes)}`
+  )
+}
+
+function setLoadingProgress(value: number, message: string, detail: string) {
+  loadingProgress.value = Math.max(loadingProgress.value, value)
+  loadingMessage.textContent = message
+  loadingDetail.textContent = detail
+}
+
+function setLoadingIndeterminate(message: string, detail: string) {
+  loadingProgress.removeAttribute("value")
+  loadingMessage.textContent = message
+  loadingDetail.textContent = detail
+}
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KiB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MiB`
 }
 
 function compileProject(api: API) {
@@ -732,6 +821,14 @@ function createNewFile() {
   inputEditor.focus()
   persistProjectState()
   if (window.ts) compileProject(window.ts)
+}
+
+function resetProject() {
+  if (!confirm("Reset the project to the TypeScript 7 defaults?")) return
+  localStorage.removeItem(storageKey)
+  const url = new URL(location.href)
+  url.hash = ""
+  location.replace(url)
 }
 
 function loadProjectState(): ProjectState {

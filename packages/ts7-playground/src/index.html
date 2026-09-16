@@ -35,7 +35,10 @@
               <h2>Project</h2>
               <span>/workspace</span>
             </div>
-            <button id="new-file-button" type="button" title="Create a new file">+ File</button>
+            <div class="file-explorer-actions">
+              <button id="reset-project-button" type="button" title="Reset the project">Reset</button>
+              <button id="new-file-button" type="button" title="Create a new file">+ File</button>
+            </div>
           </div>
           <div id="file-list" class="file-list"></div>
         </nav>
@@ -76,6 +79,8 @@
           <div></div>
         </div>
         <p id="loading-message" role="status">Downloading TypeScript...</p>
+        <progress id="loading-progress" max="100" value="0"></progress>
+        <small id="loading-detail">Preparing downloads</small>
       </div>
     </main>
     <script type="module" src="./main.js"></script>

@@ -16,7 +16,7 @@ const closed = 2
 const signal = 3
 const bufferSize = 4 * 1024 * 1024
 
-export type TsgoStatus = "loading WebAssembly" | "starting tsc.wasm" | "initializing LSP" | "ready"
+export type TsgoStatus = "mounting files" | "starting tsc.wasm" | "initializing LSP" | "ready"
 
 type WorkerMessage = {
   type: "lsp" | "drain" | "status" | "stderr" | "error"
@@ -31,6 +31,7 @@ type LspRange = {
 
 type StartTsgoLspOptions = {
   editor: monaco.editor.IStandaloneCodeEditor
+  libraries: Record<string, string>
   models: readonly monaco.editor.ITextModel[]
   module: WebAssembly.Module
   onError(message: string): void
@@ -70,11 +71,16 @@ class RingBufferWorker {
     })
   }
 
-  start(stdin: SharedArrayBuffer, module: WebAssembly.Module, files: Record<string, string>) {
+  start(
+    stdin: SharedArrayBuffer,
+    module: WebAssembly.Module,
+    libraries: Record<string, string>,
+    files: Record<string, string>
+  ) {
     this.#worker.postMessage({
       type: "init",
       stdin,
-      libsUrl: new URL("./lib-files.json", import.meta.url).href,
+      libraries,
       module,
       files,
     })
@@ -201,6 +207,7 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
   }
 
   activeEditor = options.editor
+  libraryFilesPromise = Promise.resolve(options.libraries)
   const stdin = new SharedArrayBuffer(headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize)
   const worker = new RingBufferWorker(stdin)
   let serverInfo: string | undefined
@@ -212,12 +219,12 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
   worker.start(
     stdin,
     options.module,
+    options.libraries,
     Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()]))
   )
 
   const transport = createTransportToWorker(worker as unknown as Worker)
   new MonacoLspClient(transport)
-  options.onStatus("initializing LSP")
 }
 
 async function ensureLibraryModels(result: unknown) {

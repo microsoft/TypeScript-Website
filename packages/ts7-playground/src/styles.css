@@ -161,7 +161,12 @@ body {
   font-size: 0.65rem;
 }
 
-.file-explorer-heading button {
+.file-explorer-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.file-explorer-actions button {
   height: 1.7rem;
   padding: 0 0.4rem;
   border: 1px solid var(--border);
@@ -174,7 +179,7 @@ body {
   line-height: 1;
 }
 
-.file-explorer-heading button:hover {
+.file-explorer-actions button:hover {
   background: var(--hover);
 }
 
@@ -414,8 +419,26 @@ code {
 }
 
 .loading-overlay p {
-  margin-top: 1rem;
+  margin: 1rem 0 0.75rem;
   text-align: center;
+}
+
+.loading-overlay progress {
+  width: min(22rem, 70vw);
+  height: 0.65rem;
+  accent-color: #3178c6;
+}
+
+.loading-overlay[data-state="error"] progress {
+  accent-color: #c63131;
+}
+
+.loading-overlay small {
+  min-height: 1rem;
+  margin-top: 0.45rem;
+  color: var(--muted);
+  font-family: Hack, monospace;
+  font-size: 0.68rem;
 }
 
 .lds-grid {
