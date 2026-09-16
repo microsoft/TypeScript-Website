@@ -405,13 +405,23 @@ code {
 
 .loading-overlay {
   position: absolute;
-  inset: 4.5rem 0 0;
+  top: 5.25rem;
+  right: 1rem;
   z-index: 20;
+  pointer-events: none;
+}
+
+.loading-card {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: var(--panel);
+  gap: 0.85rem;
+  width: min(25rem, calc(100vw - 2rem));
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: 0 0.45rem 1.5rem rgb(0 0 0 / 22%);
+  backdrop-filter: blur(8px);
 }
 
 .loading-overlay[hidden] {
@@ -419,12 +429,19 @@ code {
 }
 
 .loading-overlay p {
-  margin: 1rem 0 0.75rem;
-  text-align: center;
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.loading-copy {
+  min-width: 0;
+  flex: 1;
 }
 
 .loading-overlay progress {
-  width: min(22rem, 70vw);
+  display: block;
+  width: 100%;
   height: 0.65rem;
   accent-color: #3178c6;
 }
@@ -434,23 +451,28 @@ code {
 }
 
 .loading-overlay small {
+  display: block;
   min-height: 1rem;
-  margin-top: 0.45rem;
+  margin-top: 0.35rem;
+  overflow: hidden;
   color: var(--muted);
   font-family: Hack, monospace;
   font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lds-grid {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
 }
 
 .lds-grid div {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #3178c6;
   animation: lds-grid 1.2s linear infinite;
@@ -462,48 +484,48 @@ code {
 }
 
 .lds-grid div:nth-child(1) {
-  top: 8px;
-  left: 8px;
+  top: 3px;
+  left: 3px;
   animation-delay: 0s;
 }
 .lds-grid div:nth-child(2) {
-  top: 8px;
-  left: 32px;
+  top: 3px;
+  left: 19px;
   animation-delay: -0.4s;
 }
 .lds-grid div:nth-child(3) {
-  top: 8px;
-  left: 56px;
+  top: 3px;
+  left: 35px;
   animation-delay: -0.8s;
 }
 .lds-grid div:nth-child(4) {
-  top: 32px;
-  left: 8px;
+  top: 19px;
+  left: 3px;
   animation-delay: -0.4s;
 }
 .lds-grid div:nth-child(5) {
-  top: 32px;
-  left: 32px;
+  top: 19px;
+  left: 19px;
   animation-delay: -0.8s;
 }
 .lds-grid div:nth-child(6) {
-  top: 32px;
-  left: 56px;
+  top: 19px;
+  left: 35px;
   animation-delay: -1.2s;
 }
 .lds-grid div:nth-child(7) {
-  top: 56px;
-  left: 8px;
+  top: 35px;
+  left: 3px;
   animation-delay: -0.8s;
 }
 .lds-grid div:nth-child(8) {
-  top: 56px;
-  left: 32px;
+  top: 35px;
+  left: 19px;
   animation-delay: -1.2s;
 }
 .lds-grid div:nth-child(9) {
-  top: 56px;
-  left: 56px;
+  top: 35px;
+  left: 35px;
   animation-delay: -1.6s;
 }
 

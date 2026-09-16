@@ -67,20 +67,24 @@
         </aside>
       </section>
       <div id="loader" class="loading-overlay">
-        <div class="lds-grid" aria-hidden="true">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+        <div class="loading-card">
+          <div class="lds-grid" aria-hidden="true">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div class="loading-copy">
+            <p id="loading-message" role="status">Downloading TypeScript...</p>
+            <progress id="loading-progress" max="100" value="0"></progress>
+            <small id="loading-detail">Preparing downloads</small>
+          </div>
         </div>
-        <p id="loading-message" role="status">Downloading TypeScript...</p>
-        <progress id="loading-progress" max="100" value="0"></progress>
-        <small id="loading-detail">Preparing downloads</small>
       </div>
     </main>
     <script type="module" src="./main.js"></script>
