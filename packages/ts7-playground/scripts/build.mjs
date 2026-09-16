@@ -7,21 +7,15 @@ const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const websiteDirectory = resolve(packageDirectory, "../..")
 const vendorDirectory = resolve(packageDirectory, "vendor")
 const outputDirectory = resolve(packageDirectory, "dist")
-const websiteStaticDirectory = resolve(
-  websiteDirectory,
-  "packages/typescriptlang-org/static/play/7",
-)
+const websiteStaticDirectory = resolve(websiteDirectory, "packages/typescriptlang-org/static/play/7")
 const serve = process.argv.includes("--serve")
 const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? "/play/7/"
 
 const wasmFile = resolve(vendorDirectory, "typescript-wasip1-wasm/dist/tsc.wasm")
 const libDirectory = resolve(vendorDirectory, "lib")
-const editorWorker = fileURLToPath(
-  import.meta.resolve("monaco-editor/editor/editor.worker"),
-)
-const coiServiceWorker = fileURLToPath(
-  import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"),
-)
+const configSchema = resolve(websiteDirectory, "packages/tsconfig-reference/scripts/schema/result/schema.json")
+const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
+const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
 const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
 const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
@@ -30,20 +24,19 @@ const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "
 
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })
-const libFileNames = (await readdir(libDirectory))
-  .filter(fileName => /^lib(?:\..+)?\.d\.ts$/.test(fileName))
-  .sort()
+const libFileNames = (await readdir(libDirectory)).filter(fileName => /^lib(?:\..+)?\.d\.ts$/.test(fileName)).sort()
 const libFiles = Object.fromEntries(
   await Promise.all(
     libFileNames.map(async fileName => [
       `/${basename(fileName)}`,
       await readFile(resolve(libDirectory, fileName), "utf8"),
-    ]),
-  ),
+    ])
+  )
 )
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
+  cp(configSchema, resolve(outputDirectory, "tsconfig.schema.json")),
   cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
   writeFile(resolve(outputDirectory, "lib-files.json"), JSON.stringify(libFiles)),
 ])
@@ -81,8 +74,7 @@ if (serve) {
     servedir: outputDirectory,
   })
   console.log(`TypeScript 7 playground: http://${server.host}:${server.port}`)
-}
-else {
+} else {
   await buildContext.rebuild()
   await buildContext.dispose()
   await rm(websiteStaticDirectory, { force: true, recursive: true })

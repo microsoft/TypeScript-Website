@@ -167,10 +167,10 @@ let libraryFilesPromise: Promise<Record<string, string>> | undefined
 export function registerPlaygroundLanguages() {
   if (languageRegistered) return
   languageRegistered = true
-  monaco.languages.register({ id: "typescript", extensions: [".ts"] })
+  monaco.languages.register({ id: "typescript", extensions: [".ts", ".tsx", ".mts", ".cts"] })
   monaco.languages.setLanguageConfiguration("typescript", typescriptConfiguration)
   monaco.languages.setMonarchTokensProvider("typescript", typescriptLanguage)
-  monaco.languages.register({ id: "javascript", extensions: [".js"] })
+  monaco.languages.register({ id: "javascript", extensions: [".js", ".jsx", ".mjs", ".cjs"] })
   monaco.languages.setLanguageConfiguration("javascript", javascriptConfiguration)
   monaco.languages.setMonarchTokensProvider("javascript", javascriptLanguage)
   monaco.languages.register({ id: "json", extensions: [".json"] })

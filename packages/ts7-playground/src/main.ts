@@ -1,5 +1,7 @@
 import { API, DiagnosticCategory, type Diagnostic } from "@typescript/typescript/unstable/sync"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wasm"
+import LZString from "lz-string"
+import { registerConfigSchema } from "./config-schema"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
 
@@ -19,8 +21,13 @@ type TypeQuery = {
 
 type ProjectFile = {
   path: string
-  language: "json" | "typescript"
+  language: "javascript" | "json" | "typescript"
   text: string
+}
+
+type ProjectState = {
+  activeFile?: string
+  files: Record<string, string>
 }
 
 type RuntimeLog = {
@@ -50,7 +57,7 @@ declare global {
 
 const projectRoot = "/workspace"
 const configFileName = `${projectRoot}/tsconfig.json`
-const entryFileName = `${projectRoot}/index.ts`
+const entryFileName = `${projectRoot}/src/index.ts`
 const storageKey = "ts7-playground-project"
 const defaultFiles: ProjectFile[] = [
   {
@@ -61,10 +68,11 @@ const defaultFiles: ProjectFile[] = [
     "target": "ES2022",
     "module": "CommonJS",
     "strict": true,
+    "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["./*.ts"]
+  "include": ["./src/**/*"]
 }
 `,
   },
@@ -80,7 +88,7 @@ console.log(message)
 `,
   },
   {
-    path: `${projectRoot}/greet.ts`,
+    path: `${projectRoot}/src/greet.ts`,
     language: "typescript",
     text: `export function greet(name: string) {
   return \`Hello, \${name}!\`
@@ -91,6 +99,7 @@ console.log(message)
 
 const inputElement = getElement("input-editor")
 const fileList = getElement("file-list")
+const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const currentFile = getElement("current-file")
 const editorHint = getElement("editor-hint")
 const emitOutput = getElement("emit-output")
@@ -131,12 +140,15 @@ monaco.editor.defineTheme("typescript-playground", {
 })
 
 registerPlaygroundLanguages()
-const storedFiles = loadStoredFiles()
+const initialState = loadProjectState()
+const initialFiles = {
+  ...Object.fromEntries(defaultFiles.map(file => [file.path, file.text])),
+  ...initialState.files,
+}
 const projectModels = new Map(
-  defaultFiles.map(file => {
-    const text = storedFiles[file.path] ?? file.text
-    const model = monaco.editor.createModel(text, file.language, monaco.Uri.parse(`file://${file.path}`))
-    return [file.path, model] as const
+  Object.entries(initialFiles).map(([fileName, text]) => {
+    const model = monaco.editor.createModel(text, languageForFile(fileName), monaco.Uri.parse(`file://${fileName}`))
+    return [fileName, model] as const
   })
 )
 const fileButtons = new Map<string, HTMLButtonElement>()
@@ -147,7 +159,7 @@ const inputEditor = monaco.editor.create(inputElement, {
   fontSize: 14,
   inlayHints: { enabled: "on" },
   minimap: { enabled: false },
-  model: projectModels.get(entryFileName),
+  model: projectModels.get(initialState.activeFile ?? entryFileName) ?? projectModels.get(entryFileName),
   padding: { top: 10 },
   scrollBeyondLastLine: false,
   tabSize: 2,
@@ -183,14 +195,9 @@ monaco.languages.registerInlayHintsProvider("typescript", {
 
 let updateTimer = 0
 for (const model of projectModels.values()) {
-  model.onDidChangeContent(() => {
-    saveProjectFiles()
-    window.clearTimeout(updateTimer)
-    updateTimer = window.setTimeout(() => {
-      if (window.ts) compileProject(window.ts)
-    }, 220)
-  })
+  registerProjectModel(model)
 }
+newFileButton.addEventListener("click", createNewFile)
 runButton.addEventListener("click", runProject)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 
@@ -198,9 +205,10 @@ void initializeCompiler()
 
 async function initializeCompiler() {
   try {
-    const [wasmResponse, libFilesResponse] = await Promise.all([
+    const [wasmResponse, libFilesResponse, configSchemaResponse] = await Promise.all([
       fetch(new URL("./tsc.wasm", import.meta.url)),
       fetch(new URL("./lib-files.json", import.meta.url)),
+      fetch(new URL("./tsconfig.schema.json", import.meta.url)),
     ])
     if (!wasmResponse.ok) {
       throw new Error(`Unable to load tsc.wasm: ${wasmResponse.status} ${wasmResponse.statusText}`)
@@ -208,11 +216,18 @@ async function initializeCompiler() {
     if (!libFilesResponse.ok) {
       throw new Error(`Unable to load lib-files.json: ${libFilesResponse.status} ${libFilesResponse.statusText}`)
     }
+    if (!configSchemaResponse.ok) {
+      throw new Error(
+        `Unable to load tsconfig.schema.json: ${configSchemaResponse.status} ${configSchemaResponse.statusText}`
+      )
+    }
 
-    const [module, libFiles] = await Promise.all([
+    const [module, libFiles, configSchema] = await Promise.all([
       WebAssembly.compileStreaming(wasmResponse),
       libFilesResponse.json() as Promise<Record<string, string>>,
+      configSchemaResponse.json(),
     ])
+    registerConfigSchema(configSchema)
     const instance = await instantiateWasm(module)
     const transport = new WasmTransport({ instance, cwd: projectRoot })
     compilerTransport = transport
@@ -437,19 +452,20 @@ async function renderEmittedFiles() {
   }
 
   for (const [fileName, text] of files) {
+    const displayText = text.replace(/(?:\r?\n)+$/, "")
     const section = document.createElement("section")
     section.className = "emit-file"
     section.appendChild(createText("h3", relativeProjectPath(fileName)))
     const pre = document.createElement("pre")
     pre.tabIndex = 0
     const code = document.createElement("code")
-    code.textContent = text
+    code.textContent = displayText
     pre.appendChild(code)
     section.appendChild(pre)
     emitOutput.appendChild(section)
 
     const language = fileName.endsWith(".js") ? "javascript" : fileName.endsWith(".json") ? "json" : "typescript"
-    const highlighted = await monaco.editor.colorize(text, language, { tabSize: 2 })
+    const highlighted = await monaco.editor.colorize(displayText, language, { tabSize: 2 })
     if (renderVersion !== emitRenderVersion) return
     code.innerHTML = highlighted
   }
@@ -568,17 +584,60 @@ function renderRunLogs(logs: readonly RuntimeLog[]) {
 }
 
 function renderFileList() {
-  for (const file of defaultFiles) {
-    const button = document.createElement("button")
-    button.type = "button"
-    button.dataset.kind = file.language === "json" ? "{}" : "TS"
-    button.textContent = relativeProjectPath(file.path)
-    button.addEventListener("click", () => {
-      inputEditor.setModel(projectModels.get(file.path)!)
-      inputEditor.focus()
-    })
-    fileButtons.set(file.path, button)
-    fileList.appendChild(button)
+  type Tree = {
+    directories: Map<string, Tree>
+    files: string[]
+  }
+
+  const root: Tree = { directories: new Map(), files: [] }
+  for (const fileName of [...projectModels.keys()].sort()) {
+    const parts = relativeProjectPath(fileName).split("/")
+    const basename = parts.pop()!
+    let tree = root
+    for (const part of parts) {
+      let child = tree.directories.get(part)
+      if (!child) {
+        child = { directories: new Map(), files: [] }
+        tree.directories.set(part, child)
+      }
+      tree = child
+    }
+    tree.files.push(basename)
+  }
+
+  fileButtons.clear()
+  fileList.replaceChildren(renderTree(root, ""))
+  updateActiveFile()
+
+  function renderTree(tree: Tree, parentPath: string): HTMLUListElement {
+    const list = document.createElement("ul")
+    list.className = "file-tree"
+    for (const [directory, child] of [...tree.directories].sort(([left], [right]) => left.localeCompare(right))) {
+      const item = document.createElement("li")
+      const details = document.createElement("details")
+      details.open = true
+      details.appendChild(createText("summary", directory, "file-tree-folder"))
+      details.appendChild(renderTree(child, `${parentPath}${directory}/`))
+      item.appendChild(details)
+      list.appendChild(item)
+    }
+    for (const basename of tree.files.sort()) {
+      const relativePath = `${parentPath}${basename}`
+      const fileName = `${projectRoot}/${relativePath}`
+      const button = document.createElement("button")
+      button.type = "button"
+      button.dataset.kind = fileKind(fileName)
+      button.textContent = basename
+      button.addEventListener("click", () => {
+        inputEditor.setModel(projectModels.get(fileName)!)
+        inputEditor.focus()
+      })
+      fileButtons.set(fileName, button)
+      const item = document.createElement("li")
+      item.appendChild(button)
+      list.appendChild(item)
+    }
+    return list
   }
 }
 
@@ -590,7 +649,7 @@ function updateActiveFile() {
   inputEditor.updateOptions({ readOnly: !projectModel })
   editorHint.textContent =
     model.getLanguageId() === "typescript"
-      ? "Twoslash: align ^? below an expression"
+      ? "Type query: align ^? below an expression"
       : model.getLanguageId() === "json"
       ? "Edit compiler options directly"
       : "Read-only library file"
@@ -598,6 +657,7 @@ function updateActiveFile() {
     if (fileName === model.uri.path) button.setAttribute("aria-current", "page")
     else button.removeAttribute("aria-current")
   }
+  if (projectModel) persistProjectState()
 }
 
 function renderStatus() {
@@ -638,30 +698,123 @@ function setStatus(message: string, state: "loading" | "ready" | "error") {
   status.dataset.state = state
 }
 
-function loadStoredFiles(): Record<string, string> {
+function registerProjectModel(model: monaco.editor.ITextModel) {
+  model.onDidChangeContent(() => {
+    persistProjectState()
+    window.clearTimeout(updateTimer)
+    updateTimer = window.setTimeout(() => {
+      if (window.ts) compileProject(window.ts)
+    }, 220)
+  })
+}
+
+function createNewFile() {
+  const requested = prompt("New file path", "src/new-file.ts")
+  if (requested === null) return
+  const relativePath = requested.trim().replaceAll("\\", "/").replace(/^\/+/, "")
+  const parts = relativePath.split("/")
+  if (relativePath === "" || parts.some(part => part === "" || part === "." || part === "..")) {
+    alert("Enter a file path inside /workspace.")
+    return
+  }
+
+  const fileName = `${projectRoot}/${relativePath}`
+  if (projectModels.has(fileName)) {
+    alert(`${relativePath} already exists.`)
+    return
+  }
+
+  const model = monaco.editor.createModel("", languageForFile(fileName), monaco.Uri.parse(`file://${fileName}`))
+  projectModels.set(fileName, model)
+  registerProjectModel(model)
+  renderFileList()
+  inputEditor.setModel(model)
+  inputEditor.focus()
+  persistProjectState()
+  if (window.ts) compileProject(window.ts)
+}
+
+function loadProjectState(): ProjectState {
+  if (location.hash.startsWith("#code/")) {
+    const encoded = location.hash.slice("#code/".length)
+    const decoded =
+      LZString.decompressFromEncodedURIComponent(encoded) ??
+      LZString.decompressFromEncodedURIComponent(decodeURIComponent(encoded))
+    if (decoded) {
+      try {
+        return normalizeProjectState(JSON.parse(decoded))
+      } catch {
+        return {
+          activeFile: entryFileName,
+          files: { [entryFileName]: decoded },
+        }
+      }
+    }
+  }
+
   const stored = localStorage.getItem(storageKey)
-  if (!stored) return {}
+  if (!stored) return { files: {} }
   try {
-    const parsed = JSON.parse(stored)
-    if (!parsed || typeof parsed !== "object") return {}
-    return Object.fromEntries(
-      Object.entries(parsed).filter((entry): entry is [string, string] => typeof entry[1] === "string")
-    )
+    return normalizeProjectState(JSON.parse(stored))
   } catch (error) {
     console.warn("Could not restore the TypeScript 7 project", error)
-    return {}
+    return { files: {} }
   }
 }
 
-function saveProjectFiles() {
-  try {
-    localStorage.setItem(
-      storageKey,
-      JSON.stringify(Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()])))
+function normalizeProjectState(value: unknown): ProjectState {
+  if (!value || typeof value !== "object") return { files: {} }
+  const candidate = value as { activeFile?: unknown; files?: unknown }
+  const filesValue = candidate.files && typeof candidate.files === "object" ? candidate.files : value
+  const files = Object.fromEntries(
+    Object.entries(filesValue).filter(
+      (entry): entry is [string, string] => entry[0].startsWith(`${projectRoot}/`) && typeof entry[1] === "string"
     )
+  )
+  const migrations = new Map([
+    [`${projectRoot}/index.ts`, entryFileName],
+    [`${projectRoot}/greet.ts`, `${projectRoot}/src/greet.ts`],
+  ])
+  for (const [oldPath, newPath] of migrations) {
+    if (files[oldPath] !== undefined && files[newPath] === undefined) {
+      files[newPath] = files[oldPath]
+    }
+    delete files[oldPath]
+  }
+  const requestedActiveFile =
+    typeof candidate.activeFile === "string" ? migrations.get(candidate.activeFile) ?? candidate.activeFile : undefined
+  return {
+    activeFile: requestedActiveFile?.startsWith(`${projectRoot}/`) ? requestedActiveFile : undefined,
+    files,
+  }
+}
+
+function persistProjectState() {
+  const activeModel = inputEditor.getModel()
+  const state: ProjectState = {
+    activeFile: activeModel && projectModels.has(activeModel.uri.path) ? activeModel.uri.path : entryFileName,
+    files: Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()])),
+  }
+  try {
+    const serialized = JSON.stringify(state)
+    localStorage.setItem(storageKey, serialized)
+    const url = new URL(location.href)
+    url.hash = `code/${LZString.compressToEncodedURIComponent(serialized)}`
+    history.replaceState({}, "", url)
   } catch (error) {
     console.warn("Could not save the TypeScript 7 project", error)
   }
+}
+
+function languageForFile(fileName: string): ProjectFile["language"] {
+  if (fileName.endsWith(".json")) return "json"
+  if (/\.[cm]?jsx?$/i.test(fileName)) return "javascript"
+  return "typescript"
+}
+
+function fileKind(fileName: string) {
+  const language = languageForFile(fileName)
+  return language === "json" ? "{}" : language === "javascript" ? "JS" : "TS"
 }
 
 function relativeProjectPath(fileName: string) {

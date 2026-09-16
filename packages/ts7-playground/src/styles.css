@@ -135,6 +135,10 @@ body {
 
 .file-explorer-heading {
   padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .file-explorer-heading h2,
@@ -157,8 +161,55 @@ body {
   font-size: 0.65rem;
 }
 
+.file-explorer-heading button {
+  height: 1.7rem;
+  padding: 0 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 0.2rem;
+  color: inherit;
+  background: var(--panel);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.file-explorer-heading button:hover {
+  background: var(--hover);
+}
+
 .file-list {
   padding: 0.4rem 0;
+}
+
+.file-tree,
+.file-tree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.file-tree ul {
+  padding-left: 0.8rem;
+}
+
+.file-tree-folder {
+  padding: 0.3rem 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  list-style: none;
+  user-select: none;
+}
+
+.file-tree-folder::before {
+  margin-right: 0.35rem;
+  content: "▾";
+}
+
+.file-tree details:not([open]) > .file-tree-folder::before {
+  content: "▸";
 }
 
 .file-list button {

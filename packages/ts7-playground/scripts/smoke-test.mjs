@@ -21,14 +21,15 @@ try {
   const files = {
     "/workspace/tsconfig.json": JSON.stringify({
       compilerOptions: {
+        declaration: true,
         module: "CommonJS",
         strict: true,
         target: "ES2022",
       },
-      include: ["./*.ts"],
+      include: ["./src/**/*"],
     }),
-    "/workspace/greet.ts": "export const greet = (name: string) => `Hello, ${name}!`;",
-    "/workspace/index.ts": 'import { greet } from "./greet"; console.log(greet("TS7"));',
+    "/workspace/src/greet.ts": "export const greet = (name: string) => `Hello, ${name}!`;",
+    "/workspace/src/index.ts": 'import { greet } from "./greet"; console.log(greet("TS7"));',
   }
   for (const [fileName, source] of Object.entries(files)) {
     transport.setFile(fileName, source)
@@ -39,7 +40,7 @@ try {
   const parsed = api.parseJsonConfigFileContent(config.config, {
     configFileName: "/workspace/tsconfig.json",
   })
-  assert.deepEqual(parsed.fileNames, ["/workspace/greet.ts", "/workspace/index.ts"])
+  assert.deepEqual(parsed.fileNames, ["/workspace/src/greet.ts", "/workspace/src/index.ts"])
   const program = api.createProgram(parsed.fileNames, {
     compilerOptions: parsed.options,
     projectReferences: parsed.projectReferences,
@@ -50,8 +51,11 @@ try {
     assert.equal(program.getSemanticDiagnostics().length, 0)
     const emit = program.emitToString()
     assert.equal(emit.emitSkipped, false)
-    assert.deepEqual([...emit.outputFiles.keys()], ["/workspace/greet.js", "/workspace/index.js"])
-    assert.match(emit.outputFiles.get("/workspace/index.js").text, /require\("\.\/greet"\)/)
+    assert.deepEqual(
+      [...emit.outputFiles.keys()],
+      ["/workspace/src/greet.d.ts", "/workspace/src/greet.js", "/workspace/src/index.d.ts", "/workspace/src/index.js"]
+    )
+    assert.match(emit.outputFiles.get("/workspace/src/index.js").text, /require\("\.\/greet"\)/)
   } finally {
     program.dispose()
   }

@@ -22,7 +22,6 @@
       <header class="toolbar">
         <div>
           <h1>TypeScript 7 Playground</h1>
-          <p>Native TypeScript, compiled to WebAssembly</p>
         </div>
         <div class="toolbar-actions">
           <button id="run-button" type="button" disabled>Run</button>
@@ -32,15 +31,18 @@
       <section class="workspace" aria-label="TypeScript playground">
         <nav class="file-explorer" aria-label="Project files">
           <div class="file-explorer-heading">
-            <h2>Project</h2>
-            <span>/workspace</span>
+            <div>
+              <h2>Project</h2>
+              <span>/workspace</span>
+            </div>
+            <button id="new-file-button" type="button" title="Create a new file">+ File</button>
           </div>
           <div id="file-list" class="file-list"></div>
         </nav>
         <div class="editor-panel">
           <div class="panel-heading">
             <h2 id="current-file">index.ts</h2>
-            <span id="editor-hint">Twoslash: align <code>^?</code> below an expression</span>
+            <span id="editor-hint">Type query: align <code>^?</code> below an expression</span>
           </div>
           <div id="input-editor" class="editor"></div>
         </div>

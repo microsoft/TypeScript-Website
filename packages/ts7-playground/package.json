@@ -17,8 +17,11 @@
     "@vscode/monaco-lsp-client": "file:vendor/vscode-monaco-lsp-client-0.1.0.tgz",
     "coi-serviceworker": "^0.1.7",
     "hack-font": "^3.3.0",
+    "lz-string": "^1.5.0",
     "monaco-editor": "0.56.0",
-    "monaco-editor-core": "0.56.0"
+    "monaco-editor-core": "0.56.0",
+    "vscode-json-languageservice": "^5.3.11",
+    "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
     "esbuild": "^0.27.3",
