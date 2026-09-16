@@ -250,7 +250,10 @@ async function ensureLibraryModels(result: unknown) {
 
 function isLibraryUri(uri: string) {
   const parsed = monaco.Uri.parse(uri)
-  return parsed.scheme === "file" && /^\/typescript\/lib\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)
+  return (
+    (parsed.scheme === "file" && /^\/typescript\/lib\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)) ||
+    (parsed.scheme === "bundled" && /^\/libs\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path))
+  )
 }
 
 function getLibraryFiles() {

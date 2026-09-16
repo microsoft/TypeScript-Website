@@ -144,6 +144,14 @@ monaco.editor.defineTheme("typescript-playground", {
     { token: "comment", foreground: darkMode ? "7caf3d" : "6c6f2d" },
     { token: "keyword", foreground: darkMode ? "569cd6" : "3757ef" },
     { token: "type", foreground: darkMode ? "4ec9b0" : "1142af" },
+    { token: "class", foreground: darkMode ? "4ec9b0" : "267f99" },
+    { token: "enum", foreground: darkMode ? "4ec9b0" : "267f99" },
+    { token: "interface", foreground: darkMode ? "4ec9b0" : "267f99" },
+    { token: "function", foreground: darkMode ? "dcdcaa" : "795e26" },
+    { token: "method", foreground: darkMode ? "dcdcaa" : "795e26" },
+    { token: "parameter", foreground: darkMode ? "9cdcfe" : "001080" },
+    { token: "property", foreground: darkMode ? "9cdcfe" : "001080" },
+    { token: "variable", foreground: darkMode ? "9cdcfe" : "001080" },
   ],
   colors: {
     "editor.background": darkMode ? "#1e1e1e" : "#fafafa",
@@ -175,6 +183,7 @@ const inputEditor = monaco.editor.create(inputElement, {
   model: projectModels.get(initialState.activeFile ?? entryFileName) ?? projectModels.get(entryFileName),
   padding: { top: 10 },
   scrollBeyondLastLine: false,
+  "semanticHighlighting.enabled": true,
   tabSize: 2,
   theme: "typescript-playground",
 })
