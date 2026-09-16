@@ -65,10 +65,12 @@ export function registerConfigSchema(schema: JSONSchema) {
         window.setTimeout(async () => {
           if (model.isDisposed()) return
           const document = createDocument(model)
-          const diagnostics = await service.doValidation(document, service.parseJSONDocument(document), {
-            comments: "ignore",
-            trailingCommas: "warning",
-          })
+          const diagnostics = (
+            await service.doValidation(document, service.parseJSONDocument(document), {
+              comments: "ignore",
+              trailingCommas: "ignore",
+            })
+          ).filter(diagnostic => !isCaseInsensitiveEnumMatch(document, diagnostic))
           monaco.editor.setModelMarkers(model, markerOwner, diagnostics.map(toMonacoDiagnostic))
         }, 150)
       )
@@ -79,6 +81,21 @@ export function registerConfigSchema(schema: JSONSchema) {
 
   monaco.editor.getModels().forEach(registerModel)
   monaco.editor.onDidCreateModel(registerModel)
+}
+
+function isCaseInsensitiveEnumMatch(document: TextDocument, diagnostic: Diagnostic) {
+  const message = typeof diagnostic.message === "string" ? diagnostic.message : diagnostic.message.value
+  if (!message.startsWith("Value is not accepted. Valid values:")) return false
+  const source = document.getText(diagnostic.range)
+  let value: unknown
+  try {
+    value = JSON.parse(source)
+  } catch {
+    return false
+  }
+  if (typeof value !== "string") return false
+  const allowed = [...message.matchAll(/"([^"]+)"/g)].map(match => match[1])
+  return allowed.some(candidate => candidate.toLowerCase() === value.toLowerCase())
 }
 
 function isConfigModel(model: monaco.editor.ITextModel) {

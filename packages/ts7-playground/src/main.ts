@@ -775,11 +775,28 @@ function normalizeProjectState(value: unknown): ProjectState {
     [`${projectRoot}/index.ts`, entryFileName],
     [`${projectRoot}/greet.ts`, `${projectRoot}/src/greet.ts`],
   ])
+  const hasLegacyRootFiles = [...migrations.keys()].some(fileName => files[fileName] !== undefined)
   for (const [oldPath, newPath] of migrations) {
     if (files[oldPath] !== undefined && files[newPath] === undefined) {
       files[newPath] = files[oldPath]
     }
     delete files[oldPath]
+  }
+  if (hasLegacyRootFiles && files[configFileName]) {
+    try {
+      const config = JSON.parse(files[configFileName])
+      if (Array.isArray(config.include) && config.include.length === 1 && config.include[0] === "./*.ts") {
+        config.include = ["./src/**/*"]
+      }
+      config.compilerOptions ??= {}
+      config.compilerOptions.declaration ??= true
+      files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
+    } catch {
+      files[configFileName] = files[configFileName].replace(
+        /"include"\s*:\s*\[\s*"\.\/\*\.ts"\s*\]/,
+        '"include": ["./src/**/*"]'
+      )
+    }
   }
   const requestedActiveFile =
     typeof candidate.activeFile === "string" ? migrations.get(candidate.activeFile) ?? candidate.activeFile : undefined
