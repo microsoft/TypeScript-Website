@@ -12,6 +12,7 @@ const websiteStaticDirectory = resolve(
   "packages/typescriptlang-org/static/play/7",
 )
 const serve = process.argv.includes("--serve")
+const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? "/play/7/"
 
 const wasmFile = resolve(vendorDirectory, "typescript-wasip1-wasm/dist/tsc.wasm")
 const libDirectory = resolve(vendorDirectory, "lib")
@@ -23,6 +24,9 @@ const coiServiceWorker = fileURLToPath(
 )
 
 const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
+const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
+  .replace("__PLAYGROUND_BASE__", playgroundBase)
+  .replace("<title>", `<title data-typescript-version="${version}">`)
 
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })
@@ -38,7 +42,7 @@ const libFiles = Object.fromEntries(
   ),
 )
 await Promise.all([
-  cp(resolve(packageDirectory, "src/index.html"), resolve(outputDirectory, "index.html")),
+  writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
   cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
   writeFile(resolve(outputDirectory, "lib-files.json"), JSON.stringify(libFiles)),
@@ -81,9 +85,6 @@ if (serve) {
 else {
   await buildContext.rebuild()
   await buildContext.dispose()
-  const htmlPath = resolve(outputDirectory, "index.html")
-  const html = await readFile(htmlPath, "utf8")
-  await writeFile(htmlPath, html.replace("<title>", `<title data-typescript-version="${version}">`))
   await rm(websiteStaticDirectory, { force: true, recursive: true })
   await cp(outputDirectory, websiteStaticDirectory, { recursive: true })
   console.log(`Built TypeScript ${version} playground in ${outputDirectory}`)
