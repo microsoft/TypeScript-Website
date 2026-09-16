@@ -1,0 +1,1 @@
+{"version":3,"file":"wtf8.d.ts","sourceRoot":"","sources":["../../../src/api/node/wtf8.ts"],"names":[],"mappings":"AAKA,KAAK,WAAW,GAAG,eAAe,GAAG,eAAe,GAAG,IAAI,CAAC;AAC5D,UAAU,aAAa;IACnB,MAAM,CAAC,EAAE,OAAO,CAAC;CACpB;AA6BD,qBAAa,WAAY,SAAQ,WAAW;IAC/B,MAAM,CAAC,KAAK,CAAC,EAAE,WAAW,EAAE,OAAO,CAAC,EAAE,aAAa,GAAG,MAAM,CAiCpE;CACJ"}
