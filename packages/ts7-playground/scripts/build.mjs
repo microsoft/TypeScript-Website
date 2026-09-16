@@ -10,6 +10,10 @@ const typescriptDirectory = resolve(
   process.env.TYPESCRIPT_REPO || resolve(websiteDirectory, "../TypeScript"),
 )
 const outputDirectory = resolve(packageDirectory, "dist")
+const websiteStaticDirectory = resolve(
+  websiteDirectory,
+  "packages/typescriptlang-org/static/ts7-playground",
+)
 const serve = process.argv.includes("--serve")
 
 const typescriptAPI = resolve(typescriptDirectory, "packages/typescript/dist/api/sync/api.js")
@@ -102,5 +106,7 @@ else {
   const htmlPath = resolve(outputDirectory, "index.html")
   const html = await readFile(htmlPath, "utf8")
   await writeFile(htmlPath, html.replace("<title>", `<title data-typescript-version="${version}">`))
+  await rm(websiteStaticDirectory, { force: true, recursive: true })
+  await cp(outputDirectory, websiteStaticDirectory, { recursive: true })
   console.log(`Built TypeScript ${version} playground in ${outputDirectory}`)
 }

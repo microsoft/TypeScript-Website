@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "prebuild": "pnpm --filter @typescript/ts7-playground build",
     "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "clean": "gatsby clean",
     "bootstrap": "pnpm update-versions",
@@ -13,6 +14,7 @@
     "setup-playground-cache-bust": "node scripts/cacheBustPlayground.mjs",
     "create-lighthouse-json": "node scripts/createLighthouseJSON.js",
     "compile-index-examples": "twoslash --reactAlso src/components/index/twoslash/*.ts src/components/index/twoslash/*.js src/components/index/twoslash/*.tsx src/components/index/twoslash/generated && node scripts/updateIndexTwoslashExamples.js",
+    "prestart": "pnpm --filter @typescript/ts7-playground build",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "test": "pnpm tsc && jest"

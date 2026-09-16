@@ -11,8 +11,9 @@ with `TYPESCRIPT_REPO` when needed:
 TYPESCRIPT_REPO=/path/to/TypeScript pnpm --filter @typescript/ts7-playground build
 ```
 
-The generated static site is written to `dist`. Run the local development
-server with:
+The generated static site is written to `dist` and copied into the website's
+ignored `packages/typescriptlang-org/static/ts7-playground` directory. Run the
+local development server with:
 
 ```sh
 pnpm --filter @typescript/ts7-playground dev
@@ -20,3 +21,5 @@ pnpm --filter @typescript/ts7-playground dev
 
 The compiler API is also exposed as `window.ts` for experiments in the browser
 development console.
+
+When running the full website, the playground is available at `/play/7-1/`.
