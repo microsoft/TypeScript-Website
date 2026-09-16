@@ -1,5 +1,6 @@
 import { context } from "esbuild"
-import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises"
+import { createHash } from "node:crypto"
+import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises"
 import { basename, dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -34,7 +35,13 @@ const libFiles = Object.fromEntries(
   )
 )
 const libFilesJSON = JSON.stringify(libFiles)
-const [wasmStats, schemaStats] = await Promise.all([stat(wasmFile), stat(configSchema)])
+const [wasmBytes, schemaBytes] = await Promise.all([readFile(wasmFile), readFile(configSchema)])
+const assetCacheVersion = createHash("sha256")
+  .update(wasmBytes)
+  .update(libFilesJSON)
+  .update(schemaBytes)
+  .digest("hex")
+  .slice(0, 16)
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
@@ -48,10 +55,11 @@ const buildContext = await context({
   bundle: true,
   conditions: ["browser", "default"],
   define: {
+    __ASSET_CACHE_VERSION__: JSON.stringify(assetCacheVersion),
     __LOAD_ASSET_SIZES__: JSON.stringify({
       libraries: Buffer.byteLength(libFilesJSON),
-      schema: schemaStats.size,
-      wasm: wasmStats.size,
+      schema: schemaBytes.byteLength,
+      wasm: wasmBytes.byteLength,
     }),
     __TS_VERSION__: JSON.stringify(version),
   },

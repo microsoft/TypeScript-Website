@@ -6,6 +6,7 @@ import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoStatus } fr
 import "./styles.css"
 
 declare const __TS_VERSION__: string
+declare const __ASSET_CACHE_VERSION__: string
 declare const __LOAD_ASSET_SIZES__: {
   libraries: number
   schema: number
@@ -131,6 +132,9 @@ let compilerTransport: WasmTransport | undefined
 let emittedFiles = new Map<string, string>()
 let emitRenderVersion = 0
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
+const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
+const assetCachePrefix = "ts7-playground-assets-"
+let assetCachePromise: Promise<Cache | undefined> | undefined
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -232,7 +236,7 @@ async function initializeCompiler() {
       downloadAsset("schema", new URL("./tsconfig.schema.json", import.meta.url)),
     ])
 
-    setLoadingIndeterminate("Compiling TypeScript...", "WebAssembly does not expose compile progress")
+    setLoadingIndeterminate("Compiling TypeScript...", "")
     const module = await WebAssembly.compile(wasmBytes)
     setLoadingProgress(78, "Starting compiler API...", "Instantiating WebAssembly")
     const libFiles = JSON.parse(new TextDecoder().decode(libFilesBytes)) as Record<string, string>
@@ -304,12 +308,22 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
 }
 
 async function downloadAsset(name: keyof typeof __LOAD_ASSET_SIZES__, url: URL): Promise<Uint8Array<ArrayBuffer>> {
-  const response = await fetch(url)
+  url.searchParams.set("v", __ASSET_CACHE_VERSION__)
+  const request = new Request(url)
+  const cache = await getAssetCache()
+  let response = await cache?.match(request)
+  cachedAssets.set(name, response !== undefined)
+  let cacheWrite: Promise<void> | undefined
+  if (!response) {
+    response = await fetch(request)
+    if (cache) cacheWrite = cache.put(request, response.clone())
+  }
   if (!response.ok) {
     throw new Error(`Unable to load ${url.pathname}: ${response.status} ${response.statusText}`)
   }
   if (!response.body) {
     const bytes = new Uint8Array(await response.arrayBuffer())
+    await cacheWrite
     downloadedAssets.set(name, bytes.length)
     updateDownloadProgress()
     return bytes
@@ -333,15 +347,39 @@ async function downloadAsset(name: keyof typeof __LOAD_ASSET_SIZES__, url: URL):
     bytes.set(chunk, offset)
     offset += chunk.length
   }
+  await cacheWrite
   return bytes
+}
+
+function getAssetCache() {
+  assetCachePromise ??= openAssetCache()
+  return assetCachePromise
+}
+
+async function openAssetCache() {
+  if (!("caches" in globalThis)) return undefined
+  const cacheName = `${assetCachePrefix}${__ASSET_CACHE_VERSION__}`
+  try {
+    const cacheNames = await caches.keys()
+    await Promise.all(
+      cacheNames
+        .filter(name => name.startsWith(assetCachePrefix) && name !== cacheName)
+        .map(name => caches.delete(name))
+    )
+    return caches.open(cacheName)
+  } catch (error) {
+    console.warn("Could not open the TypeScript asset cache", error)
+    return undefined
+  }
 }
 
 function updateDownloadProgress() {
   const totalBytes = Object.values(__LOAD_ASSET_SIZES__).reduce((total, value) => total + value, 0)
   const downloadedBytes = [...downloadedAssets.values()].reduce((total, value) => total + value, 0)
+  const loadingFromNetwork = [...cachedAssets.values()].some(cached => !cached)
   setLoadingProgress(
     Math.min(70, (downloadedBytes / totalBytes) * 70),
-    "Downloading TypeScript...",
+    loadingFromNetwork ? "Downloading TypeScript..." : "Loading cached TypeScript...",
     `${formatBytes(downloadedBytes)} of ${formatBytes(totalBytes)}`
   )
 }
