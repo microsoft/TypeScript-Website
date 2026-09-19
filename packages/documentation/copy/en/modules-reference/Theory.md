@@ -267,7 +267,7 @@ import { add } from "./math";
 add(1, 2);
 ```
 
-When we see the import from `"./math"`, it might be tempting to think, “This is how one TypeScript file refers to another. The compiler follows this (extensionless) path in order to assign a type to `add`.”
+When we see the import to `"./math"`, it might be tempting to think, “This is how one TypeScript file refers to another. The compiler follows this (extensionless) path in order to assign a type to `add`.”
 
 <img src="./diagrams/theory.md-1.svg" width="400" alt="A simple flowchart diagram. A file (rectangle node) main.ts resolves (labeled arrow) through module specifier './math' to another file math.ts." />
 
