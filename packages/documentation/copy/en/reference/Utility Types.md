@@ -466,16 +466,23 @@ identical to `Type`.
 
 ##### Example
 
-```ts
+```ts twoslash
+// @errors: 2345
+function laxCreateStreetLight<C extends string>(
+  colors: C[],
+  defaultColor?: C,
+) { /* ... */ }
+
+laxCreateStreetLight(["red", "yellow", "green"], "blue");
+// ^?
+
 function createStreetLight<C extends string>(
   colors: C[],
   defaultColor?: NoInfer<C>,
-) {
-  // ...
-}
+) { /* ... */ }
 
-createStreetLight(["red", "yellow", "green"], "red");  // OK
-createStreetLight(["red", "yellow", "green"], "blue");  // Error
+createStreetLight(["red", "yellow", "green"], "blue");
+// ^?
 ```
 
 ## `ThisParameterType<Type>`
