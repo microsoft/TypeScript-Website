@@ -5,8 +5,13 @@
 const { writeFileSync } = require("fs")
 const { join } = require("path")
 
+/**
+ * @param {string} url
+ * @param {string} path
+ * @param {(text: string) => string} [editFunc]
+ */
 const getFileAndStoreLocally = async (url, path, editFunc) => {
-  const editingFunc = editFunc ? editFunc : text => text
+  const editingFunc =  editFunc ?? (text => text)
   const packageJSON = await fetch(url)
   const contents = await packageJSON.text()
   writeFileSync(join(__dirname, "..", path), editingFunc(contents), "utf8")
