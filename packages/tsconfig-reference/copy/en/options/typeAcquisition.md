@@ -8,7 +8,7 @@ This is called automatic type acquisition, and you can customize it using the `t
 
 If you would like to disable or customize this feature, create a `jsconfig.json` in the root of your project:
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "enable": false
@@ -18,7 +18,7 @@ If you would like to disable or customize this feature, create a `jsconfig.json`
 
 If you have a specific module which should be included (but isn't in `node_modules`):
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "include": ["jest"]
@@ -28,7 +28,7 @@ If you have a specific module which should be included (but isn't in `node_modul
 
 If a module should not be automatically acquired, for example if the library is available in your `node_modules` but your team has agreed to not use it:
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "exclude": ["jquery"]
