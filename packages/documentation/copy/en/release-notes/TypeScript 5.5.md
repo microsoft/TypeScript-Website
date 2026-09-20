@@ -719,7 +719,7 @@ TypeScript 5.5 now intentionally issues an event to clear these out.
 Instead of overwriting files, some tools will opt to delete them and then create new files from scratch.
 This is the case when running `npm ci`, for instance.
 
-While this can be efficient for those tools, it can be problematic for TypeScript's editor scenarios where deleting a watched might dispose of it and all of its transitive dependencies.
+While this can be efficient for those tools, it can be problematic for TypeScript's editor scenarios where deleting a watched file might dispose of it and all of its transitive dependencies.
 Deleting and creating a file in quick succession could lead to TypeScript tearing down an entire project and then rebuilding it from scratch.
 
 TypeScript 5.5 now has a more nuanced approach by keeping parts of a deleted project around until it picks up on a new creation event.
@@ -1054,3 +1054,4 @@ export declare const myPath: path.ParsedPath;
 Adding `preserve="true"` is backwards compatible with older versions of TypeScript as unknown attributes are ignored.
 
 This change also improved performance; in our benchmarks, the emit stage saw a 1-4% improvement in projects with declaration emit enabled.
+
