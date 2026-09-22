@@ -1,5 +1,11 @@
 # @typescript/vfs
 
+## 1.6.5
+
+### Patch Changes
+
+- [#3651](https://github.com/microsoft/TypeScript-Website/pull/3651) [`292b11f`](https://github.com/microsoft/TypeScript-Website/commit/292b11fdd04f5fb5a9657efb423c8df9153b0a26) Thanks [@spencerbeggs](https://github.com/spencerbeggs)! - Skip the localStorage feature detect in Node so importing the package no longer emits an ExperimentalWarning on Node 26
+
 ## 1.6.4
 
 ### Patch Changes
