@@ -464,6 +464,8 @@ Released:
 Blocks inferences to the contained type. Other than blocking inferences, `NoInfer<Type>` is
 identical to `Type`.
 
+For example, the `createStreetLight()` function below is called with a `colors` value of `["red", "yellow", "green"]`, making the `C` type parameter be a union of `"red" | "yellow" | "green"` (so `"blue"` would not be a valid default), but if `NoInfer<C>` was not used, the `defaultColor`'s type of `"blue"` would get added to the type parameter union, so the compiler would consider `"blue"` as a valid default even though it's not in the list of `colors`.
+
 ##### Example
 
 ```ts
