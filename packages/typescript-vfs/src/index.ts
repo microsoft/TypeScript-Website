@@ -17,13 +17,25 @@ interface LocalStorageLike {
 declare var localStorage: LocalStorageLike | undefined;
 declare var fetch: FetchLike | undefined;
 
-let hasLocalStorage = false
-try {
-  hasLocalStorage = typeof localStorage !== `undefined`
-} catch (error) { }
-
 const hasProcess = typeof process !== `undefined`
-const shouldDebug = (hasLocalStorage && typeof localStorage!.getItem === 'function' && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
+
+// Node >= 26 exposes `localStorage` as a global accessor which emits an
+// ExperimentalWarning when it is read - including via `typeof` - unless the process
+// was started with `--localstorage-file`. Probing it here would print that warning at
+// module evaluation for every consumer, so skip the probe entirely in a bare Node
+// process, where `process.env.DEBUG` below is the only reachable way to opt in anyway.
+// DOM-bearing hosts that also expose `process` (Electron renderers) still get probed.
+const isBareNodeProcess =
+  hasProcess && typeof process.versions?.node === `string` && !(`window` in globalThis)
+
+let hasLocalStorage = false
+if (!isBareNodeProcess) {
+  try {
+    hasLocalStorage = typeof localStorage !== `undefined` && typeof localStorage.getItem === `function`
+  } catch (error) { }
+}
+
+const shouldDebug = (hasLocalStorage && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
 const debugLog = shouldDebug ? console.log : (_message?: any, ..._optionalParams: any[]) => ""
 
 export interface VirtualTypeScriptEnvironment {
