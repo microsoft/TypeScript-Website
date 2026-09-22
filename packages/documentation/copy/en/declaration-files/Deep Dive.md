@@ -230,3 +230,50 @@ The second block creates the following name meanings:
 - A type `X`
 
 <!-- TODO: Write more on that. -->
+
+## Export Visibility in Declaration Files
+
+Module declaration files (`.d.ts` files with a top-level `import` or `export`)
+have a behavior that often surprises people: every top-level declaration is
+reachable from outside the module, whether or not it is marked `export`.
+
+Say we have a module file `foo.d.ts`:
+
+```ts
+interface Options {
+  count: number;
+}
+export declare function make(options: Options): void;
+```
+
+Then consumed it:
+
+```ts
+import { make, Options } from "./foo";
+```
+
+In a normal `.ts` module, importing `Options` would be an error
+("Module './foo' declares 'Options' locally, but it is not exported."),
+but in a declaration file the non-exported name is still importable.
+
+This applies to values as well as types: a `declare const` or `declare class`
+without `export` can also be named in an import.
+Be careful with values, though — if the underlying JavaScript module doesn't
+actually export that binding, the import will fail at load time under ES
+modules, or produce `undefined` under CommonJS interop, even though it
+type-checks.
+
+To opt out of this behavior and make a declaration file behave like a normal
+module — where only explicit `export`s are visible from outside — add an empty
+export to the file:
+
+```ts
+interface Options {
+  count: number;
+}
+export declare function make(options: Options): void;
+export {};
+```
+
+With the `export {}` present, importing `Options` elsewhere is now an error,
+even though the file was already a module before adding it.
