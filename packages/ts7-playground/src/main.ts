@@ -210,20 +210,22 @@ inputEditor.onMouseDown(event => {
 
 const inlayEmitter = new monaco.Emitter<void>()
 const typeQueries = new Map<string, TypeQuery[]>()
-monaco.languages.registerInlayHintsProvider("typescript", {
-  onDidChangeInlayHints: inlayEmitter.event,
-  provideInlayHints(model) {
-    return {
-      hints: (typeQueries.get(model.uri.toString()) ?? []).map(query => ({
-        kind: monaco.languages.InlayHintKind.Type,
-        position: new monaco.Position(query.lineNumber, query.column),
-        label: query.label,
-        paddingLeft: true,
-      })),
-      dispose() {},
-    }
-  },
-})
+for (const language of ["javascript", "typescript"]) {
+  monaco.languages.registerInlayHintsProvider(language, {
+    onDidChangeInlayHints: inlayEmitter.event,
+    provideInlayHints(model) {
+      return {
+        hints: (typeQueries.get(model.uri.toString()) ?? []).map(query => ({
+          kind: monaco.languages.InlayHintKind.Type,
+          position: new monaco.Position(query.lineNumber, query.column),
+          label: query.label,
+          paddingLeft: true,
+        })),
+        dispose() {},
+      }
+    },
+  })
+}
 
 let updateTimer = 0
 for (const model of projectModels.values()) {
@@ -448,14 +450,28 @@ function compileProject(api: API) {
       void renderEmittedFiles()
 
       typeQueries.clear()
-      for (const fileName of parsed.fileNames) {
-        const model = projectModels.get(fileName)
-        const sourceFile = program.getSourceFile(fileName)
-        if (!model || !sourceFile) continue
-        typeQueries.set(
-          model.uri.toString(),
-          collectTypeQueries(model.getValue(), sourceFile, program.getProject().checker, model)
+      collectProgramTypeQueries(program, parsed.fileNames)
+
+      const configuredFiles = new Set(parsed.fileNames)
+      const orphanSourceFiles = [...projectModels]
+        .filter(
+          ([fileName, model]) =>
+            !configuredFiles.has(fileName) &&
+            (model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
         )
+        .map(([fileName]) => fileName)
+      if (orphanSourceFiles.length > 0) {
+        const inferredProgram = api.createProgram(orphanSourceFiles, {
+          compilerOptions: {
+            ...parsed.options,
+            allowJs: true,
+          },
+        })
+        try {
+          collectProgramTypeQueries(inferredProgram, orphanSourceFiles)
+        } finally {
+          inferredProgram.dispose()
+        }
       }
       inlayEmitter.fire()
       projectFailure = undefined
@@ -463,6 +479,16 @@ function compileProject(api: API) {
       renderStatus()
     } finally {
       program.dispose()
+    }
+
+    function collectProgramTypeQueries(program: ReturnType<API["createProgram"]>, fileNames: readonly string[]) {
+      const checker = program.getProject().checker
+      for (const fileName of fileNames) {
+        const model = projectModels.get(fileName)
+        const sourceFile = program.getSourceFile(fileName)
+        if (!model || !sourceFile) continue
+        typeQueries.set(model.uri.toString(), collectTypeQueries(model.getValue(), sourceFile, checker, model))
+      }
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
