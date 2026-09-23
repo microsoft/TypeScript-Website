@@ -60,6 +60,78 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
     })
   }
 
+  function resolveTypesTarget(entry: any): string | null {
+    if (typeof entry === "string") {
+      return entry
+    }
+    if (entry && typeof entry === "object") {
+      if (typeof entry.types === "string") return entry.types
+      if (typeof entry.typings === "string") return entry.typings
+      if (entry.import) {
+        const result = resolveTypesTarget(entry.import)
+        if (result) return result
+      }
+      if (entry.require) {
+        const result = resolveTypesTarget(entry.require)
+        if (result) return result
+      }
+      if (entry.default) {
+        const result = resolveTypesTarget(entry.default)
+        if (result) return result
+      }
+    }
+    return null
+  }
+
+  function stripExtension(path: string): string {
+    return path.replace(/\.(d\.)?(c|m)?tsx?$/, "")
+  }
+
+  function createSubpathModuleDeclarations(moduleName: string, pkg: any): string | null {
+    const exports = pkg.exports
+    if (!exports || typeof exports !== "object") {
+      return null
+    }
+
+    const subpathDeclarations: string[] = []
+
+    for (const [key, value] of Object.entries(exports)) {
+      if (key === "." || key === "./") continue
+      if (key.startsWith("./") && !key.includes("*")) {
+        const subpath = key.slice(2)
+        if (!subpath) continue
+
+        const typesTarget = resolveTypesTarget(value)
+        if (!typesTarget) continue
+
+        let targetModule: string
+        if (typesTarget.startsWith("./")) {
+          const cleanedTarget = stripExtension(typesTarget.slice(2))
+          targetModule = `${moduleName}/${cleanedTarget}`
+        } else if (typesTarget.startsWith("/")) {
+          const cleanedTarget = stripExtension(typesTarget.slice(1))
+          targetModule = `${moduleName}/${cleanedTarget}`
+        } else {
+          const cleanedTarget = stripExtension(typesTarget)
+          targetModule = cleanedTarget.startsWith(".")
+            ? `${moduleName}/${cleanedTarget.slice(2)}`
+            : cleanedTarget
+        }
+
+        const fullModuleName = `${moduleName}/${subpath}`
+        subpathDeclarations.push(`declare module '${fullModuleName}' {
+  export * from '${targetModule}';
+}`)
+      }
+    }
+
+    if (!subpathDeclarations.length) {
+      return null
+    }
+
+    return subpathDeclarations.join("\n\n")
+  }
+
   async function resolveDeps(initialSourceFile: string, depth: number) {
     const depsToGet = getNewDependencies(config, moduleMap, initialSourceFile)
 
@@ -101,6 +173,18 @@ export const setupTypeAcquisition = (config: ATABootstrapConfig) => {
       if (typeof pkgJSON == "string") {
         fsMap.set(path, pkgJSON)
         config.delegate.receivedFile?.(pkgJSON, path)
+
+        try {
+          const pkg = JSON.parse(pkgJSON)
+          const subpathDeclarations = createSubpathModuleDeclarations(tree.moduleName, pkg)
+          if (subpathDeclarations) {
+            const subpathPath = prefix + "/subpaths.d.ts"
+            fsMap.set(subpathPath, subpathDeclarations)
+            config.delegate.receivedFile?.(subpathDeclarations, subpathPath)
+          }
+        } catch (error) {
+          config.logger?.log(`Could not parse package.json for ${tree.moduleName}`, error)
+        }
       } else {
         config.logger?.error(`Could not download package.json for ${tree.moduleName}`)
       }
@@ -171,7 +255,7 @@ export const getReferencesForModule = (ts: typeof import("typescript"), code: st
     .concat(meta.importedFiles)
     .concat(meta.libReferenceDirectives)
     .filter(f => !isDtsFile(f.fileName))
-    .filter(d => !libMap.has(d.fileName))
+    .filter(d => !isStandardLibraryReference(d.fileName, libMap))
 
   return references
     .map(r => {
@@ -273,4 +357,54 @@ function getDTName(s: string) {
 
 function isDtsFile(file: string) {
   return /\.d\.([^\.]+\.)?[cm]?ts$/i.test(file)
+}
+
+const standardLibMatchers = [
+  /^es\d{1,4}(\.|$)/,
+  /^esnext(\.|$)/,
+  /^dom(\.|$)/,
+  /^scripthost(\.|$)/,
+  /^webworker(\.|$)/,
+  /^webworkers?(\.|$)/,
+  /^typescript\/lib\//,
+  /^lib\./,
+]
+
+const exactStandardLibs = new Set(
+  [
+    "es5",
+    "es6",
+    "es7",
+    "es8",
+    "es9",
+    "es2015",
+    "es2016",
+    "es2017",
+    "es2018",
+    "es2019",
+    "es2020",
+    "es2021",
+    "es2022",
+    "es2023",
+    "es2024",
+    "esnext",
+    "dom",
+    "dom.iterable",
+    "dom.asynciterable",
+    "scripthost",
+    "webworker",
+    "webworker.iterable",
+    "webworker.importscripts",
+    "webworker.asynciterable",
+    "webworker.importscripts",
+    "dom.asynciterable",
+    "dom.iterable",
+  ].map(l => l.toLowerCase())
+)
+
+function isStandardLibraryReference(fileName: string, libMap: Map<string, string>) {
+  if (libMap.has(fileName)) return true
+  const normalized = fileName.toLowerCase()
+  if (exactStandardLibs.has(normalized)) return true
+  return standardLibMatchers.some(matcher => matcher.test(normalized))
 }
