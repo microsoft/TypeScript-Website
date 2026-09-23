@@ -21,7 +21,7 @@ Intersection and Union types are one of the ways in which you can compose types.
 Occasionally, you'll run into a library that expects a parameter to be either a `number` or a `string`.
 For instance, take the following function:
 
-```ts twoslash
+```ts 
 /**
  * Takes a string and adds "padding" to the left.
  * If 'padding' is a string, then 'padding' is appended to the left side.
@@ -381,7 +381,7 @@ That means an object of this type will have all members of all three types.
 
 For example, if you had networking requests with consistent error handling then you could separate out the error handling into its own type which is merged with types which correspond to a single response type.
 
-```ts twoslash
+```ts 
 interface ErrorHandling {
   success: boolean;
   error?: { message: string };

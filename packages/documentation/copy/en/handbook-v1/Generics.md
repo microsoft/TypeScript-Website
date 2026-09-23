@@ -21,7 +21,7 @@ You can think of this in a similar way to the `echo` command.
 
 Without generics, we would either have to give the identity function a specific type:
 
-```ts twoslash
+```ts 
 function identity(arg: number): number {
   return arg;
 }
@@ -29,7 +29,7 @@ function identity(arg: number): number {
 
 Or, we could describe the identity function using the `any` type:
 
-```ts twoslash
+```ts 
 function identity(arg: any): any {
   return arg;
 }
@@ -41,7 +41,7 @@ If we passed in a number, the only information we have is that any type could be
 Instead, we need a way of capturing the type of the argument in such a way that we can also use it to denote what is being returned.
 Here, we will use a _type variable_, a special kind of variable that works on types rather than values.
 
-```ts twoslash
+```ts 
 function identity<T>(arg: T): T {
   return arg;
 }
@@ -90,7 +90,7 @@ That is, that you actually treat these parameters as if they could be any and al
 
 Let's take our `identity` function from earlier:
 
-```ts twoslash
+```ts 
 function identity<T>(arg: T): T {
   return arg;
 }
@@ -113,7 +113,7 @@ Remember, we said earlier that these type variables stand in for any and all typ
 Let's say that we've actually intended this function to work on arrays of `T` rather than `T` directly. Since we're working with arrays, the `.length` member should be available.
 We can describe this just like we would create arrays of other types:
 
-```ts twoslash
+```ts 
 function loggingIdentity<T>(arg: T[]): T[] {
   console.log(arg.length);
   return arg;
@@ -126,7 +126,7 @@ This allows us to use our generic type variable `T` as part of the types we're w
 
 We can alternatively write the sample example this way:
 
-```ts twoslash
+```ts 
 function loggingIdentity<T>(arg: Array<T>): Array<T> {
   console.log(arg.length); // Array has a .length, so no more error
   return arg;
@@ -143,7 +143,7 @@ In this section, we'll explore the type of the functions themselves and how to c
 
 The type of generic functions is just like those of non-generic functions, with the type parameters listed first, similarly to function declarations:
 
-```ts twoslash
+```ts 
 function identity<T>(arg: T): T {
   return arg;
 }
@@ -153,7 +153,7 @@ let myIdentity: <T>(arg: T) => T = identity;
 
 We could also have used a different name for the generic type parameter in the type, so long as the number of type variables and how the type variables are used line up.
 
-```ts twoslash
+```ts 
 function identity<T>(arg: T): T {
   return arg;
 }
@@ -163,7 +163,7 @@ let myIdentity: <U>(arg: U) => U = identity;
 
 We can also write the generic type as a call signature of an object literal type:
 
-```ts twoslash
+```ts 
 function identity<T>(arg: T): T {
   return arg;
 }
@@ -174,7 +174,7 @@ let myIdentity: { <T>(arg: T): T } = identity;
 Which leads us to writing our first generic interface.
 Let's take the object literal from the previous example and move it to an interface:
 
-```ts twoslash
+```ts 
 interface GenericIdentityFn {
   <T>(arg: T): T;
 }
@@ -190,7 +190,7 @@ In a similar example, we may want to move the generic parameter to be a paramete
 This lets us see what type(s) we're generic over (e.g. `Dictionary<string>` rather than just `Dictionary`).
 This makes the type parameter visible to all the other members of the interface.
 
-```ts twoslash
+```ts 
 interface GenericIdentityFn<T> {
   (arg: T): T;
 }
@@ -273,7 +273,7 @@ To do so, we must list our requirement as a constraint on what T can be.
 To do so, we'll create an interface that describes our constraint.
 Here, we'll create an interface that has a single `.length` property and then we'll use this interface and the `extends` keyword to denote our constraint:
 
-```ts twoslash
+```ts 
 interface Lengthwise {
   length: number;
 }
@@ -337,7 +337,7 @@ getProperty(x, "m");
 
 When creating factories in TypeScript using generics, it is necessary to refer to class types by their constructor functions. For example,
 
-```ts twoslash
+```ts 
 function create<T>(c: { new (): T }): T {
   return new c();
 }

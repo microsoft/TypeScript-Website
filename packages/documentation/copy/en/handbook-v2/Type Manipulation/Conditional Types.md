@@ -43,7 +43,7 @@ But the power of conditional types comes from using them with generics.
 
 For example, let's take the following `createLabel` function:
 
-```ts twoslash
+```ts 
 interface IdLabel {
   id: number /* some fields */;
 }
@@ -180,7 +180,7 @@ This ends up being such a common operation that conditional types make it easier
 Conditional types provide us with a way to infer from types we compare against in the true branch using the `infer` keyword.
 For example, we could have inferred the element type in `Flatten` instead of fetching it out "manually" with an indexed access type:
 
-```ts twoslash
+```ts 
 type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
 ```
 
@@ -221,7 +221,7 @@ type T1 = ReturnType<typeof stringOrNum>;
 When conditional types act on a generic type, they become _distributive_ when given a union type.
 For example, take the following:
 
-```ts twoslash
+```ts 
 type ToArray<Type> = Type extends any ? Type[] : never;
 ```
 

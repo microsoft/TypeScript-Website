@@ -136,7 +136,7 @@ person.on("frstNameChanged", () => {});
 We can also do something special in template literal types: we can _infer_ from substitution positions.
 We can make our last example generic to infer from parts of the `eventName` string to figure out the associated property.
 
-```ts twoslash
+```ts 
 type PropEventSource<T> = {
     on<K extends string & keyof T>
         (eventName: `${K}Changed`, callback: (newValue: T[K]) => void ): void;
@@ -315,7 +315,7 @@ See more [at the implementation](https://github.com/microsoft/TypeScript/pull/40
 TypeScript has a feature called _index signatures_.
 These signatures are a way to signal to the type system that users can access arbitrarily-named properties.
 
-```ts twoslash
+```ts 
 interface Options {
   path: string;
   permissions: number;

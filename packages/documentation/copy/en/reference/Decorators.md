@@ -265,7 +265,7 @@ class Greeter {
 We can define the `@enumerable` decorator using the following function declaration:
 
 <!-- prettier-ignore -->
-```ts twoslash
+```ts 
 function enumerable(value: boolean) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     descriptor.enumerable = value;
