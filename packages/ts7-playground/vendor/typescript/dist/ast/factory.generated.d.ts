@@ -145,6 +145,7 @@ export declare class NodeObject {
     get whenFalse(): any;
     get whenTrue(): any;
     forEachChild<T>(visitor: (node: Node) => T, visitArray?: (nodes: NodeArray<Node>) => T): T | undefined;
+    childrenIter<TNext = void>(): Generator<Node, TNext | undefined, TNext>;
     getSourceFile(): SourceFile;
     getStart(sourceFile?: SourceFile, includeJsDocComment?: boolean): number;
     getFullStart(): number;

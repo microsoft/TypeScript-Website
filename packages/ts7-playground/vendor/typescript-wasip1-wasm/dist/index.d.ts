@@ -24,19 +24,25 @@ export interface WasmTransportOptions {
      * For example, call `wasi.initialize(instance)` before constructing the transport.
      */
     instance: WasmReactorInstance;
-    cwd?: string;
-    useCaseSensitiveFileNames?: boolean;
-    collectTiming?: boolean;
-    fs?: WasmFileSystem;
+    cwd?: string | undefined;
+    useCaseSensitiveFileNames?: boolean | undefined;
+    collectTiming?: boolean | undefined;
+    fs?: WasmFileSystem | undefined;
 }
-/** Synchronous API transport backed by an in-process TypeScript WebAssembly reactor. */
+/**
+ * Synchronous API transport backed by an in-process TypeScript WebAssembly reactor.
+ *
+ * Host callbacks must complete synchronously and cannot call this transport while
+ * an outer request is in progress.
+ */
 export declare class WasmTransport {
     lastBytesSent: number;
     lastBytesReceived: number;
-    private readonly exports;
     private readonly instance;
+    private readonly exports;
     private requestPointer;
     private closed;
+    private inCallback;
     constructor(options: WasmTransportOptions);
     setFileSystem(fs: WasmFileSystem | undefined): void;
     requestSync(method: string, payload: string): string;
@@ -51,6 +57,8 @@ export declare class WasmTransport {
         bytesSent: number;
         bytesReceived: number;
     };
+    registerCallback(name: string, callback: (name: string, payload: string) => string): void;
+    unregisterCallback(name: string): void;
     setFile(path: string, content: string): void;
     /** Read a file from the reactor's in-memory filesystem. */
     readFile(path: string): string | undefined;

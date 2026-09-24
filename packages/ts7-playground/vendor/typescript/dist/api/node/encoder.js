@@ -2,6 +2,7 @@ import { SyntaxKind } from "../../ast/index.js";
 import { getNodeCommonData, getNodeDataType, } from "./encoder.generated.js";
 import { MsgpackWriter } from "./msgpack.js";
 import { childProperties, HEADER_OFFSET_EXTENDED_DATA, HEADER_OFFSET_METADATA, HEADER_OFFSET_NODES, HEADER_OFFSET_STRING_TABLE, HEADER_OFFSET_STRING_TABLE_OFFSETS, HEADER_OFFSET_STRUCTURED_DATA, HEADER_SIZE, KIND_NODE_LIST, NODE_DATA_TYPE_CHILDREN, NODE_DATA_TYPE_EXTENDED, NODE_DATA_TYPE_STRING, NODE_LEN, PROTOCOL_VERSION, } from "./protocol.js";
+import { encodeWtf8 } from "./wtf8.js";
 const NODE_FIELDS = NODE_LEN / 4;
 const NODE_FIELD_NEXT = 3;
 const NO_STRUCTURED_DATA = 0xFFFFFFFF;
@@ -17,25 +18,26 @@ class StringTable {
     }
     add(text) {
         const index = this.offsets.length;
-        const encoder = cachedEncoder();
-        const encodedLength = encoder.encode(text).length;
+        const encoded = encodeWtf8(text);
         const offset = this.byteLen;
-        this.parts.push(text);
-        this.byteLen += encodedLength;
-        this.offsets.push(offset, offset + encodedLength);
+        this.parts.push(encoded);
+        this.byteLen += encoded.length;
+        this.offsets.push(offset, offset + encoded.length);
         return index;
     }
     encode() {
-        const encoder = cachedEncoder();
-        const dataBytes = encoder.encode(this.parts.join(""));
         const offsetBytes = new Uint8Array(this.offsets.length * 4);
         const view = new DataView(offsetBytes.buffer);
         for (let i = 0; i < this.offsets.length; i++) {
             view.setUint32(i * 4, this.offsets[i], true);
         }
-        const result = new Uint8Array(offsetBytes.length + dataBytes.length);
+        const result = new Uint8Array(offsetBytes.length + this.byteLen);
         result.set(offsetBytes, 0);
-        result.set(dataBytes, offsetBytes.length);
+        let offset = offsetBytes.length;
+        for (const part of this.parts) {
+            result.set(part, offset);
+            offset += part.length;
+        }
         return result;
     }
     stringByteLength() {
@@ -44,10 +46,6 @@ class StringTable {
     offsetsCount() {
         return this.offsets.length;
     }
-}
-let _encoder;
-function cachedEncoder() {
-    return _encoder ??= new TextEncoder();
 }
 function getChildrenPropertyMask(node) {
     const kind = node.kind;
@@ -303,5 +301,19 @@ export function uint8ArrayToBase64(data) {
         result += third === undefined ? "=" : alphabet[third & 0x3F];
     }
     return result;
+}
+export function sourceFileResponseToUint8Array(response) {
+    if (!response)
+        return undefined;
+    const fromBase64 = Uint8Array.fromBase64;
+    if (fromBase64) {
+        return fromBase64(response.data);
+    }
+    const bufferConstructor = globalThis.Buffer;
+    if (bufferConstructor) {
+        return new Uint8Array(bufferConstructor.from(response.data, "base64"));
+    }
+    const decoded = atob(response.data);
+    return Uint8Array.from(decoded, character => character.charCodeAt(0));
 }
 //# sourceMappingURL=encoder.js.map

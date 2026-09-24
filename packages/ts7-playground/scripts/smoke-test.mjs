@@ -41,8 +41,7 @@ try {
     configFileName: "/workspace/tsconfig.json",
   })
   assert.deepEqual(parsed.fileNames, ["/workspace/src/greet.ts", "/workspace/src/index.ts"])
-  const program = api.createProgram(parsed.fileNames, {
-    compilerOptions: parsed.options,
+  const program = api.createProgram(parsed.fileNames, parsed.options, {
     projectReferences: parsed.projectReferences,
     configFileParsingDiagnostics: parsed.errors,
   })

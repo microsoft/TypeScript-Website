@@ -11,6 +11,7 @@ import { ModuleResolutionKind } from "#enums/moduleResolutionKind";
 import { NewLineKind } from "#enums/newLineKind";
 import { NodeBuilderFlags } from "#enums/nodeBuilderFlags";
 import { ObjectFlags } from "#enums/objectFlags";
+import { ScriptKind } from "#enums/scriptKind";
 import { SignatureFlags } from "#enums/signatureFlags";
 import { SignatureKind } from "#enums/signatureKind";
 import { SymbolFlags } from "#enums/symbolFlags";
@@ -24,27 +25,46 @@ import { encodeNode, uint8ArrayToBase64, } from "../node/encoder.js";
 import { decodeNode, getNodeId, parseNodeHandle, readParseOptionsKey, readSourceFileHash, RemoteSourceFile, } from "../node/node.js";
 import { Wtf8Decoder } from "../node/wtf8.js";
 import { createGetCanonicalFileName, toPath, } from "../path.js";
-import { resolveFileName, toUpdateSnapshotRequest, } from "../proto.js";
+import { resolveFileName, toCreateSnapshotRequest, } from "../proto.js";
 import { SourceFileCache } from "../sourceFileCache.js";
 export { formatDiagnostics, formatDiagnosticsWithColorAndContext } from "../diagnosticFormatter.js";
 export { documentURIToFileName, fileNameToDocumentURI } from "../path.js";
-export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, SignatureFlags, SignatureKind, SymbolFlags, TypeFlags, TypeFormatFlags, TypePredicateKind };
+export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, ScriptKind, SignatureFlags, SignatureKind, SymbolFlags, TypeFlags, TypeFormatFlags, TypePredicateKind };
+let nextModuleResolutionCallbackId = 0;
+function registerModuleResolutionCallback(client, callback, getSnapshot) {
+    const name = `resolveModuleName/${++nextModuleResolutionCallbackId}`;
+    const dispose = client.registerCallback(name, params => {
+        const { moduleName, containingDirectory, resolutionMode, snapshot: snapshotId, inProgressSnapshot } = params;
+        let snapshot = snapshotId === undefined ? undefined : getSnapshot(snapshotId);
+        if (snapshotId !== undefined && snapshot === undefined) {
+            throw new Error(`Snapshot ${snapshotId} is inactive`);
+        }
+        if (inProgressSnapshot !== undefined) {
+            snapshot = -inProgressSnapshot;
+        }
+        return callback(moduleName, containingDirectory, resolutionMode, { snapshot });
+    });
+    return { name, dispose };
+}
 export { all, defer } from "./generatorSupport.js";
+import { sourceFileResponseToUint8Array } from "../node/encoder.js";
 import { executeRequestGenerators, } from "./generatorSupport.js";
 export class API {
     client;
     sourceFileCache;
     toPath;
     currentDirectory;
+    decoder = new Wtf8Decoder();
     getCanonicalFileNameWorker;
     initialized = false;
     initializing;
-    activeSnapshots = new Set();
-    latestSnapshot;
+    activeSnapshots = new Map();
+    printer;
     internal;
     constructor(options = {}) {
         this.client = new Client(options);
         this.sourceFileCache = new SourceFileCache();
+        this.printer = new Printer(this.client);
         this.internal = new InternalAPI(this.client, this.ensureInitialized);
     }
     /**
@@ -165,6 +185,42 @@ export class API {
             return yield* apiRequest("parseJsonConfigFileContent", { json, ...options });
         });
     }
+    get createSourceFile() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "createSourceFile", function (fileName, sourceText, options = {}) {
+            owner.ensureInitialized();
+            const data = owner.client.apiRequestBinary("createSourceFile", { fileName, sourceText, options });
+            if (!data) {
+                throw new Error("createSourceFile returned no source file");
+            }
+            return new RemoteSourceFile(data, owner.decoder, owner.client.getTimingCollector());
+        }, function* (fileName, sourceText, options = {}) {
+            yield* owner.ensureInitialized.gen();
+            const data = sourceFileResponseToUint8Array(yield* apiRequest("createSourceFile", { fileName, sourceText, options }));
+            if (!data) {
+                throw new Error("createSourceFile returned no source file");
+            }
+            return new RemoteSourceFile(data, owner.decoder, owner.client.getTimingCollector());
+        });
+    }
+    get createSourceFileFromFile() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "createSourceFileFromFile", function (file, options = {}) {
+            owner.ensureInitialized();
+            const data = owner.client.apiRequestBinary("createSourceFileFromFile", { fileName: resolveFileName(file), options });
+            if (!data) {
+                throw new Error("createSourceFileFromFile returned no source file");
+            }
+            return new RemoteSourceFile(data, owner.decoder, owner.client.getTimingCollector());
+        }, function* (file, options = {}) {
+            yield* owner.ensureInitialized.gen();
+            const data = sourceFileResponseToUint8Array(yield* apiRequest("createSourceFileFromFile", { fileName: resolveFileName(file), options }));
+            if (!data) {
+                throw new Error("createSourceFileFromFile returned no source file");
+            }
+            return new RemoteSourceFile(data, owner.decoder, owner.client.getTimingCollector());
+        });
+    }
     get transpileModule() {
         const owner = this;
         return cacheGeneratorMethod(owner, "transpileModule", function (input, options = {}) {
@@ -205,82 +261,158 @@ export class API {
             return yield* apiRequest("transpileDeclarationFromFile", { fileName: resolveFileName(file), options });
         });
     }
+    get createSnapshot() {
+        const owner = this;
+        function createSnapshot(params) {
+            owner.ensureInitialized();
+            const requestParams = toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params));
+            const data = owner.client.apiRequest("createSnapshot", requestParams);
+            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
+                owner.activeSnapshots.delete(snapshot.id);
+                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            }, owner.createSnapshotUpdater(() => snapshot), undefined);
+            owner.activeSnapshots.set(snapshot.id, snapshot);
+            return snapshot;
+        }
+        function* gen(params) {
+            yield* owner.ensureInitialized.gen();
+            const requestParams = toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params));
+            const data = yield* apiRequest("createSnapshot", requestParams);
+            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
+                owner.activeSnapshots.delete(snapshot.id);
+                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            }, owner.createSnapshotUpdater(() => snapshot), undefined);
+            owner.activeSnapshots.set(snapshot.id, snapshot);
+            return snapshot;
+        }
+        return cacheGeneratorMethod(owner, "createSnapshot", createSnapshot, gen);
+    }
     get updateSnapshot() {
         const owner = this;
-        return cacheGeneratorMethod(owner, "updateSnapshot", function (params) {
-            return owner.updateSnapshotWorker(params);
-        }, function* (params) {
-            return yield* owner.updateSnapshotWorker.gen(params);
-        });
-    }
-    /** @internal */
-    get updateSnapshotFrom() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "updateSnapshotFrom", function (baseSnapshot, params) {
-            if (!owner.activeSnapshots.has(baseSnapshot) || baseSnapshot.isDisposed()) {
-                throw new Error("Cannot update an inactive snapshot");
-            }
-            if (baseSnapshot !== owner.latestSnapshot) {
-                // TODO: Support forking active memory/cache snapshots once the server-side
-                // ownership, project state, and cache semantics have been worked out.
-                throw new Error("Snapshot.update can only update the latest snapshot");
-            }
-            return owner.updateSnapshotWorker(params, baseSnapshot);
-        }, function* (baseSnapshot, params) {
-            if (!owner.activeSnapshots.has(baseSnapshot) || baseSnapshot.isDisposed()) {
-                throw new Error("Cannot update an inactive snapshot");
-            }
-            if (baseSnapshot !== owner.latestSnapshot) {
-                // TODO: Support forking active memory/cache snapshots once the server-side
-                // ownership, project state, and cache semantics have been worked out.
-                throw new Error("Snapshot.update can only update the latest snapshot");
-            }
-            return yield* owner.updateSnapshotWorker.gen(params, baseSnapshot);
-        });
-    }
-    get updateSnapshotWorker() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "updateSnapshotWorker", function (params, baseSnapshot) {
+        return cacheGeneratorMethod(owner, "updateSnapshot", function (baseSnapshot, params) {
             owner.ensureInitialized();
-            const requestParams = toUpdateSnapshotRequest(params, baseSnapshot?.id);
-            const data = owner.client.apiRequest("updateSnapshot", requestParams);
-            // Retain cached source files from previous snapshot for unchanged files
-            if (owner.latestSnapshot) {
-                owner.sourceFileCache.retainForSnapshot(data.snapshot, owner.latestSnapshot.id, data.changes);
-                if (owner.latestSnapshot.isDisposed()) {
-                    owner.sourceFileCache.releaseSnapshot(owner.latestSnapshot.id);
-                }
+            if (owner.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed()) {
+                throw new Error("Cannot update an inactive snapshot");
             }
-            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
-                owner.activeSnapshots.delete(snapshot);
-                if (snapshot !== owner.latestSnapshot) {
-                    owner.sourceFileCache.releaseSnapshot(snapshot.id);
-                }
+            const data = owner.client.apiRequest("updateSnapshot", {
+                snapshot: baseSnapshot.id,
+                changes: toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params)),
             });
-            owner.latestSnapshot = snapshot;
-            owner.activeSnapshots.add(snapshot);
+            if (data.snapshot === baseSnapshot.id) {
+                owner.client.apiRequest("release", { snapshot: data.snapshot });
+                return baseSnapshot;
+            }
+            owner.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
+            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
+                owner.activeSnapshots.delete(snapshot.id);
+                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            }, owner.createSnapshotUpdater(() => snapshot), baseSnapshot);
+            owner.activeSnapshots.set(snapshot.id, snapshot);
             return snapshot;
-        }, function* (params, baseSnapshot) {
+        }, function* (baseSnapshot, params) {
             yield* owner.ensureInitialized.gen();
-            const requestParams = toUpdateSnapshotRequest(params, baseSnapshot?.id);
-            const data = yield* apiRequest("updateSnapshot", requestParams);
-            // Retain cached source files from previous snapshot for unchanged files
-            if (owner.latestSnapshot) {
-                owner.sourceFileCache.retainForSnapshot(data.snapshot, owner.latestSnapshot.id, data.changes);
-                if (owner.latestSnapshot.isDisposed()) {
-                    owner.sourceFileCache.releaseSnapshot(owner.latestSnapshot.id);
-                }
+            if (owner.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed()) {
+                throw new Error("Cannot update an inactive snapshot");
             }
-            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
-                owner.activeSnapshots.delete(snapshot);
-                if (snapshot !== owner.latestSnapshot) {
-                    owner.sourceFileCache.releaseSnapshot(snapshot.id);
-                }
+            const data = yield* apiRequest("updateSnapshot", {
+                snapshot: baseSnapshot.id,
+                changes: toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params)),
             });
-            owner.latestSnapshot = snapshot;
-            owner.activeSnapshots.add(snapshot);
+            if (data.snapshot === baseSnapshot.id) {
+                yield* apiRequest("release", { snapshot: data.snapshot });
+                return baseSnapshot;
+            }
+            owner.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
+            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
+                owner.activeSnapshots.delete(snapshot.id);
+                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            }, owner.createSnapshotUpdater(() => snapshot), baseSnapshot);
+            owner.activeSnapshots.set(snapshot.id, snapshot);
             return snapshot;
         });
+    }
+    prepareCreateSnapshotParams(params) {
+        if (!params)
+            return undefined;
+        const prepareOptions = (options) => {
+            if (!options)
+                return undefined;
+            const { moduleResolver, ...rest } = options;
+            moduleResolver?.ensureNotDisposed();
+            return {
+                ...rest,
+                moduleResolver: moduleResolver?.id,
+            };
+        };
+        return {
+            ...params,
+            createPrograms: params.createPrograms?.map(program => ({ ...program, options: prepareOptions(program.options) })),
+            reconfigurePrograms: params.reconfigurePrograms?.map(program => ({ ...program, options: prepareOptions(program.options) })),
+        };
+    }
+    prepareLanguageServerSnapshotChanges(changes) {
+        if (!changes)
+            return undefined;
+        const prepared = this.prepareCreateSnapshotParams(changes);
+        return prepared;
+    }
+    createSnapshotUpdater(getSnapshot) {
+        const update = ((params) => this.updateSnapshot(getSnapshot(), params));
+        const owner = this;
+        update.gen = function* (params) {
+            return yield* owner.updateSnapshot.gen(getSnapshot(), params);
+        };
+        return update;
+    }
+    /**
+     * Returns the language server's current canonical snapshot after atomically
+     * adopting any supplied API-driven changes. Only available on LSP-connected APIs.
+     */
+    get getCurrentLanguageServerSnapshot() {
+        const owner = this;
+        function getCurrentLanguageServerSnapshot(...args) {
+            owner.ensureInitialized();
+            const changes = args[0];
+            const baseSnapshot = args[1];
+            if (baseSnapshot && (owner.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed())) {
+                throw new Error("Cannot use an inactive snapshot as a response base");
+            }
+            const data = owner.client.apiRequest("getCurrentLanguageServerSnapshot", {
+                baseSnapshot: baseSnapshot?.id,
+                changes: owner.prepareLanguageServerSnapshotChanges(changes),
+            });
+            if (baseSnapshot) {
+                owner.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
+            }
+            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
+                owner.activeSnapshots.delete(snapshot.id);
+                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            }, owner.createSnapshotUpdater(() => snapshot), baseSnapshot);
+            owner.activeSnapshots.set(snapshot.id, snapshot);
+            return snapshot;
+        }
+        function* gen(...args) {
+            yield* owner.ensureInitialized.gen();
+            const changes = args[0];
+            const baseSnapshot = args[1];
+            if (baseSnapshot && (owner.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed())) {
+                throw new Error("Cannot use an inactive snapshot as a response base");
+            }
+            const data = yield* apiRequest("getCurrentLanguageServerSnapshot", {
+                baseSnapshot: baseSnapshot?.id,
+                changes: owner.prepareLanguageServerSnapshotChanges(changes),
+            });
+            if (baseSnapshot) {
+                owner.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
+            }
+            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
+                owner.activeSnapshots.delete(snapshot.id);
+                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            }, owner.createSnapshotUpdater(() => snapshot), baseSnapshot);
+            owner.activeSnapshots.set(snapshot.id, snapshot);
+            return snapshot;
+        }
+        return cacheGeneratorMethod(owner, "getCurrentLanguageServerSnapshot", getCurrentLanguageServerSnapshot, gen);
     }
     [globalThis.Symbol.dispose]() {
         this.close();
@@ -290,13 +422,8 @@ export class API {
         return cacheGeneratorMethod(owner, "close", function () {
             // Dispose all active snapshots
             try {
-                for (const snapshot of [...owner.activeSnapshots]) {
+                for (const snapshot of [...owner.activeSnapshots.values()]) {
                     snapshot.dispose();
-                }
-                // Release the latest snapshot's cache refs if still held
-                if (owner.latestSnapshot) {
-                    owner.sourceFileCache.releaseSnapshot(owner.latestSnapshot.id);
-                    owner.latestSnapshot = undefined;
                 }
                 owner.sourceFileCache.clear();
             }
@@ -306,18 +433,51 @@ export class API {
         }, function* () {
             // Dispose all active snapshots
             try {
-                for (const snapshot of [...owner.activeSnapshots]) {
+                for (const snapshot of [...owner.activeSnapshots.values()]) {
                     yield* snapshot.dispose.gen();
-                }
-                // Release the latest snapshot's cache refs if still held
-                if (owner.latestSnapshot) {
-                    owner.sourceFileCache.releaseSnapshot(owner.latestSnapshot.id);
-                    owner.latestSnapshot = undefined;
                 }
                 owner.sourceFileCache.clear();
             }
             finally {
                 owner.client.close(); // always close the underlying connection
+            }
+        });
+    }
+    get createModuleResolver() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "createModuleResolver", function (compilerOptions, options) {
+            owner.ensureInitialized();
+            const callback = options?.resolveModuleName
+                ? registerModuleResolutionCallback(owner.client, options.resolveModuleName, id => owner.activeSnapshots.get(id))
+                : undefined;
+            try {
+                const id = owner.client.apiRequest("createModuleResolver", {
+                    compilerOptions,
+                    moduleResolutions: options?.moduleResolutions,
+                    resolveModuleNameCallback: callback?.name,
+                });
+                return new ModuleResolver(id, owner.client, callback?.dispose);
+            }
+            catch (error) {
+                callback?.dispose();
+                throw error;
+            }
+        }, function* (compilerOptions, options) {
+            yield* owner.ensureInitialized.gen();
+            const callback = options?.resolveModuleName
+                ? registerModuleResolutionCallback(owner.client, options.resolveModuleName, id => owner.activeSnapshots.get(id))
+                : undefined;
+            try {
+                const id = yield* apiRequest("createModuleResolver", {
+                    compilerOptions,
+                    moduleResolutions: options?.moduleResolutions,
+                    resolveModuleNameCallback: callback?.name,
+                });
+                return new ModuleResolver(id, owner.client, callback?.dispose);
+            }
+            catch (error) {
+                callback?.dispose();
+                throw error;
             }
         });
     }
@@ -328,19 +488,16 @@ export class API {
         const owner = this;
         return cacheGeneratorMethod(owner, "runWithTemporaryFileUpdate", function (baseSnapshot, file, newText, cb) {
             owner.ensureInitialized();
-            if (!owner.activeSnapshots.has(baseSnapshot) || baseSnapshot.isDisposed()) {
+            if (owner.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed()) {
                 throw new Error("Cannot run a temporary file update on an inactive snapshot");
             }
-            const data = owner.client.apiRequest("updateTemporarySnapshot", { snapshot: baseSnapshot.id, file, newText });
-            // Retain cached source files from the base snapshot for files unchanged by
-            // the temporary update. The temporary snapshot is not the latest snapshot, so
-            // we never release the latest snapshot's cache here.
-            owner.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
-            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
-                owner.activeSnapshots.delete(snapshot);
-                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            const snapshot = baseSnapshot.update({
+                fileSystem: {
+                    kind: "layer",
+                    files: { [resolveFileName(file)]: newText },
+                },
+                ensurePrograms: true,
             });
-            owner.activeSnapshots.add(snapshot);
             try {
                 cb(snapshot);
             }
@@ -349,19 +506,16 @@ export class API {
             }
         }, function* (baseSnapshot, file, newText, cb) {
             yield* owner.ensureInitialized.gen();
-            if (!owner.activeSnapshots.has(baseSnapshot) || baseSnapshot.isDisposed()) {
+            if (owner.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed()) {
                 throw new Error("Cannot run a temporary file update on an inactive snapshot");
             }
-            const data = yield* apiRequest("updateTemporarySnapshot", { snapshot: baseSnapshot.id, file, newText });
-            // Retain cached source files from the base snapshot for files unchanged by
-            // the temporary update. The temporary snapshot is not the latest snapshot, so
-            // we never release the latest snapshot's cache here.
-            owner.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
-            const snapshot = new Snapshot(data, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
-                owner.activeSnapshots.delete(snapshot);
-                owner.sourceFileCache.releaseSnapshot(snapshot.id);
+            const snapshot = yield* baseSnapshot.update.gen({
+                fileSystem: {
+                    kind: "layer",
+                    files: { [resolveFileName(file)]: newText },
+                },
+                ensurePrograms: true,
             });
-            owner.activeSnapshots.add(snapshot);
             try {
                 yield* (cb(snapshot) ?? []);
             }
@@ -398,69 +552,32 @@ export class API {
             return owner.client.resetTimingInfo();
         });
     }
-    isProgramActive(program) {
-        const project = program.getProject();
-        for (const snapshot of this.activeSnapshots) {
-            if (!snapshot.isDisposed() && snapshot.getProject(project.configFileName)?.program === program) {
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     * Creates a program from current filesystem state, or derives one from oldProgram after applying fileChanges.
-     */
+    /** Creates a program from current filesystem state. */
     get createProgram() {
         const owner = this;
-        return cacheGeneratorMethod(owner, "createProgram", function (rootFiles, createProgramOptions, oldProgram, fileChanges) {
+        return cacheGeneratorMethod(owner, "createProgram", function (rootFiles, compilerOptions, createProgramOptions) {
             owner.ensureInitialized();
-            if (fileChanges && !oldProgram) {
-                throw new Error("fileChanges requires an oldProgram");
-            }
-            if (oldProgram && !owner.isProgramActive(oldProgram)) {
-                throw new Error("oldProgram must belong to this API instance and reference an active snapshot");
-            }
-            const data = owner.client.apiRequest("createProgram", {
-                rootFiles,
-                createProgramOptions,
-                oldProgram: oldProgram ? { snapshot: oldProgram.snapshotId, project: oldProgram.getProject().id } : undefined,
-                fileChanges,
+            const snapshot = owner.createSnapshot({
+                createPrograms: [{ rootFiles, compilerOptions, options: createProgramOptions }],
             });
-            if (!data.project) {
+            const program = snapshot.operation.createdPrograms[0];
+            if (!program) {
+                snapshot.dispose();
                 throw new Error("createProgram did not return a project");
             }
-            const snapshot = new Snapshot({ snapshot: data.snapshot, projects: [data.project] }, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
-                owner.activeSnapshots.delete(snapshot);
-                owner.sourceFileCache.releaseSnapshot(snapshot.id);
-            });
-            const program = snapshot.getProjects()[0].program;
             program.setOwnedSnapshot(snapshot);
-            owner.activeSnapshots.add(snapshot);
             return program;
-        }, function* (rootFiles, createProgramOptions, oldProgram, fileChanges) {
+        }, function* (rootFiles, compilerOptions, createProgramOptions) {
             yield* owner.ensureInitialized.gen();
-            if (fileChanges && !oldProgram) {
-                throw new Error("fileChanges requires an oldProgram");
-            }
-            if (oldProgram && !owner.isProgramActive(oldProgram)) {
-                throw new Error("oldProgram must belong to this API instance and reference an active snapshot");
-            }
-            const data = yield* apiRequest("createProgram", {
-                rootFiles,
-                createProgramOptions,
-                oldProgram: oldProgram ? { snapshot: oldProgram.snapshotId, project: oldProgram.getProject().id } : undefined,
-                fileChanges,
+            const snapshot = yield* owner.createSnapshot.gen({
+                createPrograms: [{ rootFiles, compilerOptions, options: createProgramOptions }],
             });
-            if (!data.project) {
+            const program = snapshot.operation.createdPrograms[0];
+            if (!program) {
+                yield* snapshot.dispose.gen();
                 throw new Error("createProgram did not return a project");
             }
-            const snapshot = new Snapshot({ snapshot: data.snapshot, projects: [data.project] }, owner.client, owner.sourceFileCache, owner.toPath, owner, () => {
-                owner.activeSnapshots.delete(snapshot);
-                owner.sourceFileCache.releaseSnapshot(snapshot.id);
-            });
-            const program = snapshot.getProjects()[0].program;
             program.setOwnedSnapshot(snapshot);
-            owner.activeSnapshots.add(snapshot);
             return program;
         });
     }
@@ -510,37 +627,76 @@ export class InternalAPI {
 }
 export class Snapshot {
     id;
+    operation;
     projectMap;
     toPath;
     client;
     disposed = false;
     disposePromise;
     onDispose;
-    api;
     snapshotRegistry;
+    projectDataMap;
+    updateSnapshot;
     internal;
-    constructor(data, client, sourceFileCache, toPath, api, onDispose) {
+    constructor(data, client, sourceFileCache, toPath, formatDiagnosticsHost, onDispose, updateSnapshot, baseSnapshot) {
         this.id = data.snapshot;
         this.client = client;
         this.toPath = toPath;
-        this.api = api;
         this.onDispose = onDispose;
+        this.updateSnapshot = updateSnapshot;
         this.projectMap = new Map();
-        this.snapshotRegistry = new SnapshotObjectRegistry(client, this.id, projectId => this.projectMap.get(projectId));
-        for (const projData of data.projects) {
-            const project = new Project(projData, this.id, client, sourceFileCache, toPath, api, this.snapshotRegistry);
-            this.projectMap.set(toPath(projData.configFileName), project);
+        const projectDataMap = new Map(baseSnapshot?.projectDataMap);
+        for (const projectId of data.changes?.removedProjects ?? []) {
+            projectDataMap.delete(projectId);
         }
+        for (const projectData of data.projects) {
+            projectDataMap.set(projectData.id, projectData);
+        }
+        this.projectDataMap = new Map([...projectDataMap].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0));
+        this.snapshotRegistry = new SnapshotObjectRegistry(client, this.id, projectId => this.projectMap.get(projectId));
+        for (const projData of this.projectDataMap.values()) {
+            const project = new Project(projData, this.id, client, sourceFileCache, toPath, formatDiagnosticsHost, this.snapshotRegistry);
+            this.projectMap.set(projData.id, project);
+        }
+        this.operation = {
+            createdPrograms: data.operation.createdPrograms?.map(projectId => this.requireProject(projectId).program),
+            openedFiles: data.operation.openedFiles?.map(result => ({ project: this.requireProject(result.project) })),
+        };
         this.internal = new SnapshotInternalAPI(this.id, client);
     }
     getProjects() {
         this.ensureNotDisposed();
         return [...this.projectMap.values()];
     }
-    getProject(configFileName) {
+    getConfiguredProject(configFileName) {
         this.ensureNotDisposed();
         return this.projectMap.get(this.toPath(configFileName));
     }
+    getProject(projectId) {
+        this.ensureNotDisposed();
+        return this.projectMap.get(projectId);
+    }
+    getProgram(projectId) {
+        return this.getProject(projectId)?.program;
+    }
+    get update() {
+        const owner = this;
+        function update(params) {
+            owner.ensureNotDisposed();
+            return owner.updateSnapshot(params);
+        }
+        function* gen(params) {
+            owner.ensureNotDisposed();
+            return yield* owner.updateSnapshot.gen(params);
+        }
+        return cacheGeneratorMethod(owner, "update", update, gen);
+    }
+    /**
+     * Gets the default project for a given file from the configured projects and
+     * inferred project already loaded in the snapshot. Synthetic projects are not
+     * considered. Files that have been opened with `openFiles` are guaranteed to
+     * have a result.
+     */
     get getDefaultProjectForFile() {
         const owner = this;
         return cacheGeneratorMethod(owner, "getDefaultProjectForFile", function (file) {
@@ -551,7 +707,7 @@ export class Snapshot {
             });
             if (!data)
                 return undefined;
-            return owner.projectMap.get(owner.toPath(data.configFileName));
+            return owner.projectMap.get(data.id);
         }, function* (file) {
             owner.ensureNotDisposed();
             const data = yield* apiRequest("getDefaultProjectForFile", {
@@ -560,21 +716,7 @@ export class Snapshot {
             });
             if (!data)
                 return undefined;
-            return owner.projectMap.get(owner.toPath(data.configFileName));
-        });
-    }
-    /**
-     * Creates the next snapshot, layering its filesystem over this snapshot's
-     * filesystem. This snapshot must still be active and be the latest snapshot.
-     */
-    get update() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "update", function (params) {
-            owner.ensureNotDisposed();
-            return owner.api.updateSnapshotFrom(owner, params);
-        }, function* (params) {
-            owner.ensureNotDisposed();
-            return yield* owner.api.updateSnapshotFrom.gen(owner, params);
+            return owner.projectMap.get(data.id);
         });
     }
     [globalThis.Symbol.dispose]() {
@@ -630,6 +772,78 @@ export class Snapshot {
             throw new Error("Snapshot is disposed");
         }
     }
+    requireProject(projectId) {
+        const project = this.projectMap.get(projectId);
+        if (!project) {
+            throw new Error(`Snapshot operation returned unknown project '${projectId}'`);
+        }
+        return project;
+    }
+}
+export class ModuleResolver {
+    id;
+    client;
+    disposeCallback;
+    disposed = false;
+    constructor(id, client, disposeCallback) {
+        this.id = id;
+        this.client = client;
+        this.disposeCallback = disposeCallback;
+    }
+    get resolveModuleName() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "resolveModuleName", function (moduleName, containingDirectory, resolutionMode, options) {
+            owner.ensureNotDisposed();
+            if (options?.snapshot instanceof Snapshot && options.snapshot.isDisposed()) {
+                throw new Error("Snapshot is disposed");
+            }
+            return owner.client.apiRequest("resolveModuleName", {
+                snapshot: options?.snapshot instanceof Snapshot ? options.snapshot.id : undefined,
+                inProgressSnapshot: typeof options?.snapshot === "number" ? -options.snapshot : undefined,
+                resolver: owner.id,
+                moduleName,
+                containingDirectory,
+                resolutionMode,
+            });
+        }, function* (moduleName, containingDirectory, resolutionMode, options) {
+            owner.ensureNotDisposed();
+            if (options?.snapshot instanceof Snapshot && options.snapshot.isDisposed()) {
+                throw new Error("Snapshot is disposed");
+            }
+            return yield* apiRequest("resolveModuleName", {
+                snapshot: options?.snapshot instanceof Snapshot ? options.snapshot.id : undefined,
+                inProgressSnapshot: typeof options?.snapshot === "number" ? -options.snapshot : undefined,
+                resolver: owner.id,
+                moduleName,
+                containingDirectory,
+                resolutionMode,
+            });
+        });
+    }
+    [globalThis.Symbol.dispose]() {
+        return this.dispose();
+    }
+    get dispose() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "dispose", function () {
+            if (owner.disposed)
+                return;
+            owner.client.apiRequest("releaseModuleResolver", { resolver: owner.id });
+            owner.disposed = true;
+            owner.disposeCallback?.();
+        }, function* () {
+            if (owner.disposed)
+                return;
+            yield* apiRequest("releaseModuleResolver", { resolver: owner.id });
+            owner.disposed = true;
+            owner.disposeCallback?.();
+        });
+    }
+    /** @internal */
+    ensureNotDisposed() {
+        if (this.disposed)
+            throw new Error("ModuleResolver is disposed");
+    }
 }
 class SnapshotObjectRegistry {
     symbols = new Map();
@@ -641,7 +855,7 @@ class SnapshotObjectRegistry {
         this.snapshotId = snapshotId;
         this.resolveProject = resolveProject;
     }
-    /** Resolve a project id (a config file path) to its Project within this snapshot. */
+    /** Resolve a project ID to its Project within this snapshot. */
     getProject(projectId) {
         return this.resolveProject(projectId);
     }
@@ -1099,6 +1313,7 @@ export class Project {
     id;
     configFileName;
     currentDirectory;
+    dirty;
     parsedCommandLine;
     /** @deprecated Use `parsedCommandLine.options`. */
     compilerOptions;
@@ -1106,7 +1321,6 @@ export class Project {
     rootFiles;
     program;
     checker;
-    emitter;
     languageService;
     client;
     snapshotId;
@@ -1114,6 +1328,7 @@ export class Project {
         this.id = data.id;
         this.configFileName = data.configFileName;
         this.currentDirectory = data.currentDirectory;
+        this.dirty = data.dirty;
         if (!data.parsedCommandLine?.options) {
             throw new Error(`Project '${data.configFileName}' has no parsed command line`);
         }
@@ -1125,7 +1340,6 @@ export class Project {
         this.program = new Program(snapshotId, this, client, sourceFileCache, toPath, formatDiagnosticsHost);
         const objectRegistry = new ProjectObjectRegistry(client, snapshotId, this, snapshotRegistry);
         this.checker = new Checker(snapshotId, this, client, objectRegistry);
-        this.emitter = new Emitter(client);
         this.languageService = new LanguageService(snapshotId, this, client, objectRegistry);
     }
     /** @deprecated Use `languageService.getImportAdderEdits`. */
@@ -1339,6 +1553,7 @@ export class LanguageService {
 export class Program {
     /** @internal */
     snapshotId;
+    id;
     project;
     client;
     sourceFileCache;
@@ -1350,6 +1565,7 @@ export class Program {
     disposePromise;
     constructor(snapshotId, project, client, sourceFileCache, toPath, formatDiagnosticsHost) {
         this.snapshotId = snapshotId;
+        this.id = project.id;
         this.project = project;
         this.client = client;
         this.sourceFileCache = sourceFileCache;
@@ -1431,11 +1647,11 @@ export class Program {
                 return retained;
             }
             // Fetch from server
-            const binaryData = owner.client.apiRequestBinary("getSourceFile", {
+            const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("getSourceFile", {
                 snapshot: owner.snapshotId,
                 project: owner.project.id,
                 file,
-            });
+            }));
             if (!binaryData) {
                 return undefined;
             }
@@ -1467,6 +1683,42 @@ export class Program {
                 mode,
             });
             return result ?? undefined;
+        });
+    }
+    get getModeForUsageLocation() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getModeForUsageLocation", function (file, usage) {
+            return owner.client.apiRequest("getModeForUsageLocation", {
+                snapshot: owner.snapshotId,
+                project: owner.project.id,
+                file,
+                usage: getNodeId(usage),
+            });
+        }, function* (file, usage) {
+            return yield* apiRequest("getModeForUsageLocation", {
+                snapshot: owner.snapshotId,
+                project: owner.project.id,
+                file,
+                usage: getNodeId(usage),
+            });
+        });
+    }
+    get getModeForResolutionAtIndex() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getModeForResolutionAtIndex", function (file, index) {
+            return owner.client.apiRequest("getModeForResolutionAtIndex", {
+                snapshot: owner.snapshotId,
+                project: owner.project.id,
+                file,
+                index,
+            });
+        }, function* (file, index) {
+            return yield* apiRequest("getModeForResolutionAtIndex", {
+                snapshot: owner.snapshotId,
+                project: owner.project.id,
+                file,
+                index,
+            });
         });
     }
     get getResolvedModuleFromModuleSpecifier() {
@@ -1671,11 +1923,11 @@ export class Program {
             }
             return new RemoteSourceFile(binaryData, owner.decoder);
         }, function* (file) {
-            const binaryData = owner.client.apiRequestBinary("getConfigSourceFile", {
+            const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("getConfigSourceFile", {
                 snapshot: owner.snapshotId,
                 project: owner.project.id,
                 file,
-            });
+            }));
             if (!binaryData) {
                 return undefined;
             }
@@ -1902,7 +2154,7 @@ export class Program {
                 emitSkipped: response.emitSkipped,
                 diagnostics: response.diagnostics,
                 emittedFiles: response.emittedFiles,
-                ...(fileSystem ? { fileSystem } : {}),
+                fileSystem,
             };
         }, function* (emitOnly) {
             const response = yield* apiRequest("emit", {
@@ -1920,7 +2172,7 @@ export class Program {
                 emitSkipped: response.emitSkipped,
                 diagnostics: response.diagnostics,
                 emittedFiles: response.emittedFiles,
-                ...(fileSystem ? { fileSystem } : {}),
+                fileSystem,
             };
         });
     }
@@ -2807,13 +3059,13 @@ export class Checker {
                 return undefined;
             return decodeNode(binaryData);
         }, function* (type, enclosingDeclaration, flags) {
-            const binaryData = owner.client.apiRequestBinary("typeToTypeNode", {
+            const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("typeToTypeNode", {
                 snapshot: owner.snapshotId,
                 project: owner.project.id,
                 type: type.id,
                 location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
                 flags,
-            });
+            }));
             if (!binaryData)
                 return undefined;
             return decodeNode(binaryData);
@@ -2834,14 +3086,14 @@ export class Checker {
                 return undefined;
             return decodeNode(binaryData);
         }, function* (signature, kind, enclosingDeclaration, flags) {
-            const binaryData = owner.client.apiRequestBinary("signatureToSignatureDeclaration", {
+            const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("signatureToSignatureDeclaration", {
                 snapshot: owner.snapshotId,
                 project: owner.project.id,
                 signature: signature.id,
                 kind,
                 location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
                 flags,
-            });
+            }));
             if (!binaryData)
                 return undefined;
             return decodeNode(binaryData);
@@ -3088,21 +3340,9 @@ export class Checker {
     get getIndexTypeOfType() {
         const owner = this;
         return cacheGeneratorMethod(owner, "getIndexTypeOfType", function (type, kind) {
-            const data = owner.client.apiRequest("getIndexTypeOfTypeByKind", {
-                snapshot: owner.snapshotId,
-                project: owner.project.id,
-                type: type.id,
-                kind,
-            });
-            return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
+            return kind === IndexKind.String ? type.getStringIndexType() : type.getNumberIndexType();
         }, function* (type, kind) {
-            const data = yield* apiRequest("getIndexTypeOfTypeByKind", {
-                snapshot: owner.snapshotId,
-                project: owner.project.id,
-                type: type.id,
-                kind,
-            });
-            return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
+            return kind === IndexKind.String ? (yield* type.getStringIndexType.gen()) : (yield* type.getNumberIndexType.gen());
         });
     }
     get getTypeOfPropertyOfType() {
@@ -3191,14 +3431,38 @@ export class Checker {
                 project: owner.project.id,
                 location: getNodeId(node),
             });
-            return typeof data === "string" || typeof data === "number" ? data : undefined;
+            if (!data || (typeof data.value !== "string" && typeof data.value !== "number")) {
+                return undefined;
+            }
+            if (data.isNumber && typeof data.value === "string") {
+                if (data.value === "+Infinity") {
+                    return Infinity;
+                }
+                else if (data.value === "-Infinity") {
+                    return -Infinity;
+                }
+                return NaN;
+            }
+            return data.value;
         }, function* (node) {
             const data = yield* apiRequest("getConstantValue", {
                 snapshot: owner.snapshotId,
                 project: owner.project.id,
                 location: getNodeId(node),
             });
-            return typeof data === "string" || typeof data === "number" ? data : undefined;
+            if (!data || (typeof data.value !== "string" && typeof data.value !== "number")) {
+                return undefined;
+            }
+            if (data.isNumber && typeof data.value === "string") {
+                if (data.value === "+Infinity") {
+                    return Infinity;
+                }
+                else if (data.value === "-Infinity") {
+                    return -Infinity;
+                }
+                return NaN;
+            }
+            return data.value;
         });
     }
     /** Get the signature of a function-like declaration. Always returns a signature. */
@@ -3524,7 +3788,7 @@ export class Checker {
         });
     }
 }
-export class Emitter {
+export class Printer {
     client;
     constructor(client) {
         this.client = client;
@@ -3542,6 +3806,28 @@ export class Emitter {
             });
         }, function* (node, options = {}) {
             const encoded = encodeNode(node);
+            const base64 = uint8ArrayToBase64(encoded);
+            return yield* apiRequest("printNode", {
+                data: base64,
+                preserveSourceNewlines: options.preserveSourceNewlines,
+                neverAsciiEscape: options.neverAsciiEscape,
+                terminateUnterminatedLiterals: options.terminateUnterminatedLiterals,
+            });
+        });
+    }
+    get printFile() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "printFile", function (sourceFile, options = {}) {
+            const encoded = encodeNode(sourceFile);
+            const base64 = uint8ArrayToBase64(encoded);
+            return owner.client.apiRequest("printNode", {
+                data: base64,
+                preserveSourceNewlines: options.preserveSourceNewlines,
+                neverAsciiEscape: options.neverAsciiEscape,
+                terminateUnterminatedLiterals: options.terminateUnterminatedLiterals,
+            });
+        }, function* (sourceFile, options = {}) {
+            const encoded = encodeNode(sourceFile);
             const base64 = uint8ArrayToBase64(encoded);
             return yield* apiRequest("printNode", {
                 data: base64,
@@ -3797,6 +4083,10 @@ class TypeObject {
     extendsType;
     baseType;
     substConstraint;
+    typeParameter;
+    constraintType;
+    nameType;
+    templateType;
     // Cached results of lazy fetches, not included in TypeResponse
     // (typically because they require some amount of computation or
     // could cause an arbitrarily large number of types to be cached
@@ -3815,6 +4105,7 @@ class TypeObject {
     constructSignatures;
     indexInfos;
     baseTypes;
+    types;
     stringIndexType;
     numberIndexType;
     constructor(data, objectRegistry) {
@@ -3829,7 +4120,24 @@ class TypeObject {
             // BigInt literal values are serialized as decimal strings (e.g. "-123") because
             // JSON cannot represent bigint. Decode them back into a real bigint here.
             const value = data.value;
-            this.value = (data.flags & TypeFlags.BigIntLiteral) ? BigInt(value) : value;
+            if (data.flags & TypeFlags.BigIntLiteral) {
+                this.value = BigInt(value);
+            }
+            // JSON cannot represent infinities, so the API serializes them as strings.
+            else if (data.flags & TypeFlags.NumberLiteral && typeof value === "string") {
+                if (value === "+Infinity") {
+                    this.value = Infinity;
+                }
+                else if (value === "-Infinity") {
+                    this.value = -Infinity;
+                }
+                else {
+                    this.value = NaN;
+                }
+            }
+            else {
+                this.value = value;
+            }
         }
         if (data.intrinsicName !== undefined)
             this.intrinsicName = data.intrinsicName;
@@ -3873,6 +4181,14 @@ class TypeObject {
             this.baseType = data.baseType;
         if (data.substConstraint !== undefined)
             this.substConstraint = data.substConstraint;
+        if (data.typeParameter !== undefined)
+            this.typeParameter = data.typeParameter;
+        if (data.constraintType !== undefined)
+            this.constraintType = data.constraintType;
+        if (data.nameType !== undefined)
+            this.nameType = data.nameType;
+        if (data.templateType !== undefined)
+            this.templateType = data.templateType;
         this.trueType = false;
         this.falseType = false;
         this.constraint = false;
@@ -3886,6 +4202,7 @@ class TypeObject {
         this.constructSignatures = false;
         this.indexInfos = false;
         this.baseTypes = false;
+        this.types = false;
         this.stringIndexType = false;
         this.numberIndexType = false;
     }
@@ -4100,7 +4417,10 @@ class TypeObject {
             if (!(owner.flags & (TypeFlags.UnionOrIntersection | TypeFlags.TemplateLiteral))) {
                 return undefined;
             }
-            return owner.objectRegistry.fetchTypes(owner, "getTypesOfType");
+            if (owner.types === false) {
+                owner.types = owner.objectRegistry.fetchTypes(owner, "getTypesOfType");
+            }
+            return owner.types;
         }, function* () {
             // Only union, intersection, and template literal types have constituent
             // types; any other kind has none, so return undefined rather than sending
@@ -4108,7 +4428,10 @@ class TypeObject {
             if (!(owner.flags & (TypeFlags.UnionOrIntersection | TypeFlags.TemplateLiteral))) {
                 return undefined;
             }
-            return yield* owner.objectRegistry.fetchTypes.gen(owner, "getTypesOfType");
+            if (owner.types === false) {
+                owner.types = yield* owner.objectRegistry.fetchTypes.gen(owner, "getTypesOfType");
+            }
+            return owner.types;
         });
     }
     get getTypeParameters() {
@@ -4149,6 +4472,38 @@ class TypeObject {
             return owner.objectRegistry.fetchTypes(owner, "getAliasTypeArgumentsOfType", owner.aliasTypeArguments);
         }, function* () {
             return yield* owner.objectRegistry.fetchTypes.gen(owner, "getAliasTypeArgumentsOfType", owner.aliasTypeArguments);
+        });
+    }
+    get getTypeParameter() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getTypeParameter", function () {
+            return owner.objectRegistry.fetchType(owner, "getTypeParameterOfMappedType", owner.typeParameter);
+        }, function* () {
+            return yield* owner.objectRegistry.fetchType.gen(owner, "getTypeParameterOfMappedType", owner.typeParameter);
+        });
+    }
+    get getConstraintType() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getConstraintType", function () {
+            return owner.objectRegistry.fetchType(owner, "getConstraintTypeOfMappedType", owner.constraintType);
+        }, function* () {
+            return yield* owner.objectRegistry.fetchType.gen(owner, "getConstraintTypeOfMappedType", owner.constraintType);
+        });
+    }
+    get getNameType() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getNameType", function () {
+            return owner.objectRegistry.fetchOptionalType(owner, "getNameTypeOfMappedType", owner.nameType);
+        }, function* () {
+            return yield* owner.objectRegistry.fetchOptionalType.gen(owner, "getNameTypeOfMappedType", owner.nameType);
+        });
+    }
+    get getTemplateType() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getTemplateType", function () {
+            return owner.objectRegistry.fetchType(owner, "getTemplateTypeOfMappedType", owner.templateType);
+        }, function* () {
+            return yield* owner.objectRegistry.fetchType.gen(owner, "getTemplateTypeOfMappedType", owner.templateType);
         });
     }
     get getObjectType() {
@@ -4335,6 +4690,9 @@ class TypeObject {
     }
     isTypeParameter() {
         return isTypeParameter(this);
+    }
+    isMappedType() {
+        return !!(this.flags & TypeFlags.Object) && !!(this.objectFlags & ObjectFlags.Mapped);
     }
 }
 export function isUnionType(type) {

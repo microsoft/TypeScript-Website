@@ -4,11 +4,13 @@ import { ModuleDetectionKind } from "#enums/moduleDetectionKind";
 import { ModuleKind } from "#enums/moduleKind";
 import { ModuleResolutionKind } from "#enums/moduleResolutionKind";
 import { NewLineKind } from "#enums/newLineKind";
+import { ScriptKind } from "#enums/scriptKind";
 import { ScriptTarget } from "#enums/scriptTarget";
 export { JsxEmit } from "#enums/jsxEmit";
 export { ModuleDetectionKind } from "#enums/moduleDetectionKind";
 export { ModuleKind } from "#enums/moduleKind";
 export { ModuleResolutionKind } from "#enums/moduleResolutionKind";
 export { NewLineKind } from "#enums/newLineKind";
+export { ScriptKind } from "#enums/scriptKind";
 export { ScriptTarget } from "#enums/scriptTarget";
 //# sourceMappingURL=proto.generated.js.map

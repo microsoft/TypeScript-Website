@@ -1,16 +1,22 @@
 export { wasmURL } from "#wasmURL";
 export { instantiateWasm, instantiateWasmSync } from "./wasi.js";
-import { setWasmFileSystem, } from "./wasi.js";
+import { registerWasmCallback, setWasmFileSystem, unregisterWasmCallback, } from "./wasi.js";
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
-/** Synchronous API transport backed by an in-process TypeScript WebAssembly reactor. */
+/**
+ * Synchronous API transport backed by an in-process TypeScript WebAssembly reactor.
+ *
+ * Host callbacks must complete synchronously and cannot call this transport while
+ * an outer request is in progress.
+ */
 export class WasmTransport {
     lastBytesSent = 0;
     lastBytesReceived = 0;
-    exports;
     instance;
+    exports;
     requestPointer = 0;
     closed = false;
+    inCallback = false;
     constructor(options) {
         this.instance = options.instance;
         this.exports = getReactorExports(options.instance);
@@ -62,6 +68,21 @@ export class WasmTransport {
             bytesReceived: this.lastBytesReceived,
         };
     }
+    registerCallback(name, callback) {
+        this.ensureOpen();
+        registerWasmCallback(this.instance, name, (callbackName, payload) => {
+            this.inCallback = true;
+            try {
+                return callback(callbackName, payload);
+            }
+            finally {
+                this.inCallback = false;
+            }
+        });
+    }
+    unregisterCallback(name) {
+        unregisterWasmCallback(this.instance, name);
+    }
     setFile(path, content) {
         this.ensureOpen();
         const pathBytes = encoder.encode(path);
@@ -105,6 +126,9 @@ export class WasmTransport {
     }
     call(method, payload) {
         this.ensureOpen();
+        if (this.inCallback) {
+            throw new Error("TypeScript WASM callbacks cannot call the same API transport");
+        }
         const methodBytes = encoder.encode(method);
         this.writeRequest(methodBytes, payload);
         this.lastBytesSent = payload.length;

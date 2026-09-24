@@ -27,18 +27,17 @@ export function resolveDocumentURI(identifier) {
     return identifier.uri;
 }
 /**
- * Builds the wire request for updateSnapshot, applying the deprecated `openProject`
+ * Builds the wire request for createSnapshot, applying the deprecated `openProject`
  * compatibility shim: a single `openProject` is folded into `openProjects` and is
  * never sent on the wire.
  */
-export function toUpdateSnapshotRequest(params, snapshot) {
+export function toCreateSnapshotRequest(params) {
     const { openProject, openProjects, ...rest } = params ?? {};
     const mergedOpenProjects = openProject !== undefined
         ? [resolveFileName(openProject), ...(openProjects ?? [])]
         : openProjects;
     return {
         ...rest,
-        snapshot,
         openProjects: mergedOpenProjects,
     };
 }

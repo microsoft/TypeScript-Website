@@ -85,6 +85,21 @@ export class TransportClient {
             this.scheduleBatch();
         });
     }
+    registerCallback(name, callback) {
+        const register = this.transport.registerCallback;
+        const unregister = this.transport.unregisterCallback;
+        if (!register || !unregister) {
+            throw new Error("Callbacks are not supported by this transport");
+        }
+        register.call(this.transport, name, (_, payload) => {
+            const result = callback(JSON.parse(payload));
+            if (result instanceof Promise) {
+                throw new Error("Injected transport callbacks must complete synchronously");
+            }
+            return JSON.stringify(result) ?? "";
+        });
+        return () => unregister.call(this.transport, name);
+    }
     getTimingCollector() {
         return this.timing;
     }

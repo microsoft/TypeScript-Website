@@ -26,6 +26,7 @@ export declare class Client {
     private connectViaSocket;
     private registerFSCallbacks;
     private sendRequestWithTiming;
+    registerCallback(name: string, callback: (params: unknown) => unknown | Promise<unknown>): () => void;
     private doBatch;
     private scheduleImmediateBatch;
     batchContext(): {

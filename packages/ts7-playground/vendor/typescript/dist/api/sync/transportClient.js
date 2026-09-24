@@ -22,6 +22,15 @@ export class TransportClient {
         }
         return undefined;
     }
+    registerCallback(name, callback) {
+        const register = this.transport.registerCallback;
+        const unregister = this.transport.unregisterCallback;
+        if (!register || !unregister) {
+            throw new Error("Callbacks are not supported by this transport");
+        }
+        register.call(this.transport, name, (_, payload) => JSON.stringify(callback(JSON.parse(payload))) ?? "");
+        return () => unregister.call(this.transport, name);
+    }
     batchRequests(requests) {
         const params = { requests };
         if (this.maxResponseBytesPerPage !== undefined) {

@@ -21,6 +21,7 @@ export declare class TransportClient {
     };
     apiRequest<K extends APIRequest["method"]>(method: K, params: APIMethodInfo[K]["params"]): Promise<APIMethodInfo[K]["result"]>;
     apiRequestBinary<K extends SourceFileResponseMethod>(method: K, params: APIMethodInfo[K]["params"]): Promise<Uint8Array | undefined>;
+    registerCallback(name: string, callback: (params: unknown) => unknown | Promise<unknown>): () => void;
     getTimingCollector(): TimingCollector | undefined;
     getTimingInfo(): Promise<TimingInfo>;
     resetTimingInfo(): Promise<void>;

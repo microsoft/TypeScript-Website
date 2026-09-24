@@ -146,8 +146,9 @@ class RingBufferWorker {
     const label = method ?? this.#pendingRequests.get(message?.id)
     if (method === "textDocument/publishDiagnostics") return
     if (label === "textDocument/definition") {
-      await ensureLibraryModels(message?.result)
-      navigateToDefinition(message?.result)
+      message.result = normalizeLibraryLocations(message?.result)
+      await ensureLibraryModels(message.result)
+      navigateToDefinition(message.result)
     }
     if (message?.id !== undefined && !method) {
       this.#pendingRequests.delete(message.id)
@@ -225,6 +226,29 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
 
   const transport = createTransportToWorker(worker as unknown as Worker)
   new MonacoLspClient(transport)
+}
+
+function normalizeLibraryLocations(result: unknown): unknown {
+  if (Array.isArray(result)) return result.map(normalizeLibraryLocations)
+  if (!result || typeof result !== "object") return result
+
+  const location = result as {
+    uri?: string
+    targetUri?: string
+  }
+  const uri = location.targetUri ?? location.uri
+  if (!uri) return result
+  const normalized = normalizeLibraryUri(uri)
+  if (normalized === uri) return result
+  return "targetUri" in location ? { ...location, targetUri: normalized } : { ...location, uri: normalized }
+}
+
+function normalizeLibraryUri(uri: string) {
+  const parsed = monaco.Uri.parse(uri)
+  if (parsed.scheme !== "bundled" || !/^\/libs\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)) {
+    return uri
+  }
+  return monaco.Uri.file(`/typescript/lib/${parsed.path.slice("/libs/".length)}`).toString()
 }
 
 async function ensureLibraryModels(result: unknown) {

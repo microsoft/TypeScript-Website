@@ -176,6 +176,9 @@ export class SyncRpcChannel {
     registerCallback(name, callback) {
         this.callbacks.set(name, callback);
     }
+    unregisterCallback(name) {
+        this.callbacks.delete(name);
+    }
     /** Kill the child process and release resources. */
     close() {
         try {

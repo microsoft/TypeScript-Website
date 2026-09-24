@@ -28,6 +28,9 @@ export class RemoteNodeList extends Array {
     get next() {
         return this.view.getUint32(this._byteIndex + NODE_OFFSET_NEXT, true);
     }
+    get firstNodeIndex() {
+        return this.index + 1;
+    }
     get data() {
         return this.view.getUint32(this._byteIndex + NODE_OFFSET_DATA, true);
     }
@@ -211,6 +214,34 @@ export class RemoteNode extends RemoteNodeBase {
                 }
                 else if (child.kind !== SyntaxKind.JSDoc) {
                     const result = visitNode(child);
+                    if (result) {
+                        return result;
+                    }
+                }
+                next = child.next;
+            } while (next);
+        }
+    }
+    *childrenIter() {
+        if (this.hasChildren()) {
+            let next = this.index + 1;
+            do {
+                const child = this.getOrCreateChildAtNodeIndex(next);
+                if (child instanceof RemoteNodeList) {
+                    if (child.length) {
+                        let listNext = child.firstNodeIndex;
+                        while (listNext) {
+                            const node = child.getOrCreateChildAtNodeIndex(listNext);
+                            listNext = node.next;
+                            const result = yield node;
+                            if (result) {
+                                return result;
+                            }
+                        }
+                    }
+                }
+                else if (child.kind !== SyntaxKind.JSDoc) {
+                    const result = yield child;
                     if (result) {
                         return result;
                     }

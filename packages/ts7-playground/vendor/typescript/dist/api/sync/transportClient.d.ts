@@ -9,6 +9,7 @@ export declare class TransportClient {
     private readonly maxResponseBytesPerPage;
     constructor(transport: SyncTransport, collectTiming: boolean, maxResponseBytesPerPage?: number);
     apiRequest<K extends keyof APIMethodInfo>(method: K, params?: APIMethodInfo[K]["params"]): APIMethodInfo[K]["result"];
+    registerCallback(name: string, callback: (params: unknown) => unknown): () => void;
     batchRequests(requests: readonly APIRequest[]): BatchRequestsResponse;
     echo(payload: string): string;
     echoBinary(payload: Uint8Array): Uint8Array;

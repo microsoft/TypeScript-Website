@@ -11,6 +11,7 @@ import { ModuleResolutionKind } from "#enums/moduleResolutionKind";
 import { NewLineKind } from "#enums/newLineKind";
 import { NodeBuilderFlags } from "#enums/nodeBuilderFlags";
 import { ObjectFlags } from "#enums/objectFlags";
+import { ScriptKind } from "#enums/scriptKind";
 import { SignatureFlags } from "#enums/signatureFlags";
 import { SignatureKind } from "#enums/signatureKind";
 import { SymbolFlags } from "#enums/symbolFlags";
@@ -23,29 +24,48 @@ import { encodeNode, uint8ArrayToBase64, } from "../node/encoder.js";
 import { decodeNode, getNodeId, parseNodeHandle, readParseOptionsKey, readSourceFileHash, RemoteSourceFile, } from "../node/node.js";
 import { Wtf8Decoder } from "../node/wtf8.js";
 import { createGetCanonicalFileName, toPath, } from "../path.js";
-import { resolveFileName, toUpdateSnapshotRequest, } from "../proto.js";
+import { resolveFileName, toCreateSnapshotRequest, } from "../proto.js";
 import { SourceFileCache } from "../sourceFileCache.js";
 export { formatDiagnostics, formatDiagnosticsWithColorAndContext } from "../diagnosticFormatter.js";
 export { documentURIToFileName, fileNameToDocumentURI } from "../path.js";
-export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, SignatureFlags, SignatureKind, SymbolFlags, TypeFlags, TypeFormatFlags, TypePredicateKind };
+export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, ScriptKind, SignatureFlags, SignatureKind, SymbolFlags, TypeFlags, TypeFormatFlags, TypePredicateKind };
+let nextModuleResolutionCallbackId = 0;
+function registerModuleResolutionCallback(client, callback, getSnapshot) {
+    const name = `resolveModuleName/${++nextModuleResolutionCallbackId}`;
+    const dispose = client.registerCallback(name, params => {
+        const { moduleName, containingDirectory, resolutionMode, snapshot: snapshotId, inProgressSnapshot } = params;
+        let snapshot = snapshotId === undefined ? undefined : getSnapshot(snapshotId);
+        if (snapshotId !== undefined && snapshot === undefined) {
+            throw new Error(`Snapshot ${snapshotId} is inactive`);
+        }
+        if (inProgressSnapshot !== undefined) {
+            snapshot = -inProgressSnapshot;
+        }
+        return callback(moduleName, containingDirectory, resolutionMode, { snapshot });
+    });
+    return { name, dispose };
+}
 // @sync-only-start
 // export { all, defer, type APIRequestGenerator, type AnyAPIRequestGenerator, type AllAPIRequestGenerator, type DeferredAPIRequestGenerator, type ExecutedGeneratorsResults } from "./generatorSupport.ts";
 // import {executeRequestGenerators, type ExecutedGeneratorsResults, type AnyAPIRequestGenerator} from "./generatorSupport.ts";
+// import { sourceFileResponseToUint8Array } from "../node/encoder.ts";
 // @sync-only-end
 export class API {
     client;
     sourceFileCache;
     toPath;
     currentDirectory;
+    decoder = new Wtf8Decoder();
     getCanonicalFileNameWorker;
     initialized = false;
     initializing;
-    activeSnapshots = new Set();
-    latestSnapshot;
+    activeSnapshots = new Map();
+    printer;
     internal;
     constructor(options = {}) {
         this.client = new Client(options);
         this.sourceFileCache = new SourceFileCache();
+        this.printer = new Printer(this.client);
         this.internal = new InternalAPI(this.client, () => this.ensureInitialized()); // @sync: this.internal = new InternalAPI(this.client, this.ensureInitialized);
     }
     /**
@@ -118,6 +138,22 @@ export class API {
         await this.ensureInitialized();
         return this.client.apiRequest("parseJsonConfigFileContent", { json, ...options });
     }
+    async createSourceFile(fileName, sourceText, options = {}) {
+        await this.ensureInitialized();
+        const data = await this.client.apiRequestBinary("createSourceFile", { fileName, sourceText, options });
+        if (!data) {
+            throw new Error("createSourceFile returned no source file");
+        }
+        return new RemoteSourceFile(data, this.decoder, this.client.getTimingCollector());
+    }
+    async createSourceFileFromFile(file, options = {}) {
+        await this.ensureInitialized();
+        const data = await this.client.apiRequestBinary("createSourceFileFromFile", { fileName: resolveFileName(file), options });
+        if (!data) {
+            throw new Error("createSourceFileFromFile returned no source file");
+        }
+        return new RemoteSourceFile(data, this.decoder, this.client.getTimingCollector());
+    }
     async transpileModule(input, options = {}) {
         await this.ensureInitialized();
         return this.client.apiRequest("transpileModule", { input, options });
@@ -134,40 +170,90 @@ export class API {
         await this.ensureInitialized();
         return this.client.apiRequest("transpileDeclarationFromFile", { fileName: resolveFileName(file), options });
     }
-    async updateSnapshot(params) {
-        return this.updateSnapshotWorker(params);
+    async createSnapshot(params) {
+        await this.ensureInitialized();
+        const requestParams = toCreateSnapshotRequest(this.prepareCreateSnapshotParams(params));
+        const data = await this.client.apiRequest("createSnapshot", requestParams);
+        const snapshot = new Snapshot(data, this.client, this.sourceFileCache, this.toPath, this, () => {
+            this.activeSnapshots.delete(snapshot.id);
+            this.sourceFileCache.releaseSnapshot(snapshot.id);
+        }, this.createSnapshotUpdater(() => snapshot), undefined);
+        this.activeSnapshots.set(snapshot.id, snapshot);
+        return snapshot;
     }
-    /** @internal */
-    async updateSnapshotFrom(baseSnapshot, params) {
-        if (!this.activeSnapshots.has(baseSnapshot) || baseSnapshot.isDisposed()) {
+    async updateSnapshot(baseSnapshot, params) {
+        await this.ensureInitialized();
+        if (this.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed()) {
             throw new Error("Cannot update an inactive snapshot");
         }
-        if (baseSnapshot !== this.latestSnapshot) {
-            // TODO: Support forking active memory/cache snapshots once the server-side
-            // ownership, project state, and cache semantics have been worked out.
-            throw new Error("Snapshot.update can only update the latest snapshot");
+        const data = await this.client.apiRequest("updateSnapshot", {
+            snapshot: baseSnapshot.id,
+            changes: toCreateSnapshotRequest(this.prepareCreateSnapshotParams(params)),
+        });
+        if (data.snapshot === baseSnapshot.id) {
+            await this.client.apiRequest("release", { snapshot: data.snapshot });
+            return baseSnapshot;
         }
-        return this.updateSnapshotWorker(params, baseSnapshot);
+        this.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
+        const snapshot = new Snapshot(data, this.client, this.sourceFileCache, this.toPath, this, () => {
+            this.activeSnapshots.delete(snapshot.id);
+            this.sourceFileCache.releaseSnapshot(snapshot.id);
+        }, this.createSnapshotUpdater(() => snapshot), baseSnapshot);
+        this.activeSnapshots.set(snapshot.id, snapshot);
+        return snapshot;
     }
-    async updateSnapshotWorker(params, baseSnapshot) {
+    prepareCreateSnapshotParams(params) {
+        if (!params)
+            return undefined;
+        const prepareOptions = (options) => {
+            if (!options)
+                return undefined;
+            const { moduleResolver, ...rest } = options;
+            moduleResolver?.ensureNotDisposed();
+            return {
+                ...rest,
+                moduleResolver: moduleResolver?.id,
+            };
+        };
+        return {
+            ...params,
+            createPrograms: params.createPrograms?.map(program => ({ ...program, options: prepareOptions(program.options) })),
+            reconfigurePrograms: params.reconfigurePrograms?.map(program => ({ ...program, options: prepareOptions(program.options) })),
+        };
+    }
+    prepareLanguageServerSnapshotChanges(changes) {
+        if (!changes)
+            return undefined;
+        const prepared = this.prepareCreateSnapshotParams(changes);
+        return prepared;
+    }
+    createSnapshotUpdater(getSnapshot) {
+        const update = params => this.updateSnapshot(getSnapshot(), params); // @sync: const update = ((params: CreateSnapshotParams) => this.updateSnapshot(getSnapshot(), params)) as SnapshotUpdater;
+        // @sync-only-start
+        // const owner = this;
+        // update.gen = function* (params: CreateSnapshotParams) { return yield* owner.updateSnapshot.gen(getSnapshot(), params); };
+        // @sync-only-end
+        return update;
+    }
+    async getCurrentLanguageServerSnapshot(...args) {
         await this.ensureInitialized();
-        const requestParams = toUpdateSnapshotRequest(params, baseSnapshot?.id);
-        const data = await this.client.apiRequest("updateSnapshot", requestParams);
-        // Retain cached source files from previous snapshot for unchanged files
-        if (this.latestSnapshot) {
-            this.sourceFileCache.retainForSnapshot(data.snapshot, this.latestSnapshot.id, data.changes);
-            if (this.latestSnapshot.isDisposed()) {
-                this.sourceFileCache.releaseSnapshot(this.latestSnapshot.id);
-            }
+        const changes = args[0];
+        const baseSnapshot = args[1];
+        if (baseSnapshot && (this.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed())) {
+            throw new Error("Cannot use an inactive snapshot as a response base");
+        }
+        const data = await this.client.apiRequest("getCurrentLanguageServerSnapshot", {
+            baseSnapshot: baseSnapshot?.id,
+            changes: this.prepareLanguageServerSnapshotChanges(changes),
+        });
+        if (baseSnapshot) {
+            this.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
         }
         const snapshot = new Snapshot(data, this.client, this.sourceFileCache, this.toPath, this, () => {
-            this.activeSnapshots.delete(snapshot);
-            if (snapshot !== this.latestSnapshot) {
-                this.sourceFileCache.releaseSnapshot(snapshot.id);
-            }
-        });
-        this.latestSnapshot = snapshot;
-        this.activeSnapshots.add(snapshot);
+            this.activeSnapshots.delete(snapshot.id);
+            this.sourceFileCache.releaseSnapshot(snapshot.id);
+        }, this.createSnapshotUpdater(() => snapshot), baseSnapshot);
+        this.activeSnapshots.set(snapshot.id, snapshot);
         return snapshot;
     }
     async [globalThis.Symbol.asyncDispose]() {
@@ -186,13 +272,8 @@ export class API {
         await this.initializing?.catch(() => { }); // @sync-skip
         // Dispose all active snapshots
         try {
-            for (const snapshot of [...this.activeSnapshots]) {
+            for (const snapshot of [...this.activeSnapshots.values()]) {
                 await snapshot.dispose();
-            }
-            // Release the latest snapshot's cache refs if still held
-            if (this.latestSnapshot) {
-                this.sourceFileCache.releaseSnapshot(this.latestSnapshot.id);
-                this.latestSnapshot = undefined;
             }
             this.sourceFileCache.clear();
         }
@@ -200,24 +281,39 @@ export class API {
             await this.client.close(); // always close the underlying connection
         }
     }
+    async createModuleResolver(compilerOptions, options) {
+        await this.ensureInitialized();
+        const callback = options?.resolveModuleName
+            ? registerModuleResolutionCallback(this.client, options.resolveModuleName, id => this.activeSnapshots.get(id))
+            : undefined;
+        try {
+            const id = await this.client.apiRequest("createModuleResolver", {
+                compilerOptions,
+                moduleResolutions: options?.moduleResolutions,
+                resolveModuleNameCallback: callback?.name,
+            });
+            return new ModuleResolver(id, this.client, callback?.dispose);
+        }
+        catch (error) {
+            callback?.dispose();
+            throw error;
+        }
+    }
     clearSourceFileCache() {
         this.sourceFileCache.clear();
     }
     async runWithTemporaryFileUpdate(baseSnapshot, file, newText, cb) {
         await this.ensureInitialized();
-        if (!this.activeSnapshots.has(baseSnapshot) || baseSnapshot.isDisposed()) {
+        if (this.activeSnapshots.get(baseSnapshot.id) !== baseSnapshot || baseSnapshot.isDisposed()) {
             throw new Error("Cannot run a temporary file update on an inactive snapshot");
         }
-        const data = await this.client.apiRequest("updateTemporarySnapshot", { snapshot: baseSnapshot.id, file, newText });
-        // Retain cached source files from the base snapshot for files unchanged by
-        // the temporary update. The temporary snapshot is not the latest snapshot, so
-        // we never release the latest snapshot's cache here.
-        this.sourceFileCache.retainForSnapshot(data.snapshot, baseSnapshot.id, data.changes);
-        const snapshot = new Snapshot(data, this.client, this.sourceFileCache, this.toPath, this, () => {
-            this.activeSnapshots.delete(snapshot);
-            this.sourceFileCache.releaseSnapshot(snapshot.id);
+        const snapshot = await baseSnapshot.update({
+            fileSystem: {
+                kind: "layer",
+                files: { [resolveFileName(file)]: newText },
+            },
+            ensurePrograms: true,
         });
-        this.activeSnapshots.add(snapshot);
         try {
             await cb(snapshot);
         }
@@ -243,42 +339,18 @@ export class API {
     resetTimingInfo() {
         return this.client.resetTimingInfo();
     }
-    isProgramActive(program) {
-        const project = program.getProject();
-        for (const snapshot of this.activeSnapshots) {
-            if (!snapshot.isDisposed() && snapshot.getProject(project.configFileName)?.program === program) {
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     * Creates a program from current filesystem state, or derives one from oldProgram after applying fileChanges.
-     */
-    async createProgram(rootFiles, createProgramOptions, oldProgram, fileChanges) {
+    /** Creates a program from current filesystem state. */
+    async createProgram(rootFiles, compilerOptions, createProgramOptions) {
         await this.ensureInitialized();
-        if (fileChanges && !oldProgram) {
-            throw new Error("fileChanges requires an oldProgram");
-        }
-        if (oldProgram && !this.isProgramActive(oldProgram)) {
-            throw new Error("oldProgram must belong to this API instance and reference an active snapshot");
-        }
-        const data = await this.client.apiRequest("createProgram", {
-            rootFiles,
-            createProgramOptions,
-            oldProgram: oldProgram ? { snapshot: oldProgram.snapshotId, project: oldProgram.getProject().id } : undefined,
-            fileChanges,
+        const snapshot = await this.createSnapshot({
+            createPrograms: [{ rootFiles, compilerOptions, options: createProgramOptions }],
         });
-        if (!data.project) {
+        const program = snapshot.operation.createdPrograms[0];
+        if (!program) {
+            await snapshot.dispose();
             throw new Error("createProgram did not return a project");
         }
-        const snapshot = new Snapshot({ snapshot: data.snapshot, projects: [data.project] }, this.client, this.sourceFileCache, this.toPath, this, () => {
-            this.activeSnapshots.delete(snapshot);
-            this.sourceFileCache.releaseSnapshot(snapshot.id);
-        });
-        const program = snapshot.getProjects()[0].program;
         program.setOwnedSnapshot(snapshot);
-        this.activeSnapshots.add(snapshot);
         return program;
     }
 }
@@ -307,37 +379,68 @@ export class InternalAPI {
 }
 export class Snapshot {
     id;
+    operation;
     projectMap;
     toPath;
     client;
     disposed = false;
     disposePromise;
     onDispose;
-    api;
     snapshotRegistry;
+    projectDataMap;
+    updateSnapshot;
     internal;
-    constructor(data, client, sourceFileCache, toPath, api, onDispose) {
+    constructor(data, client, sourceFileCache, toPath, formatDiagnosticsHost, onDispose, updateSnapshot, baseSnapshot) {
         this.id = data.snapshot;
         this.client = client;
         this.toPath = toPath;
-        this.api = api;
         this.onDispose = onDispose;
+        this.updateSnapshot = updateSnapshot;
         this.projectMap = new Map();
-        this.snapshotRegistry = new SnapshotObjectRegistry(client, this.id, projectId => this.projectMap.get(projectId));
-        for (const projData of data.projects) {
-            const project = new Project(projData, this.id, client, sourceFileCache, toPath, api, this.snapshotRegistry);
-            this.projectMap.set(toPath(projData.configFileName), project);
+        const projectDataMap = new Map(baseSnapshot?.projectDataMap);
+        for (const projectId of data.changes?.removedProjects ?? []) {
+            projectDataMap.delete(projectId);
         }
+        for (const projectData of data.projects) {
+            projectDataMap.set(projectData.id, projectData);
+        }
+        this.projectDataMap = new Map([...projectDataMap].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0));
+        this.snapshotRegistry = new SnapshotObjectRegistry(client, this.id, projectId => this.projectMap.get(projectId));
+        for (const projData of this.projectDataMap.values()) {
+            const project = new Project(projData, this.id, client, sourceFileCache, toPath, formatDiagnosticsHost, this.snapshotRegistry);
+            this.projectMap.set(projData.id, project);
+        }
+        this.operation = {
+            createdPrograms: data.operation.createdPrograms?.map(projectId => this.requireProject(projectId).program),
+            openedFiles: data.operation.openedFiles?.map(result => ({ project: this.requireProject(result.project) })),
+        };
         this.internal = new SnapshotInternalAPI(this.id, client);
     }
     getProjects() {
         this.ensureNotDisposed();
         return [...this.projectMap.values()];
     }
-    getProject(configFileName) {
+    getConfiguredProject(configFileName) {
         this.ensureNotDisposed();
         return this.projectMap.get(this.toPath(configFileName));
     }
+    getProject(projectId) {
+        this.ensureNotDisposed();
+        return this.projectMap.get(projectId);
+    }
+    getProgram(projectId) {
+        return this.getProject(projectId)?.program;
+    }
+    update(params) {
+        this.ensureNotDisposed();
+        return this.updateSnapshot(params);
+    }
+    /**
+     * Gets the default project for a given file from the configured projects and
+     * inferred project already loaded in the snapshot. Synthetic projects are not
+     * considered. Files that have been opened with `openFiles` are guaranteed to
+     * have a result.
+     */
     async getDefaultProjectForFile(file) {
         this.ensureNotDisposed();
         const data = await this.client.apiRequest("getDefaultProjectForFile", {
@@ -346,15 +449,7 @@ export class Snapshot {
         });
         if (!data)
             return undefined;
-        return this.projectMap.get(this.toPath(data.configFileName));
-    }
-    /**
-     * Creates the next snapshot, layering its filesystem over this snapshot's
-     * filesystem. This snapshot must still be active and be the latest snapshot.
-     */
-    async update(params) {
-        this.ensureNotDisposed();
-        return this.api.updateSnapshotFrom(this, params);
+        return this.projectMap.get(data.id);
     }
     [globalThis.Symbol.dispose]() {
         void this.dispose();
@@ -386,6 +481,53 @@ export class Snapshot {
             throw new Error("Snapshot is disposed");
         }
     }
+    requireProject(projectId) {
+        const project = this.projectMap.get(projectId);
+        if (!project) {
+            throw new Error(`Snapshot operation returned unknown project '${projectId}'`);
+        }
+        return project;
+    }
+}
+export class ModuleResolver {
+    id;
+    client;
+    disposeCallback;
+    disposed = false;
+    constructor(id, client, disposeCallback) {
+        this.id = id;
+        this.client = client;
+        this.disposeCallback = disposeCallback;
+    }
+    async resolveModuleName(moduleName, containingDirectory, resolutionMode, options) {
+        this.ensureNotDisposed();
+        if (options?.snapshot instanceof Snapshot && options.snapshot.isDisposed()) {
+            throw new Error("Snapshot is disposed");
+        }
+        return this.client.apiRequest("resolveModuleName", {
+            snapshot: options?.snapshot instanceof Snapshot ? options.snapshot.id : undefined,
+            inProgressSnapshot: typeof options?.snapshot === "number" ? -options.snapshot : undefined,
+            resolver: this.id,
+            moduleName,
+            containingDirectory,
+            resolutionMode,
+        });
+    }
+    [globalThis.Symbol.asyncDispose]() {
+        return this.dispose();
+    }
+    async dispose() {
+        if (this.disposed)
+            return;
+        await this.client.apiRequest("releaseModuleResolver", { resolver: this.id });
+        this.disposed = true;
+        this.disposeCallback?.();
+    }
+    /** @internal */
+    ensureNotDisposed() {
+        if (this.disposed)
+            throw new Error("ModuleResolver is disposed");
+    }
 }
 class SnapshotObjectRegistry {
     symbols = new Map();
@@ -397,7 +539,7 @@ class SnapshotObjectRegistry {
         this.snapshotId = snapshotId;
         this.resolveProject = resolveProject;
     }
-    /** Resolve a project id (a config file path) to its Project within this snapshot. */
+    /** Resolve a project ID to its Project within this snapshot. */
     getProject(projectId) {
         return this.resolveProject(projectId);
     }
@@ -648,6 +790,7 @@ export class Project {
     id;
     configFileName;
     currentDirectory;
+    dirty;
     parsedCommandLine;
     /** @deprecated Use `parsedCommandLine.options`. */
     compilerOptions;
@@ -655,7 +798,6 @@ export class Project {
     rootFiles;
     program;
     checker;
-    emitter;
     languageService;
     client;
     snapshotId;
@@ -663,6 +805,7 @@ export class Project {
         this.id = data.id;
         this.configFileName = data.configFileName;
         this.currentDirectory = data.currentDirectory;
+        this.dirty = data.dirty;
         if (!data.parsedCommandLine?.options) {
             throw new Error(`Project '${data.configFileName}' has no parsed command line`);
         }
@@ -674,7 +817,6 @@ export class Project {
         this.program = new Program(snapshotId, this, client, sourceFileCache, toPath, formatDiagnosticsHost);
         const objectRegistry = new ProjectObjectRegistry(client, snapshotId, this, snapshotRegistry);
         this.checker = new Checker(snapshotId, this, client, objectRegistry);
-        this.emitter = new Emitter(client);
         this.languageService = new LanguageService(snapshotId, this, client, objectRegistry);
     }
     /** @deprecated Use `languageService.getImportAdderEdits`. */
@@ -786,6 +928,7 @@ export class LanguageService {
 export class Program {
     /** @internal */
     snapshotId;
+    id;
     project;
     client;
     sourceFileCache;
@@ -797,6 +940,7 @@ export class Program {
     disposePromise;
     constructor(snapshotId, project, client, sourceFileCache, toPath, formatDiagnosticsHost) {
         this.snapshotId = snapshotId;
+        this.id = project.id;
         this.project = project;
         this.client = client;
         this.sourceFileCache = sourceFileCache;
@@ -864,6 +1008,22 @@ export class Program {
             mode,
         });
         return result ?? undefined;
+    }
+    async getModeForUsageLocation(file, usage) {
+        return this.client.apiRequest("getModeForUsageLocation", {
+            snapshot: this.snapshotId,
+            project: this.project.id,
+            file,
+            usage: getNodeId(usage),
+        });
+    }
+    async getModeForResolutionAtIndex(file, index) {
+        return this.client.apiRequest("getModeForResolutionAtIndex", {
+            snapshot: this.snapshotId,
+            project: this.project.id,
+            file,
+            index,
+        });
     }
     async getResolvedModuleFromModuleSpecifier(moduleSpecifier, sourceFile) {
         const result = await this.client.apiRequest("getResolvedModuleFromModuleSpecifier", {
@@ -1101,7 +1261,7 @@ export class Program {
             emitSkipped: response.emitSkipped,
             diagnostics: response.diagnostics,
             emittedFiles: response.emittedFiles,
-            ...(fileSystem ? { fileSystem } : {}),
+            fileSystem,
         };
     }
     /**
@@ -1662,13 +1822,7 @@ export class Checker {
         } : undefined;
     }
     async getIndexTypeOfType(type, kind) {
-        const data = await this.client.apiRequest("getIndexTypeOfTypeByKind", {
-            snapshot: this.snapshotId,
-            project: this.project.id,
-            type: type.id,
-            kind,
-        });
-        return data ? this.objectRegistry.getOrCreateType(data) : undefined;
+        return kind === IndexKind.String ? type.getStringIndexType() : type.getNumberIndexType();
     }
     async getTypeOfPropertyOfType(type, propertyName) {
         const data = await this.client.apiRequest("getTypeOfPropertyOfType", {
@@ -1712,7 +1866,19 @@ export class Checker {
             project: this.project.id,
             location: getNodeId(node),
         });
-        return typeof data === "string" || typeof data === "number" ? data : undefined;
+        if (!data || (typeof data.value !== "string" && typeof data.value !== "number")) {
+            return undefined;
+        }
+        if (data.isNumber && typeof data.value === "string") {
+            if (data.value === "+Infinity") {
+                return Infinity;
+            }
+            else if (data.value === "-Infinity") {
+                return -Infinity;
+            }
+            return NaN;
+        }
+        return data.value;
     }
     /** Get the signature of a function-like declaration. Always returns a signature. */
     async getSignatureFromDeclaration(node) {
@@ -1879,13 +2045,23 @@ export class Checker {
         return data ? data.map(d => this.objectRegistry.getOrCreateType(d)) : [];
     }
 }
-export class Emitter {
+export class Printer {
     client;
     constructor(client) {
         this.client = client;
     }
     async printNode(node, options = {}) {
         const encoded = encodeNode(node);
+        const base64 = uint8ArrayToBase64(encoded);
+        return this.client.apiRequest("printNode", {
+            data: base64,
+            preserveSourceNewlines: options.preserveSourceNewlines,
+            neverAsciiEscape: options.neverAsciiEscape,
+            terminateUnterminatedLiterals: options.terminateUnterminatedLiterals,
+        });
+    }
+    async printFile(sourceFile, options = {}) {
+        const encoded = encodeNode(sourceFile);
         const base64 = uint8ArrayToBase64(encoded);
         return this.client.apiRequest("printNode", {
             data: base64,
@@ -2069,6 +2245,10 @@ class TypeObject {
     extendsType;
     baseType;
     substConstraint;
+    typeParameter;
+    constraintType;
+    nameType;
+    templateType;
     // Cached results of lazy fetches, not included in TypeResponse
     // (typically because they require some amount of computation or
     // could cause an arbitrarily large number of types to be cached
@@ -2087,6 +2267,7 @@ class TypeObject {
     constructSignatures;
     indexInfos;
     baseTypes;
+    types;
     stringIndexType;
     numberIndexType;
     constructor(data, objectRegistry) {
@@ -2101,7 +2282,24 @@ class TypeObject {
             // BigInt literal values are serialized as decimal strings (e.g. "-123") because
             // JSON cannot represent bigint. Decode them back into a real bigint here.
             const value = data.value;
-            this.value = (data.flags & TypeFlags.BigIntLiteral) ? BigInt(value) : value;
+            if (data.flags & TypeFlags.BigIntLiteral) {
+                this.value = BigInt(value);
+            }
+            // JSON cannot represent infinities, so the API serializes them as strings.
+            else if (data.flags & TypeFlags.NumberLiteral && typeof value === "string") {
+                if (value === "+Infinity") {
+                    this.value = Infinity;
+                }
+                else if (value === "-Infinity") {
+                    this.value = -Infinity;
+                }
+                else {
+                    this.value = NaN;
+                }
+            }
+            else {
+                this.value = value;
+            }
         }
         if (data.intrinsicName !== undefined)
             this.intrinsicName = data.intrinsicName;
@@ -2145,6 +2343,14 @@ class TypeObject {
             this.baseType = data.baseType;
         if (data.substConstraint !== undefined)
             this.substConstraint = data.substConstraint;
+        if (data.typeParameter !== undefined)
+            this.typeParameter = data.typeParameter;
+        if (data.constraintType !== undefined)
+            this.constraintType = data.constraintType;
+        if (data.nameType !== undefined)
+            this.nameType = data.nameType;
+        if (data.templateType !== undefined)
+            this.templateType = data.templateType;
         this.trueType = false;
         this.falseType = false;
         this.constraint = false;
@@ -2158,6 +2364,7 @@ class TypeObject {
         this.constructSignatures = false;
         this.indexInfos = false;
         this.baseTypes = false;
+        this.types = false;
         this.stringIndexType = false;
         this.numberIndexType = false;
     }
@@ -2251,7 +2458,10 @@ class TypeObject {
         if (!(this.flags & (TypeFlags.UnionOrIntersection | TypeFlags.TemplateLiteral))) {
             return undefined;
         }
-        return this.objectRegistry.fetchTypes(this, "getTypesOfType");
+        if (this.types === false) {
+            this.types = await this.objectRegistry.fetchTypes(this, "getTypesOfType");
+        }
+        return this.types;
     }
     async getTypeParameters() {
         return this.objectRegistry.fetchTypes(this, "getTypeParametersOfType", this.typeParameters);
@@ -2267,6 +2477,18 @@ class TypeObject {
     }
     async getAliasTypeArguments() {
         return this.objectRegistry.fetchTypes(this, "getAliasTypeArgumentsOfType", this.aliasTypeArguments);
+    }
+    async getTypeParameter() {
+        return this.objectRegistry.fetchType(this, "getTypeParameterOfMappedType", this.typeParameter);
+    }
+    async getConstraintType() {
+        return this.objectRegistry.fetchType(this, "getConstraintTypeOfMappedType", this.constraintType);
+    }
+    async getNameType() {
+        return this.objectRegistry.fetchOptionalType(this, "getNameTypeOfMappedType", this.nameType);
+    }
+    async getTemplateType() {
+        return this.objectRegistry.fetchType(this, "getTemplateTypeOfMappedType", this.templateType);
     }
     async getObjectType() {
         return this.objectRegistry.fetchType(this, "getObjectTypeOfType", this.objectType);
@@ -2383,6 +2605,9 @@ class TypeObject {
     }
     isTypeParameter() {
         return isTypeParameter(this);
+    }
+    isMappedType() {
+        return !!(this.flags & TypeFlags.Object) && !!(this.objectFlags & ObjectFlags.Mapped);
     }
 }
 export function isUnionType(type) {

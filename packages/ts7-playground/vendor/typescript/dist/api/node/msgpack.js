@@ -1,6 +1,6 @@
 // Minimal msgpack encoder/decoder.
 // Supports: arrays, unsigned integers, strings, booleans, binary data.
-import { Wtf8Decoder } from "./wtf8.js";
+import { encodeWtf8, Wtf8Decoder, } from "./wtf8.js";
 // ── MessagePack format constants ────────────────────────────────────
 export const MSGPACK_FIXARRAY3 = 0x93; // 3-element fixarray
 export const MSGPACK_BIN8 = 0xc4;
@@ -36,7 +36,6 @@ export function writeBinHeader(buf, off, len) {
     }
     return off;
 }
-const encoder = new TextEncoder();
 const decoder = new Wtf8Decoder();
 export class MsgpackWriter {
     buf;
@@ -100,7 +99,7 @@ export class MsgpackWriter {
         }
     }
     writeString(str) {
-        const encoded = encoder.encode(str);
+        const encoded = encodeWtf8(str);
         const len = encoded.length;
         if (len <= 0x1f) {
             this.ensure(1 + len);

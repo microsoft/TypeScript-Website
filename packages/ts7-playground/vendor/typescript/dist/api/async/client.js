@@ -159,6 +159,16 @@ export class Client {
         });
         return result;
     }
+    registerCallback(name, callback) {
+        if (this.transportClient) {
+            return this.transportClient.registerCallback(name, callback);
+        }
+        if (!this.connection) {
+            throw new Error("Connection not established");
+        }
+        const disposable = this.connection.onRequest(new RequestType(name), callback);
+        return () => disposable.dispose();
+    }
     async doBatch() {
         this.nextBatch = undefined;
         if (!this.batchedRequests.length)
@@ -217,7 +227,7 @@ export class Client {
         }
     }
     scheduleImmediateBatch() {
-        if (this.nextBatch)
+        if (this.closed || this.nextBatch)
             return;
         this.nextBatch = setImmediate(this.doBatch.bind(this));
     }
@@ -247,6 +257,8 @@ export class Client {
         if (!this.connected) {
             await this.connect();
         }
+        if (this.closed)
+            throw new Error("Client is closed");
         if (!this.connection) {
             throw new Error("Connection not established");
         }
@@ -318,8 +330,19 @@ export class Client {
     async close() {
         if (this.transportClient)
             return this.transportClient.close();
-        await this.connecting?.catch(() => { }); // if connection is still in-progress, wait for it to finish before closing the connection
+        if (this.closed)
+            return;
         this.closed = true;
+        if (this.nextBatch && this.nextBatch !== "manual") {
+            clearImmediate(this.nextBatch);
+        }
+        this.nextBatch = undefined;
+        const requests = this.batchedRequests;
+        this.batchedRequests = [];
+        for (const { reject } of requests) {
+            reject(new Error("Client is closed"));
+        }
+        await this.connecting?.catch(() => { }); // if connection is still in-progress, wait for it to finish before closing the connection
         if (this.connection) {
             this.connection.dispose();
             this.connection = undefined;

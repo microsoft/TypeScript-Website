@@ -426,8 +426,7 @@ function compileProject(api: API) {
 
     const config = api.readConfigFile(configFileName)
     const parsed = api.parseJsonConfigFileContent(config.config, { configFileName })
-    const program = api.createProgram(parsed.fileNames, {
-      compilerOptions: parsed.options,
+    const program = api.createProgram(parsed.fileNames, parsed.options, {
       projectReferences: parsed.projectReferences,
       configFileParsingDiagnostics: parsed.errors,
     })
@@ -462,10 +461,8 @@ function compileProject(api: API) {
         .map(([fileName]) => fileName)
       if (orphanSourceFiles.length > 0) {
         const inferredProgram = api.createProgram(orphanSourceFiles, {
-          compilerOptions: {
-            ...parsed.options,
-            allowJs: true,
-          },
+          ...parsed.options,
+          allowJs: true,
         })
         try {
           collectProgramTypeQueries(inferredProgram, orphanSourceFiles)

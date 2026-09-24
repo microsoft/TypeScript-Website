@@ -11,6 +11,9 @@ export interface SyncTransport {
     readonly lastBytesReceived: number;
     requestSync(method: string, payload: string): string;
     requestBinarySync(method: string, payload: Uint8Array): Uint8Array;
+    /** Registers a synchronous callback, subject to the transport's reentrancy constraints. */
+    registerCallback?(name: string, callback: (name: string, payload: string) => string): void;
+    unregisterCallback?(name: string): void;
     setFileSystem?(fs: FileSystem | undefined): void;
     close(): void;
 }

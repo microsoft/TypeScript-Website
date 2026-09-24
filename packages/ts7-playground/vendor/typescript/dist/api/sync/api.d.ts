@@ -10,6 +10,7 @@ import { ModuleKind } from "#enums/moduleKind";
 import { ModuleResolutionKind } from "#enums/moduleResolutionKind";
 import { NodeBuilderFlags } from "#enums/nodeBuilderFlags";
 import { ObjectFlags } from "#enums/objectFlags";
+import { ScriptKind } from "#enums/scriptKind";
 import { SignatureFlags } from "#enums/signatureFlags";
 import { SignatureKind } from "#enums/signatureKind";
 import { SymbolFlags } from "#enums/symbolFlags";
@@ -19,18 +20,47 @@ import { TypePredicateKind } from "#enums/typePredicateKind";
 import { Client, type ClientSocketOptions, type ClientSpawnOptions } from "#syncClient";
 import { type __String, type CallLikeExpression, type Declaration, type Expression, type FileReference, type Identifier, ModifierFlags, type NamedTupleMember, type Node, type ParameterDeclaration, type Path, type SourceFile, type StringLiteralLikeNode, type SyntaxKind, type TypeNode } from "../../ast/index.ts";
 import type { LSPConnectionOptions, SyncAPIOptions as APIOptions } from "../options.ts";
-import type { APIFileChanges, CompilerOptions, CreateProgramOptions, Diagnostic, DocumentIdentifier, DocumentPosition, LSPUpdateSnapshotParams, PackageId, ParsedCommandLine, ProjectReference, ProjectResponse, ReadConfigFileResponse, ResolvedModule, ResolvedTypeReferenceDirective, SignaturePropertyMethod, SignatureResponse, SourceFileMetadata, SymbolPropertyMethod, SymbolResponse, SymbolsPropertyMethod, TextEdit, TypeAcquisition, TypePropertyMethod, TypeResponse, TypesPropertyMethod, UpdateSnapshotParams, UpdateSnapshotResponse } from "../proto.ts";
+import type { CompilerOptions, ConfiguredProjectId, CreateProgramOptions as ProtocolCreateProgramOptions, CreateSnapshotParams as ProtocolCreateSnapshotParams, CreateSnapshotProgramParams as ProtocolCreateSnapshotProgramParams, CreateSnapshotResponse, CreateSourceFileOptions, Diagnostic, DocumentIdentifier, DocumentPosition, FileNotifications, InferredProjectId, LanguageServerSnapshotChanges as ProtocolLanguageServerSnapshotChanges, ModuleResolutionEntry, ModuleResolutionSpec, PackageId, ParsedCommandLine, ProjectId, ProjectReference, ProjectResponse, ReadConfigFileResponse, ReconfigureSnapshotProgramParams as ProtocolReconfigureSnapshotProgramParams, ResolutionMode, ResolvedModule, ResolvedTypeReferenceDirective, ResolveModuleNameResult, SignaturePropertyMethod, SignatureResponse, SourceFileMetadata, StaticModuleResolution, SymbolPropertyMethod, SymbolResponse, SymbolsPropertyMethod, SyntheticProjectId, TextEdit, TypeAcquisition, TypePropertyMethod, TypeResponse, TypesPropertyMethod } from "../proto.ts";
 import { SourceFileCache } from "../sourceFileCache.ts";
 import type { RequestTiming, TimingAccumulators, TimingInfo } from "../timing.ts";
-import type { AssertsIdentifierTypePredicate, AssertsThisTypePredicate, BigIntLiteralType, BooleanLiteralType, CompletionEntry, CompletionInfo, CompletionOptions, ConditionalType, EmitOutput, EmitOutputFile, EmitResult, FormatDiagnosticsHost, FreshableType, GenericType, GetImportEditsForSymbolsOptions, IdentifierTypePredicate, ImportAdderAction as APIImportAdderAction, IndexedAccessType, IndexInfo, IndexType, InterfaceType, IntersectionType, IntrinsicType, JSDocTagInfo, LiteralType, NumberLiteralType, ObjectType, StringLiteralType, StringMappingType, StructuredType, SubstitutionType, TemplateLiteralType, ThisTypePredicate, TupleType, TupleTypeReference, Type, TypeParameter, TypePredicate, TypePredicateBase, TypeReference, UnionOrIntersectionType, UnionType } from "./types.ts";
+import type { AssertsIdentifierTypePredicate, AssertsThisTypePredicate, BigIntLiteralType, BooleanLiteralType, CompletionEntry, CompletionInfo, CompletionOptions, ConditionalType, EmitOutput, EmitOutputFile, EmitResult, FormatDiagnosticsHost, FreshableType, GenericType, GetImportEditsForSymbolsOptions, IdentifierTypePredicate, ImportAdderAction as APIImportAdderAction, IndexedAccessType, IndexInfo, IndexType, InterfaceType, IntersectionType, IntrinsicType, JSDocTagInfo, LiteralType, MappedType, NumberLiteralType, ObjectType, StringLiteralType, StringMappingType, StructuredType, SubstitutionType, TemplateLiteralType, ThisTypePredicate, TupleType, TupleTypeReference, Type, TypeParameter, TypePredicate, TypePredicateBase, TypeReference, UnionOrIntersectionType, UnionType } from "./types.ts";
 export { formatDiagnostics, formatDiagnosticsWithColorAndContext } from "../diagnosticFormatter.ts";
 export { documentURIToFileName, fileNameToDocumentURI } from "../path.ts";
-export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, SignatureFlags, SignatureKind, SymbolFlags, TypeFlags, TypeFormatFlags, TypePredicateKind };
-export type { APIFileChanges, APIImportAdderAction as ImportAdderAction, APIOptions, AssertsIdentifierTypePredicate, AssertsThisTypePredicate, BigIntLiteralType, BooleanLiteralType, ClientSocketOptions, ClientSpawnOptions, CompilerOptions, CompletionEntry, CompletionInfo, CompletionOptions, ConditionalType, CreateProgramOptions, Diagnostic, DocumentIdentifier, DocumentPosition, EmitOutput, EmitOutputFile, EmitResult, FormatDiagnosticsHost, FreshableType, GenericType, GetImportEditsForSymbolsOptions, IdentifierTypePredicate, IndexedAccessType, IndexInfo, IndexType, InterfaceType, IntersectionType, IntrinsicType, JSDocTagInfo, LiteralType, LSPConnectionOptions, NumberLiteralType, ObjectType, PackageId, ParsedCommandLine, ProjectReference, ReadConfigFileResponse, RequestTiming, ResolvedModule, ResolvedTypeReferenceDirective, SourceFileMetadata, StringLiteralType, StringMappingType, StructuredType, SubstitutionType, TemplateLiteralType, TextEdit, ThisTypePredicate, TimingAccumulators, TimingInfo, TupleType, TupleTypeReference, Type, TypeAcquisition, TypeParameter, TypePredicate, TypePredicateBase, TypeReference, UnionOrIntersectionType, UnionType, };
+export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, ScriptKind, SignatureFlags, SignatureKind, SymbolFlags, TypeFlags, TypeFormatFlags, TypePredicateKind };
+export type { APIImportAdderAction as ImportAdderAction, APIOptions, AssertsIdentifierTypePredicate, AssertsThisTypePredicate, BigIntLiteralType, BooleanLiteralType, ClientSocketOptions, ClientSpawnOptions, CompilerOptions, CompletionEntry, CompletionInfo, CompletionOptions, ConditionalType, ConfiguredProjectId, CreateSourceFileOptions, Diagnostic, DocumentIdentifier, DocumentPosition, EmitOutput, EmitOutputFile, EmitResult, FileNotifications, FormatDiagnosticsHost, FreshableType, GenericType, GetImportEditsForSymbolsOptions, IdentifierTypePredicate, IndexedAccessType, IndexInfo, IndexType, InferredProjectId, InterfaceType, IntersectionType, IntrinsicType, JSDocTagInfo, LiteralType, LSPConnectionOptions, MappedType, ModuleResolutionEntry, ModuleResolutionSpec, NumberLiteralType, ObjectType, PackageId, ParsedCommandLine, ProjectId, ProjectReference, ReadConfigFileResponse, RequestTiming, ResolutionMode, ResolvedModule, ResolvedTypeReferenceDirective, ResolveModuleNameResult, SourceFileMetadata, StaticModuleResolution, StringLiteralType, StringMappingType, StructuredType, SubstitutionType, SyntheticProjectId, TemplateLiteralType, TextEdit, ThisTypePredicate, TimingAccumulators, TimingInfo, TupleType, TupleTypeReference, Type, TypeAcquisition, TypeParameter, TypePredicate, TypePredicateBase, TypeReference, UnionOrIntersectionType, UnionType, };
+export interface ModuleResolverOptions {
+    moduleResolutions?: ModuleResolutionSpec | undefined;
+    resolveModuleName?: ResolveModuleNameCallback | undefined;
+}
+export interface ResolveModuleNameCallbackOptions {
+    snapshot: Snapshot | InProgressSnapshot | undefined;
+}
+declare const inProgressSnapshotBrand: unique symbol;
+export type InProgressSnapshot = number & {
+    readonly [inProgressSnapshotBrand]: never;
+};
+export type ResolveModuleNameCallback = (moduleName: string, containingDirectory: string, resolutionMode: ResolutionMode | undefined, options: ResolveModuleNameCallbackOptions) => StaticModuleResolution | undefined;
+export type CreateProgramOptions = Omit<ProtocolCreateProgramOptions, "moduleResolver"> & {
+    moduleResolver?: ModuleResolver | undefined;
+};
+export type CreateSnapshotProgramParams = Omit<ProtocolCreateSnapshotProgramParams, "options"> & {
+    options?: CreateProgramOptions | undefined;
+};
+export type ReconfigureSnapshotProgramParams = Omit<ProtocolReconfigureSnapshotProgramParams, "options"> & {
+    options?: CreateProgramOptions | undefined;
+};
+export type CreateSnapshotParams = Omit<ProtocolCreateSnapshotParams, "createPrograms" | "reconfigurePrograms"> & {
+    createPrograms?: readonly CreateSnapshotProgramParams[] | undefined;
+    reconfigurePrograms?: readonly ReconfigureSnapshotProgramParams[] | undefined;
+};
+export type LanguageServerSnapshotChanges = Omit<ProtocolLanguageServerSnapshotChanges, "createPrograms" | "reconfigurePrograms"> & {
+    createPrograms?: readonly CreateSnapshotProgramParams[] | undefined;
+    reconfigurePrograms?: readonly ReconfigureSnapshotProgramParams[] | undefined;
+};
 export interface TranspileOptions {
-    compilerOptions?: CompilerOptions;
-    fileName?: string;
-    reportDiagnostics?: boolean;
+    compilerOptions?: CompilerOptions | undefined;
+    fileName?: string | undefined;
+    reportDiagnostics?: boolean | undefined;
 }
 export interface TranspileOutput {
     outputText: string;
@@ -44,11 +74,12 @@ export declare class API<FromLSP extends boolean = false> implements FormatDiagn
     private sourceFileCache;
     private toPath;
     private currentDirectory;
+    private readonly decoder;
     private getCanonicalFileNameWorker;
     private initialized;
     private initializing;
     private activeSnapshots;
-    private latestSnapshot;
+    readonly printer: Printer;
     readonly internal: InternalAPI;
     constructor(options?: APIOptions | LSPConnectionOptions);
     /**
@@ -93,6 +124,14 @@ export declare class API<FromLSP extends boolean = false> implements FormatDiagn
             configDirectory?: never;
         }): Generator<ProtocolRequest, ParsedCommandLine, ProtocolResponse["result"]>;
     };
+    get createSourceFile(): {
+        (fileName: string, sourceText: string, options?: CreateSourceFileOptions): SourceFile;
+        gen(fileName: string, sourceText: string, options?: CreateSourceFileOptions): Generator<ProtocolRequest, SourceFile, ProtocolResponse["result"]>;
+    };
+    get createSourceFileFromFile(): {
+        (file: DocumentIdentifier, options?: CreateSourceFileOptions): SourceFile;
+        gen(file: DocumentIdentifier, options?: CreateSourceFileOptions): Generator<ProtocolRequest, SourceFile, ProtocolResponse["result"]>;
+    };
     get transpileModule(): {
         (input: string, options?: TranspileOptions): TranspileOutput;
         gen(input: string, options?: TranspileOptions): Generator<ProtocolRequest, TranspileOutput, ProtocolResponse["result"]>;
@@ -109,20 +148,34 @@ export declare class API<FromLSP extends boolean = false> implements FormatDiagn
         (file: DocumentIdentifier, options?: TranspileOptions): TranspileOutput;
         gen(file: DocumentIdentifier, options?: TranspileOptions): Generator<ProtocolRequest, TranspileOutput, ProtocolResponse["result"]>;
     };
-    get updateSnapshot(): {
-        (params?: FromLSP extends true ? LSPUpdateSnapshotParams : UpdateSnapshotParams): Snapshot;
-        gen(params?: FromLSP extends true ? LSPUpdateSnapshotParams : UpdateSnapshotParams): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
+    get createSnapshot(): {
+        <const CreatePrograms extends CreateSnapshotParams["createPrograms"] = undefined, const OpenFiles extends CreateSnapshotParams["openFiles"] = undefined>(params: SnapshotOperationParams<CreateSnapshotParams, CreatePrograms, OpenFiles>): SnapshotForOperationResults<CreatePrograms, OpenFiles>;
+        (): Snapshot;
+        gen<const CreatePrograms extends CreateSnapshotParams["createPrograms"] = undefined, const OpenFiles extends CreateSnapshotParams["openFiles"] = undefined>(params: SnapshotOperationParams<CreateSnapshotParams, CreatePrograms, OpenFiles>): Generator<ProtocolRequest, SnapshotForOperationResults<CreatePrograms, OpenFiles>, ProtocolResponse["result"]>;
+        gen(): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
     };
-    /** @internal */
-    get updateSnapshotFrom(): {
-        (baseSnapshot: Snapshot, params?: UpdateSnapshotParams): Snapshot;
-        gen(baseSnapshot: Snapshot, params?: UpdateSnapshotParams): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
+    private get updateSnapshot();
+    private prepareCreateSnapshotParams;
+    private prepareLanguageServerSnapshotChanges;
+    private createSnapshotUpdater;
+    /**
+     * Returns the language server's current canonical snapshot after atomically
+     * adopting any supplied API-driven changes. Only available on LSP-connected APIs.
+     */
+    get getCurrentLanguageServerSnapshot(): {
+        <const CreatePrograms extends LanguageServerSnapshotChanges["createPrograms"] = undefined, const OpenFiles extends LanguageServerSnapshotChanges["openFiles"] = undefined>(...args: FromLSP extends true ? [changes: SnapshotOperationParams<LanguageServerSnapshotChanges, CreatePrograms, OpenFiles>, baseSnapshot?: Snapshot] : [changes: never, baseSnapshot?: never]): SnapshotForOperationResults<CreatePrograms, OpenFiles>;
+        (...args: FromLSP extends true ? [changes?: LanguageServerSnapshotChanges, baseSnapshot?: Snapshot] : [changes: never, baseSnapshot?: never]): Snapshot;
+        gen<const CreatePrograms extends LanguageServerSnapshotChanges["createPrograms"] = undefined, const OpenFiles extends LanguageServerSnapshotChanges["openFiles"] = undefined>(...args: FromLSP extends true ? [changes: SnapshotOperationParams<LanguageServerSnapshotChanges, CreatePrograms, OpenFiles>, baseSnapshot?: Snapshot] : [changes: never, baseSnapshot?: never]): Generator<ProtocolRequest, SnapshotForOperationResults<CreatePrograms, OpenFiles>, ProtocolResponse["result"]>;
+        gen(...args: FromLSP extends true ? [changes?: LanguageServerSnapshotChanges, baseSnapshot?: Snapshot] : [changes: never, baseSnapshot?: never]): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
     };
-    private get updateSnapshotWorker();
     [globalThis.Symbol.dispose](): void;
     get close(): {
         (): void;
         gen(): Generator<ProtocolRequest, void, ProtocolResponse["result"]>;
+    };
+    get createModuleResolver(): {
+        (compilerOptions: CompilerOptions, options?: ModuleResolverOptions): ModuleResolver;
+        gen(compilerOptions: CompilerOptions, options?: ModuleResolverOptions): Generator<ProtocolRequest, ModuleResolver, ProtocolResponse["result"]>;
     };
     clearSourceFileCache(): void;
     get runWithTemporaryFileUpdate(): {
@@ -149,24 +202,15 @@ export declare class API<FromLSP extends boolean = false> implements FormatDiagn
         (): void;
         gen(): Generator<ProtocolRequest, void, ProtocolResponse["result"]>;
     };
-    private isProgramActive;
-    /**
-     * Creates a program from current filesystem state, or derives one from oldProgram after applying fileChanges.
-     */
+    /** Creates a program from current filesystem state. */
     get createProgram(): {
-        (rootFiles: readonly DocumentIdentifier[], createProgramOptions: CreateProgramOptions, oldProgram?: Program, fileChanges?: APIFileChanges): Program;
-        gen(rootFiles: readonly DocumentIdentifier[], createProgramOptions: CreateProgramOptions, oldProgram?: Program, fileChanges?: APIFileChanges): Generator<ProtocolRequest, Program, ProtocolResponse["result"]>;
+        (rootFiles: readonly DocumentIdentifier[], compilerOptions: CompilerOptions, createProgramOptions?: CreateProgramOptions): Program;
+        gen(rootFiles: readonly DocumentIdentifier[], compilerOptions: CompilerOptions, createProgramOptions?: CreateProgramOptions): Generator<ProtocolRequest, Program, ProtocolResponse["result"]>;
     };
 }
 type EnsureInitialized = (() => void) & {
     gen(): Generator<ProtocolRequest, void, ProtocolResponse["result"]>;
 };
-interface SnapshotOwner extends FormatDiagnosticsHost {
-    updateSnapshotFrom: {
-        (baseSnapshot: Snapshot, params?: UpdateSnapshotParams): Snapshot;
-        gen(baseSnapshot: Snapshot, params?: UpdateSnapshotParams): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
-    };
-}
 export declare class InternalAPI {
     private client;
     private ensureInitialized;
@@ -185,31 +229,86 @@ export declare class InternalAPI {
         gen(dir: string): Generator<ProtocolRequest, string, ProtocolResponse["result"]>;
     };
 }
+type SnapshotUpdater = ((params: CreateSnapshotParams) => Snapshot) & {
+    gen(params: CreateSnapshotParams): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
+};
+export interface SnapshotOperation {
+    readonly createdPrograms?: readonly Program<SyntheticProjectId>[] | undefined;
+    readonly openedFiles?: readonly SnapshotOpenedFileOperation[] | undefined;
+}
+export interface SnapshotOpenedFileOperation {
+    readonly project: Project;
+}
+/** Replaces every element of a tuple while preserving its length and index structure. */
+type MapTupleTo<Tuple extends readonly unknown[], Result> = {
+    readonly [Index in keyof Tuple]: Result;
+};
+/**
+ * Keeps `Tuple` as an inference target while contextually typing each element from
+ * `Elements`. The mapped intersection supplies nested completions and excess-property
+ * checks without widening an inferred tuple to an array.
+ */
+type ContextualizeTuple<Tuple extends readonly unknown[] | undefined, Elements extends readonly unknown[] | undefined> = Tuple & {
+    readonly [Index in keyof Tuple]: NonNullable<Elements>[number];
+};
+/** Substitutes the operation arrays with contextually typed, tuple-preserving versions. */
+type SnapshotOperationParams<Params extends {
+    createPrograms?: readonly unknown[] | undefined;
+    openFiles?: readonly unknown[] | undefined;
+}, CreatePrograms extends Params["createPrograms"], OpenFiles extends Params["openFiles"]> = Omit<Params, "createPrograms" | "openFiles"> & {
+    createPrograms?: ContextualizeTuple<CreatePrograms, Params["createPrograms"]> | undefined;
+    openFiles?: ContextualizeTuple<OpenFiles, Params["openFiles"]> | undefined;
+};
+/**
+ * Refines a snapshot's operation results to required tuples when the corresponding
+ * operation arrays were supplied, preserving their lengths for indexed access.
+ */
+type SnapshotForOperationResults<CreatePrograms extends readonly unknown[] | undefined, OpenFiles extends readonly unknown[] | undefined> = Snapshot & {
+    readonly operation: SnapshotOperation & (CreatePrograms extends readonly unknown[] ? {
+        readonly createdPrograms: MapTupleTo<CreatePrograms, Program<SyntheticProjectId>>;
+    } : unknown) & (OpenFiles extends readonly unknown[] ? {
+        readonly openedFiles: MapTupleTo<OpenFiles, SnapshotOpenedFileOperation>;
+    } : unknown);
+};
+/** Derives the refined snapshot result type from a complete operation parameter type. */
+export type SnapshotForOperation<Params extends CreateSnapshotParams> = SnapshotForOperationResults<Params extends {
+    createPrograms: infer CreatePrograms extends readonly unknown[];
+} ? CreatePrograms : undefined, Params extends {
+    openFiles: infer OpenFiles extends readonly unknown[];
+} ? OpenFiles : undefined>;
 export declare class Snapshot {
     readonly id: number;
+    readonly operation: SnapshotOperation;
     private projectMap;
     private toPath;
     private client;
     private disposed;
     private disposePromise;
     private onDispose;
-    private api;
     private snapshotRegistry;
+    private projectDataMap;
+    private updateSnapshot;
     readonly internal: SnapshotInternalAPI;
-    constructor(data: UpdateSnapshotResponse, client: Client, sourceFileCache: SourceFileCache, toPath: (fileName: string) => Path, api: SnapshotOwner, onDispose: () => void);
+    constructor(data: CreateSnapshotResponse, client: Client, sourceFileCache: SourceFileCache, toPath: (fileName: string) => Path, formatDiagnosticsHost: FormatDiagnosticsHost, onDispose: () => void, updateSnapshot: SnapshotUpdater, baseSnapshot?: Snapshot);
     getProjects(): readonly Project[];
-    getProject(configFileName: string): Project | undefined;
+    getConfiguredProject(configFileName: string): Project<ConfiguredProjectId> | undefined;
+    getProject<Id extends ProjectId>(projectId: Id): Project<Id> | undefined;
+    getProgram<Id extends ProjectId>(projectId: Id): Program<Id> | undefined;
+    get update(): {
+        <const CreatePrograms extends CreateSnapshotParams["createPrograms"] = undefined, const OpenFiles extends CreateSnapshotParams["openFiles"] = undefined>(params: SnapshotOperationParams<CreateSnapshotParams, CreatePrograms, OpenFiles>): SnapshotForOperationResults<CreatePrograms, OpenFiles>;
+        (params: CreateSnapshotParams): Snapshot;
+        gen<const CreatePrograms extends CreateSnapshotParams["createPrograms"] = undefined, const OpenFiles extends CreateSnapshotParams["openFiles"] = undefined>(params: SnapshotOperationParams<CreateSnapshotParams, CreatePrograms, OpenFiles>): Generator<ProtocolRequest, SnapshotForOperationResults<CreatePrograms, OpenFiles>, ProtocolResponse["result"]>;
+        gen(params: CreateSnapshotParams): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
+    };
+    /**
+     * Gets the default project for a given file from the configured projects and
+     * inferred project already loaded in the snapshot. Synthetic projects are not
+     * considered. Files that have been opened with `openFiles` are guaranteed to
+     * have a result.
+     */
     get getDefaultProjectForFile(): {
         (file: DocumentIdentifier): Project | undefined;
         gen(file: DocumentIdentifier): Generator<ProtocolRequest, Project | undefined, ProtocolResponse["result"]>;
-    };
-    /**
-     * Creates the next snapshot, layering its filesystem over this snapshot's
-     * filesystem. This snapshot must still be active and be the latest snapshot.
-     */
-    get update(): {
-        (params?: UpdateSnapshotParams): Snapshot;
-        gen(params?: UpdateSnapshotParams): Generator<ProtocolRequest, Snapshot, ProtocolResponse["result"]>;
     };
     [globalThis.Symbol.dispose](): void;
     get dispose(): {
@@ -219,25 +318,48 @@ export declare class Snapshot {
     private get disposeWorker();
     isDisposed(): boolean;
     private ensureNotDisposed;
+    private requireProject;
+}
+export declare class ModuleResolver {
+    readonly id: number;
+    private readonly client;
+    private readonly disposeCallback;
+    private disposed;
+    constructor(id: number, client: Client, disposeCallback: (() => void) | undefined);
+    get resolveModuleName(): {
+        (moduleName: string, containingDirectory: DocumentIdentifier, resolutionMode?: ResolutionMode, options?: {
+            snapshot?: Snapshot | InProgressSnapshot | undefined;
+        }): ResolveModuleNameResult;
+        gen(moduleName: string, containingDirectory: DocumentIdentifier, resolutionMode?: ResolutionMode, options?: {
+            snapshot?: Snapshot | InProgressSnapshot | undefined;
+        }): Generator<ProtocolRequest, ResolveModuleNameResult, ProtocolResponse["result"]>;
+    };
+    [globalThis.Symbol.dispose](): void;
+    get dispose(): {
+        (): void;
+        gen(): Generator<ProtocolRequest, void, ProtocolResponse["result"]>;
+    };
+    /** @internal */
+    ensureNotDisposed(): void;
 }
 declare class SnapshotObjectRegistry {
     private readonly symbols;
     private readonly client;
     private readonly snapshotId;
     private readonly resolveProject;
-    constructor(client: Client, snapshotId: number, resolveProject: (projectId: Path) => Project | undefined);
-    /** Resolve a project id (a config file path) to its Project within this snapshot. */
-    getProject(projectId: Path): Project | undefined;
+    constructor(client: Client, snapshotId: number, resolveProject: (projectId: ProjectId) => Project | undefined);
+    /** Resolve a project ID to its Project within this snapshot. */
+    getProject(projectId: ProjectId): Project | undefined;
     getOrCreateSymbol(data: SymbolResponse): Symbol;
     getSymbol(id: number): Symbol | undefined;
     clear(): void;
     get fetchSymbol(): {
-        (source: Symbol | Signature | Type, method: SymbolPropertyMethod, handle: number | undefined, projectId: Path): Symbol;
-        gen(source: Symbol | Signature | Type, method: SymbolPropertyMethod, handle: number | undefined, projectId: Path): Generator<ProtocolRequest, Symbol, ProtocolResponse["result"]>;
+        (source: Symbol | Signature | Type, method: SymbolPropertyMethod, handle: number | undefined, projectId: ProjectId): Symbol;
+        gen(source: Symbol | Signature | Type, method: SymbolPropertyMethod, handle: number | undefined, projectId: ProjectId): Generator<ProtocolRequest, Symbol, ProtocolResponse["result"]>;
     };
     get fetchSymbols(): {
-        (source: Symbol | Signature | Type, method: SymbolsPropertyMethod, handles: readonly number[] | undefined, projectId: Path): readonly Symbol[];
-        gen(source: Symbol | Signature | Type, method: SymbolsPropertyMethod, handles: readonly number[] | undefined, projectId: Path): Generator<ProtocolRequest, readonly Symbol[], ProtocolResponse["result"]>;
+        (source: Symbol | Signature | Type, method: SymbolsPropertyMethod, handles: readonly number[] | undefined, projectId: ProjectId): readonly Symbol[];
+        gen(source: Symbol | Signature | Type, method: SymbolsPropertyMethod, handles: readonly number[] | undefined, projectId: ProjectId): Generator<ProtocolRequest, readonly Symbol[], ProtocolResponse["result"]>;
     };
 }
 declare class ProjectObjectRegistry {
@@ -309,18 +431,18 @@ declare class ProjectObjectRegistry {
         gen(source: Signature, pos: number): Generator<ProtocolRequest, Type, ProtocolResponse["result"]>;
     };
 }
-export declare class Project {
-    readonly id: Path;
+export declare class Project<Id extends ProjectId = ProjectId> {
+    readonly id: Id;
     readonly configFileName: string;
     readonly currentDirectory: string;
+    readonly dirty: boolean;
     readonly parsedCommandLine: ParsedCommandLine;
     /** @deprecated Use `parsedCommandLine.options`. */
     readonly compilerOptions: CompilerOptions;
     /** @deprecated Use `parsedCommandLine.fileNames`. */
     readonly rootFiles: readonly string[];
-    readonly program: Program;
+    readonly program: Program<Id>;
     readonly checker: Checker;
-    readonly emitter: Emitter;
     readonly languageService: LanguageService;
     private client;
     private snapshotId;
@@ -364,9 +486,10 @@ export declare class LanguageService {
         gen(document: string, position: number, options?: CompletionOptions): Generator<ProtocolRequest, CompletionInfo | undefined, ProtocolResponse["result"]>;
     };
 }
-export declare class Program implements FormatDiagnosticsHost {
+export declare class Program<Id extends ProjectId = ProjectId> implements FormatDiagnosticsHost {
     /** @internal */
     readonly snapshotId: number;
+    readonly id: Id;
     private readonly project;
     private readonly client;
     private readonly sourceFileCache;
@@ -376,7 +499,7 @@ export declare class Program implements FormatDiagnosticsHost {
     private readonly sourceFileMetadataCache;
     private ownedSnapshot;
     private disposePromise;
-    constructor(snapshotId: number, project: Project, client: Client, sourceFileCache: SourceFileCache, toPath: (fileName: string) => Path, formatDiagnosticsHost: FormatDiagnosticsHost);
+    constructor(snapshotId: number, project: Project<Id>, client: Client, sourceFileCache: SourceFileCache, toPath: (fileName: string) => Path, formatDiagnosticsHost: FormatDiagnosticsHost);
     getCurrentDirectory(): string;
     getCanonicalFileName(fileName: string): string;
     getNewLine(): string;
@@ -396,6 +519,14 @@ export declare class Program implements FormatDiagnosticsHost {
     get getResolvedModule(): {
         (file: DocumentIdentifier, moduleName: string, mode: ModuleKind): ResolvedModule | undefined;
         gen(file: DocumentIdentifier, moduleName: string, mode: ModuleKind): Generator<ProtocolRequest, ResolvedModule | undefined, ProtocolResponse["result"]>;
+    };
+    get getModeForUsageLocation(): {
+        (file: DocumentIdentifier, usage: StringLiteralLikeNode): ModuleKind;
+        gen(file: DocumentIdentifier, usage: StringLiteralLikeNode): Generator<ProtocolRequest, ModuleKind, ProtocolResponse["result"]>;
+    };
+    get getModeForResolutionAtIndex(): {
+        (file: DocumentIdentifier, index: number): ModuleKind;
+        gen(file: DocumentIdentifier, index: number): Generator<ProtocolRequest, ModuleKind, ProtocolResponse["result"]>;
     };
     get getResolvedModuleFromModuleSpecifier(): {
         (moduleSpecifier: StringLiteralLikeNode, sourceFile?: DocumentIdentifier): ResolvedModule | undefined;
@@ -558,7 +689,7 @@ export declare class Program implements FormatDiagnosticsHost {
         (files: readonly DocumentIdentifier[]): EmitOutput;
         gen(files: readonly DocumentIdentifier[]): Generator<ProtocolRequest, EmitOutput, ProtocolResponse["result"]>;
     };
-    getProject(): Project;
+    getProject(): Project<Id>;
 }
 export declare class Checker {
     private snapshotId;
@@ -1029,12 +1160,16 @@ export interface PrintNodeOptions {
     neverAsciiEscape?: boolean | undefined;
     terminateUnterminatedLiterals?: boolean | undefined;
 }
-export declare class Emitter {
+export declare class Printer {
     private client;
     constructor(client: Client);
     get printNode(): {
         (node: Node, options?: PrintNodeOptions): string;
         gen(node: Node, options?: PrintNodeOptions): Generator<ProtocolRequest, string, ProtocolResponse["result"]>;
+    };
+    get printFile(): {
+        (sourceFile: SourceFile, options?: PrintNodeOptions): string;
+        gen(sourceFile: SourceFile, options?: PrintNodeOptions): Generator<ProtocolRequest, string, ProtocolResponse["result"]>;
     };
 }
 export declare class SnapshotInternalAPI {
@@ -1178,6 +1313,10 @@ declare class TypeObject implements Type {
     readonly extendsType: number;
     readonly baseType: number;
     readonly substConstraint: number;
+    readonly typeParameter: number;
+    readonly constraintType: number;
+    readonly nameType: number;
+    readonly templateType: number;
     private trueType;
     private falseType;
     private constraint;
@@ -1191,6 +1330,7 @@ declare class TypeObject implements Type {
     private constructSignatures;
     private indexInfos;
     private baseTypes;
+    private types;
     private stringIndexType;
     private numberIndexType;
     constructor(data: TypeResponse, objectRegistry: ProjectObjectRegistry);
@@ -1284,6 +1424,22 @@ declare class TypeObject implements Type {
         (): readonly Type[];
         gen(): Generator<ProtocolRequest, readonly Type[], ProtocolResponse["result"]>;
     };
+    get getTypeParameter(): {
+        (): TypeParameter;
+        gen(): Generator<ProtocolRequest, TypeParameter, ProtocolResponse["result"]>;
+    };
+    get getConstraintType(): {
+        (): Type;
+        gen(): Generator<ProtocolRequest, Type, ProtocolResponse["result"]>;
+    };
+    get getNameType(): {
+        (): Type | undefined;
+        gen(): Generator<ProtocolRequest, Type | undefined, ProtocolResponse["result"]>;
+    };
+    get getTemplateType(): {
+        (): Type;
+        gen(): Generator<ProtocolRequest, Type, ProtocolResponse["result"]>;
+    };
     get getObjectType(): {
         (): Type;
         gen(): Generator<ProtocolRequest, Type, ProtocolResponse["result"]>;
@@ -1349,6 +1505,7 @@ declare class TypeObject implements Type {
     isTemplateLiteralType(): this is TemplateLiteralType;
     isStringMappingType(): this is StringMappingType;
     isTypeParameter(): this is TypeParameter;
+    isMappedType(): this is MappedType;
 }
 export declare function isUnionType(type: Type): type is UnionType;
 export declare function isIntersectionType(type: Type): type is IntersectionType;

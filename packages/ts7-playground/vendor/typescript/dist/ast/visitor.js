@@ -33,6 +33,46 @@ function forEachChildOfJSDocParameterOrPropertyTag(data, cbNode, cbNodes) {
         visitNodesForEachChild(cbNode, cbNodes, data.comment);
 }
 export { forEachChildOfJSDocParameterOrPropertyTag as forEachChildOfJSDocParameterTag, forEachChildOfJSDocParameterOrPropertyTag as forEachChildOfJSDocPropertyTag };
+// ── yieldEachChild implementations ──
+function* yieldEachChildOfJSDocParameterOrPropertyTag(data) {
+    if (data.tagName) {
+        const res = yield data.tagName;
+        if (res)
+            return res;
+    }
+    if (data.isNameFirst) {
+        if (data.name) {
+            const res = yield data.name;
+            if (res)
+                return res;
+        }
+        if (data.typeExpression) {
+            const res = yield data.typeExpression;
+            if (res)
+                return res;
+        }
+    }
+    else {
+        if (data.typeExpression) {
+            const res = yield data.typeExpression;
+            if (res)
+                return res;
+        }
+        if (data.name) {
+            const res = yield data.name;
+            if (res)
+                return res;
+        }
+    }
+    if (data.comment) {
+        for (const node of data.comment) {
+            const res = yield node;
+            if (res)
+                return res;
+        }
+    }
+}
+export { yieldEachChildOfJSDocParameterOrPropertyTag as yieldEachChildOfJSDocParameterTag, yieldEachChildOfJSDocParameterOrPropertyTag as yieldEachChildOfJSDocPropertyTag };
 // ── visitEachChild implementations ──
 function visitEachChildOfJSDocParameterOrPropertyTag(node, visitor) {
     const _tagName = visitNode(node.tagName, visitor, isIdentifier);

@@ -4,7 +4,7 @@ import { getPathComponents, normalizePath, } from "./path.js";
 import { resolveFileName, } from "./proto.js";
 /** The callback names supported by the Go server for virtual FS delegation. */
 export const fsCallbackNames = ["readFile", "fileExists", "directoryExists", "getAccessibleEntries", "realpath", "writeFile"];
-/** Creates a full request filesystem, deriving directory listings when omitted. */
+/** Creates a full request filesystem. The server derives directory listings when omitted. */
 export function createFileSystem(files, options = {}) {
     return createRequestFileSystem("full", files, options);
 }
@@ -31,8 +31,8 @@ export function createFileSystemWithLib(files, options = {}) {
     }
     return createRequestFileSystem("full", files, {
         symlinks,
-        ...(options.directories ? { directories: options.directories } : {}),
-        ...(options.removedPaths?.length ? { removedPaths: options.removedPaths } : {}),
+        directories: options.directories,
+        removedPaths: options.removedPaths?.length ? options.removedPaths : undefined,
     });
 }
 /** Creates a request filesystem layer, merging base directory listings when omitted. */
@@ -49,53 +49,13 @@ function createRequestFileSystem(kind, files, options) {
         normalizedFiles.set(fileName, content);
     }
     const fileRecord = Object.fromEntries(normalizedFiles);
-    const directories = options.directories ?? (kind === "full" ? deriveDirectoryListings(fileRecord) : undefined);
     return {
         kind,
         files: fileRecord,
-        ...(directories ? { directories } : {}),
-        ...(options.symlinks ? { symlinks: options.symlinks } : {}),
-        ...(options.removedPaths?.length ? { removedPaths: [...options.removedPaths] } : {}),
+        directories: options.directories,
+        symlinks: options.symlinks,
+        removedPaths: options.removedPaths?.length ? [...options.removedPaths] : undefined,
     };
-}
-function deriveDirectoryListings(files) {
-    const listings = new Map();
-    const getListing = (directory) => {
-        let listing = listings.get(directory);
-        if (!listing) {
-            listing = { files: new Set(), directories: new Set() };
-            listings.set(directory, listing);
-        }
-        return listing;
-    };
-    for (const inputPath of Object.keys(files)) {
-        const filePath = normalizePath(inputPath);
-        const fileName = getBaseName(filePath);
-        let directory = getDirectory(filePath);
-        getListing(directory).files.add(fileName);
-        let parent = getDirectory(directory);
-        while (parent !== directory) {
-            getListing(parent).directories.add(getBaseName(directory));
-            directory = parent;
-            parent = getDirectory(directory);
-        }
-    }
-    return Object.fromEntries([...listings].map(([directory, listing]) => [directory, {
-            files: [...listing.files],
-            directories: [...listing.directories],
-        }]));
-}
-function getDirectory(path) {
-    const components = getPathComponents(path);
-    if (components.length <= 1)
-        return components[0] ?? "";
-    components.pop();
-    const root = components.shift();
-    return root + components.join("/");
-}
-function getBaseName(path) {
-    const components = getPathComponents(path);
-    return components.at(-1) ?? "";
 }
 export function createVirtualFileSystem(files) {
     const root = {
