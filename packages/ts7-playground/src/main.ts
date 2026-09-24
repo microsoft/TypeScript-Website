@@ -56,6 +56,15 @@ type PlaygroundHelp = {
   docs: Array<{ html: string; title: string }>
 }
 
+type LayoutState = {
+  emitVisible: boolean
+  filesVisible: boolean
+  filesWidth: number
+  outputVisible: boolean
+  outputWidth: number
+  runVisible: boolean
+}
+
 type RuntimeLog = {
   level: "debug" | "error" | "info" | "log" | "warn"
   text: string
@@ -122,13 +131,18 @@ console.log(message)
 ]
 
 const inputElement = getElement("input-editor")
+const workspace = document.querySelector<HTMLElement>(".workspace")!
 const fileExplorer = getElement("file-explorer")
 const fileList = getElement("file-list")
-const mobileFilesToggle = getElement<HTMLButtonElement>("mobile-files-toggle")
+const fileResizer = getElement("file-resizer")
+const outputResizer = getElement("output-resizer")
 const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
-const deleteFileButton = getElement<HTMLButtonElement>("delete-file-button")
+const toggleFilesButton = getElement<HTMLButtonElement>("toggle-files-button")
+const toggleOutputButton = getElement<HTMLButtonElement>("toggle-output-button")
+const toggleEmitButton = getElement<HTMLButtonElement>("toggle-emit-button")
+const toggleRunOutputButton = getElement<HTMLButtonElement>("toggle-run-output-button")
 const navigateBackButton = getElement<HTMLButtonElement>("navigate-back-button")
 const navigateForwardButton = getElement<HTMLButtonElement>("navigate-forward-button")
 const currentFile = getElement("current-file")
@@ -153,6 +167,7 @@ const helpDocument = getElement("help-document")
 const helpBackButton = getElement<HTMLButtonElement>("help-back-button")
 const helpContent = getElement("help-content")
 const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
+const runOutput = getElement("run-output")
 const runLog = getElement("run-log")
 const status = getElement("status")
 const loader = getElement("loader")
@@ -187,6 +202,7 @@ const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
 const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
 let assetCachePromise: Promise<Cache | undefined> | undefined
+const layoutStorageKey = "ts7-playground-layout"
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -254,20 +270,11 @@ const forwardLocations: EditorLocation[] = []
 let trackedEditorLocation: EditorLocation | undefined
 let applyingEditorNavigation = false
 const mobileLayout = matchMedia("(max-width: 700px), (max-width: 900px) and (max-height: 600px)")
-
-function setMobileFileExplorerExpanded(expanded: boolean) {
-  fileExplorer.dataset.mobileCollapsed = String(!expanded)
-  mobileFilesToggle.setAttribute("aria-expanded", String(expanded))
-  mobileFilesToggle.textContent = expanded ? "Hide" : "Files"
-  requestAnimationFrame(() => inputEditor.layout())
-}
-
-mobileFilesToggle.addEventListener("click", () => {
-  setMobileFileExplorerExpanded(mobileFilesToggle.getAttribute("aria-expanded") !== "true")
-})
-mobileLayout.addEventListener("change", event => {
-  if (!event.matches) setMobileFileExplorerExpanded(true)
-})
+const layoutState = loadLayoutState()
+applyLayoutState()
+setupWorkspaceResizer(fileResizer, "files")
+setupWorkspaceResizer(outputResizer, "output")
+window.addEventListener("resize", applyLayoutState)
 
 renderFileList()
 updateActiveFile()
@@ -314,6 +321,113 @@ inputEditor.onMouseDown(event => {
   })
 })
 
+function loadLayoutState(): LayoutState {
+  const defaults: LayoutState = {
+    emitVisible: true,
+    filesVisible: true,
+    filesWidth: 208,
+    outputVisible: true,
+    outputWidth: 440,
+    runVisible: true,
+  }
+  try {
+    const stored = JSON.parse(localStorage.getItem(layoutStorageKey) ?? "{}")
+    return {
+      emitVisible: typeof stored.emitVisible === "boolean" ? stored.emitVisible : defaults.emitVisible,
+      filesVisible: typeof stored.filesVisible === "boolean" ? stored.filesVisible : defaults.filesVisible,
+      filesWidth: typeof stored.filesWidth === "number" ? stored.filesWidth : defaults.filesWidth,
+      outputVisible: typeof stored.outputVisible === "boolean" ? stored.outputVisible : defaults.outputVisible,
+      outputWidth: typeof stored.outputWidth === "number" ? stored.outputWidth : defaults.outputWidth,
+      runVisible: typeof stored.runVisible === "boolean" ? stored.runVisible : defaults.runVisible,
+    }
+  } catch {
+    return defaults
+  }
+}
+
+function applyLayoutState() {
+  if (!matchMedia("(max-width: 1000px)").matches) {
+    layoutState.filesWidth = clampPanelWidth("files", layoutState.filesWidth)
+    layoutState.outputWidth = clampPanelWidth("output", layoutState.outputWidth)
+  }
+  workspace.style.setProperty("--files-width", `${layoutState.filesWidth}px`)
+  workspace.style.setProperty("--output-width", `${layoutState.outputWidth}px`)
+  workspace.dataset.filesCollapsed = String(!layoutState.filesVisible)
+  workspace.dataset.outputCollapsed = String(!layoutState.outputVisible)
+  emitOutput.hidden = !layoutState.emitVisible
+  runOutput.dataset.collapsed = String(!layoutState.runVisible)
+
+  toggleFilesButton.textContent = layoutState.filesVisible ? "Hide files" : "Show files"
+  toggleFilesButton.setAttribute("aria-expanded", String(layoutState.filesVisible))
+  toggleOutputButton.textContent = layoutState.outputVisible ? "Hide output" : "Show output"
+  toggleOutputButton.setAttribute("aria-expanded", String(layoutState.outputVisible))
+  toggleEmitButton.textContent = layoutState.emitVisible ? "Hide emit" : "Show emit"
+  toggleEmitButton.setAttribute("aria-expanded", String(layoutState.emitVisible))
+  toggleRunOutputButton.textContent = layoutState.runVisible ? "Hide run" : "Show run"
+  toggleRunOutputButton.setAttribute("aria-expanded", String(layoutState.runVisible))
+
+  fileResizer.setAttribute("aria-valuenow", String(Math.round(layoutState.filesWidth)))
+  outputResizer.setAttribute("aria-valuenow", String(Math.round(layoutState.outputWidth)))
+  requestAnimationFrame(() => inputEditor.layout())
+}
+
+function persistLayoutState() {
+  try {
+    localStorage.setItem(layoutStorageKey, JSON.stringify(layoutState))
+  } catch (error) {
+    console.warn("Could not save playground layout", error)
+  }
+}
+
+function setupWorkspaceResizer(element: HTMLElement, target: "files" | "output") {
+  element.addEventListener("pointerdown", event => {
+    if (matchMedia("(max-width: 1000px)").matches) return
+    event.preventDefault()
+    const startX = event.clientX
+    const startWidth = target === "files" ? layoutState.filesWidth : layoutState.outputWidth
+    element.setPointerCapture(event.pointerId)
+    document.body.dataset.resizing = target
+
+    const move = (moveEvent: PointerEvent) => {
+      const delta = moveEvent.clientX - startX
+      const width = target === "files" ? startWidth + delta : startWidth - delta
+      if (target === "files") layoutState.filesWidth = width
+      else layoutState.outputWidth = width
+      applyLayoutState()
+    }
+    const stop = () => {
+      element.removeEventListener("pointermove", move)
+      element.removeEventListener("pointerup", stop)
+      element.removeEventListener("pointercancel", stop)
+      delete document.body.dataset.resizing
+      persistLayoutState()
+    }
+    element.addEventListener("pointermove", move)
+    element.addEventListener("pointerup", stop)
+    element.addEventListener("pointercancel", stop)
+  })
+
+  element.addEventListener("keydown", event => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return
+    event.preventDefault()
+    const direction = event.key === "ArrowRight" ? 1 : -1
+    if (target === "files") layoutState.filesWidth += direction * 16
+    else layoutState.outputWidth -= direction * 16
+    applyLayoutState()
+    persistLayoutState()
+  })
+}
+
+function clampPanelWidth(target: "files" | "output", width: number) {
+  const workspaceWidth = workspace.clientWidth || innerWidth
+  if (target === "files") {
+    const maximum = Math.max(160, workspaceWidth - (layoutState.outputVisible ? layoutState.outputWidth : 0) - 420)
+    return Math.min(Math.max(width, 144), Math.min(360, maximum))
+  }
+  const maximum = Math.max(240, workspaceWidth - (layoutState.filesVisible ? layoutState.filesWidth : 0) - 480)
+  return Math.min(Math.max(width, 240), Math.min(640, maximum))
+}
+
 const inlayEmitter = new monaco.Emitter<void>()
 const typeQueries = new Map<string, TypeQuery[]>()
 for (const language of ["javascript", "typescript"]) {
@@ -339,7 +453,26 @@ for (const model of projectModels.values()) {
 }
 newFileButton.addEventListener("click", createNewFile)
 resetProjectButton.addEventListener("click", resetProject)
-deleteFileButton.addEventListener("click", deleteActiveFile)
+toggleFilesButton.addEventListener("click", () => {
+  layoutState.filesVisible = !layoutState.filesVisible
+  applyLayoutState()
+  persistLayoutState()
+})
+toggleOutputButton.addEventListener("click", () => {
+  layoutState.outputVisible = !layoutState.outputVisible
+  applyLayoutState()
+  persistLayoutState()
+})
+toggleEmitButton.addEventListener("click", () => {
+  layoutState.emitVisible = !layoutState.emitVisible
+  applyLayoutState()
+  persistLayoutState()
+})
+toggleRunOutputButton.addEventListener("click", () => {
+  layoutState.runVisible = !layoutState.runVisible
+  applyLayoutState()
+  persistLayoutState()
+})
 navigateBackButton.addEventListener("click", navigateBack)
 navigateForwardButton.addEventListener("click", navigateForward)
 runButton.addEventListener("click", runProject)
@@ -1477,15 +1610,29 @@ function renderFileList() {
       const fileName = `${projectRoot}/${relativePath}`
       const button = document.createElement("button")
       button.type = "button"
+      button.className = "file-tree-file-button"
       button.dataset.kind = fileKind(fileName)
       button.textContent = basename
       button.addEventListener("click", () => {
         navigateToModel(fileName)
-        if (mobileLayout.matches) setMobileFileExplorerExpanded(false)
+        if (mobileLayout.matches) {
+          layoutState.filesVisible = false
+          applyLayoutState()
+          persistLayoutState()
+        }
       })
       fileButtons.set(fileName, button)
+      const deleteButton = document.createElement("button")
+      deleteButton.type = "button"
+      deleteButton.className = "file-tree-delete"
+      deleteButton.textContent = "×"
+      deleteButton.title = `Delete ${relativePath}`
+      deleteButton.setAttribute("aria-label", `Delete ${relativePath}`)
+      deleteButton.addEventListener("click", () => deleteProjectFile(fileName))
       const item = document.createElement("li")
+      item.className = "file-tree-file"
       item.appendChild(button)
+      item.appendChild(deleteButton)
       list.appendChild(item)
     }
     return list
@@ -1502,10 +1649,6 @@ function updateActiveFile() {
     ? `${model.uri.path.slice(model.uri.path.lastIndexOf("/") + 1)} (bundled)`
     : model.uri.path
   inputEditor.updateOptions({ readOnly: !projectModel })
-  deleteFileButton.disabled = !projectModel
-  deleteFileButton.title = projectModel
-    ? `Delete ${relativeProjectPath(model.uri.path)}`
-    : "Bundled files are read-only"
   editorHint.textContent =
     model.getLanguageId() === "typescript"
       ? "Type query: align ^? below an expression"
@@ -1604,31 +1747,31 @@ function createNewFile() {
   void compileActiveProject?.()
 }
 
-function deleteActiveFile() {
-  const model = inputEditor.getModel()
-  if (!model || !projectModels.has(model.uri.path)) return
+function deleteProjectFile(fileName: string) {
+  const model = projectModels.get(fileName)
+  if (!model) return
   if (projectModels.size === 1) {
     alert("The project must contain at least one file.")
     return
   }
 
-  const fileName = model.uri.path
   const relativePath = relativeProjectPath(fileName)
   if (!confirm(`Delete ${relativePath}? This cannot be undone.`)) return
 
-  const remainingFiles = [...projectModels.keys()].filter(candidate => candidate !== fileName)
-  const fallbackFile =
-    remainingFiles.find(candidate => candidate === entryFileName) ??
-    remainingFiles.find(candidate => /\.[cm]?[jt]sx?$/i.test(candidate)) ??
-    remainingFiles[0]
-  const fallbackModel = projectModels.get(fallbackFile)!
   const deletedUri = model.uri.toString()
   projectModels.delete(fileName)
-  applyingEditorNavigation = true
-  try {
-    inputEditor.setModel(fallbackModel)
-  } finally {
-    applyingEditorNavigation = false
+  if (inputEditor.getModel() === model) {
+    const remainingFiles = [...projectModels.keys()]
+    const fallbackFile =
+      remainingFiles.find(candidate => candidate === entryFileName) ??
+      remainingFiles.find(candidate => /\.[cm]?[jt]sx?$/i.test(candidate)) ??
+      remainingFiles[0]
+    applyingEditorNavigation = true
+    try {
+      inputEditor.setModel(projectModels.get(fallbackFile)!)
+    } finally {
+      applyingEditorNavigation = false
+    }
   }
   model.dispose()
   removeLocationsForUri(backLocations, deletedUri)

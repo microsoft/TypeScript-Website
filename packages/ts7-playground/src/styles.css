@@ -305,12 +305,39 @@ body {
 }
 
 .workspace {
+  --files-handle-width: 0.3rem;
+  --files-width: 13rem;
+  --output-handle-width: 0.3rem;
+  --output-width: 27.5rem;
   min-height: 0;
   display: grid;
-  grid-template-columns: 13rem minmax(24rem, 1fr) minmax(20rem, 0.9fr);
+  grid-template-columns:
+    var(--files-width)
+    var(--files-handle-width)
+    minmax(24rem, 1fr)
+    var(--output-handle-width)
+    var(--output-width);
+}
+
+.workspace[data-files-collapsed="true"] {
+  --files-handle-width: 0rem;
+  --files-width: 0rem;
+}
+
+.workspace[data-output-collapsed="true"] {
+  --output-handle-width: 0rem;
+  --output-width: 0rem;
+}
+
+.workspace[data-files-collapsed="true"] .file-explorer,
+.workspace[data-files-collapsed="true"] .file-resizer,
+.workspace[data-output-collapsed="true"] .output-panel,
+.workspace[data-output-collapsed="true"] .output-resizer {
+  display: none;
 }
 
 .file-explorer {
+  grid-column: 1;
   min-width: 0;
   overflow: auto;
   border-right: 1px solid var(--border);
@@ -354,10 +381,6 @@ body {
 .file-explorer-actions {
   display: flex;
   gap: 0.25rem;
-}
-
-.mobile-files-toggle {
-  display: none;
 }
 
 .file-explorer-actions button {
@@ -428,7 +451,13 @@ body {
   content: "▸";
 }
 
-.file-list button {
+.file-tree-file {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.file-tree-file-button {
   width: 100%;
   padding: 0.42rem 0.65rem 0.42rem 0.85rem;
   overflow: hidden;
@@ -443,7 +472,7 @@ body {
   white-space: nowrap;
 }
 
-.file-list button::before {
+.file-tree-file-button::before {
   display: inline-block;
   width: 1.65rem;
   color: var(--muted);
@@ -452,16 +481,43 @@ body {
   content: attr(data-kind);
 }
 
-.file-list button:hover {
+.file-tree-file-button:hover {
   background: var(--hover);
 }
 
-.file-list button[aria-current="page"] {
+.file-tree-file-button[aria-current="page"] {
   background: var(--selected);
   font-weight: 600;
 }
 
+.file-tree-delete {
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-right: 0.3rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.2rem;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0;
+}
+
+.file-tree-file:hover .file-tree-delete,
+.file-tree-file:focus-within .file-tree-delete {
+  opacity: 1;
+}
+
+.file-tree-delete:hover {
+  color: #c63131;
+  background: var(--hover);
+}
+
 .editor-panel {
+  grid-column: 3;
   min-width: 0;
   min-height: 0;
   display: grid;
@@ -470,12 +526,42 @@ body {
 }
 
 .output-panel {
+  grid-column: 5;
   min-width: 0;
   min-height: 0;
-  display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   border-left: 1px solid var(--border);
   background: var(--panel);
+}
+
+.workspace-resizer {
+  position: relative;
+  z-index: 4;
+  min-width: 0;
+  background: var(--border);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.workspace-resizer:hover,
+.workspace-resizer:focus,
+body[data-resizing] .workspace-resizer {
+  background: var(--toolbar);
+  outline: 0;
+}
+
+.file-resizer {
+  grid-column: 2;
+}
+
+.output-resizer {
+  grid-column: 4;
+}
+
+body[data-resizing] {
+  cursor: col-resize;
+  user-select: none;
 }
 
 .diagnostics-panel {
@@ -629,7 +715,8 @@ body {
 }
 
 .editor-navigation button,
-#delete-file-button {
+.editor-heading-actions button,
+.output-heading-actions button {
   min-height: 1.8rem;
   padding: 0 0.45rem;
   border: 1px solid var(--border);
@@ -650,12 +737,14 @@ body {
 }
 
 .editor-navigation button:hover:not(:disabled),
-#delete-file-button:hover:not(:disabled) {
+.editor-heading-actions button:hover:not(:disabled),
+.output-heading-actions button:hover:not(:disabled) {
   background: var(--hover);
 }
 
 .editor-navigation button:disabled,
-#delete-file-button:disabled {
+.editor-heading-actions button:disabled,
+.output-heading-actions button:disabled {
   cursor: default;
   opacity: 0.45;
 }
@@ -664,6 +753,19 @@ body {
   color: var(--muted);
   font-size: 0.75rem;
   text-align: right;
+}
+
+.output-heading-actions,
+.run-output header > div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.output-heading-actions button {
+  flex: 0 0 auto;
 }
 
 code {
@@ -676,6 +778,7 @@ code {
 }
 
 .emit-output {
+  flex: 1 1 auto;
   min-height: 0;
   padding: 0.75rem;
   overflow: auto;
@@ -724,10 +827,20 @@ code {
 }
 
 .run-output {
+  flex: 0 0 auto;
   max-height: 12rem;
   overflow: auto;
   border-top: 1px solid var(--border);
   background: var(--panel);
+}
+
+.run-output[data-collapsed="true"] .run-log {
+  display: none;
+}
+
+.output-panel:has(.emit-output[hidden]) .run-output:not([data-collapsed="true"]) {
+  max-height: none;
+  flex: 1 1 auto;
 }
 
 .run-output header {
@@ -939,10 +1052,16 @@ code {
   }
 
   .file-explorer {
+    grid-column: 1;
     grid-row: 1;
   }
 
+  .workspace-resizer {
+    display: none;
+  }
+
   .editor-panel {
+    grid-column: 2;
     grid-row: 1;
   }
 
@@ -951,6 +1070,18 @@ code {
     grid-row: 2;
     border-top: 1px solid var(--border);
     border-left: 0;
+  }
+
+  .workspace[data-files-collapsed="true"] {
+    grid-template-columns: minmax(20rem, 1fr);
+  }
+
+  .workspace[data-files-collapsed="true"] .editor-panel {
+    grid-column: 1;
+  }
+
+  .workspace[data-output-collapsed="true"] {
+    grid-template-rows: minmax(20rem, 1fr);
   }
 }
 
@@ -986,6 +1117,7 @@ code {
 
   .toolbar-actions {
     width: 100%;
+    flex: none;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
@@ -1061,25 +1193,12 @@ code {
     border-bottom: 1px solid var(--border);
   }
 
-  .file-explorer[data-mobile-collapsed="true"] {
-    max-height: 2.75rem;
-    overflow: hidden;
-  }
-
-  .file-explorer[data-mobile-collapsed="true"] .file-list {
-    display: none;
-  }
-
   .file-explorer-heading {
     position: sticky;
     top: 0;
     z-index: 2;
     min-height: 2.75rem;
     background: var(--sidebar);
-  }
-
-  .mobile-files-toggle {
-    display: inline-block;
   }
 
   .file-explorer-actions button {
@@ -1094,10 +1213,16 @@ code {
     align-items: center;
   }
 
-  .file-list button {
+  .file-tree-file-button {
     min-height: 2.75rem;
     padding-top: 0.65rem;
     padding-bottom: 0.65rem;
+  }
+
+  .file-tree-delete {
+    width: 2.75rem;
+    height: 2.75rem;
+    opacity: 1;
   }
 
   .editor-panel {
@@ -1135,7 +1260,8 @@ code {
   }
 
   .editor-navigation button,
-  #delete-file-button {
+  .editor-heading-actions button,
+  .output-heading-actions button {
     min-width: 2.75rem;
     min-height: 2.75rem;
   }
@@ -1214,6 +1340,12 @@ code {
   select,
   summary {
     touch-action: manipulation;
+  }
+
+  .file-tree-delete {
+    width: 2.75rem;
+    height: 2.75rem;
+    opacity: 1;
   }
 }
 

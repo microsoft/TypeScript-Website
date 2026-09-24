@@ -44,21 +44,20 @@
               <span>/workspace</span>
             </div>
             <div class="file-explorer-actions">
-              <button
-                id="mobile-files-toggle"
-                class="mobile-files-toggle"
-                type="button"
-                aria-controls="file-list"
-                aria-expanded="true"
-              >
-                Hide
-              </button>
               <button id="reset-project-button" type="button" title="Reset the project">Reset</button>
               <button id="new-file-button" type="button" title="Create a new file">+ File</button>
             </div>
           </div>
           <div id="file-list" class="file-list"></div>
         </nav>
+        <div
+          id="file-resizer"
+          class="workspace-resizer file-resizer"
+          role="separator"
+          aria-label="Resize project files"
+          aria-orientation="vertical"
+          tabindex="0"
+        ></div>
         <div class="editor-panel">
           <div class="panel-heading">
             <div class="editor-heading-title">
@@ -72,15 +71,27 @@
             </div>
             <div class="editor-heading-actions">
               <span id="editor-hint">Type query: align <code>^?</code> below an expression</span>
-              <button id="delete-file-button" type="button">Delete</button>
+              <button id="toggle-files-button" type="button">Hide files</button>
+              <button id="toggle-output-button" type="button">Hide output</button>
             </div>
           </div>
           <div id="input-editor" class="editor"></div>
         </div>
+        <div
+          id="output-resizer"
+          class="workspace-resizer output-resizer"
+          role="separator"
+          aria-label="Resize output"
+          aria-orientation="vertical"
+          tabindex="0"
+        ></div>
         <aside class="output-panel">
           <div class="panel-heading">
             <h2>Emit</h2>
-            <span id="emit-summary">Waiting for the compiler</span>
+            <div class="output-heading-actions">
+              <span id="emit-summary">Waiting for the compiler</span>
+              <button id="toggle-emit-button" type="button">Hide emit</button>
+            </div>
           </div>
           <details id="diagnostics-panel" class="diagnostics-panel">
             <summary>
@@ -95,7 +106,10 @@
           <section id="run-output" class="run-output" aria-live="polite">
             <header>
               <h2>Run output</h2>
-              <button id="clear-run-output" type="button">Clear</button>
+              <div>
+                <button id="toggle-run-output-button" type="button">Hide run</button>
+                <button id="clear-run-output" type="button">Clear</button>
+              </div>
             </header>
             <div id="run-log" class="run-log">
               <p class="empty-message">Run the project to see console output.</p>
