@@ -24,6 +24,7 @@ const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/co
 const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
 const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
   .replaceAll("__PLAYGROUND_BASE__", playgroundBase)
+  .replaceAll("__COMPILER_VERSION__", version)
   .replace("<title>", `<title data-typescript-version="${version}">`)
 
 await rm(outputDirectory, { force: true, recursive: true })

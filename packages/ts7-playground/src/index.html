@@ -165,7 +165,7 @@
       </dialog>
       <div id="loader" class="loading-overlay">
         <div class="loading-card">
-          <div class="lds-grid" aria-hidden="true">
+          <div id="loading-animation" class="lds-grid" aria-hidden="true">
             <div></div>
             <div></div>
             <div></div>
@@ -176,11 +176,23 @@
             <div></div>
             <div></div>
           </div>
-          <div class="loading-copy">
+          <div id="loading-copy" class="loading-copy">
             <p id="loading-message" role="status">Downloading TypeScript...</p>
             <progress id="loading-progress" max="100" value="0"></progress>
             <small id="loading-detail">Preparing downloads</small>
           </div>
+          <section id="download-consent" class="download-consent" hidden>
+            <h2>Download TypeScript __COMPILER_VERSION__?</h2>
+            <p>
+              The first load requires approximately <strong id="download-size">53 MB</strong>. Compiler files are cached
+              in this browser for future visits.
+            </p>
+            <label>
+              <input id="remember-download-consent" type="checkbox" checked />
+              <span>Don’t ask again on this browser</span>
+            </label>
+            <button id="confirm-download-button" type="button">Download TypeScript</button>
+          </section>
         </div>
       </div>
     </main>

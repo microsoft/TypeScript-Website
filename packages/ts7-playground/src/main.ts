@@ -171,9 +171,15 @@ const runOutput = getElement("run-output")
 const runLog = getElement("run-log")
 const status = getElement("status")
 const loader = getElement("loader")
+const loadingAnimation = getElement("loading-animation")
+const loadingCopy = getElement("loading-copy")
 const loadingMessage = getElement("loading-message")
 const loadingProgress = getElement<HTMLProgressElement>("loading-progress")
 const loadingDetail = getElement("loading-detail")
+const downloadConsent = getElement("download-consent")
+const downloadSize = getElement("download-size")
+const rememberDownloadConsent = getElement<HTMLInputElement>("remember-download-consent")
+const confirmDownloadButton = getElement<HTMLButtonElement>("confirm-download-button")
 
 let compilerReady = false
 let lspReady = false
@@ -203,6 +209,7 @@ const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
 let assetCachePromise: Promise<Cache | undefined> | undefined
 const layoutStorageKey = "ts7-playground-layout"
+const downloadConsentStorageKey = "ts7-playground-skip-download-warning"
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -511,6 +518,7 @@ void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(
 
 async function initializeNativeCompiler() {
   try {
+    await confirmLargeDownloadIfNeeded()
     setLoadingProgress(0, "Downloading TypeScript...", "Preparing downloads")
     const [wasmBytes, libFilesBytes, configSchemaBytes] = await Promise.all([
       downloadAsset("wasm", new URL("./tsc.wasm", import.meta.url)),
@@ -1069,6 +1077,66 @@ async function downloadAsset(name: keyof typeof __LOAD_ASSET_SIZES__, url: URL):
 function getAssetCache() {
   assetCachePromise ??= openAssetCache()
   return assetCachePromise
+}
+
+async function confirmLargeDownloadIfNeeded() {
+  if (downloadWarningSuppressed() || (await compilerAssetsAreCached())) return
+
+  const totalBytes = Object.values(__LOAD_ASSET_SIZES__).reduce((total, value) => total + value, 0)
+  downloadSize.textContent = formatBytes(totalBytes)
+  rememberDownloadConsent.checked = true
+  loadingAnimation.hidden = true
+  loadingCopy.hidden = true
+  downloadConsent.hidden = false
+  loader.hidden = false
+  loader.dataset.state = "consent"
+
+  await new Promise<void>(resolve => {
+    confirmDownloadButton.addEventListener(
+      "click",
+      () => {
+        try {
+          if (rememberDownloadConsent.checked) localStorage.setItem(downloadConsentStorageKey, "true")
+          else localStorage.removeItem(downloadConsentStorageKey)
+        } catch (error) {
+          console.warn("Could not save the download warning preference", error)
+        }
+        resolve()
+      },
+      { once: true }
+    )
+    confirmDownloadButton.focus()
+  })
+
+  downloadConsent.hidden = true
+  loadingAnimation.hidden = false
+  loadingCopy.hidden = false
+  delete loader.dataset.state
+}
+
+function downloadWarningSuppressed() {
+  try {
+    return localStorage.getItem(downloadConsentStorageKey) === "true"
+  } catch {
+    return false
+  }
+}
+
+async function compilerAssetsAreCached() {
+  const cache = await getAssetCache()
+  if (!cache) return false
+  const urls = [
+    new URL("./tsc.wasm", import.meta.url),
+    new URL("./lib-files.json", import.meta.url),
+    new URL("./tsconfig.schema.json", import.meta.url),
+  ]
+  const matches = await Promise.all(
+    urls.map(url => {
+      url.searchParams.set("v", __ASSET_CACHE_VERSION__)
+      return cache.match(new Request(url))
+    })
+  )
+  return matches.every(response => response !== undefined)
 }
 
 async function openAssetCache() {

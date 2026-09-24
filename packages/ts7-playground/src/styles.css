@@ -943,6 +943,10 @@ code {
   pointer-events: none;
 }
 
+.loading-overlay[data-state="consent"] {
+  pointer-events: auto;
+}
+
 .loading-card {
   display: flex;
   align-items: center;
@@ -969,6 +973,47 @@ code {
 .loading-copy {
   min-width: 0;
   flex: 1;
+}
+
+.download-consent {
+  flex: 1;
+}
+
+.download-consent h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+}
+
+.download-consent p {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.download-consent label {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+}
+
+.download-consent input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.download-consent button {
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 0.25rem;
+  color: white;
+  background: var(--toolbar);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
 }
 
 .loading-overlay progress {
@@ -1196,6 +1241,10 @@ code {
     max-height: none;
     border: 0;
     border-radius: 0;
+  }
+
+  .download-consent button {
+    min-height: 2.75rem;
   }
 
   .resources-dialog > header button,
