@@ -158,6 +158,11 @@ const helpButton = getElement<HTMLButtonElement>("help-button")
 const resourcesDialog = getElement<HTMLDialogElement>("resources-dialog")
 const resourcesTitle = getElement("resources-title")
 const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-button")
+const newFileDialog = getElement<HTMLDialogElement>("new-file-dialog")
+const newFileForm = getElement<HTMLFormElement>("new-file-form")
+const newFilePath = getElement<HTMLInputElement>("new-file-path")
+const newFileError = getElement("new-file-error")
+const newFileCancelButton = getElement<HTMLButtonElement>("new-file-cancel-button")
 const examplesView = getElement("examples-view")
 const examplesSearch = getElement<HTMLInputElement>("examples-search")
 const examplesList = getElement("examples-list")
@@ -482,6 +487,11 @@ for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
 newFileButton.addEventListener("click", createNewFile)
+newFileCancelButton.addEventListener("click", () => newFileDialog.close())
+newFileForm.addEventListener("submit", event => {
+  event.preventDefault()
+  finishCreatingFile()
+})
 resetProjectButton.addEventListener("click", resetProject)
 toggleFilesButton.addEventListener("click", () => {
   layoutState.filesVisible = !layoutState.filesVisible
@@ -1813,21 +1823,29 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
 }
 
 function createNewFile() {
-  const requested = prompt("New file path", "src/new-file.ts")
-  if (requested === null) return
-  const relativePath = requested.trim().replaceAll("\\", "/").replace(/^\/+/, "")
+  newFilePath.value = "src/new-file.ts"
+  newFileError.hidden = true
+  newFileError.textContent = ""
+  newFileDialog.showModal()
+  newFilePath.focus()
+  newFilePath.select()
+}
+
+function finishCreatingFile() {
+  const relativePath = newFilePath.value.trim().replaceAll("\\", "/").replace(/^\/+/, "")
   const parts = relativePath.split("/")
   if (relativePath === "" || parts.some(part => part === "" || part === "." || part === "..")) {
-    alert("Enter a file path inside /workspace.")
+    showNewFileError("Enter a file path inside /workspace.")
     return
   }
 
   const fileName = `${projectRoot}/${relativePath}`
   if (projectModels.has(fileName)) {
-    alert(`${relativePath} already exists.`)
+    showNewFileError(`${relativePath} already exists.`)
     return
   }
 
+  newFileDialog.close()
   const model = monaco.editor.createModel("", languageForFile(fileName), monaco.Uri.parse(`file://${fileName}`))
   projectModels.set(fileName, model)
   registerProjectModel(model)
@@ -1836,6 +1854,12 @@ function createNewFile() {
   inputEditor.focus()
   persistProjectState()
   void compileActiveProject?.()
+}
+
+function showNewFileError(message: string) {
+  newFileError.textContent = message
+  newFileError.hidden = false
+  newFilePath.focus()
 }
 
 function deleteProjectFile(fileName: string) {

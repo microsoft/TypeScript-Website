@@ -152,6 +152,89 @@ body {
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 35%);
 }
 
+.form-dialog {
+  width: min(28rem, calc(100vw - 2rem));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  color: inherit;
+  background: var(--panel);
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 35%);
+}
+
+.form-dialog::backdrop {
+  background: rgb(0 0 0 / 45%);
+}
+
+.form-dialog form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.form-dialog header {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--sidebar);
+}
+
+.form-dialog h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.form-dialog label {
+  padding: 0 0.9rem;
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.form-dialog input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  color: inherit;
+  background: var(--panel);
+  font-family: Hack, monospace;
+}
+
+.form-dialog footer {
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.form-dialog button {
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  color: inherit;
+  background: var(--panel);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.form-dialog button[type="submit"] {
+  color: white;
+  background: var(--toolbar);
+}
+
+.form-error {
+  margin: 0;
+  padding: 0 0.9rem;
+  color: #c63131;
+  font-size: 0.78rem;
+}
+
 .resources-dialog::backdrop {
   background: rgb(0 0 0 / 45%);
 }
@@ -1241,6 +1324,15 @@ code {
     max-height: none;
     border: 0;
     border-radius: 0;
+  }
+
+  .form-dialog {
+    width: calc(100vw - 1.5rem);
+  }
+
+  .form-dialog input,
+  .form-dialog button {
+    min-height: 2.75rem;
   }
 
   .download-consent button {

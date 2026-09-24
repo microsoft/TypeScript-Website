@@ -137,6 +137,22 @@
           </section>
         </aside>
       </section>
+      <dialog id="new-file-dialog" class="form-dialog" aria-labelledby="new-file-title">
+        <form id="new-file-form">
+          <header>
+            <h2 id="new-file-title">Create file</h2>
+          </header>
+          <label>
+            <span>Path inside /workspace</span>
+            <input id="new-file-path" type="text" value="src/new-file.ts" autocomplete="off" spellcheck="false" />
+          </label>
+          <p id="new-file-error" class="form-error" role="alert" hidden></p>
+          <footer>
+            <button id="new-file-cancel-button" type="button">Cancel</button>
+            <button type="submit">Create</button>
+          </footer>
+        </form>
+      </dialog>
       <dialog id="resources-dialog" class="resources-dialog" aria-labelledby="resources-title">
         <header>
           <h2 id="resources-title">Examples</h2>
