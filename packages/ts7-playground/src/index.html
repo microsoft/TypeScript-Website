@@ -214,6 +214,34 @@
           </footer>
         </form>
       </dialog>
+      <dialog id="confirmation-dialog" class="form-dialog confirmation-dialog" aria-labelledby="confirmation-title">
+        <form id="confirmation-form">
+          <header>
+            <h2 id="confirmation-title">Confirm</h2>
+          </header>
+          <p id="confirmation-message"></p>
+          <footer>
+            <button id="confirmation-cancel-button" type="button">Cancel</button>
+            <button id="confirmation-submit-button" type="submit">Continue</button>
+          </footer>
+        </form>
+      </dialog>
+      <dialog id="text-input-dialog" class="form-dialog" aria-labelledby="text-input-title">
+        <form id="text-input-form">
+          <header>
+            <h2 id="text-input-title">Enter a value</h2>
+          </header>
+          <label>
+            <span id="text-input-label">Value</span>
+            <input id="text-input-value" type="text" autocomplete="off" spellcheck="false" />
+          </label>
+          <p id="text-input-error" class="form-error" role="alert" hidden></p>
+          <footer>
+            <button id="text-input-cancel-button" type="button">Cancel</button>
+            <button id="text-input-submit-button" type="submit">Continue</button>
+          </footer>
+        </form>
+      </dialog>
       <dialog id="resources-dialog" class="resources-dialog" aria-labelledby="resources-title">
         <header>
           <h2 id="resources-title">Examples</h2>

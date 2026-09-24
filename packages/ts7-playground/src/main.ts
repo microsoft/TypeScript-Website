@@ -229,6 +229,20 @@ const settingTabSize = getElement<HTMLSelectElement>("setting-tab-size")
 const settingWordWrap = getElement<HTMLInputElement>("setting-word-wrap")
 const settingMinimap = getElement<HTMLInputElement>("setting-minimap")
 const settingLigatures = getElement<HTMLInputElement>("setting-ligatures")
+const confirmationDialog = getElement<HTMLDialogElement>("confirmation-dialog")
+const confirmationForm = getElement<HTMLFormElement>("confirmation-form")
+const confirmationTitle = getElement("confirmation-title")
+const confirmationMessage = getElement("confirmation-message")
+const confirmationCancelButton = getElement<HTMLButtonElement>("confirmation-cancel-button")
+const confirmationSubmitButton = getElement<HTMLButtonElement>("confirmation-submit-button")
+const textInputDialog = getElement<HTMLDialogElement>("text-input-dialog")
+const textInputForm = getElement<HTMLFormElement>("text-input-form")
+const textInputTitle = getElement("text-input-title")
+const textInputLabel = getElement("text-input-label")
+const textInputValue = getElement<HTMLInputElement>("text-input-value")
+const textInputError = getElement("text-input-error")
+const textInputCancelButton = getElement<HTMLButtonElement>("text-input-cancel-button")
+const textInputSubmitButton = getElement<HTMLButtonElement>("text-input-submit-button")
 const resourcesDialog = getElement<HTMLDialogElement>("resources-dialog")
 const resourcesTitle = getElement("resources-title")
 const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-button")
@@ -285,6 +299,8 @@ const acquiredTypeFiles = new Map<string, string>()
 const pendingAcquiredTypeModels = new Set<string>()
 let examplesPromise: Promise<PlaygroundExamples> | undefined
 let helpPromise: Promise<PlaygroundHelp> | undefined
+let confirmationResolver: ((value: boolean) => void) | undefined
+let textInputResolver: ((value: string | null) => void) | undefined
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
 const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
@@ -547,6 +563,57 @@ function applyEditorSettings() {
   updateResponsiveEditorOptions()
 }
 
+function requestConfirmation(options: {
+  cancelLabel?: string | null
+  confirmLabel: string
+  danger?: boolean
+  message: string
+  title: string
+}) {
+  if (confirmationResolver) finishConfirmation(false)
+  confirmationTitle.textContent = options.title
+  confirmationMessage.textContent = options.message
+  confirmationCancelButton.hidden = options.cancelLabel === null
+  confirmationCancelButton.textContent = options.cancelLabel ?? "Cancel"
+  confirmationSubmitButton.textContent = options.confirmLabel
+  confirmationSubmitButton.classList.toggle("danger", options.danger === true)
+  confirmationDialog.showModal()
+  confirmationSubmitButton.focus()
+  return new Promise<boolean>(resolve => {
+    confirmationResolver = resolve
+  })
+}
+
+function finishConfirmation(value: boolean) {
+  const resolve = confirmationResolver
+  confirmationResolver = undefined
+  if (confirmationDialog.open) confirmationDialog.close()
+  resolve?.(value)
+}
+
+function requestTextInput(options: { initialValue?: string; label: string; submitLabel: string; title: string }) {
+  if (textInputResolver) finishTextInput(null)
+  textInputTitle.textContent = options.title
+  textInputLabel.textContent = options.label
+  textInputValue.value = options.initialValue ?? ""
+  textInputError.hidden = true
+  textInputError.textContent = ""
+  textInputSubmitButton.textContent = options.submitLabel
+  textInputDialog.showModal()
+  textInputValue.focus()
+  textInputValue.select()
+  return new Promise<string | null>(resolve => {
+    textInputResolver = resolve
+  })
+}
+
+function finishTextInput(value: string | null) {
+  const resolve = textInputResolver
+  textInputResolver = undefined
+  if (textInputDialog.open) textInputDialog.close()
+  resolve?.(value)
+}
+
 function updateResponsiveEditorOptions() {
   const mobile = mobileLayout.matches
   inputEditor.updateOptions({
@@ -690,7 +757,7 @@ newFileForm.addEventListener("submit", event => {
   event.preventDefault()
   finishCreatingFile()
 })
-resetProjectButton.addEventListener("click", resetProject)
+resetProjectButton.addEventListener("click", () => void resetProject())
 applyCompilerOverridesButton.addEventListener("click", applyCompilerOverridesToConfig)
 toggleFilesButton.addEventListener("click", () => {
   layoutState.filesVisible = !layoutState.filesVisible
@@ -728,6 +795,31 @@ resourcesCloseButton.addEventListener("click", () => resourcesDialog.close())
 examplesSearch.addEventListener("input", () => void renderExamples())
 helpBackButton.addEventListener("click", showHelpTopics)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
+confirmationCancelButton.addEventListener("click", () => finishConfirmation(false))
+confirmationForm.addEventListener("submit", event => {
+  event.preventDefault()
+  finishConfirmation(true)
+})
+confirmationDialog.addEventListener("cancel", event => {
+  event.preventDefault()
+  finishConfirmation(false)
+})
+textInputCancelButton.addEventListener("click", () => finishTextInput(null))
+textInputForm.addEventListener("submit", event => {
+  event.preventDefault()
+  const value = textInputValue.value.trim()
+  if (value === "") {
+    textInputError.textContent = "Enter a value."
+    textInputError.hidden = false
+    textInputValue.focus()
+    return
+  }
+  finishTextInput(value)
+})
+textInputDialog.addEventListener("cancel", event => {
+  event.preventDefault()
+  finishTextInput(null)
+})
 
 void openLegacyResourceRoute(initialHash)
 void initializeVersionSelector()
@@ -892,12 +984,16 @@ async function initializeVersionSelector() {
       }
       compilerVersion.value = selected
     }
-    compilerVersion.addEventListener("change", () => {
+    compilerVersion.addEventListener("change", async () => {
       const url = new URL(location.href)
       if (compilerVersion.value === "native") {
         url.searchParams.delete("ts")
       } else if (compilerVersion.value === "__custom__") {
-        const custom = prompt("TypeScript CDN build ID")
+        const custom = await requestTextInput({
+          label: "Playground CDN build ID",
+          submitLabel: "Load build",
+          title: "Custom TypeScript build",
+        })
         if (!custom) {
           compilerVersion.value = useNativeCompiler ? "native" : normalizeRequestedVersion(selectedCompiler!)
           return
@@ -986,7 +1082,7 @@ async function renderExamples() {
       button.type = "button"
       button.appendChild(createText("strong", example.title))
       button.appendChild(createText("small", example.path.join(" / ")))
-      button.addEventListener("click", () => loadExample(example))
+      button.addEventListener("click", () => void loadExample(example))
       examplesList.appendChild(button)
     }
   } catch (error) {
@@ -1045,8 +1141,14 @@ function showHelpDocument(topic: PlaygroundHelp["docs"][number]) {
   helpContent.innerHTML = topic.html
 }
 
-function loadExample(example: PlaygroundExample) {
-  if (!confirm(`Replace the current project with “${example.title}”?`)) return
+async function loadExample(example: PlaygroundExample) {
+  const confirmed = await requestConfirmation({
+    confirmLabel: "Replace project",
+    danger: true,
+    message: `Replace the current project with “${example.title}”? Unsaved project files will be replaced.`,
+    title: "Open example",
+  })
+  if (!confirmed) return
   navigateToExample(example)
 }
 
@@ -2411,7 +2513,7 @@ function renderFileList() {
       deleteButton.textContent = "×"
       deleteButton.title = `Delete ${relativePath}`
       deleteButton.setAttribute("aria-label", `Delete ${relativePath}`)
-      deleteButton.addEventListener("click", () => deleteProjectFile(fileName))
+      deleteButton.addEventListener("click", () => void deleteProjectFile(fileName))
       const item = document.createElement("li")
       item.className = "file-tree-file"
       item.appendChild(button)
@@ -2546,16 +2648,27 @@ function showNewFileError(message: string) {
   newFilePath.focus()
 }
 
-function deleteProjectFile(fileName: string) {
+async function deleteProjectFile(fileName: string) {
   const model = projectModels.get(fileName)
   if (!model) return
   if (projectModels.size === 1) {
-    alert("The project must contain at least one file.")
+    await requestConfirmation({
+      cancelLabel: null,
+      confirmLabel: "OK",
+      message: "The project must contain at least one file.",
+      title: "Cannot delete file",
+    })
     return
   }
 
   const relativePath = relativeProjectPath(fileName)
-  if (!confirm(`Delete ${relativePath}? This cannot be undone.`)) return
+  const confirmed = await requestConfirmation({
+    confirmLabel: "Delete file",
+    danger: true,
+    message: `Delete ${relativePath}? This cannot be undone.`,
+    title: "Delete file",
+  })
+  if (!confirmed) return
 
   const deletedUri = model.uri.toString()
   projectModels.delete(fileName)
@@ -2588,8 +2701,14 @@ function removeLocationsForUri(locations: EditorLocation[], uri: string) {
   }
 }
 
-function resetProject() {
-  if (!confirm("Reset the project to the TypeScript 7 defaults?")) return
+async function resetProject() {
+  const confirmed = await requestConfirmation({
+    confirmLabel: "Reset project",
+    danger: true,
+    message: "Reset the project to the TypeScript 7 defaults? All current project files will be replaced.",
+    title: "Reset project",
+  })
+  if (!confirmed) return
   localStorage.removeItem(storageKey)
   const url = new URL(location.href)
   url.hash = ""

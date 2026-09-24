@@ -223,6 +223,11 @@ body {
   background: var(--toolbar);
 }
 
+.form-dialog button.danger {
+  color: white;
+  background: #a1260d;
+}
+
 .form-error {
   margin: 0;
   padding: 0 0.9rem;
@@ -304,6 +309,13 @@ body {
 
 .settings-dialog .form-secondary-action {
   margin-right: auto;
+}
+
+.confirmation-dialog p {
+  margin: 0;
+  padding: 0.2rem 0.9rem 0.4rem;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 .resources-dialog::backdrop {
