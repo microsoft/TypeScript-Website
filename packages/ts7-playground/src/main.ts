@@ -197,7 +197,10 @@ const fileExplorer = getElement("file-explorer")
 const fileList = getElement("file-list")
 const fileResizer = getElement("file-resizer")
 const outputResizer = getElement("output-resizer")
-const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
+const compilerVersion = getElement<HTMLDetailsElement>("compiler-version")
+const compilerVersionButton = getElement("compiler-version-button")
+const compilerVersionLabel = getElement("compiler-version-label")
+const compilerVersionMenu = getElement("compiler-version-menu")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
 const applyCompilerOverridesButton = getElement<HTMLButtonElement>("apply-compiler-overrides-button")
@@ -960,55 +963,106 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
 }
 
 async function initializeVersionSelector() {
-  compilerVersion.disabled = true
+  compilerVersionButton.setAttribute("aria-disabled", "true")
   try {
     const response = await fetch(new URL("./versions.json", import.meta.url))
     if (!response.ok) throw new Error(`Could not load versions: ${response.status}`)
     const releases = (await response.json()) as { versions: string[] }
     const unsupported = new Set(["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"])
     const seenMinorVersions = new Set<string>()
+    const versions: Array<{ label: string; value: string }> = [{ label: __TS_VERSION__, value: "native" }]
     for (const version of releases.versions) {
       if (unsupported.has(version)) continue
       const minorVersion = version.split(".").slice(0, 2).join(".")
       if (seenMinorVersions.has(minorVersion)) continue
       seenMinorVersions.add(minorVersion)
-      compilerVersion.appendChild(new Option(version, version))
+      versions.push({ label: version, value: version })
     }
-    compilerVersion.appendChild(new Option("Custom / PR build…", "__custom__"))
-    if (useNativeCompiler) {
-      compilerVersion.value = "native"
-    } else {
-      const selected = normalizeRequestedVersion(selectedCompiler!)
-      if (![...compilerVersion.options].some(option => option.value === selected)) {
-        compilerVersion.insertBefore(new Option(selectedCompiler!, selected), compilerVersion.lastElementChild)
-      }
-      compilerVersion.value = selected
+    const selectedValue = useNativeCompiler ? "native" : normalizeRequestedVersion(selectedCompiler!)
+    if (!versions.some(version => version.value === selectedValue)) {
+      versions.push({ label: selectedCompiler!, value: selectedValue })
     }
-    compilerVersion.addEventListener("change", async () => {
-      const url = new URL(location.href)
-      if (compilerVersion.value === "native") {
-        url.searchParams.delete("ts")
-      } else if (compilerVersion.value === "__custom__") {
-        const custom = await requestTextInput({
-          label: "Playground CDN build ID",
-          submitLabel: "Load build",
-          title: "Custom TypeScript build",
-        })
-        if (!custom) {
-          compilerVersion.value = useNativeCompiler ? "native" : normalizeRequestedVersion(selectedCompiler!)
-          return
-        }
-        url.searchParams.set("ts", custom.trim())
-      } else {
-        url.searchParams.set("ts", compilerVersion.value)
+    compilerVersionMenu.replaceChildren()
+    for (const version of versions) {
+      compilerVersionMenu.appendChild(createVersionMenuItem(version.label, version.value, selectedValue))
+    }
+    const separator = document.createElement("div")
+    separator.className = "version-menu-separator"
+    separator.setAttribute("role", "separator")
+    compilerVersionMenu.appendChild(separator)
+    compilerVersionMenu.appendChild(createVersionMenuItem("Custom / PR build…", "__custom__", selectedValue))
+
+    compilerVersionLabel.textContent =
+      versions.find(version => version.value === selectedValue)?.label ?? selectedCompiler ?? __TS_VERSION__
+    compilerVersion.addEventListener("toggle", () => {
+      compilerVersionButton.setAttribute("aria-expanded", String(compilerVersion.open))
+      if (compilerVersion.open) {
+        compilerVersionMenu.querySelector<HTMLButtonElement>('[aria-checked="true"]')?.focus()
       }
-      location.href = url.href
+    })
+    compilerVersionMenu.addEventListener("keydown", handleVersionMenuKeydown)
+    document.addEventListener("pointerdown", event => {
+      if (compilerVersion.open && !compilerVersion.contains(event.target as Node)) compilerVersion.open = false
     })
   } catch (error) {
     console.warn("Could not initialize the compiler version selector", error)
   } finally {
-    compilerVersion.disabled = false
+    compilerVersionButton.removeAttribute("aria-disabled")
   }
+}
+
+function createVersionMenuItem(label: string, value: string, selectedValue: string) {
+  const button = document.createElement("button")
+  button.type = "button"
+  button.className = "version-menu-item"
+  button.dataset.value = value
+  button.setAttribute("role", "menuitemradio")
+  button.setAttribute("aria-checked", String(value === selectedValue))
+  button.appendChild(createText("span", label))
+  button.addEventListener("click", () => void selectCompilerVersion(value))
+  return button
+}
+
+async function selectCompilerVersion(value: string) {
+  compilerVersion.open = false
+  const url = new URL(location.href)
+  if (value === "native") {
+    url.searchParams.delete("ts")
+  } else if (value === "__custom__") {
+    const custom = await requestTextInput({
+      label: "Playground CDN build ID",
+      submitLabel: "Load build",
+      title: "Custom TypeScript build",
+    })
+    if (!custom) {
+      compilerVersionButton.focus()
+      return
+    }
+    url.searchParams.set("ts", custom)
+  } else {
+    url.searchParams.set("ts", value)
+  }
+  location.href = url.href
+}
+
+function handleVersionMenuKeydown(event: KeyboardEvent) {
+  const items = [...compilerVersionMenu.querySelectorAll<HTMLButtonElement>(".version-menu-item")]
+  const current = items.indexOf(document.activeElement as HTMLButtonElement)
+  let next = current
+  if (event.key === "ArrowDown") next = (current + 1) % items.length
+  else if (event.key === "ArrowUp") next = (current - 1 + items.length) % items.length
+  else if (event.key === "Home") next = 0
+  else if (event.key === "End") next = items.length - 1
+  else if (event.key === "Escape") {
+    compilerVersion.open = false
+    compilerVersionButton.focus()
+    event.preventDefault()
+    return
+  } else {
+    return
+  }
+  items[next]?.focus()
+  event.preventDefault()
 }
 
 function isNativeCompilerVersion(version: string | null) {

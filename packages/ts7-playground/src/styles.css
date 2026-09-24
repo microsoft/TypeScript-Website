@@ -9,6 +9,7 @@
   font-synthesis: none;
   --border: #d6d6d6;
   --hover: #eeeeee;
+  --menu-text: #1f1f1f;
   --muted: #5f6368;
   --output: #f5f5f5;
   --panel: #ffffff;
@@ -76,22 +77,119 @@ body {
 }
 
 .version-control {
+  position: relative;
   min-width: 7rem;
   max-width: 12rem;
+}
+
+.version-control summary {
   min-height: 2.15rem;
-  padding: 0.4rem 0.7rem;
+  padding: 0.4rem 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  overflow: hidden;
   border: 1px solid rgb(255 255 255 / 45%);
   border-radius: 0.25rem;
   color: white;
   background: rgb(0 0 0 / 16%);
+  cursor: pointer;
   font: inherit;
   font-weight: 600;
+  list-style: none;
+  white-space: nowrap;
 }
 
-.version-control option,
-.version-control optgroup {
-  color: #1f1f1f;
-  background: white;
+.version-control summary::-webkit-details-marker {
+  display: none;
+}
+
+.version-control summary:hover,
+.version-control[open] summary {
+  background: rgb(0 0 0 / 24%);
+}
+
+.version-control summary[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.version-caret {
+  width: 0.8rem;
+  height: 0.8rem;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  transition: transform 120ms ease;
+}
+
+.version-caret::before {
+  content: "▾";
+  line-height: 1;
+}
+
+.version-control[open] .version-caret {
+  transform: rotate(180deg);
+}
+
+.version-menu {
+  position: absolute;
+  top: calc(100% + 0.3rem);
+  left: 0;
+  z-index: 60;
+  width: max(100%, 10rem);
+  max-height: min(30rem, calc(100dvh - 6rem));
+  padding: 0.3rem 0;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+  color: var(--menu-text);
+  background: var(--panel);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 28%);
+}
+
+.version-menu-item {
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.45rem 1.9rem 0.45rem 0.7rem !important;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: inherit !important;
+  background: transparent !important;
+  font-size: 0.78rem !important;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.version-menu-item:hover,
+.version-menu-item:focus {
+  background: var(--hover) !important;
+  outline: 0;
+}
+
+.version-menu-item[aria-checked="true"] {
+  color: #3178c6 !important;
+  background: var(--selected) !important;
+  font-weight: 700;
+}
+
+.version-menu-item[aria-checked="true"]::after {
+  position: absolute;
+  top: 50%;
+  right: 0.65rem;
+  content: "✓";
+  transform: translateY(-50%);
+}
+
+.version-menu-separator {
+  height: 1px;
+  margin: 0.3rem 0;
+  background: var(--border);
 }
 
 .toolbar button,
@@ -1389,8 +1487,16 @@ code {
     grid-column: 1 / -1;
     width: 100%;
     max-width: none;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .version-control summary {
     min-height: 2.75rem;
-    padding: 0 0.45rem;
+  }
+
+  .version-menu {
+    width: 100%;
   }
 
   .toolbar button {
@@ -1643,6 +1749,7 @@ code {
     background: #1e1e1e;
     --border: #414141;
     --hover: #292929;
+    --menu-text: #f3f3f3;
     --muted: #b7b7b7;
     --output: #171717;
     --panel: #1e1e1e;

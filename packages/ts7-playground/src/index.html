@@ -24,9 +24,13 @@
           <h1>TypeScript 7 Playground</h1>
         </div>
         <div class="toolbar-actions">
-          <select id="compiler-version" class="version-control" aria-label="Select compiler version">
-            <option value="native">__COMPILER_VERSION__</option>
-          </select>
+          <details id="compiler-version" class="version-control">
+            <summary id="compiler-version-button" aria-haspopup="menu" aria-expanded="false">
+              <span id="compiler-version-label">__COMPILER_VERSION__</span>
+              <span class="version-caret" aria-hidden="true"></span>
+            </summary>
+            <div id="compiler-version-menu" class="version-menu" role="menu"></div>
+          </details>
           <button id="run-button" type="button" disabled>Run</button>
           <button id="examples-button" type="button">Examples</button>
           <button id="help-button" type="button">Help</button>
