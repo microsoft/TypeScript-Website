@@ -1276,6 +1276,10 @@ code {
     white-space: pre-wrap;
   }
 
+  .monaco-editor .scrollbar.horizontal {
+    display: none !important;
+  }
+
   .run-output {
     max-height: 16rem;
     padding-bottom: env(safe-area-inset-bottom);

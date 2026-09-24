@@ -348,8 +348,17 @@ function loadLayoutState(): LayoutState {
 }
 
 function updateResponsiveEditorOptions() {
+  const mobile = mobileLayout.matches
   inputEditor.updateOptions({
-    wordWrap: mobileLayout.matches ? "on" : "off",
+    folding: !mobile,
+    lineNumbersMinChars: mobile ? 3 : 5,
+    scrollbar: {
+      horizontal: mobile ? "hidden" : "auto",
+      horizontalScrollbarSize: mobile ? 0 : 12,
+      verticalScrollbarSize: mobile ? 8 : 14,
+    },
+    scrollBeyondLastColumn: mobile ? 0 : 5,
+    wordWrap: mobile ? "on" : "off",
     wrappingIndent: "indent",
   })
   requestAnimationFrame(() => inputEditor.layout())
