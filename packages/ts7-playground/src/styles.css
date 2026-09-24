@@ -76,21 +76,16 @@ body {
 }
 
 .version-control {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-}
-
-.version-control select {
+  min-width: 7rem;
   max-width: 12rem;
-  height: 1.9rem;
+  min-height: 2.15rem;
+  padding: 0.4rem 0.7rem;
   border: 1px solid rgb(255 255 255 / 45%);
   border-radius: 0.25rem;
   color: white;
   background: rgb(0 0 0 / 16%);
   font: inherit;
+  font-weight: 600;
 }
 
 .version-control option,
@@ -1292,12 +1287,7 @@ code {
 
   .version-control {
     min-width: 0;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
     grid-column: 1 / -1;
-  }
-
-  .version-control select {
     width: 100%;
     max-width: none;
     min-height: 2.75rem;

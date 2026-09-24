@@ -299,7 +299,7 @@ export const setupPlayground = (
   const nativeLi = document.createElement("li")
   nativeLi.classList.add("native")
   const nativeLink = document.createElement("a")
-  nativeLink.textContent = "7.1"
+  nativeLink.textContent = "7.1.0-dev"
   nativeLink.href = "#"
   nativeLi.onclick = () => {
     const currentURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
