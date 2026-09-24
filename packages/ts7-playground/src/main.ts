@@ -72,6 +72,12 @@ type ProjectFile = {
 type ProjectState = {
   activeFile?: string
   files: Record<string, string>
+  selection?: {
+    positionColumn: number
+    positionLineNumber: number
+    selectionStartColumn: number
+    selectionStartLineNumber: number
+  }
   useDefaults?: boolean
 }
 
@@ -399,8 +405,9 @@ updateResponsiveEditorOptions()
 mobileLayout.addEventListener("change", updateResponsiveEditorOptions)
 
 renderFileList()
-updateActiveFile()
+restoreProjectSelection(initialState)
 restoreLegacySelection()
+updateActiveFile()
 trackedEditorLocation = getEditorLocation()
 updateNavigationButtons()
 inputEditor.onDidChangeModel(() => {
@@ -420,6 +427,8 @@ inputEditor.onDidChangeModel(() => {
 })
 inputEditor.onDidChangeCursorSelection(() => {
   trackedEditorLocation = getEditorLocation()
+  window.clearTimeout(selectionPersistTimer)
+  selectionPersistTimer = window.setTimeout(persistProjectState, 150)
 })
 inputEditor.addAction({
   id: "run-project",
@@ -760,6 +769,7 @@ monaco.languages.registerInlayHintsProvider("json", {
 })
 
 let updateTimer = 0
+let selectionPersistTimer = 0
 for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
@@ -2617,6 +2627,20 @@ function restoreLegacySelection() {
   inputEditor.setSelection(new monaco.Selection(values[0], values[1], values[2], values[3]))
 }
 
+function restoreProjectSelection(state: ProjectState) {
+  const selection = state.selection
+  if (!selection) return
+  inputEditor.setSelection(
+    new monaco.Selection(
+      selection.selectionStartLineNumber,
+      selection.selectionStartColumn,
+      selection.positionLineNumber,
+      selection.positionColumn
+    )
+  )
+  inputEditor.revealRangeInCenter(inputEditor.getSelection()!, monaco.editor.ScrollType.Immediate)
+}
+
 function renderStatus() {
   const failure = compilerFailure ?? lspFailure
   if (failure) {
@@ -2844,6 +2868,7 @@ function serializeProjectState(state: ProjectState) {
   const versioned: VersionedProjectState = {
     activeFile: state.activeFile,
     files: state.files,
+    selection: state.selection,
     version: projectStateVersion,
   }
   return JSON.stringify(versioned)
@@ -2858,7 +2883,7 @@ function normalizeVersionedProjectState(value: unknown) {
 
 function normalizeProjectState(value: unknown): ProjectState {
   if (!value || typeof value !== "object") return { files: {}, useDefaults: true }
-  const candidate = value as { activeFile?: unknown; files?: unknown; version?: unknown }
+  const candidate = value as { activeFile?: unknown; files?: unknown; selection?: unknown; version?: unknown }
   if (candidate.version !== undefined && candidate.version !== projectStateVersion) {
     console.warn(`Ignoring unsupported playground project version: ${String(candidate.version)}`)
     return { files: {}, useDefaults: true }
@@ -2898,10 +2923,25 @@ function normalizeProjectState(value: unknown): ProjectState {
   }
   const requestedActiveFile =
     typeof candidate.activeFile === "string" ? migrations.get(candidate.activeFile) ?? candidate.activeFile : undefined
+  const selection = normalizeSelection(candidate.selection)
   return {
     activeFile: requestedActiveFile?.startsWith(`${projectRoot}/`) ? requestedActiveFile : undefined,
     files,
+    selection,
     useDefaults: false,
+  }
+}
+
+function normalizeSelection(value: unknown): ProjectState["selection"] {
+  if (!value || typeof value !== "object") return undefined
+  const candidate = value as Record<string, unknown>
+  const keys = ["positionColumn", "positionLineNumber", "selectionStartColumn", "selectionStartLineNumber"] as const
+  if (keys.some(key => !Number.isInteger(candidate[key]) || Number(candidate[key]) < 1)) return undefined
+  return {
+    positionColumn: Number(candidate.positionColumn),
+    positionLineNumber: Number(candidate.positionLineNumber),
+    selectionStartColumn: Number(candidate.selectionStartColumn),
+    selectionStartLineNumber: Number(candidate.selectionStartLineNumber),
   }
 }
 
@@ -3046,9 +3086,18 @@ function parseLegacyCompilerOption(key: string, rawValue: string) {
 
 function persistProjectState() {
   const activeModel = inputEditor.getModel()
+  const selection = activeModel && projectModels.has(activeModel.uri.path) ? inputEditor.getSelection() : undefined
   const state: ProjectState = {
     activeFile: activeModel && projectModels.has(activeModel.uri.path) ? activeModel.uri.path : entryFileName,
     files: Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()])),
+    selection: selection
+      ? {
+          positionColumn: selection.positionColumn,
+          positionLineNumber: selection.positionLineNumber,
+          selectionStartColumn: selection.selectionStartColumn,
+          selectionStartLineNumber: selection.selectionStartLineNumber,
+        }
+      : undefined,
   }
   try {
     const serialized = serializeProjectState(state)
