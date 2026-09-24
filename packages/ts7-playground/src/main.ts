@@ -538,7 +538,7 @@ async function initializeNativeCompiler() {
 
 async function initializeStradaCompiler(requestedVersion: string) {
   try {
-    setLoadingIndeterminate("Loading classic TypeScript...", requestedVersion)
+    setLoadingIndeterminate("Loading TypeScript...", requestedVersion)
     const version = await resolveStradaVersion(requestedVersion)
     const compilerUrl = `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/typescript.js`
     const compilerResponse = await fetch(compilerUrl)
@@ -612,26 +612,26 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
 
 async function initializeVersionSelector() {
   compilerVersion.disabled = true
-  const classicGroup = document.createElement("optgroup")
-  classicGroup.label = "Classic TypeScript (Strada)"
-  classicGroup.appendChild(new Option("Nightly", "next"))
   try {
     const response = await fetch(new URL("./versions.json", import.meta.url))
     if (!response.ok) throw new Error(`Could not load versions: ${response.status}`)
     const releases = (await response.json()) as { versions: string[] }
     const unsupported = new Set(["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"])
+    const seenMinorVersions = new Set<string>()
     for (const version of releases.versions) {
       if (unsupported.has(version)) continue
-      classicGroup.appendChild(new Option(version, version))
+      const minorVersion = version.split(".").slice(0, 2).join(".")
+      if (seenMinorVersions.has(minorVersion)) continue
+      seenMinorVersions.add(minorVersion)
+      compilerVersion.appendChild(new Option(version, version))
     }
-    classicGroup.appendChild(new Option("Custom / PR build…", "__custom__"))
-    compilerVersion.appendChild(classicGroup)
+    compilerVersion.appendChild(new Option("Custom / PR build…", "__custom__"))
     if (useNativeCompiler) {
       compilerVersion.value = "native"
     } else {
       const selected = normalizeRequestedVersion(selectedCompiler!)
       if (![...compilerVersion.options].some(option => option.value === selected)) {
-        classicGroup.insertBefore(new Option(selectedCompiler!, selected), classicGroup.lastElementChild)
+        compilerVersion.insertBefore(new Option(selectedCompiler!, selected), compilerVersion.lastElementChild)
       }
       compilerVersion.value = selected
     }
@@ -640,7 +640,7 @@ async function initializeVersionSelector() {
       if (compilerVersion.value === "native") {
         url.searchParams.delete("ts")
       } else if (compilerVersion.value === "__custom__") {
-        const custom = prompt("Classic TypeScript CDN build ID")
+        const custom = prompt("TypeScript CDN build ID")
         if (!custom) {
           compilerVersion.value = useNativeCompiler ? "native" : normalizeRequestedVersion(selectedCompiler!)
           return

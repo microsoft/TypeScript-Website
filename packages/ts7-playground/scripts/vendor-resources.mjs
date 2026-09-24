@@ -14,7 +14,7 @@ const helpIndex = {
     },
     {
       title: "Compiler versions",
-      html: "<p><strong>Native 7.1</strong> runs the WASI compiler and language server. Classic versions use the Strada language-service backend. The selector also supports Nightly and custom playground-CDN build IDs.</p><p>Changing compiler versions reloads the page while preserving the project.</p>",
+      html: "<p>The selector offers TypeScript 7.1, the latest patch release for each previous major.minor line, and custom playground-CDN build IDs.</p><p>Changing compiler versions reloads the page while preserving the project.</p>",
     },
     {
       title: "Compiler settings",
