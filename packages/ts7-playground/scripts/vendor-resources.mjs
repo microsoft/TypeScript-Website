@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises"
+import { cp, mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -45,7 +45,9 @@ const examples = await Promise.all(
 )
 
 const vendorDirectory = resolve(packageDirectory, "vendor")
+const ataVendorDirectory = resolve(vendorDirectory, "ata")
 await mkdir(vendorDirectory, { recursive: true })
+await mkdir(ataVendorDirectory, { recursive: true })
 await Promise.all([
   writeFile(
     resolve(vendorDirectory, "examples.json"),
@@ -56,6 +58,23 @@ await Promise.all([
     })}\n`
   ),
   writeFile(resolve(vendorDirectory, "help.json"), `${JSON.stringify(helpIndex)}\n`),
+  cp(resolve(websiteDirectory, "packages/ata/dist/index.js"), resolve(ataVendorDirectory, "index.js")),
+  cp(resolve(websiteDirectory, "packages/ata/dist/src/index.d.ts"), resolve(ataVendorDirectory, "index.d.ts")),
+  cp(resolve(websiteDirectory, "LICENSE-CODE"), resolve(ataVendorDirectory, "LICENSE.txt")),
+  writeFile(
+    resolve(ataVendorDirectory, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "@typescript/ata",
+        version: "0.9.8",
+        type: "module",
+        main: "./index.js",
+        types: "./index.d.ts",
+      },
+      undefined,
+      2
+    )}\n`
+  ),
 ])
 
 console.log(`Vendored ${examples.length} playground examples and ${helpIndex.docs.length} help topics`)
