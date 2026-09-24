@@ -39,6 +39,23 @@ type ProjectState = {
   useDefaults?: boolean
 }
 
+type PlaygroundExample = {
+  code: string
+  compilerSettings?: Record<string, boolean | number | string>
+  id: string
+  name: string
+  path: string[]
+  title: string
+}
+
+type PlaygroundExamples = {
+  examples: PlaygroundExample[]
+}
+
+type PlaygroundHelp = {
+  docs: Array<{ html: string; title: string }>
+}
+
 type RuntimeLog = {
   level: "debug" | "error" | "info" | "log" | "warn"
   text: string
@@ -122,6 +139,19 @@ const diagnosticsPanel = getElement<HTMLDetailsElement>("diagnostics-panel")
 const diagnosticsSummary = getElement("diagnostics-summary")
 const diagnosticsList = getElement("diagnostics-list")
 const runButton = getElement<HTMLButtonElement>("run-button")
+const examplesButton = getElement<HTMLButtonElement>("examples-button")
+const helpButton = getElement<HTMLButtonElement>("help-button")
+const resourcesDialog = getElement<HTMLDialogElement>("resources-dialog")
+const resourcesTitle = getElement("resources-title")
+const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-button")
+const examplesView = getElement("examples-view")
+const examplesSearch = getElement<HTMLInputElement>("examples-search")
+const examplesList = getElement("examples-list")
+const helpView = getElement("help-view")
+const helpList = getElement("help-list")
+const helpDocument = getElement("help-document")
+const helpBackButton = getElement<HTMLButtonElement>("help-back-button")
+const helpContent = getElement("help-content")
 const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
 const runLog = getElement("run-log")
 const status = getElement("status")
@@ -151,6 +181,8 @@ let acquireTypes: ((source: string) => Promise<number>) | undefined
 let typeAcquisitionQueue = Promise.resolve()
 let typeAcquisitionTimer = 0
 const acquiredTypeFiles = new Map<string, string>()
+let examplesPromise: Promise<PlaygroundExamples> | undefined
+let helpPromise: Promise<PlaygroundHelp> | undefined
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
 const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
@@ -311,6 +343,11 @@ deleteFileButton.addEventListener("click", deleteActiveFile)
 navigateBackButton.addEventListener("click", navigateBack)
 navigateForwardButton.addEventListener("click", navigateForward)
 runButton.addEventListener("click", runProject)
+examplesButton.addEventListener("click", () => void openExamples())
+helpButton.addEventListener("click", () => void openHelp())
+resourcesCloseButton.addEventListener("click", () => resourcesDialog.close())
+examplesSearch.addEventListener("input", () => void renderExamples())
+helpBackButton.addEventListener("click", showHelpTopics)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 
 void initializeVersionSelector()
@@ -525,6 +562,135 @@ function compareVersions(left: string, right: string) {
     if (difference !== 0) return difference
   }
   return 0
+}
+
+async function openExamples() {
+  resourcesTitle.textContent = "Examples"
+  examplesView.hidden = false
+  helpView.hidden = true
+  resourcesDialog.showModal()
+  await renderExamples()
+  examplesSearch.focus()
+}
+
+async function renderExamples() {
+  try {
+    const examples = await getExamples()
+    const query = examplesSearch.value.trim().toLowerCase()
+    const filtered = examples.examples
+      .filter(example => {
+        const searchText = `${example.title} ${example.path.join(" ")}`.toLowerCase()
+        return query === "" || searchText.includes(query)
+      })
+      .sort(
+        (left, right) =>
+          left.path.join("/").localeCompare(right.path.join("/")) || left.title.localeCompare(right.title)
+      )
+    examplesList.replaceChildren()
+    if (filtered.length === 0) {
+      examplesList.appendChild(createText("p", "No matching examples.", "empty-message"))
+      return
+    }
+    for (const example of filtered) {
+      const button = document.createElement("button")
+      button.type = "button"
+      button.appendChild(createText("strong", example.title))
+      button.appendChild(createText("small", example.path.join(" / ")))
+      button.addEventListener("click", () => loadExample(example))
+      examplesList.appendChild(button)
+    }
+  } catch (error) {
+    examplesList.replaceChildren(
+      createText("p", error instanceof Error ? error.message : String(error), "resource-error")
+    )
+  }
+}
+
+async function openHelp() {
+  resourcesTitle.textContent = "Playground help"
+  examplesView.hidden = true
+  helpView.hidden = false
+  resourcesDialog.showModal()
+  showHelpTopics()
+  try {
+    const help = await getHelp()
+    helpList.replaceChildren()
+    for (const topic of help.docs) {
+      const button = document.createElement("button")
+      button.type = "button"
+      button.appendChild(createText("strong", topic.title))
+      button.addEventListener("click", () => showHelpDocument(topic))
+      helpList.appendChild(button)
+    }
+  } catch (error) {
+    helpList.replaceChildren(createText("p", error instanceof Error ? error.message : String(error), "resource-error"))
+  }
+}
+
+function showHelpTopics() {
+  resourcesTitle.textContent = "Playground help"
+  helpList.hidden = false
+  helpDocument.hidden = true
+  helpContent.replaceChildren()
+}
+
+function showHelpDocument(topic: PlaygroundHelp["docs"][number]) {
+  helpList.hidden = true
+  helpDocument.hidden = false
+  resourcesTitle.textContent = topic.title
+  helpContent.innerHTML = topic.html
+}
+
+function loadExample(example: PlaygroundExample) {
+  if (!confirm(`Replace the current project with “${example.title}”?`)) return
+  const settings = example.compilerSettings ?? {}
+  const fileType = exampleFileType(example, settings)
+  const state = createLegacyProjectState(example.code, fileType)
+  const config = JSON.parse(state.files[configFileName] ?? defaultFiles[0].text)
+  config.compilerOptions ??= {}
+  for (const [originalKey, value] of Object.entries(settings)) {
+    if (originalKey === "ts" || originalKey === "useJavaScript" || originalKey === "filetype") continue
+    const key = originalKey === "checkJS" ? "checkJs" : originalKey
+    config.compilerOptions[key] = parseLegacyCompilerOption(key, String(value))
+  }
+  if (fileType === "js" || fileType === "jsx") {
+    config.compilerOptions.allowJs = true
+    config.compilerOptions.checkJs ??= true
+  }
+  state.files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
+
+  const serialized = JSON.stringify(state)
+  localStorage.setItem(storageKey, serialized)
+  const url = new URL(location.pathname, location.origin)
+  const requestedVersion = typeof settings.ts === "string" ? settings.ts : selectedCompiler
+  if (requestedVersion && !isNativeCompilerVersion(requestedVersion)) {
+    url.searchParams.set("ts", requestedVersion)
+  }
+  url.hash = `code/${LZString.compressToEncodedURIComponent(serialized)}`
+  history.replaceState({}, "", url)
+  location.reload()
+}
+
+function exampleFileType(example: PlaygroundExample, settings: PlaygroundExample["compilerSettings"]) {
+  if (settings?.useJavaScript === true) return example.name.endsWith("x") ? "jsx" : "js"
+  const match = /(\.d\.[cm]?ts|\.d\.ts|\.tsx|\.ts|\.jsx|\.js)$/i.exec(example.name)
+  return match?.[1].replace(/^\./, "") ?? "ts"
+}
+
+function getExamples() {
+  examplesPromise ??= fetch(new URL("./examples.json", import.meta.url)).then(async response => {
+    if (!response.ok) throw new Error(`Could not load examples: ${response.status} ${response.statusText}`)
+    return response.json() as Promise<PlaygroundExamples>
+  })
+  return examplesPromise
+}
+
+function getHelp() {
+  helpPromise ??= fetch(new URL("./help.json", import.meta.url)).then(async response => {
+    if (!response.ok) throw new Error(`Could not load help: ${response.status} ${response.statusText}`)
+    return response.json() as Promise<PlaygroundHelp>
+  })
+  return helpPromise
 }
 
 function projectFileContents() {
@@ -1557,8 +1723,7 @@ function normalizeProjectState(value: unknown): ProjectState {
   }
 }
 
-function createLegacyProjectState(code: string): ProjectState {
-  const fileType = getLegacyFileType()
+function createLegacyProjectState(code: string, fileType = getLegacyFileType()): ProjectState {
   if (!code.includes("// @filename: ")) {
     const fileName = `${projectRoot}/src/index.${fileType}`
     return {

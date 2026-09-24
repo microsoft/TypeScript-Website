@@ -16,6 +16,8 @@ const wasmFile = resolve(vendorDirectory, "typescript-wasip1-wasm/dist/tsc.wasm"
 const libDirectory = resolve(vendorDirectory, "lib")
 const configSchema = resolve(websiteDirectory, "packages/tsconfig-reference/scripts/schema/result/schema.json")
 const releaseIndex = resolve(packageDirectory, "vendor/versions.json")
+const examplesIndex = resolve(packageDirectory, "vendor/examples.json")
+const helpIndex = resolve(packageDirectory, "vendor/help.json")
 const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
@@ -48,6 +50,8 @@ await Promise.all([
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
   cp(configSchema, resolve(outputDirectory, "tsconfig.schema.json")),
   cp(releaseIndex, resolve(outputDirectory, "versions.json")),
+  cp(examplesIndex, resolve(outputDirectory, "examples.json")),
+  cp(helpIndex, resolve(outputDirectory, "help.json")),
   cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
   writeFile(resolve(outputDirectory, "lib-files.json"), libFilesJSON),
 ])

@@ -31,6 +31,8 @@
             </select>
           </label>
           <button id="run-button" type="button" disabled>Run</button>
+          <button id="examples-button" type="button">Examples</button>
+          <button id="help-button" type="button">Help</button>
           <output id="status" class="status">Loading compiler...</output>
         </div>
       </header>
@@ -101,6 +103,32 @@
           </section>
         </aside>
       </section>
+      <dialog id="resources-dialog" class="resources-dialog" aria-labelledby="resources-title">
+        <header>
+          <h2 id="resources-title">Examples</h2>
+          <button id="resources-close-button" type="button" aria-label="Close">Close</button>
+        </header>
+        <section id="examples-view" class="resources-view">
+          <label class="resource-search">
+            <span>Find an example</span>
+            <input id="examples-search" type="search" autocomplete="off" placeholder="Search examples" />
+          </label>
+          <div id="examples-list" class="resource-list">
+            <p class="empty-message">Loading examples...</p>
+          </div>
+        </section>
+        <section id="help-view" class="resources-view" hidden>
+          <div id="help-list" class="resource-list">
+            <p class="empty-message">Loading help...</p>
+          </div>
+          <div id="help-document" class="help-document" hidden>
+            <nav>
+              <button id="help-back-button" type="button">← Topics</button>
+            </nav>
+            <article id="help-content"></article>
+          </div>
+        </section>
+      </dialog>
       <div id="loader" class="loading-overlay">
         <div class="loading-card">
           <div class="lds-grid" aria-hidden="true">

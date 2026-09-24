@@ -140,6 +140,170 @@ body {
   background: #a1260d;
 }
 
+.resources-dialog {
+  width: min(48rem, calc(100vw - 2rem));
+  height: min(42rem, calc(100dvh - 2rem));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  color: inherit;
+  background: var(--panel);
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 35%);
+}
+
+.resources-dialog::backdrop {
+  background: rgb(0 0 0 / 45%);
+}
+
+.resources-dialog > header {
+  min-height: 3.25rem;
+  padding: 0.65rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--sidebar);
+}
+
+.resources-dialog h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.resources-dialog button,
+.resources-dialog a {
+  color: inherit;
+  font: inherit;
+}
+
+.resources-dialog > header button,
+.help-document nav button {
+  min-height: 2rem;
+  padding: 0 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.resources-view {
+  height: calc(100% - 3.25rem);
+  min-height: 0;
+}
+
+.resource-search {
+  padding: 0.7rem 0.8rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.resource-search input {
+  min-width: 0;
+  height: 2.25rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  color: inherit;
+  background: var(--panel);
+  font: inherit;
+}
+
+.resource-list {
+  height: 100%;
+  padding: 0.4rem;
+  overflow: auto;
+}
+
+.resource-search + .resource-list {
+  height: calc(100% - 3.7rem);
+}
+
+.resource-list > button,
+.resource-list > a {
+  width: 100%;
+  padding: 0.65rem 0.7rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+}
+
+.resource-list > button:hover,
+.resource-list > a:hover {
+  background: var(--hover);
+}
+
+.resource-list small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-align: right;
+}
+
+.resource-list > .empty-message,
+.resource-error {
+  padding: 0.75rem;
+}
+
+.resource-error {
+  color: #c63131;
+}
+
+.help-document {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.help-document nav {
+  min-height: 3rem;
+  padding: 0.45rem 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.help-document nav a {
+  font-size: 0.75rem;
+}
+
+.help-document article {
+  padding: 1rem;
+  overflow: auto;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.help-document article p {
+  max-width: 42rem;
+  margin: 0 0 1rem;
+}
+
+.help-document article code,
+.help-document article kbd {
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.2rem;
+  background: var(--sidebar);
+  font-family: Hack, monospace;
+  font-size: 0.82em;
+}
+
 .workspace {
   min-height: 0;
   display: grid;
@@ -811,7 +975,7 @@ code {
   .toolbar-actions {
     width: 100%;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
   }
 
@@ -819,6 +983,7 @@ code {
     min-width: 0;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
+    grid-column: 1 / -1;
   }
 
   .version-control select {
@@ -829,7 +994,7 @@ code {
   }
 
   .toolbar button {
-    min-width: 4rem;
+    min-width: 0;
     min-height: 2.75rem;
   }
 
@@ -839,6 +1004,34 @@ code {
     line-height: 1.35;
     overflow-wrap: anywhere;
     white-space: normal;
+  }
+
+  .resources-dialog {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .resources-dialog > header button,
+  .help-document nav button {
+    min-height: 2.75rem;
+  }
+
+  .resource-search {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .resource-search input {
+    min-height: 2.75rem;
+  }
+
+  .resource-list > button,
+  .resource-list > a {
+    min-height: 3.25rem;
   }
 
   .workspace {
