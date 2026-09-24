@@ -369,8 +369,8 @@ function applyLayoutState() {
     layoutState.filesWidth = clampPanelWidth("files", layoutState.filesWidth)
     layoutState.outputWidth = clampPanelWidth("output", layoutState.outputWidth)
   }
-  workspace.style.setProperty("--files-width", `${layoutState.filesWidth}px`)
-  workspace.style.setProperty("--output-width", `${layoutState.outputWidth}px`)
+  workspace.style.setProperty("--files-width", layoutState.filesVisible ? `${layoutState.filesWidth}px` : "0px")
+  workspace.style.setProperty("--output-width", layoutState.outputVisible ? `${layoutState.outputWidth}px` : "0px")
   workspace.dataset.filesCollapsed = String(!layoutState.filesVisible)
   workspace.dataset.outputCollapsed = String(!layoutState.outputVisible)
   emitOutput.hidden = !layoutState.emitVisible
