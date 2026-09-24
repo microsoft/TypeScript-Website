@@ -31,6 +31,7 @@ type LspRange = {
 
 type StartTsgoLspOptions = {
   editor: monaco.editor.IStandaloneCodeEditor
+  extraFiles: Record<string, string>
   libraries: Record<string, string>
   models: readonly monaco.editor.ITextModel[]
   module: WebAssembly.Module
@@ -148,7 +149,7 @@ class RingBufferWorker {
     if (method === "textDocument/publishDiagnostics") return
     if (label === "textDocument/definition") {
       message.result = normalizeLibraryLocations(message?.result)
-      await ensureLibraryModels(message.result)
+      await ensureDefinitionModels(message.result)
       navigateToDefinition(message.result)
     }
     if (message?.id !== undefined && !method) {
@@ -171,7 +172,7 @@ class RingBufferWorker {
 let languageRegistered = false
 let activeEditor: monaco.editor.IStandaloneCodeEditor | undefined
 let navigateToLocation: StartTsgoLspOptions["onNavigate"] | undefined
-let libraryFilesPromise: Promise<Record<string, string>> | undefined
+let definitionFilesPromise: Promise<Record<string, string>> | undefined
 
 export function registerPlaygroundLanguages() {
   if (languageRegistered) return
@@ -211,7 +212,15 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
 
   activeEditor = options.editor
   navigateToLocation = options.onNavigate
-  libraryFilesPromise = Promise.resolve(options.libraries)
+  definitionFilesPromise = Promise.resolve({
+    ...Object.fromEntries(
+      Object.entries(options.libraries).map(([fileName, text]) => [
+        `/typescript/lib/${fileName.slice(fileName.lastIndexOf("/") + 1)}`,
+        text,
+      ])
+    ),
+    ...options.extraFiles,
+  })
   const stdin = new SharedArrayBuffer(headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize)
   const worker = new RingBufferWorker(stdin)
   let serverInfo: string | undefined
@@ -220,12 +229,10 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     serverInfo = info
   }
   worker.onError = options.onError
-  worker.start(
-    stdin,
-    options.module,
-    options.libraries,
-    Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()]))
-  )
+  worker.start(stdin, options.module, options.libraries, {
+    ...options.extraFiles,
+    ...Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()])),
+  })
 
   const transport = createTransportToWorker(worker as unknown as Worker)
   new MonacoLspClient(transport)
@@ -254,43 +261,43 @@ function normalizeLibraryUri(uri: string) {
   return monaco.Uri.file(`/typescript/lib/${parsed.path.slice("/libs/".length)}`).toString()
 }
 
-async function ensureLibraryModels(result: unknown) {
+async function ensureDefinitionModels(result: unknown) {
   const locations = Array.isArray(result) ? result : [result]
   const uris = new Set<string>()
   for (const location of locations) {
     if (!location || typeof location !== "object") continue
     const candidate = location as { uri?: string; targetUri?: string }
     const uri = candidate.targetUri ?? candidate.uri
-    if (uri && isLibraryUri(uri)) uris.add(uri)
+    if (uri && monaco.Uri.parse(uri).scheme === "file") uris.add(uri)
   }
 
-  const libraryFiles = uris.size > 0 ? await getLibraryFiles() : {}
+  const definitionFiles = uris.size > 0 ? await getDefinitionFiles() : {}
   for (const uri of uris) {
     const monacoUri = monaco.Uri.parse(uri)
     if (monaco.editor.getModel(monacoUri)) continue
-    const filename = uri.slice(uri.lastIndexOf("/") + 1)
-    const contents = libraryFiles[`/${filename}`] ?? libraryFiles[filename]
-    if (contents === undefined) throw new Error(`Could not load ${filename}`)
-    monaco.editor.createModel(contents, "typescript", monacoUri)
+    const contents = definitionFiles[monacoUri.path]
+    if (contents === undefined) continue
+    monaco.editor.createModel(contents, languageForFile(monacoUri.path), monacoUri)
   }
 }
 
-function isLibraryUri(uri: string) {
-  const parsed = monaco.Uri.parse(uri)
-  return (
-    (parsed.scheme === "file" && /^\/typescript\/lib\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)) ||
-    (parsed.scheme === "bundled" && /^\/libs\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path))
-  )
-}
-
-function getLibraryFiles() {
-  libraryFilesPromise ??= fetch(new URL("./lib-files.json", import.meta.url)).then(response => {
+function getDefinitionFiles() {
+  definitionFilesPromise ??= fetch(new URL("./lib-files.json", import.meta.url)).then(response => {
     if (!response.ok) {
       throw new Error(`Could not load TypeScript libraries: ${response.status} ${response.statusText}`)
     }
-    return response.json() as Promise<Record<string, string>>
+    return response
+      .json()
+      .then((files: Record<string, string>) =>
+        Object.fromEntries(
+          Object.entries(files).map(([fileName, text]) => [
+            `/typescript/lib/${fileName.slice(fileName.lastIndexOf("/") + 1)}`,
+            text,
+          ])
+        )
+      )
   })
-  return libraryFilesPromise
+  return definitionFilesPromise
 }
 
 function navigateToDefinition(result: unknown) {
@@ -304,6 +311,7 @@ function navigateToDefinition(result: unknown) {
     targetRange?: LspRange
     targetSelectionRange?: LspRange
   }
+
   const uri = target.targetUri ?? target.uri
   const range = target.targetSelectionRange ?? target.targetRange ?? target.range
   if (!uri || !range) return
@@ -324,6 +332,12 @@ function navigateToDefinition(result: unknown) {
   activeEditor.setSelection(monacoRange)
   activeEditor.revealRangeInCenter(monacoRange, monaco.editor.ScrollType.Immediate)
   activeEditor.focus()
+}
+
+function languageForFile(fileName: string) {
+  if (/\.json$/i.test(fileName)) return "json"
+  if (/\.[cm]?jsx?$/i.test(fileName)) return "javascript"
+  return "typescript"
 }
 
 export { monaco }

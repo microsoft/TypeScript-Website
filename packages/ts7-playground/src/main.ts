@@ -3,6 +3,7 @@ import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wa
 import LZString from "lz-string"
 import { registerConfigSchema } from "./config-schema"
 import { StradaBackend } from "./strada"
+import { createTypeAcquisition, hasPackageImports } from "./type-acquisition"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
 
@@ -139,10 +140,17 @@ let lspFailure: string | undefined
 let projectFailure: string | undefined
 let compilerTransport: WasmTransport | undefined
 let stradaBackend: StradaBackend | undefined
+let stradaCompilerNamespace: typeof import("typescript") | undefined
 let compileActiveProject: (() => Promise<void> | void) | undefined
 let emittedFiles = new Map<string, string>()
 let emitRenderVersion = 0
 let hasShownDiagnostics = false
+let typeAcquisitionFailure: string | undefined
+let typeAcquisitionCompilerPromise: Promise<typeof import("typescript")> | undefined
+let acquireTypes: ((source: string) => Promise<number>) | undefined
+let typeAcquisitionQueue = Promise.resolve()
+let typeAcquisitionTimer = 0
+const acquiredTypeFiles = new Map<string, string>()
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
 const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
@@ -341,6 +349,10 @@ async function initializeNativeCompiler() {
       DiagnosticCategory,
       version: __TS_VERSION__,
     })
+    await refreshTypeAcquisition(true)
+    for (const [fileName, text] of acquiredTypeFiles) {
+      transport.setFile(fileName, text)
+    }
     compileActiveProject = () => compileNativeProject(api)
     compilerReady = true
     startLanguageServer(module, libFiles)
@@ -365,12 +377,14 @@ async function initializeStradaCompiler(requestedVersion: string) {
     }
     const compilerSource = await compilerResponse.text()
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
+    stradaCompilerNamespace = classicTS
     window.ts = classicTS
+    await refreshTypeAcquisition(true)
     stradaBackend = await StradaBackend.create({
       baseUrl: `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`,
       compilerSource,
       editor: inputEditor,
-      files: projectFileContents,
+      files: compilerFileContents,
       models: projectModels,
       onNavigate: navigateToModel,
       version,
@@ -393,6 +407,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
   try {
     startTsgoLsp({
       editor: inputEditor,
+      extraFiles: Object.fromEntries(acquiredTypeFiles),
       libraries,
       models: [...projectModels.values()],
       module,
@@ -514,6 +529,84 @@ function compareVersions(left: string, right: string) {
 
 function projectFileContents() {
   return Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
+}
+
+function compilerFileContents() {
+  return {
+    ...Object.fromEntries(acquiredTypeFiles),
+    ...projectFileContents(),
+  }
+}
+
+function scheduleTypeAcquisition() {
+  window.clearTimeout(typeAcquisitionTimer)
+  typeAcquisitionTimer = window.setTimeout(() => {
+    typeAcquisitionQueue = typeAcquisitionQueue.then(() => refreshTypeAcquisition(false))
+  }, 900)
+}
+
+async function refreshTypeAcquisition(initial: boolean) {
+  const source = [...projectModels.values()]
+    .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+    .map(model => model.getValue())
+    .join("\n")
+  if (!hasPackageImports(source)) {
+    typeAcquisitionFailure = undefined
+    if (compilerReady) renderStatus()
+    return
+  }
+
+  try {
+    if (!acquireTypes) {
+      const typescript = stradaCompilerNamespace ?? (await getTypeAcquisitionCompiler())
+      acquireTypes = createTypeAcquisition({
+        onFile(fileName, text) {
+          acquiredTypeFiles.set(fileName, text)
+          compilerTransport?.setFile(fileName, text)
+        },
+        onProgress(downloaded, total) {
+          const detail = `${downloaded} of ${total} declaration files`
+          if (compilerReady) setStatus(`Loading package types · ${detail}`, "loading")
+          else setLoadingIndeterminate("Loading package types...", detail)
+        },
+        onStart() {
+          if (compilerReady) setStatus("Loading package types...", "loading")
+          else setLoadingIndeterminate("Loading package types...", "Resolving npm imports")
+        },
+        typescript,
+      })
+    }
+
+    const addedFiles = await acquireTypes(source)
+    typeAcquisitionFailure = undefined
+    if (addedFiles > 0 && useNativeCompiler && lspReady && !initial) {
+      persistProjectState()
+      location.reload()
+      return
+    }
+    if (addedFiles > 0 && stradaBackend) {
+      await compileStradaProject()
+    }
+    renderStatus()
+  } catch (error) {
+    typeAcquisitionFailure = error instanceof Error ? error.message : String(error)
+    console.error("Could not acquire package types", error)
+    renderStatus()
+  }
+}
+
+async function getTypeAcquisitionCompiler() {
+  typeAcquisitionCompilerPromise ??= (async () => {
+    const version = await resolveStradaVersion("latest")
+    const url = `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/typescript.js`
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Could not load TypeScript for package type acquisition: ${response.status}`)
+    }
+    const source = await response.text()
+    return new Function(`${source}\nreturn ts;`)() as typeof import("typescript")
+  })()
+  return typeAcquisitionCompilerPromise
 }
 
 function navigateToModel(fileName: string, range?: monaco.IRange) {
@@ -709,8 +802,8 @@ function compileNativeProject(api: API) {
   try {
     const transport = compilerTransport
     if (!transport) throw new Error("The compiler transport is not initialized")
-    for (const [fileName, model] of projectModels) {
-      transport.setFile(fileName, model.getValue())
+    for (const [fileName, text] of Object.entries(compilerFileContents())) {
+      transport.setFile(fileName, text)
     }
 
     const config = api.readConfigFile(configFileName)
@@ -1296,7 +1389,10 @@ function renderStatus() {
   }
   const compiler = lspServerInfo ?? __TS_VERSION__
   const diagnostics = `${diagnosticCount} diagnostic${diagnosticCount === 1 ? "" : "s"}`
-  setStatus(`${compiler} ready · ${diagnostics}`, "ready")
+  setStatus(
+    `${compiler} ready · ${diagnostics}${typeAcquisitionFailure ? ` · package types: ${typeAcquisitionFailure}` : ""}`,
+    typeAcquisitionFailure ? "error" : "ready"
+  )
   inputEditor.layout()
 }
 
@@ -1308,6 +1404,7 @@ function setStatus(message: string, state: "loading" | "ready" | "error") {
 function registerProjectModel(model: monaco.editor.ITextModel) {
   model.onDidChangeContent(() => {
     persistProjectState()
+    scheduleTypeAcquisition()
     window.clearTimeout(updateTimer)
     updateTimer = window.setTimeout(() => {
       void compileActiveProject?.()

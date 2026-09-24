@@ -12,6 +12,7 @@
   "dependencies": {
     "@bjorn3/browser_wasi_shim": "^0.4.2",
     "@fontsource/nunito-sans": "^5.2.6",
+    "@typescript/ata": "workspace:*",
     "@typescript/typescript": "file:vendor/typescript",
     "@typescript/typescript-wasip1-wasm": "file:vendor/typescript-wasip1-wasm",
     "@vscode/monaco-lsp-client": "file:vendor/vscode-monaco-lsp-client-0.1.0.tgz",

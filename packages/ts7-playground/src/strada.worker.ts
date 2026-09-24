@@ -197,7 +197,9 @@ function parseConfig() {
 }
 
 function getRootNames(config: any) {
-  const sourceFiles = [...files.keys()].filter(fileName => /\.[cm]?[jt]sx?$/i.test(fileName))
+  const sourceFiles = [...files.keys()].filter(
+    fileName => !fileName.includes("/node_modules/") && /\.[cm]?[jt]sx?$/i.test(fileName)
+  )
   if (Array.isArray(config.files)) {
     return config.files
       .filter((fileName: unknown): fileName is string => typeof fileName === "string")
