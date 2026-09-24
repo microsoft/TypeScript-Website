@@ -2,6 +2,7 @@ import { API, DiagnosticCategory, type Diagnostic } from "@typescript/typescript
 import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wasm"
 import LZString from "lz-string"
 import { registerConfigSchema } from "./config-schema"
+import { StradaBackend } from "./strada"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
 
@@ -34,6 +35,7 @@ type ProjectFile = {
 type ProjectState = {
   activeFile?: string
   files: Record<string, string>
+  useDefaults?: boolean
 }
 
 type RuntimeLog = {
@@ -43,11 +45,7 @@ type RuntimeLog = {
 
 declare global {
   interface Window {
-    ts: API & {
-      API: typeof API
-      DiagnosticCategory: typeof DiagnosticCategory
-      version: string
-    }
+    ts: any
   }
 }
 
@@ -65,6 +63,8 @@ const projectRoot = "/workspace"
 const configFileName = `${projectRoot}/tsconfig.json`
 const entryFileName = `${projectRoot}/src/index.ts`
 const storageKey = "ts7-playground-project"
+const selectedCompiler = new URLSearchParams(location.search).get("ts")
+const useNativeCompiler = isNativeCompilerVersion(selectedCompiler)
 const defaultFiles: ProjectFile[] = [
   {
     path: configFileName,
@@ -105,6 +105,7 @@ console.log(message)
 
 const inputElement = getElement("input-editor")
 const fileList = getElement("file-list")
+const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
 const currentFile = getElement("current-file")
@@ -129,6 +130,8 @@ let compilerFailure: string | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
 let compilerTransport: WasmTransport | undefined
+let stradaBackend: StradaBackend | undefined
+let compileActiveProject: (() => Promise<void> | void) | undefined
 let emittedFiles = new Map<string, string>()
 let emitRenderVersion = 0
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
@@ -162,10 +165,14 @@ monaco.editor.defineTheme("typescript-playground", {
 
 registerPlaygroundLanguages()
 const initialState = loadProjectState()
-const initialFiles = {
-  ...Object.fromEntries(defaultFiles.map(file => [file.path, file.text])),
-  ...initialState.files,
-}
+const initialFiles =
+  initialState.useDefaults === false
+    ? { ...initialState.files }
+    : {
+        ...Object.fromEntries(defaultFiles.map(file => [file.path, file.text])),
+        ...initialState.files,
+      }
+applyLegacyCompilerOptions(initialFiles)
 const projectModels = new Map(
   Object.entries(initialFiles).map(([fileName, text]) => {
     const model = monaco.editor.createModel(text, languageForFile(fileName), monaco.Uri.parse(`file://${fileName}`))
@@ -190,6 +197,7 @@ const inputEditor = monaco.editor.create(inputElement, {
 
 renderFileList()
 updateActiveFile()
+restoreLegacySelection()
 inputEditor.onDidChangeModel(updateActiveFile)
 inputEditor.addAction({
   id: "run-project",
@@ -204,7 +212,12 @@ inputEditor.onMouseDown(event => {
   const position = event.target.position
   window.setTimeout(() => {
     inputEditor.setPosition(position)
-    void inputEditor.getAction("editor.action.revealDefinition")?.run()
+    if (stradaBackend) {
+      const model = inputEditor.getModel()
+      if (model) void stradaBackend.goToDefinition(model, position)
+    } else {
+      void inputEditor.getAction("editor.action.revealDefinition")?.run()
+    }
   })
 })
 
@@ -236,9 +249,10 @@ resetProjectButton.addEventListener("click", resetProject)
 runButton.addEventListener("click", runProject)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 
-void initializeCompiler()
+void initializeVersionSelector()
+void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(selectedCompiler!))
 
-async function initializeCompiler() {
+async function initializeNativeCompiler() {
   try {
     setLoadingProgress(0, "Downloading TypeScript...", "Preparing downloads")
     const [wasmBytes, libFilesBytes, configSchemaBytes] = await Promise.all([
@@ -271,13 +285,49 @@ async function initializeCompiler() {
       DiagnosticCategory,
       version: __TS_VERSION__,
     })
+    compileActiveProject = () => compileNativeProject(api)
     compilerReady = true
     startLanguageServer(module, libFiles)
-    compileProject(api)
+    compileNativeProject(api)
     inputEditor.focus()
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     compilerFailure = message
+    renderStatus()
+    console.error(error)
+  }
+}
+
+async function initializeStradaCompiler(requestedVersion: string) {
+  try {
+    setLoadingIndeterminate("Loading classic TypeScript...", requestedVersion)
+    const version = await resolveStradaVersion(requestedVersion)
+    const compilerUrl = `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/typescript.js`
+    const compilerResponse = await fetch(compilerUrl)
+    if (!compilerResponse.ok) {
+      throw new Error(`Unable to load TypeScript ${version}: ${compilerResponse.status} ${compilerResponse.statusText}`)
+    }
+    const compilerSource = await compilerResponse.text()
+    const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
+    window.ts = classicTS
+    stradaBackend = await StradaBackend.create({
+      baseUrl: `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`,
+      compilerSource,
+      editor: inputEditor,
+      files: projectFileContents,
+      models: projectModels,
+      onNavigate: navigateToModel,
+      version,
+    })
+    compileActiveProject = compileStradaProject
+    compilerReady = true
+    lspReady = true
+    lspServerInfo = `TypeScript ${version}`
+    await compileStradaProject()
+    renderStatus()
+    inputEditor.focus()
+  } catch (error) {
+    compilerFailure = error instanceof Error ? error.message : String(error)
     renderStatus()
     console.error(error)
   }
@@ -316,6 +366,106 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
     lspFailure = error instanceof Error ? error.message : String(error)
     renderStatus()
   }
+}
+
+async function initializeVersionSelector() {
+  compilerVersion.disabled = true
+  const classicGroup = document.createElement("optgroup")
+  classicGroup.label = "Classic TypeScript (Strada)"
+  classicGroup.appendChild(new Option("Nightly", "next"))
+  try {
+    const response = await fetch(new URL("./versions.json", import.meta.url))
+    if (!response.ok) throw new Error(`Could not load versions: ${response.status}`)
+    const releases = (await response.json()) as { versions: string[] }
+    const unsupported = new Set(["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"])
+    for (const version of releases.versions) {
+      if (unsupported.has(version)) continue
+      classicGroup.appendChild(new Option(version, version))
+    }
+    classicGroup.appendChild(new Option("Custom / PR build…", "__custom__"))
+    compilerVersion.appendChild(classicGroup)
+    if (useNativeCompiler) {
+      compilerVersion.value = "native"
+    } else {
+      const selected = normalizeRequestedVersion(selectedCompiler!)
+      if (![...compilerVersion.options].some(option => option.value === selected)) {
+        classicGroup.insertBefore(new Option(selectedCompiler!, selected), classicGroup.lastElementChild)
+      }
+      compilerVersion.value = selected
+    }
+    compilerVersion.addEventListener("change", () => {
+      const url = new URL(location.href)
+      if (compilerVersion.value === "native") {
+        url.searchParams.delete("ts")
+      } else if (compilerVersion.value === "__custom__") {
+        const custom = prompt("Classic TypeScript CDN build ID")
+        if (!custom) {
+          compilerVersion.value = useNativeCompiler ? "native" : normalizeRequestedVersion(selectedCompiler!)
+          return
+        }
+        url.searchParams.set("ts", custom.trim())
+      } else {
+        url.searchParams.set("ts", compilerVersion.value)
+      }
+      location.href = url.href
+    })
+  } catch (error) {
+    console.warn("Could not initialize the compiler version selector", error)
+  } finally {
+    compilerVersion.disabled = false
+  }
+}
+
+function isNativeCompilerVersion(version: string | null) {
+  return (
+    version === null ||
+    version === "" ||
+    version === "native" ||
+    version === "7" ||
+    version === "7.1" ||
+    version === __TS_VERSION__
+  )
+}
+
+function normalizeRequestedVersion(version: string) {
+  return version === "Nightly" ? "next" : version
+}
+
+async function resolveStradaVersion(requestedVersion: string) {
+  const normalized = normalizeRequestedVersion(requestedVersion)
+  if (normalized !== "next" && normalized !== "latest") return normalized
+  const index = normalized === "next" ? "next.json" : "releases.json"
+  const response = await fetch(`https://playgroundcdn.typescriptlang.org/indexes/${index}`, { cache: "no-cache" })
+  if (!response.ok) {
+    throw new Error(`Could not resolve TypeScript ${requestedVersion}: ${response.status}`)
+  }
+  const result = await response.json()
+  return normalized === "next"
+    ? (result.version as string)
+    : [...(result.versions as string[])].sort(compareVersions).at(-1)!
+}
+
+function compareVersions(left: string, right: string) {
+  const leftParts = left.split(/[.-]/).map(part => Number(part) || 0)
+  const rightParts = right.split(/[.-]/).map(part => Number(part) || 0)
+  for (let index = 0; index < Math.max(leftParts.length, rightParts.length); index++) {
+    const difference = (leftParts[index] ?? 0) - (rightParts[index] ?? 0)
+    if (difference !== 0) return difference
+  }
+  return 0
+}
+
+function projectFileContents() {
+  return Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
+}
+
+function navigateToModel(fileName: string, range: monaco.Range) {
+  const model = monaco.editor.getModel(monaco.Uri.file(fileName))
+  if (!model) return
+  inputEditor.setModel(model)
+  inputEditor.setSelection(range)
+  inputEditor.revealRangeInCenter(range, monaco.editor.ScrollType.Immediate)
+  inputEditor.focus()
 }
 
 async function downloadAsset(name: keyof typeof __LOAD_ASSET_SIZES__, url: URL): Promise<Uint8Array<ArrayBuffer>> {
@@ -413,7 +563,7 @@ function formatBytes(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MiB`
 }
 
-function compileProject(api: API) {
+function compileNativeProject(api: API) {
   setStatus("Checking project...", "loading")
   runButton.disabled = true
 
@@ -477,16 +627,6 @@ function compileProject(api: API) {
     } finally {
       program.dispose()
     }
-
-    function collectProgramTypeQueries(program: ReturnType<API["createProgram"]>, fileNames: readonly string[]) {
-      const checker = program.getProject().checker
-      for (const fileName of fileNames) {
-        const model = projectModels.get(fileName)
-        const sourceFile = program.getSourceFile(fileName)
-        if (!model || !sourceFile) continue
-        typeQueries.set(model.uri.toString(), collectTypeQueries(model.getValue(), sourceFile, checker, model))
-      }
-    }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     diagnosticCount = 0
@@ -499,6 +639,90 @@ function compileProject(api: API) {
     projectFailure = message
     renderStatus()
     console.error(error)
+  }
+}
+
+let stradaCompileVersion = 0
+
+async function compileStradaProject() {
+  const backend = stradaBackend
+  if (!backend) return
+  const compileVersion = ++stradaCompileVersion
+  setStatus("Checking project...", "loading")
+  runButton.disabled = true
+  try {
+    const result = await backend.compile()
+    if (compileVersion !== stradaCompileVersion) return
+    diagnosticCount = result.diagnostics.length
+    setDiagnostics(result.diagnostics as Diagnostic[])
+    emittedFiles = new Map(Object.entries(result.outputFiles))
+    runButton.disabled = ![...emittedFiles.keys()].some(fileName => fileName.endsWith(".js"))
+    void renderEmittedFiles()
+
+    typeQueries.clear()
+    await Promise.all(
+      [...projectModels.values()]
+        .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+        .map(model => collectStradaTypeQueries(backend, model))
+    )
+    if (compileVersion !== stradaCompileVersion) return
+    inlayEmitter.fire()
+    projectFailure = undefined
+    compilerFailure = undefined
+    renderStatus()
+  } catch (error) {
+    if (compileVersion !== stradaCompileVersion) return
+    diagnosticCount = 0
+    emittedFiles = new Map()
+    runButton.disabled = true
+    setDiagnostics([])
+    typeQueries.clear()
+    inlayEmitter.fire()
+    const message = error instanceof Error ? error.message : String(error)
+    renderEmitError(message)
+    projectFailure = message
+    renderStatus()
+    console.error(error)
+  }
+}
+
+async function collectStradaTypeQueries(backend: StradaBackend, model: monaco.editor.ITextModel) {
+  const source = model.getValue()
+  const queryPattern = /^\s*\/\/\s*\^\?\s*$/gm
+  const queries: TypeQuery[] = []
+  let match: RegExpExecArray | null
+  while ((match = queryPattern.exec(source))) {
+    const queryEnd = match.index + match[0].lastIndexOf("?")
+    const queryPosition = model.getPositionAt(queryEnd)
+    if (queryPosition.lineNumber === 1) continue
+    const inspectedPosition = model.getOffsetAt({
+      lineNumber: queryPosition.lineNumber - 1,
+      column: queryPosition.column,
+    })
+    const info =
+      (await backend.quickInfo(model.uri.path, inspectedPosition)) ??
+      (await backend.quickInfo(model.uri.path, Math.max(0, inspectedPosition - 1)))
+    if (!info?.displayParts) continue
+    const text = info.displayParts
+      .map((part: { text: string }) => part.text)
+      .join("")
+      .replace(/\r?\n\s*/g, " ")
+    queries.push({
+      lineNumber: queryPosition.lineNumber,
+      column: queryPosition.column + 1,
+      label: truncate(`: ${text}`, 120),
+    })
+  }
+  typeQueries.set(model.uri.toString(), queries)
+}
+
+function collectProgramTypeQueries(program: ReturnType<API["createProgram"]>, fileNames: readonly string[]) {
+  const checker = program.getProject().checker
+  for (const fileName of fileNames) {
+    const model = projectModels.get(fileName)
+    const sourceFile = program.getSourceFile(fileName)
+    if (!model || !sourceFile) continue
+    typeQueries.set(model.uri.toString(), collectTypeQueries(model.getValue(), sourceFile, checker, model))
   }
 }
 
@@ -819,6 +1043,13 @@ function updateActiveFile() {
   if (projectModel) persistProjectState()
 }
 
+function restoreLegacySelection() {
+  const params = new URLSearchParams(location.search)
+  const values = ["ssl", "ssc", "pln", "pc"].map(key => Number(params.get(key)))
+  if (values.some(value => !Number.isInteger(value) || value <= 0)) return
+  inputEditor.setSelection(new monaco.Selection(values[0], values[1], values[2], values[3]))
+}
+
 function renderStatus() {
   const failure = compilerFailure ?? lspFailure
   if (failure) {
@@ -862,7 +1093,7 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
     persistProjectState()
     window.clearTimeout(updateTimer)
     updateTimer = window.setTimeout(() => {
-      if (window.ts) compileProject(window.ts)
+      void compileActiveProject?.()
     }, 220)
   })
 }
@@ -890,7 +1121,7 @@ function createNewFile() {
   inputEditor.setModel(model)
   inputEditor.focus()
   persistProjectState()
-  if (window.ts) compileProject(window.ts)
+  void compileActiveProject?.()
 }
 
 function resetProject() {
@@ -911,26 +1142,23 @@ function loadProjectState(): ProjectState {
       try {
         return normalizeProjectState(JSON.parse(decoded))
       } catch {
-        return {
-          activeFile: entryFileName,
-          files: { [entryFileName]: decoded },
-        }
+        return createLegacyProjectState(decoded)
       }
     }
   }
 
   const stored = localStorage.getItem(storageKey)
-  if (!stored) return { files: {} }
+  if (!stored) return { files: {}, useDefaults: true }
   try {
     return normalizeProjectState(JSON.parse(stored))
   } catch (error) {
     console.warn("Could not restore the TypeScript 7 project", error)
-    return { files: {} }
+    return { files: {}, useDefaults: true }
   }
 }
 
 function normalizeProjectState(value: unknown): ProjectState {
-  if (!value || typeof value !== "object") return { files: {} }
+  if (!value || typeof value !== "object") return { files: {}, useDefaults: true }
   const candidate = value as { activeFile?: unknown; files?: unknown }
   const filesValue = candidate.files && typeof candidate.files === "object" ? candidate.files : value
   const files = Object.fromEntries(
@@ -970,7 +1198,143 @@ function normalizeProjectState(value: unknown): ProjectState {
   return {
     activeFile: requestedActiveFile?.startsWith(`${projectRoot}/`) ? requestedActiveFile : undefined,
     files,
+    useDefaults: false,
   }
+}
+
+function createLegacyProjectState(code: string): ProjectState {
+  const fileType = getLegacyFileType()
+  if (!code.includes("// @filename: ")) {
+    const fileName = `${projectRoot}/src/index.${fileType}`
+    return {
+      activeFile: fileName,
+      files: {
+        [configFileName]: defaultFiles[0].text,
+        [fileName]: code,
+      },
+      useDefaults: false,
+    }
+  }
+
+  const files: Record<string, string> = {
+    [configFileName]: defaultFiles[0].text,
+  }
+  let currentFile = `src/index.${fileType}`
+  let currentLines: string[] = []
+  const flush = () => {
+    if (currentLines.length === 0) return
+    const fileName = `${projectRoot}/${sanitizeLegacyPath(currentFile)}`
+    files[fileName] = currentLines.join("\n")
+  }
+  for (const line of code.split(/\r\n?|\n/g)) {
+    const match = /^\s*\/\/\s*@filename:\s*(.+)$/.exec(line)
+    if (match) {
+      flush()
+      currentFile = match[1].trim()
+      currentLines = []
+    } else {
+      currentLines.push(line)
+    }
+  }
+  flush()
+  const sourceFiles = Object.keys(files).filter(fileName => fileName !== configFileName)
+  return {
+    activeFile: sourceFiles[0] ?? entryFileName,
+    files,
+    useDefaults: false,
+  }
+}
+
+function sanitizeLegacyPath(fileName: string) {
+  const parts = fileName.replaceAll("\\", "/").replace(/^\/+/, "").split("/")
+  return parts.filter(part => part !== "" && part !== "." && part !== "..").join("/")
+}
+
+function getLegacyFileType() {
+  const params = new URLSearchParams(location.search)
+  if (params.has("useJavaScript")) return "js"
+  const fileType = params.get("filetype")
+  return fileType && /^[cm]?[jt]sx?$/.test(fileType) ? fileType : "ts"
+}
+
+function applyLegacyCompilerOptions(files: Record<string, string>) {
+  const params = new URLSearchParams(location.search)
+  const reserved = new Set(["example", "filetype", "pc", "pln", "ssc", "ssl", "ts", "useJavaScript"])
+  let config: any
+  try {
+    config = JSON.parse(files[configFileName] ?? defaultFiles[0].text)
+  } catch {
+    config = JSON.parse(defaultFiles[0].text)
+  }
+  config.compilerOptions ??= {}
+  for (const [key, rawValue] of params) {
+    if (reserved.has(key)) continue
+    const value = parseLegacyCompilerOption(key, rawValue)
+    if (value !== undefined) config.compilerOptions[key] = value
+  }
+  if (params.has("useJavaScript") || params.get("filetype")?.startsWith("js")) {
+    config.compilerOptions.allowJs = true
+    config.compilerOptions.checkJs = true
+  }
+  files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
+}
+
+function parseLegacyCompilerOption(key: string, rawValue: string) {
+  if (rawValue === "true") return true
+  if (rawValue === "false") return false
+  const number = Number(rawValue)
+  if (!Number.isFinite(number)) return rawValue
+  const enumMaps: Record<string, Record<number, string>> = {
+    jsx: {
+      0: "preserve",
+      1: "react",
+      2: "react-native",
+      3: "react-jsx",
+      4: "react-jsxdev",
+    },
+    module: {
+      0: "none",
+      1: "commonjs",
+      2: "amd",
+      3: "umd",
+      4: "system",
+      5: "es2015",
+      6: "es2020",
+      7: "es2022",
+      99: "esnext",
+      100: "node16",
+      199: "nodenext",
+      200: "preserve",
+    },
+    moduleResolution: {
+      1: "classic",
+      2: "node",
+      3: "node16",
+      99: "nodenext",
+      100: "bundler",
+    },
+    newLine: {
+      0: "crlf",
+      1: "lf",
+    },
+    target: {
+      0: "es3",
+      1: "es5",
+      2: "es2015",
+      3: "es2016",
+      4: "es2017",
+      5: "es2018",
+      6: "es2019",
+      7: "es2020",
+      8: "es2021",
+      9: "es2022",
+      10: "es2023",
+      11: "es2024",
+      12: "es2025",
+      99: "esnext",
+    },
+  }
+  return enumMaps[key]?.[number] ?? number
 }
 
 function persistProjectState() {

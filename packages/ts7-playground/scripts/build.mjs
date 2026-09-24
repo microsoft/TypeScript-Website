@@ -15,6 +15,7 @@ const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? "/play/7/"
 const wasmFile = resolve(vendorDirectory, "typescript-wasip1-wasm/dist/tsc.wasm")
 const libDirectory = resolve(vendorDirectory, "lib")
 const configSchema = resolve(websiteDirectory, "packages/tsconfig-reference/scripts/schema/result/schema.json")
+const releaseIndex = resolve(packageDirectory, "vendor/versions.json")
 const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
@@ -46,6 +47,7 @@ await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
   cp(configSchema, resolve(outputDirectory, "tsconfig.schema.json")),
+  cp(releaseIndex, resolve(outputDirectory, "versions.json")),
   cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
   writeFile(resolve(outputDirectory, "lib-files.json"), libFilesJSON),
 ])
@@ -67,6 +69,7 @@ const buildContext = await context({
   entryPoints: {
     main: resolve(packageDirectory, "src/main.ts"),
     "editor.worker": editorWorker,
+    "strada.worker": resolve(packageDirectory, "src/strada.worker.ts"),
     "tsgo-lsp.worker": resolve(packageDirectory, "src/tsgo-lsp.worker.ts"),
   },
   format: "esm",

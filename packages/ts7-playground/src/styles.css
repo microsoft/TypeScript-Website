@@ -74,6 +74,30 @@ body {
   gap: 0.75rem;
 }
 
+.version-control {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.version-control select {
+  max-width: 12rem;
+  height: 1.9rem;
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: 0.25rem;
+  color: white;
+  background: rgb(0 0 0 / 16%);
+  font: inherit;
+}
+
+.version-control option,
+.version-control optgroup {
+  color: #1f1f1f;
+  background: white;
+}
+
 .toolbar button,
 .run-output button {
   border: 1px solid rgb(255 255 255 / 45%);

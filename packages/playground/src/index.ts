@@ -296,6 +296,24 @@ export const setupPlayground = (
 
   const notWorkingInPlayground = ["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"]
 
+  const nativeLi = document.createElement("li")
+  nativeLi.classList.add("native")
+  const nativeLink = document.createElement("a")
+  nativeLink.textContent = "Native 7.1"
+  nativeLink.href = "#"
+  nativeLi.onclick = () => {
+    const currentURL = sandbox.createURLQueryWithCompilerOptions(sandbox)
+    const [query, hash] = currentURL.split("#")
+    const params = new URLSearchParams(query)
+    params.delete("ts")
+    const queryString = params.toString()
+    document.location = `${document.location.origin}/play/7/${queryString ? `?${queryString}` : ""}${
+      hash ? `#${hash}` : ""
+    }`
+  }
+  nativeLi.appendChild(nativeLink)
+  versionsMenu.appendChild(nativeLi)
+
   const allVersions = ["Nightly", ...sandbox.supportedVersions.filter(f => !notWorkingInPlayground.includes(f))]
 
   allVersions.forEach((v: string) => {
