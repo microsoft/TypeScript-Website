@@ -921,6 +921,18 @@ code {
 }
 
 @media (max-width: 1000px) {
+  .toolbar {
+    min-height: 0;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-actions {
+    min-width: 0;
+    flex: 1 1 34rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
   .workspace {
     grid-template-columns: 11rem minmax(20rem, 1fr);
     grid-template-rows: minmax(20rem, 1fr) minmax(16rem, 0.8fr);
