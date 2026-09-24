@@ -1,10 +1,18 @@
 import { API, DiagnosticCategory, type Diagnostic } from "@typescript/typescript/unstable/sync"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wasm"
 import LZString from "lz-string"
+import {
+  compilerOptionsNode,
+  computeCompilerOverrides,
+  configOptionNode,
+  setCompilerOption,
+  type CompilerOverride,
+  type CompilerOverrideState,
+} from "./compiler-overrides"
 import { registerConfigSchema } from "./config-schema"
 import { StradaBackend } from "./strada"
 import { createTypeAcquisition, hasPackageImports } from "./type-acquisition"
-import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoStatus } from "./tsgo-lsp"
+import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
 
 declare const __TS_VERSION__: string
@@ -13,6 +21,32 @@ declare const __LOAD_ASSET_SIZES__: {
   libraries: number
   schema: number
   wasm: number
+}
+
+function remapCompilerOverrideDiagnostics(diagnostics: readonly Diagnostic[]) {
+  return diagnostics.map(diagnostic => {
+    const text = diagnostic.text.toLowerCase()
+    const matchingOverride = compilerOverrideState.overrides.find(override => {
+      if (!override.applied) return false
+      if (
+        text.includes(`'${override.option.toLowerCase()}'`) ||
+        text.includes(`"--${override.option.toLowerCase()}"`) ||
+        text.includes(`'--${override.option.toLowerCase()}'`)
+      ) {
+        return true
+      }
+      if (diagnostic.fileName !== configFileName) return false
+      const node = configOptionNode(compilerOverrideState.effectiveConfigText, override.option)
+      return node !== undefined && diagnostic.pos <= node.offset + node.length && diagnostic.end >= node.offset
+    })
+    if (!matchingOverride) return diagnostic
+    return {
+      ...diagnostic,
+      end: matchingOverride.end,
+      fileName: matchingOverride.fileName,
+      pos: matchingOverride.start,
+    }
+  })
 }
 
 type CompilerNode = {
@@ -146,6 +180,7 @@ const outputResizer = getElement("output-resizer")
 const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
+const applyCompilerOverridesButton = getElement<HTMLButtonElement>("apply-compiler-overrides-button")
 const toggleFilesButton = getElement<HTMLButtonElement>("toggle-files-button")
 const toggleOutputButton = getElement<HTMLButtonElement>("toggle-output-button")
 const toggleEmitButton = getElement<HTMLButtonElement>("toggle-emit-button")
@@ -202,6 +237,7 @@ let compilerFailure: string | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
 let compilerTransport: WasmTransport | undefined
+let languageServer: TsgoLspController | undefined
 let stradaBackend: StradaBackend | undefined
 let stradaCompilerNamespace: typeof import("typescript") | undefined
 let compileActiveProject: (() => Promise<void> | void) | undefined
@@ -222,6 +258,7 @@ const assetCachePrefix = "ts7-playground-assets-"
 let assetCachePromise: Promise<Cache | undefined> | undefined
 const layoutStorageKey = "ts7-playground-layout"
 const downloadConsentStorageKey = "ts7-playground-skip-download-warning"
+let compilerOverrideState: CompilerOverrideState
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -263,6 +300,10 @@ const projectModels = new Map(
     return [fileName, model] as const
   })
 )
+compilerOverrideState = computeCompilerOverrides(
+  projectTextMap(),
+  projectModels.get(configFileName)?.getValue() ?? "{}"
+)
 const fileButtons = new Map<string, HTMLButtonElement>()
 const inputEditor = monaco.editor.create(inputElement, {
   automaticLayout: true,
@@ -278,6 +319,7 @@ const inputEditor = monaco.editor.create(inputElement, {
   tabSize: 2,
   theme: "typescript-playground",
 })
+let effectiveConfigModel: monaco.editor.ITextModel | undefined
 
 type EditorLocation = {
   selection: monaco.Selection
@@ -341,6 +383,14 @@ inputEditor.onMouseDown(event => {
     }
   })
 })
+
+const inlayEmitter = new monaco.Emitter<void>()
+const typeQueries = new Map<string, TypeQuery[]>()
+const compilerOverrideHints = new Map<string, monaco.languages.InlayHint[]>()
+const overrideCodeLensEmitter = new monaco.Emitter<monaco.languages.CodeLensProvider>()
+let overrideCodeLensProvider: monaco.languages.CodeLensProvider | undefined
+registerCompilerOverrideFeatures()
+refreshCompilerOverrides()
 
 function loadLayoutState(): LayoutState {
   const defaults: LayoutState = {
@@ -470,24 +520,34 @@ function clampPanelWidth(target: "files" | "output", width: number) {
   return Math.min(Math.max(width, 240), Math.min(640, maximum))
 }
 
-const inlayEmitter = new monaco.Emitter<void>()
-const typeQueries = new Map<string, TypeQuery[]>()
 for (const language of ["javascript", "typescript"]) {
   monaco.languages.registerInlayHintsProvider(language, {
     onDidChangeInlayHints: inlayEmitter.event,
     provideInlayHints(model) {
       return {
-        hints: (typeQueries.get(model.uri.toString()) ?? []).map(query => ({
-          kind: monaco.languages.InlayHintKind.Type,
-          position: new monaco.Position(query.lineNumber, query.column),
-          label: query.label,
-          paddingLeft: true,
-        })),
+        hints: [
+          ...(typeQueries.get(model.uri.toString()) ?? []).map(query => ({
+            kind: monaco.languages.InlayHintKind.Type,
+            position: new monaco.Position(query.lineNumber, query.column),
+            label: query.label,
+            paddingLeft: true,
+          })),
+          ...(compilerOverrideHints.get(model.uri.toString()) ?? []),
+        ],
         dispose() {},
       }
     },
   })
 }
+monaco.languages.registerInlayHintsProvider("json", {
+  onDidChangeInlayHints: inlayEmitter.event,
+  provideInlayHints(model) {
+    return {
+      dispose() {},
+      hints: compilerOverrideHints.get(model.uri.toString()) ?? [],
+    }
+  },
+})
 
 let updateTimer = 0
 for (const model of projectModels.values()) {
@@ -500,6 +560,7 @@ newFileForm.addEventListener("submit", event => {
   finishCreatingFile()
 })
 resetProjectButton.addEventListener("click", resetProject)
+applyCompilerOverridesButton.addEventListener("click", applyCompilerOverridesToConfig)
 toggleFilesButton.addEventListener("click", () => {
   layoutState.filesVisible = !layoutState.filesVisible
   applyLayoutState()
@@ -623,8 +684,10 @@ async function initializeStradaCompiler(requestedVersion: string) {
 
 function startLanguageServer(module: WebAssembly.Module, libraries: Record<string, string>) {
   try {
-    startTsgoLsp({
+    languageServer = startTsgoLsp({
+      configFileName,
       editor: inputEditor,
+      effectiveConfigText: compilerOverrideState.effectiveConfigText,
       extraFiles: Object.fromEntries(acquiredTypeFiles),
       libraries,
       models: [...projectModels.values()],
@@ -878,11 +941,387 @@ function projectFileContents() {
   return Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
 }
 
+function projectTextMap() {
+  return new Map([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
+}
+
 function compilerFileContents() {
-  return {
+  const files = {
     ...Object.fromEntries(acquiredTypeFiles),
     ...projectFileContents(),
   }
+  files[configFileName] = compilerOverrideState.effectiveConfigText
+  return files
+}
+
+function refreshCompilerOverrides() {
+  compilerOverrideState = computeCompilerOverrides(
+    projectTextMap(),
+    projectModels.get(configFileName)?.getValue() ?? defaultFiles[0].text
+  )
+  languageServer?.updateEffectiveConfig(compilerOverrideState.effectiveConfigText)
+  renderCompilerOverrides()
+}
+
+function renderCompilerOverrides() {
+  const byFile = new Map<string, CompilerOverride[]>()
+  for (const override of compilerOverrideState.overrides) {
+    const entries = byFile.get(override.fileName) ?? []
+    entries.push(override)
+    byFile.set(override.fileName, entries)
+  }
+
+  for (const [fileName, model] of projectModels) {
+    const hints: monaco.languages.InlayHint[] = []
+    for (const override of byFile.get(fileName) ?? []) {
+      if (!override.applied) continue
+      const end = model.getPositionAt(override.end)
+      const baseValue =
+        override.tsconfigValue === undefined
+          ? "not set in tsconfig"
+          : `tsconfig: ${formatOverrideValue(override.tsconfigValue)}`
+      hints.push({
+        kind: monaco.languages.InlayHintKind.Type,
+        label: `· overrides ${baseValue}`,
+        paddingLeft: true,
+        position: end,
+      })
+    }
+    if (fileName === configFileName) {
+      for (const override of compilerOverrideState.overrides) {
+        if (!override.applied) continue
+        const node = configOptionNode(model.getValue(), override.option)
+        if (!node) continue
+        const end = model.getPositionAt(node.offset + node.length)
+        hints.push({
+          kind: monaco.languages.InlayHintKind.Type,
+          label: `· overridden by ${relativeProjectPath(override.fileName)}:${
+            override.lineNumber
+          } → ${formatOverrideValue(override.value)}`,
+          paddingLeft: true,
+          position: end,
+        })
+      }
+    }
+    compilerOverrideHints.set(model.uri.toString(), hints)
+    const markers = compilerOverrideState.diagnostics
+      .filter(diagnostic => diagnostic.fileName === fileName)
+      .map(diagnostic => {
+        const start = model.getPositionAt(diagnostic.start)
+        const end = model.getPositionAt(Math.max(diagnostic.start + 1, diagnostic.end))
+        return {
+          code: "PLAYGROUND_OVERRIDE",
+          endColumn: end.column,
+          endLineNumber: end.lineNumber,
+          message: diagnostic.message,
+          severity: monaco.MarkerSeverity.Error,
+          source: "Playground",
+          startColumn: start.column,
+          startLineNumber: start.lineNumber,
+        }
+      })
+    monaco.editor.setModelMarkers(model, "compiler-overrides", markers)
+  }
+
+  if (effectiveConfigModel && effectiveConfigModel.getValue() !== compilerOverrideState.effectiveConfigText) {
+    effectiveConfigModel.setValue(compilerOverrideState.effectiveConfigText)
+  }
+  const activeOverrides = compilerOverrideState.overrides.filter(override => override.applied)
+  applyCompilerOverridesButton.hidden = activeOverrides.length === 0
+  applyCompilerOverridesButton.textContent = `Apply ${activeOverrides.length} override${
+    activeOverrides.length === 1 ? "" : "s"
+  }`
+  inlayEmitter.fire()
+  if (overrideCodeLensProvider) overrideCodeLensEmitter.fire(overrideCodeLensProvider)
+}
+
+function registerCompilerOverrideFeatures() {
+  monaco.editor.registerCommand("playground.showEffectiveConfig", () => {
+    const uri = monaco.Uri.parse("playground:///effective-tsconfig.json")
+    effectiveConfigModel ??= monaco.editor.createModel(compilerOverrideState.effectiveConfigText, "json", uri)
+    inputEditor.setModel(effectiveConfigModel)
+    inputEditor.focus()
+  })
+  monaco.editor.registerCommand(
+    "playground.goToCompilerOverride",
+    (_accessor, fileName: string, start: number, end: number) => {
+      const model = projectModels.get(fileName)
+      if (!model) return
+      navigateToModel(fileName, spanRange(model, start, end))
+    }
+  )
+  monaco.editor.registerCommand("playground.goToConfigOption", (_accessor, option: string) => {
+    const model = projectModels.get(configFileName)
+    if (!model) return
+    const node = configOptionNode(model.getValue(), option) ?? compilerOptionsNode(model.getValue())
+    const range = node ? spanRange(model, node.offset, node.offset + node.length) : model.getFullModelRange()
+    navigateToModel(configFileName, range)
+  })
+  for (const language of ["javascript", "typescript"]) {
+    monaco.languages.registerHoverProvider(language, {
+      provideHover(model, position) {
+        const override = compilerOverrideAt(model, model.getOffsetAt(position))
+        if (!override) return undefined
+        return {
+          contents: [
+            { value: `**Playground compiler override**` },
+            {
+              value: `\`${override.option}\`: ${formatOverrideValue(override.tsconfigValue)} → **${formatOverrideValue(
+                override.value
+              )}**`,
+            },
+            { value: "This project-wide directive takes precedence over `tsconfig.json`." },
+          ],
+          range: spanRange(model, override.start, override.end),
+        }
+      },
+    })
+    monaco.languages.registerCompletionItemProvider(language, {
+      triggerCharacters: ["@"],
+      async provideCompletionItems(model, position) {
+        const line = model.getLineContent(position.lineNumber).slice(0, position.column - 1)
+        const match = /\/\/\s*@([\w-]*)$/.exec(line)
+        if (!match) return { suggestions: [] }
+        const metadata = await getCompilerOptionMetadata()
+        const range = new monaco.Range(
+          position.lineNumber,
+          position.column - match[1].length,
+          position.lineNumber,
+          position.column
+        )
+        return {
+          suggestions: [...metadata].map(([name, info]) => ({
+            detail: info.description,
+            insertText: `${name}: `,
+            kind: monaco.languages.CompletionItemKind.Property,
+            label: name,
+            range,
+          })),
+        }
+      },
+    })
+    monaco.languages.registerCodeActionProvider(language, {
+      provideCodeActions(model, range) {
+        const override = compilerOverrideAt(model, model.getOffsetAt(range.getStartPosition()))
+        if (!override) return { actions: [], dispose() {} }
+        const removeEdit = removeOverrideEdit(model, override)
+        const actions: monaco.languages.CodeAction[] = [
+          {
+            edit: { edits: [removeEdit] },
+            kind: "quickfix",
+            title: `Remove @${override.option} override`,
+          },
+          {
+            command: {
+              arguments: [override.option],
+              id: "playground.goToConfigOption",
+              title: "Go to tsconfig option",
+            },
+            kind: "quickfix",
+            title: `Go to ${override.option} in tsconfig.json`,
+          },
+        ]
+        if (override.applied) {
+          const configModel = projectModels.get(configFileName)
+          if (configModel) {
+            actions.unshift({
+              edit: {
+                edits: [
+                  {
+                    resource: configModel.uri,
+                    textEdit: {
+                      range: configModel.getFullModelRange(),
+                      text: setCompilerOption(configModel.getValue(), override.option, override.value),
+                    },
+                    versionId: configModel.getVersionId(),
+                  },
+                  removeEdit,
+                ],
+              },
+              isPreferred: true,
+              kind: "quickfix",
+              title: `Move @${override.option} to tsconfig.json`,
+            })
+          }
+        }
+        return { actions, dispose() {} }
+      },
+    })
+  }
+
+  monaco.languages.registerHoverProvider("json", {
+    provideHover(model, position) {
+      if (model.uri.path !== configFileName) return undefined
+      const offset = model.getOffsetAt(position)
+      const override = compilerOverrideState.overrides.find(candidate => {
+        if (!candidate.applied) return false
+        const node = configOptionNode(model.getValue(), candidate.option)
+        return node && offset >= node.offset && offset <= node.offset + node.length
+      })
+      if (!override) return undefined
+      return {
+        contents: [
+          { value: `**Overridden by ${relativeProjectPath(override.fileName)}:${override.lineNumber}**` },
+          {
+            value: `Effective \`${override.option}\`: **${formatOverrideValue(override.value)}**`,
+          },
+        ],
+      }
+    },
+  })
+  overrideCodeLensProvider = {
+    onDidChange: overrideCodeLensEmitter.event,
+    provideCodeLenses(model) {
+      if (model.uri.path !== configFileName) return { lenses: [], dispose() {} }
+      const active = compilerOverrideState.overrides.filter(override => override.applied)
+      if (active.length === 0) return { lenses: [], dispose() {} }
+      const node = compilerOptionsNode(model.getValue())
+      const position = node ? model.getPositionAt(node.offset) : new monaco.Position(1, 1)
+      return {
+        dispose() {},
+        lenses: [
+          {
+            command: {
+              id: "playground.showEffectiveConfig",
+              title: `${active.length} inline compiler override${
+                active.length === 1 ? "" : "s"
+              } active · View effective config`,
+            },
+            range: new monaco.Range(position.lineNumber, 1, position.lineNumber, 1),
+          },
+        ],
+      }
+    },
+  }
+  monaco.languages.registerCodeLensProvider("json", overrideCodeLensProvider)
+  monaco.languages.registerCodeActionProvider("json", {
+    provideCodeActions(model, range) {
+      if (model.uri.path !== configFileName) return { actions: [], dispose() {} }
+      const offset = model.getOffsetAt(range.getStartPosition())
+      const override = compilerOverrideState.overrides.find(candidate => {
+        if (!candidate.applied) return false
+        const node = configOptionNode(model.getValue(), candidate.option)
+        return node && offset >= node.offset && offset <= node.offset + node.length
+      })
+      if (!override) return { actions: [], dispose() {} }
+      const sourceModel = projectModels.get(override.fileName)
+      return {
+        actions: [
+          {
+            command: {
+              arguments: [override.fileName, override.start, override.end],
+              id: "playground.goToCompilerOverride",
+              title: "Go to overriding directive",
+            },
+            kind: "quickfix",
+            title: `Go to @${override.option} override`,
+          },
+          ...(sourceModel
+            ? [
+                {
+                  edit: { edits: [removeOverrideEdit(sourceModel, override)] },
+                  kind: "quickfix",
+                  title: `Use tsconfig value and remove @${override.option}`,
+                } satisfies monaco.languages.CodeAction,
+              ]
+            : []),
+        ],
+        dispose() {},
+      }
+    },
+  })
+}
+
+let compilerOptionMetadataPromise: Promise<Map<string, { description: string }>> | undefined
+
+function getCompilerOptionMetadata() {
+  compilerOptionMetadataPromise ??= fetch(new URL("./tsconfig.schema.json", import.meta.url)).then(async response => {
+    if (!response.ok) throw new Error(`Could not load TSConfig options: ${response.status}`)
+    const schema = await response.json()
+    const properties = schema.definitions?.compilerOptionsDefinition?.properties?.compilerOptions?.properties ?? {}
+    return new Map(
+      Object.entries(properties).map(([name, value]: [string, any]) => [
+        name,
+        { description: value.markdownDescription ?? value.description ?? "" },
+      ])
+    )
+  })
+  return compilerOptionMetadataPromise
+}
+
+function compilerOverrideAt(model: monaco.editor.ITextModel, offset: number) {
+  return compilerOverrideState.overrides.find(
+    override => override.fileName === model.uri.path && offset >= override.start && offset <= override.end
+  )
+}
+
+function removeOverrideEdit(model: monaco.editor.ITextModel, override: CompilerOverride) {
+  const start = model.getPositionAt(override.start)
+  const end =
+    start.lineNumber < model.getLineCount()
+      ? new monaco.Position(start.lineNumber + 1, 1)
+      : model.getPositionAt(override.end)
+  return {
+    resource: model.uri,
+    textEdit: {
+      range: new monaco.Range(start.lineNumber, 1, end.lineNumber, end.column),
+      text: "",
+    },
+    versionId: model.getVersionId(),
+  }
+}
+
+function applyCompilerOverridesToConfig() {
+  const overrides = compilerOverrideState.overrides.filter(override => override.applied)
+  const configModel = projectModels.get(configFileName)
+  if (overrides.length === 0 || !configModel) return
+
+  let configText = configModel.getValue()
+  for (const override of overrides) {
+    configText = setCompilerOption(configText, override.option, override.value)
+  }
+  configModel.pushEditOperations([], [{ range: configModel.getFullModelRange(), text: configText }], () => null)
+
+  const byFile = new Map<string, CompilerOverride[]>()
+  for (const override of overrides) {
+    const entries = byFile.get(override.fileName) ?? []
+    entries.push(override)
+    byFile.set(override.fileName, entries)
+  }
+  for (const [fileName, fileOverrides] of byFile) {
+    const model = projectModels.get(fileName)
+    if (!model) continue
+    const edits = [...fileOverrides]
+      .sort((left, right) => right.start - left.start)
+      .map(override => {
+        const edit = removeOverrideEdit(model, override).textEdit
+        return { range: edit.range, text: edit.text }
+      })
+    model.pushEditOperations([], edits, () => null)
+  }
+}
+
+function spanRange(model: monaco.editor.ITextModel, start: number, end: number) {
+  const startPosition = model.getPositionAt(start)
+  const endPosition = model.getPositionAt(end)
+  return new monaco.Range(startPosition.lineNumber, startPosition.column, endPosition.lineNumber, endPosition.column)
+}
+
+function formatOverrideValue(value: unknown) {
+  if (value === undefined) return "(unset)"
+  return typeof value === "string" ? value : JSON.stringify(value)
+}
+
+function compilerOverrideDiagnostics(): Diagnostic[] {
+  return compilerOverrideState.diagnostics.map((diagnostic, index) => ({
+    category: DiagnosticCategory.Error,
+    code: 98000 + index,
+    end: diagnostic.end,
+    fileName: diagnostic.fileName,
+    pos: diagnostic.start,
+    source: "Playground",
+    text: diagnostic.message,
+  }))
 }
 
 function scheduleTypeAcquisition() {
@@ -1222,14 +1661,17 @@ function compileNativeProject(api: API) {
 
     try {
       const emit = program.emitToString()
-      const diagnostics = deduplicateDiagnostics([
-        ...(config.error ? [config.error] : []),
-        ...parsed.errors,
-        ...program.getSyntacticDiagnostics(),
-        ...program.getSemanticDiagnostics(),
-        ...program.getConfigFileParsingDiagnostics(),
-        ...emit.diagnostics,
-      ])
+      const diagnostics = deduplicateDiagnostics(
+        remapCompilerOverrideDiagnostics([
+          ...(config.error ? [config.error] : []),
+          ...parsed.errors,
+          ...program.getSyntacticDiagnostics(),
+          ...program.getSemanticDiagnostics(),
+          ...program.getConfigFileParsingDiagnostics(),
+          ...emit.diagnostics,
+          ...compilerOverrideDiagnostics(),
+        ])
+      )
       diagnosticCount = diagnostics.length
       setDiagnostics(diagnostics)
 
@@ -1292,8 +1734,12 @@ async function compileStradaProject() {
   try {
     const result = await backend.compile()
     if (compileVersion !== stradaCompileVersion) return
-    diagnosticCount = result.diagnostics.length
-    setDiagnostics(result.diagnostics as Diagnostic[])
+    const diagnostics = remapCompilerOverrideDiagnostics([
+      ...(result.diagnostics as Diagnostic[]),
+      ...compilerOverrideDiagnostics(),
+    ])
+    diagnosticCount = diagnostics.length
+    setDiagnostics(diagnostics)
     emittedFiles = new Map(Object.entries(result.outputFiles))
     runButton.disabled = ![...emittedFiles.keys()].some(fileName => fileName.endsWith(".js"))
     void renderEmittedFiles()
@@ -1821,6 +2267,7 @@ function setStatus(message: string, state: "loading" | "ready" | "error") {
 function registerProjectModel(model: monaco.editor.ITextModel) {
   model.onDidChangeContent(() => {
     persistProjectState()
+    refreshCompilerOverrides()
     scheduleTypeAcquisition()
     window.clearTimeout(updateTimer)
     updateTimer = window.setTimeout(() => {
@@ -1856,6 +2303,7 @@ function finishCreatingFile() {
   const model = monaco.editor.createModel("", languageForFile(fileName), monaco.Uri.parse(`file://${fileName}`))
   projectModels.set(fileName, model)
   registerProjectModel(model)
+  refreshCompilerOverrides()
   renderFileList()
   inputEditor.setModel(model)
   inputEditor.focus()
@@ -1882,6 +2330,7 @@ function deleteProjectFile(fileName: string) {
 
   const deletedUri = model.uri.toString()
   projectModels.delete(fileName)
+  refreshCompilerOverrides()
   if (inputEditor.getModel() === model) {
     const remainingFiles = [...projectModels.keys()]
     const fallbackFile =

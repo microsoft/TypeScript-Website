@@ -296,6 +296,9 @@ importers:
       hack-font:
         specifier: ^3.3.0
         version: 3.3.0
+      jsonc-parser:
+        specifier: ^3.3.1
+        version: 3.3.1
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0

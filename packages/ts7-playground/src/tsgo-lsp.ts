@@ -30,7 +30,9 @@ type LspRange = {
 }
 
 type StartTsgoLspOptions = {
+  configFileName: string
   editor: monaco.editor.IStandaloneCodeEditor
+  effectiveConfigText: string
   extraFiles: Record<string, string>
   libraries: Record<string, string>
   models: readonly monaco.editor.ITextModel[]
@@ -38,6 +40,10 @@ type StartTsgoLspOptions = {
   onError(message: string): void
   onNavigate(fileName: string, range: monaco.Range): void
   onStatus(status: TsgoStatus, serverInfo?: string): void
+}
+
+export type TsgoLspController = {
+  updateEffectiveConfig(text: string): void
 }
 
 class RingBufferWorker {
@@ -49,15 +55,20 @@ class RingBufferWorker {
   readonly #queue: Uint8Array[] = []
   readonly #listeners = new Map<EventListenerOrEventListenerObject, EventListener>()
   readonly #pendingRequests = new Map<string | number, string>()
+  readonly #configFileName: string
+  #configVersion = 1
+  #effectiveConfigText: string
   #queueOffset = 0
 
   onStatus?: (status: TsgoStatus) => void
   onError?: (message: string) => void
   onServerInfo?: (serverInfo: string) => void
 
-  constructor(stdin: SharedArrayBuffer) {
+  constructor(stdin: SharedArrayBuffer, configFileName: string, effectiveConfigText: string) {
     this.#state = new Int32Array(stdin, 0, headerWords)
     this.#data = new Uint8Array(stdin, headerWords * Int32Array.BYTES_PER_ELEMENT)
+    this.#configFileName = configFileName
+    this.#effectiveConfigText = effectiveConfigText
     this.#worker.addEventListener("message", (event: MessageEvent<WorkerMessage>) => {
       if (event.data.type === "drain") {
         this.#flush()
@@ -89,6 +100,7 @@ class RingBufferWorker {
   }
 
   postMessage(message: unknown) {
+    message = this.#rewriteConfigMessage(message)
     const lspMessage = message as { id?: string | number; method?: string }
     if (lspMessage.id !== undefined && lspMessage.method) {
       this.#pendingRequests.set(lspMessage.id, lspMessage.method)
@@ -106,6 +118,22 @@ class RingBufferWorker {
     this.#flush()
   }
 
+  updateEffectiveConfig(text: string) {
+    if (text === this.#effectiveConfigText) return
+    this.#effectiveConfigText = text
+    this.postMessage({
+      jsonrpc: "2.0",
+      method: "textDocument/didChange",
+      params: {
+        contentChanges: [{ text }],
+        textDocument: {
+          uri: monaco.Uri.file(this.#configFileName).toString(),
+          version: this.#configVersion + 1,
+        },
+      },
+    })
+  }
+
   addEventListener(type: string, listener: EventListenerOrEventListenerObject) {
     if (type !== "message") return
     const callback: EventListener = typeof listener === "function" ? listener : event => listener.handleEvent(event)
@@ -114,6 +142,47 @@ class RingBufferWorker {
 
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject) {
     if (type === "message") this.#listeners.delete(listener)
+  }
+
+  #rewriteConfigMessage(message: unknown) {
+    if (!message || typeof message !== "object") return message
+    const candidate = message as {
+      method?: string
+      params?: {
+        contentChanges?: Array<{ text?: string }>
+        textDocument?: { text?: string; uri?: string; version?: number }
+      }
+    }
+    const document = candidate.params?.textDocument
+    if (!document?.uri || monaco.Uri.parse(document.uri).path !== this.#configFileName) return message
+    if (candidate.method === "textDocument/didOpen") {
+      this.#configVersion = Math.max(this.#configVersion, document.version ?? this.#configVersion)
+      return {
+        ...candidate,
+        params: {
+          ...candidate.params,
+          textDocument: {
+            ...document,
+            text: this.#effectiveConfigText,
+          },
+        },
+      }
+    }
+    if (candidate.method === "textDocument/didChange") {
+      this.#configVersion = Math.max(this.#configVersion + 1, document.version ?? 0)
+      return {
+        ...candidate,
+        params: {
+          ...candidate.params,
+          contentChanges: [{ text: this.#effectiveConfigText }],
+          textDocument: {
+            ...document,
+            version: this.#configVersion,
+          },
+        },
+      }
+    }
+    return message
   }
 
   #flush() {
@@ -222,7 +291,7 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     ...options.extraFiles,
   })
   const stdin = new SharedArrayBuffer(headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize)
-  const worker = new RingBufferWorker(stdin)
+  const worker = new RingBufferWorker(stdin, options.configFileName, options.effectiveConfigText)
   let serverInfo: string | undefined
   worker.onStatus = status => options.onStatus(status, serverInfo)
   worker.onServerInfo = info => {
@@ -232,10 +301,16 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
   worker.start(stdin, options.module, options.libraries, {
     ...options.extraFiles,
     ...Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()])),
+    [options.configFileName]: options.effectiveConfigText,
   })
 
   const transport = createTransportToWorker(worker as unknown as Worker)
   new MonacoLspClient(transport)
+  return {
+    updateEffectiveConfig(text: string) {
+      worker.updateEffectiveConfig(text)
+    },
+  } satisfies TsgoLspController
 }
 
 function normalizeLibraryLocations(result: unknown): unknown {
