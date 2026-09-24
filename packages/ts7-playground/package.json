@@ -23,6 +23,7 @@
     "lz-string": "^1.5.0",
     "monaco-editor": "0.56.0",
     "monaco-editor-core": "0.56.0",
+    "reflect-metadata": "^0.2.2",
     "vscode-json-languageservice": "^5.3.11",
     "vscode-languageserver-textdocument": "^1.0.11"
   },

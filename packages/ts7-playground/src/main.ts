@@ -2,6 +2,7 @@ import { API, DiagnosticCategory, type Diagnostic } from "@typescript/typescript
 import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wasm"
 import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
+import "reflect-metadata"
 import examplesCatalog from "../vendor/examples.json"
 import {
   compilerOptionsNode,
@@ -2463,6 +2464,7 @@ function executeCommonJs(entryFile: string, files: ReadonlyMap<string, string>, 
     const module = { exports: {} as any }
     cache.set(fileName, module)
     const require = (specifier: string) => {
+      if (specifier === "reflect-metadata") return {}
       if (!specifier.startsWith(".")) {
         throw new Error(`Run cannot load package import "${specifier}".`)
       }

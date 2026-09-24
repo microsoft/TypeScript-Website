@@ -308,6 +308,9 @@ importers:
       monaco-editor-core:
         specifier: 0.56.0
         version: 0.56.0
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
       vscode-json-languageservice:
         specifier: ^5.3.11
         version: 5.7.2
