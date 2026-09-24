@@ -110,6 +110,7 @@ const mobileFilesToggle = getElement<HTMLButtonElement>("mobile-files-toggle")
 const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
+const deleteFileButton = getElement<HTMLButtonElement>("delete-file-button")
 const navigateBackButton = getElement<HTMLButtonElement>("navigate-back-button")
 const navigateForwardButton = getElement<HTMLButtonElement>("navigate-forward-button")
 const currentFile = getElement("current-file")
@@ -294,6 +295,7 @@ for (const model of projectModels.values()) {
 }
 newFileButton.addEventListener("click", createNewFile)
 resetProjectButton.addEventListener("click", resetProject)
+deleteFileButton.addEventListener("click", deleteActiveFile)
 navigateBackButton.addEventListener("click", navigateBack)
 navigateForwardButton.addEventListener("click", navigateForward)
 runButton.addEventListener("click", runProject)
@@ -1167,6 +1169,10 @@ function updateActiveFile() {
     ? `${model.uri.path.slice(model.uri.path.lastIndexOf("/") + 1)} (bundled)`
     : model.uri.path
   inputEditor.updateOptions({ readOnly: !projectModel })
+  deleteFileButton.disabled = !projectModel
+  deleteFileButton.title = projectModel
+    ? `Delete ${relativeProjectPath(model.uri.path)}`
+    : "Bundled files are read-only"
   editorHint.textContent =
     model.getLanguageId() === "typescript"
       ? "Type query: align ^? below an expression"
@@ -1259,6 +1265,47 @@ function createNewFile() {
   inputEditor.focus()
   persistProjectState()
   void compileActiveProject?.()
+}
+
+function deleteActiveFile() {
+  const model = inputEditor.getModel()
+  if (!model || !projectModels.has(model.uri.path)) return
+  if (projectModels.size === 1) {
+    alert("The project must contain at least one file.")
+    return
+  }
+
+  const fileName = model.uri.path
+  const relativePath = relativeProjectPath(fileName)
+  if (!confirm(`Delete ${relativePath}? This cannot be undone.`)) return
+
+  const remainingFiles = [...projectModels.keys()].filter(candidate => candidate !== fileName)
+  const fallbackFile =
+    remainingFiles.find(candidate => candidate === entryFileName) ??
+    remainingFiles.find(candidate => /\.[cm]?[jt]sx?$/i.test(candidate)) ??
+    remainingFiles[0]
+  const fallbackModel = projectModels.get(fallbackFile)!
+  const deletedUri = model.uri.toString()
+  projectModels.delete(fileName)
+  applyingEditorNavigation = true
+  try {
+    inputEditor.setModel(fallbackModel)
+  } finally {
+    applyingEditorNavigation = false
+  }
+  model.dispose()
+  removeLocationsForUri(backLocations, deletedUri)
+  removeLocationsForUri(forwardLocations, deletedUri)
+  trackedEditorLocation = getEditorLocation()
+  renderFileList()
+  persistProjectState()
+  location.reload()
+}
+
+function removeLocationsForUri(locations: EditorLocation[], uri: string) {
+  for (let index = locations.length - 1; index >= 0; index--) {
+    if (locations[index].uri === uri) locations.splice(index, 1)
+  }
 }
 
 function resetProject() {

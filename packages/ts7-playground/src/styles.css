@@ -328,6 +328,7 @@ body {
 }
 
 .editor-heading-title,
+.editor-heading-actions,
 .editor-navigation {
   min-width: 0;
   display: flex;
@@ -344,12 +345,18 @@ body {
   white-space: nowrap;
 }
 
+.editor-heading-actions {
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
 .editor-navigation {
   flex: 0 0 auto;
   gap: 0.2rem;
 }
 
-.editor-navigation button {
+.editor-navigation button,
+#delete-file-button {
   min-height: 1.8rem;
   padding: 0 0.45rem;
   border: 1px solid var(--border);
@@ -369,11 +376,13 @@ body {
   font-size: 0.9rem;
 }
 
-.editor-navigation button:hover:not(:disabled) {
+.editor-navigation button:hover:not(:disabled),
+#delete-file-button:hover:not(:disabled) {
   background: var(--hover);
 }
 
-.editor-navigation button:disabled {
+.editor-navigation button:disabled,
+#delete-file-button:disabled {
   cursor: default;
   opacity: 0.45;
 }
@@ -807,7 +816,12 @@ code {
     flex: 1 1 auto;
   }
 
-  .editor-navigation button {
+  .editor-heading-actions {
+    flex: 0 1 auto;
+  }
+
+  .editor-navigation button,
+  #delete-file-button {
     min-width: 2.75rem;
     min-height: 2.75rem;
   }
@@ -862,6 +876,10 @@ code {
 
   .editor-heading-title {
     gap: 0.35rem;
+  }
+
+  .editor-heading-actions {
+    flex: 0 0 auto;
   }
 
   .loading-card {
