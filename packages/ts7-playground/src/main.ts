@@ -39,6 +39,10 @@ type ProjectState = {
   useDefaults?: boolean
 }
 
+type VersionedProjectState = ProjectState & {
+  version: 2
+}
+
 type PlaygroundExample = {
   code: string
   compilerSettings?: Record<string, boolean | number | string>
@@ -90,6 +94,9 @@ const projectRoot = "/workspace"
 const configFileName = `${projectRoot}/tsconfig.json`
 const entryFileName = `${projectRoot}/src/index.ts`
 const storageKey = "ts7-playground-project"
+const projectHashPrefix = "#code/v2/"
+const legacyCodeHashPrefix = "#code/"
+const projectStateVersion = 2
 const selectedCompiler = new URLSearchParams(location.search).get("ts")
 const useNativeCompiler = isNativeCompilerVersion(selectedCompiler)
 const defaultFiles: ProjectFile[] = [
@@ -833,14 +840,14 @@ function loadExample(example: PlaygroundExample) {
   }
   state.files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
 
-  const serialized = JSON.stringify(state)
+  const serialized = serializeProjectState(state)
   localStorage.setItem(storageKey, serialized)
   const url = new URL(location.pathname, location.origin)
   const requestedVersion = typeof settings.ts === "string" ? settings.ts : selectedCompiler
   if (requestedVersion && !isNativeCompilerVersion(requestedVersion)) {
     url.searchParams.set("ts", requestedVersion)
   }
-  url.hash = `code/${LZString.compressToEncodedURIComponent(serialized)}`
+  url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
   history.replaceState({}, "", url)
   location.reload()
 }
@@ -1912,11 +1919,28 @@ function resetProject() {
 }
 
 function loadProjectState(): ProjectState {
-  if (location.hash.startsWith("#code/")) {
-    const encoded = location.hash.slice("#code/".length)
-    const decoded =
-      LZString.decompressFromEncodedURIComponent(encoded) ??
-      LZString.decompressFromEncodedURIComponent(decodeURIComponent(encoded))
+  if (location.hash.startsWith(projectHashPrefix)) {
+    const decoded = decodeCompressedHash(location.hash.slice(projectHashPrefix.length))
+    if (decoded) {
+      try {
+        return normalizeVersionedProjectState(JSON.parse(decoded))
+      } catch (error) {
+        console.warn("Could not restore the versioned playground project", error)
+        return { files: {}, useDefaults: true }
+      }
+    }
+  }
+
+  if (location.hash.startsWith("#src=")) {
+    try {
+      return createLegacyProjectState(decodeURIComponent(location.hash.slice("#src=".length)))
+    } catch (error) {
+      console.warn("Could not decode the legacy playground source", error)
+    }
+  }
+
+  if (location.hash.startsWith(legacyCodeHashPrefix)) {
+    const decoded = decodeCompressedHash(location.hash.slice(legacyCodeHashPrefix.length))
     if (decoded) {
       try {
         return normalizeProjectState(JSON.parse(decoded))
@@ -1936,9 +1960,39 @@ function loadProjectState(): ProjectState {
   }
 }
 
+function decodeCompressedHash(encoded: string) {
+  const decoded = LZString.decompressFromEncodedURIComponent(encoded)
+  if (decoded) return decoded
+  try {
+    return LZString.decompressFromEncodedURIComponent(decodeURIComponent(encoded))
+  } catch {
+    return null
+  }
+}
+
+function serializeProjectState(state: ProjectState) {
+  const versioned: VersionedProjectState = {
+    activeFile: state.activeFile,
+    files: state.files,
+    version: projectStateVersion,
+  }
+  return JSON.stringify(versioned)
+}
+
+function normalizeVersionedProjectState(value: unknown) {
+  if (!value || typeof value !== "object" || (value as { version?: unknown }).version !== projectStateVersion) {
+    throw new Error("Unsupported playground project URL version")
+  }
+  return normalizeProjectState(value)
+}
+
 function normalizeProjectState(value: unknown): ProjectState {
   if (!value || typeof value !== "object") return { files: {}, useDefaults: true }
-  const candidate = value as { activeFile?: unknown; files?: unknown }
+  const candidate = value as { activeFile?: unknown; files?: unknown; version?: unknown }
+  if (candidate.version !== undefined && candidate.version !== projectStateVersion) {
+    console.warn(`Ignoring unsupported playground project version: ${String(candidate.version)}`)
+    return { files: {}, useDefaults: true }
+  }
   const filesValue = candidate.files && typeof candidate.files === "object" ? candidate.files : value
   const files = Object.fromEntries(
     Object.entries(filesValue).filter(
@@ -1982,7 +2036,8 @@ function normalizeProjectState(value: unknown): ProjectState {
 }
 
 function createLegacyProjectState(code: string, fileType = getLegacyFileType()): ProjectState {
-  if (!code.includes("// @filename: ")) {
+  const fileNamePattern = /^\s*\/\/\s*@filename:\s*(.+)$/i
+  if (!code.split(/\r\n?|\n/g).some(line => fileNamePattern.test(line))) {
     const fileName = `${projectRoot}/src/index.${fileType}`
     return {
       activeFile: fileName,
@@ -1994,27 +2049,31 @@ function createLegacyProjectState(code: string, fileType = getLegacyFileType()):
     }
   }
 
+  const fourSlashStyle = /^\s*\/\/\s*@Filename:/m.test(code)
   const files: Record<string, string> = {
     [configFileName]: defaultFiles[0].text,
   }
   let currentFile = `src/index.${fileType}`
   let currentLines: string[] = []
-  const flush = () => {
-    if (currentLines.length === 0) return
-    const fileName = `${projectRoot}/${sanitizeLegacyPath(currentFile)}`
+  let hasFileDirective = false
+  const flush = (allowEmpty = false) => {
+    if (currentLines.length === 0 && !allowEmpty) return
+    const relativePath = sanitizeLegacyPath(currentFile) || `src/index.${fileType}`
+    const fileName = `${projectRoot}/${relativePath}`
     files[fileName] = currentLines.join("\n")
   }
   for (const line of code.split(/\r\n?|\n/g)) {
-    const match = /^\s*\/\/\s*@filename:\s*(.+)$/.exec(line)
+    const match = fileNamePattern.exec(line)
     if (match) {
-      flush()
+      flush(hasFileDirective)
       currentFile = match[1].trim()
       currentLines = []
+      hasFileDirective = true
     } else {
-      currentLines.push(line)
+      currentLines.push(fourSlashStyle ? line.replace(/^(\s*)\/\/\/\//, "$1") : line)
     }
   }
-  flush()
+  flush(hasFileDirective)
   const sourceFiles = Object.keys(files).filter(fileName => fileName !== configFileName)
   return {
     activeFile: sourceFiles[0] ?? entryFileName,
@@ -2032,7 +2091,7 @@ function getLegacyFileType() {
   const params = new URLSearchParams(location.search)
   if (params.has("useJavaScript")) return "js"
   const fileType = params.get("filetype")
-  return fileType && /^[cm]?[jt]sx?$/.test(fileType) ? fileType : "ts"
+  return fileType && (fileType === "d.ts" || /^[cm]?[jt]sx?$/.test(fileType)) ? fileType : "ts"
 }
 
 function applyLegacyCompilerOptions(files: Record<string, string>) {
@@ -2122,10 +2181,10 @@ function persistProjectState() {
     files: Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()])),
   }
   try {
-    const serialized = JSON.stringify(state)
+    const serialized = serializeProjectState(state)
     localStorage.setItem(storageKey, serialized)
     const url = new URL(location.href)
-    url.hash = `code/${LZString.compressToEncodedURIComponent(serialized)}`
+    url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
     history.replaceState({}, "", url)
   } catch (error) {
     console.warn("Could not save the TypeScript 7 project", error)
