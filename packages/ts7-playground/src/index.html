@@ -87,10 +87,20 @@
         ></div>
         <aside class="output-panel">
           <div class="panel-heading">
-            <h2>Emit</h2>
+            <div class="output-section-title">
+              <button
+                id="toggle-emit-button"
+                class="output-section-toggle"
+                type="button"
+                aria-label="Collapse Emit"
+                title="Collapse Emit"
+              >
+                ▾
+              </button>
+              <h2>Emit</h2>
+            </div>
             <div class="output-heading-actions">
               <span id="emit-summary">Waiting for the compiler</span>
-              <button id="toggle-emit-button" type="button">Hide emit</button>
             </div>
           </div>
           <details id="diagnostics-panel" class="diagnostics-panel">
@@ -105,9 +115,19 @@
           <div id="emit-output" class="emit-output"></div>
           <section id="run-output" class="run-output" aria-live="polite">
             <header>
-              <h2>Run output</h2>
+              <div class="output-section-title">
+                <button
+                  id="toggle-run-output-button"
+                  class="output-section-toggle"
+                  type="button"
+                  aria-label="Collapse Run output"
+                  title="Collapse Run output"
+                >
+                  ▾
+                </button>
+                <h2>Run output</h2>
+              </div>
               <div>
-                <button id="toggle-run-output-button" type="button">Hide run</button>
                 <button id="clear-run-output" type="button">Clear</button>
               </div>
             </header>

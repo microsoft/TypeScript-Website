@@ -763,6 +763,7 @@ body[data-resizing] {
 }
 
 .output-heading-actions,
+.output-section-title,
 .run-output header > div {
   min-width: 0;
   display: flex;
@@ -771,8 +772,27 @@ body[data-resizing] {
   gap: 0.4rem;
 }
 
-.output-heading-actions button {
-  flex: 0 0 auto;
+.output-section-title {
+  justify-content: flex-start;
+  gap: 0.35rem;
+}
+
+.output-section-toggle {
+  width: 1.4rem;
+  min-height: 1.4rem;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.output-section-toggle:hover {
+  color: inherit;
+  background: var(--hover);
 }
 
 code {
@@ -875,6 +895,16 @@ code {
   color: inherit;
   background: var(--panel);
   font-size: 0.7rem;
+}
+
+.run-output .output-section-toggle {
+  width: 1.4rem;
+  min-height: 1.4rem;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.85rem;
 }
 
 .run-log {
@@ -1270,7 +1300,9 @@ code {
 
   .editor-navigation button,
   .editor-heading-actions button,
-  .output-heading-actions button {
+  .output-heading-actions button,
+  .output-section-toggle,
+  .run-output .output-section-toggle {
     min-width: 2.75rem;
     min-height: 2.75rem;
   }

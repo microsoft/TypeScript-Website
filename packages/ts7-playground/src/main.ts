@@ -380,9 +380,13 @@ function applyLayoutState() {
   toggleFilesButton.setAttribute("aria-expanded", String(layoutState.filesVisible))
   toggleOutputButton.textContent = layoutState.outputVisible ? "Hide output" : "Show output"
   toggleOutputButton.setAttribute("aria-expanded", String(layoutState.outputVisible))
-  toggleEmitButton.textContent = layoutState.emitVisible ? "Hide emit" : "Show emit"
+  toggleEmitButton.textContent = layoutState.emitVisible ? "▾" : "▸"
+  toggleEmitButton.title = layoutState.emitVisible ? "Collapse Emit" : "Expand Emit"
+  toggleEmitButton.setAttribute("aria-label", toggleEmitButton.title)
   toggleEmitButton.setAttribute("aria-expanded", String(layoutState.emitVisible))
-  toggleRunOutputButton.textContent = layoutState.runVisible ? "Hide run" : "Show run"
+  toggleRunOutputButton.textContent = layoutState.runVisible ? "▾" : "▸"
+  toggleRunOutputButton.title = layoutState.runVisible ? "Collapse Run output" : "Expand Run output"
+  toggleRunOutputButton.setAttribute("aria-label", toggleRunOutputButton.title)
   toggleRunOutputButton.setAttribute("aria-expanded", String(layoutState.runVisible))
 
   fileResizer.setAttribute("aria-valuenow", String(Math.round(layoutState.filesWidth)))
