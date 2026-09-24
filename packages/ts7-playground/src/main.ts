@@ -117,6 +117,9 @@ const currentFile = getElement("current-file")
 const editorHint = getElement("editor-hint")
 const emitOutput = getElement("emit-output")
 const emitSummary = getElement("emit-summary")
+const diagnosticsPanel = getElement<HTMLDetailsElement>("diagnostics-panel")
+const diagnosticsSummary = getElement("diagnostics-summary")
+const diagnosticsList = getElement("diagnostics-list")
 const runButton = getElement<HTMLButtonElement>("run-button")
 const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
 const runLog = getElement("run-log")
@@ -139,6 +142,7 @@ let stradaBackend: StradaBackend | undefined
 let compileActiveProject: (() => Promise<void> | void) | undefined
 let emittedFiles = new Map<string, string>()
 let emitRenderVersion = 0
+let hasShownDiagnostics = false
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
 const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
@@ -941,6 +945,76 @@ function setDiagnostics(diagnostics: readonly Diagnostic[]) {
         }
       })
     monaco.editor.setModelMarkers(model, "typescript-7", markers)
+  }
+  renderDiagnostics(diagnostics)
+}
+
+function renderDiagnostics(diagnostics: readonly Diagnostic[]) {
+  const sorted = [...diagnostics].sort(
+    (left, right) =>
+      diagnosticSortOrder(left.category) - diagnosticSortOrder(right.category) ||
+      (left.fileName ?? "").localeCompare(right.fileName ?? "") ||
+      left.pos - right.pos ||
+      left.code - right.code
+  )
+  diagnosticsSummary.textContent = String(sorted.length)
+  diagnosticsList.replaceChildren()
+  diagnosticsPanel.dataset.empty = String(sorted.length === 0)
+  if (sorted.length === 0) {
+    diagnosticsList.appendChild(createText("p", "No problems found.", "empty-message"))
+    return
+  }
+  if (!hasShownDiagnostics) {
+    diagnosticsPanel.open = true
+    hasShownDiagnostics = true
+  }
+
+  for (const diagnostic of sorted) {
+    const fileName =
+      diagnostic.fileName && projectModels.has(diagnostic.fileName) ? diagnostic.fileName : configFileName
+    const model = projectModels.get(fileName)
+    const start = model?.getPositionAt(Math.max(0, diagnostic.pos)) ?? new monaco.Position(1, 1)
+    const end =
+      model?.getPositionAt(Math.max(diagnostic.pos + 1, diagnostic.end)) ??
+      new monaco.Position(start.lineNumber, start.column + 1)
+    const button = document.createElement("button")
+    button.type = "button"
+    button.className = `diagnostic diagnostic-${diagnosticCategoryName(diagnostic.category)}`
+    button.appendChild(createText("strong", `TS${diagnostic.code}`))
+    button.appendChild(createText("span", diagnostic.text, "diagnostic-message"))
+    button.appendChild(
+      createText("small", `${relativeProjectPath(fileName)}:${start.lineNumber}:${start.column}`, "diagnostic-location")
+    )
+    button.addEventListener("click", () => {
+      navigateToModel(fileName, new monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column))
+    })
+    diagnosticsList.appendChild(button)
+  }
+}
+
+function diagnosticSortOrder(category: number) {
+  switch (category) {
+    case DiagnosticCategory.Error:
+      return 0
+    case DiagnosticCategory.Warning:
+      return 1
+    case DiagnosticCategory.Suggestion:
+      return 2
+    default:
+      return 3
+  }
+}
+
+function diagnosticCategoryName(category: number) {
+  switch (category) {
+    case DiagnosticCategory.Error:
+      return "error"
+    case DiagnosticCategory.Warning:
+      return "warning"
+    case DiagnosticCategory.Suggestion:
+      return "suggestion"
+    default:
+      return "message"
   }
 }
 
