@@ -98,6 +98,50 @@ export class StradaBackend {
     this.#options.onNavigate(target.uri.path, spanToRange(target, definition.textSpan))
   }
 
+  async #formatOptions(model: monaco.editor.ITextModel) {
+    const options = model.getOptions()
+    return {
+      ConvertTabsToSpaces: options.insertSpaces,
+      IndentSize: options.indentSize,
+      IndentStyle: 2,
+      InsertSpaceAfterCommaDelimiter: true,
+      InsertSpaceAfterFunctionKeywordForAnonymousFunctions: true,
+      InsertSpaceAfterKeywordsInControlFlowStatements: true,
+      InsertSpaceAfterOpeningAndBeforeClosingNonemptyBraces: true,
+      InsertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets: false,
+      InsertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis: false,
+      InsertSpaceAfterSemicolonInForStatements: true,
+      InsertSpaceBeforeAndAfterBinaryOperators: true,
+      NewLineCharacter: model.getEOL(),
+      PlaceOpenBraceOnNewLineForControlBlocks: false,
+      PlaceOpenBraceOnNewLineForFunctions: false,
+      TabSize: options.tabSize,
+      baseIndentSize: 0,
+      convertTabsToSpaces: options.insertSpaces,
+      indentSize: options.indentSize,
+      indentStyle: 2,
+      insertSpaceAfterCommaDelimiter: true,
+      insertSpaceAfterConstructor: false,
+      insertSpaceAfterFunctionKeywordForAnonymousFunctions: true,
+      insertSpaceAfterKeywordsInControlFlowStatements: true,
+      insertSpaceAfterOpeningAndBeforeClosingEmptyBraces: false,
+      insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces: false,
+      insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces: true,
+      insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets: false,
+      insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis: false,
+      insertSpaceAfterSemicolonInForStatements: true,
+      insertSpaceAfterTypeAssertion: false,
+      insertSpaceBeforeAndAfterBinaryOperators: true,
+      insertSpaceBeforeFunctionParenthesis: false,
+      newLineCharacter: model.getEOL(),
+      placeOpenBraceOnNewLineForControlBlocks: false,
+      placeOpenBraceOnNewLineForFunctions: false,
+      semicolons: "ignore",
+      tabSize: options.tabSize,
+      trimTrailingWhitespace: true,
+    }
+  }
+
   dispose() {
     this.#disposables.forEach(disposable => disposable.dispose())
     this.#worker.terminate()
@@ -129,9 +173,16 @@ export class StradaBackend {
             })
             const word = model.getWordUntilPosition(position)
             const range = new monaco.Range(position.lineNumber, word.startColumn, position.lineNumber, word.endColumn)
-            return {
-              incomplete: result?.isIncomplete,
-              suggestions: (result?.entries ?? []).map((entry: any) => ({
+            const suggestions = (result?.entries ?? []).map((entry: any) => {
+              const suggestion: monaco.languages.CompletionItem & {
+                strada?: {
+                  data: any
+                  fileName: string
+                  name: string
+                  position: number
+                  source: string | undefined
+                }
+              } = {
                 detail: entry.labelDetails?.description,
                 filterText: entry.filterText,
                 insertText: entry.insertText ?? entry.name,
@@ -139,8 +190,50 @@ export class StradaBackend {
                 label: entry.name,
                 range,
                 sortText: entry.sortText,
-              })),
+              }
+              suggestion.strada = {
+                data: entry.data,
+                fileName: model.uri.path,
+                name: entry.name,
+                position: model.getOffsetAt(position),
+                source: entry.source,
+              }
+              return suggestion
+            })
+            return {
+              incomplete: result?.isIncomplete,
+              suggestions,
             }
+          },
+          resolveCompletionItem: async item => {
+            const metadata = (
+              item as typeof item & {
+                strada?: {
+                  data: any
+                  fileName: string
+                  name: string
+                  position: number
+                  source: string | undefined
+                }
+              }
+            ).strada
+            if (!metadata) return item
+            const details = await this.#request<any>("completionDetails", metadata)
+            if (!details) return item
+            item.detail = displayParts(details.displayParts)
+            item.documentation = {
+              value: displayParts(details.documentation),
+            }
+            const changes = (details.codeActions ?? []).flatMap((action: any) => action.changes ?? [])
+            item.additionalTextEdits = changes
+              .filter((change: any) => normalizePath(change.fileName) === normalizePath(metadata.fileName))
+              .flatMap((change: any) =>
+                change.textChanges.map((textChange: any) => ({
+                  range: spanToRange(this.#options.models.get(metadata.fileName)!, textChange.span),
+                  text: textChange.newText,
+                }))
+              )
+            return item
           },
         }),
         monaco.languages.registerHoverProvider(language, {
@@ -237,6 +330,191 @@ export class StradaBackend {
             }
             return locations
           },
+        }),
+        monaco.languages.registerDocumentHighlightProvider(language, {
+          provideDocumentHighlights: async (model, position) => {
+            await this.updateFiles()
+            const results = await this.#request<any[]>("occurrences", {
+              fileName: model.uri.path,
+              position: model.getOffsetAt(position),
+            })
+            return (results ?? []).map((occurrence: any) => ({
+              kind: occurrence.isWriteAccess
+                ? monaco.languages.DocumentHighlightKind.Write
+                : monaco.languages.DocumentHighlightKind.Text,
+              range: spanToRange(model, occurrence.textSpan),
+            }))
+          },
+        }),
+        monaco.languages.registerDocumentSymbolProvider(language, {
+          provideDocumentSymbols: async model => {
+            await this.updateFiles()
+            const items = await this.#request<any[]>("navigationBarItems", {
+              fileName: model.uri.path,
+            })
+            return items?.flatMap((item: any) => navigationSymbols(model, item)) ?? []
+          },
+        }),
+        monaco.languages.registerRenameProvider(language, {
+          resolveRenameLocation: async (model, position) => {
+            await this.updateFiles()
+            const info = await this.#request<any>("renameInfo", {
+              fileName: model.uri.path,
+              position: model.getOffsetAt(position),
+            })
+            if (!info?.canRename) {
+              return {
+                range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column),
+                rejectReason: info?.localizedErrorMessage ?? "This symbol cannot be renamed.",
+                text: "",
+              }
+            }
+            return {
+              range: spanToRange(model, info.triggerSpan),
+              text: model.getValueInRange(spanToRange(model, info.triggerSpan)),
+            }
+          },
+          provideRenameEdits: async (model, position, newName) => {
+            await this.updateFiles()
+            const locations = await this.#request<any[]>("renameLocations", {
+              fileName: model.uri.path,
+              position: model.getOffsetAt(position),
+            })
+            if (!locations) return { edits: [], rejectReason: "This symbol cannot be renamed." }
+            const edits = []
+            for (const location of locations) {
+              const target = await this.#ensureModel(location.fileName)
+              if (!target) continue
+              edits.push({
+                resource: target.uri,
+                textEdit: {
+                  range: spanToRange(target, location.textSpan),
+                  text: `${location.prefixText ?? ""}${newName}${location.suffixText ?? ""}`,
+                },
+                versionId: target.getVersionId(),
+              })
+            }
+            return { edits }
+          },
+        }),
+        monaco.languages.registerDocumentFormattingEditProvider(language, {
+          provideDocumentFormattingEdits: async model => {
+            await this.updateFiles()
+            const edits = await this.#request<any[]>("formatDocument", {
+              fileName: model.uri.path,
+              options: await this.#formatOptions(model),
+            })
+            return edits.map(edit => ({
+              range: spanToRange(model, edit.span),
+              text: edit.newText,
+            }))
+          },
+        }),
+        monaco.languages.registerDocumentRangeFormattingEditProvider(language, {
+          provideDocumentRangeFormattingEdits: async (model, range) => {
+            await this.updateFiles()
+            const edits = await this.#request<any[]>("formatRange", {
+              end: model.getOffsetAt(range.getEndPosition()),
+              fileName: model.uri.path,
+              options: await this.#formatOptions(model),
+              start: model.getOffsetAt(range.getStartPosition()),
+            })
+            return edits.map(edit => ({
+              range: spanToRange(model, edit.span),
+              text: edit.newText,
+            }))
+          },
+        }),
+        monaco.languages.registerOnTypeFormattingEditProvider(language, {
+          autoFormatTriggerCharacters: [";", "}", "\n"],
+          provideOnTypeFormattingEdits: async (model, position, ch) => {
+            await this.updateFiles()
+            const edits = await this.#request<any[]>("formatOnType", {
+              fileName: model.uri.path,
+              key: ch,
+              options: await this.#formatOptions(model),
+              position: model.getOffsetAt(position),
+            })
+            return edits.map(edit => ({
+              range: spanToRange(model, edit.span),
+              text: edit.newText,
+            }))
+          },
+        }),
+        monaco.languages.registerCodeActionProvider(language, {
+          provideCodeActions: async (model, range, context) => {
+            const errorCodes = context.markers
+              .map(marker => Number(String(marker.code ?? "").replace(/^TS/, "")))
+              .filter(Number.isFinite)
+            if (errorCodes.length === 0) return { actions: [], dispose() {} }
+            await this.updateFiles()
+            const fixes = await this.#request<any[]>("codeFixes", {
+              end: model.getOffsetAt(range.getEndPosition()),
+              errorCodes,
+              fileName: model.uri.path,
+              formatOptions: await this.#formatOptions(model),
+              preferences: {},
+              start: model.getOffsetAt(range.getStartPosition()),
+            })
+            const actions = []
+            for (const fix of fixes) {
+              const edits = []
+              for (const change of fix.changes ?? []) {
+                const target = await this.#ensureModel(change.fileName)
+                if (!target) continue
+                for (const textChange of change.textChanges) {
+                  edits.push({
+                    resource: target.uri,
+                    textEdit: {
+                      range: spanToRange(target, textChange.span),
+                      text: textChange.newText,
+                    },
+                    versionId: target.getVersionId(),
+                  })
+                }
+              }
+              actions.push({
+                diagnostics: context.markers,
+                edit: { edits },
+                isPreferred: fix.fixId !== undefined,
+                kind: "quickfix",
+                title: fix.description,
+              })
+            }
+            return { actions, dispose() {} }
+          },
+        }),
+        monaco.languages.registerInlayHintsProvider(language, {
+          provideInlayHints: async (model, range) => {
+            await this.updateFiles()
+            const start = model.getOffsetAt(range.getStartPosition())
+            const end = model.getOffsetAt(range.getEndPosition())
+            const hints = await this.#request<any[]>("inlayHints", {
+              fileName: model.uri.path,
+              preferences: {
+                includeInlayEnumMemberValueHints: true,
+                includeInlayFunctionLikeReturnTypeHints: true,
+                includeInlayFunctionParameterTypeHints: true,
+                includeInlayParameterNameHints: "literals",
+                includeInlayParameterNameHintsWhenArgumentMatchesName: false,
+                includeInlayPropertyDeclarationTypeHints: true,
+                includeInlayVariableTypeHints: true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName: false,
+              },
+              span: { length: end - start, start },
+            })
+            return {
+              dispose() {},
+              hints: hints.map(hint => ({
+                kind:
+                  hint.kind === "Type" ? monaco.languages.InlayHintKind.Type : monaco.languages.InlayHintKind.Parameter,
+                label: hint.text,
+                paddingLeft: hint.whitespaceBefore,
+                paddingRight: hint.whitespaceAfter,
+                position: model.getPositionAt(hint.position),
+              })),
+            }
+          },
         })
       )
     }
@@ -268,6 +546,50 @@ function spanToRange(model: monaco.editor.ITextModel, span: { start: number; len
   const start = model.getPositionAt(span.start)
   const end = model.getPositionAt(span.start + span.length)
   return new monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column)
+}
+
+function navigationSymbols(model: monaco.editor.ITextModel, item: any): monaco.languages.DocumentSymbol[] {
+  const range = spanToRange(model, item.spans?.[0] ?? { start: 0, length: 0 })
+  return [
+    {
+      children: item.childItems?.flatMap((child: any) => navigationSymbols(model, child)) ?? [],
+      detail: "",
+      kind: symbolKind(item.kind),
+      name: item.text,
+      range,
+      selectionRange: range,
+      tags: [],
+    },
+  ]
+}
+
+function symbolKind(kind: string | undefined) {
+  switch (kind) {
+    case "class":
+      return monaco.languages.SymbolKind.Class
+    case "const":
+    case "let":
+    case "var":
+      return monaco.languages.SymbolKind.Variable
+    case "enum":
+      return monaco.languages.SymbolKind.Enum
+    case "enum member":
+      return monaco.languages.SymbolKind.EnumMember
+    case "function":
+      return monaco.languages.SymbolKind.Function
+    case "interface":
+      return monaco.languages.SymbolKind.Interface
+    case "method":
+      return monaco.languages.SymbolKind.Method
+    case "module":
+      return monaco.languages.SymbolKind.Module
+    case "property":
+      return monaco.languages.SymbolKind.Property
+    case "type":
+      return monaco.languages.SymbolKind.TypeParameter
+    default:
+      return monaco.languages.SymbolKind.Object
+  }
 }
 
 function completionKind(kind: string | undefined) {

@@ -90,6 +90,23 @@ async function dispatch(method: string, args: any) {
           }
     case "references":
       return languageService.getReferencesAtPosition(args.fileName, args.position)
+    case "occurrences": {
+      const service = languageService as import("typescript").LanguageService & {
+        getOccurrencesAtPosition?(fileName: string, position: number): readonly any[] | undefined
+      }
+      if (service.getOccurrencesAtPosition) {
+        return service.getOccurrencesAtPosition(args.fileName, args.position)
+      }
+      const highlights = service.getDocumentHighlights(args.fileName, args.position, [...files.keys()])
+      return (
+        highlights
+          ?.find(result => normalizePath(result.fileName) === normalizePath(args.fileName))
+          ?.highlightSpans.map(highlight => ({
+            isWriteAccess: highlight.kind === "writtenReference",
+            textSpan: highlight.textSpan,
+          })) ?? []
+      )
+    }
     case "signatureHelp":
       return languageService.getSignatureHelpItems(args.fileName, args.position, args.options)
     case "renameInfo":
@@ -98,10 +115,33 @@ async function dispatch(method: string, args: any) {
       })
     case "renameLocations":
       return languageService.findRenameLocations(args.fileName, args.position, false, false, true)
-    case "navigationTree":
-      return languageService.getNavigationTree(args.fileName)
-    case "format":
+    case "navigationBarItems":
+      return languageService.getNavigationBarItems(args.fileName)
+    case "formatDocument":
       return languageService.getFormattingEditsForDocument(args.fileName, args.options)
+    case "formatRange":
+      return languageService.getFormattingEditsForRange(args.fileName, args.start, args.end, args.options)
+    case "formatOnType":
+      return languageService.getFormattingEditsAfterKeystroke(args.fileName, args.position, args.key, args.options)
+    case "codeFixes":
+      return languageService.getCodeFixesAtPosition(
+        args.fileName,
+        args.start,
+        args.end,
+        args.errorCodes,
+        args.formatOptions,
+        args.preferences
+      )
+    case "inlayHints": {
+      const service = languageService as import("typescript").LanguageService & {
+        provideInlayHints?(
+          fileName: string,
+          span: import("typescript").TextSpan,
+          preferences: import("typescript").UserPreferences
+        ): readonly any[]
+      }
+      return service.provideInlayHints?.(args.fileName, args.span, args.preferences) ?? []
+    }
     case "readFile":
       return readFile(args.fileName)
     default:
