@@ -112,6 +112,7 @@ type PlaygroundSettings = {
   minimap: boolean
   saveToUrl: boolean
   tabSize: number
+  theme: "dark" | "light" | "system"
   wordWrap: boolean
 }
 
@@ -229,6 +230,7 @@ const settingAta = getElement<HTMLInputElement>("setting-ata")
 const settingSaveUrl = getElement<HTMLInputElement>("setting-save-url")
 const settingFontSize = getElement<HTMLSelectElement>("setting-font-size")
 const settingTabSize = getElement<HTMLSelectElement>("setting-tab-size")
+const settingTheme = getElement<HTMLSelectElement>("setting-theme")
 const settingWordWrap = getElement<HTMLInputElement>("setting-word-wrap")
 const settingMinimap = getElement<HTMLInputElement>("setting-minimap")
 const settingLigatures = getElement<HTMLInputElement>("setting-ligatures")
@@ -314,7 +316,9 @@ const settingsStorageKey = "ts7-playground-settings"
 let compilerOverrideState: CompilerOverrideState
 let playgroundSettings = loadPlaygroundSettings()
 
-const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
+const darkMode =
+  playgroundSettings.theme === "dark" ||
+  (playgroundSettings.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
 monaco.editor.defineTheme("typescript-playground", {
   base: darkMode ? "vs-dark" : "vs",
   inherit: true,
@@ -484,6 +488,7 @@ function defaultPlaygroundSettings(): PlaygroundSettings {
     minimap: false,
     saveToUrl: true,
     tabSize: 2,
+    theme: "system",
     wordWrap: false,
   }
 }
@@ -502,6 +507,7 @@ function loadPlaygroundSettings() {
       minimap: typeof stored.minimap === "boolean" ? stored.minimap : defaults.minimap,
       saveToUrl: typeof stored.saveToUrl === "boolean" ? stored.saveToUrl : defaults.saveToUrl,
       tabSize: stored.tabSize === 4 ? 4 : defaults.tabSize,
+      theme: stored.theme === "light" || stored.theme === "dark" ? stored.theme : defaults.theme,
       wordWrap: typeof stored.wordWrap === "boolean" ? stored.wordWrap : defaults.wordWrap,
     } satisfies PlaygroundSettings
   } catch {
@@ -520,6 +526,7 @@ function populateSettingsForm(settings: PlaygroundSettings) {
   settingSaveUrl.checked = settings.saveToUrl
   settingFontSize.value = String(settings.fontSize)
   settingTabSize.value = String(settings.tabSize)
+  settingTheme.value = settings.theme
   settingWordWrap.checked = settings.wordWrap
   settingMinimap.checked = settings.minimap
   settingLigatures.checked = settings.fontLigatures
@@ -533,9 +540,11 @@ function saveSettings() {
     minimap: settingMinimap.checked,
     saveToUrl: settingSaveUrl.checked,
     tabSize: Number(settingTabSize.value),
+    theme: settingTheme.value === "light" || settingTheme.value === "dark" ? settingTheme.value : "system",
     wordWrap: settingWordWrap.checked,
   }
   const ataChanged = next.automaticTypeAcquisition !== playgroundSettings.automaticTypeAcquisition
+  const themeChanged = next.theme !== playgroundSettings.theme
   playgroundSettings = next
   try {
     localStorage.setItem(settingsStorageKey, JSON.stringify(playgroundSettings))
@@ -545,7 +554,7 @@ function saveSettings() {
   settingsDialog.close()
   applyEditorSettings()
   if (playgroundSettings.saveToUrl) persistProjectState()
-  if (ataChanged) {
+  if (ataChanged || themeChanged) {
     if (playgroundSettings.saveToUrl) {
       location.reload()
     } else {

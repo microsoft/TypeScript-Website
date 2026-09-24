@@ -14,14 +14,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <script>
+      try {
+        const settings = JSON.parse(localStorage.getItem("ts7-playground-settings") || "{}")
+        if (settings.theme === "light" || settings.theme === "dark") {
+          document.documentElement.dataset.theme = settings.theme
+        }
+      } catch {}
+    </script>
     <title>TypeScript 7 Playground</title>
     <link rel="stylesheet" href="./main.css" />
   </head>
   <body>
     <main class="playground">
       <header class="toolbar">
-        <div>
-          <h1>TypeScript 7 Playground</h1>
+        <div class="toolbar-brand">
+          <h1><a href="/">TypeScript</a> Playground</h1>
+          <nav class="site-links" aria-label="TypeScript website">
+            <a href="/docs/">Docs</a>
+            <a href="/download/">Download</a>
+            <a href="/community/">Community</a>
+          </nav>
         </div>
         <div class="toolbar-actions">
           <details id="compiler-version" class="version-control">
@@ -197,6 +210,14 @@
                 <option value="4">4 spaces</option>
               </select>
             </label>
+            <label class="select-setting">
+              <span>Theme</span>
+              <select id="setting-theme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
             <label class="checkbox-setting">
               <input id="setting-word-wrap" type="checkbox" />
               <span>Wrap long lines on desktop</span>
@@ -305,6 +326,15 @@
         </div>
       </div>
     </main>
+    <footer class="site-footer">
+      <a href="/">TypeScript</a>
+      <nav aria-label="TypeScript website footer">
+        <a href="/docs/">Documentation</a>
+        <a href="/download/">Download</a>
+        <a href="/community/">Community</a>
+        <a href="https://github.com/microsoft/TypeScript" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </footer>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

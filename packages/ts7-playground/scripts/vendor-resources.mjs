@@ -51,7 +51,7 @@ const helpIndex = {
     {
       title: "Settings",
       legacyIndexes: [5],
-      html: "<p>Use <strong>Settings</strong> to control automatic package type acquisition, URL updates while typing, font size, tab size, desktop word wrapping, the minimap, and font ligatures.</p><p>Changing automatic type acquisition reloads the page so package declarations are added to or removed from the language-service filesystem consistently.</p>",
+      html: "<p>Use <strong>Settings</strong> to control automatic package type acquisition, URL updates while typing, font size, tab size, theme, desktop word wrapping, the minimap, and font ligatures.</p><p>Changing automatic type acquisition or the theme reloads the page so the language-service filesystem and editor colors are initialized consistently.</p>",
     },
   ],
 }
