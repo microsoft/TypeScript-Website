@@ -230,6 +230,82 @@ body {
   font-size: 0.78rem;
 }
 
+.settings-dialog {
+  width: min(34rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+}
+
+.settings-dialog fieldset {
+  margin: 0 0.9rem;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+}
+
+.settings-dialog legend {
+  padding: 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.settings-dialog .checkbox-setting {
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.55rem;
+  color: inherit;
+  font-weight: 400;
+}
+
+.settings-dialog .checkbox-setting input {
+  width: 1rem;
+  height: 1rem;
+  min-height: 0;
+  margin-top: 0.15rem;
+}
+
+.settings-dialog .checkbox-setting span {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.settings-dialog .checkbox-setting small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.settings-dialog .select-setting {
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  color: inherit;
+  font-weight: 400;
+}
+
+.settings-dialog select {
+  min-height: 2.25rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  color: inherit;
+  background: var(--panel);
+  font: inherit;
+}
+
+.settings-dialog footer span {
+  flex: 1;
+}
+
+.settings-dialog .form-secondary-action {
+  margin-right: auto;
+}
+
 .resources-dialog::backdrop {
   background: rgb(0 0 0 / 45%);
 }
@@ -1292,7 +1368,7 @@ code {
     width: 100%;
     flex: none;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.5rem;
   }
 
@@ -1329,6 +1405,10 @@ code {
 
   .form-dialog {
     width: calc(100vw - 1.5rem);
+  }
+
+  .settings-dialog {
+    max-height: calc(100dvh - 1.5rem);
   }
 
   .form-dialog input,

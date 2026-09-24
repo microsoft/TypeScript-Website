@@ -105,6 +105,16 @@ type LayoutState = {
   runVisible: boolean
 }
 
+type PlaygroundSettings = {
+  automaticTypeAcquisition: boolean
+  fontLigatures: boolean
+  fontSize: number
+  minimap: boolean
+  saveToUrl: boolean
+  tabSize: number
+  wordWrap: boolean
+}
+
 type RuntimeLog = {
   level: "debug" | "error" | "info" | "log" | "warn"
   text: string
@@ -207,6 +217,18 @@ const diagnosticsList = getElement("diagnostics-list")
 const runButton = getElement<HTMLButtonElement>("run-button")
 const examplesButton = getElement<HTMLButtonElement>("examples-button")
 const helpButton = getElement<HTMLButtonElement>("help-button")
+const settingsButton = getElement<HTMLButtonElement>("settings-button")
+const settingsDialog = getElement<HTMLDialogElement>("settings-dialog")
+const settingsForm = getElement<HTMLFormElement>("settings-form")
+const settingsCancelButton = getElement<HTMLButtonElement>("settings-cancel-button")
+const settingsResetButton = getElement<HTMLButtonElement>("settings-reset-button")
+const settingAta = getElement<HTMLInputElement>("setting-ata")
+const settingSaveUrl = getElement<HTMLInputElement>("setting-save-url")
+const settingFontSize = getElement<HTMLSelectElement>("setting-font-size")
+const settingTabSize = getElement<HTMLSelectElement>("setting-tab-size")
+const settingWordWrap = getElement<HTMLInputElement>("setting-word-wrap")
+const settingMinimap = getElement<HTMLInputElement>("setting-minimap")
+const settingLigatures = getElement<HTMLInputElement>("setting-ligatures")
 const resourcesDialog = getElement<HTMLDialogElement>("resources-dialog")
 const resourcesTitle = getElement("resources-title")
 const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-button")
@@ -269,7 +291,9 @@ const assetCachePrefix = "ts7-playground-assets-"
 let assetCachePromise: Promise<Cache | undefined> | undefined
 const layoutStorageKey = "ts7-playground-layout"
 const downloadConsentStorageKey = "ts7-playground-skip-download-warning"
+const settingsStorageKey = "ts7-playground-settings"
 let compilerOverrideState: CompilerOverrideState
+let playgroundSettings = loadPlaygroundSettings()
 
 const darkMode = matchMedia("(prefers-color-scheme: dark)").matches
 monaco.editor.defineTheme("typescript-playground", {
@@ -320,15 +344,15 @@ const fileButtons = new Map<string, HTMLButtonElement>()
 const inputEditor = monaco.editor.create(inputElement, {
   automaticLayout: true,
   fontFamily: "Hack, monospace",
-  fontLigatures: true,
-  fontSize: 14,
+  fontLigatures: playgroundSettings.fontLigatures,
+  fontSize: playgroundSettings.fontSize,
   inlayHints: { enabled: "on" },
-  minimap: { enabled: false },
+  minimap: { enabled: playgroundSettings.minimap },
   model: projectModels.get(initialState.activeFile ?? entryFileName) ?? projectModels.get(entryFileName),
   padding: { top: 10 },
   scrollBeyondLastLine: false,
   "semanticHighlighting.enabled": true,
-  tabSize: 2,
+  tabSize: playgroundSettings.tabSize,
   theme: "typescript-playground",
 })
 let effectiveConfigModel: monaco.editor.ITextModel | undefined
@@ -433,6 +457,96 @@ function loadLayoutState(): LayoutState {
   }
 }
 
+function defaultPlaygroundSettings(): PlaygroundSettings {
+  return {
+    automaticTypeAcquisition: true,
+    fontLigatures: true,
+    fontSize: 14,
+    minimap: false,
+    saveToUrl: true,
+    tabSize: 2,
+    wordWrap: false,
+  }
+}
+
+function loadPlaygroundSettings() {
+  const defaults = defaultPlaygroundSettings()
+  try {
+    const stored = JSON.parse(localStorage.getItem(settingsStorageKey) ?? "{}")
+    return {
+      automaticTypeAcquisition:
+        typeof stored.automaticTypeAcquisition === "boolean"
+          ? stored.automaticTypeAcquisition
+          : defaults.automaticTypeAcquisition,
+      fontLigatures: typeof stored.fontLigatures === "boolean" ? stored.fontLigatures : defaults.fontLigatures,
+      fontSize: [12, 14, 16, 18, 20].includes(stored.fontSize) ? stored.fontSize : defaults.fontSize,
+      minimap: typeof stored.minimap === "boolean" ? stored.minimap : defaults.minimap,
+      saveToUrl: typeof stored.saveToUrl === "boolean" ? stored.saveToUrl : defaults.saveToUrl,
+      tabSize: stored.tabSize === 4 ? 4 : defaults.tabSize,
+      wordWrap: typeof stored.wordWrap === "boolean" ? stored.wordWrap : defaults.wordWrap,
+    } satisfies PlaygroundSettings
+  } catch {
+    return defaults
+  }
+}
+
+function openSettings() {
+  populateSettingsForm(playgroundSettings)
+  settingsDialog.showModal()
+  settingAta.focus()
+}
+
+function populateSettingsForm(settings: PlaygroundSettings) {
+  settingAta.checked = settings.automaticTypeAcquisition
+  settingSaveUrl.checked = settings.saveToUrl
+  settingFontSize.value = String(settings.fontSize)
+  settingTabSize.value = String(settings.tabSize)
+  settingWordWrap.checked = settings.wordWrap
+  settingMinimap.checked = settings.minimap
+  settingLigatures.checked = settings.fontLigatures
+}
+
+function saveSettings() {
+  const next: PlaygroundSettings = {
+    automaticTypeAcquisition: settingAta.checked,
+    fontLigatures: settingLigatures.checked,
+    fontSize: Number(settingFontSize.value),
+    minimap: settingMinimap.checked,
+    saveToUrl: settingSaveUrl.checked,
+    tabSize: Number(settingTabSize.value),
+    wordWrap: settingWordWrap.checked,
+  }
+  const ataChanged = next.automaticTypeAcquisition !== playgroundSettings.automaticTypeAcquisition
+  playgroundSettings = next
+  try {
+    localStorage.setItem(settingsStorageKey, JSON.stringify(playgroundSettings))
+  } catch (error) {
+    console.warn("Could not save playground settings", error)
+  }
+  settingsDialog.close()
+  applyEditorSettings()
+  if (playgroundSettings.saveToUrl) persistProjectState()
+  if (ataChanged) {
+    if (playgroundSettings.saveToUrl) {
+      location.reload()
+    } else {
+      const url = new URL(location.href)
+      url.hash = ""
+      location.replace(url)
+    }
+  }
+}
+
+function applyEditorSettings() {
+  inputEditor.updateOptions({
+    fontLigatures: playgroundSettings.fontLigatures,
+    fontSize: playgroundSettings.fontSize,
+    minimap: { enabled: playgroundSettings.minimap },
+    tabSize: playgroundSettings.tabSize,
+  })
+  updateResponsiveEditorOptions()
+}
+
 function updateResponsiveEditorOptions() {
   const mobile = mobileLayout.matches
   inputEditor.updateOptions({
@@ -444,7 +558,7 @@ function updateResponsiveEditorOptions() {
       verticalScrollbarSize: mobile ? 8 : 14,
     },
     scrollBeyondLastColumn: mobile ? 0 : 5,
-    wordWrap: mobile ? "on" : "off",
+    wordWrap: mobile || playgroundSettings.wordWrap ? "on" : "off",
     wrappingIndent: "indent",
   })
   requestAnimationFrame(() => inputEditor.layout())
@@ -603,6 +717,13 @@ navigateForwardButton.addEventListener("click", navigateForward)
 runButton.addEventListener("click", runProject)
 examplesButton.addEventListener("click", () => void openExamples())
 helpButton.addEventListener("click", () => void openHelp())
+settingsButton.addEventListener("click", openSettings)
+settingsCancelButton.addEventListener("click", () => settingsDialog.close())
+settingsResetButton.addEventListener("click", () => populateSettingsForm(defaultPlaygroundSettings()))
+settingsForm.addEventListener("submit", event => {
+  event.preventDefault()
+  saveSettings()
+})
 resourcesCloseButton.addEventListener("click", () => resourcesDialog.close())
 examplesSearch.addEventListener("input", () => void renderExamples())
 helpBackButton.addEventListener("click", showHelpTopics)
@@ -1418,6 +1539,7 @@ function compilerOverrideDiagnostics(): Diagnostic[] {
 }
 
 function scheduleTypeAcquisition() {
+  if (!playgroundSettings.automaticTypeAcquisition) return
   window.clearTimeout(typeAcquisitionTimer)
   typeAcquisitionTimer = window.setTimeout(() => {
     typeAcquisitionQueue = typeAcquisitionQueue.then(() => refreshTypeAcquisition(false))
@@ -1425,6 +1547,11 @@ function scheduleTypeAcquisition() {
 }
 
 async function refreshTypeAcquisition(initial: boolean) {
+  if (!playgroundSettings.automaticTypeAcquisition) {
+    typeAcquisitionFailure = undefined
+    if (compilerReady) renderStatus()
+    return
+  }
   const source = [...projectModels.values()]
     .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
     .map(model => model.getValue())
@@ -2744,6 +2871,7 @@ function persistProjectState() {
   try {
     const serialized = serializeProjectState(state)
     localStorage.setItem(storageKey, serialized)
+    if (!playgroundSettings.saveToUrl) return
     const url = new URL(location.href)
     url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
     history.replaceState({}, "", url)

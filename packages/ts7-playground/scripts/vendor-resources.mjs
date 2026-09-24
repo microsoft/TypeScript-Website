@@ -10,7 +10,7 @@ const helpIndex = {
   docs: [
     {
       title: "Projects and files",
-      legacyIndexes: [5, 6, 7],
+      legacyIndexes: [6, 7],
       html: "<p>The playground is a virtual project rooted at <code>/workspace</code>. Use <strong>+ File</strong> to add source or configuration files, select files in the project tree, and use <strong>Delete</strong> to remove the active project file.</p><p>The project is saved in the page URL and browser storage as you edit.</p>",
     },
     {
@@ -47,6 +47,11 @@ const helpIndex = {
       title: "URLs and compatibility",
       legacyIndexes: [9, 10],
       html: "<p>New projects use the versioned <code>#code/v2/</code> format. The playground also accepts old <code>#code/</code> source links, <code>#src=</code>, compiler-option query parameters, selections, and filename directives.</p><p>Legacy example and handbook hashes are migrated when opened.</p>",
+    },
+    {
+      title: "Settings",
+      legacyIndexes: [5],
+      html: "<p>Use <strong>Settings</strong> to control automatic package type acquisition, URL updates while typing, font size, tab size, desktop word wrapping, the minimap, and font ligatures.</p><p>Changing automatic type acquisition reloads the page so package declarations are added to or removed from the language-service filesystem consistently.</p>",
     },
   ],
 }

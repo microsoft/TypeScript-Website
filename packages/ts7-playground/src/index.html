@@ -30,6 +30,7 @@
           <button id="run-button" type="button" disabled>Run</button>
           <button id="examples-button" type="button">Examples</button>
           <button id="help-button" type="button">Help</button>
+          <button id="settings-button" type="button">Settings</button>
           <output id="status" class="status">Loading compiler...</output>
         </div>
       </header>
@@ -148,6 +149,68 @@
           <footer>
             <button id="new-file-cancel-button" type="button">Cancel</button>
             <button type="submit">Create</button>
+          </footer>
+        </form>
+      </dialog>
+      <dialog id="settings-dialog" class="form-dialog settings-dialog" aria-labelledby="settings-title">
+        <form id="settings-form">
+          <header>
+            <h2 id="settings-title">Playground settings</h2>
+          </header>
+          <fieldset>
+            <legend>Behavior</legend>
+            <label class="checkbox-setting">
+              <input id="setting-ata" type="checkbox" />
+              <span>
+                <strong>Automatic package types</strong>
+                <small>Download declarations for imported npm packages.</small>
+              </span>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-save-url" type="checkbox" />
+              <span>
+                <strong>Update the URL while typing</strong>
+                <small>Keep the versioned project link synchronized with edits.</small>
+              </span>
+            </label>
+          </fieldset>
+          <fieldset>
+            <legend>Editor</legend>
+            <label class="select-setting">
+              <span>Font size</span>
+              <select id="setting-font-size">
+                <option value="12">12 px</option>
+                <option value="14">14 px</option>
+                <option value="16">16 px</option>
+                <option value="18">18 px</option>
+                <option value="20">20 px</option>
+              </select>
+            </label>
+            <label class="select-setting">
+              <span>Tab size</span>
+              <select id="setting-tab-size">
+                <option value="2">2 spaces</option>
+                <option value="4">4 spaces</option>
+              </select>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-word-wrap" type="checkbox" />
+              <span>Wrap long lines on desktop</span>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-minimap" type="checkbox" />
+              <span>Show minimap</span>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-ligatures" type="checkbox" />
+              <span>Use font ligatures</span>
+            </label>
+          </fieldset>
+          <footer>
+            <button id="settings-reset-button" type="button" class="form-secondary-action">Reset settings</button>
+            <span></span>
+            <button id="settings-cancel-button" type="button">Cancel</button>
+            <button type="submit">Save</button>
           </footer>
         </form>
       </dialog>
