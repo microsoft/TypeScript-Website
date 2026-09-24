@@ -260,6 +260,7 @@ let acquireTypes: ((source: string) => Promise<number>) | undefined
 let typeAcquisitionQueue = Promise.resolve()
 let typeAcquisitionTimer = 0
 const acquiredTypeFiles = new Map<string, string>()
+const pendingAcquiredTypeModels = new Set<string>()
 let examplesPromise: Promise<PlaygroundExamples> | undefined
 let helpPromise: Promise<PlaygroundHelp> | undefined
 const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
@@ -717,6 +718,13 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
       onStatus(nextStatus, serverInfo) {
         lspStatus = nextStatus
         lspReady = nextStatus === "ready"
+        if (lspReady) {
+          for (const fileName of pendingAcquiredTypeModels) {
+            const text = acquiredTypeFiles.get(fileName)
+            if (text !== undefined) mountAcquiredTypeModel(fileName, text)
+          }
+          pendingAcquiredTypeModels.clear()
+        }
         lspServerInfo = serverInfo ?? lspServerInfo
         const progress = {
           "mounting files": 92,
@@ -1434,6 +1442,8 @@ async function refreshTypeAcquisition(initial: boolean) {
         onFile(fileName, text) {
           acquiredTypeFiles.set(fileName, text)
           compilerTransport?.setFile(fileName, text)
+          if (lspReady) mountAcquiredTypeModel(fileName, text)
+          else if (languageServer) pendingAcquiredTypeModels.add(fileName)
         },
         onProgress(downloaded, total) {
           const detail = `${downloaded} of ${total} declaration files`
@@ -1450,13 +1460,10 @@ async function refreshTypeAcquisition(initial: boolean) {
 
     const addedFiles = await acquireTypes(source)
     typeAcquisitionFailure = undefined
-    if (addedFiles > 0 && useNativeCompiler && lspReady && !initial) {
-      persistProjectState()
-      location.reload()
-      return
-    }
     if (addedFiles > 0 && stradaBackend) {
       await compileStradaProject()
+    } else if (addedFiles > 0 && useNativeCompiler) {
+      await compileActiveProject?.()
     }
     renderStatus()
   } catch (error) {
@@ -1464,6 +1471,16 @@ async function refreshTypeAcquisition(initial: boolean) {
     console.error("Could not acquire package types", error)
     renderStatus()
   }
+}
+
+function mountAcquiredTypeModel(fileName: string, text: string) {
+  const uri = monaco.Uri.file(fileName)
+  const existing = monaco.editor.getModel(uri)
+  if (existing) {
+    if (existing.getValue() !== text) existing.setValue(text)
+    return
+  }
+  monaco.editor.createModel(text, languageForFile(fileName), uri)
 }
 
 async function getTypeAcquisitionCompiler() {
