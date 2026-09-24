@@ -275,6 +275,8 @@ applyLayoutState()
 setupWorkspaceResizer(fileResizer, "files")
 setupWorkspaceResizer(outputResizer, "output")
 window.addEventListener("resize", applyLayoutState)
+updateResponsiveEditorOptions()
+mobileLayout.addEventListener("change", updateResponsiveEditorOptions)
 
 renderFileList()
 updateActiveFile()
@@ -343,6 +345,14 @@ function loadLayoutState(): LayoutState {
   } catch {
     return defaults
   }
+}
+
+function updateResponsiveEditorOptions() {
+  inputEditor.updateOptions({
+    wordWrap: mobileLayout.matches ? "on" : "off",
+    wrappingIndent: "indent",
+  })
+  requestAnimationFrame(() => inputEditor.layout())
 }
 
 function applyLayoutState() {

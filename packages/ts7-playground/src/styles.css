@@ -1271,9 +1271,18 @@ code {
     padding: 0.5rem;
   }
 
+  .emit-file pre {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
   .run-output {
     max-height: 16rem;
     padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .run-log {
+    overflow-wrap: anywhere;
   }
 
   .run-output button {
