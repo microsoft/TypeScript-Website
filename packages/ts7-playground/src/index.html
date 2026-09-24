@@ -59,7 +59,15 @@
         </nav>
         <div class="editor-panel">
           <div class="panel-heading">
-            <h2 id="current-file">index.ts</h2>
+            <div class="editor-heading-title">
+              <div class="editor-navigation" role="group" aria-label="Editor navigation">
+                <button id="navigate-back-button" type="button" title="Go back" aria-label="Go back" disabled>←</button>
+                <button id="navigate-forward-button" type="button" title="Go forward" aria-label="Go forward" disabled>
+                  →
+                </button>
+              </div>
+              <h2 id="current-file">index.ts</h2>
+            </div>
             <span id="editor-hint">Type query: align <code>^?</code> below an expression</span>
           </div>
           <div id="input-editor" class="editor"></div>

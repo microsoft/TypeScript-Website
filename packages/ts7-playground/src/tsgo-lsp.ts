@@ -35,6 +35,7 @@ type StartTsgoLspOptions = {
   models: readonly monaco.editor.ITextModel[]
   module: WebAssembly.Module
   onError(message: string): void
+  onNavigate(fileName: string, range: monaco.Range): void
   onStatus(status: TsgoStatus, serverInfo?: string): void
 }
 
@@ -169,6 +170,7 @@ class RingBufferWorker {
 
 let languageRegistered = false
 let activeEditor: monaco.editor.IStandaloneCodeEditor | undefined
+let navigateToLocation: StartTsgoLspOptions["onNavigate"] | undefined
 let libraryFilesPromise: Promise<Record<string, string>> | undefined
 
 export function registerPlaygroundLanguages() {
@@ -208,6 +210,7 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
   }
 
   activeEditor = options.editor
+  navigateToLocation = options.onNavigate
   libraryFilesPromise = Promise.resolve(options.libraries)
   const stdin = new SharedArrayBuffer(headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize)
   const worker = new RingBufferWorker(stdin)
@@ -305,7 +308,7 @@ function navigateToDefinition(result: unknown) {
   const range = target.targetSelectionRange ?? target.targetRange ?? target.range
   if (!uri || !range) return
   const model = monaco.editor.getModel(monaco.Uri.parse(uri))
-  if (!model || activeEditor.getModel() === model) return
+  if (!model) return
 
   const monacoRange = new monaco.Range(
     range.start.line + 1,
@@ -313,6 +316,10 @@ function navigateToDefinition(result: unknown) {
     range.end.line + 1,
     range.end.character + 1
   )
+  if (navigateToLocation) {
+    navigateToLocation(model.uri.path, monacoRange)
+    return
+  }
   activeEditor.setModel(model)
   activeEditor.setSelection(monacoRange)
   activeEditor.revealRangeInCenter(monacoRange, monaco.editor.ScrollType.Immediate)

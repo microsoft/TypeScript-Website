@@ -110,6 +110,8 @@ const mobileFilesToggle = getElement<HTMLButtonElement>("mobile-files-toggle")
 const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
+const navigateBackButton = getElement<HTMLButtonElement>("navigate-back-button")
+const navigateForwardButton = getElement<HTMLButtonElement>("navigate-forward-button")
 const currentFile = getElement("current-file")
 const editorHint = getElement("editor-hint")
 const emitOutput = getElement("emit-output")
@@ -197,6 +199,15 @@ const inputEditor = monaco.editor.create(inputElement, {
   theme: "typescript-playground",
 })
 
+type EditorLocation = {
+  selection: monaco.Selection
+  uri: string
+}
+
+const backLocations: EditorLocation[] = []
+const forwardLocations: EditorLocation[] = []
+let trackedEditorLocation: EditorLocation | undefined
+let applyingEditorNavigation = false
 const mobileLayout = matchMedia("(max-width: 700px), (max-width: 900px) and (max-height: 600px)")
 
 function setMobileFileExplorerExpanded(expanded: boolean) {
@@ -216,7 +227,26 @@ mobileLayout.addEventListener("change", event => {
 renderFileList()
 updateActiveFile()
 restoreLegacySelection()
-inputEditor.onDidChangeModel(updateActiveFile)
+trackedEditorLocation = getEditorLocation()
+updateNavigationButtons()
+inputEditor.onDidChangeModel(() => {
+  const nextLocation = getEditorLocation()
+  if (
+    !applyingEditorNavigation &&
+    trackedEditorLocation &&
+    nextLocation &&
+    trackedEditorLocation.uri !== nextLocation.uri
+  ) {
+    pushEditorLocation(backLocations, trackedEditorLocation)
+    forwardLocations.length = 0
+  }
+  trackedEditorLocation = nextLocation
+  updateActiveFile()
+  updateNavigationButtons()
+})
+inputEditor.onDidChangeCursorSelection(() => {
+  trackedEditorLocation = getEditorLocation()
+})
 inputEditor.addAction({
   id: "run-project",
   label: "Run Project",
@@ -264,6 +294,8 @@ for (const model of projectModels.values()) {
 }
 newFileButton.addEventListener("click", createNewFile)
 resetProjectButton.addEventListener("click", resetProject)
+navigateBackButton.addEventListener("click", navigateBack)
+navigateForwardButton.addEventListener("click", navigateForward)
 runButton.addEventListener("click", runProject)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 
@@ -362,6 +394,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
         lspFailure = message
         renderStatus()
       },
+      onNavigate: navigateToModel,
       onStatus(nextStatus, serverInfo) {
         lspStatus = nextStatus
         lspReady = nextStatus === "ready"
@@ -477,12 +510,94 @@ function projectFileContents() {
   return Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
 }
 
-function navigateToModel(fileName: string, range: monaco.Range) {
+function navigateToModel(fileName: string, range?: monaco.IRange) {
   const model = monaco.editor.getModel(monaco.Uri.file(fileName))
   if (!model) return
-  inputEditor.setModel(model)
-  inputEditor.setSelection(range)
-  inputEditor.revealRangeInCenter(range, monaco.editor.ScrollType.Immediate)
+  if (inputEditor.getModel() === model && !range) {
+    inputEditor.focus()
+    return
+  }
+  const currentLocation = getEditorLocation()
+  if (currentLocation) {
+    pushEditorLocation(backLocations, currentLocation)
+    forwardLocations.length = 0
+  }
+  applyingEditorNavigation = true
+  try {
+    inputEditor.setModel(model)
+    if (range) {
+      inputEditor.setSelection(range)
+      inputEditor.revealRangeInCenter(range, monaco.editor.ScrollType.Immediate)
+    }
+  } finally {
+    applyingEditorNavigation = false
+  }
+  trackedEditorLocation = getEditorLocation()
+  updateNavigationButtons()
+  inputEditor.focus()
+}
+
+function getEditorLocation(): EditorLocation | undefined {
+  const model = inputEditor.getModel()
+  const selection = inputEditor.getSelection()
+  return model && selection ? { selection, uri: model.uri.toString() } : undefined
+}
+
+function pushEditorLocation(stack: EditorLocation[], location: EditorLocation) {
+  const previous = stack.at(-1)
+  if (previous?.uri === location.uri && sameSelection(previous.selection, location.selection)) return
+  stack.push(location)
+}
+
+function sameSelection(left: monaco.Selection, right: monaco.Selection) {
+  return (
+    left.selectionStartLineNumber === right.selectionStartLineNumber &&
+    left.selectionStartColumn === right.selectionStartColumn &&
+    left.positionLineNumber === right.positionLineNumber &&
+    left.positionColumn === right.positionColumn
+  )
+}
+
+function updateNavigationButtons() {
+  navigateBackButton.disabled = backLocations.length === 0
+  navigateForwardButton.disabled = forwardLocations.length === 0
+}
+
+function navigateBack() {
+  navigateThroughHistory(backLocations, forwardLocations)
+}
+
+function navigateForward() {
+  navigateThroughHistory(forwardLocations, backLocations)
+}
+
+function navigateThroughHistory(source: EditorLocation[], destination: EditorLocation[]) {
+  let target: EditorLocation | undefined
+  while ((target = source.pop())) {
+    if (monaco.editor.getModel(monaco.Uri.parse(target.uri))) break
+  }
+  if (!target) {
+    updateNavigationButtons()
+    return
+  }
+  const current = getEditorLocation()
+  if (current) pushEditorLocation(destination, current)
+  applyEditorLocation(target)
+}
+
+function applyEditorLocation(location: EditorLocation) {
+  const model = monaco.editor.getModel(monaco.Uri.parse(location.uri))
+  if (!model) return
+  applyingEditorNavigation = true
+  try {
+    inputEditor.setModel(model)
+    inputEditor.setSelection(location.selection)
+    inputEditor.revealRangeInCenter(location.selection, monaco.editor.ScrollType.Immediate)
+  } finally {
+    applyingEditorNavigation = false
+  }
+  trackedEditorLocation = getEditorLocation()
+  updateNavigationButtons()
   inputEditor.focus()
 }
 
@@ -1030,8 +1145,7 @@ function renderFileList() {
       button.dataset.kind = fileKind(fileName)
       button.textContent = basename
       button.addEventListener("click", () => {
-        inputEditor.setModel(projectModels.get(fileName)!)
-        inputEditor.focus()
+        navigateToModel(fileName)
         if (mobileLayout.matches) setMobileFileExplorerExpanded(false)
       })
       fileButtons.set(fileName, button)
@@ -1046,8 +1160,12 @@ function renderFileList() {
 function updateActiveFile() {
   const model = inputEditor.getModel()
   if (!model) return
-  currentFile.textContent = relativeProjectPath(model.uri.path)
   const projectModel = projectModels.has(model.uri.path)
+  currentFile.textContent = projectModel
+    ? relativeProjectPath(model.uri.path)
+    : model.uri.path.startsWith("/typescript/lib/")
+    ? `${model.uri.path.slice(model.uri.path.lastIndexOf("/") + 1)} (bundled)`
+    : model.uri.path
   inputEditor.updateOptions({ readOnly: !projectModel })
   editorHint.textContent =
     model.getLanguageId() === "typescript"
