@@ -35,13 +35,22 @@
         </div>
       </header>
       <section class="workspace" aria-label="TypeScript playground">
-        <nav class="file-explorer" aria-label="Project files">
+        <nav id="file-explorer" class="file-explorer" aria-label="Project files">
           <div class="file-explorer-heading">
             <div>
               <h2>Project</h2>
               <span>/workspace</span>
             </div>
             <div class="file-explorer-actions">
+              <button
+                id="mobile-files-toggle"
+                class="mobile-files-toggle"
+                type="button"
+                aria-controls="file-list"
+                aria-expanded="true"
+              >
+                Hide
+              </button>
               <button id="reset-project-button" type="button" title="Reset the project">Reset</button>
               <button id="new-file-button" type="button" title="Create a new file">+ File</button>
             </div>

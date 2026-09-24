@@ -104,7 +104,9 @@ console.log(message)
 ]
 
 const inputElement = getElement("input-editor")
+const fileExplorer = getElement("file-explorer")
 const fileList = getElement("file-list")
+const mobileFilesToggle = getElement<HTMLButtonElement>("mobile-files-toggle")
 const compilerVersion = getElement<HTMLSelectElement>("compiler-version")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
@@ -193,6 +195,22 @@ const inputEditor = monaco.editor.create(inputElement, {
   "semanticHighlighting.enabled": true,
   tabSize: 2,
   theme: "typescript-playground",
+})
+
+const mobileLayout = matchMedia("(max-width: 700px), (max-width: 900px) and (max-height: 600px)")
+
+function setMobileFileExplorerExpanded(expanded: boolean) {
+  fileExplorer.dataset.mobileCollapsed = String(!expanded)
+  mobileFilesToggle.setAttribute("aria-expanded", String(expanded))
+  mobileFilesToggle.textContent = expanded ? "Hide" : "Files"
+  requestAnimationFrame(() => inputEditor.layout())
+}
+
+mobileFilesToggle.addEventListener("click", () => {
+  setMobileFileExplorerExpanded(mobileFilesToggle.getAttribute("aria-expanded") !== "true")
+})
+mobileLayout.addEventListener("change", event => {
+  if (!event.matches) setMobileFileExplorerExpanded(true)
 })
 
 renderFileList()
@@ -1014,6 +1032,7 @@ function renderFileList() {
       button.addEventListener("click", () => {
         inputEditor.setModel(projectModels.get(fileName)!)
         inputEditor.focus()
+        if (mobileLayout.matches) setMobileFileExplorerExpanded(false)
       })
       fileButtons.set(fileName, button)
       const item = document.createElement("li")
