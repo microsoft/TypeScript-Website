@@ -1022,6 +1022,17 @@ code {
 }
 
 .loading-overlay[data-state="consent"] {
+  position: fixed;
+  inset: 0;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transform: none;
+}
+
+.loading-overlay[data-state="consent"] .loading-card {
+  width: min(30rem, calc(100vw - 2rem));
   pointer-events: auto;
 }
 
