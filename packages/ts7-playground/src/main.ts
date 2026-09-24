@@ -1,6 +1,8 @@
 import { API, DiagnosticCategory, type Diagnostic } from "@typescript/typescript/unstable/sync"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript-wasip1-wasm"
+import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
+import examplesCatalog from "../vendor/examples.json"
 import {
   compilerOptionsNode,
   computeCompilerOverrides,
@@ -91,7 +93,7 @@ type PlaygroundExamples = {
 }
 
 type PlaygroundHelp = {
-  docs: Array<{ html: string; title: string }>
+  docs: Array<{ html: string; legacyIndexes?: number[]; title: string }>
 }
 
 type LayoutState = {
@@ -131,6 +133,14 @@ const storageKey = "ts7-playground-project"
 const projectHashPrefix = "#code/v2/"
 const legacyCodeHashPrefix = "#code/"
 const projectStateVersion = 2
+const bundledExamples = examplesCatalog as PlaygroundExamples
+const initialHash = location.hash
+const initialLegacyExample = legacyExampleFromHash(initialHash)
+if (initialLegacyExample?.compilerSettings?.ts && !new URLSearchParams(location.search).has("ts")) {
+  const url = new URL(location.href)
+  url.searchParams.set("ts", String(initialLegacyExample.compilerSettings.ts))
+  history.replaceState({}, "", url)
+}
 const selectedCompiler = new URLSearchParams(location.search).get("ts")
 const useNativeCompiler = isNativeCompilerVersion(selectedCompiler)
 const defaultFiles: ProjectFile[] = [
@@ -285,6 +295,7 @@ monaco.editor.defineTheme("typescript-playground", {
 })
 
 registerPlaygroundLanguages()
+registerExampleLinks()
 const initialState = loadProjectState()
 const initialFiles =
   initialState.useDefaults === false
@@ -373,6 +384,11 @@ inputEditor.onMouseDown(event => {
     return
   }
   const position = event.target.position
+  const example = exampleAtPosition(inputEditor.getModel(), position)
+  if (example) {
+    navigateToExample(example)
+    return
+  }
   window.setTimeout(() => {
     inputEditor.setPosition(position)
     if (stradaBackend) {
@@ -591,6 +607,7 @@ examplesSearch.addEventListener("input", () => void renderExamples())
 helpBackButton.addEventListener("click", showHelpTopics)
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 
+void openLegacyResourceRoute(initialHash)
 void initializeVersionSelector()
 void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(selectedCompiler!))
 
@@ -871,6 +888,20 @@ async function openHelp() {
   }
 }
 
+async function openLegacyResourceRoute(hash: string) {
+  if (hash === "#show-examples") {
+    await openExamples()
+    return
+  }
+  const handbook = /^#handbook(?:-(\d+))?$/.exec(hash)
+  if (!handbook) return
+  await openHelp()
+  const index = Number(handbook[1] ?? 0)
+  const help = await getHelp()
+  const topic = help.docs.find(candidate => candidate.legacyIndexes?.includes(index))
+  if (topic) showHelpDocument(topic)
+}
+
 function showHelpTopics() {
   resourcesTitle.textContent = "Playground help"
   helpList.hidden = false
@@ -887,6 +918,10 @@ function showHelpDocument(topic: PlaygroundHelp["docs"][number]) {
 
 function loadExample(example: PlaygroundExample) {
   if (!confirm(`Replace the current project with “${example.title}”?`)) return
+  navigateToExample(example)
+}
+
+function createExampleProjectState(example: PlaygroundExample) {
   const settings = example.compilerSettings ?? {}
   const fileType = exampleFileType(example, settings)
   const state = createLegacyProjectState(example.code, fileType)
@@ -902,7 +937,12 @@ function loadExample(example: PlaygroundExample) {
     config.compilerOptions.checkJs ??= true
   }
   state.files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
+  return state
+}
 
+function navigateToExample(example: PlaygroundExample) {
+  const settings = example.compilerSettings ?? {}
+  const state = createExampleProjectState(example)
   const serialized = serializeProjectState(state)
   localStorage.setItem(storageKey, serialized)
   const url = new URL(location.pathname, location.origin)
@@ -922,10 +962,7 @@ function exampleFileType(example: PlaygroundExample, settings: PlaygroundExample
 }
 
 function getExamples() {
-  examplesPromise ??= fetch(new URL("./examples.json", import.meta.url)).then(async response => {
-    if (!response.ok) throw new Error(`Could not load examples: ${response.status} ${response.statusText}`)
-    return response.json() as Promise<PlaygroundExamples>
-  })
+  examplesPromise ??= Promise.resolve(bundledExamples)
   return examplesPromise
 }
 
@@ -935,6 +972,54 @@ function getHelp() {
     return response.json() as Promise<PlaygroundHelp>
   })
   return helpPromise
+}
+
+function registerExampleLinks() {
+  const examplesById = new Map(bundledExamples.examples.map(example => [example.id, example]))
+  for (const language of ["javascript", "typescript"]) {
+    monaco.languages.registerLinkProvider(language, {
+      provideLinks(model) {
+        const links: monaco.languages.ILink[] = []
+        for (let lineNumber = 1; lineNumber <= model.getLineCount(); lineNumber++) {
+          const line = model.getLineContent(lineNumber)
+          const match = /\/\/\s*example:\s*([\w-]+)/i.exec(line)
+          if (!match) continue
+          const example = examplesById.get(match[1])
+          if (!example) continue
+          const startColumn = match.index + match[0].lastIndexOf(match[1]) + 1
+          const url = legacyExampleUrl(example)
+          links.push({
+            range: new monaco.Range(lineNumber, startColumn, lineNumber, startColumn + match[1].length),
+            tooltip: `Open example: ${example.title}`,
+            url: monaco.Uri.parse(url.href),
+          })
+        }
+        return { links }
+      },
+    })
+  }
+}
+
+function exampleAtPosition(model: monaco.editor.ITextModel | null, position: monaco.Position) {
+  if (!model) return undefined
+  const line = model.getLineContent(position.lineNumber)
+  const match = /\/\/\s*example:\s*([\w-]+)/i.exec(line)
+  if (!match) return undefined
+  const startColumn = match.index + match[0].lastIndexOf(match[1]) + 1
+  if (position.column < startColumn || position.column > startColumn + match[1].length) return undefined
+  return bundledExamples.examples.find(example => example.id === match[1])
+}
+
+function legacyExampleUrl(example: PlaygroundExample) {
+  const url = new URL(location.pathname, location.origin)
+  for (const [key, value] of Object.entries(example.compilerSettings ?? {})) {
+    url.searchParams.set(key, String(value))
+  }
+  if (!url.searchParams.has("ts") && selectedCompiler && !isNativeCompilerVersion(selectedCompiler)) {
+    url.searchParams.set("ts", selectedCompiler)
+  }
+  url.hash = `example/${example.id}`
+  return url
 }
 
 function projectFileContents() {
@@ -2368,6 +2453,10 @@ function resetProject() {
 }
 
 function loadProjectState(): ProjectState {
+  if (initialLegacyExample) {
+    return createExampleProjectState(initialLegacyExample)
+  }
+
   if (location.hash.startsWith(projectHashPrefix)) {
     const decoded = decodeCompressedHash(location.hash.slice(projectHashPrefix.length))
     if (decoded) {
@@ -2407,6 +2496,12 @@ function loadProjectState(): ProjectState {
     console.warn("Could not restore the TypeScript 7 project", error)
     return { files: {}, useDefaults: true }
   }
+}
+
+function legacyExampleFromHash(hash: string) {
+  if (!hash.startsWith("#example/")) return undefined
+  const id = decodeURIComponent(hash.slice("#example/".length))
+  return bundledExamples.examples.find(example => example.id === id)
 }
 
 function decodeCompressedHash(encoded: string) {
