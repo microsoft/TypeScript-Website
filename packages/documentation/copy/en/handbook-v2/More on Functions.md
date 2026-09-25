@@ -450,7 +450,7 @@ Functions with fewer parameters (of the same types) can always take the place of
 
 ## Function Overloads
 
-Some JavaScript functions can be called in a variety of argument counts and types.
+Some JavaScript functions can be called with different types and numbers of arguments.
 For example, you might write a function to produce a `Date` that takes either a timestamp (one argument) or a month/day/year specification (three arguments).
 
 In TypeScript, we can specify a function that can be called in different ways by writing _overload signatures_.
