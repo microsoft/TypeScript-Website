@@ -183,7 +183,7 @@ const defaultFiles: ProjectFile[] = [
     language: "typescript",
     text: `import { greet } from "./greet"
 
-const message = greet("TypeScript 7")
+const message = greet("TypeScript Playground v2")
 //    ^?
 
 console.log(message)
@@ -2794,7 +2794,7 @@ async function resetProject() {
   const confirmed = await requestConfirmation({
     confirmLabel: "Reset project",
     danger: true,
-    message: "Reset the project to the TypeScript 7 defaults? All current project files will be replaced.",
+    message: "Reset the project to the TypeScript Playground v2 defaults? All current project files will be replaced.",
     title: "Reset project",
   })
   if (!confirmed) return
@@ -2845,7 +2845,7 @@ function loadProjectState(): ProjectState {
   try {
     return normalizeProjectState(JSON.parse(stored))
   } catch (error) {
-    console.warn("Could not restore the TypeScript 7 project", error)
+    console.warn("Could not restore the TypeScript Playground v2 project", error)
     return { files: {}, useDefaults: true }
   }
 }
@@ -3109,7 +3109,7 @@ function persistProjectState() {
     url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
     history.replaceState({}, "", url)
   } catch (error) {
-    console.warn("Could not save the TypeScript 7 project", error)
+    console.warn("Could not save the TypeScript Playground v2 project", error)
   }
 }
 

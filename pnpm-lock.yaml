@@ -183,6 +183,61 @@ importers:
         specifier: 6.0.2
         version: 6.0.2
 
+  packages/playground-v2:
+    dependencies:
+      '@bjorn3/browser_wasi_shim':
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@fontsource/nunito-sans':
+        specifier: ^5.2.6
+        version: 5.3.0
+      '@typescript/ata':
+        specifier: file:vendor/ata
+        version: file:packages/playground-v2/vendor/ata
+      '@typescript/typescript':
+        specifier: file:vendor/typescript
+        version: file:packages/playground-v2/vendor/typescript
+      '@typescript/typescript-wasip1-wasm':
+        specifier: file:vendor/typescript-wasip1-wasm
+        version: file:packages/playground-v2/vendor/typescript-wasip1-wasm
+      '@vscode/monaco-lsp-client':
+        specifier: file:vendor/vscode-monaco-lsp-client-0.1.0.tgz
+        version: file:packages/playground-v2/vendor/vscode-monaco-lsp-client-0.1.0.tgz(monaco-editor-core@0.56.0)(ws@8.19.0)
+      coi-serviceworker:
+        specifier: ^0.1.7
+        version: 0.1.7
+      hack-font:
+        specifier: ^3.3.0
+        version: 3.3.0
+      jsonc-parser:
+        specifier: ^3.3.1
+        version: 3.3.1
+      lz-string:
+        specifier: ^1.5.0
+        version: 1.5.0
+      monaco-editor:
+        specifier: 0.56.0
+        version: 0.56.0
+      monaco-editor-core:
+        specifier: 0.56.0
+        version: 0.56.0
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
+      vscode-json-languageservice:
+        specifier: ^5.3.11
+        version: 5.7.2
+      vscode-languageserver-textdocument:
+        specifier: ^1.0.11
+        version: 1.0.14
+    devDependencies:
+      esbuild:
+        specifier: ^0.27.3
+        version: 0.27.3
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
+
   packages/playground-worker:
     dependencies:
       esbuild:
@@ -266,61 +321,6 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.8.1
-      typescript:
-        specifier: 6.0.2
-        version: 6.0.2
-
-  packages/ts7-playground:
-    dependencies:
-      '@bjorn3/browser_wasi_shim':
-        specifier: ^0.4.2
-        version: 0.4.2
-      '@fontsource/nunito-sans':
-        specifier: ^5.2.6
-        version: 5.3.0
-      '@typescript/ata':
-        specifier: file:vendor/ata
-        version: file:packages/ts7-playground/vendor/ata
-      '@typescript/typescript':
-        specifier: file:vendor/typescript
-        version: file:packages/ts7-playground/vendor/typescript
-      '@typescript/typescript-wasip1-wasm':
-        specifier: file:vendor/typescript-wasip1-wasm
-        version: file:packages/ts7-playground/vendor/typescript-wasip1-wasm
-      '@vscode/monaco-lsp-client':
-        specifier: file:vendor/vscode-monaco-lsp-client-0.1.0.tgz
-        version: file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz(monaco-editor-core@0.56.0)(ws@8.19.0)
-      coi-serviceworker:
-        specifier: ^0.1.7
-        version: 0.1.7
-      hack-font:
-        specifier: ^3.3.0
-        version: 3.3.0
-      jsonc-parser:
-        specifier: ^3.3.1
-        version: 3.3.1
-      lz-string:
-        specifier: ^1.5.0
-        version: 1.5.0
-      monaco-editor:
-        specifier: 0.56.0
-        version: 0.56.0
-      monaco-editor-core:
-        specifier: 0.56.0
-        version: 0.56.0
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
-      vscode-json-languageservice:
-        specifier: ^5.3.11
-        version: 5.7.2
-      vscode-languageserver-textdocument:
-        specifier: ^1.0.11
-        version: 1.0.14
-    devDependencies:
-      esbuild:
-        specifier: ^0.27.3
-        version: 0.27.3
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -2987,14 +2987,14 @@ packages:
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@typescript/ata@file:packages/ts7-playground/vendor/ata':
-    resolution: {directory: packages/ts7-playground/vendor/ata, type: directory}
+  '@typescript/ata@file:packages/playground-v2/vendor/ata':
+    resolution: {directory: packages/playground-v2/vendor/ata, type: directory}
 
-  '@typescript/typescript-wasip1-wasm@file:packages/ts7-playground/vendor/typescript-wasip1-wasm':
-    resolution: {directory: packages/ts7-playground/vendor/typescript-wasip1-wasm, type: directory}
+  '@typescript/typescript-wasip1-wasm@file:packages/playground-v2/vendor/typescript-wasip1-wasm':
+    resolution: {directory: packages/playground-v2/vendor/typescript-wasip1-wasm, type: directory}
 
-  '@typescript/typescript@file:packages/ts7-playground/vendor/typescript':
-    resolution: {directory: packages/ts7-playground/vendor/typescript, type: directory}
+  '@typescript/typescript@file:packages/playground-v2/vendor/typescript':
+    resolution: {directory: packages/playground-v2/vendor/typescript, type: directory}
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
@@ -3108,8 +3108,8 @@ packages:
   '@vscode/l10n@0.0.18':
     resolution: {integrity: sha512-KYSIHVmslkaCDyw013pphY+d7x1qV8IZupYfeIfzNA+nsaWHbn5uPuQRvdRFsa9zFzGeudPuoGoZ1Op4jrJXIQ==}
 
-  '@vscode/monaco-lsp-client@file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz':
-    resolution: {integrity: sha512-crEhIeX0sU8QT2b1ZpMxAkutNIcP+mne6HbwBCFIGHE/QLe3X7cm4kCtrrzFXbCwWlrvtyOd4V21dTYmST+LGw==, tarball: file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz}
+  '@vscode/monaco-lsp-client@file:packages/playground-v2/vendor/vscode-monaco-lsp-client-0.1.0.tgz':
+    resolution: {integrity: sha512-crEhIeX0sU8QT2b1ZpMxAkutNIcP+mne6HbwBCFIGHE/QLe3X7cm4kCtrrzFXbCwWlrvtyOd4V21dTYmST+LGw==, tarball: file:packages/playground-v2/vendor/vscode-monaco-lsp-client-0.1.0.tgz}
     version: 0.1.0
     peerDependencies:
       monaco-editor-core: '*'
@@ -13104,11 +13104,11 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@typescript/ata@file:packages/ts7-playground/vendor/ata': {}
+  '@typescript/ata@file:packages/playground-v2/vendor/ata': {}
 
-  '@typescript/typescript-wasip1-wasm@file:packages/ts7-playground/vendor/typescript-wasip1-wasm': {}
+  '@typescript/typescript-wasip1-wasm@file:packages/playground-v2/vendor/typescript-wasip1-wasm': {}
 
-  '@typescript/typescript@file:packages/ts7-playground/vendor/typescript': {}
+  '@typescript/typescript@file:packages/playground-v2/vendor/typescript': {}
 
   '@ungap/structured-clone@1.3.0': {}
 
@@ -13177,7 +13177,7 @@ snapshots:
 
   '@vscode/l10n@0.0.18': {}
 
-  '@vscode/monaco-lsp-client@file:packages/ts7-playground/vendor/vscode-monaco-lsp-client-0.1.0.tgz(monaco-editor-core@0.56.0)(ws@8.19.0)':
+  '@vscode/monaco-lsp-client@file:packages/playground-v2/vendor/vscode-monaco-lsp-client-0.1.0.tgz(monaco-editor-core@0.56.0)(ws@8.19.0)':
     dependencies:
       '@hediet/json-rpc': 0.5.0
       '@hediet/json-rpc-browser': 0.5.1

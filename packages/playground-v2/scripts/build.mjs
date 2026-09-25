@@ -96,7 +96,7 @@ if (serve) {
     port: 4173,
     servedir: outputDirectory,
   })
-  console.log(`TypeScript 7 playground: http://${server.host}:${server.port}`)
+  console.log(`TypeScript Playground v2: http://${server.host}:${server.port}`)
 } else {
   await buildContext.rebuild()
   await buildContext.dispose()

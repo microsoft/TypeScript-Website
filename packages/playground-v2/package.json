@@ -1,5 +1,5 @@
 {
-  "name": "@typescript/ts7-playground",
+  "name": "@typescript/playground-v2",
   "private": true,
   "type": "module",
   "scripts": {
