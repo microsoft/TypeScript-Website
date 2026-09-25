@@ -331,7 +331,7 @@ monaco.editor.defineTheme("typescript-playground", {
   inherit: true,
   rules: [
     { token: "comment", foreground: darkMode ? "7caf3d" : "6c6f2d" },
-    { token: "keyword", foreground: darkMode ? "569cd6" : "3757ef" },
+    { token: "keyword", foreground: darkMode ? "7fc7ff" : "2b45c7" },
     { token: "type", foreground: darkMode ? "4ec9b0" : "1142af" },
     { token: "class", foreground: darkMode ? "4ec9b0" : "267f99" },
     { token: "enum", foreground: darkMode ? "4ec9b0" : "267f99" },
@@ -344,8 +344,10 @@ monaco.editor.defineTheme("typescript-playground", {
   ],
   colors: {
     "editor.background": darkMode ? "#1e1e1e" : "#fafafa",
-    "editor.inlayHint.background": darkMode ? "#333333" : "#eeeeee",
-    "editor.inlayHint.foreground": darkMode ? "#d4d4d4" : "#333333",
+    "editor.inactiveSelectionBackground": darkMode ? "#3a3d41" : "#e8e8e8",
+    "editor.selectionBackground": darkMode ? "#264f78" : "#dbeafe",
+    "editorInlayHint.background": darkMode ? "#333333" : "#eeeeee",
+    "editorInlayHint.foreground": darkMode ? "#d4d4d4" : "#333333",
   },
 })
 

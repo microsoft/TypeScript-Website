@@ -7,6 +7,7 @@
   background: #fafafa;
   font-family: "Nunito Sans", sans-serif;
   font-synthesis: none;
+  --accent: #1d5f9e;
   --border: #d6d6d6;
   --hover: #eeeeee;
   --menu-text: #1f1f1f;
@@ -86,13 +87,14 @@ body {
 }
 
 .site-links a {
+  min-height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
   color: inherit;
-  opacity: 0.85;
   text-decoration: none;
 }
 
 .site-links a:hover {
-  opacity: 1;
   text-decoration: underline;
 }
 
@@ -235,7 +237,7 @@ body {
 }
 
 .version-menu-item[aria-checked="true"] {
-  color: #3178c6 !important;
+  color: var(--accent) !important;
   background: var(--selected) !important;
   font-weight: 700;
 }
@@ -1827,6 +1829,7 @@ code {
   color: #f3f3f3;
   color-scheme: dark;
   background: #1e1e1e;
+  --accent: #75b7f0;
   --border: #414141;
   --hover: #292929;
   --menu-text: #f3f3f3;
@@ -1843,6 +1846,7 @@ code {
   :root:not([data-theme]) {
     color: #f3f3f3;
     background: #1e1e1e;
+    --accent: #75b7f0;
     --border: #414141;
     --hover: #292929;
     --menu-text: #f3f3f3;
