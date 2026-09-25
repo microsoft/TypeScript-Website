@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="__PLAYGROUND_BASE__" />
+    <script>
+      const playgroundBase = "__PLAYGROUND_BASE__"
+      if (playgroundBase !== "/" && location.pathname === playgroundBase.slice(0, -1)) {
+        const url = new URL(location.href)
+        url.pathname = playgroundBase
+        location.replace(url)
+      }
+    </script>
+    <script src="./coi-serviceworker.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      try {
+        const settings = JSON.parse(localStorage.getItem("ts7-playground-settings") || "{}")
+        if (settings.theme === "light" || settings.theme === "dark") {
+          document.documentElement.dataset.theme = settings.theme
+        }
+      } catch {}
+    </script>
+    <title>TypeScript Playground v2</title>
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+  <body>
+    <main class="playground">
+      <header class="toolbar">
+        <div class="toolbar-brand">
+          <h1><a href="/">TypeScript</a> Playground v2</h1>
+          <nav class="site-links" aria-label="TypeScript website">
+            <a href="/docs/">Docs</a>
+            <a href="/download/">Download</a>
+            <a href="/community/">Community</a>
+          </nav>
+        </div>
+        <div class="toolbar-actions">
+          <details id="compiler-version" class="version-control">
+            <summary id="compiler-version-button" aria-haspopup="menu" aria-expanded="false">
+              <span id="compiler-version-label">__COMPILER_VERSION__</span>
+              <span class="version-caret" aria-hidden="true"></span>
+            </summary>
+            <div id="compiler-version-menu" class="version-menu" role="menu"></div>
+          </details>
+          <button id="run-button" type="button" disabled>Run</button>
+          <button id="examples-button" type="button">Examples</button>
+          <button id="help-button" type="button">Help</button>
+          <button id="settings-button" type="button">Settings</button>
+          <output id="status" class="status">Loading compiler...</output>
+        </div>
+      </header>
+      <section class="workspace" aria-label="TypeScript playground">
+        <nav id="file-explorer" class="file-explorer" aria-label="Project files">
+          <div class="file-explorer-heading">
+            <div>
+              <h2>Project</h2>
+              <span>/workspace</span>
+            </div>
+            <div class="file-explorer-actions">
+              <button id="reset-project-button" type="button" title="Reset the project">Reset</button>
+              <button id="new-file-button" type="button" title="Create a new file">+ File</button>
+            </div>
+          </div>
+          <div id="file-list" class="file-list"></div>
+        </nav>
+        <div
+          id="file-resizer"
+          class="workspace-resizer file-resizer"
+          role="separator"
+          aria-label="Resize project files"
+          aria-orientation="vertical"
+          tabindex="0"
+        ></div>
+        <div class="editor-panel">
+          <div class="panel-heading">
+            <div class="editor-heading-title">
+              <div class="editor-navigation" role="group" aria-label="Editor navigation">
+                <button id="navigate-back-button" type="button" title="Go back" aria-label="Go back" disabled>←</button>
+                <button id="navigate-forward-button" type="button" title="Go forward" aria-label="Go forward" disabled>
+                  →
+                </button>
+              </div>
+              <h2 id="current-file">index.ts</h2>
+            </div>
+            <div class="editor-heading-actions">
+              <span id="editor-hint">Type query: align <code>^?</code> below an expression</span>
+              <button id="apply-compiler-overrides-button" type="button" hidden>Apply overrides</button>
+              <button id="toggle-files-button" type="button">Hide files</button>
+              <button id="toggle-output-button" type="button">Hide output</button>
+            </div>
+          </div>
+          <div id="input-editor" class="editor"></div>
+        </div>
+        <div
+          id="output-resizer"
+          class="workspace-resizer output-resizer"
+          role="separator"
+          aria-label="Resize output"
+          aria-orientation="vertical"
+          tabindex="0"
+        ></div>
+        <aside class="output-panel">
+          <div class="panel-heading">
+            <div class="output-section-title">
+              <button
+                id="toggle-emit-button"
+                class="output-section-toggle"
+                type="button"
+                aria-label="Collapse Emit"
+                title="Collapse Emit"
+              >
+                ▾
+              </button>
+              <h2>Emit</h2>
+            </div>
+            <div class="output-heading-actions">
+              <span id="emit-summary">Waiting for the compiler</span>
+            </div>
+          </div>
+          <details id="diagnostics-panel" class="diagnostics-panel">
+            <summary>
+              <span>Problems</span>
+              <span id="diagnostics-summary">0</span>
+            </summary>
+            <div id="diagnostics-list" class="diagnostics-list">
+              <p class="empty-message">No problems found.</p>
+            </div>
+          </details>
+          <div id="emit-output" class="emit-output"></div>
+          <section id="run-output" class="run-output" aria-live="polite">
+            <header>
+              <div class="output-section-title">
+                <button
+                  id="toggle-run-output-button"
+                  class="output-section-toggle"
+                  type="button"
+                  aria-label="Collapse Run output"
+                  title="Collapse Run output"
+                >
+                  ▾
+                </button>
+                <h2>Run output</h2>
+              </div>
+              <div>
+                <button id="clear-run-output" type="button">Clear</button>
+              </div>
+            </header>
+            <div id="run-log" class="run-log">
+              <p class="empty-message">Run the project to see console output.</p>
+            </div>
+          </section>
+        </aside>
+      </section>
+      <dialog id="new-file-dialog" class="form-dialog" aria-labelledby="new-file-title">
+        <form id="new-file-form">
+          <header>
+            <h2 id="new-file-title">Create file</h2>
+          </header>
+          <label>
+            <span>Path inside /workspace</span>
+            <input id="new-file-path" type="text" value="src/new-file.ts" autocomplete="off" spellcheck="false" />
+          </label>
+          <p id="new-file-error" class="form-error" role="alert" hidden></p>
+          <footer>
+            <button id="new-file-cancel-button" type="button">Cancel</button>
+            <button type="submit">Create</button>
+          </footer>
+        </form>
+      </dialog>
+      <dialog id="settings-dialog" class="form-dialog settings-dialog" aria-labelledby="settings-title">
+        <form id="settings-form">
+          <header>
+            <h2 id="settings-title">Playground settings</h2>
+          </header>
+          <fieldset>
+            <legend>Behavior</legend>
+            <label class="checkbox-setting">
+              <input id="setting-ata" type="checkbox" />
+              <span>
+                <strong>Automatic package types</strong>
+                <small>Download declarations for imported npm packages.</small>
+              </span>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-save-url" type="checkbox" />
+              <span>
+                <strong>Update the URL while typing</strong>
+                <small>Keep the versioned project link synchronized with edits.</small>
+              </span>
+            </label>
+          </fieldset>
+          <fieldset>
+            <legend>Editor</legend>
+            <label class="select-setting">
+              <span>Font size</span>
+              <select id="setting-font-size">
+                <option value="12">12 px</option>
+                <option value="14">14 px</option>
+                <option value="16">16 px</option>
+                <option value="18">18 px</option>
+                <option value="20">20 px</option>
+              </select>
+            </label>
+            <label class="select-setting">
+              <span>Tab size</span>
+              <select id="setting-tab-size">
+                <option value="2">2 spaces</option>
+                <option value="4">4 spaces</option>
+              </select>
+            </label>
+            <label class="select-setting">
+              <span>Theme</span>
+              <select id="setting-theme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-word-wrap" type="checkbox" />
+              <span>Wrap long lines on desktop</span>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-minimap" type="checkbox" />
+              <span>Show minimap</span>
+            </label>
+            <label class="checkbox-setting">
+              <input id="setting-ligatures" type="checkbox" />
+              <span>Use font ligatures</span>
+            </label>
+          </fieldset>
+          <footer>
+            <button id="settings-reset-button" type="button" class="form-secondary-action">Reset settings</button>
+            <span></span>
+            <button id="settings-cancel-button" type="button">Cancel</button>
+            <button type="submit">Save</button>
+          </footer>
+        </form>
+      </dialog>
+      <dialog id="confirmation-dialog" class="form-dialog confirmation-dialog" aria-labelledby="confirmation-title">
+        <form id="confirmation-form">
+          <header>
+            <h2 id="confirmation-title">Confirm</h2>
+          </header>
+          <p id="confirmation-message"></p>
+          <footer>
+            <button id="confirmation-cancel-button" type="button">Cancel</button>
+            <button id="confirmation-submit-button" type="submit">Continue</button>
+          </footer>
+        </form>
+      </dialog>
+      <dialog id="text-input-dialog" class="form-dialog" aria-labelledby="text-input-title">
+        <form id="text-input-form">
+          <header>
+            <h2 id="text-input-title">Enter a value</h2>
+          </header>
+          <label>
+            <span id="text-input-label">Value</span>
+            <input id="text-input-value" type="text" autocomplete="off" spellcheck="false" />
+          </label>
+          <p id="text-input-error" class="form-error" role="alert" hidden></p>
+          <footer>
+            <button id="text-input-cancel-button" type="button">Cancel</button>
+            <button id="text-input-submit-button" type="submit">Continue</button>
+          </footer>
+        </form>
+      </dialog>
+      <dialog id="resources-dialog" class="resources-dialog" aria-labelledby="resources-title">
+        <header>
+          <h2 id="resources-title">Examples</h2>
+          <button id="resources-close-button" type="button" aria-label="Close">Close</button>
+        </header>
+        <section id="examples-view" class="resources-view">
+          <label class="resource-search">
+            <span>Find an example</span>
+            <input id="examples-search" type="search" autocomplete="off" placeholder="Search examples" />
+          </label>
+          <div id="examples-list" class="resource-list">
+            <p class="empty-message">Loading examples...</p>
+          </div>
+        </section>
+        <section id="help-view" class="resources-view" hidden>
+          <div id="help-list" class="resource-list">
+            <p class="empty-message">Loading help...</p>
+          </div>
+          <div id="help-document" class="help-document" hidden>
+            <nav>
+              <button id="help-back-button" type="button">← Topics</button>
+            </nav>
+            <article id="help-content"></article>
+          </div>
+        </section>
+      </dialog>
+      <div id="loader" class="loading-overlay">
+        <div class="loading-card">
+          <div id="loading-animation" class="lds-grid" aria-hidden="true">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div id="loading-copy" class="loading-copy">
+            <p id="loading-message" role="status">Downloading TypeScript...</p>
+            <progress id="loading-progress" max="100" value="0"></progress>
+            <small id="loading-detail">Preparing downloads</small>
+          </div>
+          <section id="download-consent" class="download-consent" hidden>
+            <h2>Download TypeScript __COMPILER_VERSION__?</h2>
+            <p>
+              The first load requires approximately <strong id="download-size">53 MB</strong>. Compiler files are cached
+              in this browser for future visits.
+            </p>
+            <label>
+              <input id="remember-download-consent" type="checkbox" checked />
+              <span>Don’t ask again on this browser</span>
+            </label>
+            <button id="confirm-download-button" type="button">Download TypeScript</button>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <a href="/">TypeScript</a>
+      <nav aria-label="TypeScript website footer">
+        <a href="/docs/">Documentation</a>
+        <a href="/download/">Download</a>
+        <a href="/community/">Community</a>
+        <a href="https://github.com/microsoft/TypeScript" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </footer>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

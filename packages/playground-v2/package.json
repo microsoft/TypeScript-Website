@@ -1,0 +1,34 @@
+{
+  "name": "@typescript/playground-v2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --serve",
+    "test": "node scripts/smoke-test.mjs",
+    "typecheck": "tsc --noEmit",
+    "vendor-resources": "node scripts/vendor-resources.mjs",
+    "vendor-typescript": "node scripts/vendor-typescript.mjs"
+  },
+  "dependencies": {
+    "@bjorn3/browser_wasi_shim": "^0.4.2",
+    "@fontsource/nunito-sans": "^5.2.6",
+    "@typescript/ata": "file:vendor/ata",
+    "@typescript/typescript": "file:vendor/typescript",
+    "@typescript/typescript-wasip1-wasm": "file:vendor/typescript-wasip1-wasm",
+    "@vscode/monaco-lsp-client": "file:vendor/vscode-monaco-lsp-client-0.1.0.tgz",
+    "coi-serviceworker": "^0.1.7",
+    "hack-font": "^3.3.0",
+    "jsonc-parser": "^3.3.1",
+    "lz-string": "^1.5.0",
+    "monaco-editor": "0.56.0",
+    "monaco-editor-core": "0.56.0",
+    "reflect-metadata": "^0.2.2",
+    "vscode-json-languageservice": "^5.3.11",
+    "vscode-languageserver-textdocument": "^1.0.11"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.3",
+    "typescript": "*"
+  }
+}
