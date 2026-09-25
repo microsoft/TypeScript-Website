@@ -79,6 +79,7 @@ packages/sandbox/src/releases.json
 packages/sandbox/src/release_data.ts
 packages/typescriptlang-org/src/lib/documentationNavigation.ts
 packages/typescriptlang-org/static/play/7/
+packages/typescriptlang-org/static/play/v2/
 
 .idea/
 

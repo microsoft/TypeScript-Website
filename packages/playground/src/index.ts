@@ -307,7 +307,7 @@ export const setupPlayground = (
     const params = new URLSearchParams(query)
     params.delete("ts")
     const queryString = params.toString()
-    document.location = `${document.location.origin}/play/7/${queryString ? `?${queryString}` : ""}${
+    document.location = `${document.location.origin}/play/v2/${queryString ? `?${queryString}` : ""}${
       hash ? `#${hash}` : ""
     }`
   }
