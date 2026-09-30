@@ -45,6 +45,16 @@ export const settingsPlugin: PluginFactory = (i, utils) => {
     // },
   ]
 
+  // Applies on the next Run without a reload, so it stays out of the
+  // requireRestart list above
+  const runSettings: LocalStorageOption[] = [
+    {
+      display: i("play_sidebar_options_disable_loop_protection"),
+      blurb: i("play_sidebar_options_disable_loop_protection_copy"),
+      flag: "disable-loop-protection",
+    },
+  ]
+
   const uiPlugins: LocalStorageOption[] = [
     {
       display: i("play_sidebar_js_title"),
@@ -91,6 +101,7 @@ export const settingsPlugin: PluginFactory = (i, utils) => {
 
       ds.subtitle(i("play_subnav_settings"))
       ds.showOptionList(settings, { style: "separated", requireRestart: true })
+      ds.showOptionList(runSettings, { style: "separated" })
 
       ds.subtitle(i("play_settings_tabs_settings"))
       ds.showOptionList(uiPlugins, { style: "separated", requireRestart: true })

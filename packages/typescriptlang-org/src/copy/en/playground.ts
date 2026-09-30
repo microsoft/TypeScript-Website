@@ -26,6 +26,9 @@ export const playCopy = {
   play_sidebar_options_disable_save: "Disable Save-On-Type",
   play_sidebar_options_disable_save_copy:
     "Disable changing the URL when you type.",
+  play_sidebar_options_disable_loop_protection: "Disable Loop Protection",
+  play_sidebar_options_disable_loop_protection_copy:
+    "Stop the Playground from automatically exiting loops which block the page for too long when running code.",
   play_sidebar_plugins: "Plugins",
   play_sidebar_featured_plugins: "Featured Plugins",
   play_sidebar_plugins_options_external:
@@ -55,6 +58,10 @@ export const playCopy = {
   play_run_js: "Executed JavaScript",
   play_run_ts: "Executed transpiled TypeScript",
   play_run_js_fail: "Executed JavaScript Failed:",
+  play_run_js_loop_protection:
+    "Possible infinite loop detected around line {line}. The loop was exited after the code blocked the page for {budget}ms. You can turn this off via Disable Loop Protection in Settings.",
+  play_run_js_loop_protection_skipped:
+    "The loop around line {line} was exited early because the page had already been blocked for {budget}ms.",
   play_default_code_sample: `// Welcome to the TypeScript Playground, this is a website
 // which gives you a chance to write, share and learn TypeScript.
 
