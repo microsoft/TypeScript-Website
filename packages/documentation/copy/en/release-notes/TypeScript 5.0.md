@@ -1373,7 +1373,7 @@ export class C {
 
 This call will fail because `key` expects a `string | symbol`, but constructor parameters receive a key of `undefined`.
 The correct fix is to change the type of `key` within `inject`.
-A reasonable workaround if you're using a library that can't be upgraded is is to wrap `inject` in a more type-safe decorator function, and use a type-assertion on `key`.
+A reasonable workaround if you're using a library that can't be upgraded is to wrap `inject` in a more type-safe decorator function, and use a type-assertion on `key`.
 
 For more details, [see this issue](https://github.com/microsoft/TypeScript/issues/52435).
 
