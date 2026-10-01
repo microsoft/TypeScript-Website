@@ -20,7 +20,7 @@ Next, if your version of Visual Studio does not already have the latest TypeScri
 
 ![Visual Studio Project Window Screenshot](/images/tutorials/aspnet/createwebapp.png)
 
-5. Name your project and solution. After select the _Create_ button
+5. Name your project and solution. Next, select the _Create_ button
 
 ![Visual Studio New Project Window Screenshot](/images/tutorials/aspnet/namewebapp.png)
 
@@ -113,7 +113,7 @@ Replace the contents of the `tsconfig.json` file with:
 
 Note: `"ESNext"` targets latest supported
 
-[`noImplicitAny`](/tsconfig#noImplicitAny) is good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. `"compileOnSave"` makes it easy to update your code in a running web app.
+[`noImplicitAny`](/tsconfig#noImplicitAny) is a good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. `"compileOnSave"` makes it easy to update your code in a running web app.
 
 #### _Set up NPM_
 
@@ -174,7 +174,7 @@ If ‘default’ and ‘clean’ tasks don’t show up, refresh the explorer:
 
 ![Screenshot of task explorer with "Gulpfile.js" in it](/images/tutorials/aspnet/taskrunnerrefresh.png)
 
-## Write a HTML page
+## Write an HTML page
 
 Right click on the `wwwroot` folder (if you don't see the folder try building the project) and add a New Item named `index.html` inside. Use the following code for `index.html`
 
@@ -201,7 +201,7 @@ Right click on the `wwwroot` folder (if you don't see the folder try building th
 1. Run the project
 2. As you type on the boxes you should see the message appear/change!
 
-![A GIF of Edge showing the code you have just wrote](https://media.giphy.com/media/U3mTibRAx34DG3zhAN/giphy.gif)
+![A GIF of Edge showing the code you have just written](https://media.giphy.com/media/U3mTibRAx34DG3zhAN/giphy.gif)
 
 ## Debug
 
@@ -210,6 +210,6 @@ Right click on the `wwwroot` folder (if you don't see the folder try building th
 3. Put a breakpoint on the line with return.
 4. Type in the boxes and confirm that the breakpoint hits in TypeScript code and that inspection works correctly.
 
-![An image showing the debugger running the code you have just wrote](/images/tutorials/aspnet/debugger.png)
+![An image showing the debugger running the code you have just written](/images/tutorials/aspnet/debugger.png)
 
 Congrats you've built your own .NET Core project with a TypeScript frontend.
