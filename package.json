@@ -38,7 +38,8 @@
       "typescript": "6.0.2",
       "tslib": "^2.6.2",
       "sharp": "0.34.5",
-      "webpack": "^5.105.3"
+      "webpack": "^5.105.3",
+      "eslint-plugin-flowtype": "8.0.3"
     },
     "patchedDependencies": {
       "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch"
