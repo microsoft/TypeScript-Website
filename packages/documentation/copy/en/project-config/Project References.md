@@ -68,6 +68,7 @@ Project references can solve all of these problems and more.
 ```
 
 The `path` property of each reference can point to a directory containing a `tsconfig.json` file, or to the config file itself (which may have any name).
+Reference `path` values are resolved relative to the `tsconfig.json` file they appear in.
 
 When you reference a project, new things happen:
 
