@@ -128,7 +128,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 </tbody></table>
 
-<h3>Build Options</h3>
+<h3>Build Commands</h3>
 <table class="cli-option" width="100%">
   <thead>
     <tr>
