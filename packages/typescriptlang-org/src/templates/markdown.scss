@@ -1,5 +1,5 @@
-@import "../style/globals.scss";
-@import "./markdown-twoslash.scss";
+@use "../style/globals.scss";
+@use "markdown-twoslash.scss";
 
 .markdown {
   scroll-behavior: smooth;
@@ -127,18 +127,18 @@
   }
 
   .blue-tick {
-    color: $ts-main-blue-color;
+    color: globals.$ts-main-blue-color;
     font-weight: bold;
     font-size: 1.2rem;
   }
 
   .black-tick {
-    color: $ts-muted-green;
+    color: globals.$ts-muted-green;
     font-size: 1.2rem;
   }
 
   .red-cross {
-    color: $ts-muted-red;
+    color: globals.$ts-muted-red;
     font-size: 1.2rem;
   }
 }

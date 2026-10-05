@@ -1,4 +1,4 @@
-@import "../style/globals.scss";
+@use "../style/globals.scss";
 
 // The subnav beginning with "Playground"
 .navbar-sub {
@@ -100,12 +100,12 @@
           margin-left: 0;
 
           &.beta {
-            color: $ts-main-blue-color;
-            border-bottom: 1px solid $ts-light-bg-grey-highlight-color;
+            color: globals.$ts-main-blue-color;
+            border-bottom: 1px solid globals.$ts-light-bg-grey-highlight-color;
           }
 
           &.nightly {
-            border-top: 1px solid $ts-light-bg-grey-highlight-color;
+            border-top: 1px solid globals.$ts-light-bg-grey-highlight-color;
           }
         }
 
@@ -192,7 +192,7 @@
             }
 
             >span {
-              font-family: $font-code;
+              font-family: globals.$font-code;
               margin-left: 4px;
             }
           }
@@ -206,7 +206,7 @@
         label {
           margin-right: 0.5rem;
           width: 33%;
-          font-family: $font-code;
+          font-family: globals.$font-code;
 
           select {
             margin-left: 1rem;
@@ -608,7 +608,7 @@ main #editor-toolbar {
     z-index: 1;
     background-color: var(--playground-dropdown-bg);
 
-    @media (max-width: $screen-sm) {
+    @media (max-width: globals.$screen-sm) {
       flex-basis: 300px;
       width: 300px;
       max-width: 300px;
@@ -634,7 +634,7 @@ main #editor-toolbar {
 
       #restart-required {
         text-align: center;
-        border: 1px solid $ts-main-blue-color;
+        border: 1px solid globals.$ts-main-blue-color;
         padding: 5px 10px;
         position: absolute;
         right: 0;
@@ -651,7 +651,7 @@ main #editor-toolbar {
         padding: 0 10px;
 
         code {
-          font-family: $font-code;
+          font-family: globals.$font-code;
           font-size: 14px;
           line-height: 19px;
         }
@@ -663,7 +663,7 @@ main #editor-toolbar {
       align-items: center;
       justify-content: center;
 
-      @media (max-width: $screen-sm) {
+      @media (max-width: globals.$screen-sm) {
         justify-content: flex-start;
       }
 
@@ -691,7 +691,7 @@ main #editor-toolbar {
           position: absolute;
           top: -8px;
           right: -10px;
-          background-color: $ts-muted-red;
+          background-color: globals.$ts-muted-red;
           color: white;
           padding: 0 4px;
           height: 20px;
@@ -742,7 +742,7 @@ main #editor-toolbar {
 
   #log-container {
     overflow: auto;
-    font-family: $font-code;
+    font-family: globals.$font-code;
     line-height: 1.5rem;
     white-space: pre-wrap;
     height: 95%;
@@ -784,7 +784,7 @@ main #editor-toolbar {
   }
 
   div.ast {
-    font-family: $font-code;
+    font-family: globals.$font-code;
     font-size: 0.8rem;
     line-height: 0.3rem;
 
@@ -893,7 +893,7 @@ main #editor-toolbar {
   }
 
   ul.compiler-diagnostics {
-    font-family: $font-code;
+    font-family: globals.$font-code;
     margin: 0;
     padding: 0;
 
@@ -977,7 +977,7 @@ input[type="url"] {
 }
 
 input.good {
-  border-color: $ts-muted-green;
+  border-color: globals.$ts-muted-green;
 }
 
 #playground-container .playground-plugins {
@@ -1084,7 +1084,7 @@ input.good {
   flex-direction: column;
 
   textarea {
-    font-family: $font-code;
+    font-family: globals.$font-code;
     padding: 8px;
   }
 
@@ -1101,7 +1101,7 @@ input.good {
 
   .window-title {
     text-align: center;
-    background-color: $ts-light-bg-grey;
+    background-color: globals.$ts-light-bg-grey;
     font-size: 32px;
 
     &.warning {
@@ -1138,7 +1138,7 @@ input.good {
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: $ts-main-blue-color;
+      background: globals.$ts-main-blue-color;
       animation: lds-grid 1.2s linear infinite;
 
       &:nth-child(1) {
