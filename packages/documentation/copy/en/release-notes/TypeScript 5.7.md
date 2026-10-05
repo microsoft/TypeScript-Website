@@ -349,7 +349,7 @@ This should avoid this common worst-case behavior.
 
 For more information, [see the change here](https://github.com/microsoft/TypeScript/pull/59688).
 
-### Validated JSON Imports in `--module nodenext`
+## Validated JSON Imports in `--module nodenext`
 
 When importing from a `.json` file under `--module nodenext`, TypeScript will now enforce certain rules to prevent runtime errors.
 
