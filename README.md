@@ -87,7 +87,7 @@ To optimize even more, the env var `NO_TRANSLATIONS` as truthy will make the web
 
 ## Sandbox
 
-The editor aspect of the TypeScript Playground REPL, useable for all sites which want to show a monaco editor
+The editor aspect of the TypeScript Playground REPL, usable for all sites which want to show a monaco editor
 with TypeScript or JavaScript code.
 
 ## Playground
