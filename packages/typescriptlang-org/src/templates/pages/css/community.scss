@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "./grid.scss";
 
 .community {
@@ -102,7 +103,7 @@
 
       &.bug {
         background-image: url("../../../assets/community/connect-github-icon.png");
-        background-color: lighten(black, 30%);
+        background-color: color.adjust(black, $lightness: 30%);
       }
     }
   }
