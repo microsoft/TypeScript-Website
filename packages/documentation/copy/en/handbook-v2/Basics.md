@@ -347,7 +347,7 @@ That's a feature, and it's best not to add annotations when the type system woul
 
 ## Erased Types
 
-Let's take a look at what happens when we compile the above function `greet` with `tsc` to output JavaScript:
+Let's take a look at what happens when we compile the above function `greet` with `tsc --target es5` to output JavaScript:
 
 ```ts twoslash
 // @showEmit
