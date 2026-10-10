@@ -170,7 +170,7 @@ We've written some generic functions that can work on _any_ kind of value.
 Sometimes we want to relate two values, but can only operate on a certain subset of values.
 In this case, we can use a _constraint_ to limit the kinds of types that a type parameter can accept.
 
-Let's write a function that returns the longer of two values.
+Let's write a function that returns the longer of two values _of the same type_.
 To do this, we need a `length` property that's a number.
 We _constrain_ the type parameter to that type by writing an `extends` clause:
 
@@ -188,8 +188,8 @@ function longest<Type extends { length: number }>(a: Type, b: Type) {
 const longerArray = longest([1, 2], [1, 2, 3]);
 // longerString is of type 'alice' | 'bob'
 const longerString = longest("alice", "bob");
-// Error! Numbers don't have a 'length' property
-const notOK = longest(10, 100);
+// Error! Type cannot be string and number[]
+const notOk = longest("alice", [1,2,3]);
 ```
 
 There are a few interesting things to note in this example.
@@ -202,7 +202,7 @@ Without the type constraint, we wouldn't be able to access those properties beca
 The types of `longerArray` and `longerString` were inferred based on the arguments.
 Remember, generics are all about relating two or more values with the same type!
 
-Finally, just as we'd like, the call to `longest(10, 100)` is rejected because the `number` type doesn't have a `.length` property.
+Finally, the call to `longest("alice", [1,2,3])` is rejected because `number[]` and `string` cannot be the same type. Even though both types have a `.length` property, our generic type parameter indicates both `a` and `b` must share a single type.  That shared type will be the inferred return type of our generic function.
 
 ### Working with Constrained Values
 
