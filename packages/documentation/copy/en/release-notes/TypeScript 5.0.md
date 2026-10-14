@@ -461,7 +461,7 @@ If you want all your projects to also use the options from the `@tsconfig/strict
 This works to a point.
 If you have any projects that *don't* want to use `@tsconfig/strictest`, they have to either manually disable the options, or create a separate version of `tsconfig.base.json` that *doesn't* extend from `@tsconfig/strictest`.
 
-To give some more flexibility here, Typescript 5.0 now allows the `extends` field to take multiple entries.
+To give some more flexibility here, TypeScript 5.0 now allows the `extends` field to take multiple entries.
 For example, in this configuration file:
 
 ```jsonc
