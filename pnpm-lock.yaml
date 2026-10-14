@@ -21,8 +21,11 @@ overrides:
 
 patchedDependencies:
   gatsby-remark-shiki-twoslash@3.0.38:
-    hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
+    hash: 3aa0dc2d9c0fd3921986acbadfef7a10df948fb30d02590f86cecab9b91800bf
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
+  remark-shiki-twoslash@3.1.3:
+    hash: 5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30
+    path: patches/remark-shiki-twoslash@3.1.3.patch
 
 importers:
 
@@ -81,7 +84,7 @@ importers:
         version: 13.0.2
       remark-shiki-twoslash:
         specifier: ^3.1.3
-        version: 3.1.3(typescript@6.0.2)
+        version: 3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2)
 
   packages/ata:
     dependencies:
@@ -395,7 +398,7 @@ importers:
         version: 6.16.0(gatsby@5.16.1(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.2))
       gatsby-remark-shiki-twoslash:
         specifier: ^3.0.38
-        version: 3.0.38(patch_hash=5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640)
+        version: 3.0.38(patch_hash=3aa0dc2d9c0fd3921986acbadfef7a10df948fb30d02590f86cecab9b91800bf)
       gatsby-remark-smartypants:
         specifier: ^6.16.0
         version: 6.16.0(gatsby@5.16.1(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.2))
@@ -16338,9 +16341,9 @@ snapshots:
       lodash: 4.17.23
       unist-util-visit: 2.0.3
 
-  gatsby-remark-shiki-twoslash@3.0.38(patch_hash=5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640):
+  gatsby-remark-shiki-twoslash@3.0.38(patch_hash=3aa0dc2d9c0fd3921986acbadfef7a10df948fb30d02590f86cecab9b91800bf):
     dependencies:
-      remark-shiki-twoslash: 3.1.3(typescript@6.0.2)
+      remark-shiki-twoslash: 3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2)
       typescript: 6.0.2
       unist-util-visit: 2.0.3
 
@@ -20181,7 +20184,7 @@ snapshots:
     dependencies:
       mdast-util-to-nlcst: 4.0.1
 
-  remark-shiki-twoslash@3.1.3(typescript@6.0.2):
+  remark-shiki-twoslash@3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2):
     dependencies:
       '@types/unist': 2.0.11
       '@typescript/twoslash': link:packages/ts-twoslasher
@@ -21433,7 +21436,7 @@ snapshots:
       hast-util-to-html: 7.1.3
       mdast-util-to-hast: 10.2.0
       remark: 13.0.0
-      remark-shiki-twoslash: 3.1.3(typescript@6.0.2)
+      remark-shiki-twoslash: 3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2)
       unist-util-visit: 3.1.0
     transitivePeerDependencies:
       - supports-color

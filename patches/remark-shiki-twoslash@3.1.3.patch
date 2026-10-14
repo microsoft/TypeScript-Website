@@ -1,0 +1,290 @@
+diff --git a/dist/remark-shiki-twoslash.cjs.development.js b/dist/remark-shiki-twoslash.cjs.development.js
+index efaed7711553c44c31abcaf53abab08b8780b248..782e3362bfd5be74d087c01571ce7e858697dec7 100644
+--- a/dist/remark-shiki-twoslash.cjs.development.js
++++ b/dist/remark-shiki-twoslash.cjs.development.js
+@@ -808,57 +808,7 @@ var cachedTwoslashCall = function cachedTwoslashCall(code, lang, settings) {
+     return shikiTwoslash.runTwoSlash(code, lang, settings);
+   }
+ 
+-  var _require = require("crypto"),
+-      createHash = _require.createHash;
+-
+-  var _require2 = require("fs"),
+-      readFileSync = _require2.readFileSync,
+-      existsSync = _require2.existsSync,
+-      mkdirSync = _require2.mkdirSync,
+-      writeFileSync = _require2.writeFileSync;
+-
+-  var _require3 = require("path"),
+-      join = _require3.join;
+-
+-  var shikiVersion = require('@typescript/twoslash/package.json').version;
+-
+-  var tsVersion = require('typescript/package.json').version;
+-
+-  var shasum = createHash("sha1");
+-  var codeSha = shasum.update(code + "-" + shikiVersion + "-" + tsVersion).digest("hex");
+-
+-  var getNmCache = function getNmCache() {
+-    if (__dirname.includes("node_modules")) {
+-      return join(__dirname.split("node_modules")[0], "node_modules", ".cache", "twoslash");
+-    } else {
+-      return join(__dirname, "..", "..", ".cache", "twoslash");
+-    }
+-  };
+-
+-  var getPnpCache = function getPnpCache() {
+-    try {
+-      var pnp = require("pnpapi");
+-
+-      return join(pnp.getPackageInformation(pnp.topLevel).packageLocation, "node_modules", ".cache", "twoslash");
+-    } catch (error) {
+-      return getNmCache();
+-    }
+-  };
+-
+-  var cacheRoot = process.versions.pnp ? getPnpCache() : getNmCache();
+-  var cachePath = join(cacheRoot, codeSha + ".json");
+-
+-  if (existsSync(cachePath)) {
+-    if (process.env.debug) console.log("Using cached twoslash results from " + cachePath);
+-    return JSON.parse(readFileSync(cachePath, "utf8"));
+-  } else {
+-    var results = shikiTwoslash.runTwoSlash(code, lang, settings);
+-    if (!existsSync(cacheRoot)) mkdirSync(cacheRoot, {
+-      recursive: true
+-    });
+-    writeFileSync(cachePath, JSON.stringify(results), "utf8");
+-    return results;
+-  }
++  return require("./twoslash-cache.js")(code, lang, settings, shikiTwoslash.runTwoSlash);
+ };
+ 
+ var addIncludes = function addIncludes(map, name, code) {
+diff --git a/dist/remark-shiki-twoslash.cjs.production.min.js b/dist/remark-shiki-twoslash.cjs.production.min.js
+index 9ee26741d08d555a0ef3c0e0917ef0d6342020a5..2df325d745cc341393c3c38c72ad29342f2631b7 100644
+--- a/dist/remark-shiki-twoslash.cjs.production.min.js
++++ b/dist/remark-shiki-twoslash.cjs.production.min.js
+@@ -1,2 +1,3 @@
+-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e,t=require("@typescript/twoslash"),r=(e=require("unist-util-visit"))&&"object"==typeof e&&"default"in e?e.default:e,n=require("fenceparser"),o=require("shiki"),i=require("shiki-twoslash");function a(e,t,r,n,o,i,a){try{var s=e[i](a),c=s.value}catch(e){return void r(e)}s.done?t(c):Promise.resolve(c).then(n,o)}function s(e){return function(){var t=this,r=arguments;return new Promise((function(n,o){var i=e.apply(t,r);function s(e){a(i,n,o,s,c,"next",e)}function c(e){a(i,n,o,s,c,"throw",e)}s(void 0)}))}}function c(){return(c=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function u(e,t){return e(t={exports:{}},t.exports),t.exports}var l=u((function(e){var t=function(e){var t=Object.prototype,r=t.hasOwnProperty,n="function"==typeof Symbol?Symbol:{},o=n.iterator||"@@iterator",i=n.asyncIterator||"@@asyncIterator",a=n.toStringTag||"@@toStringTag";function s(e,t,r){return Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}),e[t]}try{s({},"")}catch(e){s=function(e,t,r){return e[t]=r}}function c(e,t,r,n){var o=Object.create((t&&t.prototype instanceof f?t:f).prototype),i=new E(n||[]);return o._invoke=function(e,t,r){var n="suspendedStart";return function(o,i){if("executing"===n)throw new Error("Generator is already running");if("completed"===n){if("throw"===o)throw i;return{value:void 0,done:!0}}for(r.method=o,r.arg=i;;){var a=r.delegate;if(a){var s=x(a,r);if(s){if(s===l)continue;return s}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if("suspendedStart"===n)throw n="completed",r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);n="executing";var c=u(e,t,r);if("normal"===c.type){if(n=r.done?"completed":"suspendedYield",c.arg===l)continue;return{value:c.arg,done:r.done}}"throw"===c.type&&(n="completed",r.method="throw",r.arg=c.arg)}}}(e,r,i),o}function u(e,t,r){try{return{type:"normal",arg:e.call(t,r)}}catch(e){return{type:"throw",arg:e}}}e.wrap=c;var l={};function f(){}function p(){}function h(){}var d={};d[o]=function(){return this};var v=Object.getPrototypeOf,m=v&&v(v(L([])));m&&m!==t&&r.call(m,o)&&(d=m);var g=h.prototype=f.prototype=Object.create(d);function y(e){["next","throw","return"].forEach((function(t){s(e,t,(function(e){return this._invoke(t,e)}))}))}function w(e,t){var n;this._invoke=function(o,i){function a(){return new t((function(n,a){!function n(o,i,a,s){var c=u(e[o],e,i);if("throw"!==c.type){var l=c.arg,f=l.value;return f&&"object"==typeof f&&r.call(f,"__await")?t.resolve(f.__await).then((function(e){n("next",e,a,s)}),(function(e){n("throw",e,a,s)})):t.resolve(f).then((function(e){l.value=e,a(l)}),(function(e){return n("throw",e,a,s)}))}s(c.arg)}(o,i,n,a)}))}return n=n?n.then(a,a):a()}}function x(e,t){var r=e.iterator[t.method];if(void 0===r){if(t.delegate=null,"throw"===t.method){if(e.iterator.return&&(t.method="return",t.arg=void 0,x(e,t),"throw"===t.method))return l;t.method="throw",t.arg=new TypeError("The iterator does not provide a 'throw' method")}return l}var n=u(r,e.iterator,t.arg);if("throw"===n.type)return t.method="throw",t.arg=n.arg,t.delegate=null,l;var o=n.arg;return o?o.done?(t[e.resultName]=o.value,t.next=e.nextLoc,"return"!==t.method&&(t.method="next",t.arg=void 0),t.delegate=null,l):o:(t.method="throw",t.arg=new TypeError("iterator result is not an object"),t.delegate=null,l)}function b(e){var t={tryLoc:e[0]};1 in e&&(t.catchLoc=e[1]),2 in e&&(t.finallyLoc=e[2],t.afterLoc=e[3]),this.tryEntries.push(t)}function k(e){var t=e.completion||{};t.type="normal",delete t.arg,e.completion=t}function E(e){this.tryEntries=[{tryLoc:"root"}],e.forEach(b,this),this.reset(!0)}function L(e){if(e){var t=e[o];if(t)return t.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var n=-1,i=function t(){for(;++n<e.length;)if(r.call(e,n))return t.value=e[n],t.done=!1,t;return t.value=void 0,t.done=!0,t};return i.next=i}}return{next:j}}function j(){return{value:void 0,done:!0}}return p.prototype=g.constructor=h,h.constructor=p,p.displayName=s(h,a,"GeneratorFunction"),e.isGeneratorFunction=function(e){var t="function"==typeof e&&e.constructor;return!!t&&(t===p||"GeneratorFunction"===(t.displayName||t.name))},e.mark=function(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,h):(e.__proto__=h,s(e,a,"GeneratorFunction")),e.prototype=Object.create(g),e},e.awrap=function(e){return{__await:e}},y(w.prototype),w.prototype[i]=function(){return this},e.AsyncIterator=w,e.async=function(t,r,n,o,i){void 0===i&&(i=Promise);var a=new w(c(t,r,n,o),i);return e.isGeneratorFunction(r)?a:a.next().then((function(e){return e.done?e.value:a.next()}))},y(g),s(g,a,"Generator"),g[o]=function(){return this},g.toString=function(){return"[object Generator]"},e.keys=function(e){var t=[];for(var r in e)t.push(r);return t.reverse(),function r(){for(;t.length;){var n=t.pop();if(n in e)return r.value=n,r.done=!1,r}return r.done=!0,r}},e.values=L,E.prototype={constructor:E,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=void 0,this.done=!1,this.delegate=null,this.method="next",this.arg=void 0,this.tryEntries.forEach(k),!e)for(var t in this)"t"===t.charAt(0)&&r.call(this,t)&&!isNaN(+t.slice(1))&&(this[t]=void 0)},stop:function(){this.done=!0;var e=this.tryEntries[0].completion;if("throw"===e.type)throw e.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var t=this;function n(r,n){return a.type="throw",a.arg=e,t.next=r,n&&(t.method="next",t.arg=void 0),!!n}for(var o=this.tryEntries.length-1;o>=0;--o){var i=this.tryEntries[o],a=i.completion;if("root"===i.tryLoc)return n("end");if(i.tryLoc<=this.prev){var s=r.call(i,"catchLoc"),c=r.call(i,"finallyLoc");if(s&&c){if(this.prev<i.catchLoc)return n(i.catchLoc,!0);if(this.prev<i.finallyLoc)return n(i.finallyLoc)}else if(s){if(this.prev<i.catchLoc)return n(i.catchLoc,!0)}else{if(!c)throw new Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return n(i.finallyLoc)}}}},abrupt:function(e,t){for(var n=this.tryEntries.length-1;n>=0;--n){var o=this.tryEntries[n];if(o.tryLoc<=this.prev&&r.call(o,"finallyLoc")&&this.prev<o.finallyLoc){var i=o;break}}i&&("break"===e||"continue"===e)&&i.tryLoc<=t&&t<=i.finallyLoc&&(i=null);var a=i?i.completion:{};return a.type=e,a.arg=t,i?(this.method="next",this.next=i.finallyLoc,l):this.complete(a)},complete:function(e,t){if("throw"===e.type)throw e.arg;return"break"===e.type||"continue"===e.type?this.next=e.arg:"return"===e.type?(this.rval=this.arg=e.arg,this.method="return",this.next="end"):"normal"===e.type&&t&&(this.next=t),l},finish:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.finallyLoc===e)return this.complete(r.completion,r.afterLoc),k(r),l}},catch:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.tryLoc===e){var n=r.completion;if("throw"===n.type){var o=n.arg;k(r)}return o}}throw new Error("illegal catch attempt")},delegateYield:function(e,t,r){return this.delegate={iterator:L(e),resultName:t,nextLoc:r},"next"===this.method&&(this.arg=void 0),l}},e}(e.exports);try{regeneratorRuntime=t}catch(e){Function("r","regeneratorRuntime = r")(t)}}));function f(e){return e.replace(/</g,"&lt;").replace(/>/g,"&gt;")}var p=function(e,r,n){var o="undefined"!=typeof self&&void 0!==self.WorkerGlobalScope||"undefined"!=typeof window&&void 0!==window.document&&"undefined"!=typeof fetch,i="undefined"!=typeof jest,a=o||i?function(e){}:console.error,s="<pre><code>"+n+"</code></pre>";"object"!=typeof n?(s=String(n),a("### Unexpected error:"),a(n)):n instanceof t.TwoslashError?(s=function(e){return"\n<h3>"+f(e.title)+"</h3>\n<p>"+f(e.description).replace(/(?:\r\n|\r|\n)/g,"<br>")+"</p>\n<code>"+f(e.recommendation).replace(/(?:\r\n|\r|\n)/g,"<br>")+"</code>\n"}(n),a("### Twoslash error: "+n.title),a(n.description),a(n.recommendation),a("\n### Code Sample"),a(e)):n instanceof Error&&(s=function(e){return"<pre><code>"+e.message.split("## Code")[0]+"</code></pre>"}(n),a("### Unexpected error:"),a(n));var c="\n    <a href='#twoslash-error'><div class='twoslash-fixed-error-note'><span class='twoslash-error-color'></span>Twoslash failure</div></a>\n    <div class='twoslash-exception-message'>"+s+"<p>Raising Code:</p><pre class='twoslash-exception-code'><code>"+f(e)+"</code></pre></div>";r.type="html",r.value='<div id=\'twoslash-error\'><style>\n@import url(\'http://fonts.cdnfonts.com/css/caslon-os\'); \n\n.twoslash-fixed-error-note { \n    position: fixed;\n    top: 20px;\n    right: 20px;\n    display: flex;\n    align-items: center;\n    padding: .25rem .75rem;\n    color: black;\n    background-color: #FCF3D9;\n    background-clip: padding-box;\n    border-bottom: 1px solid rgba(0,0,0,.05);\n    border-radius: .25rem;\n    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";\n } \n\n #__docusaurus .twoslash-fixed-error-note {\n    top: 80px;\n }\n\n .twoslash-fixed-error-note:hover {\n    border-bottom: 1px solid rgba(226, 61, 30, 0.8);\n }\n\n .twoslash-error-color {\n    background-color: #E23D1E;\n    width: 18px;\n    height: 18px;\n    border-radius: 9px;\n    margin-right:  10px;\n    color: black;\n }\n\n.twoslash-exception-message { \n    font-family: \'Caslon OS\', sans-serif; \n    background-color: #FCF3D9;\n    font-size: 1.1rem;\n    padding: 2rem;\n    border-left: 2px solid #E23D1E;\n}\n\n.twoslash-exception-message p {\n    margin-top: 1rem;\n    margin-bottom: 0.6rem;\n}\n\n.twoslash-exception-message h3 { \n    margin-top: 0.6rem;\n    margin-bottom: 0.3rem;\n    font-size: 1.8rem;\n}\n\n.twoslash-exception-message code {\n     white-space: pre-wrap;\n     font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;\n     margin-bottom: 20px;\n     background-color: #FCF3D9;\n     color: black;\n     border: none;\n     padding-left: 0;\n }\n\n .twoslash-exception-message > code {\n     display: block;\n     margin-bottom: 1.5rem;\n     margin-top: 3rem;\n }\n\n.twoslash-exception-code {\n    border-left: 2px solid #E5A604;\n    padding-left: 20px;\n    background-color: #FCF3D9;\n    color: black;\n}\n</style>'+c+"</div>",r.children=[]},h=new Map;function d(e,t,r,n,o){var a,s={json5:"json"};if(s[t.lang]&&(t.lang=s[t.lang]),"twoslash"===t.lang){if(!t.meta.include||"string"!=typeof t.meta.include)throw new Error("A twoslash code block needs a pragma like 'twoslash include [name]'");!function(e,t,r){var n=[];r.split("\n").forEach((function(r,o){var i=r.trim();if(i.startsWith("// - ")){var a=i.split("// - ")[1].split(" ")[0];e.set(t+"-"+a,n.join("\n"))}else n.push(r)})),e.set(t,n.join("\n"))}(h,t.meta.include,e),a=o.wrapFragments?'<div class="shiki-twoslash-fragment"></div>':""}else a=r.map((function(r){var a=r.customName.split("/").pop().replace(".json","");return i.renderCodeToHTML(e,t.lang,t.meta,c({themeName:a},o),r,n)})).join("\n"),r.length>1&&o.wrapFragments&&(a='<div class="shiki-twoslash-fragment">'+a+"</div>");return a}var v=function(e,t,r){var n=t.lang;if(void 0===r&&(r={}),("undefined"==typeof process||!process.env||!process.env.TWOSLASH_DISABLE)&&t.meta.twoslash)return function(e,t,r){if("undefined"!=typeof self&&void 0!==self.WorkerGlobalScope||"undefined"!=typeof window&&void 0!==window.document&&"undefined"!=typeof fetch)return i.runTwoSlash(e,t,r);var n=require("crypto").createHash,o=require("fs"),a=o.readFileSync,s=o.existsSync,c=o.mkdirSync,u=o.writeFileSync,l=require("path").join,f=require("@typescript/twoslash/package.json").version,p=require("typescript/package.json").version,h=n("sha1").update(e+"-"+f+"-"+p).digest("hex"),d=function(){return __dirname.includes("node_modules")?l(__dirname.split("node_modules")[0],"node_modules",".cache","twoslash"):l(__dirname,"..","..",".cache","twoslash")},v=process.versions.pnp?function(){try{var e=require("pnpapi");return l(e.getPackageInformation(e.topLevel).packageLocation,"node_modules",".cache","twoslash")}catch(e){return d()}}():d(),m=l(v,h+".json");if(s(m))return process.env.debug&&console.log("Using cached twoslash results from "+m),JSON.parse(a(m,"utf8"));var g=i.runTwoSlash(e,t,r);return s(v)||c(v,{recursive:!0}),u(m,JSON.stringify(g),"utf8"),g}(function(e,t){for(var r,n=/\/\/ @include: (.*)$/gm,o=[];null!==(r=n.exec(t));){r.index===n.lastIndex&&n.lastIndex++;var i=r[1],a=e.get(i);if(!a){var s="Could not find an include with the key: '"+i+"'.\nThere is: "+Array.from(e.keys())+".";throw new Error(s)}o.push([r.index,r[0].length,a])}var c=t.toString();return o.reverse().forEach((function(e){c=c.substring(0,e[0])+e[2]+c.substring(e[0]+e[1])})),c}(h,e),n,r)},m=new Map,g=function(e){return Promise.all((e.themes||(e.theme?[e.theme]:["light-plus"])).map(function(){var t=s(l.mark((function t(r){var n,i;return l.wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return n=r.name||r,t.next=3,o.getHighlighter(c({},e,{theme:r,themes:void 0}));case 3:return(i=t.sent).customName=n,t.abrupt("return",i);case 6:case"end":return t.stop()}}),t)})));return function(e){return t.apply(this,arguments)}}()))},y=function(){return h.clear()},w=function(e){var t,r=n.lex(e),o=r[0],i=r.slice(1);if("twoslash"===o){var a=i.indexOf("include");-1!==a&&i.splice(a+1,0,"=")}var s=null!=(t=n.parse(i))?t:{};return{lang:(o||"").toString(),meta:s}},x=function(e,r){return void 0===r&&(r={}),function(n){var o=n.value,i=void 0;try{i=w([n.lang,n.meta].filter(Boolean).join(" "))}catch(e){var a=new t.TwoslashError("Codefence error","Could not parse the codefence for this code sample","It's usually an unclosed string",o);return p(o,n,a)}if(!(Object.keys(i.meta).filter((function(e){return(r.ignoreCodeblocksWithCodefenceMeta||[]).includes(e)})).length>0)){var s;try{s=n.twoslash||v(o,i,r)}catch(e){var c=process&&process.env&&!!process.env.CI,u="undefined"==typeof jest;if(c&&u||r.alwayRaiseForTwoslashExceptions)throw e;return p(o,n,e)}s&&(n.value=s.code,n.lang=s.extension,n.twoslash=s);var l=d(n.value,i,e,s,r);n.type="html",n.value=l,n.children=[]}}},b=function(){var e=s(l.mark((function e(t){return l.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return void 0===t&&(t={}),y(),m.has(t)||m.set(t,g(t)),e.next=5,m.get(t);case 5:return e.abrupt("return",{settings:t,highlighters:e.sent});case 7:case"end":return e.stop()}}),e)})));return function(t){return e.apply(this,arguments)}}();exports.default=function(e){return void 0===e&&(e={}),m.has(e)||m.set(e,g(e)),function(){var t=s(l.mark((function t(n){var o;return l.wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,m.get(e);case 2:o=t.sent,y(),r(n,"code",x(o,e));case 5:case"end":return t.stop()}}),t)})));return function(e){return t.apply(this,arguments)}}()},exports.highlightersFromSettings=g,exports.remarkVisitor=x,exports.runTwoSlashOnNode=v,exports.setupForFile=b,exports.transformAttributesToHTML=function(e,t,r,n){var o=w(t),i=v(e,o,n);return d(i&&i.code||e,o,r,i,n)};
++"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e,t=require("@typescript/twoslash"),r=(e=require("unist-util-visit"))&&"object"==typeof e&&"default"in e?e.default:e,n=require("fenceparser"),o=require("shiki"),i=require("shiki-twoslash");function a(e,t,r,n,o,i,a){try{var s=e[i](a),c=s.value}catch(e){return void r(e)}s.done?t(c):Promise.resolve(c).then(n,o)}function s(e){return function(){var t=this,r=arguments;return new Promise((function(n,o){var i=e.apply(t,r);function s(e){a(i,n,o,s,c,"next",e)}function c(e){a(i,n,o,s,c,"throw",e)}s(void 0)}))}}function c(){return(c=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e}).apply(this,arguments)}function u(e,t){return e(t={exports:{}},t.exports),t.exports}var l=u((function(e){var t=function(e){var t=Object.prototype,r=t.hasOwnProperty,n="function"==typeof Symbol?Symbol:{},o=n.iterator||"@@iterator",i=n.asyncIterator||"@@asyncIterator",a=n.toStringTag||"@@toStringTag";function s(e,t,r){return Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}),e[t]}try{s({},"")}catch(e){s=function(e,t,r){return e[t]=r}}function c(e,t,r,n){var o=Object.create((t&&t.prototype instanceof f?t:f).prototype),i=new E(n||[]);return o._invoke=function(e,t,r){var n="suspendedStart";return function(o,i){if("executing"===n)throw new Error("Generator is already running");if("completed"===n){if("throw"===o)throw i;return{value:void 0,done:!0}}for(r.method=o,r.arg=i;;){var a=r.delegate;if(a){var s=x(a,r);if(s){if(s===l)continue;return s}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if("suspendedStart"===n)throw n="completed",r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);n="executing";var c=u(e,t,r);if("normal"===c.type){if(n=r.done?"completed":"suspendedYield",c.arg===l)continue;return{value:c.arg,done:r.done}}"throw"===c.type&&(n="completed",r.method="throw",r.arg=c.arg)}}}(e,r,i),o}function u(e,t,r){try{return{type:"normal",arg:e.call(t,r)}}catch(e){return{type:"throw",arg:e}}}e.wrap=c;var l={};function f(){}function p(){}function h(){}var d={};d[o]=function(){return this};var v=Object.getPrototypeOf,m=v&&v(v(L([])));m&&m!==t&&r.call(m,o)&&(d=m);var g=h.prototype=f.prototype=Object.create(d);function y(e){["next","throw","return"].forEach((function(t){s(e,t,(function(e){return this._invoke(t,e)}))}))}function w(e,t){var n;this._invoke=function(o,i){function a(){return new t((function(n,a){!function n(o,i,a,s){var c=u(e[o],e,i);if("throw"!==c.type){var l=c.arg,f=l.value;return f&&"object"==typeof f&&r.call(f,"__await")?t.resolve(f.__await).then((function(e){n("next",e,a,s)}),(function(e){n("throw",e,a,s)})):t.resolve(f).then((function(e){l.value=e,a(l)}),(function(e){return n("throw",e,a,s)}))}s(c.arg)}(o,i,n,a)}))}return n=n?n.then(a,a):a()}}function x(e,t){var r=e.iterator[t.method];if(void 0===r){if(t.delegate=null,"throw"===t.method){if(e.iterator.return&&(t.method="return",t.arg=void 0,x(e,t),"throw"===t.method))return l;t.method="throw",t.arg=new TypeError("The iterator does not provide a 'throw' method")}return l}var n=u(r,e.iterator,t.arg);if("throw"===n.type)return t.method="throw",t.arg=n.arg,t.delegate=null,l;var o=n.arg;return o?o.done?(t[e.resultName]=o.value,t.next=e.nextLoc,"return"!==t.method&&(t.method="next",t.arg=void 0),t.delegate=null,l):o:(t.method="throw",t.arg=new TypeError("iterator result is not an object"),t.delegate=null,l)}function b(e){var t={tryLoc:e[0]};1 in e&&(t.catchLoc=e[1]),2 in e&&(t.finallyLoc=e[2],t.afterLoc=e[3]),this.tryEntries.push(t)}function k(e){var t=e.completion||{};t.type="normal",delete t.arg,e.completion=t}function E(e){this.tryEntries=[{tryLoc:"root"}],e.forEach(b,this),this.reset(!0)}function L(e){if(e){var t=e[o];if(t)return t.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var n=-1,i=function t(){for(;++n<e.length;)if(r.call(e,n))return t.value=e[n],t.done=!1,t;return t.value=void 0,t.done=!0,t};return i.next=i}}return{next:j}}function j(){return{value:void 0,done:!0}}return p.prototype=g.constructor=h,h.constructor=p,p.displayName=s(h,a,"GeneratorFunction"),e.isGeneratorFunction=function(e){var t="function"==typeof e&&e.constructor;return!!t&&(t===p||"GeneratorFunction"===(t.displayName||t.name))},e.mark=function(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,h):(e.__proto__=h,s(e,a,"GeneratorFunction")),e.prototype=Object.create(g),e},e.awrap=function(e){return{__await:e}},y(w.prototype),w.prototype[i]=function(){return this},e.AsyncIterator=w,e.async=function(t,r,n,o,i){void 0===i&&(i=Promise);var a=new w(c(t,r,n,o),i);return e.isGeneratorFunction(r)?a:a.next().then((function(e){return e.done?e.value:a.next()}))},y(g),s(g,a,"Generator"),g[o]=function(){return this},g.toString=function(){return"[object Generator]"},e.keys=function(e){var t=[];for(var r in e)t.push(r);return t.reverse(),function r(){for(;t.length;){var n=t.pop();if(n in e)return r.value=n,r.done=!1,r}return r.done=!0,r}},e.values=L,E.prototype={constructor:E,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=void 0,this.done=!1,this.delegate=null,this.method="next",this.arg=void 0,this.tryEntries.forEach(k),!e)for(var t in this)"t"===t.charAt(0)&&r.call(this,t)&&!isNaN(+t.slice(1))&&(this[t]=void 0)},stop:function(){this.done=!0;var e=this.tryEntries[0].completion;if("throw"===e.type)throw e.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var t=this;function n(r,n){return a.type="throw",a.arg=e,t.next=r,n&&(t.method="next",t.arg=void 0),!!n}for(var o=this.tryEntries.length-1;o>=0;--o){var i=this.tryEntries[o],a=i.completion;if("root"===i.tryLoc)return n("end");if(i.tryLoc<=this.prev){var s=r.call(i,"catchLoc"),c=r.call(i,"finallyLoc");if(s&&c){if(this.prev<i.catchLoc)return n(i.catchLoc,!0);if(this.prev<i.finallyLoc)return n(i.finallyLoc)}else if(s){if(this.prev<i.catchLoc)return n(i.catchLoc,!0)}else{if(!c)throw new Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return n(i.finallyLoc)}}}},abrupt:function(e,t){for(var n=this.tryEntries.length-1;n>=0;--n){var o=this.tryEntries[n];if(o.tryLoc<=this.prev&&r.call(o,"finallyLoc")&&this.prev<o.finallyLoc){var i=o;break}}i&&("break"===e||"continue"===e)&&i.tryLoc<=t&&t<=i.finallyLoc&&(i=null);var a=i?i.completion:{};return a.type=e,a.arg=t,i?(this.method="next",this.next=i.finallyLoc,l):this.complete(a)},complete:function(e,t){if("throw"===e.type)throw e.arg;return"break"===e.type||"continue"===e.type?this.next=e.arg:"return"===e.type?(this.rval=this.arg=e.arg,this.method="return",this.next="end"):"normal"===e.type&&t&&(this.next=t),l},finish:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.finallyLoc===e)return this.complete(r.completion,r.afterLoc),k(r),l}},catch:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.tryLoc===e){var n=r.completion;if("throw"===n.type){var o=n.arg;k(r)}return o}}throw new Error("illegal catch attempt")},delegateYield:function(e,t,r){return this.delegate={iterator:L(e),resultName:t,nextLoc:r},"next"===this.method&&(this.arg=void 0),l}},e}(e.exports);try{regeneratorRuntime=t}catch(e){Function("r","regeneratorRuntime = r")(t)}}));function f(e){return e.replace(/</g,"&lt;").replace(/>/g,"&gt;")}var p=function(e,r,n){var o="undefined"!=typeof self&&void 0!==self.WorkerGlobalScope||"undefined"!=typeof window&&void 0!==window.document&&"undefined"!=typeof fetch,i="undefined"!=typeof jest,a=o||i?function(e){}:console.error,s="<pre><code>"+n+"</code></pre>";"object"!=typeof n?(s=String(n),a("### Unexpected error:"),a(n)):n instanceof t.TwoslashError?(s=function(e){return"\n<h3>"+f(e.title)+"</h3>\n<p>"+f(e.description).replace(/(?:\r\n|\r|\n)/g,"<br>")+"</p>\n<code>"+f(e.recommendation).replace(/(?:\r\n|\r|\n)/g,"<br>")+"</code>\n"}(n),a("### Twoslash error: "+n.title),a(n.description),a(n.recommendation),a("\n### Code Sample"),a(e)):n instanceof Error&&(s=function(e){return"<pre><code>"+e.message.split("## Code")[0]+"</code></pre>"}(n),a("### Unexpected error:"),a(n));var c="\n    <a href='#twoslash-error'><div class='twoslash-fixed-error-note'><span class='twoslash-error-color'></span>Twoslash failure</div></a>\n    <div class='twoslash-exception-message'>"+s+"<p>Raising Code:</p><pre class='twoslash-exception-code'><code>"+f(e)+"</code></pre></div>";r.type="html",r.value='<div id=\'twoslash-error\'><style>\n@import url(\'http://fonts.cdnfonts.com/css/caslon-os\'); \n\n.twoslash-fixed-error-note { \n    position: fixed;\n    top: 20px;\n    right: 20px;\n    display: flex;\n    align-items: center;\n    padding: .25rem .75rem;\n    color: black;\n    background-color: #FCF3D9;\n    background-clip: padding-box;\n    border-bottom: 1px solid rgba(0,0,0,.05);\n    border-radius: .25rem;\n    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";\n } \n\n #__docusaurus .twoslash-fixed-error-note {\n    top: 80px;\n }\n\n .twoslash-fixed-error-note:hover {\n    border-bottom: 1px solid rgba(226, 61, 30, 0.8);\n }\n\n .twoslash-error-color {\n    background-color: #E23D1E;\n    width: 18px;\n    height: 18px;\n    border-radius: 9px;\n    margin-right:  10px;\n    color: black;\n }\n\n.twoslash-exception-message { \n    font-family: \'Caslon OS\', sans-serif; \n    background-color: #FCF3D9;\n    font-size: 1.1rem;\n    padding: 2rem;\n    border-left: 2px solid #E23D1E;\n}\n\n.twoslash-exception-message p {\n    margin-top: 1rem;\n    margin-bottom: 0.6rem;\n}\n\n.twoslash-exception-message h3 { \n    margin-top: 0.6rem;\n    margin-bottom: 0.3rem;\n    font-size: 1.8rem;\n}\n\n.twoslash-exception-message code {\n     white-space: pre-wrap;\n     font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;\n     margin-bottom: 20px;\n     background-color: #FCF3D9;\n     color: black;\n     border: none;\n     padding-left: 0;\n }\n\n .twoslash-exception-message > code {\n     display: block;\n     margin-bottom: 1.5rem;\n     margin-top: 3rem;\n }\n\n.twoslash-exception-code {\n    border-left: 2px solid #E5A604;\n    padding-left: 20px;\n    background-color: #FCF3D9;\n    color: black;\n}\n</style>'+c+"</div>",r.children=[]},h=new Map;function d(e,t,r,n,o){var a,s={json5:"json"};if(s[t.lang]&&(t.lang=s[t.lang]),"twoslash"===t.lang){if(!t.meta.include||"string"!=typeof t.meta.include)throw new Error("A twoslash code block needs a pragma like 'twoslash include [name]'");!function(e,t,r){var n=[];r.split("\n").forEach((function(r,o){var i=r.trim();if(i.startsWith("// - ")){var a=i.split("// - ")[1].split(" ")[0];e.set(t+"-"+a,n.join("\n"))}else n.push(r)})),e.set(t,n.join("\n"))}(h,t.meta.include,e),a=o.wrapFragments?'<div class="shiki-twoslash-fragment"></div>':""}else a=r.map((function(r){var a=r.customName.split("/").pop().replace(".json","");return i.renderCodeToHTML(e,t.lang,t.meta,c({themeName:a},o),r,n)})).join("\n"),r.length>1&&o.wrapFragments&&(a='<div class="shiki-twoslash-fragment">'+a+"</div>");return a}var v=function(e,t,r){var n=t.lang;if(void 0===r&&(r={}),("undefined"==typeof process||!process.env||!process.env.TWOSLASH_DISABLE)&&t.meta.twoslash)return function(e,t,r){if("undefined"!=typeof self&&void 0!==self.WorkerGlobalScope||"undefined"!=typeof window&&void 0!==window.document&&"undefined"!=typeof fetch)return i.runTwoSlash(e,t,r);return require("./twoslash-cache.js")(e, t, r, i.runTwoSlash);
++}(function(e,t){for(var r,n=/\/\/ @include: (.*)$/gm,o=[];null!==(r=n.exec(t));){r.index===n.lastIndex&&n.lastIndex++;var i=r[1],a=e.get(i);if(!a){var s="Could not find an include with the key: '"+i+"'.\nThere is: "+Array.from(e.keys())+".";throw new Error(s)}o.push([r.index,r[0].length,a])}var c=t.toString();return o.reverse().forEach((function(e){c=c.substring(0,e[0])+e[2]+c.substring(e[0]+e[1])})),c}(h,e),n,r)},m=new Map,g=function(e){return Promise.all((e.themes||(e.theme?[e.theme]:["light-plus"])).map(function(){var t=s(l.mark((function t(r){var n,i;return l.wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return n=r.name||r,t.next=3,o.getHighlighter(c({},e,{theme:r,themes:void 0}));case 3:return(i=t.sent).customName=n,t.abrupt("return",i);case 6:case"end":return t.stop()}}),t)})));return function(e){return t.apply(this,arguments)}}()))},y=function(){return h.clear()},w=function(e){var t,r=n.lex(e),o=r[0],i=r.slice(1);if("twoslash"===o){var a=i.indexOf("include");-1!==a&&i.splice(a+1,0,"=")}var s=null!=(t=n.parse(i))?t:{};return{lang:(o||"").toString(),meta:s}},x=function(e,r){return void 0===r&&(r={}),function(n){var o=n.value,i=void 0;try{i=w([n.lang,n.meta].filter(Boolean).join(" "))}catch(e){var a=new t.TwoslashError("Codefence error","Could not parse the codefence for this code sample","It's usually an unclosed string",o);return p(o,n,a)}if(!(Object.keys(i.meta).filter((function(e){return(r.ignoreCodeblocksWithCodefenceMeta||[]).includes(e)})).length>0)){var s;try{s=n.twoslash||v(o,i,r)}catch(e){var c=process&&process.env&&!!process.env.CI,u="undefined"==typeof jest;if(c&&u||r.alwayRaiseForTwoslashExceptions)throw e;return p(o,n,e)}s&&(n.value=s.code,n.lang=s.extension,n.twoslash=s);var l=d(n.value,i,e,s,r);n.type="html",n.value=l,n.children=[]}}},b=function(){var e=s(l.mark((function e(t){return l.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return void 0===t&&(t={}),y(),m.has(t)||m.set(t,g(t)),e.next=5,m.get(t);case 5:return e.abrupt("return",{settings:t,highlighters:e.sent});case 7:case"end":return e.stop()}}),e)})));return function(t){return e.apply(this,arguments)}}();exports.default=function(e){return void 0===e&&(e={}),m.has(e)||m.set(e,g(e)),function(){var t=s(l.mark((function t(n){var o;return l.wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,m.get(e);case 2:o=t.sent,y(),r(n,"code",x(o,e));case 5:case"end":return t.stop()}}),t)})));return function(e){return t.apply(this,arguments)}}()},exports.highlightersFromSettings=g,exports.remarkVisitor=x,exports.runTwoSlashOnNode=v,exports.setupForFile=b,exports.transformAttributesToHTML=function(e,t,r,n){var o=w(t),i=v(e,o,n);return d(i&&i.code||e,o,r,i,n)};
+ //# sourceMappingURL=remark-shiki-twoslash.cjs.production.min.js.map
+diff --git a/dist/remark-shiki-twoslash.esm.js b/dist/remark-shiki-twoslash.esm.js
+index 7d005c0ae14fff368e1808ffae3ecef5dab756b9..cabf08a27259ac62316f3459c95ecd5bf9ae0082 100644
+--- a/dist/remark-shiki-twoslash.esm.js
++++ b/dist/remark-shiki-twoslash.esm.js
+@@ -802,57 +802,7 @@ var cachedTwoslashCall = function cachedTwoslashCall(code, lang, settings) {
+     return runTwoSlash(code, lang, settings);
+   }
+ 
+-  var _require = require("crypto"),
+-      createHash = _require.createHash;
+-
+-  var _require2 = require("fs"),
+-      readFileSync = _require2.readFileSync,
+-      existsSync = _require2.existsSync,
+-      mkdirSync = _require2.mkdirSync,
+-      writeFileSync = _require2.writeFileSync;
+-
+-  var _require3 = require("path"),
+-      join = _require3.join;
+-
+-  var shikiVersion = require('@typescript/twoslash/package.json').version;
+-
+-  var tsVersion = require('typescript/package.json').version;
+-
+-  var shasum = createHash("sha1");
+-  var codeSha = shasum.update(code + "-" + shikiVersion + "-" + tsVersion).digest("hex");
+-
+-  var getNmCache = function getNmCache() {
+-    if (__dirname.includes("node_modules")) {
+-      return join(__dirname.split("node_modules")[0], "node_modules", ".cache", "twoslash");
+-    } else {
+-      return join(__dirname, "..", "..", ".cache", "twoslash");
+-    }
+-  };
+-
+-  var getPnpCache = function getPnpCache() {
+-    try {
+-      var pnp = require("pnpapi");
+-
+-      return join(pnp.getPackageInformation(pnp.topLevel).packageLocation, "node_modules", ".cache", "twoslash");
+-    } catch (error) {
+-      return getNmCache();
+-    }
+-  };
+-
+-  var cacheRoot = process.versions.pnp ? getPnpCache() : getNmCache();
+-  var cachePath = join(cacheRoot, codeSha + ".json");
+-
+-  if (existsSync(cachePath)) {
+-    if (process.env.debug) console.log("Using cached twoslash results from " + cachePath);
+-    return JSON.parse(readFileSync(cachePath, "utf8"));
+-  } else {
+-    var results = runTwoSlash(code, lang, settings);
+-    if (!existsSync(cacheRoot)) mkdirSync(cacheRoot, {
+-      recursive: true
+-    });
+-    writeFileSync(cachePath, JSON.stringify(results), "utf8");
+-    return results;
+-  }
++  return require("./twoslash-cache.js")(code, lang, settings, runTwoSlash);
+ };
+ 
+ var addIncludes = function addIncludes(map, name, code) {
+diff --git a/dist/twoslash-cache.js b/dist/twoslash-cache.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..7ae5d5ad41e6284ba9eefcfbfb86235800c94a9d
+--- /dev/null
++++ b/dist/twoslash-cache.js
+@@ -0,0 +1,149 @@
++const fs = require("fs")
++const path = require("path")
++const { createHash } = require("crypto")
++const { createRequire } = require("module")
++
++const shikiRequire = createRequire(require.resolve("shiki-twoslash"))
++const twoslashRequire = createRequire(shikiRequire.resolve("@typescript/twoslash"))
++const ts = twoslashRequire("typescript")
++const readTokens = new Map()
++let implementation
++
++const digest = value => createHash("sha1").update(value).digest("hex")
++const portable = filename =>
++  path.isAbsolute(filename) ? path.relative(process.cwd(), filename) : filename
++
++function compilerImplementation() {
++  if (implementation) return implementation
++  const hash = createHash("sha1")
++  hash.update(fs.readFileSync(__filename))
++  for (const [name, resolver] of [
++    ["shiki-twoslash", require],
++    ["@typescript/twoslash", shikiRequire],
++    ["@typescript/vfs", twoslashRequire],
++  ]) {
++    hash.update(name).update(fs.readFileSync(resolver.resolve(name + "/package.json")))
++    const directory = path.join(
++      path.dirname(resolver.resolve(name + "/package.json")),
++      "dist"
++    )
++    for (const filename of fs.readdirSync(directory).filter(f => f.endsWith(".js")).sort()) {
++      hash.update(filename).update(fs.readFileSync(path.join(directory, filename)))
++    }
++  }
++  for (const name of ["typescript", "lz-string"]) {
++    hash.update(name).update(fs.readFileSync(twoslashRequire.resolve(name)))
++  }
++  implementation = hash.digest("hex")
++  return implementation
++}
++
++function rememberRead(filename, contents, stat) {
++  filename = path.resolve(filename)
++  const token = contents === undefined ? null : digest(contents)
++  if (stat) {
++    const signature = [stat.size, stat.mtimeMs, stat.ctimeMs, stat.ino].join(":")
++    readTokens.delete(filename)
++    readTokens.set(filename, { signature, token })
++    if (readTokens.size > 256) readTokens.delete(readTokens.keys().next().value)
++  }
++  return token
++}
++
++function readToken(filename) {
++  filename = path.resolve(filename)
++  const stat = fs.statSync(filename, { throwIfNoEntry: false })
++  if (!stat) return null
++  const signature = [stat.size, stat.mtimeMs, stat.ctimeMs, stat.ino].join(":")
++  const cached = readTokens.get(filename)
++  if (cached && cached.signature === signature) {
++    readTokens.delete(filename)
++    readTokens.set(filename, cached)
++    return cached.token
++  }
++  return rememberRead(filename, ts.sys.readFile(filename), stat)
++}
++
++function inputToken(value) {
++  if (Array.isArray(value)) return JSON.stringify(value.map(portable))
++  if (typeof value === "string") return portable(value)
++  return value
++}
++
++function inputsMatch(inputs) {
++  return inputs.every(input => {
++    const args = input.args.map((arg, i) =>
++      input.undefinedArgs.includes(i) ? undefined : arg
++    )
++    args[0] = path.resolve(args[0])
++    const token = input.method === "readFile"
++      ? readToken(args[0])
++      : inputToken(ts.sys[input.method](...args))
++    return token === input.token
++  })
++}
++
++function compile(code, lang, settings, runTwoSlash) {
++  const inputs = new Map()
++  const sys = { ...ts.sys }
++  // Misses and directory probes matter when new typings become available.
++  for (const method of [
++    "readFile", "fileExists", "directoryExists", "getDirectories",
++    "readDirectory", "realpath", "resolvePath",
++  ]) {
++    if (!ts.sys[method]) continue
++    sys[method] = (...args) => {
++      const value = ts.sys[method](...args)
++      const input = {
++        method,
++        args: args.map((arg, i) => i === 0 ? portable(path.resolve(arg)) : arg),
++        undefinedArgs: args.flatMap((arg, i) => arg === undefined ? [i] : []),
++      }
++      const key = JSON.stringify(input)
++      input.token = method === "readFile"
++        ? rememberRead(args[0], value, fs.statSync(args[0], { throwIfNoEntry: false }))
++        : inputToken(value)
++      inputs.set(key, input)
++      return value
++    }
++  }
++  const options = { ...settings, tsModule: { ...ts, sys } }
++  const results = runTwoSlash(code, lang, options)
++  return { results, inputs: [...inputs.values()] }
++}
++
++function cacheDirectory() {
++  if (process.versions.pnp) {
++    const pnp = require("pnpapi")
++    return path.join(
++      pnp.getPackageInformation(pnp.topLevel).packageLocation,
++      "node_modules", ".cache", "twoslash"
++    )
++  }
++  return __dirname.includes("node_modules")
++    ? path.join(__dirname.split("node_modules")[0], "node_modules", ".cache", "twoslash")
++    : path.join(__dirname, "..", "..", ".cache", "twoslash")
++}
++
++module.exports = function cachedTwoslash(code, lang, settings, runTwoSlash) {
++  if (settings.tsModule || settings.fsMap || settings.customTransformers || settings.lzstringModule) {
++    if (process.env.debug) console.log("Skipping Twoslash cache for custom compiler inputs")
++    return runTwoSlash(code, lang, settings)
++  }
++  const key = digest(JSON.stringify([code, lang, settings, compilerImplementation()]))
++  const directory = cacheDirectory()
++  const filename = path.join(directory, key + ".json")
++  if (fs.existsSync(filename)) {
++    const cached = JSON.parse(fs.readFileSync(filename, "utf8"))
++    if (inputsMatch(cached.inputs)) {
++      if (process.env.debug) console.log("Using cached twoslash results from " + filename)
++      const now = new Date()
++      fs.utimesSync(filename, now, now)
++      return cached.results
++    }
++  }
++  const cached = compile(code, lang, settings, runTwoSlash)
++  fs.mkdirSync(directory, { recursive: true })
++  fs.writeFileSync(filename, JSON.stringify(cached), "utf8")
++  return cached.results
++}

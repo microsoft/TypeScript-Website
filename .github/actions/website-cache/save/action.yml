@@ -1,0 +1,28 @@
+name: Save website build work
+description: Prune least-recently-used compiled examples and checkpoint the successful build
+
+inputs:
+  key:
+    description: Primary key returned by the website cache restore action
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Prune Twoslash cache to 64 MiB
+      shell: bash
+      env:
+        CACHE_KEY: ${{ inputs.key }}
+      run: |
+        if [[ -z "$CACHE_KEY" ]]; then
+          echo "::error::Missing website cache restore key"
+          exit 1
+        fi
+        node "$GITHUB_ACTION_PATH/../prune-twoslash-cache.js"
+
+    - uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: |
+          node_modules/.cache/twoslash
+          packages/typescriptlang-org/.cache/webpack
+        key: ${{ inputs.key }}
