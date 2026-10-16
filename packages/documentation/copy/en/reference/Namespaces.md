@@ -121,7 +121,7 @@ As our application grows, we'll want to split the code across multiple files to 
 ## Multi-file namespaces
 
 Here, we'll split our `Validation` namespace across many files.
-Even though the files are separate, they can each contribute to the same namespace and can be consumed as if they were all defined in one place.
+Even though the files are separated, they can each contribute to the same namespace and can be consumed as if they were all defined in one place.
 Because there are dependencies between files, we'll add reference tags to tell the compiler about the relationships between the files.
 Our test code is otherwise unchanged.
 
