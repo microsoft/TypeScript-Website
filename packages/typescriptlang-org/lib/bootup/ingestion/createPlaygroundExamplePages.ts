@@ -79,15 +79,14 @@ export const createPlaygroundExamplePages = async (
         title: inlineTitle || name,
         lang: language,
         html: invertCodeToHTML(code),
-        redirectHref: hrefForExample({ name, compilerSettings, id }, language),
+        redirectHref: hrefForExample({ name, compilerSettings, id }),
       },
     })
   })
 }
 
 const hrefForExample = (
-  example: { name: string; compilerSettings: any; id: string },
-  lang: string
+  example: { name: string; compilerSettings: any; id: string }
 ) => {
   const isJS = example.name.indexOf(".js") !== -1
   const prefix = isJS ? "filetype=js" : ""
@@ -97,8 +96,8 @@ const hrefForExample = (
     .map(key => key + "=" + params[key])
     .join("&")
 
-  const langURL = lang === "en" ? "" : lang
-  return `${langURL}/play/?${prefix + queryParams}#${hash}`
+  const query = [prefix, queryParams].filter(Boolean).join("&")
+  return `/play/?${query}#${hash}`
 }
 
 const getCompilerDetailsFromCode = (contents: string) => {

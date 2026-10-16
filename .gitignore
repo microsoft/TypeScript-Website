@@ -66,6 +66,10 @@ typings/
 
 # tdsx
 dist
+!packages/playground-v2/vendor/typescript/dist/
+!packages/playground-v2/vendor/typescript/dist/**
+!packages/playground-v2/vendor/typescript-wasip1-wasm/dist/
+!packages/playground-v2/vendor/typescript-wasip1-wasm/dist/**
 
 .lighthouserc.json
 packages/documentation/output/attribution.json
@@ -78,6 +82,8 @@ packages/documentation/output/attribution.json
 packages/sandbox/src/releases.json
 packages/sandbox/src/release_data.ts
 packages/typescriptlang-org/src/lib/documentationNavigation.ts
+packages/typescriptlang-org/static/play/
+packages/typescriptlang-org/static/v2/
 
 .idea/
 

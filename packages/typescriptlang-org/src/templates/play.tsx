@@ -45,7 +45,7 @@ const Play: React.FC<Props> = (props) => {
     // a page reload to ensure the playground is full set up
     let leftPlayground = false
     window.addEventListener('popstate', (event) => {
-      const onPlayground = document.location.pathname.endsWith("/play/") || document.location.pathname.endsWith("/play")
+      const onPlayground = /\/oldplay\/?$/.test(document.location.pathname)
       if (leftPlayground && onPlayground) {
         document.location.reload()
       } else if (!leftPlayground && !onPlayground) {
@@ -118,11 +118,11 @@ const Play: React.FC<Props> = (props) => {
         em.textContent = `(${tsVersion})`
 
         const latestReleaseLink = document.createElement('a');
-        latestReleaseLink.href = `/play?ts=${latestRelease}${document.location.hash}`;
+        latestReleaseLink.href = `${document.location.pathname}?ts=${latestRelease}${document.location.hash}`;
         latestReleaseLink.textContent = latestRelease;
 
         const nightlyLink = document.createElement('a');
-        nightlyLink.href = `/play?ts=next${document.location.hash}`;
+        nightlyLink.href = `${document.location.pathname}?ts=next${document.location.hash}`;
         nightlyLink.textContent = 'Nightly';
 
         loadingMessage.appendChild(document.createTextNode("This version of TypeScript "))

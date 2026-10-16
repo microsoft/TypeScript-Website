@@ -1,0 +1,117 @@
+import { context } from "esbuild"
+import { createHash } from "node:crypto"
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
+import { compatibilityHtml, compatibilityPaths, playgroundPath } from "./routes.mjs"
+
+const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..")
+const websiteDirectory = resolve(packageDirectory, "../..")
+const vendorDirectory = resolve(packageDirectory, "vendor")
+const outputDirectory = resolve(packageDirectory, "dist")
+const websiteStaticDirectory = resolve(websiteDirectory, "packages/typescriptlang-org/static/play")
+const compatibilityDirectories = compatibilityPaths.map(path =>
+  resolve(websiteDirectory, "packages/typescriptlang-org/static", path)
+)
+const serve = process.argv.includes("--serve")
+const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? playgroundPath
+
+const wasmFile = new URL(import.meta.resolve("@typescript/typescript-wasip1-wasm/lib/tsc.wasm"))
+const libListURL = new URL(import.meta.resolve("@typescript/typescript-wasip1-wasm/lib/libFiles.json"))
+const configSchema = new URL(import.meta.resolve("@typescript/typescript/schemas/tsconfig.schema.json"))
+const releaseIndex = resolve(packageDirectory, "vendor/versions.json")
+const examplesIndex = resolve(packageDirectory, "vendor/examples.json")
+const helpIndex = resolve(packageDirectory, "vendor/help.json")
+const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
+const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
+
+const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
+const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
+  .replaceAll("__PLAYGROUND_BASE__", playgroundBase)
+  .replaceAll("__COMPILER_VERSION__", version)
+  .replace("<title>", `<title data-typescript-version="${version}">`)
+
+await rm(outputDirectory, { force: true, recursive: true })
+await mkdir(outputDirectory, { recursive: true })
+const libFileNames = JSON.parse(await readFile(libListURL, "utf8"))
+const libFiles = Object.fromEntries(
+  await Promise.all(
+    libFileNames.map(async fileName => [
+      `/${fileName}`,
+      await readFile(new URL(fileName, libListURL), "utf8"),
+    ])
+  )
+)
+const libFilesJSON = JSON.stringify(libFiles)
+const [wasmBytes, schemaBytes] = await Promise.all([readFile(wasmFile), readFile(configSchema)])
+const assetCacheVersion = createHash("sha256")
+  .update(wasmBytes)
+  .update(libFilesJSON)
+  .update(schemaBytes)
+  .digest("hex")
+  .slice(0, 16)
+await Promise.all([
+  writeFile(resolve(outputDirectory, "index.html"), indexHtml),
+  cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
+  cp(configSchema, resolve(outputDirectory, "tsconfig.schema.json")),
+  cp(releaseIndex, resolve(outputDirectory, "versions.json")),
+  cp(examplesIndex, resolve(outputDirectory, "examples.json")),
+  cp(helpIndex, resolve(outputDirectory, "help.json")),
+  cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
+  writeFile(resolve(outputDirectory, "lib-files.json"), libFilesJSON),
+])
+
+const buildContext = await context({
+  absWorkingDir: packageDirectory,
+  bundle: true,
+  conditions: ["browser", "default"],
+  define: {
+    __ASSET_CACHE_VERSION__: JSON.stringify(assetCacheVersion),
+    __LOAD_ASSET_SIZES__: JSON.stringify({
+      libraries: Buffer.byteLength(libFilesJSON),
+      schema: schemaBytes.byteLength,
+      wasm: wasmBytes.byteLength,
+    }),
+    __TS_VERSION__: JSON.stringify(version),
+  },
+  entryNames: "[name]",
+  entryPoints: {
+    main: resolve(packageDirectory, "src/main.ts"),
+    "editor.worker": editorWorker,
+    "strada.worker": resolve(packageDirectory, "src/strada.worker.ts"),
+    "native.worker": resolve(packageDirectory, "src/native.worker.ts"),
+    "tsgo-lsp.worker": resolve(packageDirectory, "src/tsgo-lsp.worker.ts"),
+  },
+  format: "esm",
+  loader: {
+    ".ttf": "file",
+    ".woff": "file",
+    ".woff2": "file",
+  },
+  outdir: outputDirectory,
+  platform: "browser",
+  sourcemap: true,
+  target: ["es2022"],
+})
+
+if (serve) {
+  await buildContext.watch()
+  const server = await buildContext.serve({
+    host: "127.0.0.1",
+    port: 4173,
+    servedir: outputDirectory,
+  })
+  console.log(`TypeScript Playground v2: http://${server.host}:${server.port}`)
+} else {
+  await buildContext.rebuild()
+  await buildContext.dispose()
+  await rm(websiteStaticDirectory, { force: true, recursive: true })
+  await cp(outputDirectory, websiteStaticDirectory, { recursive: true })
+  await Promise.all(
+    compatibilityDirectories.map(async directory => {
+      await mkdir(directory, { recursive: true })
+      await writeFile(resolve(directory, "index.html"), compatibilityHtml)
+    })
+  )
+  console.log(`Built TypeScript ${version} playground in ${outputDirectory}`)
+}

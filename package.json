@@ -41,6 +41,7 @@
       "webpack": "^5.105.3"
     },
     "patchedDependencies": {
+      "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
       "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch"
     },
     "ignoredBuiltDependencies": [
