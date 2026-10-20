@@ -3,7 +3,7 @@ title: Advanced Types
 layout: docs
 permalink: /docs/handbook/advanced-types.html
 oneline: Advanced concepts around types in TypeScript
-deprecated_by: /docs/handbook/2/types-from-types.html
+deprecated_by: "/docs/handbook/2/narrowing.html#using-type-predicates"
 
 # prettier-ignore
 deprecation_redirects: [
