@@ -301,12 +301,27 @@ export const setupPlayground = (
   allVersions.forEach((v: string) => {
     const li = document.createElement("li")
     const a = document.createElement("a")
-    a.textContent = v
-    a.href = "#"
-
+    
+    // Format version text with release date if available
     if (v === "Nightly") {
+      a.textContent = v
       li.classList.add("nightly")
+    } else {
+      const versionInfo = sandbox.releaseInfo[v as keyof typeof sandbox.releaseInfo]
+      if (versionInfo && versionInfo.date) {
+        const releaseDate = new Date(versionInfo.date)
+        const formattedDate = releaseDate.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric' 
+        })
+        a.textContent = `${v} (${formattedDate})`
+      } else {
+        a.textContent = v
+      }
     }
+    
+    a.href = "#"
 
     if (v.toLowerCase().includes("beta")) {
       li.classList.add("beta")
