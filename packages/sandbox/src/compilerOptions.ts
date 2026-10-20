@@ -24,7 +24,8 @@ export function getDefaultSandboxCompilerOptions(
     strictBindCallApply: true,
     noImplicitThis: true,
     noImplicitReturns: true,
-    noUncheckedIndexedAccess: false,
+    noUncheckedIndexedAccess: true,
+    exactOptionalPropertyTypes: true,
 
     // 3.7 off, 3.8 on I think
     useDefineForClassFields: false,
@@ -85,7 +86,8 @@ export const getCompilerOptionsFromParams = (
       let toSet = undefined
       if (val === "true" && playgroundDefaults[key] !== true) {
         toSet = true
-      } else if (val === "false" && (playgroundDefaults[key] as any) !== false) { // TODO(jakebailey): remove as any, check undefined above
+      } else if (val === "false" && (playgroundDefaults[key] as any) !== false) {
+        // TODO(jakebailey): remove as any, check undefined above
         toSet = false
       } else if (!isNaN(parseInt(val, 10)) && playgroundDefaults[key] !== parseInt(val, 10)) {
         toSet = parseInt(val, 10)
