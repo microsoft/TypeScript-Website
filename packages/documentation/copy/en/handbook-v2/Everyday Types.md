@@ -252,7 +252,7 @@ printId("202");
 printId({ myID: 22342 });
 ```
 
-> The separator of the union members is allowed before the first element, so you could also write this:
+> The `|` operator is ignored when used before the first element, so you could also write this:
 > ```ts twoslash
 > function printTextOrNumberOrBool(
 >   textOrNumberOrBool:
