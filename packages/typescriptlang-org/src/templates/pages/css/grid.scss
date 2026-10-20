@@ -1,4 +1,4 @@
-@import "../../../style/globals.scss";
+@use "../../../style/globals.scss";
 
 .row,
 .split-row {
@@ -37,7 +37,7 @@
   }
 }
 
-@media (max-width: $screen-sm) {
+@media (max-width: globals.$screen-sm) {
   // from left to right -> top to down
   .container > .row {
     flex-direction: column;

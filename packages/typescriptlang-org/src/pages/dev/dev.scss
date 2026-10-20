@@ -1,4 +1,4 @@
-@import "../../style/globals.scss";
+@use "../../style/globals.scss";
 
 #dev {
   .navbar-sub .active {
@@ -7,7 +7,7 @@
 
   .content {
     display: flex;
-    @media (max-width: $screen-sm) {
+    @media (max-width: globals.$screen-sm) {
       flex-direction: column;
     }
   }
@@ -28,7 +28,7 @@
     flex-direction: row;
     width: 100%;
 
-    @media (max-width: $screen-sm) {
+    @media (max-width: globals.$screen-sm) {
       flex-direction: column;
     }
 
@@ -40,7 +40,7 @@
 
   .split-fivehundred {
     width: calc(100% - 500px);
-    @media (max-width: $screen-md) {
+    @media (max-width: globals.$screen-md) {
       width: 100%;
     }
   }
@@ -48,7 +48,7 @@
     width: 500px;
     margin-left: 20px;
 
-    @media (max-width: $screen-md) {
+    @media (max-width: globals.$screen-md) {
       width: 100%;
       margin-left: 0px;
       padding-left: 20px;
@@ -76,7 +76,7 @@
     div.button {
       display: inline-block;
       padding: 8px 12px;
-      background-color: $ts-light-bg-sandy-color;
+      background-color: globals.$ts-light-bg-sandy-color;
       margin: 10px;
       text-decoration: none;
       color: black;
