@@ -1,5 +1,5 @@
 import type * as Sync from "@typescript/typescript/sync"
-import type * as Host from "@typescript/typescript/unstable/wasm"
+import type * as Host from "@typescript/typescript/wasm"
 import type * as Ast from "@typescript/typescript/ast"
 import type { CompilerModules } from "./compiler-distribution"
 import type { SourceFile } from "./ata"

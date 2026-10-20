@@ -43,13 +43,13 @@
         ".": "./lib/version.cjs",
         "./vscode": "./dist/vscode/extensionApi.js",
         "./sync": "./dist/api/sync/api.js",
-        "./unstable/sync/transport": "./dist/api/sync/transport.js",
+        "./sync/transport": "./dist/api/sync/transport.js",
         "./async": "./dist/api/async/api.js",
-        "./unstable/async/transport": "./dist/api/async/transport.js",
+        "./async/transport": "./dist/api/async/transport.js",
         "./fs": "./dist/api/fs.js",
         "./path": "./dist/api/typedPaths.js",
         "./proto": "./dist/api/proto.js",
-        "./unstable/wasm": "./dist/wasm/index.js",
+        "./wasm": "./dist/wasm/index.js",
         "./ast": "./dist/ast/index.js",
         "./ast/is": "./dist/ast/is.js",
         "./ast/factory": "./dist/ast/factory.generated.js",
@@ -58,7 +58,7 @@
         "./ast/visitor": "./dist/ast/visitor.js",
         "./ast/clone": "./dist/ast/clone.js"
     },
-    "gitHead": "4b93f40564ea9618434c545ac57d289f5f3bd9e5",
+    "gitHead": "52bdc38fbb9d8a3f55aa7429a718e3f88745bccd",
     "publishConfig": {
         "access": "public",
         "tag": "next"

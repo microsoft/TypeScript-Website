@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto"
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { spawnSync } from "node:child_process"
@@ -20,11 +20,24 @@ const revision = run("git", ["rev-parse", "HEAD"])
 if (run("git", ["status", "--porcelain"])) throw new Error("Commit the TypeScript changes before vendoring")
 const manifests = await Promise.all(
   packageNames.map(async name => {
-    const source = resolve(typescriptDirectory, "built/npm", name)
-    const manifest = JSON.parse(await readFile(resolve(source, "package.json"), "utf8"))
+    const source = resolve(typescriptDirectory, "built/npm", `${name}.tgz`)
+    const entries = run("tar", ["-tzf", source]).split("\n")
+    for (const path of entries) {
+      if (!path.startsWith("package/") || path.split("/").some(part => part === "..")) {
+        throw new Error(`Invalid path in ${name} tarball: ${path}`)
+      }
+    }
+    const manifest = JSON.parse(run("tar", ["-xOf", source, "package/package.json"]))
     if (manifest.gitHead !== revision) throw new Error(`Rebuild ${name}: its gitHead does not match ${revision}`)
-    const [packed] = JSON.parse(run("npm", ["pack", source, "--dry-run", "--ignore-scripts", "--json"]))
-    return { name, source, manifest, files: packed.files.map(file => file.path).sort() }
+    return {
+      name,
+      source,
+      manifest,
+      files: entries
+        .filter(path => !path.endsWith("/"))
+        .map(path => path.slice(8))
+        .sort(),
+    }
   })
 )
 const version = manifests[0].manifest.version
@@ -34,11 +47,10 @@ const hash = createHash("sha256")
 for (const { name, source, files } of manifests) {
   const target = resolve(vendorDirectory, name)
   await rm(target, { recursive: true, force: true })
+  await mkdir(target, { recursive: true })
+  run("tar", ["-xzf", source, "--strip-components=1", "--no-same-owner", "-C", target])
   for (const path of files) {
-    const destination = resolve(target, path)
-    await mkdir(dirname(destination), { recursive: true })
-    await cp(resolve(source, path), destination)
-    hash.update(`${name}/${path}\0`).update(await readFile(destination))
+    hash.update(`${name}/${path}\0`).update(await readFile(resolve(target, path)))
   }
 }
 
@@ -68,7 +80,7 @@ const paths = {
   sync: entry(main, "./sync", "typescript"),
   async: entry(main, "./async", "typescript"),
   ast: entry(main, "./ast", "typescript"),
-  host: entry(main, "./unstable/wasm", "typescript"),
+  host: entry(main, "./wasm", "typescript"),
   wasm: entry(artifact, "./lib/tsc.wasm", "typescript-wasip1-wasm"),
   libraryIndex: entry(artifact, "./lib/libFiles.json", "typescript-wasip1-wasm"),
   schema: entry(main, "./schemas/tsconfig.schema.json", "typescript"),

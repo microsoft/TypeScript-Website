@@ -3,7 +3,7 @@ import { readFile, readdir } from "node:fs/promises"
 import { test } from "node:test"
 import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
-import { instantiateWasm, WasmTransport } from "@typescript/typescript/unstable/wasm"
+import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
 import { loadCompilerDistribution } from "./compiler-distribution"
 

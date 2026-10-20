@@ -17,7 +17,7 @@
         "./lib/libFiles.json": "./lib/libFiles.json",
         "./lib/tsc.wasm": "./lib/tsc.wasm"
     },
-    "gitHead": "4b93f40564ea9618434c545ac57d289f5f3bd9e5",
+    "gitHead": "52bdc38fbb9d8a3f55aa7429a718e3f88745bccd",
     "publishConfig": {
         "access": "public",
         "tag": "next"

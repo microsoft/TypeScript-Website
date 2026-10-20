@@ -27,8 +27,8 @@ standard libraries; its `lib/libFiles.json` index determines which library URLs
 are fetched. Schemas are fetched from the matching compiler package too.
 No compiler implementation is bundled with the website.
 
-`vendor-typescript` copies the exact npm file lists from the committed
-TypeScript repository's `built/npm` packages, preserving their manifests and
+`vendor-typescript` extracts the built npm tarballs from the committed
+TypeScript repository's `built/npm` directory, preserving their manifests and
 module graphs. The build serves those packages unchanged under a content-keyed
 `compiler/` directory as a local, non-transforming CDN simulation.
 `vendor/distribution.json` pairs their entry URLs, version, and cache identity.
