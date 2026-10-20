@@ -21,7 +21,7 @@ const helpIndex = {
     {
       title: "Compiler settings",
       legacyIndexes: [0],
-      html: "<p>Edit <code>tsconfig.json</code> directly. The editor provides schema completion, hover documentation, and validation for compiler options.</p><p>Emit and diagnostics use the files and options selected by that configuration.</p>",
+      html: "<p>Edit <code>tsconfig.json</code> directly. The editor provides schema completion, hover documentation, and validation for compiler options.</p><p>New projects use NodeNext modules and ESNext output, with strict checking, checked indexed access, exact optional properties, and each source file treated as a module. Declaration output is enabled; dependency declaration checking is skipped.</p><p>Emit and diagnostics use the files and options selected by that configuration. Automatic package types can add ambient types unless you specify <code>compilerOptions.types</code> yourself.</p>",
     },
     {
       title: "Package types",
@@ -36,7 +36,7 @@ const helpIndex = {
     {
       title: "Emit and Run",
       legacyIndexes: [2, 3],
-      html: "<p>The Emit panel shows every generated JavaScript and declaration file. <strong>Run</strong> executes the emitted project with an in-browser CommonJS loader and captures console output.</p><p>Set <code>compilerOptions.module</code> to <code>CommonJS</code> when running a project.</p>",
+      html: "<p>The Emit panel shows every generated JavaScript and declaration file. <strong>Run</strong> executes the emitted project with an in-browser CommonJS loader and captures console output.</p><p>The default NodeNext project emits runnable CommonJS. Projects emitting ECMAScript modules must choose a CommonJS-compatible configuration to use Run.</p>",
     },
     {
       title: "Examples",

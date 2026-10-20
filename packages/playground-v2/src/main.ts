@@ -168,11 +168,13 @@ const defaultFiles: ProjectFile[] = [
     language: "json",
     text: `{
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "CommonJS",
+    "module": "nodenext",
+    "target": "esnext",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "moduleDetection": "force",
     "declaration": true,
-    "esModuleInterop": true,
     "skipLibCheck": true
   },
   "include": ["./src/**/*"]
