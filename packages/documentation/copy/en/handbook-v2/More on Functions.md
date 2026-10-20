@@ -870,7 +870,7 @@ const dst = [0];
 src.forEach((el) => dst.push(el));
 ```
 
-There is one other special case to be aware of, when a literal function definition has a `void` return type, that function must **not** return anything.
+There is one other special case to be aware of. When a literal function definition has a `void` return type, that function must **not** return anything.
 
 ```ts twoslash
 function f2(): void {
