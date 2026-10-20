@@ -1,4 +1,4 @@
-import { SymbolOwnerKind } from "#enums/symbolOwnerKind";
+import { SymbolOwnerKind } from "../../enums/symbolOwnerKind.js";
 import { documentURIToFileName, fileNameToDocumentURI, } from "./path.js";
 export * from "./proto.generated.js";
 export * from "./userPreferences.generated.js";
@@ -46,20 +46,5 @@ export function resolveDocumentURI(identifier) {
         return fileNameToDocumentURI(identifier);
     }
     return identifier.uri;
-}
-/**
- * Builds the wire request for createSnapshot, applying the deprecated `openProject`
- * compatibility shim: a single `openProject` is folded into `openProjects` and is
- * never sent on the wire.
- */
-export function toCreateSnapshotRequest(params) {
-    const { openProject, openProjects, ...rest } = params ?? {};
-    const mergedOpenProjects = openProject !== undefined
-        ? [resolveFileName(openProject), ...(openProjects ?? [])]
-        : openProjects;
-    return {
-        ...rest,
-        openProjects: mergedOpenProjects,
-    };
 }
 //# sourceMappingURL=proto.js.map

@@ -1,15 +1,16 @@
-import type { JsxEmit } from "#enums/jsxEmit";
-import type { ModuleDetectionKind } from "#enums/moduleDetectionKind";
-import type { ModuleKind } from "#enums/moduleKind";
-import type { ModuleResolutionKind } from "#enums/moduleResolutionKind";
-import type { NewLineKind } from "#enums/newLineKind";
-import type { ScriptTarget } from "#enums/scriptTarget";
-export { JsxEmit } from "#enums/jsxEmit";
-export { ModuleDetectionKind } from "#enums/moduleDetectionKind";
-export { ModuleKind } from "#enums/moduleKind";
-export { ModuleResolutionKind } from "#enums/moduleResolutionKind";
-export { NewLineKind } from "#enums/newLineKind";
-export { ScriptTarget } from "#enums/scriptTarget";
+import type { JsxEmit } from "../../enums/jsxEmit.js";
+import type { ModuleDetectionKind } from "../../enums/moduleDetectionKind.js";
+import type { ModuleKind } from "../../enums/moduleKind.js";
+import type { ModuleResolutionKind } from "../../enums/moduleResolutionKind.js";
+import type { NewLineKind } from "../../enums/newLineKind.js";
+import type { ScriptTarget } from "../../enums/scriptTarget.js";
+import type { RootedDirectoryPath, RootedFilePath, RootedPath } from "../ast/index.ts";
+export { JsxEmit } from "../../enums/jsxEmit.js";
+export { ModuleDetectionKind } from "../../enums/moduleDetectionKind.js";
+export { ModuleKind } from "../../enums/moduleKind.js";
+export { ModuleResolutionKind } from "../../enums/moduleResolutionKind.js";
+export { NewLineKind } from "../../enums/newLineKind.js";
+export { ScriptTarget } from "../../enums/scriptTarget.js";
 /** CompilerOptions contains the compiler options exposed by the API. */
 export interface CompilerOptions {
     allowJs?: boolean | undefined;
@@ -27,7 +28,7 @@ export interface CompilerOptions {
     emitBOM?: boolean | undefined;
     emitDecoratorMetadata?: boolean | undefined;
     declaration?: boolean | undefined;
-    declarationDir?: string | undefined;
+    declarationDir?: RootedDirectoryPath | undefined;
     declarationMap?: boolean | undefined;
     deduplicatePackages?: boolean | undefined;
     disableSizeLimit?: boolean | undefined;
@@ -77,21 +78,21 @@ export interface CompilerOptions {
     noResolve?: boolean | undefined;
     noImplicitOverride?: boolean | undefined;
     noUncheckedSideEffectImports?: boolean | undefined;
-    outDir?: string | undefined;
+    outDir?: RootedDirectoryPath | undefined;
     paths?: Record<string, string[]> | undefined;
     /** Plugins are parsed only so tools can report that native TypeScript does not support them. */
     plugins?: PluginImport[] | undefined;
     preserveConstEnums?: boolean | undefined;
     preserveSymlinks?: boolean | undefined;
-    project?: string | undefined;
+    project?: RootedPath | undefined;
     resolveJsonModule?: boolean | undefined;
     resolvePackageJsonExports?: boolean | undefined;
     resolvePackageJsonImports?: boolean | undefined;
     removeComments?: boolean | undefined;
     rewriteRelativeImportExtensions?: boolean | undefined;
     reactNamespace?: string | undefined;
-    rootDir?: string | undefined;
-    rootDirs?: string[] | undefined;
+    rootDir?: RootedDirectoryPath | undefined;
+    rootDirs?: RootedDirectoryPath[] | undefined;
     skipLibCheck?: boolean | undefined;
     stableTypeOrdering?: boolean | undefined;
     strict?: boolean | undefined;
@@ -107,14 +108,14 @@ export interface CompilerOptions {
     suppressOutputPathCheck?: boolean | undefined;
     target?: ScriptTarget | undefined;
     traceResolution?: boolean | undefined;
-    tsBuildInfoFile?: string | undefined;
-    typeRoots?: string[] | undefined;
+    tsBuildInfoFile?: RootedFilePath | undefined;
+    typeRoots?: RootedDirectoryPath[] | undefined;
     types?: string[] | undefined;
     useDefineForClassFields?: boolean | undefined;
     useUnknownInCatchVariables?: boolean | undefined;
     verbatimModuleSyntax?: boolean | undefined;
     maxNodeModuleJsDepth?: number | undefined;
-    configFilePath?: string | undefined;
+    configFilePath?: RootedFilePath | undefined;
 }
 export interface PluginImport {
     name: string;

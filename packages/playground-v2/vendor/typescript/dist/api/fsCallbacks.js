@@ -1,4 +1,15 @@
-import { serverFS, } from "./fs.js";
+const useOS = Symbol("useOS");
+const identity = Symbol("identity");
+const fakeStat = Symbol("fakeStat");
+const noop = Symbol("noop");
+const error = Symbol("error");
+export const serverFS = {
+    useOS: useOS,
+    identity: identity,
+    fakeStat: fakeStat,
+    noop: noop,
+    error: error,
+};
 const fileSystemCallbackTable = {
     readFile: { serverFS: [serverFS.useOS, serverFS.error] },
     fileExists: { serverFS: [serverFS.useOS, serverFS.error] },

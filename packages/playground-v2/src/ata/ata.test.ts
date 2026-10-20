@@ -2,7 +2,8 @@ import assert from "node:assert/strict"
 import { readFile } from "node:fs/promises"
 import { createRequire } from "node:module"
 import { test } from "node:test"
-import { API } from "@typescript/typescript/unstable/sync"
+import { API } from "@typescript/typescript/sync"
+import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/unstable/wasm"
 import { acquisitionOptions } from "./config"
 import { corsaDiscovery, stradaDiscovery, PackageTypeAcquirer, type AcquisitionProgress, type Dependency } from "./index"
@@ -91,7 +92,7 @@ declare module "ambient" {}
       ),
     ]
     assert.deepEqual(sort(await discover(file)), sort(expected))
-    assert.deepEqual(sort(await corsaDiscovery(api)(file)), sort(expected))
+    assert.deepEqual(sort(await corsaDiscovery(api, ast)(file)), sort(expected))
   } finally {
     api.close()
   }

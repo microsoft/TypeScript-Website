@@ -1,5 +1,6 @@
-import { API, type Diagnostic, type FileNotifications, type Snapshot } from "@typescript/typescript/unstable/sync"
-import type { Node } from "@typescript/typescript/unstable/ast"
+import type { API, Diagnostic, FileNotifications, Snapshot } from "@typescript/typescript/sync"
+import type * as Ast from "@typescript/typescript/ast"
+import type { Node } from "@typescript/typescript/ast"
 import type { WasmTransport } from "@typescript/typescript/unstable/wasm"
 import { TextDocument } from "vscode-languageserver-textdocument"
 import { corsaDiscovery, type Dependency, type SourceFile } from "./ata"
@@ -27,8 +28,8 @@ export class NativeCompiler {
   private readonly files = new Map<string, string>()
   private readonly discoverDependencies: ReturnType<typeof corsaDiscovery>
 
-  constructor(private readonly api: API, private readonly transport: WasmTransport) {
-    this.discoverDependencies = corsaDiscovery(api)
+  constructor(private readonly api: API, private readonly transport: WasmTransport, ast: typeof Ast) {
+    this.discoverDependencies = corsaDiscovery(api, ast)
   }
 
   discover(file: SourceFile): readonly Dependency[] {
@@ -93,7 +94,7 @@ export class NativeCompiler {
       ]
       const typeQueries: Record<string, NativeTypeQuery[]> = {}
       this.collectTypeQueries(program, parsed.fileNames, input.files, typeQueries)
-      const configuredFiles = new Set(parsed.fileNames)
+      const configuredFiles = new Set<string>(parsed.fileNames)
       const orphanFiles = input.sourceFiles.filter(fileName => !configuredFiles.has(fileName))
       if (orphanFiles.some(fileName => hasTypeQuery(input.files[fileName]))) {
         const inferred = this.api.createProgram(orphanFiles, { ...parsed.options, allowJs: true })

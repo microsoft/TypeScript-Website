@@ -1,8 +1,12 @@
 import { configureFileSystemCallbacks, encodeFileSystemCallbackResult, } from "../fsCallbacks.js";
 import { getAPIProcessArgs, isSpawnOptions, isTransportOptions, resolveExePath, } from "../options.js";
 import { SyncRpcChannel } from "../syncChannel.js";
+import { TimingDump } from "../timingDump.js";
 import { TransportClient } from "./transportClient.js";
 export class Client extends TransportClient {
+    channel;
+    timingDump;
+    closed = false;
     constructor(options) {
         if (isTransportOptions(options)) {
             if (options.fs !== undefined) {
@@ -14,6 +18,10 @@ export class Client extends TransportClient {
         if (!isSpawnOptions(options)) {
             throw new Error("Socket connections are not yet supported in the sync client");
         }
+        const timingDump = TimingDump.fromEnvironment("sync", "spawn");
+        if (timingDump) {
+            options = { ...options, collectTiming: true };
+        }
         const args = getAPIProcessArgs(options, false);
         const fsConfiguration = configureFileSystemCallbacks(options.fs);
         if (fsConfiguration.arguments.length > 0) {
@@ -22,6 +30,8 @@ export class Client extends TransportClient {
         const collectTiming = options.collectTiming ?? false;
         const channel = new SyncRpcChannel(resolveExePath(options), args, collectTiming);
         super(channel, collectTiming, options.maxResponseBytesPerPage);
+        this.channel = channel;
+        this.timingDump = timingDump;
         if (options.fs) {
             for (const name of fsConfiguration.callbackNames) {
                 if (name === "writeFile") {
@@ -41,6 +51,29 @@ export class Client extends TransportClient {
                     return JSON.stringify(encodeFileSystemCallbackResult(name, callback(JSON.parse(arg))));
                 });
             }
+        }
+    }
+    close() {
+        if (this.closed)
+            return;
+        this.closed = true;
+        try {
+            const timing = this.getTimingCollector();
+            if (this.timingDump && timing && this.channel) {
+                const local = timing.getInfo();
+                let server;
+                let serverTimingError;
+                try {
+                    server = JSON.parse(this.channel.requestSync("getServerTiming", ""));
+                }
+                catch (error) {
+                    serverTimingError = String(error);
+                }
+                this.timingDump.write(local, server, serverTimingError);
+            }
+        }
+        finally {
+            super.close();
         }
     }
 }

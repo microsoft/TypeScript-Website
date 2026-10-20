@@ -1,6 +1,6 @@
-import { SpanMapFeature } from "#enums/spanMapFeature";
-import { SpanMapFidelity } from "#enums/spanMapFidelity";
-import { SpanMapKind } from "#enums/spanMapKind";
+import { SpanMapFeature } from "../../enums/spanMapFeature.js";
+import { SpanMapFidelity } from "../../enums/spanMapFidelity.js";
+import { SpanMapKind } from "../../enums/spanMapKind.js";
 export { SpanMapFeature, SpanMapFidelity, SpanMapKind };
 /** Provides bidirectional span-aware mapping between virtual and original text. */
 export class SpanMap {

@@ -1,5 +1,57 @@
-import { NodeFlags } from "#enums/nodeFlags";
-import { SyntaxKind } from "#enums/syntaxKind";
+var __addDisposableResource = (this && this.__addDisposableResource) || function (env, value, async) {
+    if (value !== null && value !== void 0) {
+        if (typeof value !== "object" && typeof value !== "function") throw new TypeError("Object expected.");
+        var dispose, inner;
+        if (async) {
+            if (!Symbol.asyncDispose) throw new TypeError("Symbol.asyncDispose is not defined.");
+            dispose = value[Symbol.asyncDispose];
+        }
+        if (dispose === void 0) {
+            if (!Symbol.dispose) throw new TypeError("Symbol.dispose is not defined.");
+            dispose = value[Symbol.dispose];
+            if (async) inner = dispose;
+        }
+        if (typeof dispose !== "function") throw new TypeError("Object not disposable.");
+        if (inner) dispose = function() { try { inner.call(this); } catch (e) { return Promise.reject(e); } };
+        env.stack.push({ value: value, dispose: dispose, async: async });
+    }
+    else if (async) {
+        env.stack.push({ async: true });
+    }
+    return value;
+};
+var __disposeResources = (this && this.__disposeResources) || (function (SuppressedError) {
+    return function (env) {
+        function fail(e) {
+            env.error = env.hasError ? new SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
+            env.hasError = true;
+        }
+        var r, s = 0;
+        function next() {
+            while (r = env.stack.pop()) {
+                try {
+                    if (!r.async && s === 1) return s = 0, env.stack.push(r), Promise.resolve().then(next);
+                    if (r.dispose) {
+                        var result = r.dispose.call(r.value);
+                        if (r.async) return s |= 2, Promise.resolve(result).then(next, function(e) { fail(e); return next(); });
+                    }
+                    else s |= 1;
+                }
+                catch (e) {
+                    fail(e);
+                }
+            }
+            if (s === 1) return env.hasError ? Promise.reject(env.error) : Promise.resolve();
+            if (env.hasError) throw env.error;
+        }
+        return next();
+    };
+})(typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+});
+import { NodeFlags } from "../../enums/nodeFlags.js";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
 import { createSyntaxList, createToken, } from "./factory.generated.js";
 import { isJSDocNodeKind, isKeywordKind, isPrivateIdentifier, isPropertyNameLiteral, isTokenKind, } from "./is.js";
 import { createScanner, skipTrivia, } from "./scanner.js";
@@ -63,12 +115,13 @@ export function findNextToken(previousToken, parent, sourceFile) {
         // The scanner is initialized at `previousToken.end`, so tokenFullStart === previousToken.end.
         const startPos = previousToken.end;
         if (startPos >= n.pos && startPos < n.end) {
-            const scanner = getScannerForSourceFile(sourceFile, startPos);
-            const token = scanner.getToken();
-            const tokenFullStart = scanner.getTokenFullStart();
-            const tokenEnd = scanner.getTokenEnd();
-            const flags = scanner.getTokenFlags();
-            return getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, n, flags);
+            return withScanner(sourceFile, startPos, scanner => {
+                const token = scanner.getToken();
+                const tokenFullStart = scanner.getTokenFullStart();
+                const tokenEnd = scanner.getTokenEnd();
+                const flags = scanner.getTokenFlags();
+                return getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, n, flags);
+            });
         }
         return undefined;
     }
@@ -213,40 +266,42 @@ function getTokenAtPositionImpl(sourceFile, position, allowPositionInLeadingTriv
                 return current;
             }
             // Use the scanner to find a token not stored in the AST.
-            const scanner = getScannerForSourceFile(sourceFile, state.left);
-            let end = current.end;
+            const containing = current;
+            let end = containing.end;
             const afterLeft = nodeAfterLeft;
             if (afterLeft !== undefined) {
                 end = afterLeft.pos;
             }
-            while (state.left < end) {
-                const token = scanner.getToken();
-                const tokenFullStart = scanner.getTokenFullStart();
-                const tokenStart = allowPositionInLeadingTrivia ? tokenFullStart : scanner.getTokenStart();
-                const tokenEnd = scanner.getTokenEnd();
-                const flags = scanner.getTokenFlags();
-                if (tokenEnd > end) {
-                    break;
-                }
-                if (tokenStart <= position && position < tokenEnd) {
-                    if (token === SyntaxKind.Identifier || !isTokenKind(token)) {
-                        if (isJSDocNodeKind(current.kind)) {
-                            return current;
+            return withScanner(sourceFile, state.left, scanner => {
+                while (state.left < end) {
+                    const token = scanner.getToken();
+                    const tokenFullStart = scanner.getTokenFullStart();
+                    const tokenStart = allowPositionInLeadingTrivia ? tokenFullStart : scanner.getTokenStart();
+                    const tokenEnd = scanner.getTokenEnd();
+                    const flags = scanner.getTokenFlags();
+                    if (tokenEnd > end) {
+                        break;
+                    }
+                    if (tokenStart <= position && position < tokenEnd) {
+                        if (token === SyntaxKind.Identifier || !isTokenKind(token)) {
+                            if (isJSDocNodeKind(containing.kind)) {
+                                return containing;
+                            }
+                            throw new Error(`did not expect ${SyntaxKind[containing.kind]} to have ${SyntaxKind[token]} in its trivia`);
                         }
-                        throw new Error(`did not expect ${SyntaxKind[current.kind]} to have ${SyntaxKind[token]} in its trivia`);
+                        return getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, containing, flags);
                     }
-                    return getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, current, flags);
-                }
-                if (includePrecedingTokenAtEndPosition !== undefined && tokenEnd === position) {
-                    const prevToken = getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, current, flags);
-                    if (includePrecedingTokenAtEndPosition(prevToken)) {
-                        return prevToken;
+                    if (includePrecedingTokenAtEndPosition !== undefined && tokenEnd === position) {
+                        const prevToken = getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, containing, flags);
+                        if (includePrecedingTokenAtEndPosition(prevToken)) {
+                            return prevToken;
+                        }
                     }
+                    state.left = tokenEnd;
+                    scanner.scan();
                 }
-                state.left = tokenEnd;
-                scanner.scan();
-            }
-            return current;
+                return containing;
+            });
         }
         current = state.next;
         state.left = current.pos;
@@ -439,21 +494,23 @@ function findRightmostValidToken(sourceFile, endPos, containingNode, position) {
             const startPos = rightmostValidNode !== undefined ? rightmostValidNode.end : n.pos;
             const targetEnd = Math.min(endPos, position);
             if (startPos < targetEnd) {
-                const scanner = getScannerForSourceFile(sourceFile, startPos);
-                let pos = startPos;
-                let lastScannedToken;
-                while (pos < targetEnd) {
-                    const tokenStart = scanner.getTokenStart();
-                    if (tokenStart >= position)
-                        break;
-                    const tokenFullStart = scanner.getTokenFullStart();
-                    const tokenEnd = scanner.getTokenEnd();
-                    const token = scanner.getToken();
-                    const flags = scanner.getTokenFlags();
-                    lastScannedToken = getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, n, flags);
-                    pos = tokenEnd;
-                    scanner.scan();
-                }
+                const lastScannedToken = withScanner(sourceFile, startPos, scanner => {
+                    let pos = startPos;
+                    let lastToken;
+                    while (pos < targetEnd) {
+                        const tokenStart = scanner.getTokenStart();
+                        if (tokenStart >= position)
+                            break;
+                        const tokenFullStart = scanner.getTokenFullStart();
+                        const tokenEnd = scanner.getTokenEnd();
+                        const token = scanner.getToken();
+                        const flags = scanner.getTokenFlags();
+                        lastToken = getOrCreateToken(sourceFile, token, tokenFullStart, tokenEnd, n, flags);
+                        pos = tokenEnd;
+                        scanner.scan();
+                    }
+                    return lastToken;
+                });
                 if (lastScannedToken !== undefined) {
                     return lastScannedToken;
                 }
@@ -510,12 +567,61 @@ function isJSDocCommentChildKind(kind) {
 function isJSDocSingleCommentNodeList(nodes) {
     return nodes.length === 1 && isJSDocCommentChildKind(nodes[0].kind);
 }
-function getScannerForSourceFile(sourceFile, pos) {
-    const scanner = createScanner(/*skipTrivia*/ true, sourceFile.languageVariant, sourceFile.text);
-    scanner.resetTokenState(pos);
-    scanner.scan();
-    return scanner;
+const scannerPools = new WeakMap();
+function acquireScanner(sourceFile) {
+    let pool = scannerPools.get(sourceFile);
+    if (pool === undefined) {
+        pool = [];
+        scannerPools.set(sourceFile, pool);
+    }
+    const lease = pool.pop();
+    if (lease === undefined) {
+        return createPooledScanner(sourceFile, pool);
+    }
+    // setText resets the token state (position, token, value, flags) to the start of the text.
+    lease.scanner.setText(sourceFile.text);
+    lease.scanner.setLanguageVariant(sourceFile.languageVariant);
+    return lease;
 }
+function createPooledScanner(sourceFile, pool) {
+    return {
+        scanner: createScanner(/*skipTrivia*/ true, sourceFile.languageVariant, sourceFile.text),
+        [Symbol.dispose]() {
+            // Drop per-use state so an idle scanner holds no token values or comment directives.
+            // The JSDoc leading-asterisk depth is never changed by this module, so it stays zero.
+            this.scanner.clearCommentDirectives();
+            this.scanner.resetTokenState(0);
+            pool.push(this);
+        },
+    };
+}
+function withScanner(sourceFile, pos, callback) {
+    const env_1 = { stack: [], error: void 0, hasError: false };
+    try {
+        const lease = __addDisposableResource(env_1, acquireScanner(sourceFile), false);
+        const { scanner } = lease;
+        if (pos !== undefined) {
+            scanner.resetTokenState(pos);
+            scanner.scan();
+        }
+        return callback(scanner);
+    }
+    catch (e_1) {
+        env_1.error = e_1;
+        env_1.hasError = true;
+    }
+    finally {
+        __disposeResources(env_1);
+    }
+}
+/**
+ * Returns the idle scanners pooled for `sourceFile`. Exposed for tests only.
+ * @internal
+ */
+export function getPooledScannersForTesting(sourceFile) {
+    return scannerPools.get(sourceFile)?.map(lease => lease.scanner) ?? emptyScannerArray;
+}
+const emptyScannerArray = [];
 function getOrCreateToken(sourceFile, kind, pos, end, parent, _flags) {
     const key = `${pos}_${end}`;
     if (!sourceFile.tokenCache) {
@@ -565,43 +671,54 @@ export function getChildren(node, sourceFile = node.getSourceFile()) {
     return children;
 }
 function createChildren(node, sourceFile) {
-    const children = [];
-    // Inside a JSDoc comment there are no real tokens to synthesize.
-    if (shouldSkipChild(node)) {
-        node.forEachChild(child => void children.push(child));
+    const env_2 = { stack: [], error: void 0, hasError: false };
+    try {
+        const children = [];
+        // Inside a JSDoc comment there are no real tokens to synthesize.
+        if (shouldSkipChild(node)) {
+            node.forEachChild(child => void children.push(child));
+            return children;
+        }
+        // One scanner serves every run of synthetic tokens materialized for this node.
+        const lease = __addDisposableResource(env_2, acquireScanner(sourceFile), false);
+        const { scanner } = lease;
+        let pos = node.pos;
+        const processNode = (child) => {
+            // Reparsed subtrees (JSDoc types materialized into the AST) have positions inside
+            // the comment, not in this node's token range.
+            if (child.flags & NodeFlags.Reparsed) {
+                return;
+            }
+            addSyntheticNodes(children, pos, child.pos, node, sourceFile, scanner);
+            children.push(child);
+            pos = child.end;
+        };
+        const processNodes = (nodes) => {
+            if (nodes.length > 0 && !nodes.some(child => !(child.flags & NodeFlags.Reparsed))) {
+                return;
+            }
+            addSyntheticNodes(children, pos, nodes.pos, node, sourceFile, scanner);
+            children.push(createSyntaxListNode(nodes, node, sourceFile, scanner));
+            pos = nodes.end;
+        };
+        // JSDoc attached to the node is leading content, processed first.
+        if (node.jsDoc) {
+            for (const jsDoc of node.jsDoc) {
+                processNode(jsDoc);
+            }
+        }
+        pos = node.pos;
+        node.forEachChild(processNode, processNodes);
+        addSyntheticNodes(children, pos, node.end, node, sourceFile, scanner);
         return children;
     }
-    // One scanner serves every run of synthetic tokens materialized for this node.
-    const scanner = createScanner(/*skipTrivia*/ true, sourceFile.languageVariant, sourceFile.text);
-    let pos = node.pos;
-    const processNode = (child) => {
-        // Reparsed subtrees (JSDoc types materialized into the AST) have positions inside
-        // the comment, not in this node's token range.
-        if (child.flags & NodeFlags.Reparsed) {
-            return;
-        }
-        addSyntheticNodes(children, pos, child.pos, node, sourceFile, scanner);
-        children.push(child);
-        pos = child.end;
-    };
-    const processNodes = (nodes) => {
-        if (nodes.length > 0 && !nodes.some(child => !(child.flags & NodeFlags.Reparsed))) {
-            return;
-        }
-        addSyntheticNodes(children, pos, nodes.pos, node, sourceFile, scanner);
-        children.push(createSyntaxListNode(nodes, node, sourceFile, scanner));
-        pos = nodes.end;
-    };
-    // JSDoc attached to the node is leading content, processed first.
-    if (node.jsDoc) {
-        for (const jsDoc of node.jsDoc) {
-            processNode(jsDoc);
-        }
+    catch (e_2) {
+        env_2.error = e_2;
+        env_2.hasError = true;
     }
-    pos = node.pos;
-    node.forEachChild(processNode, processNodes);
-    addSyntheticNodes(children, pos, node.end, node, sourceFile, scanner);
-    return children;
+    finally {
+        __disposeResources(env_2);
+    }
 }
 function addSyntheticNodes(children, pos, end, parent, sourceFile, scanner) {
     if (pos >= end) {

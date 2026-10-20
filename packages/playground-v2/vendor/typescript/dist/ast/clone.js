@@ -1,4 +1,4 @@
-import { SyntaxKind } from "#enums/syntaxKind";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
 import { cloneNode, createNodeArray, createNumericLiteral, createStringLiteral, } from "./factory.generated.js";
 import { visitEachChild } from "./visitor.js";
 function isArray(value) {

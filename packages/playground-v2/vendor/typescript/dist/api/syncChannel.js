@@ -9,9 +9,8 @@
  * directly on the pipe file descriptors obtained from the spawned
  * ChildProcess.
  */
-import { spawn, } from "node:child_process";
-import { closeSync, openSync, readSync, writeSync, } from "node:fs";
 import { binHeaderSize, MSGPACK_BIN16, MSGPACK_BIN32, MSGPACK_BIN8, MSGPACK_FIXARRAY3, MSGPACK_UINT8, writeBinHeader, } from "./node/msgpack.js";
+import { nodeProcess } from "./nodeProcess.js";
 // ── MessageType constants ────────────────────────────────────────────
 // Sent by channel (parent → child)
 const MSG_REQUEST = 1;
@@ -21,28 +20,40 @@ const MSG_CALL_ERROR = 3;
 const MSG_RESPONSE = 4;
 const MSG_ERROR = 5;
 const MSG_CALL = 6;
-// Pre-allocated buffer used by Atomics.wait for tiny sleeps when a
-// non-blocking fd returns EAGAIN.
-const sleepBuf = new Int32Array(new SharedArrayBuffer(4));
-// Shared empty buffer – avoids allocating Buffer.alloc(0) on every
-// zero-length bin field.
-const EMPTY_BUF = Buffer.alloc(0);
+// Module state is created on first use so that this module can be loaded
+// outside Node.js.
+// Buffer used by Atomics.wait for tiny sleeps when a non-blocking fd
+// returns EAGAIN.
+let sleepBuf;
+function sleep(ms) {
+    Atomics.wait(sleepBuf ??= new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
 // ── Global cleanup tracking ─────────────────────────────────────────
 // Track all live child processes so they can be killed on process exit.
 // This mimics the auto-cleanup behavior of the native libsyncrpc module,
 // whose Rust/C++ destructors would kill children automatically.
-const liveChildren = new Set();
-process.on("exit", () => {
-    for (const child of liveChildren) {
-        try {
-            child.kill();
-        }
-        catch {
-            // swallow – process may already be dead
-        }
+let liveChildren;
+function trackChild(process, child) {
+    if (!liveChildren) {
+        const children = liveChildren = new Set();
+        process.on("exit", () => {
+            for (const child of children) {
+                try {
+                    child.kill();
+                }
+                catch {
+                    // swallow – process may already be dead
+                }
+            }
+            children.clear();
+        });
     }
-    liveChildren.clear();
-});
+    liveChildren.add(child);
+}
+export function createPipePath() {
+    const process = nodeProcess();
+    return `\\\\.\\pipe\\tsgo-sync-${process.pid}-${process.getBuiltinModule("node:crypto").randomBytes(16).toString("hex")}`;
+}
 /**
  * SyncRpcChannel – drop-in replacement for the native libsyncrpc class.
  *
@@ -65,6 +76,7 @@ export class SyncRpcChannel {
     writeFd;
     pipeFd;
     callbacks = new Map();
+    callbackFailure;
     methodBufCache = new Map();
     // When true, the payload byte lengths of each request/response are recorded
     // and exposed via the `last*` fields below. These count only the JSON/binary
@@ -76,9 +88,13 @@ export class SyncRpcChannel {
     // immediately after a request returns (the channel is strictly serial).
     lastBytesSent = 0;
     lastBytesReceived = 0;
+    fs = nodeProcess().getBuiltinModule("node:fs");
+    // Shared empty buffer – avoids allocating Buffer.alloc(0) on every
+    // zero-length bin field.
+    emptyBuf = Buffer.alloc(0);
     _msgType = 0;
-    _msgName = EMPTY_BUF;
-    _msgPayload = EMPTY_BUF;
+    _msgName = this.emptyBuf;
+    _msgPayload = this.emptyBuf;
     headerBuf = Buffer.allocUnsafe(4);
     // Read-ahead buffer – reduces readSync syscalls by buffering data from the pipe.
     readBuf = Buffer.allocUnsafe(65536);
@@ -88,6 +104,8 @@ export class SyncRpcChannel {
     writeBuf = Buffer.allocUnsafe(65536);
     constructor(exe, args, collectTiming = false) {
         this.collectTiming = collectTiming;
+        const process = nodeProcess();
+        const { spawn } = process.getBuiltinModule("node:child_process");
         const isWindows = process.platform === "win32";
         if (isWindows) {
             // On Windows, libuv pipe handles don't expose POSIX fds, so
@@ -95,7 +113,7 @@ export class SyncRpcChannel {
             // we create a Windows named pipe path, pass it to the child
             // via --pipe, and open it with fs.openSync which returns a
             // real C-runtime fd backed by a proper HANDLE.
-            const pipePath = `\\\\.\\pipe\\tsgo-sync-${process.pid}-${Date.now()}`;
+            const pipePath = createPipePath();
             this.child = spawn(exe, [...args, "--pipe", pipePath], {
                 stdio: ["ignore", "ignore", "inherit"],
             });
@@ -103,14 +121,14 @@ export class SyncRpcChannel {
             let fd;
             for (let i = 0; i < 500; i++) {
                 try {
-                    fd = openSync(pipePath, "r+");
+                    fd = this.fs.openSync(pipePath, "r+");
                     break;
                 }
                 catch {
                     if (this.child.exitCode !== null) {
                         throw new Error(`Child process exited with code ${this.child.exitCode} before pipe was ready`);
                     }
-                    Atomics.wait(sleepBuf, 0, 0, 10);
+                    sleep(10);
                 }
             }
             if (fd === undefined) {
@@ -151,7 +169,7 @@ export class SyncRpcChannel {
             stdin.unref();
         }
         // Track for auto-cleanup on process exit.
-        liveChildren.add(this.child);
+        trackChild(process, this.child);
         this.child.unref();
     }
     // ── Public API ──────────────────────────────────────────────────
@@ -182,9 +200,9 @@ export class SyncRpcChannel {
     /** Kill the child process and release resources. */
     close() {
         try {
-            liveChildren.delete(this.child);
+            liveChildren?.delete(this.child);
             if (this.pipeFd !== undefined) {
-                closeSync(this.pipeFd);
+                this.fs.closeSync(this.pipeFd);
                 this.pipeFd = undefined;
             }
             // Destroy the stdio streams so that their pipe handles are closed
@@ -203,6 +221,9 @@ export class SyncRpcChannel {
     ensureOpen() {
         if (this.readFd < 0) {
             throw new Error("SyncRpcChannel is closed");
+        }
+        if (this.callbackFailure) {
+            throw this.callbackFailure.error;
         }
     }
     getMethodBuf(method) {
@@ -242,7 +263,14 @@ export class SyncRpcChannel {
                     throw new Error(`name mismatch for response: expected \`${method}\`, got \`${this._msgName.toString("utf-8")}\``);
                 }
                 case MSG_CALL: {
-                    this.handleCall(this._msgName.toString("utf-8"), this._msgPayload);
+                    try {
+                        this.handleCall(this._msgName.toString("utf-8"), this._msgPayload);
+                    }
+                    catch (error) {
+                        // The pending response is unread, so further I/O cannot be synchronized.
+                        this.callbackFailure = { error };
+                        throw error;
+                    }
                     break;
                 }
                 default:
@@ -386,7 +414,7 @@ export class SyncRpcChannel {
                 throw new Error(`Expected binary data (0xc4-0xc6), received: 0x${marker.toString(16)}`);
         }
         if (size === 0)
-            return EMPTY_BUF;
+            return this.emptyBuf;
         return this.readExact(size);
     }
     // ── Low-level synchronous I/O ───────────────────────────────────
@@ -429,7 +457,7 @@ export class SyncRpcChannel {
         this.readBufLen = 0;
         for (;;) {
             try {
-                const n = readSync(this.readFd, this.readBuf, 0, this.readBuf.length, null);
+                const n = this.fs.readSync(this.readFd, this.readBuf, 0, this.readBuf.length, null);
                 if (n === 0) {
                     throw this.eofError();
                 }
@@ -438,7 +466,7 @@ export class SyncRpcChannel {
             }
             catch (e) {
                 if (e instanceof Error && ("code" in e) && (e.code === "EAGAIN" || e.code === "EWOULDBLOCK")) {
-                    Atomics.wait(sleepBuf, 0, 0, 1);
+                    sleep(1);
                     continue;
                 }
                 throw e;
@@ -466,7 +494,7 @@ export class SyncRpcChannel {
                 // Remaining data is larger than read buffer; read directly
                 // into the target to avoid unnecessary copying.
                 try {
-                    const n = readSync(this.readFd, buffer, pos, length - pos, null);
+                    const n = this.fs.readSync(this.readFd, buffer, pos, length - pos, null);
                     if (n === 0) {
                         throw this.eofError();
                     }
@@ -474,7 +502,7 @@ export class SyncRpcChannel {
                 }
                 catch (e) {
                     if (e instanceof Error && ("code" in e) && (e.code === "EAGAIN" || e.code === "EWOULDBLOCK")) {
-                        Atomics.wait(sleepBuf, 0, 0, 1);
+                        sleep(1);
                         continue;
                     }
                     throw e;
@@ -495,12 +523,12 @@ export class SyncRpcChannel {
         let pos = 0;
         while (pos < total) {
             try {
-                const n = writeSync(this.writeFd, data, pos, total - pos);
+                const n = this.fs.writeSync(this.writeFd, data, pos, total - pos);
                 pos += n;
             }
             catch (e) {
                 if (e instanceof Error && ("code" in e) && (e.code === "EAGAIN" || e.code === "EWOULDBLOCK")) {
-                    Atomics.wait(sleepBuf, 0, 0, 1);
+                    sleep(1);
                     continue;
                 }
                 throw e;

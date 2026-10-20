@@ -2,7 +2,7 @@ import assert from "node:assert/strict"
 import { readFile, readdir } from "node:fs/promises"
 import { runInNewContext } from "node:vm"
 import { compatibilityHtml, compatibilityPaths, compatibilityScript, playgroundPath } from "./routes.mjs"
-import { API } from "@typescript/typescript/unstable/sync"
+import { API } from "@typescript/typescript/sync"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/unstable/wasm"
 import { wasmURL } from "@typescript/typescript-wasip1-wasm"
 

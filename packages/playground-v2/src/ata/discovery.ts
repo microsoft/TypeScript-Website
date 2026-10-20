@@ -1,5 +1,6 @@
-import type { API } from "@typescript/typescript/unstable/sync"
-import { isCallExpression, isIdentifier, isStringLiteral, type Node } from "@typescript/typescript/unstable/ast"
+import type { API } from "@typescript/typescript/sync"
+import type * as Ast from "@typescript/typescript/ast"
+import type { Node } from "@typescript/typescript/ast"
 import type { Dependency, DiscoverDependencies, SourceFile } from "./types"
 
 function dependency(specifier: string, kind: Dependency["kind"], text: string, end: number): Dependency {
@@ -12,7 +13,10 @@ function unique(dependencies: readonly Dependency[]) {
   return [...new Map(dependencies.map(item => [`${item.kind}:${item.specifier}:${item.version ?? ""}`, item])).values()]
 }
 
-export function corsaDiscovery(api: API): (file: SourceFile) => readonly Dependency[] {
+export function corsaDiscovery(
+  api: API,
+  { isCallExpression, isIdentifier, isStringLiteral }: typeof Ast
+): (file: SourceFile) => readonly Dependency[] {
   return file => {
     const retained = api.createSourceFile(file.path, file.text)
     try {

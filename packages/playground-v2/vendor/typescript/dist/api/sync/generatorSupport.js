@@ -7,6 +7,24 @@ export function* apiRequest(method, params) {
     return yield { method, params };
 }
 const deferredGeneratorMarker = Symbol();
+// Marks executed generators on the generator itself: a WeakSet holding every generator of a long-running batch is
+// costly to grow and to process during GC
+const executedMarker = Symbol();
+const executedNonExtensibleGenerators = new WeakSet();
+/** Marks the generator as executed, returning false if it already was. */
+function markExecuted(generator) {
+    if (!Object.isExtensible(generator)) {
+        if (executedNonExtensibleGenerators.has(generator))
+            return false;
+        executedNonExtensibleGenerators.add(generator);
+        return true;
+    }
+    const target = generator;
+    if (target[executedMarker])
+        return false;
+    target[executedMarker] = true;
+    return true;
+}
 const allGeneratorMarker = Symbol();
 export function all(...requestGenerators) {
     return new AllRequestGenerator(requestGenerators);
@@ -52,7 +70,6 @@ class AllRequestGenerator {
     }
 }
 export function executeRequestGenerators(requestGenerators, executeRequests) {
-    const registeredGenerators = new WeakSet();
     let firstGenerator;
     let lastGenerator;
     const root = startGroup(requestGenerators);
@@ -152,14 +169,13 @@ export function executeRequestGenerators(requestGenerators, executeRequests) {
         }
     }
     function addGenerator(generator, parent) {
-        if (registeredGenerators.has(generator)) {
+        if (!markExecuted(generator)) {
             const error = new Error("Cannot execute the same generator instance more than once");
             if (!parent)
                 throw error;
             failGroup(parent, error);
             return;
         }
-        registeredGenerators.add(generator);
         const next = parent?.parent;
         const previous = next ? next.previous : lastGenerator;
         const state = {
@@ -208,12 +224,11 @@ export function executeRequestGenerators(requestGenerators, executeRequests) {
             const pending = wrapper.generators;
             if (!pending)
                 break;
-            if (registeredGenerators.has(wrapper)) {
+            if (!markExecuted(wrapper)) {
                 failGroup(group, new Error("Cannot execute the same generator instance more than once"));
                 group.initializing = false;
                 return group;
             }
-            registeredGenerators.add(wrapper);
             wrapper.next();
             (group.wrappers ??= []).push(wrapper);
             generators = pending;

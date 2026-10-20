@@ -2,6 +2,12 @@ import { combineTimingInfo, disabledTimingInfo, TimingCollector, } from "../timi
 function isTextRequest(request) {
     return request.kind === "text";
 }
+export function createTransportClient(options) {
+    if (options.fs !== undefined) {
+        options.transport.setFileSystem?.(options.fs);
+    }
+    return new TransportClient(options.transport, options.collectTiming ?? false, options.maxResponseBytesPerPage);
+}
 /** Protocol client for an injected asynchronous transport. */
 export class TransportClient {
     encoder = new TextEncoder();
@@ -10,18 +16,14 @@ export class TransportClient {
     maxResponseBytesPerPage;
     connected = false;
     closed = false;
+    closing;
     nextBatch = false;
     batchGeneration = 0;
     batchedRequests = [];
-    closedPromise;
-    rejectClosed;
+    pendingOperations = new Set();
     constructor(transport, collectTiming, maxResponseBytesPerPage) {
         this.transport = transport;
         this.maxResponseBytesPerPage = maxResponseBytesPerPage;
-        this.closedPromise = new Promise((_, reject) => {
-            this.rejectClosed = reject;
-        });
-        void this.closedPromise.catch(() => { });
         if (collectTiming) {
             this.timing = new TimingCollector();
         }
@@ -122,9 +124,15 @@ export class TransportClient {
             await this.invokeTransport(() => this.transport.request("resetServerTiming", ""));
         }
     }
-    async close() {
+    close() {
+        return this.closing ??= this.closeWorker();
+    }
+    async closeWorker() {
         this.closed = true;
-        this.rejectClosed(new Error("Client is closed"));
+        for (const reject of this.pendingOperations) {
+            reject(new Error("Client is closed"));
+        }
+        this.pendingOperations.clear();
         this.batchGeneration++;
         this.nextBatch = false;
         const requests = this.batchedRequests;
@@ -199,11 +207,16 @@ export class TransportClient {
                 return;
             }
             for (const request of requests) {
-                if (request.kind === "text") {
-                    request.resolve(await this.sendRequest(request.method, request.params));
+                try {
+                    if (request.kind === "text") {
+                        request.resolve(await this.sendRequest(request.method, request.params));
+                    }
+                    else {
+                        request.resolve(await this.sendBinaryRequest(request.method, request.payload));
+                    }
                 }
-                else {
-                    request.resolve(await this.sendBinaryRequest(request.method, request.payload));
+                catch (error) {
+                    request.reject(error);
                 }
             }
         }
@@ -230,10 +243,20 @@ export class TransportClient {
     invokeTransport(operation) {
         if (this.closed)
             return Promise.reject(new Error("Client is closed"));
-        return Promise.race([
-            Promise.resolve().then(operation),
-            this.closedPromise,
-        ]);
+        return new Promise((resolve, reject) => {
+            this.pendingOperations.add(reject);
+            Promise.resolve().then(() => {
+                if (this.closed)
+                    throw new Error("Client is closed");
+                return operation();
+            }).then(value => {
+                this.pendingOperations.delete(reject);
+                resolve(value);
+            }, error => {
+                this.pendingOperations.delete(reject);
+                reject(error);
+            });
+        });
     }
     recordTiming(method, start, bytesSent, bytesReceived) {
         if (!this.timing)

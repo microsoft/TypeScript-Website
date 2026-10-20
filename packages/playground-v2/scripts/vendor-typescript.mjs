@@ -1,104 +1,101 @@
-import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises"
+import { createHash } from "node:crypto"
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { spawnSync } from "node:child_process"
 
 const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..")
-const websiteDirectory = resolve(packageDirectory, "../..")
-const typescriptDirectory = resolve(process.env.TYPESCRIPT_REPO || resolve(websiteDirectory, "../TypeScript"))
+const typescriptDirectory = resolve(process.env.TYPESCRIPT_REPO || resolve(packageDirectory, "../../../TypeScript"))
 const vendorDirectory = resolve(packageDirectory, "vendor")
-const typescriptPackage = resolve(typescriptDirectory, "packages/typescript")
-const wasmPackage = resolve(typescriptDirectory, "packages/typescript-wasip1-wasm")
-const libDirectory = resolve(wasmPackage, "lib")
 const packageNames = ["typescript", "typescript-wasip1-wasm"]
-const legalFiles = ["LICENSE.txt", "NOTICE.txt"]
 
-const libFileNames = JSON.parse(await readFile(resolve(libDirectory, "libFiles.json"), "utf8"))
-const expectedLibFileNames = (await readdir(libDirectory)).filter(fileName => /^lib(?:\..+)?\.d\.ts$/.test(fileName)).sort()
-if (
-  !Array.isArray(libFileNames) ||
-  libFileNames.length === 0 ||
-  JSON.stringify(libFileNames) !== JSON.stringify(expectedLibFileNames)
-) {
-  throw new Error("The WASI package library index does not match its declaration files")
+function run(command, args) {
+  const result = spawnSync(command, args, { cwd: typescriptDirectory, encoding: "utf8" })
+  if (result.error) throw result.error
+  if (result.status !== 0) throw new Error(result.stderr || result.stdout || `${command} failed`)
+  return result.stdout.trim()
 }
-await Promise.all([
-  readFile(resolve(typescriptPackage, "dist/wasm/index.js")),
-  readFile(resolve(typescriptPackage, "schemas/tsconfig.schema.json")),
-  readFile(resolve(typescriptPackage, "schemas/jsconfig.schema.json")),
-  readFile(resolve(wasmPackage, "lib/tsc.wasm")),
-])
 
+const revision = run("git", ["rev-parse", "HEAD"])
+if (run("git", ["status", "--porcelain"])) throw new Error("Commit the TypeScript changes before vendoring")
+const manifests = await Promise.all(
+  packageNames.map(async name => {
+    const source = resolve(typescriptDirectory, "built/npm", name)
+    const manifest = JSON.parse(await readFile(resolve(source, "package.json"), "utf8"))
+    if (manifest.gitHead !== revision) throw new Error(`Rebuild ${name}: its gitHead does not match ${revision}`)
+    const [packed] = JSON.parse(run("npm", ["pack", source, "--dry-run", "--ignore-scripts", "--json"]))
+    return { name, source, manifest, files: packed.files.map(file => file.path).sort() }
+  })
+)
+const version = manifests[0].manifest.version
+if (version !== manifests[1].manifest.version) throw new Error("TypeScript API and WASI artifact versions do not match")
+
+const hash = createHash("sha256")
+for (const { name, source, files } of manifests) {
+  const target = resolve(vendorDirectory, name)
+  await rm(target, { recursive: true, force: true })
+  for (const path of files) {
+    const destination = resolve(target, path)
+    await mkdir(dirname(destination), { recursive: true })
+    await cp(resolve(source, path), destination)
+    hash.update(`${name}/${path}\0`).update(await readFile(destination))
+  }
+}
+
+const mainDirectory = resolve(vendorDirectory, "typescript")
+const artifactDirectory = resolve(vendorDirectory, "typescript-wasip1-wasm")
+const main = JSON.parse(await readFile(resolve(mainDirectory, "package.json"), "utf8"))
+const artifact = JSON.parse(await readFile(resolve(artifactDirectory, "package.json"), "utf8"))
+if (main.version !== artifact.version) throw new Error("TypeScript API and WASI artifact versions do not match")
+if (main.imports) throw new Error("The compiler distribution must not require package-private imports")
+const libraries = JSON.parse(await readFile(resolve(artifactDirectory, "lib/libFiles.json"), "utf8"))
+if (
+  !Array.isArray(libraries) ||
+  libraries.length === 0 ||
+  libraries.some(name => typeof name !== "string" || !/^lib(?:\.[\w.]+)?\.d\.ts$/.test(name))
+) {
+  throw new Error("Invalid WASI library index")
+}
+
+function entry(manifest, subpath, directory) {
+  const value = manifest.exports[subpath]
+  const path = typeof value === "string" ? value : value?.default
+  if (typeof path !== "string" || !path.startsWith("./")) throw new Error(`Missing package export: ${subpath}`)
+  return `${directory}/${path.slice(2)}`
+}
+
+const paths = {
+  sync: entry(main, "./sync", "typescript"),
+  async: entry(main, "./async", "typescript"),
+  ast: entry(main, "./ast", "typescript"),
+  host: entry(main, "./unstable/wasm", "typescript"),
+  wasm: entry(artifact, "./lib/tsc.wasm", "typescript-wasip1-wasm"),
+  libraryIndex: entry(artifact, "./lib/libFiles.json", "typescript-wasip1-wasm"),
+  schema: entry(main, "./schemas/tsconfig.schema.json", "typescript"),
+}
+const bytes = await Promise.all(
+  [paths.wasm, paths.libraryIndex, paths.schema].map(path => readFile(resolve(vendorDirectory, path)))
+)
+const libraryBytes = await Promise.all(libraries.map(name => readFile(resolve(artifactDirectory, "lib", name))))
+const cacheKey = hash.digest("hex").slice(0, 16)
 await Promise.all([
-  rm(resolve(vendorDirectory, "lib"), { force: true, recursive: true }),
-  rm(resolve(vendorDirectory, "typescript"), { force: true, recursive: true }),
-  rm(resolve(vendorDirectory, "typescript-wasip1-wasm"), { force: true, recursive: true }),
-  rm(resolve(vendorDirectory, "source-revision.txt"), { force: true }),
-  rm(resolve(vendorDirectory, "version.txt"), { force: true }),
-])
-await Promise.all(packageNames.map(packageName => mkdir(resolve(vendorDirectory, packageName), { recursive: true })))
-await Promise.all([
-  cp(resolve(typescriptPackage, "dist"), resolve(vendorDirectory, "typescript/dist"), {
-    recursive: true,
-  }),
-  cp(resolve(wasmPackage, "dist"), resolve(vendorDirectory, "typescript-wasip1-wasm/dist"), {
-    recursive: true,
-  }),
-  cp(resolve(wasmPackage, "lib"), resolve(vendorDirectory, "typescript-wasip1-wasm/lib"), { recursive: true }),
-  cp(resolve(typescriptPackage, "schemas"), resolve(vendorDirectory, "typescript/schemas"), { recursive: true }),
-  writeVendorManifest(typescriptPackage, "typescript"),
-  writeVendorManifest(wasmPackage, "typescript-wasip1-wasm"),
-  ...packageNames.flatMap(packageName =>
-    legalFiles.map(fileName =>
-      cp(resolve(typescriptDirectory, fileName), resolve(vendorDirectory, packageName, fileName))
-    )
+  writeFile(resolve(vendorDirectory, "source-revision.txt"), `${revision}\n`),
+  writeFile(resolve(vendorDirectory, "version.txt"), `${version}\n`),
+  writeFile(
+    resolve(vendorDirectory, "distribution.json"),
+    `${JSON.stringify(
+      {
+        version,
+        revision,
+        cacheKey,
+        ...paths,
+        downloadBytes:
+          bytes.reduce((sum, value) => sum + value.byteLength, 0) +
+          libraryBytes.reduce((sum, value) => sum + value.byteLength, 0),
+      },
+      undefined,
+      2
+    )}\n`
   ),
 ])
-
-const versionResult = spawnSync(resolve(typescriptDirectory, "built/local/tsc"), ["--version"], { encoding: "utf8" })
-if (versionResult.status !== 0) {
-  throw new Error(versionResult.stderr || "Unable to read the TypeScript version")
-}
-const version = versionResult.stdout.trim().replace(/^Version\s+/, "")
-const revisionResult = spawnSync("git", ["-C", typescriptDirectory, "rev-parse", "HEAD"], {
-  encoding: "utf8",
-})
-if (revisionResult.status !== 0) {
-  throw new Error(revisionResult.stderr || "Unable to read the TypeScript source revision")
-}
-await Promise.all([
-  writeFile(resolve(vendorDirectory, "source-revision.txt"), revisionResult.stdout.trim() + "\n"),
-  writeFile(resolve(vendorDirectory, "version.txt"), `${version}\n`),
-])
-
-console.log(`Vendored TypeScript ${version} from ${typescriptDirectory}`)
-
-async function writeVendorManifest(sourceDirectory, vendorName) {
-  const manifest = JSON.parse(await readFile(resolve(sourceDirectory, "package.json"), "utf8"))
-  const exports = { ...manifest.exports }
-  const imports = { ...manifest.imports }
-  if (vendorName === "typescript") {
-    delete exports["."]
-    delete imports["#getExePath"]
-    delete imports["#vscode-jsonrpc/node"]
-    imports["#asyncClient"] = "./dist/api/async/browserClient.js"
-    imports["#syncClient"] = "./dist/api/sync/browserClient.js"
-    imports["#enums/*"] = {
-      types: "./dist/enums/*.enum.d.ts",
-      default: "./dist/enums/*.js",
-    }
-  }
-  const vendoredManifest = {
-    name: manifest.name,
-    version: manifest.version,
-    license: manifest.license,
-    type: manifest.type,
-    files: vendorName === "typescript-wasip1-wasm" ? ["dist", "lib", ...legalFiles] : ["dist", "schemas", ...legalFiles],
-    exports,
-    imports,
-  }
-  await writeFile(
-    resolve(vendorDirectory, vendorName, "package.json"),
-    `${JSON.stringify(vendoredManifest, undefined, 2)}\n`
-  )
-}
+console.log(`Vendored unchanged npm package contents for TypeScript ${version} at ${revision}`)

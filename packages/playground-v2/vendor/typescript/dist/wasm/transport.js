@@ -1,7 +1,9 @@
 export { instantiateWasm, instantiateWasmSync } from "./wasi.js";
+import { encodeWtf8, Wtf8Decoder, } from "../api/node/wtf8.js";
 import { registerWasmCallback, setWasmFileSystem, unregisterWasmCallback, } from "./wasi.js";
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
+const fileContentDecoder = new Wtf8Decoder("utf-8", { ignoreBOM: true });
 /**
  * Synchronous API transport backed by an in-process TypeScript WebAssembly reactor.
  *
@@ -13,7 +15,6 @@ export class WasmTransport {
     lastBytesReceived = 0;
     instance;
     exports;
-    requestPointer = 0;
     closed = false;
     inCallback = false;
     callbackNames = new Set();
@@ -26,7 +27,7 @@ export class WasmTransport {
             collectTiming: options.collectTiming,
         }));
         this.writeRequest(sessionOptions);
-        if (this.exports.create_session(this.requestPointer, sessionOptions.length) !== 0) {
+        if (this.exports.create_session(sessionOptions.length) !== 0) {
             throw new Error(`Failed to create TypeScript WASM session: ${this.readResponseText()}`);
         }
         try {
@@ -81,7 +82,7 @@ export class WasmTransport {
     setFile(path, content) {
         this.ensureCanEnterWasm();
         const pathBytes = encoder.encode(path);
-        const contentBytes = encoder.encode(content);
+        const contentBytes = encodeWtf8(content);
         this.writeRequest(pathBytes, contentBytes);
         if (this.exports.set_file(pathBytes.length, contentBytes.length) !== 0) {
             throw new Error(`Failed to write ${path}: ${this.readResponseText()}`);
@@ -98,7 +99,7 @@ export class WasmTransport {
         if (status !== 0) {
             throw new Error(`Failed to read ${path}: ${this.readResponseText()}`);
         }
-        return this.readResponseText();
+        return fileContentDecoder.decode(this.readResponseBytes());
     }
     removeFile(path) {
         this.ensureCanEnterWasm();
@@ -139,11 +140,11 @@ export class WasmTransport {
     }
     writeRequest(first, second) {
         const total = first.length + (second?.length ?? 0);
-        this.requestPointer = this.exports.get_request_buffer(total) >>> 0;
+        const requestPointer = this.exports.get_request_buffer(total) >>> 0;
         const memory = new Uint8Array(this.exports.memory.buffer);
-        memory.set(first, this.requestPointer);
+        memory.set(first, requestPointer);
         if (second) {
-            memory.set(second, this.requestPointer + first.length);
+            memory.set(second, requestPointer + first.length);
         }
     }
     readResponseText() {

@@ -1,7 +1,7 @@
-import type { ModifierFlags } from "#enums/modifierFlags";
-import type { NodeFlags } from "#enums/nodeFlags";
-import { SyntaxKind } from "#enums/syntaxKind";
-import { TokenFlags } from "#enums/tokenFlags";
+import type { ModifierFlags } from "../../enums/modifierFlags.js";
+import type { NodeFlags } from "../../enums/nodeFlags.js";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
+import { TokenFlags } from "../../enums/tokenFlags.js";
 import type { JsxTagNamePropertyAccess, Node, NodeArray } from "./ast.ts";
 export type TriviaSyntaxKind = SyntaxKind.SingleLineCommentTrivia | SyntaxKind.MultiLineCommentTrivia | SyntaxKind.NewLineTrivia | SyntaxKind.WhitespaceTrivia | SyntaxKind.ConflictMarkerTrivia;
 export type LiteralSyntaxKind = SyntaxKind.NumericLiteral | SyntaxKind.BigIntLiteral | SyntaxKind.StringLiteral | SyntaxKind.JsxText | SyntaxKind.JsxTextAllWhiteSpaces | SyntaxKind.RegularExpressionLiteral | SyntaxKind.NoSubstitutionTemplateLiteral;

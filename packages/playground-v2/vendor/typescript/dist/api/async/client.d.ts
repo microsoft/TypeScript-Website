@@ -1,30 +1,36 @@
-import { type AsyncClientOptions } from "../options.ts";
+import { type AsyncClientOptions, type ClientOptions } from "../options.ts";
 import type { APIMethodInfo, APIRequest, SourceFileResponseMethod } from "../proto.ts";
 import { TimingCollector, type TimingInfo } from "../timing.ts";
+import { type TransportClient } from "./transportClient.ts";
 export type { AsyncClientOptions as ClientOptions, AsyncClientTransportOptions, ClientSocketOptions, ClientSpawnOptions } from "../options.ts";
 export type { AsyncTransport } from "./transport.ts";
+export type Client = TransportClient | RpcClient;
+export declare function createClient(options: AsyncClientOptions): Client;
 /**
  * Client handles communication with the TypeScript API server
  * over STDIO (spawned process) or a Unix domain socket using JSON-RPC.
  */
-export declare class Client {
+declare class RpcClient {
     private socket;
     private process;
     private connection;
+    private jsonrpc;
     private options;
-    private transportClient;
     private connected;
     private closed;
     private connecting;
     private timing;
+    private timingDump;
+    private closing;
     private batchedRequests;
     private nextBatch;
-    constructor(options: AsyncClientOptions);
+    constructor(options: ClientOptions);
     connect(): Promise<void>;
     private connectWorker;
     private connectViaSpawn;
     private connectViaSocket;
     private registerFSCallbacks;
+    private requestType;
     private sendRequestWithTiming;
     registerCallback(name: string, callback: (params: unknown) => unknown | Promise<unknown>): () => void;
     private doBatch;
@@ -50,5 +56,6 @@ export declare class Client {
     resetTimingInfo(): Promise<void>;
     private fetchServerTiming;
     close(): Promise<void>;
+    private closeWorker;
 }
 //# sourceMappingURL=client.d.ts.map

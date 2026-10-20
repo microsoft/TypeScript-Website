@@ -438,21 +438,7 @@ async function ensureDefinitionModels(result: unknown) {
 }
 
 function getDefinitionFiles() {
-  definitionFilesPromise ??= fetch(new URL("./lib-files.json", import.meta.url)).then(response => {
-    if (!response.ok) {
-      throw new Error(`Could not load TypeScript libraries: ${response.status} ${response.statusText}`)
-    }
-    return response
-      .json()
-      .then((files: Record<string, string>) =>
-        Object.fromEntries(
-          Object.entries(files).map(([fileName, text]) => [
-            `/typescript/lib/${fileName.slice(fileName.lastIndexOf("/") + 1)}`,
-            text,
-          ])
-        )
-      )
-  })
+  if (!definitionFilesPromise) throw new Error("Language-server libraries are not initialized")
   return definitionFilesPromise
 }
 

@@ -1,3 +1,4 @@
+import type { FileSystemCallbacks } from "../api/fs.ts";
 import type { WasmReactorInstance } from "./transport.ts";
 declare namespace WebAssembly {
     interface Module {
@@ -23,7 +24,7 @@ export interface InstantiateWasmOptions {
     stderr?: ((text: string) => void) | undefined;
 }
 export interface WasmFileSystem {
-    writeFile?: ((path: string, data: string) => unknown) | symbol | undefined;
+    writeFile?: FileSystemCallbacks["writeFile"] | undefined;
 }
 export declare function setWasmFileSystem(instance: WasmReactorInstance, fs: WasmFileSystem | undefined): void;
 export declare function registerWasmCallback(instance: WasmReactorInstance, name: string, callback: (name: string, payload: string) => string): void;

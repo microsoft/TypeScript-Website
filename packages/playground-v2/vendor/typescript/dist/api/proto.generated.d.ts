@@ -1,13 +1,28 @@
-import { ModuleKind } from "#enums/moduleKind";
-import { ScriptKind } from "#enums/scriptKind";
-import { SymbolOwnerKind } from "#enums/symbolOwnerKind";
-import type { Path } from "../ast/index.ts";
-import type { CompilerOptions } from "./compilerOptions.generated.ts";
+import { CaseSensitivity } from "../../enums/caseSensitivity.js";
+import { JsxEmit } from "../../enums/jsxEmit.js";
+import { ModuleDetectionKind } from "../../enums/moduleDetectionKind.js";
+import { ModuleKind } from "../../enums/moduleKind.js";
+import { ModuleResolutionKind } from "../../enums/moduleResolutionKind.js";
+import { NewLineKind } from "../../enums/newLineKind.js";
+import { ScriptKind } from "../../enums/scriptKind.js";
+import { ScriptTarget } from "../../enums/scriptTarget.js";
+import { SymbolOwnerKind } from "../../enums/symbolOwnerKind.js";
+import type { PathKey, RootedDirectoryPath, RootedFilePath, RootedPath } from "../ast/index.ts";
+import type { CompilerOptions, PluginImport } from "./compilerOptions.generated.ts";
 import type { UserPreferences } from "./userPreferences.generated.ts";
-export { ModuleKind } from "#enums/moduleKind";
-export { ScriptKind } from "#enums/scriptKind";
-export { SymbolOwnerKind } from "#enums/symbolOwnerKind";
+export { CaseSensitivity } from "../../enums/caseSensitivity.js";
+export { JsxEmit } from "../../enums/jsxEmit.js";
+export { ModuleDetectionKind } from "../../enums/moduleDetectionKind.js";
+export { ModuleKind } from "../../enums/moduleKind.js";
+export { ModuleResolutionKind } from "../../enums/moduleResolutionKind.js";
+export { NewLineKind } from "../../enums/newLineKind.js";
+export { ScriptKind } from "../../enums/scriptKind.js";
+export { ScriptTarget } from "../../enums/scriptTarget.js";
+export { SymbolOwnerKind } from "../../enums/symbolOwnerKind.js";
+export type { PathKey, RootedDirectoryPath, RootedFilePath, RootedPath } from "../ast/index.ts";
+export type { CompilerOptions, PluginImport } from "./compilerOptions.generated.ts";
 export * from "./compilerOptions.generated.ts";
+export type { UserPreferences } from "./userPreferences.generated.ts";
 export type APIMethod<TParams, TResult> = {
     params: TParams;
     result: TResult;
@@ -54,7 +69,7 @@ export interface APIMethodInfo {
     getDeclaredTypeOfSymbol: APIMethod<GetTypeOfSymbolParams, TypeResponse>;
     getNonMissingTypeOfSymbol: APIMethod<GetTypeOfSymbolParams, TypeResponse>;
     getSourceFile: APIMethod<GetSourceFileParams, SourceFileResponse | null>;
-    getSourceFileNames: APIMethod<GetSourceFileNamesParams, string[]>;
+    getSourceFileNames: APIMethod<GetSourceFileNamesParams, RootedFilePath[]>;
     getSourceFileMetadata: APIMethod<GetSourceFileParams, SourceFileMetadata | null>;
     getModeForUsageLocation: APIMethod<GetModeForUsageLocationParams, ModuleKind>;
     getModeForResolutionAtIndex: APIMethod<GetModeForResolutionAtIndexParams, ModuleKind>;
@@ -62,7 +77,7 @@ export interface APIMethodInfo {
     getResolvedModuleFromModuleSpecifier: APIMethod<GetResolvedModuleFromModuleSpecifierParams, ResolvedModule | null>;
     getResolvedTypeReferenceDirective: APIMethod<GetResolvedTypeReferenceDirectiveParams, ResolvedTypeReferenceDirective | null>;
     getResolvedTypeReferenceDirectiveFromTypeReferenceDirective: APIMethod<GetResolvedTypeReferenceDirectiveFromReferenceParams, ResolvedTypeReferenceDirective | null>;
-    getConfigFileNames: APIMethod<GetProjectDiagnosticsParams, string[] | null>;
+    getConfigFileNames: APIMethod<GetProjectDiagnosticsParams, RootedFilePath[] | null>;
     getConfigSourceFile: APIMethod<GetSourceFileParams, SourceFileResponse | null>;
     resolveName: APIMethod<ResolveNameParams, SymbolResponse | null>;
     getSymbolsInScope: APIMethod<GetSymbolsInScopeParams, SymbolResponse[]>;
@@ -143,6 +158,10 @@ export interface APIMethodInfo {
     getAliasedSymbol: APIMethod<CheckerSymbolParams, SymbolResponse>;
     getImmediateAliasedSymbol: APIMethod<CheckerSymbolParams, SymbolResponse | null>;
     getTargetSymbol: APIMethod<CheckerSymbolParams, SymbolResponse>;
+    getMergedSymbol: APIMethod<CheckerSymbolParams, SymbolResponse>;
+    getSymbolOfNode: APIMethod<CheckerNodeParams, SymbolResponse | null>;
+    getSymbolOfDeclarationForChecker: APIMethod<CheckerNodeParams, SymbolResponse | null>;
+    getParentOfSymbolForChecker: APIMethod<CheckerSymbolParams, SymbolResponse | null>;
     getExportSymbolOfSymbolForChecker: APIMethod<CheckerSymbolParams, SymbolResponse>;
     getFullyQualifiedName: APIMethod<CheckerSymbolParams, string>;
     getExportsOfModule: APIMethod<CheckerSymbolParams, SymbolResponse[] | null>;
@@ -155,6 +174,7 @@ export interface APIMethodInfo {
     getReferencedSymbolsForNode: APIMethod<GetReferencedSymbolsForNodeParams, ReferencedSymbolEntry[] | null>;
     getSignatureUsages: APIMethod<GetSignatureUsagesParams, SignatureUsageResponse[] | null>;
     getCompletionsAtPosition: APIMethod<GetCompletionsAtPositionParams, CompletionInfoResponse | null>;
+    formatNodeForInsertion: APIMethod<FormatNodeForInsertionParams, string>;
     getSyntacticDiagnostics: APIMethod<GetDiagnosticsParams, DiagnosticResponse[] | null>;
     getBindDiagnostics: APIMethod<GetDiagnosticsParams, DiagnosticResponse[] | null>;
     getSemanticDiagnostics: APIMethod<GetDiagnosticsParams, DiagnosticResponse[] | null>;
@@ -164,7 +184,6 @@ export interface APIMethodInfo {
     getGlobalDiagnostics: APIMethod<GetProjectDiagnosticsParams, DiagnosticResponse[] | null>;
     getConfigFileParsingDiagnostics: APIMethod<GetProjectDiagnosticsParams, DiagnosticResponse[] | null>;
     printNode: APIMethod<PrintNodeParams, string>;
-    formatNodeForInsertion: APIMethod<FormatNodeForInsertionParams, string>;
     emit: APIMethod<EmitParams, EmitResponse>;
     emitToString: APIMethod<EmitParams, EmitOutputResponse>;
     getJavaScriptEmit: APIMethod<SelectedFilesEmitParams, EmitOutputResponse>;
@@ -195,7 +214,7 @@ export type EnsurePrograms = true | readonly ProjectId[];
 export type InferredProjectId = string & {
     __inferredProjectIdBrand: any;
 };
-export type ConfiguredProjectId = Path & {
+export type ConfiguredProjectId = PathKey & {
     __configuredProjectIdBrand: any;
 };
 export type SyntheticProjectId = string & {
@@ -238,7 +257,7 @@ export interface SymbolResponse {
     reference: SymbolReference;
     name: string;
     flags: number;
-    checkFlags: number;
+    checkFlags?: number | undefined;
     declarations?: string[] | undefined;
     valueDeclaration?: string | undefined;
     parent?: CompactSymbolReference | undefined;
@@ -255,10 +274,10 @@ export interface BatchRequestsResponse {
 }
 /** InitializeResponse is returned by the initialize method. */
 export interface InitializeResponse {
-    /** UseCaseSensitiveFileNames indicates whether the host file system is case-sensitive. */
-    useCaseSensitiveFileNames: boolean;
+    /** CaseSensitivity determines how the host file system compares paths. */
+    caseSensitivity: CaseSensitivity;
     /** CurrentDirectory is the server's current working directory. */
-    currentDirectory: string;
+    currentDirectory: RootedDirectoryPath;
 }
 /** CreateSnapshotParams are the parameters for creating a new independent snapshot. */
 export interface CreateSnapshotParams extends SnapshotRequestChangesParams {
@@ -299,7 +318,7 @@ export interface GetCurrentLanguageServerSnapshotParams {
 }
 export interface CreateBuildOrchestratorParams extends BuildOptions, CompilerOptions {
     rootNames: readonly string[] | null;
-    cwd?: string | undefined;
+    cwd?: RootedDirectoryPath | undefined;
 }
 export interface CreateBuildOrchestratorResponse {
     buildOrchestratorID: number;
@@ -324,7 +343,7 @@ export interface CleanBuildResponse {
     status: number;
     diagnostics?: DiagnosticResponse[] | undefined;
     statistics: Statistics;
-    filesDeleted?: string[] | undefined;
+    filesDeleted?: RootedFilePath[] | undefined;
 }
 export interface CreateModuleResolverParams {
     compilerOptions: CompilerOptions;
@@ -351,7 +370,7 @@ export interface ParseCommandLineParams {
     commandLine: readonly string[] | null;
 }
 export interface ConfigFileResponse {
-    fileNames: string[];
+    fileNames: RootedFilePath[];
     options: CompilerOptions;
     buildOptions?: BuildOptions | undefined;
     projectReferences?: ProjectReference[] | undefined;
@@ -403,50 +422,48 @@ export interface GetDefaultProjectForFileParams {
 }
 export interface ProjectResponse {
     id: ProjectId;
-    configFileName: string;
-    currentDirectory: string;
+    /** Handle identifies this project's lifetime across snapshots; Id is its logical name. */
+    handle: number;
+    configFileName?: RootedFilePath | undefined;
+    currentDirectory: RootedDirectoryPath;
     dirty: boolean;
     parsedCommandLine: ConfigFileResponse;
-    /** @deprecated Use parsedCommandLine.fileNames. */
-    rootFiles: string[];
-    /** @deprecated Use parsedCommandLine.options. */
-    compilerOptions: CompilerOptions;
 }
 export interface GetSymbolAtPositionParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     position: number;
 }
 export interface GetSymbolsAtPositionsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     positions: readonly number[] | null;
 }
 export interface GetSymbolAtLocationParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
 }
 export interface GetSymbolsAtLocationsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     locations: readonly string[] | null;
 }
 export interface GetSymbolOfSourceFileParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
 }
 export interface GetSymbolsOfSourceFilesParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     files: readonly DocumentIdentifier[] | null;
 }
 export interface GetTypeOfSymbolParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     symbol: SymbolReference;
 }
 export interface TypeResponse {
@@ -456,9 +473,9 @@ export interface TypeResponse {
     isTupleType?: boolean | undefined;
     /**
      * Value is literal type data. BigInt literals are encoded as signed decimal
-     * strings because JSON cannot represent bigint; absent values are null.
+     * strings because JSON cannot represent bigint; absent values are omitted.
      */
-    value: unknown;
+    value?: unknown | undefined;
     /** ObjectType / TypeReference / StringMappingType / IndexType target */
     target?: number | undefined;
     /** InterfaceType type parameters */
@@ -503,41 +520,41 @@ export interface TypeResponse {
 }
 export interface GetTypesOfSymbolsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     symbols: readonly SymbolReference[] | null;
 }
 export interface GetSourceFileParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
 }
 export interface GetSourceFileNamesParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
 }
 /** SourceFileMetadata carries program-stored metadata about a single source file. */
 export interface SourceFileMetadata {
     isDefaultLibrary: boolean;
     isFromExternalLibrary: boolean;
     packageJsonType: string;
-    packageJsonDirectory: string;
+    packageJsonDirectory: RootedDirectoryPath;
     impliedNodeFormat: ModuleKind;
 }
 export interface GetModeForUsageLocationParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     usage: string;
 }
 export interface GetModeForResolutionAtIndexParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     index: number;
 }
 export interface GetResolvedModuleParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     moduleName: string;
     mode: ModuleKind;
@@ -554,13 +571,13 @@ export interface ResolvedModule {
 }
 export interface GetResolvedModuleFromModuleSpecifierParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     moduleSpecifier: string;
     sourceFile?: DocumentIdentifier | undefined;
 }
 export interface GetResolvedTypeReferenceDirectiveParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     typeDirectiveName: string;
     mode: ModuleKind;
@@ -574,7 +591,7 @@ export interface ResolvedTypeReferenceDirective {
 }
 export interface GetResolvedTypeReferenceDirectiveFromReferenceParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     sourceFile: DocumentIdentifier;
     typeDirectiveName: string;
     resolutionMode: ModuleKind;
@@ -582,11 +599,11 @@ export interface GetResolvedTypeReferenceDirectiveFromReferenceParams {
 /** GetProjectDiagnosticsParams are parameters for project-wide diagnostic methods. */
 export interface GetProjectDiagnosticsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
 }
 export interface ResolveNameParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     name: string;
     /** Optional: node handle for location context */
     location?: string | undefined;
@@ -605,7 +622,7 @@ export interface ResolveNameParams {
  */
 export interface GetSymbolsInScopeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     /** Optional: node handle for location context */
     location?: string | undefined;
     /** Optional: file for location context (alternative to Location) */
@@ -617,13 +634,13 @@ export interface GetSymbolsInScopeParams {
 }
 export interface GetSignaturesOfTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
     kind: number;
 }
 export interface SignatureResponse {
     id: number;
-    flags: number;
+    flags?: number | undefined;
     declaration?: string | undefined;
     typeParameters?: number[] | undefined;
     parameters?: CompactSymbolReference[] | undefined;
@@ -632,28 +649,28 @@ export interface SignatureResponse {
 }
 export interface GetResolvedSignatureParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
 }
 export interface GetTypeAtLocationParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
 }
 export interface GetTypeAtLocationsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     locations: readonly string[] | null;
 }
 export interface GetTypeAtPositionParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     position: number;
 }
 export interface GetTypesAtPositionsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     positions: readonly number[] | null;
 }
@@ -664,82 +681,82 @@ export interface GetSymbolPropertyParams {
 /** GetTypePropertyParams is used for all type sub-property endpoints. */
 export interface GetTypePropertyParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     objectId: number;
 }
 /** GetSignaturePropertyParams is used for all signature sub-property endpoints. */
 export interface GetSignaturePropertyParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     objectId: number;
 }
 /** GetContextualTypeParams returns the contextual type for a node. */
 export interface GetContextualTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
 }
 export interface GetContextualTypeForArgumentParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
     index: number;
 }
 /** CheckerTypeParams are parameters for checker methods that operate on a type. */
 export interface CheckerTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
 }
 /** GetBaseTypeOfLiteralTypeParams returns the base type of a literal type. */
 export interface GetBaseTypeOfLiteralTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
 }
 /** GetTypeFromTypeNodeParams are the parameters for the getTypeFromTypeNode method. */
 export interface GetTypeFromTypeNodeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
 }
 /** GetWidenedTypeParams are the parameters for the getWidenedType method. */
 export interface GetWidenedTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
 }
 /** GetParameterTypeParams are the parameters for the getParameterType method. */
 export interface GetParameterTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     signature: number;
     index: number;
 }
 /** IsArrayLikeTypeParams checks whether a type is array-like. */
 export interface IsArrayLikeTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
 }
 /** IsTypeAssignableToParams checks assignability between two types. */
 export interface IsTypeAssignableToParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     source: number;
     target: number;
 }
 /** GetTypeOfSymbolAtLocationParams returns the narrowed type of a symbol at a specific location. */
 export interface GetTypeOfSymbolAtLocationParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     symbol: SymbolReference;
     location: string;
 }
 /** TypeToTypeNodeParams are the parameters for the typeToTypeNode method. */
 export interface TypeToTypeNodeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
     location?: string | undefined;
     flags?: number | undefined;
@@ -747,7 +764,7 @@ export interface TypeToTypeNodeParams {
 /** SignatureToSignatureDeclarationParams are the parameters for the signatureToSignatureDeclaration method. */
 export interface SignatureToSignatureDeclarationParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     signature: number;
     kind: number;
     location?: string | undefined;
@@ -756,7 +773,7 @@ export interface SignatureToSignatureDeclarationParams {
 /** CheckerSignatureParams are parameters for checker methods that operate on a signature. */
 export interface CheckerSignatureParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     signature: number;
 }
 /** TypePredicateResponse is the response for getTypePredicateOfSignature. */
@@ -769,13 +786,13 @@ export interface TypePredicateResponse {
 /** GetPropertyOfTypeParams are parameters for getPropertyOfType (a named property of a type). */
 export interface GetPropertyOfTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
     name: string;
 }
 export interface GetIndexInfoOfTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     type: number;
     kind: number;
 }
@@ -788,7 +805,7 @@ export interface IndexInfoResponse {
 }
 export interface GetImportAdderEditsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     actions: readonly ImportAdderAction[] | null;
 }
@@ -800,7 +817,7 @@ export interface TextEdit {
 /** CheckerNodeParams are parameters for checker methods that operate on a node location. */
 export interface CheckerNodeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     location: string;
 }
 export interface ConstantValueResponse {
@@ -810,13 +827,13 @@ export interface ConstantValueResponse {
 /** CheckerSymbolParams are parameters for checker methods that operate on a symbol. */
 export interface CheckerSymbolParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     symbol: SymbolReference;
 }
 /** GetMemberInModuleExportsParams are parameters for getMemberInModuleExports. */
 export interface GetMemberInModuleExportsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     symbol: SymbolReference;
     name: string;
 }
@@ -831,14 +848,14 @@ export interface JSDocTagInfo {
 /** GetReferencesToSymbolInFileParams are the parameters for the getReferencesToSymbolInFile method. */
 export interface GetReferencesToSymbolInFileParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     symbol: SymbolReference;
 }
 /** GetReferencedSymbolsForNodeParams are the parameters for the getReferencedSymbolsForNode method. */
 export interface GetReferencedSymbolsForNodeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     node: string;
     position: number;
 }
@@ -851,7 +868,7 @@ export interface ReferencedSymbolEntry {
 /** GetSignatureUsagesParams are the parameters for the getSignatureUsages method. */
 export interface GetSignatureUsagesParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     signatureDecl: string;
 }
 /** SignatureUsageResponse represents a single usage of a signature as a name-call pair. */
@@ -862,7 +879,7 @@ export interface SignatureUsageResponse {
 /** GetCompletionsAtPositionParams are the parameters for the getCompletionsAtPosition method. */
 export interface GetCompletionsAtPositionParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     file: DocumentIdentifier;
     position: number;
     triggerCharacter?: string | undefined;
@@ -873,16 +890,27 @@ export interface CompletionInfoResponse {
     isIncomplete: boolean;
     entries: CompletionEntryResponse[];
 }
+/** FormatNodeForInsertionParams are the parameters for the formatNodeForInsertion method. */
+export interface FormatNodeForInsertionParams {
+    snapshot: number;
+    project: number;
+    /** target file where the node will be inserted */
+    file: DocumentIdentifier;
+    /** UTF-16 code-unit offset of the insertion position in the target file */
+    position: number;
+    /** base64-encoded binary AST data for the synthesized node */
+    data: string;
+}
 /** GetDiagnosticsParams are parameters for per-file diagnostic methods. */
 export interface GetDiagnosticsParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     files?: readonly DocumentIdentifier[] | undefined;
 }
 /** DiagnosticResponse is the API response for a single diagnostic. */
 export interface DiagnosticResponse {
-    /** FileName is the path of the file this diagnostic belongs to, if any. */
-    fileName?: string | undefined;
+    /** The file name of the file this diagnostic belongs to, if any. */
+    fileName?: RootedFilePath | undefined;
     /** Pos is the start position of the diagnostic in the source file. */
     pos: number;
     /** End is the end position of the diagnostic in the source file. */
@@ -918,26 +946,15 @@ export interface PrintNodeParams {
     neverAsciiEscape?: boolean | undefined;
     terminateUnterminatedLiterals?: boolean | undefined;
 }
-/** FormatNodeForInsertionParams are the parameters for the formatNodeForInsertion method. */
-export interface FormatNodeForInsertionParams {
-    snapshot: number;
-    project: ProjectId;
-    /** target file where the node will be inserted */
-    file: DocumentIdentifier;
-    /** UTF-16 code-unit offset of the insertion position in the target file */
-    position: number;
-    /** base64-encoded binary AST data for the synthesized node */
-    data: string;
-}
 export interface EmitParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     emitOnly?: number | undefined;
 }
 export interface EmitResponse {
     emitSkipped: boolean;
     diagnostics: DiagnosticResponse[];
-    emittedFiles: string[];
+    emittedFiles: RootedFilePath[];
     /**
      * EmittedFilesContents contains contents parallel to EmittedFiles when the
      * source snapshot uses a full filesystem. It is empty for write-through emits.
@@ -951,13 +968,13 @@ export interface EmitOutputResponse {
 }
 export interface SelectedFilesEmitParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
     files: readonly DocumentIdentifier[] | null;
 }
 /** GetIntrinsicTypeParams is used for intrinsic type getters (anyType, stringType, etc.). */
 export interface GetIntrinsicTypeParams {
     snapshot: number;
-    project: ProjectId;
+    project: number;
 }
 /**
  * WellKnownSymbolsResponse carries the handle ids of the per-checker singleton
@@ -981,11 +998,11 @@ export interface ProfileParams {
     dir: string;
 }
 export interface ProfileResult {
-    file: string;
+    file: RootedFilePath;
 }
 export interface SourceFileDescriptor {
-    fileName: string;
-    path: Path;
+    fileName: RootedFilePath;
+    path: PathKey;
     contentHash: string;
     parseOptionsKey: string;
     scriptKind: ScriptKind;
@@ -1006,11 +1023,11 @@ export interface CompactSymbolReference {
     file?: string | undefined;
 }
 export interface BatchRequest {
-    method: "batchRequests" | "build" | "buildReferences" | "cleanBuild" | "cleanReferences" | "createBuildOrchestrator" | "createModuleResolver" | "createSnapshot" | "createSourceFile" | "createSourceFileFromFile" | "disposeBuildOrchestrator" | "emit" | "emitToString" | "formatNodeForInsertion" | "getAliasSymbolOfType" | "getAliasTypeArgumentsOfType" | "getAliasedSymbol" | "getAnyType" | "getApparentPropertiesOfType" | "getApparentType" | "getAwaitedType" | "getBaseConstraintOfType" | "getBaseTypeOfLiteralType" | "getBaseTypeOfType" | "getBaseTypes" | "getBigIntType" | "getBindDiagnostics" | "getBooleanType" | "getCachedSourceFile" | "getCheckTypeOfType" | "getCompletionsAtPosition" | "getConfigFileNames" | "getConfigFileParsingDiagnostics" | "getConfigSourceFile" | "getConstantValue" | "getConstraintOfType" | "getConstraintOfTypeParameter" | "getConstraintTypeOfMappedType" | "getContextualType" | "getContextualTypeForArgument" | "getCurrentLanguageServerSnapshot" | "getDeclarationDiagnostics" | "getDeclarationEmit" | "getDeclaredTypeOfSymbol" | "getDefaultFromTypeParameter" | "getDefaultProjectForFile" | "getDocumentationComment" | "getESSymbolType" | "getExportSpecifierLocalTargetSymbol" | "getExportSymbolOfSymbol" | "getExportSymbolOfSymbolForChecker" | "getExportsOfModule" | "getExportsOfSymbol" | "getExtendsTypeOfType" | "getFalseTypeOfConditionalType" | "getFreshTypeOfType" | "getFullyQualifiedName" | "getGlobalDiagnostics" | "getImmediateAliasedSymbol" | "getImportAdderEdits" | "getIndexInfoOfType" | "getIndexInfosOfType" | "getIndexTypeOfType" | "getJavaScriptEmit" | "getJsDocTags" | "getLocalTypeParametersOfType" | "getMemberInModuleExports" | "getMembersOfSymbol" | "getModeForResolutionAtIndex" | "getModeForUsageLocation" | "getNameTypeOfMappedType" | "getNeverType" | "getNonMissingTypeOfSymbol" | "getNonNullableType" | "getNonPrimitiveType" | "getNullType" | "getNumberType" | "getObjectTypeOfType" | "getOuterTypeParametersOfType" | "getParameterType" | "getParametersOfSignature" | "getParentOfSymbol" | "getProgramDiagnostics" | "getPropertiesOfType" | "getPropertyOfType" | "getReducedType" | "getReferencedSymbolsForNode" | "getReferencesToSymbolInFile" | "getRegularTypeOfType" | "getResolvedModule" | "getResolvedModuleFromModuleSpecifier" | "getResolvedSignature" | "getResolvedTypeReferenceDirective" | "getResolvedTypeReferenceDirectiveFromTypeReferenceDirective" | "getRestTypeOfSignature" | "getReturnTypeOfSignature" | "getSemanticDiagnostics" | "getShorthandAssignmentValueSymbol" | "getSignatureFromDeclaration" | "getSignatureUsages" | "getSignaturesOfType" | "getSourceFile" | "getSourceFileMetadata" | "getSourceFileNames" | "getStringType" | "getSuggestionDiagnostics" | "getSymbolAtLocation" | "getSymbolAtPosition" | "getSymbolOfDeclaration" | "getSymbolOfSourceFile" | "getSymbolOfType" | "getSymbolsAtLocations" | "getSymbolsAtPositions" | "getSymbolsInScope" | "getSymbolsOfSourceFiles" | "getSyntacticDiagnostics" | "getTargetOfSignature" | "getTargetOfType" | "getTargetSymbol" | "getTemplateTypeOfMappedType" | "getThisParameterOfSignature" | "getThisTypeOfType" | "getTrueTypeOfConditionalType" | "getTypeArguments" | "getTypeAtLocation" | "getTypeAtLocations" | "getTypeAtPosition" | "getTypeFromTypeNode" | "getTypeOfPropertyOfType" | "getTypeOfSymbol" | "getTypeOfSymbolAtLocation" | "getTypeParameterAtPosition" | "getTypeParameterOfMappedType" | "getTypeParametersOfSignature" | "getTypeParametersOfType" | "getTypePredicateOfSignature" | "getTypesAtPositions" | "getTypesOfSymbols" | "getTypesOfType" | "getUndefinedType" | "getUnknownType" | "getVoidType" | "getWellKnownSignatures" | "getWellKnownSymbols" | "getWidenedType" | "initialize" | "isArrayLikeType" | "isArrayType" | "isContextSensitive" | "isReadonlySymbol" | "isTypeAssignableTo" | "parseCommandLine" | "parseConfigFile" | "parseJsonConfigFileContent" | "printNode" | "readConfigFile" | "release" | "releaseModuleResolver" | "releaseSourceFile" | "resolveModuleName" | "resolveName" | "retainSourceFile" | "saveHeapProfile" | "signatureToSignatureDeclaration" | "startCPUProfile" | "stopCPUProfile" | "transpileDeclaration" | "transpileDeclarationFromFile" | "transpileModule" | "transpileModuleFromFile" | "typeToString" | "typeToTypeNode" | "updateSnapshot";
+    method: "batchRequests" | "build" | "buildReferences" | "cleanBuild" | "cleanReferences" | "createBuildOrchestrator" | "createModuleResolver" | "createSnapshot" | "createSourceFile" | "createSourceFileFromFile" | "disposeBuildOrchestrator" | "emit" | "emitToString" | "formatNodeForInsertion" | "getAliasSymbolOfType" | "getAliasTypeArgumentsOfType" | "getAliasedSymbol" | "getAnyType" | "getApparentPropertiesOfType" | "getApparentType" | "getAwaitedType" | "getBaseConstraintOfType" | "getBaseTypeOfLiteralType" | "getBaseTypeOfType" | "getBaseTypes" | "getBigIntType" | "getBindDiagnostics" | "getBooleanType" | "getCachedSourceFile" | "getCheckTypeOfType" | "getCompletionsAtPosition" | "getConfigFileNames" | "getConfigFileParsingDiagnostics" | "getConfigSourceFile" | "getConstantValue" | "getConstraintOfType" | "getConstraintOfTypeParameter" | "getConstraintTypeOfMappedType" | "getContextualType" | "getContextualTypeForArgument" | "getCurrentLanguageServerSnapshot" | "getDeclarationDiagnostics" | "getDeclarationEmit" | "getDeclaredTypeOfSymbol" | "getDefaultFromTypeParameter" | "getDefaultProjectForFile" | "getDocumentationComment" | "getESSymbolType" | "getExportSpecifierLocalTargetSymbol" | "getExportSymbolOfSymbol" | "getExportSymbolOfSymbolForChecker" | "getExportsOfModule" | "getExportsOfSymbol" | "getExtendsTypeOfType" | "getFalseTypeOfConditionalType" | "getFreshTypeOfType" | "getFullyQualifiedName" | "getGlobalDiagnostics" | "getImmediateAliasedSymbol" | "getImportAdderEdits" | "getIndexInfoOfType" | "getIndexInfosOfType" | "getIndexTypeOfType" | "getJavaScriptEmit" | "getJsDocTags" | "getLocalTypeParametersOfType" | "getMemberInModuleExports" | "getMembersOfSymbol" | "getMergedSymbol" | "getModeForResolutionAtIndex" | "getModeForUsageLocation" | "getNameTypeOfMappedType" | "getNeverType" | "getNonMissingTypeOfSymbol" | "getNonNullableType" | "getNonPrimitiveType" | "getNullType" | "getNumberType" | "getObjectTypeOfType" | "getOuterTypeParametersOfType" | "getParameterType" | "getParametersOfSignature" | "getParentOfSymbol" | "getParentOfSymbolForChecker" | "getProgramDiagnostics" | "getPropertiesOfType" | "getPropertyOfType" | "getReducedType" | "getReferencedSymbolsForNode" | "getReferencesToSymbolInFile" | "getRegularTypeOfType" | "getResolvedModule" | "getResolvedModuleFromModuleSpecifier" | "getResolvedSignature" | "getResolvedTypeReferenceDirective" | "getResolvedTypeReferenceDirectiveFromTypeReferenceDirective" | "getRestTypeOfSignature" | "getReturnTypeOfSignature" | "getSemanticDiagnostics" | "getShorthandAssignmentValueSymbol" | "getSignatureFromDeclaration" | "getSignatureUsages" | "getSignaturesOfType" | "getSourceFile" | "getSourceFileMetadata" | "getSourceFileNames" | "getStringType" | "getSuggestionDiagnostics" | "getSymbolAtLocation" | "getSymbolAtPosition" | "getSymbolOfDeclaration" | "getSymbolOfDeclarationForChecker" | "getSymbolOfNode" | "getSymbolOfSourceFile" | "getSymbolOfType" | "getSymbolsAtLocations" | "getSymbolsAtPositions" | "getSymbolsInScope" | "getSymbolsOfSourceFiles" | "getSyntacticDiagnostics" | "getTargetOfSignature" | "getTargetOfType" | "getTargetSymbol" | "getTemplateTypeOfMappedType" | "getThisParameterOfSignature" | "getThisTypeOfType" | "getTrueTypeOfConditionalType" | "getTypeArguments" | "getTypeAtLocation" | "getTypeAtLocations" | "getTypeAtPosition" | "getTypeFromTypeNode" | "getTypeOfPropertyOfType" | "getTypeOfSymbol" | "getTypeOfSymbolAtLocation" | "getTypeParameterAtPosition" | "getTypeParameterOfMappedType" | "getTypeParametersOfSignature" | "getTypeParametersOfType" | "getTypePredicateOfSignature" | "getTypesAtPositions" | "getTypesOfSymbols" | "getTypesOfType" | "getUndefinedType" | "getUnknownType" | "getVoidType" | "getWellKnownSignatures" | "getWellKnownSymbols" | "getWidenedType" | "initialize" | "isArrayLikeType" | "isArrayType" | "isContextSensitive" | "isReadonlySymbol" | "isTypeAssignableTo" | "parseCommandLine" | "parseConfigFile" | "parseJsonConfigFileContent" | "printNode" | "readConfigFile" | "release" | "releaseModuleResolver" | "releaseSourceFile" | "resolveModuleName" | "resolveName" | "retainSourceFile" | "saveHeapProfile" | "signatureToSignatureDeclaration" | "startCPUProfile" | "stopCPUProfile" | "transpileDeclaration" | "transpileDeclarationFromFile" | "transpileModule" | "transpileModuleFromFile" | "typeToString" | "typeToTypeNode" | "updateSnapshot";
     params?: unknown | undefined;
 }
 export interface BatchResponse {
-    method: "batchRequests" | "build" | "buildReferences" | "cleanBuild" | "cleanReferences" | "createBuildOrchestrator" | "createModuleResolver" | "createSnapshot" | "createSourceFile" | "createSourceFileFromFile" | "disposeBuildOrchestrator" | "emit" | "emitToString" | "formatNodeForInsertion" | "getAliasSymbolOfType" | "getAliasTypeArgumentsOfType" | "getAliasedSymbol" | "getAnyType" | "getApparentPropertiesOfType" | "getApparentType" | "getAwaitedType" | "getBaseConstraintOfType" | "getBaseTypeOfLiteralType" | "getBaseTypeOfType" | "getBaseTypes" | "getBigIntType" | "getBindDiagnostics" | "getBooleanType" | "getCachedSourceFile" | "getCheckTypeOfType" | "getCompletionsAtPosition" | "getConfigFileNames" | "getConfigFileParsingDiagnostics" | "getConfigSourceFile" | "getConstantValue" | "getConstraintOfType" | "getConstraintOfTypeParameter" | "getConstraintTypeOfMappedType" | "getContextualType" | "getContextualTypeForArgument" | "getCurrentLanguageServerSnapshot" | "getDeclarationDiagnostics" | "getDeclarationEmit" | "getDeclaredTypeOfSymbol" | "getDefaultFromTypeParameter" | "getDefaultProjectForFile" | "getDocumentationComment" | "getESSymbolType" | "getExportSpecifierLocalTargetSymbol" | "getExportSymbolOfSymbol" | "getExportSymbolOfSymbolForChecker" | "getExportsOfModule" | "getExportsOfSymbol" | "getExtendsTypeOfType" | "getFalseTypeOfConditionalType" | "getFreshTypeOfType" | "getFullyQualifiedName" | "getGlobalDiagnostics" | "getImmediateAliasedSymbol" | "getImportAdderEdits" | "getIndexInfoOfType" | "getIndexInfosOfType" | "getIndexTypeOfType" | "getJavaScriptEmit" | "getJsDocTags" | "getLocalTypeParametersOfType" | "getMemberInModuleExports" | "getMembersOfSymbol" | "getModeForResolutionAtIndex" | "getModeForUsageLocation" | "getNameTypeOfMappedType" | "getNeverType" | "getNonMissingTypeOfSymbol" | "getNonNullableType" | "getNonPrimitiveType" | "getNullType" | "getNumberType" | "getObjectTypeOfType" | "getOuterTypeParametersOfType" | "getParameterType" | "getParametersOfSignature" | "getParentOfSymbol" | "getProgramDiagnostics" | "getPropertiesOfType" | "getPropertyOfType" | "getReducedType" | "getReferencedSymbolsForNode" | "getReferencesToSymbolInFile" | "getRegularTypeOfType" | "getResolvedModule" | "getResolvedModuleFromModuleSpecifier" | "getResolvedSignature" | "getResolvedTypeReferenceDirective" | "getResolvedTypeReferenceDirectiveFromTypeReferenceDirective" | "getRestTypeOfSignature" | "getReturnTypeOfSignature" | "getSemanticDiagnostics" | "getShorthandAssignmentValueSymbol" | "getSignatureFromDeclaration" | "getSignatureUsages" | "getSignaturesOfType" | "getSourceFile" | "getSourceFileMetadata" | "getSourceFileNames" | "getStringType" | "getSuggestionDiagnostics" | "getSymbolAtLocation" | "getSymbolAtPosition" | "getSymbolOfDeclaration" | "getSymbolOfSourceFile" | "getSymbolOfType" | "getSymbolsAtLocations" | "getSymbolsAtPositions" | "getSymbolsInScope" | "getSymbolsOfSourceFiles" | "getSyntacticDiagnostics" | "getTargetOfSignature" | "getTargetOfType" | "getTargetSymbol" | "getTemplateTypeOfMappedType" | "getThisParameterOfSignature" | "getThisTypeOfType" | "getTrueTypeOfConditionalType" | "getTypeArguments" | "getTypeAtLocation" | "getTypeAtLocations" | "getTypeAtPosition" | "getTypeFromTypeNode" | "getTypeOfPropertyOfType" | "getTypeOfSymbol" | "getTypeOfSymbolAtLocation" | "getTypeParameterAtPosition" | "getTypeParameterOfMappedType" | "getTypeParametersOfSignature" | "getTypeParametersOfType" | "getTypePredicateOfSignature" | "getTypesAtPositions" | "getTypesOfSymbols" | "getTypesOfType" | "getUndefinedType" | "getUnknownType" | "getVoidType" | "getWellKnownSignatures" | "getWellKnownSymbols" | "getWidenedType" | "initialize" | "isArrayLikeType" | "isArrayType" | "isContextSensitive" | "isReadonlySymbol" | "isTypeAssignableTo" | "parseCommandLine" | "parseConfigFile" | "parseJsonConfigFileContent" | "printNode" | "readConfigFile" | "release" | "releaseModuleResolver" | "releaseSourceFile" | "resolveModuleName" | "resolveName" | "retainSourceFile" | "saveHeapProfile" | "signatureToSignatureDeclaration" | "startCPUProfile" | "stopCPUProfile" | "transpileDeclaration" | "transpileDeclarationFromFile" | "transpileModule" | "transpileModuleFromFile" | "typeToString" | "typeToTypeNode" | "updateSnapshot";
+    method: "batchRequests" | "build" | "buildReferences" | "cleanBuild" | "cleanReferences" | "createBuildOrchestrator" | "createModuleResolver" | "createSnapshot" | "createSourceFile" | "createSourceFileFromFile" | "disposeBuildOrchestrator" | "emit" | "emitToString" | "formatNodeForInsertion" | "getAliasSymbolOfType" | "getAliasTypeArgumentsOfType" | "getAliasedSymbol" | "getAnyType" | "getApparentPropertiesOfType" | "getApparentType" | "getAwaitedType" | "getBaseConstraintOfType" | "getBaseTypeOfLiteralType" | "getBaseTypeOfType" | "getBaseTypes" | "getBigIntType" | "getBindDiagnostics" | "getBooleanType" | "getCachedSourceFile" | "getCheckTypeOfType" | "getCompletionsAtPosition" | "getConfigFileNames" | "getConfigFileParsingDiagnostics" | "getConfigSourceFile" | "getConstantValue" | "getConstraintOfType" | "getConstraintOfTypeParameter" | "getConstraintTypeOfMappedType" | "getContextualType" | "getContextualTypeForArgument" | "getCurrentLanguageServerSnapshot" | "getDeclarationDiagnostics" | "getDeclarationEmit" | "getDeclaredTypeOfSymbol" | "getDefaultFromTypeParameter" | "getDefaultProjectForFile" | "getDocumentationComment" | "getESSymbolType" | "getExportSpecifierLocalTargetSymbol" | "getExportSymbolOfSymbol" | "getExportSymbolOfSymbolForChecker" | "getExportsOfModule" | "getExportsOfSymbol" | "getExtendsTypeOfType" | "getFalseTypeOfConditionalType" | "getFreshTypeOfType" | "getFullyQualifiedName" | "getGlobalDiagnostics" | "getImmediateAliasedSymbol" | "getImportAdderEdits" | "getIndexInfoOfType" | "getIndexInfosOfType" | "getIndexTypeOfType" | "getJavaScriptEmit" | "getJsDocTags" | "getLocalTypeParametersOfType" | "getMemberInModuleExports" | "getMembersOfSymbol" | "getMergedSymbol" | "getModeForResolutionAtIndex" | "getModeForUsageLocation" | "getNameTypeOfMappedType" | "getNeverType" | "getNonMissingTypeOfSymbol" | "getNonNullableType" | "getNonPrimitiveType" | "getNullType" | "getNumberType" | "getObjectTypeOfType" | "getOuterTypeParametersOfType" | "getParameterType" | "getParametersOfSignature" | "getParentOfSymbol" | "getParentOfSymbolForChecker" | "getProgramDiagnostics" | "getPropertiesOfType" | "getPropertyOfType" | "getReducedType" | "getReferencedSymbolsForNode" | "getReferencesToSymbolInFile" | "getRegularTypeOfType" | "getResolvedModule" | "getResolvedModuleFromModuleSpecifier" | "getResolvedSignature" | "getResolvedTypeReferenceDirective" | "getResolvedTypeReferenceDirectiveFromTypeReferenceDirective" | "getRestTypeOfSignature" | "getReturnTypeOfSignature" | "getSemanticDiagnostics" | "getShorthandAssignmentValueSymbol" | "getSignatureFromDeclaration" | "getSignatureUsages" | "getSignaturesOfType" | "getSourceFile" | "getSourceFileMetadata" | "getSourceFileNames" | "getStringType" | "getSuggestionDiagnostics" | "getSymbolAtLocation" | "getSymbolAtPosition" | "getSymbolOfDeclaration" | "getSymbolOfDeclarationForChecker" | "getSymbolOfNode" | "getSymbolOfSourceFile" | "getSymbolOfType" | "getSymbolsAtLocations" | "getSymbolsAtPositions" | "getSymbolsInScope" | "getSymbolsOfSourceFiles" | "getSyntacticDiagnostics" | "getTargetOfSignature" | "getTargetOfType" | "getTargetSymbol" | "getTemplateTypeOfMappedType" | "getThisParameterOfSignature" | "getThisTypeOfType" | "getTrueTypeOfConditionalType" | "getTypeArguments" | "getTypeAtLocation" | "getTypeAtLocations" | "getTypeAtPosition" | "getTypeFromTypeNode" | "getTypeOfPropertyOfType" | "getTypeOfSymbol" | "getTypeOfSymbolAtLocation" | "getTypeParameterAtPosition" | "getTypeParameterOfMappedType" | "getTypeParametersOfSignature" | "getTypeParametersOfType" | "getTypePredicateOfSignature" | "getTypesAtPositions" | "getTypesOfSymbols" | "getTypesOfType" | "getUndefinedType" | "getUnknownType" | "getVoidType" | "getWellKnownSignatures" | "getWellKnownSymbols" | "getWidenedType" | "initialize" | "isArrayLikeType" | "isArrayType" | "isContextSensitive" | "isReadonlySymbol" | "isTypeAssignableTo" | "parseCommandLine" | "parseConfigFile" | "parseJsonConfigFileContent" | "printNode" | "readConfigFile" | "release" | "releaseModuleResolver" | "releaseSourceFile" | "resolveModuleName" | "resolveName" | "retainSourceFile" | "saveHeapProfile" | "signatureToSignatureDeclaration" | "startCPUProfile" | "stopCPUProfile" | "transpileDeclaration" | "transpileDeclarationFromFile" | "transpileModule" | "transpileModuleFromFile" | "typeToString" | "typeToTypeNode" | "updateSnapshot";
     result: unknown;
     error?: string | undefined;
 }
@@ -1095,7 +1112,7 @@ export interface SnapshotChanges {
      * ChangedProjects maps project handles to the file changes within that project.
      * Projects not listed here (and not in RemovedProjects) are unchanged.
      */
-    changedProjects?: Record<string, ProjectFileChanges | null> | undefined;
+    changedProjects?: Record<ProjectId, ProjectFileChanges | null> | undefined;
     /**
      * RemovedProjects lists project handles that were present in the previous
      * snapshot but absent from the new one.
@@ -1131,7 +1148,7 @@ export interface ModuleResolutionSpec {
 }
 export interface ProjectReference {
     /** Path is a normalized path on disk. */
-    path: string;
+    path: RootedPath;
     /** OriginalPath is the path as it was originally written. */
     originalPath?: string | undefined;
     /** Circular indicates that this reference is intended to form a circularity. */
@@ -1147,7 +1164,7 @@ export interface CreateSourceFileOptions {
     scriptKind?: ScriptKind | undefined;
 }
 export interface TranspileOptions {
-    compilerOptions?: CompilerOptions | undefined;
+    compilerOptions?: RawCompilerOptions | undefined;
     fileName?: string | undefined;
     reportDiagnostics?: boolean | undefined;
 }
@@ -1182,25 +1199,25 @@ export interface DiagnosticSourceLineResponse {
     text: string;
 }
 export interface EmitOutputFile {
-    fileName: string;
+    fileName: RootedFilePath;
     text: string;
-    sourceFileName?: string | undefined;
+    sourceFileName?: RootedFilePath | undefined;
 }
 export interface SymbolOwner {
     kind: SymbolOwnerKind;
     file?: SourceFileDescriptor | undefined;
     snapshot?: number | undefined;
-    project?: ProjectId | undefined;
+    project?: number | undefined;
 }
 export interface CreateSnapshotProgramParams {
     rootFiles: readonly DocumentIdentifier[] | null;
-    compilerOptions: CompilerOptions;
+    compilerOptions: RawCompilerOptions;
     options?: CreateProgramOptions | undefined;
 }
 export interface ReconfigureSnapshotProgramParams {
     id: SyntheticProjectId;
     rootFiles: readonly DocumentIdentifier[] | null;
-    compilerOptions: CompilerOptions;
+    compilerOptions: RawCompilerOptions;
     options?: CreateProgramOptions | undefined;
 }
 /**
@@ -1227,9 +1244,9 @@ export interface RequestSymlink {
 /** ProjectFileChanges describes what source files changed within a single project. */
 export interface ProjectFileChanges {
     /** ChangedFiles lists source file paths whose content differs. */
-    changedFiles?: Path[] | undefined;
+    changedFiles?: PathKey[] | undefined;
     /** DeletedFiles lists source file paths removed from the project's program. */
-    deletedFiles?: Path[] | undefined;
+    deletedFiles?: PathKey[] | undefined;
 }
 export interface OpenedFileOperationResult {
     project: ProjectId;
@@ -1254,5 +1271,151 @@ export interface StaticModuleResolution {
     resolvedFileName?: DocumentIdentifier | undefined;
     originalPath?: DocumentIdentifier | undefined;
     packageId?: PackageId | undefined;
+}
+/**
+ * RawCompilerOptions is the JSON/API representation of compiler options.
+ * Filesystem paths remain strings until Finalize resolves them against a base
+ * directory and constructs a CompilerOptions with typed path guarantees.
+ */
+export interface RawCompilerOptions {
+    allowJs?: boolean | undefined;
+    allowArbitraryExtensions?: boolean | undefined;
+    allowImportingTsExtensions?: boolean | undefined;
+    allowNonTsExtensions?: boolean | undefined;
+    allowUmdGlobalAccess?: boolean | undefined;
+    allowUnreachableCode?: boolean | undefined;
+    allowUnusedLabels?: boolean | undefined;
+    assumeChangesOnlyAffectDirectDependencies?: boolean | undefined;
+    checkJs?: boolean | undefined;
+    customConditions?: string[] | undefined;
+    composite?: boolean | undefined;
+    emitDeclarationOnly?: boolean | undefined;
+    emitBOM?: boolean | undefined;
+    emitDecoratorMetadata?: boolean | undefined;
+    declaration?: boolean | undefined;
+    declarationDir?: string | undefined;
+    declarationMap?: boolean | undefined;
+    deduplicatePackages?: boolean | undefined;
+    disableSizeLimit?: boolean | undefined;
+    disableSourceOfProjectReferenceRedirect?: boolean | undefined;
+    disableSolutionSearching?: boolean | undefined;
+    disableReferencedProjectLoad?: boolean | undefined;
+    erasableSyntaxOnly?: boolean | undefined;
+    exactOptionalPropertyTypes?: boolean | undefined;
+    experimentalDecorators?: boolean | undefined;
+    forceConsistentCasingInFileNames?: boolean | undefined;
+    isolatedModules?: boolean | undefined;
+    isolatedDeclarations?: boolean | undefined;
+    ignoreConfig?: boolean | undefined;
+    ignoreDeprecations?: string | undefined;
+    importHelpers?: boolean | undefined;
+    inlineSourceMap?: boolean | undefined;
+    inlineSources?: boolean | undefined;
+    init?: boolean | undefined;
+    incremental?: boolean | undefined;
+    jsx?: JsxEmit | undefined;
+    jsxFactory?: string | undefined;
+    jsxFragmentFactory?: string | undefined;
+    jsxImportSource?: string | undefined;
+    lib?: string[] | undefined;
+    libReplacement?: boolean | undefined;
+    locale?: string | undefined;
+    mapRoot?: string | undefined;
+    module?: ModuleKind | undefined;
+    moduleResolution?: ModuleResolutionKind | undefined;
+    moduleSuffixes?: string[] | undefined;
+    moduleDetection?: ModuleDetectionKind | undefined;
+    newLine?: NewLineKind | undefined;
+    noEmit?: boolean | undefined;
+    noCheck?: boolean | undefined;
+    noErrorTruncation?: boolean | undefined;
+    noFallthroughCasesInSwitch?: boolean | undefined;
+    noImplicitAny?: boolean | undefined;
+    noImplicitThis?: boolean | undefined;
+    noImplicitReturns?: boolean | undefined;
+    noEmitHelpers?: boolean | undefined;
+    noLib?: boolean | undefined;
+    noPropertyAccessFromIndexSignature?: boolean | undefined;
+    noUncheckedIndexedAccess?: boolean | undefined;
+    noEmitOnError?: boolean | undefined;
+    noUnusedLocals?: boolean | undefined;
+    noUnusedParameters?: boolean | undefined;
+    noResolve?: boolean | undefined;
+    noImplicitOverride?: boolean | undefined;
+    noUncheckedSideEffectImports?: boolean | undefined;
+    outDir?: string | undefined;
+    paths?: Record<string, string[]> | undefined;
+    /** Plugins are parsed only so tools can report that native TypeScript does not support them. */
+    plugins?: PluginImport[] | undefined;
+    preserveConstEnums?: boolean | undefined;
+    preserveSymlinks?: boolean | undefined;
+    project?: string | undefined;
+    resolveJsonModule?: boolean | undefined;
+    resolvePackageJsonExports?: boolean | undefined;
+    resolvePackageJsonImports?: boolean | undefined;
+    removeComments?: boolean | undefined;
+    rewriteRelativeImportExtensions?: boolean | undefined;
+    reactNamespace?: string | undefined;
+    rootDir?: string | undefined;
+    rootDirs?: string[] | undefined;
+    skipLibCheck?: boolean | undefined;
+    stableTypeOrdering?: boolean | undefined;
+    strict?: boolean | undefined;
+    strictBindCallApply?: boolean | undefined;
+    strictBuiltinIteratorReturn?: boolean | undefined;
+    strictFunctionTypes?: boolean | undefined;
+    strictNullChecks?: boolean | undefined;
+    strictPropertyInitialization?: boolean | undefined;
+    stripInternal?: boolean | undefined;
+    skipDefaultLibCheck?: boolean | undefined;
+    sourceMap?: boolean | undefined;
+    sourceRoot?: string | undefined;
+    suppressOutputPathCheck?: boolean | undefined;
+    target?: ScriptTarget | undefined;
+    traceResolution?: boolean | undefined;
+    tsBuildInfoFile?: string | undefined;
+    typeRoots?: string[] | undefined;
+    types?: string[] | undefined;
+    useDefineForClassFields?: boolean | undefined;
+    useUnknownInCatchVariables?: boolean | undefined;
+    verbatimModuleSyntax?: boolean | undefined;
+    maxNodeModuleJsDepth?: number | undefined;
+    /** @deprecated Do not use outside of options parsing and validation. */
+    allowSyntheticDefaultImports?: boolean | undefined;
+    /** @deprecated Do not use outside of options parsing and validation. */
+    alwaysStrict?: boolean | undefined;
+    /** @deprecated Do not use outside of options parsing and validation. */
+    baseUrl?: string | undefined;
+    /** @deprecated Do not use outside of options parsing and validation. */
+    downlevelIteration?: boolean | undefined;
+    /** @deprecated Do not use outside of options parsing and validation. */
+    esModuleInterop?: boolean | undefined;
+    /** @deprecated Do not use outside of options parsing and validation. */
+    outFile?: string | undefined;
+    configFilePath?: string | undefined;
+    noDtsResolution?: boolean | undefined;
+    pathsBasePath?: string | undefined;
+    diagnostics?: boolean | undefined;
+    extendedDiagnostics?: boolean | undefined;
+    generateCpuProfile?: string | undefined;
+    generateTrace?: string | undefined;
+    listEmittedFiles?: boolean | undefined;
+    listFiles?: boolean | undefined;
+    explainFiles?: boolean | undefined;
+    listFilesOnly?: boolean | undefined;
+    noEmitForJsFiles?: boolean | undefined;
+    preserveWatchOutput?: boolean | undefined;
+    pretty?: boolean | undefined;
+    version?: boolean | undefined;
+    watch?: boolean | undefined;
+    showConfig?: boolean | undefined;
+    build?: boolean | undefined;
+    help?: boolean | undefined;
+    all?: boolean | undefined;
+    runExternalCode?: boolean | undefined;
+    pprofDir?: string | undefined;
+    singleThreaded?: boolean | undefined;
+    quiet?: boolean | undefined;
+    checkers?: number | undefined;
 }
 //# sourceMappingURL=proto.generated.d.ts.map

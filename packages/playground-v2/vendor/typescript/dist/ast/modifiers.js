@@ -1,5 +1,5 @@
-import { ModifierFlags } from "#enums/modifierFlags";
-import { SyntaxKind } from "#enums/syntaxKind";
+import { ModifierFlags } from "../../enums/modifierFlags.js";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
 export function modifierToFlag(kind) {
     switch (kind) {
         case SyntaxKind.StaticKeyword:

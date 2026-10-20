@@ -9,6 +9,7 @@
  * directly on the pipe file descriptors obtained from the spawned
  * ChildProcess.
  */
+export declare function createPipePath(): string;
 /**
  * SyncRpcChannel – drop-in replacement for the native libsyncrpc class.
  *
@@ -31,10 +32,13 @@ export declare class SyncRpcChannel {
     private writeFd;
     private pipeFd;
     private callbacks;
+    private callbackFailure;
     private methodBufCache;
     private readonly collectTiming;
     lastBytesSent: number;
     lastBytesReceived: number;
+    private readonly fs;
+    private readonly emptyBuf;
     private _msgType;
     private _msgName;
     private _msgPayload;

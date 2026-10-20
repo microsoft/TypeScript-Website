@@ -1,7 +1,10 @@
+import { CaseSensitivity } from "../../enums/caseSensitivity.js";
+export { CaseSensitivity } from "../../enums/caseSensitivity.js";
 const CharacterCodesSlash = "/".charCodeAt(0);
 const CharacterCodesBackslash = "\\".charCodeAt(0);
 const CharacterCodesColon = ":".charCodeAt(0);
 const CharacterCodesPercent = "%".charCodeAt(0);
+const CharacterCodesCaret = "^".charCodeAt(0);
 const CharacterCodes3 = "3".charCodeAt(0);
 const CharacterCodesa = "a".charCodeAt(0);
 const CharacterCodesz = "z".charCodeAt(0);
@@ -12,6 +15,8 @@ const directorySeparator = "/";
 const altDirectorySeparator = "\\";
 const urlSchemeSeparator = "://";
 const backslashRegExp = /\\/g;
+// Preserve U+0130 as case-sensitive while avoiding work for common lowercase paths.
+const fileNameLowerCaseRegExp = /[^\u0130\u0131\u00DFa-z0-9\\/:\-_. ]+/g;
 // check path for these segments: '', '.'. '..'
 const relativePathSegmentRegExp = /\/\/|(?:^|\/)\.\.?(?:$|\/)/;
 /**
@@ -85,12 +90,15 @@ function getEncodedRootLength(path) {
         return p1 + 1; // UNC: "//server/" or "\\server\"
     }
     // Dynamic/virtual compiler file name.
-    if (ch0 === 94 /* ^ */ && path.charCodeAt(1) === CharacterCodesSlash) {
+    if (ch0 === CharacterCodesCaret && path.charCodeAt(1) === CharacterCodesSlash) {
         if (path.startsWith(dynamicURIFileNamePrefix)) {
             const schemeEnd = path.indexOf(directorySeparator, dynamicURIFileNamePrefix.length);
             if (schemeEnd !== -1) {
                 const authorityEnd = path.indexOf(directorySeparator, schemeEnd + 1);
-                return authorityEnd === -1 ? path.length : authorityEnd + 1;
+                if (authorityEnd !== -1) {
+                    return authorityEnd + 1;
+                }
+                return ~path.length;
             }
         }
         return 2;
@@ -364,32 +372,163 @@ function pathFromComponents(components) {
     return root + components.slice(1).join(directorySeparator);
 }
 /**
- * Converts a file name to a normalized path.
- *
- * @param fileName The file name to convert
- * @param basePath The base path to use for relative file names
- * @param getCanonicalFileName A function to get the canonical file name (e.g., toLowerCase for case-insensitive systems)
- * @returns The normalized path
+ * Returns the canonical key for an already rooted, normalized path under
+ * caseSensitivity.
  */
-export function toPath(fileName, basePath, getCanonicalFileName) {
-    const nonCanonicalizedPath = isRootedDiskPath(fileName)
-        ? normalizePath(fileName)
-        : getNormalizedAbsolutePath(fileName, basePath);
-    return nonCanonicalizedPath.startsWith(dynamicURIFileNamePrefix)
-        ? nonCanonicalizedPath
-        : getCanonicalFileName(nonCanonicalizedPath);
+export function pathKey(path, caseSensitivity) {
+    if (path.startsWith(dynamicURIFileNamePrefix)) {
+        let canonicalPath = path;
+        if (getRootLength(path) === path.length && !hasTrailingDirectorySeparator(path)) {
+            canonicalPath += directorySeparator;
+        }
+        return canonicalize(canonicalPath, CaseSensitivity.Sensitive);
+    }
+    return canonicalize(path, caseSensitivity);
 }
 /**
- * Creates a getCanonicalFileName function based on case sensitivity.
+ * Validates a canonical path key received from a trusted producer without
+ * applying case sensitivity again.
  */
-export function createGetCanonicalFileName(useCaseSensitiveFileNames) {
-    return useCaseSensitiveFileNames ? identity : toLowerCase;
+export function tryPathKeyFromCanonical(path) {
+    return tryRootedPathFromNormalized(path) === undefined ? undefined : path;
 }
-function identity(x) {
-    return x;
+/**
+ * Resolves path against currentDirectory and normalizes it.
+ */
+export function toRootedPath(path, currentDirectory) {
+    if (path === "") {
+        throw new Error("Path must not be empty");
+    }
+    if (hasRootedURLSuffix(path)) {
+        throw new Error(`Path must not contain a URL query or fragment: ${path}`);
+    }
+    if (getEncodedRootLength(path) === 0 &&
+        currentDirectory !== undefined &&
+        hasURLRoot(currentDirectory) &&
+        /[?#]/.test(path)) {
+        throw new Error(`Relative URL path must not contain a query or fragment: ${path}`);
+    }
+    let normalized = getNormalizedAbsolutePath(path, currentDirectory);
+    if (normalized === "" ||
+        getRootLength(normalized) === 0 ||
+        hasRootedURLSuffix(normalized)) {
+        throw new Error(`Path is not rooted: ${normalized}`);
+    }
+    if (getRootLength(normalized) === normalized.length && !hasTrailingDirectorySeparator(normalized)) {
+        normalized += directorySeparator;
+    }
+    return normalized;
 }
-function toLowerCase(s) {
-    return s.toLowerCase();
+/**
+ * Validates a path that is already rooted and normalized without changing it.
+ */
+export function rootedPathFromNormalized(path) {
+    const result = tryRootedPathFromNormalized(path);
+    if (result === undefined) {
+        throw new Error(`Path is not rooted and normalized: ${path}`);
+    }
+    return result;
+}
+/**
+ * Attempts to validate a path that is already rooted and normalized without
+ * changing it.
+ */
+export function tryRootedPathFromNormalized(path) {
+    if (hasRootedURLSuffix(path)) {
+        return undefined;
+    }
+    const rootLength = getRootLength(path);
+    if (path === "" ||
+        rootLength === 0 ||
+        path.includes("\\") ||
+        hasRelativePathSegment(path, rootLength) ||
+        path.length === rootLength && !hasTrailingDirectorySeparator(path) ||
+        path.length > rootLength && hasTrailingDirectorySeparator(path)) {
+        return undefined;
+    }
+    return path;
+}
+function hasRootedURLSuffix(path) {
+    if (!hasURLRoot(path)) {
+        return false;
+    }
+    const schemeEnd = path.indexOf(urlSchemeSeparator);
+    const suffixStart = path.search(/[?#]/);
+    return suffixStart >= schemeEnd + urlSchemeSeparator.length;
+}
+function hasURLRoot(path) {
+    return getEncodedRootLength(path) < 0 && path.includes(urlSchemeSeparator);
+}
+function hasRelativePathSegment(path, start) {
+    if (start === path.length) {
+        return false;
+    }
+    let segmentStart = start;
+    for (let index = start; index <= path.length; index++) {
+        if (index !== path.length && path.charCodeAt(index) !== CharacterCodesSlash) {
+            continue;
+        }
+        const segmentLength = index - segmentStart;
+        if (segmentLength === 0 ||
+            segmentLength === 1 && path.charCodeAt(segmentStart) === CharacterCodesDot ||
+            segmentLength === 2 &&
+                path.charCodeAt(segmentStart) === CharacterCodesDot &&
+                path.charCodeAt(segmentStart + 1) === CharacterCodesDot) {
+            return true;
+        }
+        segmentStart = index + 1;
+    }
+    return false;
+}
+/**
+ * Resolves fileName against currentDirectory, normalizes it, and gives it file
+ * intent.
+ */
+export function toRootedFilePath(fileName, currentDirectory) {
+    return toRootedPath(fileName, currentDirectory);
+}
+/**
+ * Resolves directory against currentDirectory, normalizes it, and gives it
+ * directory intent.
+ */
+export function toRootedDirectoryPath(directory, currentDirectory) {
+    return toRootedPath(directory, currentDirectory);
+}
+/**
+ * Gives a RootedPath file intent without changing it.
+ */
+export function rootedFilePathFromPath(path) {
+    return path;
+}
+/**
+ * Gives a RootedPath directory intent without changing it.
+ */
+export function rootedDirectoryPathFromPath(path) {
+    return path;
+}
+/**
+ * Applies caseSensitivity to text used for path comparison or keys.
+ */
+export function canonicalize(text, caseSensitivity) {
+    return isCaseSensitive(caseSensitivity) ? text : toFileNameLowerCase(text);
+}
+export function isCaseSensitive(caseSensitivity) {
+    return caseSensitivity === CaseSensitivity.Sensitive;
+}
+export function isCaseInsensitive(caseSensitivity) {
+    return caseSensitivity === CaseSensitivity.Insensitive;
+}
+function toLowerCasePerCodePoint(text) {
+    let result = "";
+    for (const char of text) {
+        result += char.toLowerCase();
+    }
+    return result;
+}
+function toFileNameLowerCase(fileName) {
+    return fileNameLowerCaseRegExp.test(fileName)
+        ? fileName.replace(fileNameLowerCaseRegExp, toLowerCasePerCodePoint)
+        : fileName;
 }
 const bundledScheme = "bundled:///";
 const dynamicURIFileNamePrefix = "^/~ts-uri~/";
@@ -594,8 +733,10 @@ export function documentURIToFileName(uri) {
     return dynamicURIFileNamePrefix + scheme + "/" + encodedAuthority + "/" + encodedPath;
 }
 function encodeDynamicURIPath(path, preserveFinalExtension = true) {
-    if (!dynamicURIPathNeedsEncoding(path) && !isRootedDiskPath(path)) {
-        return path;
+    if (!dynamicURIPathNeedsEncoding(path)) {
+        if (!isRootedDiskPath(path)) {
+            return path;
+        }
     }
     const segments = path.split("/");
     for (let i = 0; i < segments.length; i++) {
@@ -632,16 +773,28 @@ function dynamicURIPathSegmentNeedsEncoding(segment) {
         segment.includes("\\");
 }
 function encodeDynamicURIPathSegment(segment, preserveExtension) {
-    return dynamicURIPathSegmentNeedsEncoding(segment)
-        ? forceEncodeDynamicURIPathSegment(segment, preserveExtension)
-        : segment;
+    if (dynamicURIPathSegmentNeedsEncoding(segment)) {
+        return forceEncodeDynamicURIPathSegment(segment, preserveExtension);
+    }
+    return segment;
 }
 function forceEncodeDynamicURIPathSegment(segment, preserveExtension) {
     let extension = "";
     if (preserveExtension && segment !== "." && segment !== "..") {
         [segment, extension] = splitDynamicURIFileExtension(segment);
     }
-    return dynamicURIPathSegmentEscapePrefix + encodeDynamicURIHex(segment) + "~" + extension;
+    let hex = "";
+    const encoded = encodeURIComponent(segment);
+    for (let i = 0; i < encoded.length; i++) {
+        if (encoded.charCodeAt(i) === CharacterCodesPercent) {
+            hex += encoded.slice(i + 1, i + 3).toLowerCase();
+            i += 2;
+        }
+        else {
+            hex += encoded.charCodeAt(i).toString(16).padStart(2, "0");
+        }
+    }
+    return dynamicURIPathSegmentEscapePrefix + hex + "~" + extension;
 }
 function forceEncodeDynamicURIPathSegmentWithSuffix(segment, suffix) {
     const [base, extension] = splitDynamicURIFileExtension(segment);
@@ -667,26 +820,13 @@ function getDynamicURIFileExtension(segment) {
         }
     }
     const dot = segment.lastIndexOf(".");
-    return dot >= baseStart ? segment.substring(dot) : "";
-}
-function encodeDynamicURIHex(text) {
-    let hex = "";
-    const encoded = encodeURIComponent(text);
-    for (let i = 0; i < encoded.length; i++) {
-        if (encoded.charCodeAt(i) === CharacterCodesPercent) {
-            hex += encoded.slice(i + 1, i + 3).toLowerCase();
-            i += 2;
-        }
-        else {
-            hex += encoded.charCodeAt(i).toString(16).padStart(2, "0");
-        }
-    }
-    return hex;
+    return dot > segment.lastIndexOf("\\") ? segment.substring(dot) : "";
 }
 function decodeDynamicURIPath(path) {
-    return path.includes(dynamicURIPathSegmentEscapePrefix)
-        ? path.split("/").map(decodeDynamicURIPathSegment).join("/")
-        : path;
+    if (!path.includes(dynamicURIPathSegmentEscapePrefix)) {
+        return path;
+    }
+    return path.split("/").map(decodeDynamicURIPathSegment).join("/");
 }
 function decodeDynamicURIPathSegment(segment) {
     if (!segment.startsWith(dynamicURIPathSegmentEscapePrefix)) {
@@ -698,25 +838,39 @@ function decodeDynamicURIPathSegment(segment) {
     }
     const encoded = segment.slice(dynamicURIPathSegmentEscapePrefix.length, separator);
     const extension = segment.slice(separator + 1);
-    const decoded = decodeDynamicURIHex(encoded);
-    if (decoded === undefined) {
+    if (encoded.length % 2 !== 0 || !/^[0-9a-f]*$/i.test(encoded)) {
         return segment;
     }
-    const suffix = decoded.indexOf("\0");
-    return suffix === -1
-        ? decoded + extension
-        : decoded.substring(0, suffix) + extension + decoded.substring(suffix + 1);
+    try {
+        const decoded = decodeURIComponent(encoded.replace(/../g, value => `%${value}`));
+        const suffix = decoded.indexOf("\0");
+        return suffix === -1
+            ? decoded + extension
+            : decoded.substring(0, suffix) + extension + decoded.substring(suffix + 1);
+    }
+    catch {
+        return segment;
+    }
 }
 function encodeDynamicURINoPath(suffix) {
-    return dynamicURINoPathEscapePrefix + encodeDynamicURIHex(suffix) + "~";
+    let hex = "";
+    const encoded = encodeURIComponent(suffix);
+    for (let i = 0; i < encoded.length; i++) {
+        if (encoded.charCodeAt(i) === CharacterCodesPercent) {
+            hex += encoded.substring(i + 1, i + 3).toLowerCase();
+            i += 2;
+        }
+        else {
+            hex += encoded.charCodeAt(i).toString(16).padStart(2, "0");
+        }
+    }
+    return dynamicURINoPathEscapePrefix + hex + "~";
 }
 function decodeDynamicURINoPath(path) {
     if (!path.startsWith(dynamicURINoPathEscapePrefix) || !path.endsWith("~")) {
         return undefined;
     }
-    return decodeDynamicURIHex(path.substring(dynamicURINoPathEscapePrefix.length, path.length - 1));
-}
-function decodeDynamicURIHex(encoded) {
+    const encoded = path.substring(dynamicURINoPathEscapePrefix.length, path.length - 1);
     if (encoded.length % 2 !== 0 || !/^[0-9a-f]*$/i.test(encoded)) {
         return undefined;
     }

@@ -1,22 +1,25 @@
 {
-  "name": "@typescript/typescript-wasip1-wasm",
-  "version": "0.0.0",
-  "license": "Apache-2.0",
-  "type": "module",
-  "files": [
-    "dist",
-    "lib",
-    "LICENSE.txt",
-    "NOTICE.txt"
-  ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "@typescript/source": "./src/index.ts",
-      "default": "./dist/index.js"
+    "name": "@typescript/typescript-wasip1-wasm",
+    "version": "7.1.0-dev.0.0",
+    "license": "Apache-2.0",
+    "author": "Microsoft Corp.",
+    "homepage": "https://www.typescriptlang.org/",
+    "description": "Experimental TypeScript support for wasip1/wasm",
+    "type": "module",
+    "files": [
+        "dist",
+        "lib",
+        "NOTICE.txt"
+    ],
+    "exports": {
+        "./package.json": "./package.json",
+        ".": "./dist/index.js",
+        "./lib/libFiles.json": "./lib/libFiles.json",
+        "./lib/tsc.wasm": "./lib/tsc.wasm"
     },
-    "./lib/libFiles.json": "./lib/libFiles.json",
-    "./lib/tsc.wasm": "./lib/tsc.wasm"
-  },
-  "imports": {}
+    "gitHead": "4b93f40564ea9618434c545ac57d289f5f3bd9e5",
+    "publishConfig": {
+        "access": "public",
+        "tag": "next"
+    }
 }

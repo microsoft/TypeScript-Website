@@ -1,10 +1,10 @@
 // is.ts — Hand-written type guard functions
 // Generated guards are in is.generated.ts
-import { ModifierFlags } from "#enums/modifierFlags";
-import { NodeFlags } from "#enums/nodeFlags";
-import { OuterExpressionKinds } from "#enums/outerExpressionKinds";
-import { ScriptKind } from "#enums/scriptKind";
-import { SyntaxKind } from "#enums/syntaxKind";
+import { ModifierFlags } from "../../enums/modifierFlags.js";
+import { NodeFlags } from "../../enums/nodeFlags.js";
+import { OuterExpressionKinds } from "../../enums/outerExpressionKinds.js";
+import { ScriptKind } from "../../enums/scriptKind.js";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
 import { isBinaryExpression, isClassLikeDeclaration, isComputedPropertyName, isHeritageClause, isIdentifier, isJSDocAugmentsTag, isJSDocImplementsTag, isJSDocLink, isJSDocLinkCode, isJSDocLinkPlain, isJSDocNameReference, isLiteralExpression, isShorthandPropertyAssignment, } from "./is.generated.js";
 import { hasExpression, hasInitializer, hasObjectAssignmentInitializer, } from "./utils.js";
 export * from "./is.generated.js";

@@ -1,6 +1,6 @@
-import type { Path } from "../ast/index.ts";
+import type { PathKey } from "../ast/index.ts";
 import type { RemoteSourceFile } from "./node/node.ts";
-import type { SnapshotChanges, SourceFileDescriptor } from "./proto.ts";
+import type { ProjectId, SnapshotChanges, SourceFileDescriptor } from "./proto.ts";
 /**
  * A cached source file entry, identified by content hash.
  */
@@ -50,13 +50,13 @@ export declare class SourceFileCache<TSymbol> {
      * A given (snapshot, project) pair always parses a file the same way, so there is
      * at most one matching entry per ref.
      */
-    getRetained(path: Path, snapshotId: number, projectId: string): RemoteSourceFile | undefined;
+    getRetained(path: PathKey, snapshotId: number, projectId: ProjectId): RemoteSourceFile | undefined;
     get(file: RemoteSourceFile): RemoteSourceFile | undefined;
-    getOrCreateRecord(file: SourceFileDescriptor, snapshotId: number, projectId: string): CachedSourceFile<TSymbol>;
+    getOrCreateRecord(file: SourceFileDescriptor, snapshotId: number, projectId: ProjectId): CachedSourceFile<TSymbol>;
     /** Find the live record for a source-file node ID without creating or retaining one. */
     findRecord(nodeId: string): CachedSourceFile<TSymbol> | undefined;
     /** Retain an existing record for a snapshot/project that reused one of its cached objects. */
-    retainRecord(record: CachedSourceFile<TSymbol>, snapshotId: number, projectId: string): void;
+    retainRecord(record: CachedSourceFile<TSymbol>, snapshotId: number, projectId: ProjectId): void;
     /** Attach a source file fetched by its descriptor to its existing record. */
     attachFile(record: CachedSourceFile<TSymbol>, file: RemoteSourceFile): RemoteSourceFile;
     getOrCreateSymbol(record: CachedSourceFile<TSymbol>, file: SourceFileDescriptor, id: number, create: () => TSymbol): TSymbol;
@@ -64,7 +64,7 @@ export declare class SourceFileCache<TSymbol> {
      * Store a source file in the cache and retain it for the given (snapshot, project) pair.
      * Returns the cached file — which may be an existing entry if the hash matches.
      */
-    set(file: RemoteSourceFile, snapshotId: number, projectId: string): RemoteSourceFile;
+    set(file: RemoteSourceFile, snapshotId: number, projectId: ProjectId): RemoteSourceFile;
     /**
      * Store a source file in the cache and retain it for a direct lease.
      * Returns the cached file so leased and program-owned files share identity.
@@ -105,6 +105,6 @@ export declare class SourceFileCache<TSymbol> {
     /**
      * Check if a path is in the cache.
      */
-    has(path: Path): boolean;
+    has(path: PathKey): boolean;
 }
 //# sourceMappingURL=sourceFileCache.d.ts.map

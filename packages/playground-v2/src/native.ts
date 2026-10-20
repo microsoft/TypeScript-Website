@@ -1,5 +1,6 @@
 import type { Dependency, SourceFile } from "./ata"
 import type { NativeCompileInput, NativeCompileResult } from "./native-compiler"
+import type { CompilerModules } from "./compiler-distribution"
 
 type PendingRequest = {
   resolve(value: unknown): void
@@ -12,6 +13,7 @@ type QueuedCompile = {
 }
 
 export class NativeBackend {
+  diagnosticCategories!: typeof import("@typescript/typescript/sync").DiagnosticCategory
   private readonly worker = new Worker(new URL("./native.worker.js", import.meta.url), { type: "module" })
   private readonly pending = new Map<number, PendingRequest>()
   private nextId = 0
@@ -39,10 +41,16 @@ export class NativeBackend {
     })
   }
 
-  static async create(module: WebAssembly.Module, libraries: Record<string, string>) {
+  static async create(module: WebAssembly.Module, libraries: Record<string, string>, modules: CompilerModules) {
     const backend = new NativeBackend()
     try {
-      await backend.request("init", { module, libraries })
+      const { sync, async, ast, host } = modules
+      const result = await backend.request<{ diagnosticCategories: NativeBackend["diagnosticCategories"] }>("init", {
+        module,
+        libraries,
+        modules: { sync, async, ast, host },
+      })
+      backend.diagnosticCategories = result.diagnosticCategories
       return backend
     } catch (error) {
       backend.worker.terminate()

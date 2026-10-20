@@ -1,5 +1,5 @@
-import { ModifierFlags } from "#enums/modifierFlags";
-import { SyntaxKind } from "#enums/syntaxKind";
+import { ModifierFlags } from "../../enums/modifierFlags.js";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
 import type { __String, Declaration, DeclarationName, Expression, HasExpression, HasInitializer, ObjectAssignmentInitializer, SourceFile } from "./ast.ts";
 import type { Node } from "./ast.ts";
 export declare function formatSyntaxKind(kind: SyntaxKind): string;

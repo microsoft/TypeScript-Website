@@ -1,4 +1,4 @@
-import { type FileReference, type LineAndCharacter, type MappedDiagnosticDirective, type Node, type Path, SpanMap, SyntaxKind } from "../../ast/index.ts";
+import { type FileReference, type LineAndCharacter, type MappedDiagnosticDirective, type Node, type PathKey, type RootedFilePath, SpanMap, SyntaxKind } from "../../ast/index.ts";
 import type { API as AsyncAPI } from "../async/api.ts";
 import type { CachedSourceFile } from "../sourceFileCache.ts";
 import type { API as SyncAPI } from "../sync/api.ts";
@@ -31,21 +31,18 @@ export declare class RemoteSourceFile extends RemoteNode implements SourceFileIn
     private _cachedSupplementalSourceFileNames;
     private _cachedDiagnosticDirectives;
     private _diagnosticDirectivesRead;
+    private _handleFileKey;
     constructor(data: Uint8Array, decoder: TextDecoder, timing?: TimingCollector, api?: AsyncAPI<boolean> | SyncAPI<boolean> | undefined);
-    /** @internal */
-    get contentHash(): string;
-    /** @internal */
-    get parseOptionsKey(): string;
-    /** @internal */
-    get nodeId(): string;
     readFileReferences(structuredDataOffset: number): readonly FileReference[];
     readNodeIndexArray(structuredDataOffset: number): readonly Node[];
     readStringArray(structuredDataOffset: number): readonly string[];
-    /** @internal */
     getOrCreateNodeAtIndex(index: number): Node;
     private get extendedDataOffset();
-    get fileName(): string;
-    get path(): Path;
+    private getFileName;
+    private getPathKey;
+    private readFileNameArray;
+    get fileName(): RootedFilePath;
+    get path(): PathKey;
     get languageVariant(): number;
     get scriptKind(): number;
     get referencedFiles(): readonly FileReference[];
@@ -57,10 +54,10 @@ export declare class RemoteSourceFile extends RemoteNode implements SourceFileIn
     get externalModuleIndicator(): Node | true | undefined;
     get originalText(): string;
     get spanMap(): SpanMap | undefined;
-    get supplementalSourceFileNames(): readonly string[] | undefined;
-    get canonicalSourceFileName(): string | undefined;
+    get supplementalSourceFileNames(): readonly RootedFilePath[] | undefined;
+    get canonicalSourceFileName(): RootedFilePath | undefined;
     get contentMapper(): string | undefined;
-    get virtualFileName(): string | undefined;
+    get virtualFileName(): RootedFilePath | undefined;
     get diagnosticDirectives(): readonly MappedDiagnosticDirective[] | undefined;
     get isDeclarationFile(): boolean;
     get text(): string;
@@ -78,13 +75,14 @@ export declare function findDescendant(root: Node, pos: number, end: number, kin
 export interface ParsedNodeHandle {
     index: number;
     kind: SyntaxKind;
-    path: Path;
+    sourceFileId: string;
+    path: PathKey;
 }
 /**
- * Parse a node handle string into its components.
- * Handle format: "index.kind.path" where path may contain dots.
+ * Parse a compiler-produced node handle into its components.
+ * Handle format: "index.kind.#sourceFileId.path" where path may contain dots.
  */
-export declare function parseNodeHandle(handle: string): ParsedNodeHandle;
+export declare function parseNodeHandleFromCompiler(handle: string): ParsedNodeHandle;
 /**
  * Decode binary-encoded AST data into a Node.
  * Works for any binary-encoded node, including synthetic nodes

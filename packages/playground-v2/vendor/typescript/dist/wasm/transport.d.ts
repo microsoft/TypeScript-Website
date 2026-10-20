@@ -4,7 +4,7 @@ export interface WasmReactorExports {
     memory: {
         readonly buffer: ArrayBufferLike;
     };
-    create_session(optionsPointer: number, optionsLength: number): number;
+    create_session(optionsLength: number): number;
     close_session(): void;
     get_request_buffer(size: number): number;
     handle_request(methodLength: number, payloadLength: number): number;
@@ -39,7 +39,6 @@ export declare class WasmTransport {
     lastBytesReceived: number;
     private readonly instance;
     private readonly exports;
-    private requestPointer;
     private closed;
     private inCallback;
     private readonly callbackNames;

@@ -1,6 +1,8 @@
+import type { AsyncClientTransportOptions } from "../options.ts";
 import type { APIMethodInfo, APIRequest, SourceFileResponseMethod } from "../proto.ts";
 import { TimingCollector, type TimingInfo } from "../timing.ts";
 import type { AsyncTransport } from "./transport.ts";
+export declare function createTransportClient(options: AsyncClientTransportOptions): TransportClient;
 /** Protocol client for an injected asynchronous transport. */
 export declare class TransportClient {
     private readonly encoder;
@@ -9,11 +11,11 @@ export declare class TransportClient {
     private readonly maxResponseBytesPerPage;
     private connected;
     private closed;
+    private closing;
     private nextBatch;
     private batchGeneration;
     private batchedRequests;
-    private readonly closedPromise;
-    private rejectClosed;
+    private readonly pendingOperations;
     constructor(transport: AsyncTransport, collectTiming: boolean, maxResponseBytesPerPage?: number);
     connect(): Promise<void>;
     batchContext(): {
@@ -26,6 +28,7 @@ export declare class TransportClient {
     getTimingInfo(): Promise<TimingInfo>;
     resetTimingInfo(): Promise<void>;
     close(): Promise<void>;
+    private closeWorker;
     private scheduleBatch;
     private doBatch;
     private sendRequest;

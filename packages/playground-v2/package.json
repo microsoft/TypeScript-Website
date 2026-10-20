@@ -6,7 +6,7 @@
     "build": "node scripts/build.mjs",
     "dev": "node scripts/build.mjs --serve",
     "test": "node scripts/test-ata.mjs && node scripts/smoke-test.mjs",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/typescript/bin/tsc -p tsconfig.test.json",
     "vendor-resources": "node scripts/vendor-resources.mjs",
     "vendor-typescript": "node scripts/vendor-typescript.mjs"
   },

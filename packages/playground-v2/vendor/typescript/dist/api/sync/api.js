@@ -1,33 +1,34 @@
 import { apiRequest, cacheGeneratorMethod, } from "./generatorSupport.js";
-import { CheckFlags } from "#enums/checkFlags";
-import { CompletionItemKind } from "#enums/completionItemKind";
-import { DiagnosticCategory } from "#enums/diagnosticCategory";
-import { ElementFlags } from "#enums/elementFlags";
-import { EmitOnly } from "#enums/emitOnly";
-import { IndexKind } from "#enums/indexKind";
-import { JsxEmit } from "#enums/jsxEmit";
-import { ModuleKind } from "#enums/moduleKind";
-import { ModuleResolutionKind } from "#enums/moduleResolutionKind";
-import { NewLineKind } from "#enums/newLineKind";
-import { NodeBuilderFlags } from "#enums/nodeBuilderFlags";
-import { ObjectFlags } from "#enums/objectFlags";
-import { ScriptKind } from "#enums/scriptKind";
-import { SignatureFlags } from "#enums/signatureFlags";
-import { SignatureKind } from "#enums/signatureKind";
-import { SymbolFlags } from "#enums/symbolFlags";
-import { SymbolOwnerKind } from "#enums/symbolOwnerKind";
-import { TypeFlags } from "#enums/typeFlags";
-import { TypeFormatFlags } from "#enums/typeFormatFlags";
-import { TypePredicateKind } from "#enums/typePredicateKind";
-import { Client, } from "#syncClient";
+import { CheckFlags } from "../../../enums/checkFlags.js";
+import { CompletionItemKind } from "../../../enums/completionItemKind.js";
+import { DiagnosticCategory } from "../../../enums/diagnosticCategory.js";
+import { ElementFlags } from "../../../enums/elementFlags.js";
+import { EmitOnly } from "../../../enums/emitOnly.js";
+import { IndexKind } from "../../../enums/indexKind.js";
+import { JsxEmit } from "../../../enums/jsxEmit.js";
+import { ModuleKind } from "../../../enums/moduleKind.js";
+import { ModuleResolutionKind } from "../../../enums/moduleResolutionKind.js";
+import { NewLineKind } from "../../../enums/newLineKind.js";
+import { NodeBuilderFlags } from "../../../enums/nodeBuilderFlags.js";
+import { ObjectFlags } from "../../../enums/objectFlags.js";
+import { ScriptKind } from "../../../enums/scriptKind.js";
+import { SignatureFlags } from "../../../enums/signatureFlags.js";
+import { SignatureKind } from "../../../enums/signatureKind.js";
+import { SymbolFlags } from "../../../enums/symbolFlags.js";
+import { SymbolOwnerKind } from "../../../enums/symbolOwnerKind.js";
+import { TypeFlags } from "../../../enums/typeFlags.js";
+import { TypeFormatFlags } from "../../../enums/typeFormatFlags.js";
+import { TypePredicateKind } from "../../../enums/typePredicateKind.js";
 import { ModifierFlags, unescapeLeadingUnderscores, } from "../../ast/index.js";
 import { assertNever } from "../../internal/utils.js";
 import { encodeNode, uint8ArrayToBase64, } from "../node/encoder.js";
-import { decodeNode, getNodeId, parseNodeHandle, readSourceFileLease, RemoteNode, RemoteSourceFile, } from "../node/node.js";
+import { decodeNode, getNodeId, getNodeRequestHandle, parseNodeHandleFromCompiler, readParseOptionsKey, readSourceFileHash, readSourceFileLease, RemoteNode, RemoteSourceFile, } from "../node/node.js";
 import { Wtf8Decoder } from "../node/wtf8.js";
-import { createGetCanonicalFileName, toPath, } from "../path.js";
-import { resolveFileName, toCreateSnapshotRequest, validateSymbolResponse, } from "../proto.js";
+import { canonicalize, CaseSensitivity, pathKey, toRootedDirectoryPath, toRootedPath, } from "../path.js";
+import { prepareCompilerOptions } from "../prepareCompilerOptions.generated.js";
+import { resolveFileName, validateSymbolResponse, } from "../proto.js";
 import { SourceFileCache, } from "../sourceFileCache.js";
+import { Client, } from "./client.js";
 export { formatDiagnostics, formatDiagnosticsWithColorAndContext } from "../diagnosticFormatter.js";
 export { documentURIToFileName, fileNameToDocumentURI } from "../path.js";
 export { CheckFlags, CompletionItemKind, DiagnosticCategory, ElementFlags, EmitOnly, IndexKind, JsxEmit, ModifierFlags, ModuleKind, ModuleResolutionKind, NodeBuilderFlags, ObjectFlags, ScriptKind, SignatureFlags, SignatureKind, SymbolFlags, SymbolOwnerKind, TypeFlags, TypeFormatFlags, TypePredicateKind };
@@ -56,21 +57,21 @@ export class API {
     /** @internal */
     sourceFileCache;
     toPath;
-    currentDirectory;
     decoder = new Wtf8Decoder();
-    getCanonicalFileNameWorker;
+    currentDirectory;
+    caseSensitivity;
     initialized = false;
     initializing;
     activeSnapshots = new Map();
     activeBuildOrchestrators = new Set();
     activeSourceFileLeases = new Map();
     printer;
-    internal;
+    debug;
     constructor(options = {}) {
         this.client = new Client(options);
         this.sourceFileCache = new SourceFileCache();
         this.printer = new Printer(this.client);
-        this.internal = new InternalAPI(this.client, this.ensureInitialized);
+        this.debug = new DebugHandlers(this.client, this.ensureInitialized);
     }
     /**
      * Looks up a remote declaration's binder symbol. Throws for synthesized or configuration ASTs.
@@ -84,7 +85,7 @@ export class API {
             const record = file.symbolCache;
             if (!record)
                 throw new Error(`Cached source file not found for declaration`);
-            const index = parseNodeHandle(getNodeId(declaration)).index;
+            const index = parseNodeHandleFromCompiler(getNodeId(declaration)).index;
             const cached = record.symbolsByDeclarationNodeIndex.get(index);
             if (cached)
                 return cached;
@@ -96,7 +97,7 @@ export class API {
             const record = file.symbolCache;
             if (!record)
                 throw new Error(`Cached source file not found for declaration`);
-            const index = parseNodeHandle(getNodeId(declaration)).index;
+            const index = parseNodeHandleFromCompiler(getNodeId(declaration)).index;
             const cached = record.symbolsByDeclarationNodeIndex.get(index);
             if (cached)
                 return cached;
@@ -171,11 +172,9 @@ export class API {
         return cacheGeneratorMethod(owner, "initializeWorker", function () {
             try {
                 const response = owner.client.apiRequest("initialize", null);
-                const getCanonicalFileName = createGetCanonicalFileName(response.useCaseSensitiveFileNames);
-                const currentDirectory = response.currentDirectory;
-                owner.getCanonicalFileNameWorker = getCanonicalFileName;
-                owner.currentDirectory = currentDirectory;
-                owner.toPath = (fileName, basePath = currentDirectory) => toPath(fileName, basePath, getCanonicalFileName);
+                owner.currentDirectory = response.currentDirectory;
+                owner.caseSensitivity = response.caseSensitivity;
+                owner.toPath = (fileName, basePath = response.currentDirectory) => pathKey(toRootedPath(fileName, toRootedDirectoryPath(basePath, response.currentDirectory)), response.caseSensitivity);
                 owner.initialized = true;
             }
             catch (error) {
@@ -185,11 +184,9 @@ export class API {
         }, function* () {
             try {
                 const response = yield* apiRequest("initialize", null);
-                const getCanonicalFileName = createGetCanonicalFileName(response.useCaseSensitiveFileNames);
-                const currentDirectory = response.currentDirectory;
-                owner.getCanonicalFileNameWorker = getCanonicalFileName;
-                owner.currentDirectory = currentDirectory;
-                owner.toPath = (fileName, basePath = currentDirectory) => toPath(fileName, basePath, getCanonicalFileName);
+                owner.currentDirectory = response.currentDirectory;
+                owner.caseSensitivity = response.caseSensitivity;
+                owner.toPath = (fileName, basePath = response.currentDirectory) => pathKey(toRootedPath(fileName, toRootedDirectoryPath(basePath, response.currentDirectory)), response.caseSensitivity);
                 owner.initialized = true;
             }
             catch (error) {
@@ -205,14 +202,18 @@ export class API {
         return this.currentDirectory;
     }
     getCanonicalFileName(fileName) {
-        if (this.getCanonicalFileNameWorker === undefined) {
+        return canonicalize(fileName, this.getCaseSensitivity());
+    }
+    getCaseSensitivity() {
+        if (this.caseSensitivity === undefined) {
             throw new Error("API has not been initialized");
         }
-        return this.getCanonicalFileNameWorker(fileName);
+        return this.caseSensitivity;
     }
     getNewLine() {
         return "\n";
     }
+    /** @internal */
     get createBuildOrchestrator() {
         const owner = this;
         return cacheGeneratorMethod(owner, "createBuildOrchestrator", function (rootNames, buildOrchestratorOptions) {
@@ -220,6 +221,9 @@ export class API {
             const orchestratorResponse = owner.client.apiRequest("createBuildOrchestrator", {
                 ...buildOrchestratorOptions,
                 ...buildOrchestratorOptions.overrideCompilerOptions,
+                cwd: buildOrchestratorOptions.cwd === undefined
+                    ? undefined
+                    : toRootedDirectoryPath(buildOrchestratorOptions.cwd, owner.getCurrentDirectory()),
                 rootNames,
             });
             const orchestrator = new BuildOrchestrator(owner.client, orchestratorResponse, () => {
@@ -232,6 +236,9 @@ export class API {
             const orchestratorResponse = yield* apiRequest("createBuildOrchestrator", {
                 ...buildOrchestratorOptions,
                 ...buildOrchestratorOptions.overrideCompilerOptions,
+                cwd: buildOrchestratorOptions.cwd === undefined
+                    ? undefined
+                    : toRootedDirectoryPath(buildOrchestratorOptions.cwd, owner.getCurrentDirectory()),
                 rootNames,
             });
             const orchestrator = new BuildOrchestrator(owner.client, orchestratorResponse, () => {
@@ -422,7 +429,7 @@ export class API {
         const owner = this;
         function createSnapshot(params) {
             owner.ensureInitialized();
-            const requestParams = toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params));
+            const requestParams = owner.prepareCreateSnapshotParams(params);
             const data = owner.client.apiRequest("createSnapshot", requestParams);
             const snapshot = new Snapshot(data, owner.toPath, owner, () => {
                 owner.activeSnapshots.delete(snapshot.id);
@@ -433,7 +440,7 @@ export class API {
         }
         function* gen(params) {
             yield* owner.ensureInitialized.gen();
-            const requestParams = toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params));
+            const requestParams = owner.prepareCreateSnapshotParams(params);
             const data = yield* apiRequest("createSnapshot", requestParams);
             const snapshot = new Snapshot(data, owner.toPath, owner, () => {
                 owner.activeSnapshots.delete(snapshot.id);
@@ -453,7 +460,7 @@ export class API {
             }
             const data = owner.client.apiRequest("updateSnapshot", {
                 snapshot: baseSnapshot.id,
-                changes: toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params)),
+                changes: owner.prepareCreateSnapshotParams(params),
             });
             if (data.snapshot === baseSnapshot.id) {
                 owner.client.apiRequest("release", { snapshot: data.snapshot });
@@ -473,7 +480,7 @@ export class API {
             }
             const data = yield* apiRequest("updateSnapshot", {
                 snapshot: baseSnapshot.id,
-                changes: toCreateSnapshotRequest(owner.prepareCreateSnapshotParams(params)),
+                changes: owner.prepareCreateSnapshotParams(params),
             });
             if (data.snapshot === baseSnapshot.id) {
                 yield* apiRequest("release", { snapshot: data.snapshot });
@@ -489,16 +496,19 @@ export class API {
         });
     }
     prepareCreateSnapshotParams(params) {
-        if (!params)
-            return undefined;
+        params ??= {};
         const prepareOptions = (options) => {
             if (!options)
                 return undefined;
-            const { moduleResolver, ...rest } = options;
+            const { moduleResolver, projectReferences, ...rest } = options;
             moduleResolver?.ensureNotDisposed();
             return {
                 ...rest,
                 moduleResolver: moduleResolver?.id,
+                projectReferences: projectReferences?.map(reference => ({
+                    ...reference,
+                    path: toRootedPath(reference.path, this.getCurrentDirectory()),
+                })),
             };
         };
         return {
@@ -627,7 +637,7 @@ export class API {
                 : undefined;
             try {
                 const id = owner.client.apiRequest("createModuleResolver", {
-                    compilerOptions,
+                    compilerOptions: prepareCompilerOptions(compilerOptions, owner.getCurrentDirectory()),
                     moduleResolutions: options?.moduleResolutions,
                     resolveModuleNameCallback: callback?.name,
                 });
@@ -644,7 +654,7 @@ export class API {
                 : undefined;
             try {
                 const id = yield* apiRequest("createModuleResolver", {
-                    compilerOptions,
+                    compilerOptions: prepareCompilerOptions(compilerOptions, owner.getCurrentDirectory()),
                     moduleResolutions: options?.moduleResolutions,
                     resolveModuleNameCallback: callback?.name,
                 });
@@ -707,8 +717,8 @@ export class API {
      *
      * Fetching the snapshot issues a lightweight request to the server to
      * retrieve its timing collection. Collection must be enabled via the
-     * `collectTiming` option; when it is not, the returned snapshot has
-     * `enabled: false` and zeroed totals.
+     * `collectTiming` option or `TS_API_TIMING_DIR` environment variable; when
+     * it is not, the returned snapshot has `enabled: false` and zeroed totals.
      */
     get getTimingInfo() {
         const owner = this;
@@ -767,8 +777,12 @@ function sourceFileDescriptor(sourceFile) {
         nodeId: sourceFile.nodeId,
     };
 }
+/** Returns whether a node is backed by a remote compiler response. */
+export function isRemoteNode(node) {
+    return node instanceof RemoteNode;
+}
 function getRemoteSourceFile(node) {
-    if (!(node instanceof RemoteNode))
+    if (!isRemoteNode(node))
         return undefined;
     const file = node.getSourceFile();
     return file instanceof RemoteSourceFile && file.api ? file : undefined;
@@ -848,10 +862,9 @@ export class RetainedSourceFile {
         });
     }
 }
-export class InternalAPI {
+export class DebugHandlers {
     client;
     ensureInitialized;
-    /** @internal */
     constructor(client, ensureInitialized) {
         this.client = client;
         this.ensureInitialized = ensureInitialized;
@@ -903,7 +916,6 @@ export class Snapshot {
     snapshotRegistry;
     projectDataMap;
     updateSnapshot;
-    internal;
     get client() {
         return this.api.client;
     }
@@ -931,7 +943,6 @@ export class Snapshot {
             createdPrograms: data.operation.createdPrograms?.map(projectId => this.requireProject(projectId).program),
             openedFiles: data.operation.openedFiles?.map(result => ({ project: this.requireProject(result.project) })),
         };
-        this.internal = new SnapshotInternalAPI(this.id, api.client);
     }
     getProjects() {
         this.ensureNotDisposed();
@@ -939,7 +950,8 @@ export class Snapshot {
     }
     getConfiguredProject(configFileName) {
         this.ensureNotDisposed();
-        return this.projectMap.get(this.toPath(configFileName));
+        const id = this.toPath(configFileName);
+        return this.projectMap.get(id);
     }
     getProject(projectId) {
         this.ensureNotDisposed();
@@ -989,7 +1001,7 @@ export class Snapshot {
         });
     }
     [globalThis.Symbol.dispose]() {
-        void this.dispose();
+        this.dispose();
     }
     get dispose() {
         const owner = this;
@@ -1116,13 +1128,15 @@ export class ModuleResolver {
 }
 class SnapshotObjectRegistry {
     symbols = new Map();
+    nodeHandles = new Map();
     projectRegistries = new Map();
     snapshotId;
+    disposed = false;
     constructor(snapshotId) {
         this.snapshotId = snapshotId;
     }
     addProjectRegistry(registry) {
-        this.projectRegistries.set(registry.project.id, registry);
+        this.projectRegistries.set(registry.project.handle, registry);
     }
     getOrCreateSymbol(data) {
         const reference = data.reference;
@@ -1144,8 +1158,19 @@ class SnapshotObjectRegistry {
     getSymbol(id) {
         return this.symbols.get(id);
     }
+    getOrCreateNodeHandle(handle, project) {
+        let node = this.nodeHandles.get(handle);
+        if (!node) {
+            node = new NodeHandle(handle, project);
+            if (!this.disposed)
+                this.nodeHandles.set(handle, node);
+        }
+        return node;
+    }
     clear() {
+        this.disposed = true;
         this.symbols.clear();
+        this.nodeHandles.clear();
     }
 }
 class ProjectObjectRegistry {
@@ -1205,7 +1230,7 @@ class ProjectObjectRegistry {
         return this.types.get(id);
     }
     createNodeHandle(handle) {
-        return new NodeHandle(handle, this.project);
+        return this.snapshotRegistry.getOrCreateNodeHandle(handle, this.project);
     }
     getOrCreateSignature(data) {
         let sig = this.signatures.get(data.id);
@@ -1239,7 +1264,7 @@ class ProjectObjectRegistry {
             }
             const data = owner.client.apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             if (!data)
@@ -1255,7 +1280,7 @@ class ProjectObjectRegistry {
             }
             const data = yield* apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             if (!data)
@@ -1289,7 +1314,7 @@ class ProjectObjectRegistry {
                 ? owner.client.apiRequest(method, { symbol: source.reference })
                 : owner.client.apiRequest(method, {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     objectId: source.id,
                 });
             if (!data)
@@ -1305,7 +1330,7 @@ class ProjectObjectRegistry {
                 ? yield* apiRequest(method, { symbol: source.reference })
                 : yield* apiRequest(method, {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     objectId: source.id,
                 });
             if (!data)
@@ -1323,7 +1348,7 @@ class ProjectObjectRegistry {
                 return cached;
             const data = owner.client.apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             if (!data)
@@ -1337,7 +1362,7 @@ class ProjectObjectRegistry {
                 return cached;
             const data = yield* apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             if (!data)
@@ -1364,7 +1389,7 @@ class ProjectObjectRegistry {
             }
             const typesData = owner.client.apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             if (typesData == null)
@@ -1388,7 +1413,7 @@ class ProjectObjectRegistry {
             }
             const typesData = yield* apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             if (typesData == null)
@@ -1434,7 +1459,7 @@ class ProjectObjectRegistry {
                 ? owner.client.apiRequest(method, { symbol: source.reference })
                 : owner.client.apiRequest(method, {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     objectId: source.id,
                 });
             return data?.map(symbol => owner.getOrCreateSymbol(symbol)) ?? [];
@@ -1443,7 +1468,7 @@ class ProjectObjectRegistry {
                 ? yield* apiRequest(method, { symbol: source.reference })
                 : yield* apiRequest(method, {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     objectId: source.id,
                 });
             return data?.map(symbol => owner.getOrCreateSymbol(symbol)) ?? [];
@@ -1456,7 +1481,7 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchBaseTypes", function (source) {
             const typesData = owner.client.apiRequest("getBaseTypes", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
             });
             if (typesData == null)
@@ -1465,7 +1490,7 @@ class ProjectObjectRegistry {
         }, function* (source) {
             const typesData = yield* apiRequest("getBaseTypes", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
             });
             if (typesData == null)
@@ -1478,14 +1503,14 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchPropertiesOfType", function (source) {
             const data = owner.client.apiRequest("getPropertiesOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
             });
             return data ? data.map(symbol => owner.getOrCreateSymbol(symbol)) : [];
         }, function* (source) {
             const data = yield* apiRequest("getPropertiesOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
             });
             return data ? data.map(symbol => owner.getOrCreateSymbol(symbol)) : [];
@@ -1496,14 +1521,14 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchApparentPropertiesOfType", function (source) {
             const data = owner.client.apiRequest("getApparentPropertiesOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             return data ? data.map(symbol => owner.getOrCreateSymbol(symbol)) : [];
         }, function* (source) {
             const data = yield* apiRequest("getApparentPropertiesOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 objectId: source.id,
             });
             return data ? data.map(symbol => owner.getOrCreateSymbol(symbol)) : [];
@@ -1514,7 +1539,7 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchPropertyOfType", function (source, name) {
             const data = owner.client.apiRequest("getPropertyOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
                 name,
             });
@@ -1522,7 +1547,7 @@ class ProjectObjectRegistry {
         }, function* (source, name) {
             const data = yield* apiRequest("getPropertyOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
                 name,
             });
@@ -1534,7 +1559,7 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchSignaturesOfType", function (source, kind) {
             const data = owner.client.apiRequest("getSignaturesOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
                 kind,
             });
@@ -1542,7 +1567,7 @@ class ProjectObjectRegistry {
         }, function* (source, kind) {
             const data = yield* apiRequest("getSignaturesOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
                 kind,
             });
@@ -1554,7 +1579,7 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchIndexInfosOfType", function (source) {
             const data = owner.client.apiRequest("getIndexInfosOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
             });
             if (!data)
@@ -1563,12 +1588,12 @@ class ProjectObjectRegistry {
                 keyType: owner.getOrCreateType(info.keyType),
                 valueType: owner.getOrCreateType(info.valueType),
                 isReadonly: info.isReadonly ?? false,
-                declaration: info.declaration ? new NodeHandle(info.declaration, owner.project) : undefined,
+                declaration: info.declaration ? owner.createNodeHandle(info.declaration) : undefined,
             }));
         }, function* (source) {
             const data = yield* apiRequest("getIndexInfosOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: source.id,
             });
             if (!data)
@@ -1577,7 +1602,7 @@ class ProjectObjectRegistry {
                 keyType: owner.getOrCreateType(info.keyType),
                 valueType: owner.getOrCreateType(info.valueType),
                 isReadonly: info.isReadonly ?? false,
-                declaration: info.declaration ? new NodeHandle(info.declaration, owner.project) : undefined,
+                declaration: info.declaration ? owner.createNodeHandle(info.declaration) : undefined,
             }));
         });
     }
@@ -1586,7 +1611,7 @@ class ProjectObjectRegistry {
         return cacheGeneratorMethod(owner, "fetchTypeParameterAtPosition", function (source, pos) {
             const data = owner.client.apiRequest("getTypeParameterAtPosition", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: source.id,
                 index: pos,
             });
@@ -1594,7 +1619,7 @@ class ProjectObjectRegistry {
         }, function* (source, pos) {
             const data = yield* apiRequest("getTypeParameterAtPosition", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: source.id,
                 index: pos,
             });
@@ -1606,20 +1631,21 @@ export class Project {
     /** @internal */
     api;
     id;
+    /**
+     * Server identity for this project's lifetime across snapshots.
+     * @internal
+     */
+    handle;
     configFileName;
     currentDirectory;
     dirty;
     parsedCommandLine;
-    /** @deprecated Use `parsedCommandLine.options`. */
-    compilerOptions;
-    /** @deprecated Use `parsedCommandLine.fileNames`. */
-    rootFiles;
     program;
     checker;
     languageService;
-    snapshotId;
     constructor(data, snapshotId, toPath, api, snapshotRegistry) {
         this.id = data.id;
+        this.handle = data.handle;
         this.api = api;
         this.configFileName = data.configFileName;
         this.currentDirectory = data.currentDirectory;
@@ -1628,31 +1654,10 @@ export class Project {
             throw new Error(`Project '${data.configFileName}' has no parsed command line`);
         }
         this.parsedCommandLine = data.parsedCommandLine;
-        this.compilerOptions = this.parsedCommandLine.options;
-        this.rootFiles = this.parsedCommandLine.fileNames;
-        this.snapshotId = snapshotId;
         this.program = new Program(snapshotId, this, toPath);
         const objectRegistry = new ProjectObjectRegistry(snapshotId, this, snapshotRegistry);
         this.checker = new Checker(snapshotId, this, objectRegistry);
         this.languageService = new LanguageService(snapshotId, this, objectRegistry);
-    }
-    /** @deprecated Use `languageService.getImportAdderEdits`. */
-    get getImportAdderEdits() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "getImportAdderEdits", function (file, actions) {
-            return owner.languageService.getImportAdderEdits(file, actions);
-        }, function* (file, actions) {
-            return yield* owner.languageService.getImportAdderEdits.gen(file, actions);
-        });
-    }
-    /** @deprecated Use `languageService.getImportEditsForSymbols`. */
-    get getImportEditsForSymbols() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "getImportEditsForSymbols", function (file, symbols, options = {}) {
-            return owner.languageService.getImportEditsForSymbols(file, symbols, options);
-        }, function* (file, symbols, options = {}) {
-            return yield* owner.languageService.getImportEditsForSymbols.gen(file, symbols, options);
-        });
     }
     dispose() {
         this.checker.dispose();
@@ -1690,7 +1695,7 @@ export class LanguageService {
             });
             const data = owner.client.apiRequest("getImportAdderEdits", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 actions: requestActions,
             });
@@ -1713,7 +1718,7 @@ export class LanguageService {
             });
             const data = yield* apiRequest("getImportAdderEdits", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 actions: requestActions,
             });
@@ -1757,26 +1762,26 @@ export class LanguageService {
         return cacheGeneratorMethod(owner, "getReferencedSymbolsForNode", function (node, position) {
             const data = owner.client.apiRequest("getReferencedSymbolsForNode", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                node: getNodeId(node),
+                project: owner.project.handle,
+                node: getNodeRequestHandle(node),
                 position,
             });
             return (data ?? []).map(entry => ({
-                definition: new NodeHandle(entry.definition, owner.project),
+                definition: owner.objectRegistry.createNodeHandle(entry.definition),
                 symbol: entry.symbol ? owner.objectRegistry.getOrCreateSymbol(entry.symbol) : undefined,
-                references: (entry.references ?? []).map(h => new NodeHandle(h, owner.project)),
+                references: (entry.references ?? []).map(h => owner.objectRegistry.createNodeHandle(h)),
             }));
         }, function* (node, position) {
             const data = yield* apiRequest("getReferencedSymbolsForNode", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                node: getNodeId(node),
+                project: owner.project.handle,
+                node: getNodeRequestHandle(node),
                 position,
             });
             return (data ?? []).map(entry => ({
-                definition: new NodeHandle(entry.definition, owner.project),
+                definition: owner.objectRegistry.createNodeHandle(entry.definition),
                 symbol: entry.symbol ? owner.objectRegistry.getOrCreateSymbol(entry.symbol) : undefined,
-                references: (entry.references ?? []).map(h => new NodeHandle(h, owner.project)),
+                references: (entry.references ?? []).map(h => owner.objectRegistry.createNodeHandle(h)),
             }));
         });
     }
@@ -1785,22 +1790,22 @@ export class LanguageService {
         return cacheGeneratorMethod(owner, "getSignatureUsage", function (signatureDecl) {
             const data = owner.client.apiRequest("getSignatureUsages", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                signatureDecl: getNodeId(signatureDecl),
+                project: owner.project.handle,
+                signatureDecl: getNodeRequestHandle(signatureDecl),
             });
             return (data ?? []).map(entry => ({
-                name: new NodeHandle(entry.name, owner.project),
-                call: entry.call ? new NodeHandle(entry.call, owner.project) : undefined,
+                name: owner.objectRegistry.createNodeHandle(entry.name),
+                call: entry.call ? owner.objectRegistry.createNodeHandle(entry.call) : undefined,
             }));
         }, function* (signatureDecl) {
             const data = yield* apiRequest("getSignatureUsages", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                signatureDecl: getNodeId(signatureDecl),
+                project: owner.project.handle,
+                signatureDecl: getNodeRequestHandle(signatureDecl),
             });
             return (data ?? []).map(entry => ({
-                name: new NodeHandle(entry.name, owner.project),
-                call: entry.call ? new NodeHandle(entry.call, owner.project) : undefined,
+                name: owner.objectRegistry.createNodeHandle(entry.name),
+                call: entry.call ? owner.objectRegistry.createNodeHandle(entry.call) : undefined,
             }));
         });
     }
@@ -1809,7 +1814,7 @@ export class LanguageService {
         return cacheGeneratorMethod(owner, "getCompletionsAtPosition", function (document, position, options) {
             const data = owner.client.apiRequest("getCompletionsAtPosition", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file: document,
                 position,
                 triggerCharacter: options?.triggerCharacter,
@@ -1827,7 +1832,7 @@ export class LanguageService {
         }, function* (document, position, options) {
             const data = yield* apiRequest("getCompletionsAtPosition", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file: document,
                 position,
                 triggerCharacter: options?.triggerCharacter,
@@ -1842,6 +1847,39 @@ export class LanguageService {
                     symbol: e.symbol ? owner.objectRegistry.getOrCreateSymbol(e.symbol) : undefined,
                 })),
             };
+        });
+    }
+    /**
+     * Format a synthesized node with the correct indentation for insertion at a
+     * specific position in an existing source file.
+     *
+     * @param node The synthesized AST node to format.
+     * @param file The target file where the node will be inserted.
+     * @param position The UTF-16 code-unit offset in the target file for insertion.
+     * @returns The formatted text of the node, indented for the insertion position.
+     */
+    get formatNodeForInsertion() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "formatNodeForInsertion", function (node, file, position) {
+            const encoded = encodeNode(node);
+            const base64 = uint8ArrayToBase64(encoded);
+            return owner.client.apiRequest("formatNodeForInsertion", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                file,
+                position,
+                data: base64,
+            });
+        }, function* (node, file, position) {
+            const encoded = encodeNode(node);
+            const base64 = uint8ArrayToBase64(encoded);
+            return yield* apiRequest("formatNodeForInsertion", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                file,
+                position,
+                data: base64,
+            });
         });
     }
 }
@@ -1874,14 +1912,14 @@ export class Program {
         return this.project.api.getCanonicalFileName(fileName);
     }
     getNewLine() {
-        return this.project.compilerOptions.newLine === NewLineKind.CRLF ? "\r\n" : "\n";
+        return this.project.parsedCommandLine.options.newLine === NewLineKind.CRLF ? "\r\n" : "\n";
     }
     /** @internal */
     setOwnedSnapshot(snapshot) {
         this.ownedSnapshot = snapshot;
     }
     [globalThis.Symbol.dispose]() {
-        void this.dispose();
+        this.dispose();
     }
     get dispose() {
         const owner = this;
@@ -1906,13 +1944,38 @@ export class Program {
         });
     }
     getCompilerOptions() {
-        return this.project.compilerOptions;
+        return this.project.parsedCommandLine.options;
     }
     get getSourceFile() {
         const owner = this;
         return cacheGeneratorMethod(owner, "getSourceFile", function (file) {
             const fileName = resolveFileName(file);
-            const path = owner.toPath(fileName, owner.project.currentDirectory);
+            const path = owner.pathKeyForFileName(fileName);
+            return owner.getSourceFileWorker(file, path);
+        }, function* (file) {
+            const fileName = resolveFileName(file);
+            const path = owner.pathKeyForFileName(fileName);
+            return yield* owner.getSourceFileWorker.gen(file, path);
+        });
+    }
+    /**
+     * Returns the source file for an already-canonical path.
+     */
+    get getSourceFileByPath() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getSourceFileByPath", function (path) {
+            // The wire format is a string, but the cache key remains the supplied
+            // PathKey and is never treated as a RootedPath.
+            return owner.getSourceFileWorker(path, path);
+        }, function* (path) {
+            // The wire format is a string, but the cache key remains the supplied
+            // PathKey and is never treated as a RootedPath.
+            return yield* owner.getSourceFileWorker.gen(path, path);
+        });
+    }
+    get getSourceFileWorker() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getSourceFileWorker", function (file, path) {
             // Check if we already have a retained cache entry for this (snapshot, project) pair
             const retained = owner.sourceFileCache.getRetained(path, owner.snapshotId, owner.project.id);
             if (retained) {
@@ -1921,7 +1984,7 @@ export class Program {
             // Fetch from server
             const binaryData = owner.client.apiRequestBinary("getSourceFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
             });
             if (!binaryData) {
@@ -1930,9 +1993,7 @@ export class Program {
             // Create a new RemoteSourceFile and cache it (set returns existing if hash matches)
             const decoded = new RemoteSourceFile(binaryData, owner.decoder, owner.client.getTimingCollector(), owner.project.api);
             return owner.sourceFileCache.set(decoded, owner.snapshotId, owner.project.id);
-        }, function* (file) {
-            const fileName = resolveFileName(file);
-            const path = owner.toPath(fileName, owner.project.currentDirectory);
+        }, function* (file, path) {
             // Check if we already have a retained cache entry for this (snapshot, project) pair
             const retained = owner.sourceFileCache.getRetained(path, owner.snapshotId, owner.project.id);
             if (retained) {
@@ -1941,7 +2002,7 @@ export class Program {
             // Fetch from server
             const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("getSourceFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
             }));
             if (!binaryData) {
@@ -1957,7 +2018,7 @@ export class Program {
         return cacheGeneratorMethod(owner, "getResolvedModule", function (file, moduleName, mode) {
             const result = owner.client.apiRequest("getResolvedModule", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 moduleName,
                 mode,
@@ -1966,7 +2027,7 @@ export class Program {
         }, function* (file, moduleName, mode) {
             const result = yield* apiRequest("getResolvedModule", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 moduleName,
                 mode,
@@ -1979,16 +2040,16 @@ export class Program {
         return cacheGeneratorMethod(owner, "getModeForUsageLocation", function (file, usage) {
             return owner.client.apiRequest("getModeForUsageLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
-                usage: getNodeId(usage),
+                usage: getNodeRequestHandle(usage),
             });
         }, function* (file, usage) {
             return yield* apiRequest("getModeForUsageLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
-                usage: getNodeId(usage),
+                usage: getNodeRequestHandle(usage),
             });
         });
     }
@@ -1997,14 +2058,14 @@ export class Program {
         return cacheGeneratorMethod(owner, "getModeForResolutionAtIndex", function (file, index) {
             return owner.client.apiRequest("getModeForResolutionAtIndex", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 index,
             });
         }, function* (file, index) {
             return yield* apiRequest("getModeForResolutionAtIndex", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 index,
             });
@@ -2015,16 +2076,16 @@ export class Program {
         return cacheGeneratorMethod(owner, "getResolvedModuleFromModuleSpecifier", function (moduleSpecifier, sourceFile) {
             const result = owner.client.apiRequest("getResolvedModuleFromModuleSpecifier", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                moduleSpecifier: getNodeId(moduleSpecifier),
+                project: owner.project.handle,
+                moduleSpecifier: getNodeRequestHandle(moduleSpecifier),
                 sourceFile,
             });
             return result ?? undefined;
         }, function* (moduleSpecifier, sourceFile) {
             const result = yield* apiRequest("getResolvedModuleFromModuleSpecifier", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                moduleSpecifier: getNodeId(moduleSpecifier),
+                project: owner.project.handle,
+                moduleSpecifier: getNodeRequestHandle(moduleSpecifier),
                 sourceFile,
             });
             return result ?? undefined;
@@ -2035,7 +2096,7 @@ export class Program {
         return cacheGeneratorMethod(owner, "getResolvedTypeReferenceDirective", function (file, typeDirectiveName, mode) {
             const result = owner.client.apiRequest("getResolvedTypeReferenceDirective", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 typeDirectiveName,
                 mode,
@@ -2044,7 +2105,7 @@ export class Program {
         }, function* (file, typeDirectiveName, mode) {
             const result = yield* apiRequest("getResolvedTypeReferenceDirective", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 typeDirectiveName,
                 mode,
@@ -2057,7 +2118,7 @@ export class Program {
         return cacheGeneratorMethod(owner, "getResolvedTypeReferenceDirectiveFromTypeReferenceDirective", function (typeReferenceDirective, sourceFile) {
             const result = owner.client.apiRequest("getResolvedTypeReferenceDirectiveFromTypeReferenceDirective", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 sourceFile,
                 typeDirectiveName: typeReferenceDirective.fileName,
                 resolutionMode: typeReferenceDirective.resolutionMode,
@@ -2066,7 +2127,7 @@ export class Program {
         }, function* (typeReferenceDirective, sourceFile) {
             const result = yield* apiRequest("getResolvedTypeReferenceDirectiveFromTypeReferenceDirective", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 sourceFile,
                 typeDirectiveName: typeReferenceDirective.fileName,
                 resolutionMode: typeReferenceDirective.resolutionMode,
@@ -2079,13 +2140,13 @@ export class Program {
         return cacheGeneratorMethod(owner, "getSourceFileNames", function () {
             const data = owner.client.apiRequest("getSourceFileNames", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         }, function* () {
             const data = yield* apiRequest("getSourceFileNames", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         });
@@ -2098,9 +2159,9 @@ export class Program {
     get getSourceFileMetadata() {
         const owner = this;
         return cacheGeneratorMethod(owner, "getSourceFileMetadata", function (file) {
-            return owner.getSourceFileMetadataByPath(owner.toPath(resolveFileName(file), owner.project.currentDirectory));
+            return owner.getSourceFileMetadataByPath(owner.pathKeyForFileName(resolveFileName(file)));
         }, function* (file) {
-            return yield* owner.getSourceFileMetadataByPath.gen(owner.toPath(resolveFileName(file), owner.project.currentDirectory));
+            return yield* owner.getSourceFileMetadataByPath.gen(owner.pathKeyForFileName(resolveFileName(file)));
         });
     }
     /**
@@ -2130,20 +2191,27 @@ export class Program {
     get fetchSourceFileMetadata() {
         const owner = this;
         return cacheGeneratorMethod(owner, "fetchSourceFileMetadata", function (path) {
+            // PathKey is serialized as a string; the server deliberately treats all
+            // client-provided path text as untrusted input.
             const data = owner.client.apiRequest("getSourceFileMetadata", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file: path,
             });
             return data ?? undefined;
         }, function* (path) {
+            // PathKey is serialized as a string; the server deliberately treats all
+            // client-provided path text as untrusted input.
             const data = yield* apiRequest("getSourceFileMetadata", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file: path,
             });
             return data ?? undefined;
         });
+    }
+    pathKeyForFileName(fileName) {
+        return this.toPath(fileName, this.project.currentDirectory);
     }
     /**
      * Returns whether the given source file was loaded as part of an external library
@@ -2184,13 +2252,13 @@ export class Program {
         return cacheGeneratorMethod(owner, "getConfigFileNames", function () {
             const data = owner.client.apiRequest("getConfigFileNames", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         }, function* () {
             const data = yield* apiRequest("getConfigFileNames", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         });
@@ -2204,7 +2272,7 @@ export class Program {
         return cacheGeneratorMethod(owner, "getConfigSourceFile", function (file) {
             const binaryData = owner.client.apiRequestBinary("getConfigSourceFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
             });
             if (!binaryData) {
@@ -2214,7 +2282,7 @@ export class Program {
         }, function* (file) {
             const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("getConfigSourceFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
             }));
             if (!binaryData) {
@@ -2235,7 +2303,7 @@ export class Program {
                     : [file];
             const data = owner.client.apiRequest("getSyntacticDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2245,7 +2313,7 @@ export class Program {
                     : [file];
             const data = yield* apiRequest("getSyntacticDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2263,7 +2331,7 @@ export class Program {
                     : [file];
             const data = owner.client.apiRequest("getBindDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2273,7 +2341,7 @@ export class Program {
                     : [file];
             const data = yield* apiRequest("getBindDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2291,7 +2359,7 @@ export class Program {
                     : [file];
             const data = owner.client.apiRequest("getSemanticDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2301,7 +2369,7 @@ export class Program {
                     : [file];
             const data = yield* apiRequest("getSemanticDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2319,7 +2387,7 @@ export class Program {
                     : [file];
             const data = owner.client.apiRequest("getSuggestionDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2329,7 +2397,7 @@ export class Program {
                     : [file];
             const data = yield* apiRequest("getSuggestionDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2347,7 +2415,7 @@ export class Program {
                     : [file];
             const data = owner.client.apiRequest("getDeclarationDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2357,7 +2425,7 @@ export class Program {
                     : [file];
             const data = yield* apiRequest("getDeclarationDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return data ?? [];
@@ -2371,13 +2439,13 @@ export class Program {
         return cacheGeneratorMethod(owner, "getProgramDiagnostics", function () {
             const data = owner.client.apiRequest("getProgramDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         }, function* () {
             const data = yield* apiRequest("getProgramDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         });
@@ -2390,13 +2458,13 @@ export class Program {
         return cacheGeneratorMethod(owner, "getGlobalDiagnostics", function () {
             const data = owner.client.apiRequest("getGlobalDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         }, function* () {
             const data = yield* apiRequest("getGlobalDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         });
@@ -2409,13 +2477,13 @@ export class Program {
         return cacheGeneratorMethod(owner, "getConfigFileParsingDiagnostics", function () {
             const data = owner.client.apiRequest("getConfigFileParsingDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         }, function* () {
             const data = yield* apiRequest("getConfigFileParsingDiagnostics", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return data ?? [];
         });
@@ -2430,7 +2498,7 @@ export class Program {
         return cacheGeneratorMethod(owner, "emit", function (emitOnly) {
             const response = owner.client.apiRequest("emit", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 emitOnly,
             });
             const fileSystem = response.emittedFilesContents.length
@@ -2448,7 +2516,7 @@ export class Program {
         }, function* (emitOnly) {
             const response = yield* apiRequest("emit", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 emitOnly,
             });
             const fileSystem = response.emittedFilesContents.length
@@ -2473,14 +2541,14 @@ export class Program {
         return cacheGeneratorMethod(owner, "emitToString", function (emitOnly) {
             const response = owner.client.apiRequest("emitToString", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 emitOnly,
             });
             return toEmitOutput(response);
         }, function* (emitOnly) {
             const response = yield* apiRequest("emitToString", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 emitOnly,
             });
             return toEmitOutput(response);
@@ -2494,14 +2562,14 @@ export class Program {
         return cacheGeneratorMethod(owner, "getJavaScriptEmit", function (files) {
             const response = owner.client.apiRequest("getJavaScriptEmit", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return toEmitOutput(response);
         }, function* (files) {
             const response = yield* apiRequest("getJavaScriptEmit", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return toEmitOutput(response);
@@ -2515,14 +2583,14 @@ export class Program {
         return cacheGeneratorMethod(owner, "getDeclarationEmit", function (files) {
             const response = owner.client.apiRequest("getDeclarationEmit", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return toEmitOutput(response);
         }, function* (files) {
             const response = yield* apiRequest("getDeclarationEmit", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 files,
             });
             return toEmitOutput(response);
@@ -2544,7 +2612,7 @@ export class BuildOrchestrator {
         this.onDispose = onDispose;
     }
     [globalThis.Symbol.dispose]() {
-        void this.dispose();
+        this.dispose();
     }
     get dispose() {
         const owner = this;
@@ -2691,21 +2759,102 @@ export class Checker {
     dispose() {
         this.objectRegistry.clear();
     }
+    /** Get the merged symbol, or the original symbol if it has not been merged. */
+    get getMergedSymbol() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getMergedSymbol", function (symbol) {
+            const data = owner.client.apiRequest("getMergedSymbol", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                symbol: symbol.reference,
+            });
+            return owner.objectRegistry.getOrCreateSymbol(data);
+        }, function* (symbol) {
+            const data = yield* apiRequest("getMergedSymbol", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                symbol: symbol.reference,
+            });
+            return owner.objectRegistry.getOrCreateSymbol(data);
+        });
+    }
+    /**
+     * Get a node's merged symbol. For a declaration, prefer
+     * {@link Checker.getSymbolOfDeclaration} for a non-nullable result.
+     */
+    get getSymbolOfNode() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getSymbolOfNode", function (node) {
+            const data = owner.client.apiRequest("getSymbolOfNode", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
+            });
+            return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
+        }, function* (node) {
+            const data = yield* apiRequest("getSymbolOfNode", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
+            });
+            return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
+        });
+    }
+    /** Get a declaration's merged symbol. */
+    get getSymbolOfDeclaration() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getSymbolOfDeclaration", function (node) {
+            const data = owner.client.apiRequest("getSymbolOfDeclarationForChecker", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
+            });
+            // Declarations normally have symbols, but preserve unexpected null results at runtime.
+            return (data && owner.objectRegistry.getOrCreateSymbol(data));
+        }, function* (node) {
+            const data = yield* apiRequest("getSymbolOfDeclarationForChecker", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
+            });
+            // Declarations normally have symbols, but preserve unexpected null results at runtime.
+            return (data && owner.objectRegistry.getOrCreateSymbol(data));
+        });
+    }
+    /** Get a symbol's merged parent, if any. */
+    get getParentOfSymbol() {
+        const owner = this;
+        return cacheGeneratorMethod(owner, "getParentOfSymbol", function (symbol) {
+            const data = owner.client.apiRequest("getParentOfSymbolForChecker", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                symbol: symbol.reference,
+            });
+            return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
+        }, function* (symbol) {
+            const data = yield* apiRequest("getParentOfSymbolForChecker", {
+                snapshot: owner.snapshotId,
+                project: owner.project.handle,
+                symbol: symbol.reference,
+            });
+            return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
+        });
+    }
     get getSymbolAtLocation() {
         const owner = this;
         function getSymbolAtLocation(nodeOrNodes) {
             if (Array.isArray(nodeOrNodes)) {
                 const data = owner.client.apiRequest("getSymbolsAtLocations", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
-                    locations: nodeOrNodes.map(node => getNodeId(node)),
+                    project: owner.project.handle,
+                    locations: nodeOrNodes.map(node => getNodeRequestHandle(node)),
                 });
                 return data.map(d => d ? owner.objectRegistry.getOrCreateSymbol(d) : undefined);
             }
             const data = owner.client.apiRequest("getSymbolAtLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(nodeOrNodes),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(nodeOrNodes),
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         }
@@ -2713,15 +2862,15 @@ export class Checker {
             if (Array.isArray(nodeOrNodes)) {
                 const data = yield* apiRequest("getSymbolsAtLocations", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
-                    locations: nodeOrNodes.map(node => getNodeId(node)),
+                    project: owner.project.handle,
+                    locations: nodeOrNodes.map(node => getNodeRequestHandle(node)),
                 });
                 return data.map(d => d ? owner.objectRegistry.getOrCreateSymbol(d) : undefined);
             }
             const data = yield* apiRequest("getSymbolAtLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(nodeOrNodes),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(nodeOrNodes),
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         }
@@ -2733,7 +2882,7 @@ export class Checker {
             if (typeof positionOrPositions === "number") {
                 const data = owner.client.apiRequest("getSymbolAtPosition", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     file,
                     position: positionOrPositions,
                 });
@@ -2741,7 +2890,7 @@ export class Checker {
             }
             const data = owner.client.apiRequest("getSymbolsAtPositions", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 positions: positionOrPositions,
             });
@@ -2751,7 +2900,7 @@ export class Checker {
             if (typeof positionOrPositions === "number") {
                 const data = yield* apiRequest("getSymbolAtPosition", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     file,
                     position: positionOrPositions,
                 });
@@ -2759,7 +2908,7 @@ export class Checker {
             }
             const data = yield* apiRequest("getSymbolsAtPositions", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 positions: positionOrPositions,
             });
@@ -2773,14 +2922,14 @@ export class Checker {
             if (Array.isArray(fileOrFiles)) {
                 const data = owner.client.apiRequest("getSymbolsOfSourceFiles", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     files: fileOrFiles,
                 });
                 return data.map(d => d ? owner.objectRegistry.getOrCreateSymbol(d) : undefined);
             }
             const data = owner.client.apiRequest("getSymbolOfSourceFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file: fileOrFiles,
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
@@ -2789,14 +2938,14 @@ export class Checker {
             if (Array.isArray(fileOrFiles)) {
                 const data = yield* apiRequest("getSymbolsOfSourceFiles", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     files: fileOrFiles,
                 });
                 return data.map(d => d ? owner.objectRegistry.getOrCreateSymbol(d) : undefined);
             }
             const data = yield* apiRequest("getSymbolOfSourceFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file: fileOrFiles,
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
@@ -2814,14 +2963,14 @@ export class Checker {
             if (Array.isArray(symbolOrSymbols)) {
                 const data = owner.client.apiRequest("getTypesOfSymbols", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     symbols: symbolOrSymbols.map(symbol => symbol.reference),
                 });
                 return data.map(d => owner.objectRegistry.getOrCreateType(d));
             }
             const data = owner.client.apiRequest("getTypeOfSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbolOrSymbols.reference,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -2830,14 +2979,14 @@ export class Checker {
             if (Array.isArray(symbolOrSymbols)) {
                 const data = yield* apiRequest("getTypesOfSymbols", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     symbols: symbolOrSymbols.map(symbol => symbol.reference),
                 });
                 return data.map(d => owner.objectRegistry.getOrCreateType(d));
             }
             const data = yield* apiRequest("getTypeOfSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbolOrSymbols.reference,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -2854,14 +3003,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getDeclaredTypeOfSymbol", function (symbol) {
             const data = owner.client.apiRequest("getDeclaredTypeOfSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (symbol) {
             const data = yield* apiRequest("getDeclaredTypeOfSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -2878,14 +3027,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getNonMissingTypeOfSymbol", function (symbol) {
             const data = owner.client.apiRequest("getNonMissingTypeOfSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (symbol) {
             const data = yield* apiRequest("getNonMissingTypeOfSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -2896,46 +3045,19 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getReferencesToSymbolInFile", function (file, symbol) {
             const data = owner.client.apiRequest("getReferencesToSymbolInFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 symbol: symbol.reference,
             });
-            return (data ?? []).map(h => new NodeHandle(h, owner.project));
+            return (data ?? []).map(h => owner.objectRegistry.createNodeHandle(h));
         }, function* (file, symbol) {
             const data = yield* apiRequest("getReferencesToSymbolInFile", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 symbol: symbol.reference,
             });
-            return (data ?? []).map(h => new NodeHandle(h, owner.project));
-        });
-    }
-    /** @deprecated Use `project.languageService.getReferencedSymbolsForNode`. */
-    get getReferencedSymbolsForNode() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "getReferencedSymbolsForNode", function (node, position) {
-            return owner.project.languageService.getReferencedSymbolsForNode(node, position);
-        }, function* (node, position) {
-            return yield* owner.project.languageService.getReferencedSymbolsForNode.gen(node, position);
-        });
-    }
-    /** @deprecated Use `project.languageService.getSignatureUsage`. */
-    get getSignatureUsage() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "getSignatureUsage", function (signatureDecl) {
-            return owner.project.languageService.getSignatureUsage(signatureDecl);
-        }, function* (signatureDecl) {
-            return yield* owner.project.languageService.getSignatureUsage.gen(signatureDecl);
-        });
-    }
-    /** @deprecated Use `project.languageService.getCompletionsAtPosition`. */
-    get getCompletionsAtPosition() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "getCompletionsAtPosition", function (document, position, options) {
-            return owner.project.languageService.getCompletionsAtPosition(document, position, options);
-        }, function* (document, position, options) {
-            return yield* owner.project.languageService.getCompletionsAtPosition.gen(document, position, options);
+            return (data ?? []).map(h => owner.objectRegistry.createNodeHandle(h));
         });
     }
     /**
@@ -2949,15 +3071,15 @@ export class Checker {
             if (Array.isArray(nodeOrNodes)) {
                 const data = owner.client.apiRequest("getTypeAtLocations", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
-                    locations: nodeOrNodes.map(node => getNodeId(node)),
+                    project: owner.project.handle,
+                    locations: nodeOrNodes.map(node => getNodeRequestHandle(node)),
                 });
                 return data.map(d => owner.objectRegistry.getOrCreateType(d));
             }
             const data = owner.client.apiRequest("getTypeAtLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(nodeOrNodes),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(nodeOrNodes),
             });
             return owner.objectRegistry.getOrCreateType(data);
         }
@@ -2965,15 +3087,15 @@ export class Checker {
             if (Array.isArray(nodeOrNodes)) {
                 const data = yield* apiRequest("getTypeAtLocations", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
-                    locations: nodeOrNodes.map(node => getNodeId(node)),
+                    project: owner.project.handle,
+                    locations: nodeOrNodes.map(node => getNodeRequestHandle(node)),
                 });
                 return data.map(d => owner.objectRegistry.getOrCreateType(d));
             }
             const data = yield* apiRequest("getTypeAtLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(nodeOrNodes),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(nodeOrNodes),
             });
             return owner.objectRegistry.getOrCreateType(data);
         }
@@ -2997,15 +3119,15 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getResolvedSignature", function (node) {
             const data = owner.client.apiRequest("getResolvedSignature", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return owner.objectRegistry.getOrCreateSignature(data);
         }, function* (node) {
             const data = yield* apiRequest("getResolvedSignature", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return owner.objectRegistry.getOrCreateSignature(data);
         });
@@ -3016,7 +3138,7 @@ export class Checker {
             if (typeof positionOrPositions === "number") {
                 const data = owner.client.apiRequest("getTypeAtPosition", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     file,
                     position: positionOrPositions,
                 });
@@ -3024,7 +3146,7 @@ export class Checker {
             }
             const data = owner.client.apiRequest("getTypesAtPositions", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 positions: positionOrPositions,
             });
@@ -3034,7 +3156,7 @@ export class Checker {
             if (typeof positionOrPositions === "number") {
                 const data = yield* apiRequest("getTypeAtPosition", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     file,
                     position: positionOrPositions,
                 });
@@ -3042,7 +3164,7 @@ export class Checker {
             }
             const data = yield* apiRequest("getTypesAtPositions", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 file,
                 positions: positionOrPositions,
             });
@@ -3057,10 +3179,10 @@ export class Checker {
             const isNode = location && "kind" in location;
             const data = owner.client.apiRequest("resolveName", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 name,
                 meaning,
-                location: isNode ? getNodeId(location) : undefined,
+                location: isNode ? getNodeRequestHandle(location) : undefined,
                 file: !isNode && location ? location.document : undefined,
                 position: !isNode && location ? location.position : undefined,
                 excludeGlobals,
@@ -3071,10 +3193,10 @@ export class Checker {
             const isNode = location && "kind" in location;
             const data = yield* apiRequest("resolveName", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 name,
                 meaning,
-                location: isNode ? getNodeId(location) : undefined,
+                location: isNode ? getNodeRequestHandle(location) : undefined,
                 file: !isNode && location ? location.document : undefined,
                 position: !isNode && location ? location.position : undefined,
                 excludeGlobals,
@@ -3092,9 +3214,9 @@ export class Checker {
             const isNode = "kind" in location;
             const data = owner.client.apiRequest("getSymbolsInScope", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 meaning,
-                location: isNode ? getNodeId(location) : undefined,
+                location: isNode ? getNodeRequestHandle(location) : undefined,
                 file: isNode ? undefined : location.document,
                 position: isNode ? undefined : location.position,
             });
@@ -3104,9 +3226,9 @@ export class Checker {
             const isNode = "kind" in location;
             const data = yield* apiRequest("getSymbolsInScope", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 meaning,
-                location: isNode ? getNodeId(location) : undefined,
+                location: isNode ? getNodeRequestHandle(location) : undefined,
                 file: isNode ? undefined : location.document,
                 position: isNode ? undefined : location.position,
             });
@@ -3132,15 +3254,15 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getContextualType", function (node) {
             const data = owner.client.apiRequest("getContextualType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
         }, function* (node) {
             const data = yield* apiRequest("getContextualType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
         });
@@ -3150,16 +3272,16 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getContextualTypeForArgumentAtIndex", function (node, argIndex) {
             const data = owner.client.apiRequest("getContextualTypeForArgument", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
                 index: argIndex,
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
         }, function* (node, argIndex) {
             const data = yield* apiRequest("getContextualTypeForArgument", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
                 index: argIndex,
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
@@ -3170,14 +3292,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getAwaitedType", function (type) {
             const data = owner.client.apiRequest("getAwaitedType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
         }, function* (type) {
             const data = yield* apiRequest("getAwaitedType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
@@ -3189,14 +3311,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getBaseTypeOfLiteralType", function (type) {
             const data = owner.client.apiRequest("getBaseTypeOfLiteralType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (type) {
             const data = yield* apiRequest("getBaseTypeOfLiteralType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -3221,15 +3343,15 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getTypeFromTypeNode", function (node) {
             const data = owner.client.apiRequest("getTypeFromTypeNode", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (node) {
             const data = yield* apiRequest("getTypeFromTypeNode", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return owner.objectRegistry.getOrCreateType(data);
         });
@@ -3240,14 +3362,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getWidenedType", function (type) {
             const data = owner.client.apiRequest("getWidenedType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (type) {
             const data = yield* apiRequest("getWidenedType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -3262,7 +3384,7 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getParameterType", function (signature, index) {
             const data = owner.client.apiRequest("getParameterType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
                 index,
             });
@@ -3270,7 +3392,7 @@ export class Checker {
         }, function* (signature, index) {
             const data = yield* apiRequest("getParameterType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
                 index,
             });
@@ -3282,13 +3404,13 @@ export class Checker {
         return cacheGeneratorMethod(owner, "isArrayLikeType", function (type) {
             return owner.client.apiRequest("isArrayLikeType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
         }, function* (type) {
             return yield* apiRequest("isArrayLikeType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
         });
@@ -3298,14 +3420,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "isTypeAssignableTo", function (source, target) {
             return owner.client.apiRequest("isTypeAssignableTo", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 source: source.id,
                 target: target.id,
             });
         }, function* (source, target) {
             return yield* apiRequest("isTypeAssignableTo", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 source: source.id,
                 target: target.id,
             });
@@ -3316,15 +3438,15 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getShorthandAssignmentValueSymbol", function (node) {
             const data = owner.client.apiRequest("getShorthandAssignmentValueSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         }, function* (node) {
             const data = yield* apiRequest("getShorthandAssignmentValueSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         });
@@ -3339,17 +3461,17 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getTypeOfSymbolAtLocation", function (symbol, location) {
             const data = owner.client.apiRequest("getTypeOfSymbolAtLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
-                location: getNodeId(location),
+                location: getNodeRequestHandle(location),
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (symbol, location) {
             const data = yield* apiRequest("getTypeOfSymbolAtLocation", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
-                location: getNodeId(location),
+                location: getNodeRequestHandle(location),
             });
             return owner.objectRegistry.getOrCreateType(data);
         });
@@ -3359,13 +3481,13 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getIntrinsicType", function (method) {
             const data = owner.client.apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (method) {
             const data = yield* apiRequest(method, {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
             return owner.objectRegistry.getOrCreateType(data);
         });
@@ -3471,9 +3593,9 @@ export class Checker {
         return cacheGeneratorMethod(owner, "typeToTypeNode", function (type, enclosingDeclaration, flags) {
             const binaryData = owner.client.apiRequestBinary("typeToTypeNode", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
-                location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
+                location: enclosingDeclaration ? getNodeRequestHandle(enclosingDeclaration) : undefined,
                 flags,
             });
             if (!binaryData)
@@ -3482,9 +3604,9 @@ export class Checker {
         }, function* (type, enclosingDeclaration, flags) {
             const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("typeToTypeNode", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
-                location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
+                location: enclosingDeclaration ? getNodeRequestHandle(enclosingDeclaration) : undefined,
                 flags,
             }));
             if (!binaryData)
@@ -3497,10 +3619,10 @@ export class Checker {
         return cacheGeneratorMethod(owner, "signatureToSignatureDeclaration", function (signature, kind, enclosingDeclaration, flags) {
             const binaryData = owner.client.apiRequestBinary("signatureToSignatureDeclaration", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
                 kind,
-                location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
+                location: enclosingDeclaration ? getNodeRequestHandle(enclosingDeclaration) : undefined,
                 flags,
             });
             if (!binaryData)
@@ -3509,10 +3631,10 @@ export class Checker {
         }, function* (signature, kind, enclosingDeclaration, flags) {
             const binaryData = sourceFileResponseToUint8Array(yield* apiRequest("signatureToSignatureDeclaration", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
                 kind,
-                location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
+                location: enclosingDeclaration ? getNodeRequestHandle(enclosingDeclaration) : undefined,
                 flags,
             }));
             if (!binaryData)
@@ -3525,9 +3647,9 @@ export class Checker {
         return cacheGeneratorMethod(owner, "typeToString", function (type, enclosingDeclaration, flags) {
             const result = owner.client.apiRequest("typeToString", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
-                location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
+                location: enclosingDeclaration ? getNodeRequestHandle(enclosingDeclaration) : undefined,
                 flags,
             });
             if (typeof result !== "string")
@@ -3536,9 +3658,9 @@ export class Checker {
         }, function* (type, enclosingDeclaration, flags) {
             const result = yield* apiRequest("typeToString", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
-                location: enclosingDeclaration ? getNodeId(enclosingDeclaration) : undefined,
+                location: enclosingDeclaration ? getNodeRequestHandle(enclosingDeclaration) : undefined,
                 flags,
             });
             if (typeof result !== "string")
@@ -3551,14 +3673,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "isContextSensitive", function (node) {
             return owner.client.apiRequest("isContextSensitive", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
         }, function* (node) {
             return yield* apiRequest("isContextSensitive", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
         });
     }
@@ -3567,13 +3689,13 @@ export class Checker {
         return cacheGeneratorMethod(owner, "isArrayType", function (type) {
             return owner.client.apiRequest("isArrayType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
         }, function* (type) {
             return yield* apiRequest("isArrayType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
         });
@@ -3608,13 +3730,13 @@ export class Checker {
         return cacheGeneratorMethod(owner, "isReadonlySymbol", function (symbol) {
             return owner.client.apiRequest("isReadonlySymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
         }, function* (symbol) {
             return yield* apiRequest("isReadonlySymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
         });
@@ -3637,14 +3759,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getRestTypeOfSignature", function (signature) {
             const data = owner.client.apiRequest("getRestTypeOfSignature", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
             });
             return owner.objectRegistry.getOrCreateType(data);
         }, function* (signature) {
             const data = yield* apiRequest("getRestTypeOfSignature", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
             });
             return owner.objectRegistry.getOrCreateType(data);
@@ -3655,7 +3777,7 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getTypePredicateOfSignature", function (signature) {
             const data = owner.client.apiRequest("getTypePredicateOfSignature", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
             });
             if (!data)
@@ -3669,7 +3791,7 @@ export class Checker {
         }, function* (signature) {
             const data = yield* apiRequest("getTypePredicateOfSignature", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 signature: signature.id,
             });
             if (!data)
@@ -3733,7 +3855,7 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getIndexInfoOfType", function (type, kind) {
             const data = owner.client.apiRequest("getIndexInfoOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
                 kind,
             });
@@ -3741,12 +3863,12 @@ export class Checker {
                 keyType: owner.objectRegistry.getOrCreateType(data.keyType),
                 valueType: owner.objectRegistry.getOrCreateType(data.valueType),
                 isReadonly: data.isReadonly ?? false,
-                declaration: data.declaration ? new NodeHandle(data.declaration, owner.project) : undefined,
+                declaration: data.declaration ? owner.objectRegistry.createNodeHandle(data.declaration) : undefined,
             } : undefined;
         }, function* (type, kind) {
             const data = yield* apiRequest("getIndexInfoOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
                 kind,
             });
@@ -3754,7 +3876,7 @@ export class Checker {
                 keyType: owner.objectRegistry.getOrCreateType(data.keyType),
                 valueType: owner.objectRegistry.getOrCreateType(data.valueType),
                 isReadonly: data.isReadonly ?? false,
-                declaration: data.declaration ? new NodeHandle(data.declaration, owner.project) : undefined,
+                declaration: data.declaration ? owner.objectRegistry.createNodeHandle(data.declaration) : undefined,
             } : undefined;
         });
     }
@@ -3771,7 +3893,7 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getTypeOfPropertyOfType", function (type, propertyName) {
             const data = owner.client.apiRequest("getTypeOfPropertyOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
                 name: propertyName,
             });
@@ -3779,7 +3901,7 @@ export class Checker {
         }, function* (type, propertyName) {
             const data = yield* apiRequest("getTypeOfPropertyOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
                 name: propertyName,
             });
@@ -3811,14 +3933,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getBaseConstraintOfType", function (type) {
             const data = owner.client.apiRequest("getBaseConstraintOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
         }, function* (type) {
             const data = yield* apiRequest("getBaseConstraintOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return data ? owner.objectRegistry.getOrCreateType(data) : undefined;
@@ -3829,7 +3951,7 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getPropertyOfType", function (type, name) {
             const data = owner.client.apiRequest("getPropertyOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
                 name,
             });
@@ -3837,7 +3959,7 @@ export class Checker {
         }, function* (type, name) {
             const data = yield* apiRequest("getPropertyOfType", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
                 name,
             });
@@ -3849,8 +3971,8 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getConstantValue", function (node) {
             const data = owner.client.apiRequest("getConstantValue", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             if (!data || (typeof data.value !== "string" && typeof data.value !== "number")) {
                 return undefined;
@@ -3868,8 +3990,8 @@ export class Checker {
         }, function* (node) {
             const data = yield* apiRequest("getConstantValue", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             if (!data || (typeof data.value !== "string" && typeof data.value !== "number")) {
                 return undefined;
@@ -3892,15 +4014,15 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getSignatureFromDeclaration", function (node) {
             const data = owner.client.apiRequest("getSignatureFromDeclaration", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return owner.objectRegistry.getOrCreateSignature(data);
         }, function* (node) {
             const data = yield* apiRequest("getSignatureFromDeclaration", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return owner.objectRegistry.getOrCreateSignature(data);
         });
@@ -3910,15 +4032,15 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getExportSpecifierLocalTargetSymbol", function (node) {
             const data = owner.client.apiRequest("getExportSpecifierLocalTargetSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         }, function* (node) {
             const data = yield* apiRequest("getExportSpecifierLocalTargetSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
-                location: getNodeId(node),
+                project: owner.project.handle,
+                location: getNodeRequestHandle(node),
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         });
@@ -3933,14 +4055,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getAliasedSymbol", function (symbol) {
             const data = owner.client.apiRequest("getAliasedSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateSymbol(data);
         }, function* (symbol) {
             const data = yield* apiRequest("getAliasedSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateSymbol(data);
@@ -3955,13 +4077,13 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getFullyQualifiedName", function (symbol) {
             return owner.client.apiRequest("getFullyQualifiedName", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
         }, function* (symbol) {
             return yield* apiRequest("getFullyQualifiedName", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
         });
@@ -3971,14 +4093,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getImmediateAliasedSymbol", function (symbol) {
             const data = owner.client.apiRequest("getImmediateAliasedSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
         }, function* (symbol) {
             const data = yield* apiRequest("getImmediateAliasedSymbol", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return data ? owner.objectRegistry.getOrCreateSymbol(data) : undefined;
@@ -3993,7 +4115,7 @@ export class Checker {
             if (symbol.checkFlags & CheckFlags.Instantiated) {
                 const data = owner.client.apiRequest("getTargetSymbol", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     symbol: symbol.reference,
                 });
                 return owner.objectRegistry.getOrCreateSymbol(data);
@@ -4003,7 +4125,7 @@ export class Checker {
             if (symbol.checkFlags & CheckFlags.Instantiated) {
                 const data = yield* apiRequest("getTargetSymbol", {
                     snapshot: owner.snapshotId,
-                    project: owner.project.id,
+                    project: owner.project.handle,
                     symbol: symbol.reference,
                 });
                 return owner.objectRegistry.getOrCreateSymbol(data);
@@ -4016,14 +4138,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getExportSymbolOfSymbol", function (symbol) {
             const data = owner.client.apiRequest("getExportSymbolOfSymbolForChecker", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateSymbol(data);
         }, function* (symbol) {
             const data = yield* apiRequest("getExportSymbolOfSymbolForChecker", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return owner.objectRegistry.getOrCreateSymbol(data);
@@ -4040,12 +4162,12 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getWellKnownSymbols", function () {
             return owner.wellKnownSymbols ??= owner.client.apiRequest("getWellKnownSymbols", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
         }, function* () {
             return owner.wellKnownSymbols ??= yield* apiRequest("getWellKnownSymbols", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
         });
     }
@@ -4093,12 +4215,12 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getWellKnownSignatures", function () {
             return owner.wellKnownSignatures ??= owner.client.apiRequest("getWellKnownSignatures", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
         }, function* () {
             return owner.wellKnownSignatures ??= yield* apiRequest("getWellKnownSignatures", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
             });
         });
     }
@@ -4120,14 +4242,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getExportsOfModule", function (symbol) {
             const data = owner.client.apiRequest("getExportsOfModule", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return data ? data.map(d => owner.objectRegistry.getOrCreateSymbol(d)) : [];
         }, function* (symbol) {
             const data = yield* apiRequest("getExportsOfModule", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return data ? data.map(d => owner.objectRegistry.getOrCreateSymbol(d)) : [];
@@ -4138,7 +4260,7 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getMemberInModuleExports", function (symbol, name) {
             const data = owner.client.apiRequest("getMemberInModuleExports", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
                 name,
             });
@@ -4146,7 +4268,7 @@ export class Checker {
         }, function* (symbol, name) {
             const data = yield* apiRequest("getMemberInModuleExports", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
                 name,
             });
@@ -4158,14 +4280,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getJsDocTagsOfSymbol", function (symbol) {
             const data = owner.client.apiRequest("getJsDocTags", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return data ?? [];
         }, function* (symbol) {
             const data = yield* apiRequest("getJsDocTags", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
             return data ?? [];
@@ -4176,13 +4298,13 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getDocumentationCommentOfSymbol", function (symbol) {
             return owner.client.apiRequest("getDocumentationComment", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
         }, function* (symbol) {
             return yield* apiRequest("getDocumentationComment", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 symbol: symbol.reference,
             });
         });
@@ -4195,14 +4317,14 @@ export class Checker {
         return cacheGeneratorMethod(owner, "getTypeArguments", function (type) {
             const data = owner.client.apiRequest("getTypeArguments", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return data ? data.map(d => owner.objectRegistry.getOrCreateType(d)) : [];
         }, function* (type) {
             const data = yield* apiRequest("getTypeArguments", {
                 snapshot: owner.snapshotId,
-                project: owner.project.id,
+                project: owner.project.handle,
                 type: type.id,
             });
             return data ? data.map(d => owner.objectRegistry.getOrCreateType(d)) : [];
@@ -4259,64 +4381,9 @@ export class Printer {
         });
     }
 }
-export class SnapshotInternalAPI {
-    snapshotId;
-    client;
-    constructor(snapshotId, client) {
-        this.snapshotId = snapshotId;
-        this.client = client;
-    }
-    /**
-     * Format a synthesized node with the correct indentation for insertion at a
-     * specific position in an existing source file.
-     *
-     * @param node The synthesized AST node to format.
-     * @param file The target file where the node will be inserted.
-     * @param position The UTF-16 code-unit offset in the target file for insertion.
-     * @returns The formatted text of the node, indented for the insertion position.
-     */
-    get formatNodeForInsertion() {
-        const owner = this;
-        return cacheGeneratorMethod(owner, "formatNodeForInsertion", function (node, file, position) {
-            const data = owner.client.apiRequest("getDefaultProjectForFile", {
-                snapshot: owner.snapshotId,
-                file,
-            });
-            if (!data) {
-                throw new Error(`No project found for file: ${typeof file === "string" ? file : file.uri}`);
-            }
-            const encoded = encodeNode(node);
-            const base64 = uint8ArrayToBase64(encoded);
-            return owner.client.apiRequest("formatNodeForInsertion", {
-                snapshot: owner.snapshotId,
-                project: data.id,
-                file,
-                position,
-                data: base64,
-            });
-        }, function* (node, file, position) {
-            const data = yield* apiRequest("getDefaultProjectForFile", {
-                snapshot: owner.snapshotId,
-                file,
-            });
-            if (!data) {
-                throw new Error(`No project found for file: ${typeof file === "string" ? file : file.uri}`);
-            }
-            const encoded = encodeNode(node);
-            const base64 = uint8ArrayToBase64(encoded);
-            return yield* apiRequest("formatNodeForInsertion", {
-                snapshot: owner.snapshotId,
-                project: data.id,
-                file,
-                position,
-                data: base64,
-            });
-        });
-    }
-}
 export class NodeHandle {
     /**
-     * The project this handle was produced in, used as the default for {@link resolve}.
+     * The project where this handle was first materialized, used as the default for {@link resolve}.
      * Node handles are only meaningful within a project's program, so the producing project
      * is remembered so callers don't have to pass it explicitly.
      */
@@ -4325,11 +4392,15 @@ export class NodeHandle {
     fileOwner;
     index;
     kind;
+    /** Identity of the exact parsed source file, shared across programs that reuse that AST. */
+    sourceFileId;
+    /** Retrieval metadata; never used to substitute a different source-file AST. */
     path;
     constructor(handle, canonicalProject, fileOwner) {
-        const parsed = parseNodeHandle(handle);
+        const parsed = parseNodeHandleFromCompiler(handle);
         this.index = parsed.index;
         this.kind = parsed.kind;
+        this.sourceFileId = parsed.sourceFileId;
         this.path = parsed.path;
         this.canonicalProject = canonicalProject;
         this.fileOwner = fileOwner;
@@ -4338,35 +4409,46 @@ export class NodeHandle {
      * Resolve this handle to the actual AST node by fetching the source file from a project
      * and looking up the node by index. If no project is passed, the project that produced
      * the handle is used. Declarations of file-owned symbols identify an exact source file and
-     * resolve through it, independently of any project.
+     * resolve through it, independently of any project. A different AST at the
+     * same path is never substituted.
      */
     get resolve() {
         const owner = this;
         return cacheGeneratorMethod(owner, "resolve", function (project = owner.canonicalProject) {
             if (owner.fileOwner) {
                 const sourceFile = owner.fileOwner.record.file ?? owner.fetchOwnerFile(owner.fileOwner);
-                return sourceFile.getOrCreateNodeAtIndex(owner.index);
+                return owner.resolveInFile(sourceFile);
             }
             if (!project)
-                throw new Error(`Node handle for '${owner.path}' has no project context`);
-            const sourceFile = project.program.getSourceFile(owner.path);
+                throw new Error(`Node handle for source file '${owner.sourceFileId}' has no project context`);
+            const sourceFile = project.program.getSourceFileByPath(owner.path);
             if (!sourceFile) {
-                return undefined;
+                throw new Error("Node handle source file is not part of the requested program");
             }
-            return sourceFile.getOrCreateNodeAtIndex(owner.index);
+            return owner.resolveInFile(sourceFile);
         }, function* (project = owner.canonicalProject) {
             if (owner.fileOwner) {
                 const sourceFile = owner.fileOwner.record.file ?? (yield* owner.fetchOwnerFile.gen(owner.fileOwner));
-                return sourceFile.getOrCreateNodeAtIndex(owner.index);
+                return owner.resolveInFile(sourceFile);
             }
             if (!project)
-                throw new Error(`Node handle for '${owner.path}' has no project context`);
-            const sourceFile = yield* project.program.getSourceFile.gen(owner.path);
+                throw new Error(`Node handle for source file '${owner.sourceFileId}' has no project context`);
+            const sourceFile = yield* project.program.getSourceFileByPath.gen(owner.path);
             if (!sourceFile) {
-                return undefined;
+                throw new Error("Node handle source file is not part of the requested program");
             }
-            return sourceFile.getOrCreateNodeAtIndex(owner.index);
+            return owner.resolveInFile(sourceFile);
         });
+    }
+    resolveInFile(sourceFile) {
+        if (sourceFile.nodeId !== this.sourceFileId) {
+            throw new Error(`Node handle source file is not part of the requested program`);
+        }
+        const node = sourceFile.getOrCreateNodeAtIndex(this.index);
+        if (!node || node.kind !== this.kind) {
+            throw new Error("Node handle does not identify a node of the expected kind");
+        }
+        return node;
     }
     get fetchOwnerFile() {
         const owner = this;
@@ -4396,8 +4478,11 @@ export class Symbol {
     checkFlags;
     /** @internal */
     reference;
-    declarations;
-    valueDeclaration;
+    // Declaration handles are kept in their wire form until first accessed.
+    declarationHandles;
+    valueDeclarationHandle;
+    declarationsCache;
+    valueDeclarationCache;
     parent;
     exportSymbol;
     membersCache;
@@ -4410,18 +4495,30 @@ export class Symbol {
         this.escapedName = data.name;
         this.name = unescapeLeadingUnderscores(data.name);
         this.flags = data.flags;
-        this.checkFlags = data.checkFlags;
-        // A file-owned symbol has no canonical project; its declarations resolve through its file.
-        const project = storage.kind === SymbolOwnerKind.Snapshot ? storage.registry.project : undefined;
-        const fileOwner = storage.kind === SymbolOwnerKind.File ? storage.owner : undefined;
-        this.declarations = (data.declarations ?? []).map(handle => new NodeHandle(handle, project, fileOwner));
-        this.valueDeclaration = data.valueDeclaration
-            ? new NodeHandle(data.valueDeclaration, project, fileOwner)
-            : undefined;
+        this.checkFlags = data.checkFlags ?? 0;
+        this.declarationHandles = data.declarations;
+        this.valueDeclarationHandle = data.valueDeclaration;
+        this.declarationsCache = undefined;
+        this.valueDeclarationCache = undefined;
         if (data.parent !== undefined)
             this.parent = data.parent;
         if (data.exportSymbol !== undefined)
             this.exportSymbol = data.exportSymbol;
+    }
+    get declarations() {
+        return this.declarationsCache ??= this.declarationHandles?.map(handle => this.createDeclarationHandle(handle)) ?? [];
+    }
+    get valueDeclaration() {
+        if (this.valueDeclarationCache === undefined && this.valueDeclarationHandle) {
+            this.valueDeclarationCache = this.createDeclarationHandle(this.valueDeclarationHandle);
+        }
+        return this.valueDeclarationCache;
+    }
+    createDeclarationHandle(handle) {
+        // A file-owned symbol has no canonical project; its declarations resolve through its file.
+        return this.storage.kind === SymbolOwnerKind.Snapshot
+            ? this.storage.registry.createNodeHandle(handle)
+            : new NodeHandle(handle, undefined, this.storage.owner);
     }
     get getParent() {
         const owner = this;
@@ -4622,8 +4719,7 @@ class TypeObject {
         this.objectRegistry = objectRegistry;
         this.id = data.id;
         this.flags = data.flags;
-        if (data.objectFlags !== undefined)
-            this.objectFlags = data.objectFlags;
+        this.objectFlags = data.objectFlags ?? 0;
         if (data.symbol !== undefined)
             this.symbol = data.symbol;
         if (data.value != null) {
@@ -4651,8 +4747,7 @@ class TypeObject {
         }
         if (data.intrinsicName !== undefined)
             this.intrinsicName = data.intrinsicName;
-        if (data.isThisType !== undefined)
-            this.isThisType = data.isThisType;
+        this.isThisType = data.isThisType ?? false;
         if (data.freshType !== undefined)
             this.freshType = data.freshType;
         if (data.regularType !== undefined)
@@ -5278,7 +5373,9 @@ export class Signature {
     flags;
     objectRegistry;
     id;
-    declaration;
+    project;
+    declarationHandle;
+    declarationCache;
     typeParameters;
     parameters;
     thisParameter;
@@ -5286,14 +5383,22 @@ export class Signature {
     returnType;
     constructor(data, project, objectRegistry) {
         this.id = data.id;
-        this.flags = data.flags;
+        this.flags = data.flags ?? 0;
         this.objectRegistry = objectRegistry;
-        this.declaration = data.declaration ? new NodeHandle(data.declaration, project) : undefined;
+        this.project = project;
+        this.declarationHandle = data.declaration;
+        this.declarationCache = undefined;
         this.typeParameters = data.typeParameters ?? [];
         this.parameters = data.parameters ?? [];
         this.thisParameter = data.thisParameter;
         this.target = data.target;
         this.returnType = false;
+    }
+    get declaration() {
+        if (this.declarationCache === undefined && this.declarationHandle) {
+            this.declarationCache = this.objectRegistry.createNodeHandle(this.declarationHandle);
+        }
+        return this.declarationCache;
     }
     get getTypeParameters() {
         const owner = this;

@@ -1,13 +1,18 @@
+import { encodeFileSystemCallbackResult, serverFS, } from "../api/fsCallbacks.js";
+import { Wtf8Decoder } from "../api/node/wtf8.js";
 const errnoSuccess = 0;
 const errnoBadFileDescriptor = 8;
 const errnoInvalidArgument = 28;
 const errnoIo = 29;
+const errnoNoBuffers = 42;
 const errnoNoSys = 52;
 const fileTypeCharacterDevice = 2;
 const eventTypeClock = 0;
 const subscriptionClockAbstime = 1;
 const hostCallbackFD = 0x7fff_fffd;
 const hostWriteFileFD = 0x7fff_fffe;
+const textDecoder = new TextDecoder();
+const fileContentDecoder = new Wtf8Decoder("utf-8", { ignoreBOM: true });
 const wasmHosts = new WeakMap();
 export function setWasmFileSystem(instance, fs) {
     const host = wasmHosts.get(instance);
@@ -52,6 +57,7 @@ function createWasiHost(options) {
     const decoders = new Map();
     const encoder = new TextEncoder();
     const callbacks = new Map();
+    let pendingCallbackResult;
     const closedDescriptors = new Set();
     let fileSystem;
     function getMemory() {
@@ -189,14 +195,30 @@ function createWasiHost(options) {
         const decoder = new TextDecoder();
         const method = decoder.decode(new Uint8Array(memory.buffer, methodPointer, methodLength));
         const payload = decoder.decode(new Uint8Array(memory.buffer, payloadPointer, payloadLength));
+        const pending = pendingCallbackResult;
+        pendingCallbackResult = undefined;
         try {
-            const callback = callbacks.get(method);
-            if (!callback) {
-                throw new Error(`No callback is registered for ${method}`);
+            let result;
+            if (methodLength === 0) {
+                // An empty method fetches a result that did not fit the previous call's buffer.
+                if (!pending || pending.length > resultCapacity)
+                    return errnoInvalidArgument;
+                result = pending;
             }
-            const result = encoder.encode(callback(method, payload));
-            if (result.length > resultCapacity) {
-                throw new Error(`Callback result exceeds ${resultCapacity} bytes`);
+            else {
+                const callback = callbacks.get(method);
+                if (!callback) {
+                    throw new Error(`No callback is registered for ${method}`);
+                }
+                result = encoder.encode(callback(method, payload));
+                if (result.length > resultCapacity) {
+                    pendingCallbackResult = result;
+                    const resultView = new DataView(getMemory().buffer);
+                    resultView.setUint32(bufferPointer + 8, result.length, true);
+                    resultView.setUint32(bufferPointer + 12, 0, true);
+                    resultView.setUint32(writtenPointer, 0, true);
+                    return errnoNoBuffers;
+                }
             }
             const resultMemory = getMemory();
             const resultView = new DataView(resultMemory.buffer);
@@ -229,7 +251,8 @@ function createWasiHost(options) {
     function hostWriteFile(iovsPointer, iovsLength, writtenPointer) {
         iovsPointer >>>= 0;
         writtenPointer >>>= 0;
-        if (typeof fileSystem?.writeFile !== "function")
+        const writeFile = fileSystem?.writeFile;
+        if (writeFile === undefined || writeFile === serverFS.useOS)
             return errnoBadFileDescriptor;
         if (iovsLength !== 1)
             return errnoInvalidArgument;
@@ -244,14 +267,18 @@ function createWasiHost(options) {
         const errorCapacity = view.getUint32(bufferPointer + 8, true);
         if (12 + pathLength + dataLength + errorCapacity !== bufferLength)
             return errnoInvalidArgument;
-        const decoder = new TextDecoder();
         const pathPointer = bufferPointer + 12;
         const dataPointer = pathPointer + pathLength;
         const errorPointer = dataPointer + dataLength;
-        const path = decoder.decode(new Uint8Array(memory.buffer, pathPointer, pathLength));
-        const data = decoder.decode(new Uint8Array(memory.buffer, dataPointer, dataLength));
+        const path = textDecoder.decode(new Uint8Array(memory.buffer, pathPointer, pathLength));
+        const data = fileContentDecoder.decode(new Uint8Array(memory.buffer, dataPointer, dataLength));
         try {
-            fileSystem.writeFile(path, data);
+            const result = typeof writeFile === "function" ? writeFile(path, data) : writeFile;
+            const response = encodeFileSystemCallbackResult("writeFile", result);
+            if (response.kind === "useOS")
+                return errnoBadFileDescriptor;
+            if (response.kind === "error")
+                throw new Error("filesystem callback returned serverFS.error: writeFile");
             new DataView(getMemory().buffer).setUint32(writtenPointer, bufferLength, true);
             return errnoSuccess;
         }
@@ -298,7 +325,9 @@ function createWasiHost(options) {
             return errnoNoSys;
         const deadline = performance.now() + Math.max(0, shortestDelay);
         while (performance.now() < deadline) {
-            // WASI imports are synchronous, so a clock subscription must wait here.
+            // WASI imports are synchronous, so a clock subscription must spin here.
+            // The Go scheduler only polls when every goroutine is idle with a
+            // pending timer, which the reactor does not hit during API requests.
         }
         new Uint8Array(memory.buffer, eventsPointer, 32).fill(0);
         view.setBigUint64(eventsPointer, view.getBigUint64(selected, true), true);

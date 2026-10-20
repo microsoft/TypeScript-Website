@@ -1,9 +1,6 @@
-import { OuterExpressionKinds } from "#enums/outerExpressionKinds";
-import type { AsExpression, BindingPattern, BlockOrExpression, BooleanLiteral, ConciseBody, ExclamationToken, Expression, ExpressionWithTypeArguments, ForInitializer, Identifier, JSDocTypeExpression, JSDocTypeLiteral, JsxTagNameExpression, LeftHandSideExpression, LiteralExpression, MinusToken, ModuleDeclaration, Node, NonNullExpression, NullLiteral, ParenthesizedExpression, PartiallyEmittedExpression, PlusToken, PrefixUnaryExpression, QuestionToken, ReadonlyKeyword, SatisfiesExpression, Statement, TemplateMiddle, TemplateTail, ThisTypeNode, TypeAssertion, TypeNode, UnaryExpressionBase } from "./ast.ts";
+import type { BindingPattern, BlockOrExpression, BooleanLiteral, ConciseBody, ExclamationToken, Expression, ForInitializer, Identifier, JSDocTypeExpression, JSDocTypeLiteral, JsxTagNameExpression, LeftHandSideExpression, LiteralExpression, MinusToken, ModuleDeclaration, Node, NullLiteral, PlusToken, PrefixUnaryExpression, QuestionToken, ReadonlyKeyword, Statement, TemplateMiddle, TemplateTail, ThisTypeNode, TypeNode, UnaryExpressionBase } from "./ast.ts";
 export * from "./is.generated.ts";
 type JSDocNamespaceDeclaration = ModuleDeclaration;
-type WrappedExpression<T extends Expression> = ParenthesizedExpression | TypeAssertion | AsExpression | SatisfiesExpression | ExpressionWithTypeArguments | NonNullExpression | PartiallyEmittedExpression;
-type OuterExpression = WrappedExpression<Expression>;
 export declare function isTypeNode(node: Node): node is TypeNode;
 export declare function isStatement(node: Node): node is Statement;
 export declare function isExpression(node: Node): node is Expression;
@@ -13,14 +10,6 @@ export declare function isLeftHandSideExpression(node: Node): node is LeftHandSi
 export declare function skipPartiallyEmittedExpressions(node: Expression): Expression;
 export declare function skipPartiallyEmittedExpressions(node: Node): Node;
 export declare function isUnaryExpression(node: Node): node is UnaryExpressionBase;
-/** @internal */
-export declare function isOuterExpression(node: Node, kinds?: OuterExpressionKinds): node is OuterExpression;
-/** @internal */
-export declare function skipOuterExpressions<T extends Expression>(node: WrappedExpression<T>): T;
-/** @internal */
-export declare function skipOuterExpressions(node: Expression, kinds?: OuterExpressionKinds): Expression;
-/** @internal */
-export declare function skipOuterExpressions(node: Node, kinds?: OuterExpressionKinds): Node;
 export declare function isBindingPattern(node: Node): node is BindingPattern;
 export declare function isConciseBody(node: Node): node is ConciseBody;
 export declare function isForInitializer(node: Node): node is ForInitializer;

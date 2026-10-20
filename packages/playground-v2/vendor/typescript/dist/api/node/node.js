@@ -1,8 +1,9 @@
 import { computeLineStarts, NodeFlags, SpanMap, SpanMapFeature, SpanMapKind, SyntaxKind, TokenFlags, } from "../../ast/index.js";
+import { tryPathKeyFromCanonical } from "../path.js";
 import { MsgpackReader } from "./msgpack.js";
 import { RemoteNode, RemoteNodeList, } from "./node.generated.js";
 import { NODE_EXTENDED_DATA_MASK, readParseOptionsKey, readSourceFileHash, readSourceFileNodeId, } from "./node.infrastructure.js";
-import { HEADER_OFFSET_EXTENDED_DATA, HEADER_OFFSET_NODES, HEADER_OFFSET_STRING_TABLE, HEADER_OFFSET_STRING_TABLE_OFFSETS, HEADER_OFFSET_STRUCTURED_DATA, KIND_NODE_LIST, NODE_LEN, NODE_OFFSET_KIND, NODE_OFFSET_PARENT, } from "./protocol.js";
+import { HEADER_OFFSET_EXTENDED_DATA, HEADER_OFFSET_NODES, HEADER_OFFSET_SOURCE_FILE_ID, HEADER_OFFSET_STRING_TABLE, HEADER_OFFSET_STRING_TABLE_OFFSETS, HEADER_OFFSET_STRUCTURED_DATA, KIND_NODE_LIST, NODE_LEN, NODE_OFFSET_KIND, NODE_OFFSET_PARENT, } from "./protocol.js";
 import { Wtf8Decoder } from "./wtf8.js";
 // Re-export everything consumers need from the other two files.
 export { RemoteNode, RemoteNodeList } from "./node.generated.js";
@@ -61,6 +62,7 @@ export class RemoteSourceFile extends RemoteNode {
     _cachedSupplementalSourceFileNames;
     _cachedDiagnosticDirectives;
     _diagnosticDirectivesRead = false;
+    _handleFileKey;
     constructor(data, decoder, timing, api) {
         const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
         const offsetNodes = view.getUint32(HEADER_OFFSET_NODES, true);
@@ -91,6 +93,21 @@ export class RemoteSourceFile extends RemoteNode {
     /** @internal */
     get nodeId() {
         return readSourceFileNodeId(this.view);
+    }
+    /**
+     * The file component of node handles sent to the server: `#` followed by the
+     * server's identity for this exact source file.
+     * @internal
+     */
+    get handleFileKey() {
+        if (this._handleFileKey === undefined) {
+            const nodeId = this.view.getBigUint64(HEADER_OFFSET_SOURCE_FILE_ID, true);
+            if (nodeId === 0n) {
+                throw new Error("Node has no server source-file identity");
+            }
+            this._handleFileKey = `#${nodeId}`;
+        }
+        return this._handleFileKey;
     }
     readFileReferences(structuredDataOffset) {
         if (structuredDataOffset === NO_STRUCTURED_DATA) {
@@ -138,7 +155,6 @@ export class RemoteSourceFile extends RemoteNode {
         }
         return result;
     }
-    /** @internal */
     getOrCreateNodeAtIndex(index) {
         let node = this.nodes[index];
         if (!node) {
@@ -164,13 +180,22 @@ export class RemoteSourceFile extends RemoteNode {
     get extendedDataOffset() {
         return this._offsetExtendedData + (this.data & NODE_EXTENDED_DATA_MASK);
     }
+    getFileName(stringIndex) {
+        return this.getString(stringIndex);
+    }
+    getPathKey(stringIndex) {
+        return this.getString(stringIndex);
+    }
+    readFileNameArray(structuredDataOffset) {
+        return this.readStringArray(structuredDataOffset);
+    }
     get fileName() {
         const stringIndex = this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.FileName, true);
-        return this.getString(stringIndex);
+        return this.getFileName(stringIndex);
     }
     get path() {
         const stringIndex = this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.Path, true);
-        return this.getString(stringIndex);
+        return this.getPathKey(stringIndex);
     }
     get languageVariant() {
         return this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.LanguageVariant, true);
@@ -278,11 +303,11 @@ export class RemoteSourceFile extends RemoteNode {
         const offset = this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.SupplementalSourceFileNames, true);
         if (offset === NO_STRUCTURED_DATA)
             return undefined;
-        return this._cachedSupplementalSourceFileNames = this.readStringArray(offset);
+        return this._cachedSupplementalSourceFileNames = this.readFileNameArray(offset);
     }
     get canonicalSourceFileName() {
         const stringIndex = this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.CanonicalSourceFileName, true);
-        return stringIndex === NO_STRUCTURED_DATA ? undefined : this.getString(stringIndex);
+        return stringIndex === NO_STRUCTURED_DATA ? undefined : this.getFileName(stringIndex);
     }
     get contentMapper() {
         const stringIndex = this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.ContentMapper, true);
@@ -290,7 +315,7 @@ export class RemoteSourceFile extends RemoteNode {
     }
     get virtualFileName() {
         const stringIndex = this.view.getUint32(this.extendedDataOffset + sourceFileExtendedDataOffsets.VirtualFileName, true);
-        return stringIndex === NO_STRUCTURED_DATA ? undefined : this.getString(stringIndex);
+        return stringIndex === NO_STRUCTURED_DATA ? undefined : this.getFileName(stringIndex);
     }
     get diagnosticDirectives() {
         if (this._diagnosticDirectivesRead)
@@ -389,10 +414,10 @@ export function findDescendant(root, pos, end, kind) {
     return result;
 }
 /**
- * Parse a node handle string into its components.
- * Handle format: "index.kind.path" where path may contain dots.
+ * Parse a compiler-produced node handle into its components.
+ * Handle format: "index.kind.#sourceFileId.path" where path may contain dots.
  */
-export function parseNodeHandle(handle) {
+export function parseNodeHandleFromCompiler(handle) {
     const firstDot = handle.indexOf(".");
     if (firstDot === -1) {
         throw new Error(`Invalid node handle: ${handle}`);
@@ -401,10 +426,34 @@ export function parseNodeHandle(handle) {
     if (secondDot === -1) {
         throw new Error(`Invalid node handle: ${handle}`);
     }
+    const indexText = handle.slice(0, firstDot);
+    const kindText = handle.slice(firstDot + 1, secondDot);
+    const thirdDot = handle.indexOf(".", secondDot + 1);
+    if (thirdDot === -1) {
+        throw new Error(`Invalid node handle: ${handle}`);
+    }
+    const fileKey = handle.slice(secondDot + 1, thirdDot);
+    const sourceFileId = fileKey.slice(1);
+    const path = handle.slice(thirdDot + 1);
+    const index = Number(indexText);
+    const kind = Number(kindText);
+    const key = tryPathKeyFromCanonical(path);
+    if (!Number.isSafeInteger(index) ||
+        index < 0 ||
+        String(index) !== indexText ||
+        !Number.isSafeInteger(kind) ||
+        kind < 0 ||
+        String(kind) !== kindText ||
+        !/^#[1-9][0-9]*$/.test(fileKey) ||
+        BigInt(sourceFileId) > 0xffffffffffffffffn ||
+        key === undefined) {
+        throw new Error(`Invalid node handle: ${handle}`);
+    }
     return {
-        index: parseInt(handle.slice(0, firstDot), 10),
-        kind: parseInt(handle.slice(firstDot + 1, secondDot), 10),
-        path: handle.slice(secondDot + 1),
+        index,
+        kind: kind,
+        sourceFileId,
+        path: key,
     };
 }
 /**
@@ -424,6 +473,24 @@ export function getNodeId(node) {
     if (!(node instanceof RemoteNode)) {
         throw new Error("getNodeId requires a RemoteNode");
     }
-    return node.id;
+    const sourceFile = node["_sourceFile"];
+    if (sourceFile instanceof RemoteSourceFile) {
+        return `${node["index"]}.${node.kind}.${sourceFile.handleFileKey}.${sourceFile.path}`;
+    }
+    throw new Error("Node has no server source-file identity");
+}
+/**
+ * Get the compact handle identifying a node in its exact server source-file AST.
+ * @internal
+ */
+export function getNodeRequestHandle(node) {
+    if (!(node instanceof RemoteNode)) {
+        throw new Error("getNodeRequestHandle requires a RemoteNode");
+    }
+    const sourceFile = node["_sourceFile"];
+    if (sourceFile instanceof RemoteSourceFile) {
+        return `${node["index"]}.${sourceFile.handleFileKey}`;
+    }
+    throw new Error("Node has no server source-file identity");
 }
 //# sourceMappingURL=node.js.map

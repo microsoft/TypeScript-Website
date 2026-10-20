@@ -1,32 +1,6 @@
-/**
- * Returns length of the root part of a path or URL (i.e. length of "/", "x:/", "//server/share/, file:///user/files").
- *
- * For example:
- * ```ts
- * getRootLength("a") === 0                   // ""
- * getRootLength("/") === 1                   // "/"
- * getRootLength("c:") === 2                  // "c:"
- * getRootLength("c:d") === 0                 // ""
- * getRootLength("c:/") === 3                 // "c:/"
- * getRootLength("c:\\") === 3                // "c:\\"
- * getRootLength("//server") === 7            // "//server"
- * getRootLength("//server/share") === 8      // "//server/"
- * getRootLength("\\\\server") === 7          // "\\\\server"
- * getRootLength("\\\\server\\share") === 8   // "\\\\server\\"
- * getRootLength("file:///path") === 8        // "file:///"
- * getRootLength("file:///c:") === 10         // "file:///c:"
- * getRootLength("file:///c:d") === 8         // "file:///"
- * getRootLength("file:///c:/path") === 11    // "file:///c:/"
- * getRootLength("file://server") === 13      // "file://server"
- * getRootLength("file://server/path") === 14 // "file://server/"
- * getRootLength("http://server") === 13      // "http://server"
- * getRootLength("http://server/path") === 14 // "http://server/"
- * getRootLength("^/untitled/ts-nul-authority/Untitled-1") === 2 // "^/"
- * ```
- *
- * @internal
- */
-export declare function getRootLength(path: string): number;
+import { CaseSensitivity } from "../../enums/caseSensitivity.js";
+import type { PathKey, RootedDirectoryPath, RootedFilePath, RootedPath } from "../ast/index.ts";
+export { CaseSensitivity } from "../../enums/caseSensitivity.js";
 export declare function getPathComponents(path: string): string[];
 /**
  * Determines whether a path has a trailing separator (`/` or `\\`).
@@ -63,18 +37,52 @@ export declare function normalizePath(path: string): string;
 export declare function isRootedDiskPath(path: string): boolean;
 export declare function convertToRelativePath(absoluteOrRelativePath: string, basePath: string, getCanonicalFileName: (path: string) => string): string;
 /**
- * Converts a file name to a normalized path.
- *
- * @param fileName The file name to convert
- * @param basePath The base path to use for relative file names
- * @param getCanonicalFileName A function to get the canonical file name (e.g., toLowerCase for case-insensitive systems)
- * @returns The normalized path
+ * Returns the canonical key for an already rooted, normalized path under
+ * caseSensitivity.
  */
-export declare function toPath(fileName: string, basePath: string | undefined, getCanonicalFileName: (path: string) => string): string;
+export declare function pathKey(path: RootedPath, caseSensitivity: CaseSensitivity): PathKey;
 /**
- * Creates a getCanonicalFileName function based on case sensitivity.
+ * Validates a canonical path key received from a trusted producer without
+ * applying case sensitivity again.
  */
-export declare function createGetCanonicalFileName(useCaseSensitiveFileNames: boolean): (fileName: string) => string;
+export declare function tryPathKeyFromCanonical(path: string): PathKey | undefined;
+/**
+ * Resolves path against currentDirectory and normalizes it.
+ */
+export declare function toRootedPath(path: string, currentDirectory: RootedDirectoryPath | undefined): RootedPath;
+/**
+ * Validates a path that is already rooted and normalized without changing it.
+ */
+export declare function rootedPathFromNormalized(path: string): RootedPath;
+/**
+ * Attempts to validate a path that is already rooted and normalized without
+ * changing it.
+ */
+export declare function tryRootedPathFromNormalized(path: string): RootedPath | undefined;
+/**
+ * Resolves fileName against currentDirectory, normalizes it, and gives it file
+ * intent.
+ */
+export declare function toRootedFilePath(fileName: string, currentDirectory: RootedDirectoryPath | undefined): RootedFilePath;
+/**
+ * Resolves directory against currentDirectory, normalizes it, and gives it
+ * directory intent.
+ */
+export declare function toRootedDirectoryPath(directory: string, currentDirectory: RootedDirectoryPath | undefined): RootedDirectoryPath;
+/**
+ * Gives a RootedPath file intent without changing it.
+ */
+export declare function rootedFilePathFromPath(path: RootedPath): RootedFilePath;
+/**
+ * Gives a RootedPath directory intent without changing it.
+ */
+export declare function rootedDirectoryPathFromPath(path: RootedPath): RootedDirectoryPath;
+/**
+ * Applies caseSensitivity to text used for path comparison or keys.
+ */
+export declare function canonicalize(text: string, caseSensitivity: CaseSensitivity): string;
+export declare function isCaseSensitive(caseSensitivity: CaseSensitivity): boolean;
+export declare function isCaseInsensitive(caseSensitivity: CaseSensitivity): boolean;
 /**
  * Returns true if the path refers to a bundled library file.
  */

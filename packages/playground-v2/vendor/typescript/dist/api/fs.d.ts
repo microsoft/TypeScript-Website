@@ -1,3 +1,5 @@
+import type { RootedDirectoryPath, RootedFilePath, RootedPath } from "../ast/index.ts";
+import { serverFS } from "./fsCallbacks.ts";
 import type { RequestDirectoryEntries, RequestFileSystem, RequestSymlink } from "./proto.generated.ts";
 import { type DocumentIdentifier } from "./proto.ts";
 export interface FileSystemEntries {
@@ -14,38 +16,23 @@ export interface FileSystemStat {
     /** Last modification time, matching Node.js `fs.Stats.mtime`. */
     mtime: Date;
 }
-declare const useOS: unique symbol;
-declare const identity: unique symbol;
-declare const fakeStat: unique symbol;
-declare const noop: unique symbol;
-declare const error: unique symbol;
-export declare const serverFS: {
-    /** Delegate the configured operation, or the current callback invocation, to the server's operating-system filesystem. */
-    readonly useOS: typeof useOS;
-    /** Use the input path as its own real path without consulting a filesystem. Valid only for `realpath`. */
-    readonly identity: typeof identity;
-    /** Synthesize stat information from `directoryExists` and `fileExists`. Valid only for `stat`. */
-    readonly fakeStat: typeof fakeStat;
-    /** Ignore writes without invoking a callback or writing to the server's operating-system filesystem. Valid only for `writeFile`. */
-    readonly noop: typeof noop;
-    /** Panic if the configured operation, or current callback invocation, reaches the server filesystem. */
-    readonly error: typeof error;
-};
+export { serverFS };
 export interface FileSystemCallbacks {
-    directoryExists: ((directoryName: string) => boolean | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
-    fileExists: ((fileName: string) => boolean | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
-    getAccessibleEntries: ((directoryName: string) => FileSystemEntries | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    directoryExists: ((directoryName: RootedDirectoryPath) => boolean | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    fileExists: ((fileName: RootedFilePath) => boolean | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    getAccessibleEntries: ((directoryName: RootedDirectoryPath) => FileSystemEntries | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
     /**
      * Read a file's content.
      * - Return the file content as a `string` (including `""` for empty files).
      * - Return `undefined` to indicate the file does not exist.
      * - Return {@link serverFS.useOS} to fall back to the server's operating-system filesystem.
      */
-    readFile: ((fileName: string) => string | undefined | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
-    realpath: ((path: string) => string | typeof serverFS.useOS | typeof serverFS.identity | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.identity | typeof serverFS.error;
-    stat: ((path: string) => FileSystemStat | undefined | typeof serverFS.useOS | typeof serverFS.fakeStat | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.fakeStat | typeof serverFS.error;
-    writeFile: ((path: string, content: string) => void | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error;
-    removeFile: ((path: string) => void | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error;
+    readFile: ((fileName: RootedFilePath) => string | undefined | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    /** Relative results are resolved against the queried path's directory by the server. */
+    realpath: ((path: RootedPath) => string | typeof serverFS.useOS | typeof serverFS.identity | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.identity | typeof serverFS.error;
+    stat: ((path: RootedPath) => FileSystemStat | undefined | typeof serverFS.useOS | typeof serverFS.fakeStat | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.fakeStat | typeof serverFS.error;
+    writeFile: ((path: RootedFilePath, content: string) => void | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error;
+    removeFile: ((path: RootedPath) => void | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error;
 }
 export interface CreateFileSystemOptions {
     /** Complete directory listings. Full filesystems derive these from `files` when omitted. */
@@ -72,5 +59,4 @@ export declare function createFileSystem(files: RequestFileEntries, options?: Cr
 export declare function createFileSystemWithLib(files: RequestFileEntries, options?: CreateFileSystemWithLibOptions): RequestFileSystem;
 /** Creates a request filesystem layer, merging base directory listings when omitted. */
 export declare function createFileSystemLayer(files: RequestFileEntries, options?: CreateFileSystemOptions): RequestFileSystem;
-export {};
 //# sourceMappingURL=fs.d.ts.map

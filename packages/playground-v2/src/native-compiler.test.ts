@@ -1,9 +1,54 @@
 import assert from "node:assert/strict"
 import { readFile, readdir } from "node:fs/promises"
 import { test } from "node:test"
-import { API } from "@typescript/typescript/unstable/sync"
+import { API } from "@typescript/typescript/sync"
+import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/unstable/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
+import { loadCompilerDistribution } from "./compiler-distribution"
+
+test("runtime compiler URLs resolve against the distribution and package library index", async t => {
+  const metadata = {
+    version: "7.1.0-test",
+    revision: "test-revision",
+    cacheKey: "test-content-key",
+    sync: "typescript/dist/api/sync/api.js",
+    async: "typescript/dist/api/async/api.js",
+    ast: "typescript/dist/ast/index.js",
+    host: "typescript/dist/wasm/index.js",
+    wasm: "typescript-wasip1-wasm/lib/tsc.wasm",
+    libraryIndex: "typescript-wasip1-wasm/lib/libFiles.json",
+    schema: "typescript/schemas/tsconfig.schema.json",
+    downloadBytes: 100,
+  }
+  const requests: string[] = []
+  let invalidLibrary = false
+  t.mock.method(globalThis, "fetch", async (input: URL | RequestInfo) => {
+    const url = String(input)
+    requests.push(url)
+    return Response.json(url.endsWith("distribution.json") ? metadata :
+      invalidLibrary ? ["../outside.d.ts"] : ["lib.d.ts", "lib.es5.d.ts"])
+  })
+  const url = new URL("https://cdn.example.test/immutable/compiler/distribution.json")
+  const distribution = await loadCompilerDistribution(url)
+  assert.equal(distribution.sync, "https://cdn.example.test/immutable/compiler/typescript/dist/api/sync/api.js")
+  assert.equal(distribution.host, "https://cdn.example.test/immutable/compiler/typescript/dist/wasm/index.js")
+  assert.deepEqual(distribution.libraries.map(url => url.href), [
+    "https://cdn.example.test/immutable/compiler/typescript-wasip1-wasm/lib/lib.d.ts",
+    "https://cdn.example.test/immutable/compiler/typescript-wasip1-wasm/lib/lib.es5.d.ts",
+  ])
+  assert.equal(requests.length, 2)
+  invalidLibrary = true
+  await assert.rejects(loadCompilerDistribution(url), /Invalid compiler library index/)
+})
+
+test("runtime compiler loading reports missing and malformed distribution metadata", async t => {
+  const url = new URL("https://cdn.example.test/compiler/distribution.json")
+  const fetch = t.mock.method(globalThis, "fetch", async () => new Response("", { status: 404 }))
+  await assert.rejects(loadCompilerDistribution(url), /Could not load compiler distribution: 404/)
+  fetch.mock.mockImplementation(async () => Response.json({ version: "7.1" }))
+  await assert.rejects(loadCompilerDistribution(url), /Invalid compiler distribution field: revision/)
+})
 
 test("native compiler reuses snapshots across edits, types, and configuration changes", async () => {
   const directory = process.env.PLAYGROUND_DIR!
@@ -40,7 +85,7 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
       },
     },
   })
-  const compiler = new NativeCompiler(api, transport)
+  const compiler = new NativeCompiler(api, transport, ast)
   const configFileName = "/workspace/tsconfig.json"
   const source = "/workspace/src/index.ts"
   const config = { compilerOptions: { strict: true, target: "es2022", module: "commonjs", declaration: true }, include: ["src/**/*"] }

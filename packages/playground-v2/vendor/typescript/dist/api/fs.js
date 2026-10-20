@@ -1,19 +1,8 @@
-import getExePath from "#getExePath";
-import { dirname } from "node:path";
+import { serverFS } from "./fsCallbacks.js";
+import { getDefaultExePath, nodeProcess, } from "./nodeProcess.js";
 import { normalizePath } from "./path.js";
 import { resolveFileName, } from "./proto.js";
-const useOS = Symbol("useOS");
-const identity = Symbol("identity");
-const fakeStat = Symbol("fakeStat");
-const noop = Symbol("noop");
-const error = Symbol("error");
-export const serverFS = {
-    useOS: useOS,
-    identity: identity,
-    fakeStat: fakeStat,
-    noop: noop,
-    error: error,
-};
+export { serverFS };
 /** Creates a full request filesystem. The server derives directory listings when omitted. */
 export function createFileSystem(files, options = {}) {
     return createRequestFileSystem("full", files, options);
@@ -28,11 +17,11 @@ export function createFileSystemWithLib(files, options = {}) {
         : [normalizePath("bundled:///libs")];
     if (!options.defaultLibraryPath) {
         try {
-            defaultLibraryPaths.push(normalizePath(dirname(getExePath())));
+            defaultLibraryPaths.push(normalizePath(nodeProcess().getBuiltinModule("node:path").dirname(getDefaultExePath())));
         }
         catch {
-            // A socket-connected embedded server can provide bundled libs without
-            // a locally installed compiler executable.
+            // A socket-connected embedded server or a WebAssembly transport can
+            // provide bundled libs without a locally installed compiler executable.
         }
     }
     const symlinks = { ...options.symlinks };

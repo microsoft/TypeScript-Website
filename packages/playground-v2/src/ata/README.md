@@ -21,10 +21,20 @@ path references, and standard-library references. Literal dynamic imports,
 import types, re-exports, and import-equals are supported. Existing
 `// types: VERSION` annotations are preserved.
 
-The native API and reactor host come from the same TypeScript package.
-The matching WASI artifact package supplies the binary and standard libraries;
-its `lib/libFiles.json` index determines which libraries the build includes.
-Configuration schemas are vendored from the compiler package alongside its API.
+The native API, AST helpers, and reactor host are dynamically imported by URL
+inside the worker. The matching WASI artifact package supplies the binary and
+standard libraries; its `lib/libFiles.json` index determines which library URLs
+are fetched. Schemas are fetched from the matching compiler package too.
+No compiler implementation is bundled with the website.
+
+`vendor-typescript` copies the exact npm file lists from the committed
+TypeScript repository's `built/npm` packages, preserving their manifests and
+module graphs. The build serves those packages unchanged under a content-keyed
+`compiler/` directory as a local, non-transforming CDN simulation.
+`vendor/distribution.json` pairs their entry URLs, version, and cache identity.
+Set `COMPILER_DISTRIBUTION_URL` when building to load that distribution from
+another origin instead; that build omits the local compiler copy. The other
+origin must serve modules and assets with CORS headers.
 
 ## Resolution
 

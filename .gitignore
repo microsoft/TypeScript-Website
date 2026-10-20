@@ -68,6 +68,8 @@ typings/
 dist
 !packages/playground-v2/vendor/typescript/dist/
 !packages/playground-v2/vendor/typescript/dist/**
+!packages/playground-v2/vendor/typescript/vendor/vscode-jsonrpc/typings/
+!packages/playground-v2/vendor/typescript/vendor/vscode-jsonrpc/typings/**
 !packages/playground-v2/vendor/typescript-wasip1-wasm/dist/
 !packages/playground-v2/vendor/typescript-wasip1-wasm/dist/**
 

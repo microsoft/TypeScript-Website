@@ -1,9 +1,9 @@
-import { CommentDirectiveType } from "#enums/commentDirectiveType";
-import { LanguageVariant } from "#enums/languageVariant";
-import { RegularExpressionFlags } from "#enums/regularExpressionFlags";
-import { ScriptTarget } from "#enums/scriptTarget";
-import { SyntaxKind } from "#enums/syntaxKind";
-import { TokenFlags } from "#enums/tokenFlags";
+import { CommentDirectiveType } from "../../enums/commentDirectiveType.js";
+import { LanguageVariant } from "../../enums/languageVariant.js";
+import { RegularExpressionFlags } from "../../enums/regularExpressionFlags.js";
+import { ScriptTarget } from "../../enums/scriptTarget.js";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
+import { TokenFlags } from "../../enums/tokenFlags.js";
 import type { JsxTokenSyntaxKind, KeywordSyntaxKind } from "./ast.ts";
 export type JSDocTokenKind = SyntaxKind.EndOfFile | SyntaxKind.WhitespaceTrivia | SyntaxKind.AtToken | SyntaxKind.NewLineTrivia | SyntaxKind.AsteriskToken | SyntaxKind.OpenBraceToken | SyntaxKind.CloseBraceToken | SyntaxKind.LessThanToken | SyntaxKind.GreaterThanToken | SyntaxKind.OpenBracketToken | SyntaxKind.CloseBracketToken | SyntaxKind.OpenParenToken | SyntaxKind.CloseParenToken | SyntaxKind.EqualsToken | SyntaxKind.CommaToken | SyntaxKind.DotToken | SyntaxKind.Identifier | SyntaxKind.BacktickToken | SyntaxKind.HashToken | SyntaxKind.Unknown | KeywordSyntaxKind;
 export interface CommentDirective {

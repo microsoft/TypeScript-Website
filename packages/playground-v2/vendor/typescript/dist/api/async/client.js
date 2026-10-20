@@ -1,43 +1,45 @@
-import { createMessageConnection, RequestType, SocketMessageReader, SocketMessageWriter, StreamMessageReader, StreamMessageWriter, } from "#vscode-jsonrpc/node";
 import { configureFileSystemCallbacks, encodeFileSystemCallbackResult, } from "../fsCallbacks.js";
+import { nodeProcess } from "../nodeProcess.js";
 import { getAPIProcessArgs, isAsyncTransportOptions, isSpawnOptions, resolveExePath, } from "../options.js";
 import { combineTimingInfo, disabledServerTimingInfo, disabledTimingInfo, TimingCollector, } from "../timing.js";
-import { TransportClient } from "./transportClient.js";
+import { TimingDump } from "../timingDump.js";
+import { createTransportClient, } from "./transportClient.js";
+export function createClient(options) {
+    return isAsyncTransportOptions(options) ? createTransportClient(options) : new RpcClient(options);
+}
 /**
  * Client handles communication with the TypeScript API server
  * over STDIO (spawned process) or a Unix domain socket using JSON-RPC.
  */
-export class Client {
+class RpcClient {
     socket;
     process;
     connection;
+    // Loaded on connection so that injected-transport clients never load it.
+    jsonrpc;
     options;
-    transportClient;
     connected = false;
     closed = false;
     connecting;
     timing;
+    timingDump;
+    closing;
     batchedRequests = [];
     nextBatch;
     constructor(options) {
-        if (isAsyncTransportOptions(options)) {
-            if (options.fs !== undefined) {
-                options.transport.setFileSystem?.(options.fs);
-            }
-            this.transportClient = new TransportClient(options.transport, options.collectTiming ?? false, options.maxResponseBytesPerPage);
-            return;
+        this.timingDump = TimingDump.fromEnvironment("async", isSpawnOptions(options) ? "spawn" : "socket");
+        if (this.timingDump || isSpawnOptions(options) && options.collectTiming) {
+            this.timing = new TimingCollector();
+        }
+        if (this.timingDump && isSpawnOptions(options)) {
+            options = { ...options, collectTiming: true };
         }
         this.options = options;
         if (isSpawnOptions(options)) {
             configureFileSystemCallbacks(options.fs);
-            if (options.collectTiming) {
-                this.timing = new TimingCollector();
-            }
         }
     }
     connect() {
-        if (this.transportClient)
-            return this.transportClient.connect();
         if (this.closed)
             return Promise.reject(new Error("Client is closed"));
         if (this.connected)
@@ -49,6 +51,7 @@ export class Client {
     async connectWorker() {
         if (!this.options)
             throw new Error("Client options are not available");
+        this.jsonrpc ??= await import("./jsonrpc.js");
         if (isSpawnOptions(this.options)) {
             await this.connectViaSpawn(this.options);
         }
@@ -57,7 +60,7 @@ export class Client {
         }
     }
     async connectViaSpawn(options) {
-        const { spawn } = await import("node:child_process");
+        const { spawn } = nodeProcess().getBuiltinModule("node:child_process");
         return new Promise((resolve, reject) => {
             const args = getAPIProcessArgs(options, true);
             const fsConfiguration = configureFileSystemCallbacks(options.fs);
@@ -74,20 +77,16 @@ export class Client {
                 this.connected = true;
                 resolve();
             });
-            const reader = new StreamMessageReader(this.process.stdout);
-            const writer = new StreamMessageWriter(this.process.stdin);
-            this.connection = createMessageConnection(reader, writer);
+            this.connection = this.jsonrpc.createStreamConnection(this.process.stdout, this.process.stdin);
             this.registerFSCallbacks(this.connection, options.fs, fsConfiguration);
             this.connection.listen();
         });
     }
     async connectViaSocket(options) {
-        const { createConnection } = await import("node:net");
+        const { createConnection } = nodeProcess().getBuiltinModule("node:net");
         return new Promise((resolve, reject) => {
             this.socket = createConnection(options.pipe, () => {
-                const reader = new SocketMessageReader(this.socket);
-                const writer = new SocketMessageWriter(this.socket);
-                this.connection = createMessageConnection(reader, writer);
+                this.connection = this.jsonrpc.createStreamConnection(this.socket, this.socket);
                 this.connection.listen();
                 this.connected = true;
                 resolve();
@@ -101,24 +100,86 @@ export class Client {
         if (!fs)
             return;
         for (const name of configuration.callbackNames) {
-            if (name === "writeFile") {
-                const callback = fs.writeFile;
-                if (typeof callback !== "function")
-                    throw new Error("Invalid writeFile callback configuration");
-                const requestType = new RequestType(name);
-                connection.onRequest(requestType, (arg) => {
-                    return encodeFileSystemCallbackResult(name, callback(arg.path, arg.data));
-                });
-                continue;
+            switch (name) {
+                case "readFile": {
+                    const callback = fs.readFile;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid readFile callback configuration");
+                    connection.onRequest(this.requestType(name), fileName => {
+                        return encodeFileSystemCallbackResult(name, callback(fileName));
+                    });
+                    break;
+                }
+                case "fileExists": {
+                    const callback = fs.fileExists;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid fileExists callback configuration");
+                    connection.onRequest(this.requestType(name), fileName => {
+                        return encodeFileSystemCallbackResult(name, callback(fileName));
+                    });
+                    break;
+                }
+                case "directoryExists": {
+                    const callback = fs.directoryExists;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid directoryExists callback configuration");
+                    connection.onRequest(this.requestType(name), directoryName => {
+                        return encodeFileSystemCallbackResult(name, callback(directoryName));
+                    });
+                    break;
+                }
+                case "getAccessibleEntries": {
+                    const callback = fs.getAccessibleEntries;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid getAccessibleEntries callback configuration");
+                    connection.onRequest(this.requestType(name), directoryName => {
+                        return encodeFileSystemCallbackResult(name, callback(directoryName));
+                    });
+                    break;
+                }
+                case "realpath": {
+                    const callback = fs.realpath;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid realpath callback configuration");
+                    connection.onRequest(this.requestType(name), path => {
+                        return encodeFileSystemCallbackResult(name, callback(path));
+                    });
+                    break;
+                }
+                case "stat": {
+                    const callback = fs.stat;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid stat callback configuration");
+                    connection.onRequest(this.requestType(name), path => {
+                        return encodeFileSystemCallbackResult(name, callback(path));
+                    });
+                    break;
+                }
+                case "writeFile": {
+                    const callback = fs.writeFile;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid writeFile callback configuration");
+                    connection.onRequest(this.requestType(name), arg => {
+                        return encodeFileSystemCallbackResult(name, callback(arg.path, arg.data));
+                    });
+                    break;
+                }
+                case "removeFile": {
+                    const callback = fs.removeFile;
+                    if (typeof callback !== "function")
+                        throw new Error("Invalid removeFile callback configuration");
+                    connection.onRequest(this.requestType(name), path => {
+                        return encodeFileSystemCallbackResult(name, callback(path));
+                    });
+                    break;
+                }
             }
-            const callback = fs[name];
-            if (typeof callback !== "function")
-                throw new Error(`Invalid ${name} callback configuration`);
-            const requestType = new RequestType(name);
-            connection.onRequest(requestType, (arg) => {
-                return encodeFileSystemCallbackResult(name, callback(arg));
-            });
         }
+    }
+    requestType(method) {
+        if (!this.jsonrpc)
+            throw new Error("Connection not established");
+        return new this.jsonrpc.RequestType(method);
     }
     async sendRequestWithTiming(requestType, params) {
         if (!this.connection) {
@@ -146,13 +207,10 @@ export class Client {
         return result;
     }
     registerCallback(name, callback) {
-        if (this.transportClient) {
-            return this.transportClient.registerCallback(name, callback);
-        }
         if (!this.connection) {
             throw new Error("Connection not established");
         }
-        const disposable = this.connection.onRequest(new RequestType(name), callback);
+        const disposable = this.connection.onRequest(this.requestType(name), callback);
         return () => disposable.dispose();
     }
     async doBatch() {
@@ -170,12 +228,12 @@ export class Client {
             }
             if (requests.length === 1) {
                 // send single queued requests directly instead of as a batched request
-                const requestType = new RequestType(requests[0].method);
+                const requestType = this.requestType(requests[0].method);
                 const response = await this.sendRequestWithTiming(requestType, requests[0].params);
                 requests[0].resolve(response);
                 return;
             }
-            const requestType = new RequestType("batchRequests");
+            const requestType = this.requestType("batchRequests");
             const params = { requests: requests.map(request => ({ method: request.method, params: request.params })) };
             const maxResponseBytesPerPage = this.options?.maxResponseBytesPerPage;
             if (maxResponseBytesPerPage !== undefined) {
@@ -218,8 +276,6 @@ export class Client {
         this.nextBatch = setImmediate(this.doBatch.bind(this));
     }
     batchContext() {
-        if (this.transportClient)
-            return this.transportClient.batchContext();
         if (this.nextBatch === "manual") {
             throw new Error("Already in a manual batch context");
         }
@@ -236,8 +292,6 @@ export class Client {
         };
     }
     async apiRequest(method, params) {
-        if (this.transportClient)
-            return this.transportClient.apiRequest(method, params);
         if (this.closed)
             throw new Error("Client is closed");
         if (!this.connected) {
@@ -255,8 +309,6 @@ export class Client {
         return resultPromise;
     }
     async apiRequestBinary(method, params) {
-        if (this.transportClient)
-            return this.transportClient.apiRequestBinary(method, params);
         const response = await this.apiRequest(method, params);
         if (!response)
             return undefined;
@@ -270,8 +322,6 @@ export class Client {
      * materialization totals surface alongside request timings.
      */
     getTimingCollector() {
-        if (this.transportClient)
-            return this.transportClient.getTimingCollector();
         return this.timing;
     }
     /**
@@ -280,8 +330,6 @@ export class Client {
      * (fetched via a getServerTiming request) and estimated transport overhead.
      */
     async getTimingInfo() {
-        if (this.transportClient)
-            return this.transportClient.getTimingInfo();
         if (!this.timing) {
             return disabledTimingInfo();
         }
@@ -293,14 +341,12 @@ export class Client {
         return combineTimingInfo(local, await this.fetchServerTiming());
     }
     async resetTimingInfo() {
-        if (this.transportClient)
-            return this.transportClient.resetTimingInfo();
         if (!this.timing)
             return;
         this.timing.reset();
         if (this.connected && this.connection) {
             // Keep the server's collection in sync so combined totals stay meaningful.
-            const requestType = new RequestType("resetServerTiming");
+            const requestType = this.requestType("resetServerTiming");
             await this.connection.sendRequest(requestType, undefined);
         }
     }
@@ -310,14 +356,13 @@ export class Client {
         }
         // Fetch the server's own timing collection via a dedicated request. This
         // bypasses the client-side collector so the query does not pollute it.
-        const requestType = new RequestType("getServerTiming");
+        const requestType = this.requestType("getServerTiming");
         return this.connection.sendRequest(requestType, undefined);
     }
-    async close() {
-        if (this.transportClient)
-            return this.transportClient.close();
-        if (this.closed)
-            return;
+    close() {
+        return this.closing ??= this.closeWorker();
+    }
+    async closeWorker() {
         this.closed = true;
         if (this.nextBatch && this.nextBatch !== "manual") {
             clearImmediate(this.nextBatch);
@@ -329,24 +374,47 @@ export class Client {
             reject(new Error("Client is closed"));
         }
         await this.connecting?.catch(() => { }); // if connection is still in-progress, wait for it to finish before closing the connection
-        if (this.connection) {
-            this.connection.dispose();
-            this.connection = undefined;
+        try {
+            if (this.timingDump && this.timing) {
+                const local = this.timing.getInfo();
+                let server;
+                let serverTimingError;
+                const connection = this.connection;
+                // Closing alone does not reject pending JSON-RPC requests.
+                const onClose = connection?.onClose(() => connection.dispose());
+                try {
+                    if (this.connected)
+                        server = await this.fetchServerTiming();
+                }
+                catch (error) {
+                    serverTimingError = String(error);
+                }
+                finally {
+                    onClose?.dispose();
+                }
+                this.timingDump.write(local, server, serverTimingError);
+            }
         }
-        if (this.socket) {
-            this.socket.destroy();
-            this.socket = undefined;
+        finally {
+            if (this.connection) {
+                this.connection.dispose();
+                this.connection = undefined;
+            }
+            if (this.socket) {
+                this.socket.destroy();
+                this.socket = undefined;
+            }
+            if (this.process) {
+                // Close stdin to unblock the server's read loop, allowing it to exit cleanly.
+                // The server is blocked on stdin.Read(), so just sending SIGTERM would deadlock:
+                // - Node won't exit while child is alive
+                // - Child can't process SIGTERM while blocked on read
+                // - Read won't error until stdin is closed
+                this.process.stdin?.end();
+                this.process = undefined;
+            }
+            this.connected = false;
         }
-        if (this.process) {
-            // Close stdin to unblock the server's read loop, allowing it to exit cleanly.
-            // The server is blocked on stdin.Read(), so just sending SIGTERM would deadlock:
-            // - Node won't exit while child is alive
-            // - Child can't process SIGTERM while blocked on read
-            // - Read won't error until stdin is closed
-            this.process.stdin?.end();
-            this.process = undefined;
-        }
-        this.connected = false;
     }
 }
 //# sourceMappingURL=client.js.map

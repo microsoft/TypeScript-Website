@@ -1,5 +1,4 @@
 import { context } from "esbuild"
-import { createHash } from "node:crypto"
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -16,9 +15,6 @@ const compatibilityDirectories = compatibilityPaths.map(path =>
 const serve = process.argv.includes("--serve")
 const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? playgroundPath
 
-const wasmFile = new URL(import.meta.resolve("@typescript/typescript-wasip1-wasm/lib/tsc.wasm"))
-const libListURL = new URL(import.meta.resolve("@typescript/typescript-wasip1-wasm/lib/libFiles.json"))
-const configSchema = new URL(import.meta.resolve("@typescript/typescript/schemas/tsconfig.schema.json"))
 const releaseIndex = resolve(packageDirectory, "vendor/versions.json")
 const examplesIndex = resolve(packageDirectory, "vendor/examples.json")
 const helpIndex = resolve(packageDirectory, "vendor/help.json")
@@ -26,6 +22,8 @@ const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/edi
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
 const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
+const distribution = JSON.parse(await readFile(resolve(vendorDirectory, "distribution.json"), "utf8"))
+const distributionPath = `compiler/${distribution.cacheKey}`
 const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
   .replaceAll("__PLAYGROUND_BASE__", playgroundBase)
   .replaceAll("__COMPILER_VERSION__", version)
@@ -33,32 +31,15 @@ const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "
 
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })
-const libFileNames = JSON.parse(await readFile(libListURL, "utf8"))
-const libFiles = Object.fromEntries(
-  await Promise.all(
-    libFileNames.map(async fileName => [
-      `/${fileName}`,
-      await readFile(new URL(fileName, libListURL), "utf8"),
-    ])
-  )
-)
-const libFilesJSON = JSON.stringify(libFiles)
-const [wasmBytes, schemaBytes] = await Promise.all([readFile(wasmFile), readFile(configSchema)])
-const assetCacheVersion = createHash("sha256")
-  .update(wasmBytes)
-  .update(libFilesJSON)
-  .update(schemaBytes)
-  .digest("hex")
-  .slice(0, 16)
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
-  cp(configSchema, resolve(outputDirectory, "tsconfig.schema.json")),
   cp(releaseIndex, resolve(outputDirectory, "versions.json")),
   cp(examplesIndex, resolve(outputDirectory, "examples.json")),
   cp(helpIndex, resolve(outputDirectory, "help.json")),
-  cp(wasmFile, resolve(outputDirectory, "tsc.wasm")),
-  writeFile(resolve(outputDirectory, "lib-files.json"), libFilesJSON),
+  ...(process.env.COMPILER_DISTRIBUTION_URL ? [] : ["typescript", "typescript-wasip1-wasm", "distribution.json"]).map(
+    name => cp(resolve(vendorDirectory, name), resolve(outputDirectory, distributionPath, name), { recursive: true })
+  ),
 ])
 
 const buildContext = await context({
@@ -66,12 +47,9 @@ const buildContext = await context({
   bundle: true,
   conditions: ["browser", "default"],
   define: {
-    __ASSET_CACHE_VERSION__: JSON.stringify(assetCacheVersion),
-    __LOAD_ASSET_SIZES__: JSON.stringify({
-      libraries: Buffer.byteLength(libFilesJSON),
-      schema: schemaBytes.byteLength,
-      wasm: wasmBytes.byteLength,
-    }),
+    __COMPILER_DISTRIBUTION_URL__: JSON.stringify(
+      process.env.COMPILER_DISTRIBUTION_URL || `./${distributionPath}/distribution.json`
+    ),
     __TS_VERSION__: JSON.stringify(version),
   },
   entryNames: "[name]",
@@ -89,6 +67,7 @@ const buildContext = await context({
     ".woff2": "file",
   },
   outdir: outputDirectory,
+  metafile: true,
   platform: "browser",
   sourcemap: true,
   target: ["es2022"],
@@ -103,7 +82,11 @@ if (serve) {
   })
   console.log(`TypeScript Playground v2: http://${server.host}:${server.port}`)
 } else {
-  await buildContext.rebuild()
+  const result = await buildContext.rebuild()
+  const compilerInputs = Object.keys(result.metafile.inputs).filter(path =>
+    /(?:vendor|node_modules)\/(?:@typescript\/)?typescript(?:-wasip1-wasm)?\//.test(path)
+  )
+  if (compilerInputs.length) throw new Error(`Compiler implementation was bundled: ${compilerInputs.join(", ")}`)
   await buildContext.dispose()
   await rm(websiteStaticDirectory, { force: true, recursive: true })
   await cp(outputDirectory, websiteStaticDirectory, { recursive: true })

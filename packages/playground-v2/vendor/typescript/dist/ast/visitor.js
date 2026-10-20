@@ -3,7 +3,7 @@
  * child ordering. Generated code in visitor.generated.ts and factory.generated.ts
  * delegates to these functions.
  */
-import { SyntaxKind } from "#enums/syntaxKind";
+import { SyntaxKind } from "../../enums/syntaxKind.js";
 import { updateJSDocParameterTag, updateJSDocPropertyTag, } from "./factory.generated.js";
 import { isEntityName, isIdentifier, isTypeNode, } from "./is.js";
 import { visitNode, visitNodes, } from "./visitor.generated.js";

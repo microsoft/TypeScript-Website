@@ -1,4 +1,5 @@
-import { DiagnosticCategory, type Diagnostic } from "@typescript/typescript/unstable/sync"
+import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
+import { loadCompilerDistribution, type CompilerDistribution } from "./compiler-distribution"
 import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
 import "reflect-metadata"
@@ -26,12 +27,9 @@ import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspControll
 import "./styles.css"
 
 declare const __TS_VERSION__: string
-declare const __ASSET_CACHE_VERSION__: string
-declare const __LOAD_ASSET_SIZES__: {
-  libraries: number
-  schema: number
-  wasm: number
-}
+declare const __COMPILER_DISTRIBUTION_URL__: string
+
+type Diagnostic = Omit<CompilerDiagnostic, "fileName"> & { fileName?: string }
 
 function remapCompilerOverrideDiagnostics(diagnostics: readonly Diagnostic[]) {
   return diagnostics.map(diagnostic => {
@@ -289,6 +287,9 @@ let languageServer: TsgoLspController | undefined
 let stradaBackend: StradaBackend | undefined
 let nativeBackend: NativeBackend | undefined
 let nativeCompileVersion = 0
+let DiagnosticCategory: typeof import("@typescript/typescript/sync").DiagnosticCategory
+let compilerDistributionPromise: Promise<CompilerDistribution> | undefined
+let nativeDistribution: CompilerDistribution | undefined
 let projectPersistTimer = 0
 let projectPersistenceEnabled = true
 let lastStoredProject: string | undefined
@@ -310,8 +311,8 @@ let examplesPromise: Promise<PlaygroundExamples> | undefined
 let helpPromise: Promise<PlaygroundHelp> | undefined
 let confirmationResolver: ((value: boolean) => void) | undefined
 let textInputResolver: ((value: string | null) => void) | undefined
-const downloadedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, number>()
-const cachedAssets = new Map<keyof typeof __LOAD_ASSET_SIZES__, boolean>()
+const downloadedAssets = new Map<string, number>()
+const cachedAssets = new Map<string, boolean>()
 const assetCachePrefix = "ts7-playground-assets-"
 let assetCachePromise: Promise<Cache | undefined> | undefined
 const layoutStorageKey = "ts7-playground-layout"
@@ -863,22 +864,24 @@ void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(
 
 async function initializeNativeCompiler() {
   try {
+    const distribution = await getCompilerDistribution()
+    nativeDistribution = distribution
     await confirmLargeDownloadIfNeeded()
     setLoadingProgress(0, "Downloading TypeScript...", "Preparing downloads")
-    const [wasmBytes, libFilesBytes, configSchemaBytes] = await Promise.all([
-      downloadAsset("wasm", new URL("./tsc.wasm", import.meta.url)),
-      downloadAsset("libraries", new URL("./lib-files.json", import.meta.url)),
-      downloadAsset("schema", new URL("./tsconfig.schema.json", import.meta.url)),
+    const [wasmBytes, libFiles, configSchemaBytes] = await Promise.all([
+      downloadAsset("wasm", distribution.wasm),
+      downloadLibraries(distribution),
+      downloadAsset("schema", distribution.schema),
     ])
 
     setLoadingIndeterminate("Compiling TypeScript...", "")
     const module = await WebAssembly.compile(wasmBytes)
     setLoadingProgress(78, "Starting compiler worker...", "Preparing WebAssembly")
-    const libFiles = JSON.parse(new TextDecoder().decode(libFilesBytes)) as Record<string, string>
     const configSchema = JSON.parse(new TextDecoder().decode(configSchemaBytes))
     registerConfigSchema(configSchema)
-    nativeBackend = await NativeBackend.create(module, libFiles)
+    nativeBackend = await NativeBackend.create(module, libFiles, distribution)
     const backend = nativeBackend
+    DiagnosticCategory = backend.diagnosticCategories
     discoverDependencies = file => backend.discover(file)
     compileActiveProject = compileNativeProject
     compilerReady = true
@@ -906,6 +909,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
     }
     const compilerSource = await compilerResponse.text()
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
+    DiagnosticCategory = classicTS.DiagnosticCategory
     discoverDependencies = stradaDiscovery(classicTS)
     stradaBackend = await StradaBackend.create({
       baseUrl: `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`,
@@ -1669,17 +1673,19 @@ function registerCompilerOverrideFeatures() {
 let compilerOptionMetadataPromise: Promise<Map<string, { description: string }>> | undefined
 
 function getCompilerOptionMetadata() {
-  compilerOptionMetadataPromise ??= fetch(new URL("./tsconfig.schema.json", import.meta.url)).then(async response => {
-    if (!response.ok) throw new Error(`Could not load TSConfig options: ${response.status}`)
-    const schema = await response.json()
-    const properties = schema.definitions?.compilerOptionsDefinition?.properties?.compilerOptions?.properties ?? {}
-    return new Map(
-      Object.entries(properties).map(([name, value]: [string, any]) => [
-        name,
-        { description: value.markdownDescription ?? value.description ?? "" },
-      ])
-    )
-  })
+  compilerOptionMetadataPromise ??= getCompilerDistribution()
+    .then(distribution => fetch(distribution.schema))
+    .then(async response => {
+      if (!response.ok) throw new Error(`Could not load TSConfig options: ${response.status}`)
+      const schema = await response.json()
+      const properties = schema.definitions?.compilerOptionsDefinition?.properties?.compilerOptions?.properties ?? {}
+      return new Map(
+        Object.entries(properties).map(([name, value]: [string, any]) => [
+          name,
+          { description: value.markdownDescription ?? value.description ?? "" },
+        ])
+      )
+    })
   return compilerOptionMetadataPromise
 }
 
@@ -1903,20 +1909,39 @@ function applyEditorLocation(location: EditorLocation) {
   inputEditor.focus()
 }
 
-async function downloadAsset(name: keyof typeof __LOAD_ASSET_SIZES__, url: URL): Promise<Uint8Array<ArrayBuffer>> {
-  url.searchParams.set("v", __ASSET_CACHE_VERSION__)
+function getCompilerDistribution() {
+  compilerDistributionPromise ??= loadCompilerDistribution(new URL(__COMPILER_DISTRIBUTION_URL__, import.meta.url))
+  return compilerDistributionPromise
+}
+
+async function downloadLibraries(distribution: CompilerDistribution) {
+  const files: Record<string, string> = {}
+  let next = 0
+  await Promise.all(
+    Array.from({ length: Math.min(8, distribution.libraries.length) }, async () => {
+      while (next < distribution.libraries.length) {
+        const url = distribution.libraries[next++]
+        const name = url.pathname.slice(url.pathname.lastIndexOf("/") + 1)
+        files[`/${name}`] = new TextDecoder().decode(await downloadAsset(`library:${name}`, url))
+      }
+    })
+  )
+  return files
+}
+
+async function downloadAsset(name: string, url: URL): Promise<Uint8Array<ArrayBuffer>> {
   const request = new Request(url)
   const cache = await getAssetCache()
-  let response = await cachedCompilerAsset(cache, url)
+  let response = await cache?.match(url)
   cachedAssets.set(name, response !== undefined)
   let cacheWrite: Promise<void> | undefined
   if (!response) {
     response = await fetch(request)
-    if (cache) cacheWrite = cache.put(request, response.clone())
   }
   if (!response.ok) {
     throw new Error(`Unable to load ${url.pathname}: ${response.status} ${response.statusText}`)
   }
+  if (cache && !cachedAssets.get(name)) cacheWrite = cache.put(request, response.clone())
   if (!response.body) {
     const bytes = new Uint8Array(await response.arrayBuffer())
     await cacheWrite
@@ -1952,26 +1977,11 @@ function getAssetCache() {
   return assetCachePromise
 }
 
-async function cachedCompilerAsset(cache: Cache | undefined, url: URL) {
-  if (!cache) return undefined
-  const exact = await cache.match(url)
-  if (exact) return exact
-  const fileName = url.pathname.slice(url.pathname.lastIndexOf("/") + 1)
-  const previous = (await cache.keys()).find(request => {
-    const cachedUrl = new URL(request.url)
-    return (
-      cachedUrl.origin === url.origin &&
-      cachedUrl.pathname.endsWith(`/${fileName}`) &&
-      cachedUrl.searchParams.get("v") === __ASSET_CACHE_VERSION__
-    )
-  })
-  return previous ? cache.match(previous) : undefined
-}
-
 async function confirmLargeDownloadIfNeeded() {
   if (downloadWarningSuppressed() || (await compilerAssetsAreCached())) return
 
-  const totalBytes = Object.values(__LOAD_ASSET_SIZES__).reduce((total, value) => total + value, 0)
+  if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
+  const totalBytes = nativeDistribution.downloadBytes
   downloadSize.textContent = formatBytes(totalBytes)
   rememberDownloadConsent.checked = true
   loadingAnimation.hidden = true
@@ -2013,24 +2023,22 @@ function downloadWarningSuppressed() {
 
 async function compilerAssetsAreCached() {
   const cache = await getAssetCache()
-  if (!cache) return false
+  if (!cache || !nativeDistribution) return false
   const urls = [
-    new URL("./tsc.wasm", import.meta.url),
-    new URL("./lib-files.json", import.meta.url),
-    new URL("./tsconfig.schema.json", import.meta.url),
+    nativeDistribution.wasm,
+    nativeDistribution.schema,
+    ...nativeDistribution.libraries,
   ]
   const matches = await Promise.all(
-    urls.map(url => {
-      url.searchParams.set("v", __ASSET_CACHE_VERSION__)
-      return cachedCompilerAsset(cache, url)
-    })
+    urls.map(url => cache.match(url))
   )
   return matches.every(response => response !== undefined)
 }
 
 async function openAssetCache() {
   if (!("caches" in globalThis)) return undefined
-  const cacheName = `${assetCachePrefix}${__ASSET_CACHE_VERSION__}`
+  if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
+  const cacheName = `${assetCachePrefix}${nativeDistribution.cacheKey}`
   try {
     const cacheNames = await caches.keys()
     await Promise.all(
@@ -2046,7 +2054,9 @@ async function openAssetCache() {
 }
 
 function updateDownloadProgress() {
-  const totalBytes = Object.values(__LOAD_ASSET_SIZES__).reduce((total, value) => total + value, 0)
+  if (compilerFailure) return
+  if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
+  const totalBytes = nativeDistribution.downloadBytes
   const downloadedBytes = [...downloadedAssets.values()].reduce((total, value) => total + value, 0)
   const loadingFromNetwork = [...cachedAssets.values()].some(cached => !cached)
   setLoadingProgress(

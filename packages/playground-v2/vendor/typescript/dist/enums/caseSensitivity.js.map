@@ -1,0 +1,1 @@
+{"version":3,"file":"caseSensitivity.js","sources":["../../src/enums/caseSensitivity.ts"],"names":[],"mappings":"AAAA,uGAAuG;AACvG,MAAM,CAAC,IAAI,eAAoB,CAAC;AAChC,CAAC,UAAU,eAAe;IACtB,eAAe,CAAC,eAAe,CAAC,aAAa,CAAC,GAAG,CAAC,CAAC,GAAG,aAAa,CAAC;IACpE,eAAe,CAAC,eAAe,CAAC,WAAW,CAAC,GAAG,CAAC,CAAC,GAAG,WAAW,CAAC;AACpE,CAAC,CAAC,CAAC,eAAe,IAAI,CAAC,eAAe,GAAG,EAAE,CAAC,CAAC,CAAC"}
