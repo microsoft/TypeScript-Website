@@ -542,7 +542,7 @@ immutable. The referent is still mutable:
 ```js
 const a = [1, 2, 3];
 a.push(102); // ):
-a[0] = 101; // D:
+a[0] = 1; // D:
 ```
 
 TypeScript additionally has a `readonly` modifier for properties.
@@ -574,7 +574,7 @@ as well as special syntax for this type:
 let a: ReadonlyArray<number> = [1, 2, 3];
 let b: readonly number[] = [1, 2, 3];
 a.push(102); // error
-b[0] = 101; // error
+b[0] = 1; // error
 ```
 
 You can also use a const-assertion, which operates on arrays and
@@ -583,7 +583,7 @@ object literals:
 ```ts
 let a = [1, 2, 3] as const;
 a.push(102); // error
-a[0] = 101; // error
+a[0] = 1; // error
 ```
 
 However, none of these options are the default, so they are not
