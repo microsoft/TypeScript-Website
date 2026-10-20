@@ -7,7 +7,7 @@ TypeScript's type acquisition can infer what types should be added based on file
 
 You can disable this via `disableFilenameBasedTypeAcquisition`.
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "disableFilenameBasedTypeAcquisition": true
