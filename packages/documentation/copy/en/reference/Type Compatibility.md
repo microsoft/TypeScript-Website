@@ -307,7 +307,7 @@ For practical purposes, type compatibility is dictated by assignment compatibili
 
 The following table summarizes assignability between some abstract types.
 Rows indicate what each is assignable to, columns indicate what is assignable to them.
-A "<span class='black-tick'>✓</span>" indicates a combination that is compatible only when [`strictNullChecks`](/tsconfig#strictNullChecks) is off.
+A "<span class='tick-if-not-strict'>✓</span>" indicates a combination that is compatible only when [`strictNullChecks`](/tsconfig#strictNullChecks) is off.
 
 <!-- This is the rendered form of https://github.com/microsoft/TypeScript-Website/pull/1490 -->
 <table class="data">
@@ -370,19 +370,19 @@ A "<span class='black-tick'>✓</span>" indicates a combination that is compatib
 <td>undefined →</td>
 <td align="center"><span class="blue-tick">✓</span></td>
 <td align="center"><span class="blue-tick">✓</span></td>
-<td align="center"><span class="black-tick">✓</span></td>
+<td align="center"><span class="tick-if-not-strict">✓</span></td>
 <td align="center"><span class="blue-tick">✓</span></td>
 <td align="center"></td>
-<td align="center"><span class="black-tick">✓</span></td>
+<td align="center"><span class="tick-if-not-strict">✓</span></td>
 <td align="center"><span class="red-cross">✕</span></td>
 </tr>
 <tr>
 <td>null →</td>
 <td align="center"><span class="blue-tick">✓</span></td>
 <td align="center"><span class="blue-tick">✓</span></td>
-<td align="center"><span class="black-tick">✓</span></td>
-<td align="center"><span class="black-tick">✓</span></td>
-<td align="center"><span class="black-tick">✓</span></td>
+<td align="center"><span class="tick-if-not-strict">✓</span></td>
+<td align="center"><span class="tick-if-not-strict">✓</span></td>
+<td align="center"><span class="tick-if-not-strict">✓</span></td>
 <td align="center"></td>
 <td align="center"><span class="red-cross">✕</span></td>
 </tr>
