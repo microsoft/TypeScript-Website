@@ -688,7 +688,7 @@ function fail(msg: string): never {
 ```
 
 The `never` type represents values which are _never_ observed.
-In a return type, this means that the function throws an exception or terminates execution of the program.
+In a return type, this means that the function throws an exception, terminates execution of the program or takes literally forever to finish.
 
 `never` also appears when TypeScript determines there's nothing left in a union.
 
