@@ -56,7 +56,7 @@ We're up and running using TypeScript in our JavaScript app!
 Now we can start taking advantage of some of the new tools TypeScript offers.
 Add a `: string` type annotation to the 'person' function parameter as shown here:
 
-```ts twoslash
+```ts 
 function greeter(person: string) {
   return "Hello, " + person;
 }
@@ -102,7 +102,7 @@ Let's develop our sample further. Here we use an interface that describes object
 In TypeScript, two types are compatible if their internal structure is compatible.
 This allows us to implement an interface just by having the shape the interface requires, without an explicit `implements` clause.
 
-```ts twoslash
+```ts 
 interface Person {
   firstName: string;
   lastName: string;
@@ -127,7 +127,7 @@ Notice that classes and interfaces play well together, letting the programmer de
 
 Also of note, the use of `public` on parameters to the constructor is a shorthand that allows us to automatically create properties with that name.
 
-```ts twoslash
+```ts 
 class Student {
   fullName: string;
   constructor(

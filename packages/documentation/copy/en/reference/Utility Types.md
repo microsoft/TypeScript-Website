@@ -47,7 +47,7 @@ Constructs a type with all properties of `Type` set to optional. This utility wi
 
 ##### Example
 
-```ts twoslash
+```ts 
 interface Todo {
   title: string;
   description: string;
@@ -491,7 +491,7 @@ Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) p
 
 ##### Example
 
-```ts twoslash
+```ts 
 function toHex(this: Number) {
   return this.toString(16);
 }
@@ -514,7 +514,7 @@ Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter fr
 
 ##### Example
 
-```ts twoslash
+```ts 
 function toHex(this: Number) {
   return this.toString(16);
 }

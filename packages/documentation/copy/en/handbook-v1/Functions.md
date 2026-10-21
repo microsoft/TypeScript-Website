@@ -51,7 +51,7 @@ function addToZ(x, y) {
 
 Let's add types to our simple examples from earlier:
 
-```ts twoslash
+```ts 
 function add(x: number, y: number): number {
   return x + y;
 }
@@ -68,7 +68,7 @@ TypeScript can figure the return type out by looking at the return statements, s
 
 Now that we've typed the function, let's write the full type of the function out by looking at each piece of the function type.
 
-```ts twoslash
+```ts 
 let myAdd: (x: number, y: number) => number = function (
   x: number,
   y: number
@@ -83,7 +83,7 @@ We write out the parameter types just like a parameter list, giving each paramet
 This name is just to help with readability.
 We could have instead written:
 
-```ts twoslash
+```ts 
 let myAdd: (baseValue: number, increment: number) => number = function (
   x: number,
   y: number
@@ -106,7 +106,7 @@ In effect, captured variables are part of the "hidden state" of any function and
 
 In playing with the example, you may notice that the TypeScript compiler can figure out the type even if you only have types on one side of the equation:
 
-```ts twoslash
+```ts 
 // The parameters 'x' and 'y' have the type number
 let myAdd = function (x: number, y: number): number {
   return x + y;
@@ -219,7 +219,7 @@ In JavaScript, you can work with the arguments directly using the `arguments` va
 
 In TypeScript, you can gather these arguments together into a variable:
 
-```ts twoslash
+```ts 
 function buildName(firstName: string, ...restOfName: string[]) {
   return firstName + " " + restOfName.join(" ");
 }
@@ -234,7 +234,7 @@ The compiler will build an array of the arguments passed in with the name given 
 
 The ellipsis is also used in the type of the function with rest parameters:
 
-```ts twoslash
+```ts 
 function buildName(firstName: string, ...restOfName: string[]) {
   return firstName + " " + restOfName.join(" ");
 }
@@ -331,7 +331,7 @@ function f(this: void) {
 
 Let's add a couple of interfaces to our example above, `Card` and `Deck`, to make the types clearer and easier to reuse:
 
-```ts twoslash
+```ts 
 interface Card {
   suit: string;
   card: number;
@@ -373,7 +373,7 @@ Because the library that calls your callback will call it like a normal function
 With some work you can use `this` parameters to prevent errors with callbacks too.
 First, the library author needs to annotate the callback type with `this`:
 
-```ts twoslash
+```ts 
 interface UIElement {
   addClickListener(onclick: (this: void, e: Event) => void): void;
 }
@@ -503,7 +503,7 @@ The answer is to supply multiple function types for the same function as a list 
 This list is what the compiler will use to resolve function calls.
 Let's create a list of overloads that describe what our `pickCard` accepts and what it returns.
 
-```ts twoslash
+```ts 
 let suits = ["hearts", "spades", "clubs", "diamonds"];
 
 function pickCard(x: { suit: string; card: number }[]): number;
