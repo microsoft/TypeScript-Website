@@ -430,6 +430,7 @@ kitty.numLives--;
 Unless you take specific measures to avoid it, the internal state of a `const` variable is still modifiable.
 Fortunately, TypeScript allows you to specify that members of an object are `readonly`.
 The [chapter on Interfaces](/docs/handbook/interfaces.html) has the details.
+For object literals, you can use a [`const` assertion](/docs/handbook/2/everyday-types.html#literal-inference) to make all properties `readonly` in place.
 
 ## `let` vs. `const`
 
