@@ -25,7 +25,7 @@ This technique is a hybrid approach, using Babel's [preset-typescript](https://b
 
 By using babel's support for TypeScript, you get the ability to work with existing build pipelines and are more likely to have a faster JS emit time because Babel does not type check your code.
 
-#### Type Checking and d.ts file generation
+### Type Checking and d.ts file generation
 
 The downside to using babel is that you don't get type checking during the transition from TS to JS. This can mean that type errors which you miss in your editor could sneak through into production code.
 

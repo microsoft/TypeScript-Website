@@ -21,7 +21,7 @@ This type is meant to model operations like `await` in `async` functions, or the
 `.then()` method on `Promise`s - specifically, the way that they recursively
 unwrap `Promise`s.
 
-##### Example
+### Example
 
 ```ts twoslash
 type A = Awaited<Promise<string>>;
@@ -45,7 +45,7 @@ Released:
 
 Constructs a type with all properties of `Type` set to optional. This utility will return a type that represents all subsets of a given type.
 
-##### Example
+### Example
 
 ```ts twoslash
 interface Todo {
@@ -78,7 +78,7 @@ Released:
 
 Constructs a type consisting of all properties of `Type` set to required. The opposite of [`Partial`](#partialtype).
 
-##### Example
+### Example
 
 ```ts twoslash
 // @errors: 2741
@@ -103,7 +103,7 @@ Released:
 
 Constructs a type with all properties of `Type` set to `readonly`, meaning the properties of the constructed type cannot be reassigned.
 
-##### Example
+### Example
 
 ```ts twoslash
 // @errors: 2540
@@ -120,7 +120,7 @@ todo.title = "Hello";
 
 This utility is useful for representing assignment expressions that will fail at runtime (i.e. when attempting to reassign properties of a [frozen object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)).
 
-##### `Object.freeze`
+### `Object.freeze`
 
 ```ts
 function freeze<Type>(obj: Type): Readonly<Type>;
@@ -137,7 +137,7 @@ Released:
 
 Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
 
-##### Example
+### Example
 
 ```ts twoslash
 type CatName = "miffy" | "boris" | "mordred";
@@ -168,7 +168,7 @@ Released:
 
 Constructs a type by picking the set of properties `Keys` (string literal or union of string literals) from `Type`.
 
-##### Example
+### Example
 
 ```ts twoslash
 interface Todo {
@@ -199,7 +199,7 @@ Released:
 
 Constructs a type by picking all properties from `Type` and then removing `Keys` (string literal or union of string literals). The opposite of [`Pick`](#picktype-keys).
 
-##### Example
+### Example
 
 ```ts twoslash
 interface Todo {
@@ -242,7 +242,7 @@ Released:
 
 Constructs a type by excluding from `UnionType` all union members that are assignable to `ExcludedMembers`.
 
-##### Example
+### Example
 
 ```ts twoslash
 type T0 = Exclude<"a" | "b" | "c", "a">;
@@ -272,7 +272,7 @@ Released:
 
 Constructs a type by extracting from `Type` all union members that are assignable to `Union`.
 
-##### Example
+### Example
 
 ```ts twoslash
 type T0 = Extract<"a" | "b" | "c", "a" | "f">;
@@ -300,7 +300,7 @@ Released:
 
 Constructs a type by excluding `null` and `undefined` from `Type`.
 
-##### Example
+### Example
 
 ```ts twoslash
 type T0 = NonNullable<string | number | undefined>;
@@ -322,7 +322,7 @@ Constructs a tuple type from the types used in the parameters of a function type
 
 For overloaded functions, this will be the parameters of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
 
-##### Example
+### Example
 
 ```ts twoslash
 // @errors: 2344
@@ -357,7 +357,7 @@ Released:
 
 Constructs a tuple or array type from the types of a constructor function type. It produces a tuple type with all the parameter types (or the type `never` if `Type` is not a function).
 
-##### Example
+### Example
 
 ```ts twoslash
 // @errors: 2344
@@ -393,7 +393,7 @@ Constructs a type consisting of the return type of function `Type`.
 
 For overloaded functions, this will be the return type of the _last_ signature; see [Inferring Within Conditional Types](/docs/handbook/2/conditional-types.html#inferring-within-conditional-types).
 
-##### Example
+### Example
 
 ```ts twoslash
 // @errors: 2344 2344
@@ -430,7 +430,7 @@ Released:
 
 Constructs a type consisting of the instance type of a constructor function in `Type`.
 
-##### Example
+### Example
 
 ```ts twoslash
 // @errors: 2344 2344
@@ -464,7 +464,7 @@ Released:
 Blocks inferences to the contained type. Other than blocking inferences, `NoInfer<Type>` is
 identical to `Type`.
 
-##### Example
+### Example
 
 ```ts
 function createStreetLight<C extends string>(
@@ -489,7 +489,7 @@ Released:
 
 Extracts the type of the [this](/docs/handbook/functions.html#this-parameters) parameter for a function type, or [unknown](/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type) if the function type has no `this` parameter.
 
-##### Example
+### Example
 
 ```ts twoslash
 function toHex(this: Number) {
@@ -512,7 +512,7 @@ Released:
 
 Removes the [`this`](/docs/handbook/functions.html#this-parameters) parameter from `Type`. If `Type` has no explicitly declared `this` parameter, the result is simply `Type`. Otherwise, a new function type with no `this` parameter is created from `Type`. Generics are erased and only the last overload signature is propagated into the new function type.
 
-##### Example
+### Example
 
 ```ts twoslash
 function toHex(this: Number) {
@@ -535,7 +535,7 @@ Released:
 
 This utility does not return a transformed type. Instead, it serves as a marker for a contextual [`this`](/docs/handbook/functions.html#this) type. Note that the [`noImplicitThis`](/tsconfig#noImplicitThis) flag must be enabled to use this utility.
 
-##### Example
+### Example
 
 ```ts twoslash
 // @noImplicitThis: true

@@ -93,7 +93,7 @@ This can lead to problems when other tools are used to process the resulting mod
 
 The `amd-module` directive allows passing an optional module name to the compiler:
 
-##### amdModule.ts
+### amdModule.ts
 
 ```ts
 /// <amd-module name="NamedModule"/>
@@ -102,7 +102,7 @@ export class C {}
 
 Will result in assigning the name `NamedModule` to the module as part of calling the AMD `define`:
 
-##### amdModule.js
+### amdModule.js
 
 ```js
 define("NamedModule", ["require", "exports"], function (require, exports) {
