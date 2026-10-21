@@ -55,7 +55,7 @@ export const Comm: React.FC<Props> = props => {
               <a className="icon stackoverflow img-circle"></a>
               <div className="text">
                 <a href="https://stackoverflow.com/questions/tagged/typescript" id="stack-header" title="TypeScript tag on Stack Overflow" target="_blank">
-                  <h3 className="community-callout-headline">Stack Overflow</h3>
+                  <p className="community-callout-headline">Stack Overflow</p>
                 </a>
                 {i("com_online_stack_overflow_desc")}
               </div>
@@ -66,7 +66,7 @@ export const Comm: React.FC<Props> = props => {
 
               <div className="text">
                 <a href="https://discord.gg/typescript" id="discord-header" title="TypeScript Community on Discord" >
-                  <h3 className="community-callout-headline">{i("com_online_discord_header")}</h3>
+                  <p className="community-callout-headline">{i("com_online_discord_header")}</p>
                 </a>
                 {i("com_online_discord_desc")}</div>
             </div>
@@ -74,7 +74,7 @@ export const Comm: React.FC<Props> = props => {
             <a className="icon bug img-circle" />
               <div className="text">
                 <a href="https://github.com/microsoft/TypeScript/issues/new/choose" id="github-header" title="Create a new GitHub Issue on the TypeScript repo">
-                  <h3 className="community-callout-headline">GitHub</h3>
+                  <p className="community-callout-headline">GitHub</p>
                 </a>
                 {i("com_online_github_desc")}{" "}
                 <a href="https://github.com/microsoft/TypeScript/issues/new/choose" title="Create a new GitHub Issue on the TypeScript repo">{i("com_online_github_href")}</a>
@@ -84,7 +84,7 @@ export const Comm: React.FC<Props> = props => {
             <a className="icon twitter img-circle" />
               <div className="text">
                 <a href="https://twitter.com/typescript" id="twitter-header" target="_blank" title="The TypeScript team on Twitter">
-                  <h3 className="community-callout-headline">Twitter</h3>
+                  <p className="community-callout-headline">Twitter</p>
                 </a>
                 {i("com_online_twitter_desc") + " "}
                 <a href="https://twitter.com/typescript" title="The TypeScript team on Twitter" target="_blank">@typescript</a>!
@@ -94,7 +94,7 @@ export const Comm: React.FC<Props> = props => {
             <a className="icon blog img-circle" />
               <div className="text">
                 <a href="https://devblogs.microsoft.com/typescript/" id="blog-header" target="_blank" title="The official TypeScript blog">
-                  <h3 className="community-callout-headline">Blog</h3>
+                  <p className="community-callout-headline">Blog</p>
                 </a>
                 {i("com_online_blog_desc") + " "}
                 <a href="https://devblogs.microsoft.com/typescript/" target="_blank" title="The official TypeScript blog">blog</a>!
@@ -104,7 +104,7 @@ export const Comm: React.FC<Props> = props => {
             <a className="icon definitelytyped img-circle" />
               <div className="text">
                 <a href="https://github.com/definitelytyped/definitelytyped/#definitelytyped" id="deftyped-header" target="_blank" title="Definitely Typed, a central location for third party type definitions">
-                  <h3 className="community-callout-headline">Definitely Typed</h3>
+                  <p className="community-callout-headline">Definitely Typed</p>
                 </a>
                 {i("com_online_typed_desc")}{" "}
                 <a href="https://github.com/definitelytyped/definitelytyped/#definitelytyped" target="_blank" title="Definitely Typed, a central location for third party type definitions">{i("com_online_typed_href")}</a>{" "}
@@ -188,7 +188,7 @@ export const Comm: React.FC<Props> = props => {
               <Col className="callout" key={index}>
                 <img src={require("../../assets/community/meetup-logos/" + meetup.image).default} className="icon img-square" alt={"logo of " + meetup.title} />
                 <div>
-                  <h4 className="community-callout-headline">{meetup.title}</h4>
+                  <p className="community-callout-headline">{meetup.title}</p>
                   <div className="text">{meetup.country}<br />
                     <a rel="noopener" target="blank" href={meetup.url} title={"Website for " + meetup.title}>Website</a>
                     {" "}{meetup.twitter ? <a rel="noopener" target="blank" href={meetup.twitter} title={"Twitter page for " + meetup.title}>Twitter</a> : null}
