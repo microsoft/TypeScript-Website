@@ -32,7 +32,7 @@ const Index: React.FC<Props> = (props) => {
         <div style={{ borderRight: "1px lightgrey solid", padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>via npm</h3>
           <p>TypeScript is available as a <a href="https://www.npmjs.com/package/typescript">package on the npm registry</a> available as <code>"typescript"</code>.</p>
-          <p>You will need a copy of <a title="Link to the node.js project" href="https://nodejs.org/en/">Node.js</a> as an environment to run the package. Then you use a dependency manager like <a title="Link to the npm package manager" href='https://www.npmjs.com/'>npm</a>, <a title="Link to the yarn package manager" href='https://yarnpkg.com/'>yarn</a> or <a title="Link to the pnpm package manager" href='https://pnpm.js.org/'>pnpm</a> to download TypeScript into your project.</p>
+          <p>You will need a copy of <a href="https://nodejs.org/en/">Node.js</a> as an environment to run the package. Then you use a dependency manager like <a href='https://www.npmjs.com/'>npm</a>, <a href='https://yarnpkg.com/'>yarn</a> or <a href='https://pnpm.js.org/'>pnpm</a> to download TypeScript into your project.</p>
           <div>
             <code id='code-example'>npm install typescript --save-dev</code><br /><br />
             <button onClick={() => changeExample("npm install typescript --save-dev")}>npm</button> <button onClick={() => changeExample("yarn add typescript --dev")}>yarn</button> <button onClick={() => changeExample("pnpm add typescript -D")}>pnpm</button>
@@ -79,7 +79,7 @@ const Index: React.FC<Props> = (props) => {
         <div style={{ padding: "1rem", flex: 1, minWidth: "240px" }}>
           <h3>via Visual Studio Marketplace</h3>
           <p>You can install TypeScript as a Visual Studio extension, which will allow you to use TypeScript across many MSBuild projects in Visual Studio.</p>
-          <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download} title="Link to the Visual Studio Marketplace for the TypeScript MSBuild extension">in the Visual Studio Marketplace</a>.</p>
+          <p>The latest version is available <a href={releaseInfo.vs.stable.vs2019_download}>in the Visual Studio Marketplace</a>.</p>
         </div>
       </section>
     </div>
