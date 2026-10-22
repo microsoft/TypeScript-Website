@@ -201,6 +201,34 @@ $headline-foreground-bg: white;
 }
 
 #index-2 {
+  @media (forced-colors: active) {
+    svg:not([fill="none"]),
+    svg [fill]:not([fill="none"]):not(defs *, mask *, clipPath *) {
+      fill: CanvasText;
+    }
+
+    svg[stroke]:not([stroke="none"]),
+    svg [stroke]:not([stroke="none"]):not(defs *, mask *, clipPath *) {
+      stroke: CanvasText;
+    }
+
+    svg[aria-label="probot logo"] {
+      path[fill="#086E12"] {
+        fill: Canvas;
+      }
+
+      path[stroke="#086E12"] {
+        stroke: Canvas;
+      }
+    }
+
+    img[src$="/images/index/stack-overflow.svg"],
+    img[src$="/images/index/state-of-js.svg"] {
+      forced-color-adjust: none;
+      background-color: white;
+    }
+  }
+
   h1 {
     font-size: 2.5rem;
     line-height: 2.8rem;
@@ -552,6 +580,10 @@ $headline-foreground-bg: white;
 
     svg path {
       fill: black;
+
+      @media (forced-colors: active) {
+        fill: CanvasText;
+      }
     }
 
     @media screen and (-ms-high-contrast: active) {
@@ -590,6 +622,10 @@ $headline-foreground-bg: white;
       }
       svg path {
         stroke: white;
+
+        @media (forced-colors: active) {
+          stroke: CanvasText;
+        }
       }
 
       &:active {
