@@ -50,6 +50,10 @@
   }
 
   .tsconfig-quick-nav {
+    a {
+      text-decoration: underline;
+    }
+
     &.grouped {
       border-left: 1px solid var(--text-color);
       margin-bottom: 3rem;
@@ -85,7 +89,7 @@
         margin-left: 8px;
         a {
           color: var(--text-color);
-          text-decoration: none;
+          text-decoration: underline;
           &:hover {
             text-decoration: underline;
           }
