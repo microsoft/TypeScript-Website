@@ -559,6 +559,14 @@ $headline-foreground-bg: white;
         fill: yellow;
       }
     }
+
+    @media (forced-colors: active) {
+      border: 1px solid ButtonText;
+
+      svg path {
+        fill: ButtonText;
+      }
+    }
   }
 
   a.get-started {
