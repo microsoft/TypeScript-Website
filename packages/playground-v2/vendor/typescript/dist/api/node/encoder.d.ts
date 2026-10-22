@@ -11,7 +11,7 @@ export declare function encodeNode(node: Node): Uint8Array;
 /**
  * Encode a Uint8Array to a base64 string.
  */
-export declare function uint8ArrayToBase64(data: Uint8Array): string;
+export declare const uint8ArrayToBase64: (data: Uint8Array) => string;
 export declare function sourceFileResponseToUint8Array(response: {
     readonly data: string;
 } | null | undefined): Uint8Array | undefined;

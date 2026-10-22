@@ -1,7 +1,4 @@
 import { combineTimingInfo, disabledTimingInfo, TimingCollector, } from "../timing.js";
-function isTextRequest(request) {
-    return request.kind === "text";
-}
 export function createTransportClient(options) {
     if (options.fs !== undefined) {
         options.transport.setFileSystem?.(options.fs);
@@ -14,7 +11,6 @@ export class TransportClient {
     timing;
     transport;
     maxResponseBytesPerPage;
-    connected = false;
     closed = false;
     closing;
     nextBatch = false;
@@ -27,12 +23,6 @@ export class TransportClient {
         if (collectTiming) {
             this.timing = new TimingCollector();
         }
-    }
-    connect() {
-        if (this.closed)
-            return Promise.reject(new Error("Client is closed"));
-        this.connected = true;
-        return Promise.resolve();
     }
     batchContext() {
         if (this.nextBatch === "manual") {
@@ -54,11 +44,6 @@ export class TransportClient {
     async apiRequest(method, params) {
         if (this.closed)
             throw new Error("Client is closed");
-        if (!this.connected) {
-            await this.connect();
-        }
-        if (this.closed)
-            throw new Error("Client is closed");
         if (method === "initialize") {
             return this.sendRequest(method, params);
         }
@@ -69,11 +54,6 @@ export class TransportClient {
         return result;
     }
     async apiRequestBinary(method, params) {
-        if (this.closed)
-            throw new Error("Client is closed");
-        if (!this.connected) {
-            await this.connect();
-        }
         if (this.closed)
             throw new Error("Client is closed");
         return new Promise((resolve, reject) => {
@@ -96,7 +76,7 @@ export class TransportClient {
         register.call(this.transport, name, (_, payload) => {
             const result = callback(JSON.parse(payload));
             if (isPromiseLike(result)) {
-                throw new Error("Injected transport callbacks must complete synchronously");
+                return result.then(value => JSON.stringify(value) ?? "");
             }
             return JSON.stringify(result) ?? "";
         });
@@ -110,7 +90,7 @@ export class TransportClient {
             return disabledTimingInfo();
         }
         const local = this.timing.getInfo();
-        if (!this.connected) {
+        if (this.closed) {
             return local;
         }
         const response = await this.invokeTransport(() => this.transport.request("getServerTiming", ""));
@@ -120,7 +100,7 @@ export class TransportClient {
         if (!this.timing)
             return;
         this.timing.reset();
-        if (this.connected) {
+        if (!this.closed) {
             await this.invokeTransport(() => this.transport.request("resetServerTiming", ""));
         }
     }
@@ -141,7 +121,6 @@ export class TransportClient {
             reject(new Error("Client is closed"));
         }
         await this.transport.close();
-        this.connected = false;
     }
     scheduleBatch() {
         if (this.closed || this.nextBatch)
@@ -172,7 +151,7 @@ export class TransportClient {
                 request.resolve(await this.sendRequest(request.method, request.params));
                 return;
             }
-            if (requests.every(isTextRequest)) {
+            if (requests.every((request) => request.kind === "text")) {
                 const params = {
                     requests: requests.map(request => ({ method: request.method, params: request.params })),
                 };

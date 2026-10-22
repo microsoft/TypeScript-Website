@@ -1,38 +1,10 @@
-import { encodeFileSystemCallbackResult, serverFS, } from "../api/fsCallbacks.js";
-import { Wtf8Decoder } from "../api/node/wtf8.js";
 const errnoSuccess = 0;
 const errnoBadFileDescriptor = 8;
 const errnoInvalidArgument = 28;
-const errnoIo = 29;
-const errnoNoBuffers = 42;
 const errnoNoSys = 52;
 const fileTypeCharacterDevice = 2;
 const eventTypeClock = 0;
 const subscriptionClockAbstime = 1;
-const hostCallbackFD = 0x7fff_fffd;
-const hostWriteFileFD = 0x7fff_fffe;
-const textDecoder = new TextDecoder();
-const fileContentDecoder = new Wtf8Decoder("utf-8", { ignoreBOM: true });
-const wasmHosts = new WeakMap();
-export function setWasmFileSystem(instance, fs) {
-    const host = wasmHosts.get(instance);
-    if (!host) {
-        if (fs === undefined)
-            return;
-        throw new Error("The TypeScript WASM reactor was not created by instantiateWasm");
-    }
-    host.setFileSystem(fs);
-}
-export function registerWasmCallback(instance, name, callback) {
-    const host = wasmHosts.get(instance);
-    if (!host) {
-        throw new Error("The TypeScript WASM reactor was not created by instantiateWasm");
-    }
-    host.registerCallback(name, callback);
-}
-export function unregisterWasmCallback(instance, name) {
-    wasmHosts.get(instance)?.unregisterCallback(name);
-}
 /** Instantiate and initialize the TypeScript reactor with its minimal WASI host. */
 export async function instantiateWasm(module, options = {}) {
     const host = createWasiHost(options);
@@ -55,11 +27,7 @@ function createWasiHost(options) {
     const stdout = options.stdout ?? (text => console.log(text));
     const stderr = options.stderr ?? (text => console.error(text));
     const decoders = new Map();
-    const encoder = new TextEncoder();
-    const callbacks = new Map();
-    let pendingCallbackResult;
     const closedDescriptors = new Set();
-    let fileSystem;
     function getMemory() {
         const memory = instance?.exports.memory;
         if (!(memory instanceof WebAssembly.Memory)) {
@@ -119,37 +87,22 @@ function createWasiHost(options) {
     function fdWrite(fd, iovsPointer, iovsLength, writtenPointer) {
         iovsPointer >>>= 0;
         writtenPointer >>>= 0;
-        if (fd === hostWriteFileFD) {
-            return hostWriteFile(iovsPointer, iovsLength, writtenPointer);
-        }
-        if (fd === hostCallbackFD) {
-            return hostCallback(iovsPointer, iovsLength, writtenPointer);
-        }
         if ((fd !== 1 && fd !== 2) || closedDescriptors.has(fd))
             return errnoBadFileDescriptor;
         const memory = getMemory();
         const view = new DataView(memory.buffer);
-        const chunks = [];
+        let decoder = decoders.get(fd);
+        if (!decoder)
+            decoders.set(fd, decoder = new TextDecoder());
+        let text = "";
         let length = 0;
         for (let i = 0; i < iovsLength; i++) {
             const iovPointer = iovsPointer + i * 8;
-            const chunkPointer = view.getUint32(iovPointer, true);
             const chunkLength = view.getUint32(iovPointer + 4, true);
-            chunks.push(new Uint8Array(memory.buffer, chunkPointer, chunkLength));
+            text += decoder.decode(new Uint8Array(memory.buffer, view.getUint32(iovPointer, true), chunkLength), { stream: true });
             length += chunkLength;
         }
-        const bytes = new Uint8Array(length);
-        let offset = 0;
-        for (const chunk of chunks) {
-            bytes.set(chunk, offset);
-            offset += chunk.length;
-        }
         view.setUint32(writtenPointer, length, true);
-        if (length === 0)
-            return errnoSuccess;
-        const decoder = decoders.get(fd) ?? new TextDecoder();
-        decoders.set(fd, decoder);
-        const text = decoder.decode(bytes, { stream: true });
         if (text) {
             (fd === 1 ? stdout : stderr)(text);
         }
@@ -172,74 +125,6 @@ function createWasiHost(options) {
     function isOpenStdioDescriptor(fd) {
         return fd >= 0 && fd <= 2 && !closedDescriptors.has(fd);
     }
-    function hostCallback(iovsPointer, iovsLength, writtenPointer) {
-        if (iovsLength !== 1)
-            return errnoInvalidArgument;
-        const memory = getMemory();
-        const view = new DataView(memory.buffer);
-        const bufferPointer = view.getUint32(iovsPointer, true);
-        const bufferLength = view.getUint32(iovsPointer + 4, true);
-        if (bufferLength < 16)
-            return errnoInvalidArgument;
-        const methodLength = view.getUint32(bufferPointer, true);
-        const payloadLength = view.getUint32(bufferPointer + 4, true);
-        const resultCapacity = view.getUint32(bufferPointer + 8, true);
-        const errorCapacity = view.getUint32(bufferPointer + 12, true);
-        if (16 + methodLength + payloadLength + resultCapacity + errorCapacity > bufferLength) {
-            return errnoInvalidArgument;
-        }
-        const methodPointer = bufferPointer + 16;
-        const payloadPointer = methodPointer + methodLength;
-        const resultPointer = payloadPointer + payloadLength;
-        const errorPointer = resultPointer + resultCapacity;
-        const decoder = new TextDecoder();
-        const method = decoder.decode(new Uint8Array(memory.buffer, methodPointer, methodLength));
-        const payload = decoder.decode(new Uint8Array(memory.buffer, payloadPointer, payloadLength));
-        const pending = pendingCallbackResult;
-        pendingCallbackResult = undefined;
-        try {
-            let result;
-            if (methodLength === 0) {
-                // An empty method fetches a result that did not fit the previous call's buffer.
-                if (!pending || pending.length > resultCapacity)
-                    return errnoInvalidArgument;
-                result = pending;
-            }
-            else {
-                const callback = callbacks.get(method);
-                if (!callback) {
-                    throw new Error(`No callback is registered for ${method}`);
-                }
-                result = encoder.encode(callback(method, payload));
-                if (result.length > resultCapacity) {
-                    pendingCallbackResult = result;
-                    const resultView = new DataView(getMemory().buffer);
-                    resultView.setUint32(bufferPointer + 8, result.length, true);
-                    resultView.setUint32(bufferPointer + 12, 0, true);
-                    resultView.setUint32(writtenPointer, 0, true);
-                    return errnoNoBuffers;
-                }
-            }
-            const resultMemory = getMemory();
-            const resultView = new DataView(resultMemory.buffer);
-            new Uint8Array(resultMemory.buffer, resultPointer, result.length).set(result);
-            resultView.setUint32(bufferPointer + 8, result.length, true);
-            resultView.setUint32(bufferPointer + 12, 0, true);
-            resultView.setUint32(writtenPointer, bufferLength, true);
-            return errnoSuccess;
-        }
-        catch (error) {
-            const errorBytes = encoder.encode(error instanceof Error ? error.message : String(error));
-            const errorLength = Math.min(errorBytes.length, errorCapacity);
-            const errorMemory = getMemory();
-            const errorView = new DataView(errorMemory.buffer);
-            new Uint8Array(errorMemory.buffer, errorPointer, errorLength).set(errorBytes.subarray(0, errorLength));
-            errorView.setUint32(bufferPointer + 8, 0, true);
-            errorView.setUint32(bufferPointer + 12, errorLength, true);
-            errorView.setUint32(writtenPointer, 0, true);
-            return errnoIo;
-        }
-    }
     function randomGet(bufferPointer, bufferLength) {
         bufferPointer >>>= 0;
         const buffer = new Uint8Array(getMemory().buffer, bufferPointer, bufferLength);
@@ -247,51 +132,6 @@ function createWasiHost(options) {
             crypto.getRandomValues(buffer.subarray(offset, Math.min(offset + 65_536, buffer.length)));
         }
         return errnoSuccess;
-    }
-    function hostWriteFile(iovsPointer, iovsLength, writtenPointer) {
-        iovsPointer >>>= 0;
-        writtenPointer >>>= 0;
-        const writeFile = fileSystem?.writeFile;
-        if (writeFile === undefined || writeFile === serverFS.useOS)
-            return errnoBadFileDescriptor;
-        if (iovsLength !== 1)
-            return errnoInvalidArgument;
-        const memory = getMemory();
-        const view = new DataView(memory.buffer);
-        const bufferPointer = view.getUint32(iovsPointer, true);
-        const bufferLength = view.getUint32(iovsPointer + 4, true);
-        if (bufferLength < 12)
-            return errnoInvalidArgument;
-        const pathLength = view.getUint32(bufferPointer, true);
-        const dataLength = view.getUint32(bufferPointer + 4, true);
-        const errorCapacity = view.getUint32(bufferPointer + 8, true);
-        if (12 + pathLength + dataLength + errorCapacity !== bufferLength)
-            return errnoInvalidArgument;
-        const pathPointer = bufferPointer + 12;
-        const dataPointer = pathPointer + pathLength;
-        const errorPointer = dataPointer + dataLength;
-        const path = textDecoder.decode(new Uint8Array(memory.buffer, pathPointer, pathLength));
-        const data = fileContentDecoder.decode(new Uint8Array(memory.buffer, dataPointer, dataLength));
-        try {
-            const result = typeof writeFile === "function" ? writeFile(path, data) : writeFile;
-            const response = encodeFileSystemCallbackResult("writeFile", result);
-            if (response.kind === "useOS")
-                return errnoBadFileDescriptor;
-            if (response.kind === "error")
-                throw new Error("filesystem callback returned serverFS.error: writeFile");
-            new DataView(getMemory().buffer).setUint32(writtenPointer, bufferLength, true);
-            return errnoSuccess;
-        }
-        catch (error) {
-            const errorBytes = encoder.encode(error instanceof Error ? error.message : String(error));
-            const errorLength = Math.min(errorBytes.length, errorCapacity);
-            const errorMemory = getMemory();
-            const errorView = new DataView(errorMemory.buffer);
-            new Uint8Array(errorMemory.buffer, errorPointer, errorLength).set(errorBytes.subarray(0, errorLength));
-            errorView.setUint32(bufferPointer + 8, errorLength, true);
-            errorView.setUint32(writtenPointer, 0, true);
-            return errnoIo;
-        }
     }
     function pollOneoff(subscriptionsPointer, eventsPointer, subscriptionsLength, eventsLengthPointer) {
         subscriptionsPointer >>>= 0;
@@ -380,17 +220,6 @@ function createWasiHost(options) {
                 throw new Error("TypeScript WASM reactor did not export typescript_initialize");
             }
             initialize();
-            wasmHosts.set(instance, {
-                setFileSystem(value) {
-                    fileSystem = value;
-                },
-                registerCallback(name, callback) {
-                    callbacks.set(name, callback);
-                },
-                unregisterCallback(name) {
-                    callbacks.delete(name);
-                },
-            });
             return instance;
         },
     };

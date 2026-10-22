@@ -9,7 +9,6 @@ export declare class TransportClient {
     private readonly timing;
     private readonly transport;
     private readonly maxResponseBytesPerPage;
-    private connected;
     private closed;
     private closing;
     private nextBatch;
@@ -17,7 +16,6 @@ export declare class TransportClient {
     private batchedRequests;
     private readonly pendingOperations;
     constructor(transport: AsyncTransport, collectTiming: boolean, maxResponseBytesPerPage?: number);
-    connect(): Promise<void>;
     batchContext(): {
         [Symbol.dispose](): void;
     };

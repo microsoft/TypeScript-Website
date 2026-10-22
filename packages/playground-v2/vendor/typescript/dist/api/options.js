@@ -8,9 +8,6 @@ export function isSpawnOptions(options) {
 export function isTransportOptions(options) {
     return "transport" in options;
 }
-export function isAsyncTransportOptions(options) {
-    return "transport" in options;
-}
 export function resolveExePath(options) {
     return options.tsserverPath ?? getDefaultExePath();
 }

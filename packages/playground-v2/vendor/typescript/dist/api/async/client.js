@@ -1,11 +1,11 @@
 import { configureFileSystemCallbacks, encodeFileSystemCallbackResult, } from "../fsCallbacks.js";
 import { nodeProcess } from "../nodeProcess.js";
-import { getAPIProcessArgs, isAsyncTransportOptions, isSpawnOptions, resolveExePath, } from "../options.js";
+import { getAPIProcessArgs, isSpawnOptions, isTransportOptions, resolveExePath, } from "../options.js";
 import { combineTimingInfo, disabledServerTimingInfo, disabledTimingInfo, TimingCollector, } from "../timing.js";
 import { TimingDump } from "../timingDump.js";
 import { createTransportClient, } from "./transportClient.js";
 export function createClient(options) {
-    return isAsyncTransportOptions(options) ? createTransportClient(options) : new RpcClient(options);
+    return isTransportOptions(options) ? createTransportClient(options) : new RpcClient(options);
 }
 /**
  * Client handles communication with the TypeScript API server
@@ -49,8 +49,6 @@ class RpcClient {
         });
     }
     async connectWorker() {
-        if (!this.options)
-            throw new Error("Client options are not available");
         this.jsonrpc ??= await import("./jsonrpc.js");
         if (isSpawnOptions(this.options)) {
             await this.connectViaSpawn(this.options);
@@ -235,9 +233,8 @@ class RpcClient {
             }
             const requestType = this.requestType("batchRequests");
             const params = { requests: requests.map(request => ({ method: request.method, params: request.params })) };
-            const maxResponseBytesPerPage = this.options?.maxResponseBytesPerPage;
-            if (maxResponseBytesPerPage !== undefined) {
-                params.maxResponseBytesPerPage = maxResponseBytesPerPage;
+            if (this.options.maxResponseBytesPerPage !== undefined) {
+                params.maxResponseBytesPerPage = this.options.maxResponseBytesPerPage;
             }
             const response = await this.sendRequestWithTiming(requestType, params);
             let responses = response.responses;
@@ -247,8 +244,8 @@ class RpcClient {
                     requests: [],
                     continuationToken,
                 };
-                if (maxResponseBytesPerPage !== undefined) {
-                    pageParams.maxResponseBytesPerPage = maxResponseBytesPerPage;
+                if (this.options.maxResponseBytesPerPage !== undefined) {
+                    pageParams.maxResponseBytesPerPage = this.options.maxResponseBytesPerPage;
                 }
                 const page = await this.sendRequestWithTiming(requestType, pageParams);
                 responses = responses.concat(page.responses);

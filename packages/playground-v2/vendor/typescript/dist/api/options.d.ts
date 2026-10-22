@@ -37,43 +37,40 @@ export interface ClientSpawnOptions {
 }
 export type ClientOptions = ClientSocketOptions | ClientSpawnOptions;
 export declare function isSpawnOptions(options: ClientOptions): options is ClientSpawnOptions;
-export interface ClientTransportOptions {
+interface TransportOptionsBase {
+    /** Maximum encoded byte size of each batch response page. Defaults to 300 million bytes. Individual responses can be larger than this size, but this controls where batch pages are cutoff. */
+    maxResponseBytesPerPage?: number | undefined;
+    /** Virtual filesystem callbacks used by transports that support them. */
+    fs?: FileSystemCallbacks | undefined;
+    /** Collect timing information for requests made through the transport. */
+    collectTiming?: boolean | undefined;
+}
+export interface ClientTransportOptions extends TransportOptionsBase {
     /**
      * An existing synchronous transport connected to an API session.
      * Custom module resolution callbacks must obey the transport's reentrancy
      * constraints.
      */
     transport: SyncTransport;
-    /** Maximum encoded byte size of each batch response page. Defaults to 300 million bytes. Individual responses can be larger than this size, but this controls where batch pages are cutoff. */
-    maxResponseBytesPerPage?: number | undefined;
-    /** Virtual filesystem callbacks used by transports that support them. */
-    fs?: FileSystemCallbacks | undefined;
-    /** Collect timing information for requests made through the transport. */
-    collectTiming?: boolean | undefined;
 }
 export type SyncClientOptions = ClientSocketOptions | ClientSpawnOptions | ClientTransportOptions;
-export declare function isTransportOptions(options: SyncClientOptions): options is ClientTransportOptions;
-export interface AsyncClientTransportOptions {
+export declare function isTransportOptions<T extends SyncClientOptions | AsyncClientOptions>(options: T): options is Extract<T, {
+    transport: unknown;
+}>;
+export interface AsyncClientTransportOptions extends TransportOptionsBase {
     /**
      * An existing asynchronous transport connected to an API session.
-     * Host callbacks are synchronous even when requests are asynchronous, so
-     * custom module resolution callbacks cannot return Promises and must obey
-     * the transport's reentrancy constraints.
+     * Custom module resolution callbacks must obey the transport's support
+     * for Promise results and reentrancy.
      */
     transport: AsyncTransport;
-    /** Maximum encoded byte size of each batch response page. Defaults to 300 million bytes. Individual responses can be larger than this size, but this controls where batch pages are cutoff. */
-    maxResponseBytesPerPage?: number | undefined;
-    /** Virtual filesystem callbacks used by transports that support them. */
-    fs?: FileSystemCallbacks | undefined;
-    /** Collect timing information for requests made through the transport. */
-    collectTiming?: boolean | undefined;
 }
 export type AsyncClientOptions = ClientOptions | AsyncClientTransportOptions;
-export declare function isAsyncTransportOptions(options: AsyncClientOptions): options is AsyncClientTransportOptions;
 export declare function resolveExePath(options: ClientSpawnOptions): string;
 export declare function getAPIProcessArgs(options: ClientSpawnOptions, async: boolean): string[];
 export interface LSPConnectionOptions extends ClientSocketOptions {
 }
 export type APIOptions = ClientSpawnOptions | AsyncClientTransportOptions;
 export type SyncAPIOptions = ClientSpawnOptions | ClientTransportOptions;
+export {};
 //# sourceMappingURL=options.d.ts.map

@@ -277,43 +277,30 @@ export function encodeNode(node) {
     result.set(nodesBytes, offsetNodes);
     return result;
 }
+const nodeBuffer = globalThis.Buffer;
 /**
  * Encode a Uint8Array to a base64 string.
  */
-export function uint8ArrayToBase64(data) {
-    const nativeToBase64 = data.toBase64;
-    if (nativeToBase64) {
-        return nativeToBase64.call(data);
-    }
-    const bufferConstructor = globalThis.Buffer;
-    if (bufferConstructor) {
-        return bufferConstructor.from(data.buffer, data.byteOffset, data.byteLength).toString("base64");
-    }
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    let result = "";
-    for (let i = 0; i < data.length; i += 3) {
-        const first = data[i];
-        const second = data[i + 1];
-        const third = data[i + 2];
-        result += alphabet[first >> 2];
-        result += alphabet[((first & 0x03) << 4) | ((second ?? 0) >> 4)];
-        result += second === undefined ? "=" : alphabet[((second & 0x0F) << 2) | ((third ?? 0) >> 6)];
-        result += third === undefined ? "=" : alphabet[third & 0x3F];
-    }
-    return result;
-}
+export const uint8ArrayToBase64 = "toBase64" in Uint8Array.prototype
+    ? data => data.toBase64()
+    : nodeBuffer
+        ? data => nodeBuffer.from(data.buffer, data.byteOffset, data.byteLength).toString("base64")
+        : data => {
+            let binary = "";
+            for (let i = 0; i < data.length; i += 0x8000) {
+                binary += String.fromCharCode(...data.subarray(i, i + 0x8000));
+            }
+            return btoa(binary);
+        };
+const base64ToUint8Array = "fromBase64" in Uint8Array
+    ? Uint8Array.fromBase64
+    : nodeBuffer
+        ? data => {
+            const buffer = nodeBuffer.from(data, "base64");
+            return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+        }
+        : data => Uint8Array.from(atob(data), character => character.charCodeAt(0));
 export function sourceFileResponseToUint8Array(response) {
-    if (!response)
-        return undefined;
-    const fromBase64 = Uint8Array.fromBase64;
-    if (fromBase64) {
-        return fromBase64(response.data);
-    }
-    const bufferConstructor = globalThis.Buffer;
-    if (bufferConstructor) {
-        return new Uint8Array(bufferConstructor.from(response.data, "base64"));
-    }
-    const decoded = atob(response.data);
-    return Uint8Array.from(decoded, character => character.charCodeAt(0));
+    return response ? base64ToUint8Array(response.data) : undefined;
 }
 //# sourceMappingURL=encoder.js.map

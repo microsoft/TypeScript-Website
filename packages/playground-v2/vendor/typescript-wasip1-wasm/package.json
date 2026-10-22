@@ -1,6 +1,6 @@
 {
     "name": "@typescript/typescript-wasip1-wasm",
-    "version": "7.1.0-dev.0.0",
+    "version": "7.1.0-dev",
     "license": "Apache-2.0",
     "author": "Microsoft Corp.",
     "homepage": "https://www.typescriptlang.org/",
@@ -17,7 +17,7 @@
         "./lib/libFiles.json": "./lib/libFiles.json",
         "./lib/tsc.wasm": "./lib/tsc.wasm"
     },
-    "gitHead": "52bdc38fbb9d8a3f55aa7429a718e3f88745bccd",
+    "gitHead": "0e515e6c2cfd1f50f1d28d321ab8210369b52a9d",
     "publishConfig": {
         "access": "public",
         "tag": "next"
