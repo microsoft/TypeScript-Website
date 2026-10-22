@@ -1265,11 +1265,13 @@ $headline-foreground-bg: white;
   }
 }
 
-.cta .cta-back a {
+.cta > .transparent-button {
   position: relative;
-  top: 20px;
-  left: 20px;
-  width: 60px;
+  top: auto;
+  left: auto;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .transparent-button {
