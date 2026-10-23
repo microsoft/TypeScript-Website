@@ -226,6 +226,7 @@ const Play: React.FC<Props> = (props) => {
 
   return (
     <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
+      <h1 className="playground-title">{i("head_playground_title")}</h1>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">
