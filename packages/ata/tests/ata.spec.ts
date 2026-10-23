@@ -21,6 +21,11 @@ describe(getReferencesForModule, () => {
     const code = "import 'abc'; import {asda} from 'abc'"
     expect(getReferencesForModule(ts, code).map(m => m.module)).toEqual(["abc"])
   })
+
+  it("keeps scoped subpath imports", () => {
+    const code = "import '@example/pkg/subpath'"
+    expect(getReferencesForModule(ts, code).map(m => m.module)).toEqual(["@example/pkg/subpath"])
+  })
 })
 
 describe("ignores lib references", () => {
