@@ -65,7 +65,9 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         // Skip handbook v2 from appearing in search
-        excludes: [`*/glossary`, `*/vo/*`],
+        excludes: [`*/glossary`, `*/vo/*`, `/*/play`],
+        // The canonical playground is static HTML rather than a Gatsby page.
+        resolvePages: ({ allSitePage }) => [...allSitePage.nodes, { path: "/play/" }],
       },
     },
     // Lets you edit the head from inside a react tree

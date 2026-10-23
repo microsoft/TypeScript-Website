@@ -1,0 +1,69 @@
+{
+    "name": "typescript",
+    "version": "7.1.0-dev",
+    "license": "Apache-2.0",
+    "author": "Microsoft Corp.",
+    "homepage": "https://www.typescriptlang.org/",
+    "description": "TypeScript is a language for application scale JavaScript development",
+    "keywords": [
+        "TypeScript",
+        "Microsoft",
+        "compiler",
+        "language",
+        "javascript"
+    ],
+    "bugs": {
+        "url": "https://github.com/microsoft/TypeScript/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/TypeScript.git"
+    },
+    "type": "module",
+    "preferUnplugged": true,
+    "engines": {
+        "node": ">=16.20.0"
+    },
+    "files": [
+        "bin",
+        "lib",
+        "schemas",
+        "dist",
+        "enums",
+        "vendor",
+        "NOTICE.txt"
+    ],
+    "bin": {
+        "tsc": "./bin/tsc"
+    },
+    "exports": {
+        "./package.json": "./package.json",
+        "./schemas/tsconfig.schema.json": "./schemas/tsconfig.schema.json",
+        "./schemas/jsconfig.schema.json": "./schemas/jsconfig.schema.json",
+        ".": "./lib/version.cjs",
+        "./vscode": "./dist/vscode/extensionApi.js",
+        "./sync": "./dist/api/sync/api.js",
+        "./sync/transport": "./dist/api/sync/transport.js",
+        "./async": "./dist/api/async/api.js",
+        "./async/transport": "./dist/api/async/transport.js",
+        "./fs": "./dist/api/fs.js",
+        "./path": "./dist/api/typedPaths.js",
+        "./proto": "./dist/api/proto.js",
+        "./wasm": "./dist/wasm/index.js",
+        "./ast": "./dist/ast/index.js",
+        "./ast/is": "./dist/ast/is.js",
+        "./ast/factory": "./dist/ast/factory.generated.js",
+        "./ast/utils": "./dist/ast/utils.js",
+        "./ast/scanner": "./dist/ast/scanner.js",
+        "./ast/visitor": "./dist/ast/visitor.js",
+        "./ast/clone": "./dist/ast/clone.js"
+    },
+    "gitHead": "0e515e6c2cfd1f50f1d28d321ab8210369b52a9d",
+    "publishConfig": {
+        "access": "public",
+        "tag": "next"
+    },
+    "optionalDependencies": {
+        "@typescript/typescript-linux-x64": "7.1.0-dev"
+    }
+}

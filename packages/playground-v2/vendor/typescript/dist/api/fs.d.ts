@@ -1,0 +1,62 @@
+import type { RootedDirectoryPath, RootedFilePath, RootedPath } from "../ast/index.ts";
+import { serverFS } from "./fsCallbacks.ts";
+import type { RequestDirectoryEntries, RequestFileSystem, RequestSymlink } from "./proto.generated.ts";
+import { type DocumentIdentifier } from "./proto.ts";
+export interface FileSystemEntries {
+    files: string[];
+    directories: string[];
+    /** Names from `files` or `directories` that are symbolic links. */
+    symlinks: string[] | undefined;
+}
+export interface FileSystemStat {
+    /** POSIX-style file mode, matching Node.js `fs.Stats.mode`. */
+    mode: number;
+    /** File size in bytes, matching Node.js `fs.Stats.size`. */
+    size: number;
+    /** Last modification time, matching Node.js `fs.Stats.mtime`. */
+    mtime: Date;
+}
+export { serverFS };
+export interface FileSystemCallbacks {
+    directoryExists: ((directoryName: RootedDirectoryPath) => boolean | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    fileExists: ((fileName: RootedFilePath) => boolean | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    getAccessibleEntries: ((directoryName: RootedDirectoryPath) => FileSystemEntries | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    /**
+     * Read a file's content.
+     * - Return the file content as a `string` (including `""` for empty files).
+     * - Return `undefined` to indicate the file does not exist.
+     * - Return {@link serverFS.useOS} to fall back to the server's operating-system filesystem.
+     */
+    readFile: ((fileName: RootedFilePath) => string | undefined | typeof serverFS.useOS | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.error;
+    /** Relative results are resolved against the queried path's directory by the server. */
+    realpath: ((path: RootedPath) => string | typeof serverFS.useOS | typeof serverFS.identity | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.identity | typeof serverFS.error;
+    stat: ((path: RootedPath) => FileSystemStat | undefined | typeof serverFS.useOS | typeof serverFS.fakeStat | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.fakeStat | typeof serverFS.error;
+    writeFile: ((path: RootedFilePath, content: string) => void | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error;
+    removeFile: ((path: RootedPath) => void | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error) | typeof serverFS.useOS | typeof serverFS.noop | typeof serverFS.error;
+}
+export interface CreateFileSystemOptions {
+    /** Complete directory listings. Full filesystems derive these from `files` when omitted. */
+    directories?: Record<string, RequestDirectoryEntries> | undefined;
+    symlinks?: Record<string, RequestSymlink> | undefined;
+    /** Files or directory trees hidden from an underlying snapshot or host filesystem. */
+    removedPaths?: readonly string[] | undefined;
+}
+export interface CreateFileSystemWithLibOptions extends CreateFileSystemOptions {
+    /** Default library directory used by a custom or non-embedded compiler executable. */
+    defaultLibraryPath?: string | undefined;
+}
+/**
+ * Files supplied to a request filesystem. String identifiers are file names;
+ * use `{ uri }` when supplying a document URI so it can be decoded correctly.
+ */
+export type RequestFileEntries = readonly (readonly [id: DocumentIdentifier, content: string])[];
+/** Creates a full request filesystem. The server derives directory listings when omitted. */
+export declare function createFileSystem(files: RequestFileEntries, options?: CreateFileSystemOptions): RequestFileSystem;
+/**
+ * Creates a full request filesystem with the compiler's default library
+ * directory mounted read-only through the host filesystem.
+ */
+export declare function createFileSystemWithLib(files: RequestFileEntries, options?: CreateFileSystemWithLibOptions): RequestFileSystem;
+/** Creates a request filesystem layer, merging base directory listings when omitted. */
+export declare function createFileSystemLayer(files: RequestFileEntries, options?: CreateFileSystemOptions): RequestFileSystem;
+//# sourceMappingURL=fs.d.ts.map

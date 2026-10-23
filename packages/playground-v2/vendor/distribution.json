@@ -1,0 +1,13 @@
+{
+  "version": "7.1.0-dev",
+  "revision": "0e515e6c2cfd1f50f1d28d321ab8210369b52a9d",
+  "cacheKey": "c592cef9db28c436",
+  "sync": "typescript/dist/api/sync/api.js",
+  "async": "typescript/dist/api/async/api.js",
+  "ast": "typescript/dist/ast/index.js",
+  "host": "typescript/dist/wasm/index.js",
+  "wasm": "typescript-wasip1-wasm/lib/tsc.wasm",
+  "libraryIndex": "typescript-wasip1-wasm/lib/libFiles.json",
+  "schema": "typescript/schemas/tsconfig.schema.json",
+  "downloadBytes": 53427409
+}
