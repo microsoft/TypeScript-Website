@@ -42,7 +42,7 @@ type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
 
 We generally recommend that people use ahead-of-time generation for large string unions, but this is useful in smaller cases.
 
-### String Unions in Types
+## String Unions in Types
 
 The power in template literals comes when defining a new string based on information inside a type.
 
@@ -124,7 +124,7 @@ person.on("firstName", () => {});
 person.on("frstNameChanged", () => {});
 ```
 
-### Inference with Template Literals
+## Inference with Template Literals
 
 Notice that we did not benefit from all the information provided in the original passed object. Given change of a `firstName` (i.e. a `firstNameChanged` event),  we should expect that the callback will receive an argument of type `string`. Similarly, the callback for a change to `age` should receive a `number` argument. We're naively using `any` to type the `callback`'s argument. Again, template literal types make it possible to ensure an attribute's data type will be the same type as that attribute's callback's first argument.
 
@@ -181,7 +181,7 @@ To help with string manipulation, TypeScript includes a set of types which can b
 
 Converts each character in the string to the uppercase version.
 
-##### Example
+#### Example
 
 ```ts twoslash
 type Greeting = "Hello, world"
@@ -197,7 +197,7 @@ type MainID = ASCIICacheKey<"my_app">
 
 Converts each character in the string to the lowercase equivalent.
 
-##### Example
+#### Example
 
 ```ts twoslash
 type Greeting = "Hello, world"
@@ -213,7 +213,7 @@ type MainID = ASCIICacheKey<"MY_APP">
 
 Converts the first character in the string to an uppercase equivalent.
 
-##### Example
+#### Example
 
 ```ts twoslash
 type LowercaseGreeting = "hello, world";
@@ -225,7 +225,7 @@ type Greeting = Capitalize<LowercaseGreeting>;
 
 Converts the first character in the string to a lowercase equivalent.
 
-##### Example
+#### Example
 
 ```ts twoslash
 type UppercaseGreeting = "HELLO WORLD";

@@ -201,7 +201,7 @@ type Animals = Cat | Dog;
 
 TypeScript has extended the `import` syntax with two concepts for declaring an import of a type:
 
-###### `import type`
+##### `import type`
 
 Which is an import statement which can _only_ import types:
 
@@ -221,7 +221,7 @@ import type { createCatName } from "./animal.js";
 const name = createCatName();
 ```
 
-###### Inline `type` imports
+##### Inline `type` imports
 
 TypeScript 4.5 also allows for individual imports to be prefixed with `type` to indicate that the imported reference is a type:
 
@@ -258,7 +258,7 @@ You can learn more about this syntax in the [modules reference page](/docs/handb
 
 CommonJS is the format which most modules on npm are delivered in. Even if you are writing using the ES Modules syntax above, having a brief understanding of how CommonJS syntax works will help you debug easier.
 
-#### Exporting
+### Exporting
 
 Identifiers are exported via setting the `exports` property on a global called `module`.
 
@@ -365,7 +365,7 @@ import { valueOfPi } from "./constants.js";
 export const twoPi = valueOfPi * 2;
 ```
 
-#### `ES2020`
+### `ES2020`
 
 ```ts twoslash
 // @showEmit
@@ -376,7 +376,7 @@ import { valueOfPi } from "./constants.js";
 export const twoPi = valueOfPi * 2;
 ```
 
-#### `CommonJS`
+### `CommonJS`
 
 ```ts twoslash
 // @showEmit
@@ -387,7 +387,7 @@ import { valueOfPi } from "./constants.js";
 export const twoPi = valueOfPi * 2;
 ```
 
-#### `UMD`
+### `UMD`
 
 ```ts twoslash
 // @showEmit

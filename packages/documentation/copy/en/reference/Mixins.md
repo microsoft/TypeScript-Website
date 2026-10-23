@@ -213,7 +213,7 @@ This pattern relies less on the compiler, and more on your codebase to ensure bo
 The mixin pattern is supported natively inside the TypeScript compiler by code flow analysis.
 There are a few cases where you can hit the edges of the native support.
 
-#### Decorators and Mixins [`#4881`](https://github.com/microsoft/TypeScript/issues/4881)
+### Decorators and Mixins [`#4881`](https://github.com/microsoft/TypeScript/issues/4881)
 
 You cannot use decorators to provide mixins via code flow analysis:
 
@@ -245,7 +245,7 @@ const playerTwo = (new Player() as unknown) as FreezablePlayer;
 playerTwo.shouldFreeze;
 ```
 
-#### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
+### Static Property Mixins [`#17829`](https://github.com/microsoft/TypeScript/issues/17829)
 
 More of a gotcha than a constraint.
 The class expression pattern creates singletons, so they can't be mapped at the type system to support different variable types.
