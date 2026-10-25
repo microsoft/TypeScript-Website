@@ -88,11 +88,10 @@ it("can delete files in the virtual fs", () => {
 
   const system = createFSBackedSystem(fsMap, monorepoRoot, ts)
   const env = createVirtualTypeScriptEnvironment(system, [index, exporter], ts, compilerOpts)
-  
+
   expect(env.getSourceFile(index)).toBeTruthy()
 
-  env.deleteFile(index);
+  env.deleteFile(index)
 
   expect(env.getSourceFile(index)).toBeFalsy()
-
 })

@@ -14,8 +14,8 @@ interface LocalStorageLike {
   removeItem(key: string): void
 }
 
-declare var localStorage: LocalStorageLike | undefined;
-declare var fetch: FetchLike | undefined;
+declare var localStorage: LocalStorageLike | undefined
+declare var fetch: FetchLike | undefined
 
 const hasProcess = typeof process !== `undefined`
 
@@ -25,14 +25,13 @@ const hasProcess = typeof process !== `undefined`
 // module evaluation for every consumer, so skip the probe entirely in a bare Node
 // process, where `process.env.DEBUG` below is the only reachable way to opt in anyway.
 // DOM-bearing hosts that also expose `process` (Electron renderers) still get probed.
-const isBareNodeProcess =
-  hasProcess && typeof process.versions?.node === `string` && !(`window` in globalThis)
+const isBareNodeProcess = hasProcess && typeof process.versions?.node === `string` && !(`window` in globalThis)
 
 let hasLocalStorage = false
 if (!isBareNodeProcess) {
   try {
     hasLocalStorage = typeof localStorage !== `undefined` && typeof localStorage.getItem === `function`
-  } catch (error) { }
+  } catch (error) {}
 }
 
 const shouldDebug = (hasLocalStorage && localStorage!.getItem("DEBUG")) || (hasProcess && process.env.DEBUG)
@@ -90,7 +89,7 @@ export function createVirtualTypeScriptEnvironment(
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
-      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
+      updateFile({ fileName, text: content })
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
       const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
@@ -105,19 +104,12 @@ export function createVirtualTypeScriptEnvironment(
         prevFullContents.slice(0, prevTextSpan.start) +
         content +
         prevFullContents.slice(prevTextSpan.start + prevTextSpan.length)
-      const newSourceFile = ts.updateSourceFile(prevSourceFile, newText, {
-        span: prevTextSpan,
-        newLength: content.length,
-      })
 
-      updateFile(newSourceFile)
+      updateFile({ fileName, text: newText })
     },
     deleteFile(fileName) {
-      const sourceFile = languageService.getProgram()!.getSourceFile(fileName)
-      if (sourceFile) {
-        deleteFile(sourceFile)
-      }
-    }
+      deleteFile(fileName)
+    },
   }
 }
 
@@ -262,7 +254,7 @@ export const knownLibFilesForCompilerOptions = (compilerOptions: CompilerOptions
     "lib.esnext.symbol.d.ts",
     "lib.esnext.temporal.d.ts",
     "lib.esnext.typedarrays.d.ts",
-    "lib.esnext.weakref.d.ts"
+    "lib.esnext.weakref.d.ts",
   ]
 
   const targetToCut = ts.ScriptTarget[target]
@@ -407,7 +399,7 @@ export const createDefaultMapFromCDN = (
           contents.forEach((text, index) => fsMap.set("/" + files[index], text))
         })
         // Return a NOOP for .d.ts files which aren't in the current build of TypeScript
-        .catch(() => { })
+        .catch(() => {})
     )
   }
 
@@ -438,7 +430,7 @@ export const createDefaultMapFromCDN = (
                 return t
               })
               // Return a NOOP for .d.ts files which aren't in the current build of TypeScript
-              .catch(() => { })
+              .catch(() => {})
           )
         } else {
           return Promise.resolve(unzip(content))
@@ -488,11 +480,13 @@ const defaultCompilerOptions = (ts: typeof import("typescript")): CompilerOption
     suppressOutputPathCheck: true,
     skipLibCheck: true,
     skipDefaultLibCheck: true,
-    ...(ts.versionMajorMinor && Number(ts.versionMajorMinor.split(".")[0]) >= 6 ? {
-      ignoreDeprecations: "6.0" ,
-    } : {
-      moduleResolution: ts.ModuleResolutionKind.NodeJs,
-    }),
+    ...(ts.versionMajorMinor && Number(ts.versionMajorMinor.split(".")[0]) >= 6
+      ? {
+          ignoreDeprecations: "6.0",
+        }
+      : {
+          moduleResolution: ts.ModuleResolutionKind.NodeJs,
+        }),
   }
 }
 
@@ -525,7 +519,7 @@ export function createSystem(files: Map<string, string>): System {
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
     },
-    deleteFile: (fileName) => {
+    deleteFile: fileName => {
       files.delete(fileName)
     },
   }
@@ -607,7 +601,7 @@ export function createFSBackedSystem(
     writeFile: (fileName, contents) => {
       files.set(fileName, contents)
     },
-    deleteFile: (fileName) => {
+    deleteFile: fileName => {
       files.delete(fileName)
     },
     realpath: nodeSys.realpath,
@@ -665,7 +659,7 @@ export function createVirtualCompilerHost(sys: System, compilerOptions: Compiler
       sourceFiles.delete(sourceFile.fileName)
       sys.deleteFile!(sourceFile.fileName)
       return alreadyExists
-    }
+    },
   }
   return vHost
 }
@@ -681,11 +675,13 @@ export function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
-  const { compilerHost, updateFile, deleteFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
   const fileVersions = new Map<string, string>()
   let projectVersion = 0
   const languageServiceHost: LanguageServiceHost = {
-    ...compilerHost,
+    ...sys,
+    getDefaultLibFileName: options => "/" + ts.getDefaultLibFileName(options || compilerOptions),
+    getNewLine: () => sys.newLine,
+    useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
     getCustomTransformers: () => customTransformers,
@@ -713,8 +709,8 @@ export function createVirtualLanguageServiceHost(
 
   type Return = {
     languageServiceHost: LanguageServiceHost
-    updateFile: (sourceFile: import("typescript").SourceFile) => void
-    deleteFile: (sourceFile: import("typescript").SourceFile) => void
+    updateFile: (sourceFile: import("typescript").SourceFile | { fileName: string; text: string }) => void
+    deleteFile: (sourceFile: import("typescript").SourceFile | { fileName: string } | string) => void
   }
 
   const lsHost: Return = {
@@ -725,17 +721,18 @@ export function createVirtualLanguageServiceHost(
       if (!fileNames.includes(sourceFile.fileName)) {
         fileNames.push(sourceFile.fileName)
       }
-      updateFile(sourceFile)
+      sys.writeFile(sourceFile.fileName, sourceFile.text)
     },
     deleteFile: sourceFile => {
+      const fileName = typeof sourceFile === "string" ? sourceFile : sourceFile.fileName
       projectVersion++
-      fileVersions.set(sourceFile.fileName, projectVersion.toString())
-      const index = fileNames.indexOf(sourceFile.fileName)
+      fileVersions.set(fileName, projectVersion.toString())
+      const index = fileNames.indexOf(fileName)
       if (index !== -1) {
         fileNames.splice(index, 1)
       }
-      deleteFile(sourceFile)
-    }
+      sys.deleteFile?.(fileName)
+    },
   }
   return lsHost
 }

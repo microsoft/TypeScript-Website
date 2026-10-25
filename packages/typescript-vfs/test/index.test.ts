@@ -5,6 +5,7 @@ import {
   createDefaultMapFromCDN,
   knownLibFilesForCompilerOptions,
   createVirtualCompilerHost,
+  createVirtualLanguageServiceHost,
 } from "../src"
 
 import ts from "typescript"
@@ -243,5 +244,109 @@ it("moduleDetection options", async () => {
     host: host.compilerHost,
   })
   program.emit()
-  expect(fsMap.get("index.js")).toEqual(`define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    let foo = 'foo';\n});\n`)
+  expect(fsMap.get("index.js")).toEqual(
+    `define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    let foo = 'foo';\n});\n`
+  )
+})
+
+it("does not parse duplicate SourceFiles on createFile and updateFile", () => {
+  let createSourceFileCalls = 0
+  let updateSourceFileCalls = 0
+  const tsProxy = new Proxy(ts, {
+    get(target, prop) {
+      if (prop === "createSourceFile") {
+        return (...args: any[]) => {
+          createSourceFileCalls++
+          return (target as any).createSourceFile(...args)
+        }
+      }
+      if (prop === "updateSourceFile") {
+        return (...args: any[]) => {
+          updateSourceFileCalls++
+          return (target as any).updateSourceFile(...args)
+        }
+      }
+      return (target as any)[prop]
+    },
+  })
+
+  const fsMap = new Map<string, string>()
+  const system = createSystem(fsMap)
+  const env = createVirtualTypeScriptEnvironment(system, [], tsProxy, {})
+
+  // Creating a file should not invoke ts.createSourceFile directly
+  env.createFile("sample.ts", "const message = 'hello';")
+  expect(createSourceFileCalls).toBe(0)
+
+  // Language service parses and returns the source file on demand
+  const sf = env.getSourceFile("sample.ts")
+  expect(sf).toBeDefined()
+  expect(sf?.text).toBe("const message = 'hello';")
+
+  // Updating a file should not invoke ts.updateSourceFile directly
+  env.updateFile("sample.ts", "const message = 'world';")
+  expect(updateSourceFileCalls).toBe(0)
+
+  // Language service returns the updated source file on demand
+  const updatedSf = env.getSourceFile("sample.ts")
+  expect(updatedSf).toBeDefined()
+  expect(updatedSf?.text).toBe("const message = 'world';")
+
+  // Deleting a file removes it from both env and system
+  env.deleteFile("sample.ts")
+  expect(env.getSourceFile("sample.ts")).toBeUndefined()
+  expect(system.fileExists("sample.ts")).toBe(false)
+})
+
+it("supports updateFile with replaceTextSpan without creating duplicate SourceFiles", () => {
+  let updateSourceFileCalls = 0
+  const tsProxy = new Proxy(ts, {
+    get(target, prop) {
+      if (prop === "updateSourceFile") {
+        return (...args: any[]) => {
+          updateSourceFileCalls++
+          return (target as any).updateSourceFile(...args)
+        }
+      }
+      return (target as any)[prop]
+    },
+  })
+
+  const fsMap = new Map<string, string>()
+  const system = createSystem(fsMap)
+  const env = createVirtualTypeScriptEnvironment(system, [], tsProxy, {})
+
+  env.createFile("test.ts", "const val = 123;")
+  expect(env.getSourceFile("test.ts")?.text).toBe("const val = 123;")
+
+  // Replace '123' with '456'
+  const span = ts.createTextSpan(12, 3)
+  env.updateFile("test.ts", "456", span)
+  expect(updateSourceFileCalls).toBe(0)
+  expect(env.getSourceFile("test.ts")?.text).toBe("const val = 456;")
+})
+
+it("allows updating and deleting files via createVirtualLanguageServiceHost", () => {
+  const fsMap = new Map<string, string>()
+  const system = createSystem(fsMap)
+  const lsHost = createVirtualLanguageServiceHost(system, ["init.ts"], {}, ts)
+
+  // Can update using a SourceFile or { fileName, text }
+  lsHost.updateFile({ fileName: "file1.ts", text: "const x = 1;" })
+  expect(system.readFile("file1.ts")).toBe("const x = 1;")
+  expect(lsHost.languageServiceHost.getScriptFileNames()).toContain("file1.ts")
+
+  const sf = ts.createSourceFile("file2.ts", "const y = 2;", ts.ScriptTarget.ES2015)
+  lsHost.updateFile(sf)
+  expect(system.readFile("file2.ts")).toBe("const y = 2;")
+  expect(lsHost.languageServiceHost.getScriptFileNames()).toContain("file2.ts")
+
+  // Can delete using SourceFile, object or string
+  lsHost.deleteFile("file1.ts")
+  expect(lsHost.languageServiceHost.getScriptFileNames()).not.toContain("file1.ts")
+  expect(system.fileExists("file1.ts")).toBe(false)
+
+  lsHost.deleteFile(sf)
+  expect(lsHost.languageServiceHost.getScriptFileNames()).not.toContain("file2.ts")
+  expect(system.fileExists("file2.ts")).toBe(false)
 })
