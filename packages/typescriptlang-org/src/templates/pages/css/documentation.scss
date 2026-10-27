@@ -96,8 +96,7 @@
 }
 
 .columns {
-  // 2 for the container, 0.6 for the item
-  margin: 0 -2.6rem;
+  margin: 0 -2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -107,6 +106,10 @@
 
     .item {
       min-width: 240px;
+
+      @media (max-width: $screen-sm) {
+        min-width: 0;
+      }
     }
   }
 
