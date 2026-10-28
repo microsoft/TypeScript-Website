@@ -797,7 +797,7 @@ We'll circle back to type aliases in just a little bit.
 
 ### The `Array` Type
 
-Generic object types are often some sort of container type that work independently of the type of elements they contain.
+Generic object types are often some sort of container type that works independently of the type of elements they contain.
 It's ideal for data structures to work this way so that they're re-usable across different data types.
 
 It turns out we've been working with a type just like that throughout this handbook: the `Array` type.
