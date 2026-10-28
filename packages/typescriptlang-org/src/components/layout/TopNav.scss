@@ -400,6 +400,19 @@ form.search {
         width: 100%;
       }
     }
+
+    .ds-dropdown-menu {
+      top: 100% !important;
+      right: auto !important;
+      bottom: auto;
+      width: calc(100vw - 1rem);
+
+      &:before {
+        top: -7px;
+        bottom: auto;
+        transform: rotate(-45deg);
+      }
+    }
   }
 }
 
