@@ -381,6 +381,41 @@ form.search {
   }
 }
 
+@media (max-width: 790px) and (max-height: 480px) {
+  #top-menu {
+    position: static;
+
+    &.up,
+    &.down {
+      transform: none;
+    }
+
+    form.search {
+      .algolia-autocomplete {
+        flex: 1;
+        min-width: 0;
+      }
+
+      input {
+        width: 100%;
+      }
+    }
+
+    .ds-dropdown-menu {
+      top: 100% !important;
+      right: auto !important;
+      bottom: auto;
+      width: calc(100vw - 1rem);
+
+      &:before {
+        top: -7px;
+        bottom: auto;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}
+
 .skip-to-main {
   clip: rect(1px, 1px, 1px, 1px);
   height: 1px;
