@@ -230,9 +230,9 @@
               "markdownDescription": "Output compiler performance information after building.\n\nSee more: https://www.typescriptlang.org/tsconfig#diagnostics"
             },
             "disableReferencedProjectLoad": {
-              "description": "Reduce the number of projects loaded automatically by TypeScript.",
+              "description": "Avoid searching for symbols across referenced projects in code editors.",
               "type": "boolean",
-              "markdownDescription": "Reduce the number of projects loaded automatically by TypeScript.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableReferencedProjectLoad"
+              "markdownDescription": "Avoid searching for symbols across referenced projects in code editors.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableReferencedProjectLoad"
             },
             "noPropertyAccessFromIndexSignature": {
               "description": "Enforces using indexed accessors for keys declared using an indexed type.",
@@ -1025,9 +1025,9 @@
               "markdownDescription": "Output more detailed compiler performance information after building.\n\nSee more: https://www.typescriptlang.org/tsconfig#extendedDiagnostics"
             },
             "disableSourceOfProjectReferenceRedirect": {
-              "description": "Disable preferring source files instead of declaration files when referencing composite projects.",
+              "description": "When editing code, only consult declaration files from referenced projects.",
               "type": "boolean",
-              "markdownDescription": "Disable preferring source files instead of declaration files when referencing composite projects.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableSourceOfProjectReferenceRedirect"
+              "markdownDescription": "When editing code, only consult declaration files from referenced projects.\n\nSee more: https://www.typescriptlang.org/tsconfig#disableSourceOfProjectReferenceRedirect"
             },
             "disableSolutionSearching": {
               "description": "Opt a project out of multi-project reference checking when editing.",
