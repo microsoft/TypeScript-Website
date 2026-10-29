@@ -117,7 +117,7 @@ type Unbounded = [...Strings, ...Numbers, boolean];
 
 By combining both of these behaviors together, we can write a single well-typed signature for `concat`:
 
-```ts twoslash
+```ts 
 type Arr = readonly any[];
 
 function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
@@ -140,7 +140,7 @@ function partialCall(f, ...headArgs) {
 
 TypeScript 4.0 improves the inference process for rest parameters and rest tuple elements so that we can type this and have it "just work".
 
-```ts twoslash
+```ts 
 type Arr = readonly unknown[];
 
 function partialCall<T extends Arr, U extends Arr, R>(
@@ -419,7 +419,7 @@ if (!obj.prop) {
 
 [Try running the following example](https://www.typescriptlang.org/play?ts=next#code/MYewdgzgLgBCBGArGBeGBvAsAKBnmA5gKawAOATiKQBQCUGO+TMokIANkQHTsgHUAiYlChFyMABYBDCDHIBXMANoBuHI2Z4A9FpgAlIqXZTgRGAFsiAQg2byJeeTAwAslKgSu5KWAAmIczoYAB4YAAYuAFY1XHwAXwAaWxgIEhgKKmoAfQA3KXYALhh4EA4iH3osWM1WCDKePkFUkTFJGTlFZRimOJw4mJwAM0VgKABLcBhB0qCqplr63n4BcjGCCVgIMd8zIjz2eXciXy7k+yhHZygFIhje7BwFzgblgBUJMdlwM3yAdykAJ6yBSQGAeMzNUTkU7YBCILgZUioOBIBGUJEAHwxUxmqnU2Ce3CWgnenzgYDMACo6pZxpYIJSOqDwSkSFCYXC0VQYFi0NMQHQVEA) to see how that differs from _always_ performing the assignment.
 
-```ts twoslash
+```ts 
 const obj = {
     get prop() {
         console.log("getter has run");

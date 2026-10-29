@@ -6,7 +6,7 @@ tags: typescript types
 A type in TypeScript usually describes an exact set of fields to match on an object.
 An index signature is a way to define the [Shape](#shape) of fields which are not known ahead of time.
 
-```ts twoslash
+```ts 
 type MathConstants = {
   pi: 3.14159;
   phi: 1.61803;
