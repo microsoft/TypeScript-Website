@@ -34,8 +34,6 @@ Question to ask yourself while looking at a library you are trying to type.
 
    Does it add a global object? Does it use `require` or `import`/`export` statements?
 
-### Smaller samples for different types of libraries
-
 ### Modular Libraries
 
 Almost every modern Node.js library falls into the module family.
