@@ -102,9 +102,9 @@ A set of tools and scripts for generating a comprehensive API reference for the 
 
 ```sh
 # Generate JSON from the typescript cli
-pnpm run --filter=tsconfig-reference generate-json
+pnpm run --filter=tsconfig-reference generate:json
 # Jams them all into a single file
-pnpm run --filter=tsconfig-reference generate-markdown
+pnpm run --filter=tsconfig-reference generate:md
 ```
 
 Validate the docs:
