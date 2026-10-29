@@ -66,7 +66,7 @@ This is important for two reasons:
 2. The types of the attributes being passed in the JSX element should be looked up differently.
    Intrinsic element attributes should be known _intrinsically_ whereas components will likely want to specify their own set of attributes.
 
-TypeScript uses the [same convention that React does](http://facebook.github.io/react/docs/jsx-in-depth.html#html-tags-vs.-react-components) for distinguishing between these.
+TypeScript uses the [same convention that React does](https://react.dev/learn#components) for distinguishing between these.
 An intrinsic element always begins with a lowercase letter, and a value-based element always begins with an uppercase letter.
 
 ### The `JSX` namespace
