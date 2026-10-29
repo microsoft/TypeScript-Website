@@ -38,6 +38,46 @@ type Stuff =
 
 When the type on the left of the `extends` is assignable to the one on the right, then you'll get the type in the first branch (the "true" branch); otherwise you'll get the type in the latter branch (the "false" branch).
 
+> Be aware that this is not true for union types.
+> When the type on the left of the `extends` is a union, each of its members are evaluated for the `extends` clause independently and the results are unioned together.
+> The example below depends on this when it evaluates `number | string extends number`.
+> This is false (`number | string` is not assignable to `number`) however this type expression evaluates to the union `trueExpression | falseExpression` instead of just `falseExpression`.
+> This also applies to types that are implicitly treated like unions, for examples `boolean`: `boolean extends true` is false, but when used in a conditional type returns the union of the true and false expressions.
+> The type `any` is also handled like a union, always producing the `trueExpression` unioned with the `falseExpression`.
+> 
+> This does not generalize to types which contain unions.
+> For example `{ id: number | string } extends { id: number }` is false, and only produces the false expression.
+> For this to produce the union behaviour, the input type would need to be rewritten to `{ id: number } | { id: string }`.
+> This version of the type corosponds to the exact same set of runtime values as the previous form, but behaves differently when used in conditional types.
+> If you are writing a generic type which is conditional on its input, you may want to document which of these representations it supports or structure it to ensure that both are handled correctly.
+> 
+> In the above case, an example of handleing both in an inconsistant way:
+> ```ts twoslash
+> type UsesNumberId<T extends { id: number | string }> = T extends  { id: number } ? true : false;
+> 
+> type A = UsesNumberId<{ id: number }>;
+> //  ^?
+> type B = UsesNumberId<{ id: string }>;
+> //  ^?
+> type C = UsesNumberId<{ id: number | string }>;
+> //  ^?
+> type D = UsesNumberId<{ id: number } | { id: string }>;
+> //  ^?
+> ```
+> This version handles both formats for its argument the same, making cases C and D both `boolean` unlike the above form:
+> ```ts twoslash
+> type UsesNumberId<T extends { id: number | string }> = T extends  { id: number } ? true : T extends { id: string } ? false : boolean;
+> 
+> type A = UsesNumberId<{ id: number }>;
+> //  ^?
+> type B = UsesNumberId<{ id: string }>;
+> //  ^?
+> type C = UsesNumberId<{ id: number | string }>;
+> //  ^?
+> type D = UsesNumberId<{ id: number } | { id: string }>;
+> //  ^?
+> ```
+
 From the examples above, conditional types might not immediately seem useful - we can tell ourselves whether or not `Dog extends Animal` and pick `number` or `string`!
 But the power of conditional types comes from using them with generics.
 
