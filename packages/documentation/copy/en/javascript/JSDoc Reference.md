@@ -19,6 +19,7 @@ Note:
 - [`@import`](#import)
 - [`@param`](#param-and-returns) (or [`@arg`](#param-and-returns) or [`@argument`](#param-and-returns))
 - [`@returns`](#param-and-returns) (or [`@return`](#param-and-returns))
+- [`@overload`](#overload)
 - [`@typedef`](#typedef-callback-and-param)
 - [`@callback`](#typedef-callback-and-param)
 - [`@template`](#template)
@@ -291,6 +292,48 @@ function ps() {}
  * @returns {{ a: string, b: number }} - May use '@returns' as well as '@return'
  */
 function ab() {}
+```
+
+### `@overload`
+
+[Overloads](/docs/handbook/2/functions.html#function-overloads) can be declared with the `@overload` tag.
+Each JSDoc comment with an `@overload` tag is treated as a distinct overload for the following function declaration.
+
+```js twoslash
+// @errors: 2575
+// @ts-check
+// 3 argument overload
+/**
+ * @overload
+ * @param {number} m
+ * @param {number} d
+ * @param {number} y
+ * @returns {Date}
+ */
+// 1 argument overload
+/**
+ * @overload
+ * @param {number} timestamp
+ * @returns {Date}
+ */
+// implementation signature
+/**
+ * @param {number} mOrTimestamp
+ * @param {number} [d]
+ * @param {number} [y]
+ * @returns {Date}
+ */
+function makeDate(mOrTimestamp, d, y) {
+  if (d !== undefined && y !== undefined) {
+    return new Date(y, mOrTimestamp, d);
+  } else {
+    return new Date(mOrTimestamp);
+  }
+}
+const d1 = makeDate(12345678);
+const d2 = makeDate(5, 5, 5);
+const d3 = makeDate(1, 3);
+
 ```
 
 ### `@typedef`, `@callback`, and `@param`
