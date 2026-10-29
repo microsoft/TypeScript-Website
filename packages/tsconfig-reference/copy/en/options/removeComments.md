@@ -17,7 +17,6 @@ When `removeComments` is set to `true`:
 ```ts twoslash
 // @showEmit
 // @removeComments: true
-/** The translation of 'Hello world' into Portuguese */
 export const helloWorldPTBR = "Olá Mundo";
 ```
 
