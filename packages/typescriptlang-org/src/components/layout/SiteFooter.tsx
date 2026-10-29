@@ -220,7 +220,8 @@ export const SiteFooter = (props: Props) => {
   useEffect(() => {
     // Handle escape closing dropdowns etc
     document.onkeydown = whenEscape(() => {
-      document.getElementById("playground-samples-popover")!.style.visibility = "hidden"
+      const samplesPopover = document.getElementById("playground-samples-popover")
+      if (samplesPopover) samplesPopover.style.visibility = "hidden"
     })
   }, [])
 
