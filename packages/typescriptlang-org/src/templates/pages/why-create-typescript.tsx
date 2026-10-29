@@ -81,7 +81,7 @@ String name = "Danger";
 
                                 <p>In JavaScript you use the abbreviation <code>var</code> to declare a variable. Meanwhile, in Java you need to say <em>what kind
 of data</em> the variable contains. In this case the variable contains a <code>String</code>. (A string is a programming term for
-a collection of characters. They <code>"look like this"</code>. This <a href="https://www.youtube.com/watch?v=czTWbdwbt7E">5m video</a> is a good primer if you want to learn more.)</p>
+a collection of characters. They <code>"look like this"</code>.)</p>
 
                                 <p>Both of these variables contain a string, but the difference is that in Java the variable can <em>only</em> ever contain a <em>string</em>, because that's what we said when we created the variable. In JS, the variable can change to be <em>anything</em>,
 like a number, or a list of dates.</p>
