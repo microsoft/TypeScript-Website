@@ -31,23 +31,27 @@ Just like with function declarations, if a parameter type isn't specified, it's 
 
 > Note that the parameter name is **required**. The function type `(string) => void` means "a function with a parameter named `string` of type `any`"!
 
-Of course, we can use a type alias to name a function type:
+Of course, we can use an interface to name a function type:
 
 ```ts twoslash
-type GreetFunction = (a: string) => void;
+interface GreetFunction {
+  (a: string): void
+}
 function greeter(fn: GreetFunction) {
   // ...
 }
 ```
 
+Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
+
 ## Call Signatures
 
 In JavaScript, functions can have properties in addition to being callable.
 However, the function type expression syntax doesn't allow for declaring properties.
-If we want to describe something callable with properties, we can write a _call signature_ in an object type:
+If we want to describe something callable with properties, we can write a _call signature_ in an object interface:
 
 ```ts twoslash
-type DescribableFunction = {
+interface DescribableFunction {
   description: string;
   (someArg: number): boolean;
 };
@@ -63,8 +67,6 @@ myFunc.description = "default description";
 doSomething(myFunc);
 ```
 
-Note that the syntax is slightly different compared to a function type expression - use `:` between the parameter list and the return type rather than `=>`.
-
 ## Construct Signatures
 
 JavaScript functions can also be invoked with the `new` operator.
@@ -74,7 +76,7 @@ You can write a _construct signature_ by adding the `new` keyword in front of a 
 ```ts twoslash
 type SomeObject = any;
 // ---cut---
-type SomeConstructor = {
+intefrace SomeConstructor {
   new (s: string): SomeObject;
 };
 function fn(ctor: SomeConstructor) {
@@ -805,11 +807,15 @@ function sum({ a, b, c }: { a: number; b: number; c: number }) {
 }
 ```
 
-This can look a bit verbose, but you can use a named type here as well:
+This can look a bit verbose, but you can use an interface here as well:
 
 ```ts twoslash
 // Same as prior example
-type ABC = { a: number; b: number; c: number };
+interface ABC {
+  a: number;
+  b: number;
+  c: number;
+}
 function sum({ a, b, c }: ABC) {
   console.log(a + b + c);
 }
@@ -821,12 +827,14 @@ function sum({ a, b, c }: ABC) {
 
 The `void` return type for functions can produce some unusual, but expected behavior.
 
-Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`type voidFunc = () => void`), when implemented, can return _any_ other value, but it will be ignored.
+Contextual typing with a return type of `void` does **not** force functions to **not** return something. Another way to say this is a contextual function type with a `void` return type (`interface voidFunc { (): void }`), when implemented, can return _any_ other value, but it will be ignored.
 
 Thus, the following implementations of the type `() => void` are valid:
 
 ```ts twoslash
-type voidFunc = () => void;
+interface voidFunc {
+  (): void
+}
 
 const f1: voidFunc = () => {
   return true;
@@ -842,7 +850,9 @@ const f3: voidFunc = function () {
 And when the return value of one of these functions is assigned to another variable, it will retain the type of `void`:
 
 ```ts twoslash
-type voidFunc = () => void;
+interface voidFunc {
+  (): void
+}
 
 const f1: voidFunc = () => {
   return true;
