@@ -297,6 +297,23 @@ interface NotOkay {
 
 </details>
 
+You can also use the `in` keyword with a union of literal types to denote a set of properties with a common type:
+
+```ts twoslash
+type FeatureOptions = {
+  [key in 'darkMode' | 'newUserProfile']: bool
+}
+```
+
+The above example is equivalent to:
+
+```ts twoslash
+type FeatureOptions = {
+  darkMode: bool;
+  newUserProfile: bool;
+}
+```
+
 While string index signatures are a powerful way to describe the "dictionary" pattern, they also enforce that all properties match their return type.
 This is because a string index declares that `obj.property` is also available as `obj["property"]`.
 In the following example, `name`'s type does not match the string index's type, and the type checker gives an error:
