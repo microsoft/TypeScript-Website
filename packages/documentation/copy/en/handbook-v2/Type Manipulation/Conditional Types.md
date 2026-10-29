@@ -204,6 +204,8 @@ type Str = GetReturnType<(x: string) => string>;
 type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
 //   ^?
 ```
+If you are curious about the use of `never[]` as the most generic type for function arguments, there is an excellent explanation in this [reddit](https://www.reddit.com/r/typescript/comments/muyl55/comment/gv9ndij/?utm_source=reddit&utm_medium=web2x&context=3).
+
 
 When inferring from a type with multiple call signatures (such as the type of an overloaded function), inferences are made from the _last_ signature (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
 
