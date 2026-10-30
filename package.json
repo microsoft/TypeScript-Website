@@ -41,7 +41,8 @@
       "webpack": "^5.105.3"
     },
     "patchedDependencies": {
-      "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch"
+      "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch",
+      "remark-shiki-twoslash@3.1.3": "patches/remark-shiki-twoslash@3.1.3.patch"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher",
@@ -67,7 +68,7 @@
   },
   "scripts": {
     "ci:publish": "pnpm changeset git-tag && pnpm publish -r",
-    "bootstrap": "pnpm -r run bootstrap && BOOTSTRAPPING=true pnpm -r run build",
+    "bootstrap": "pnpm -r --filter=!@typescript/ata --filter=!@typescript/vfs --filter=!@typescript/twoslash --filter=!playground-examples --filter=!tsconfig-reference run bootstrap && pnpm build",
     "start": "concurrently -p \"[{name}]\" -n \"BUILD,SITE\" -c \"bgBlue.bold,bgMagenta.bold\" \"node watcher.js\" \"pnpm run --filter=typescriptlang-org start\"",
     "build": "pnpm run --filter=!typescriptlang-org build",
     "build-site": "pnpm run --filter=typescriptlang-org build",
@@ -76,6 +77,9 @@
     "clean": "pnpm run --filter=typescriptlang-org gatsby clean",
     "clean-twoslash": "rm -rf packages/.cache/twoslash",
     "test": "CI=true pnpm -r run test",
+    "test:ci": "pnpm test:ci:site && pnpm test:ci:packages",
+    "test:ci:site": "CI=true pnpm -r --filter=glossary --filter=tsconfig-reference run lint && CI=true pnpm --filter=typescriptlang-org test",
+    "test:ci:packages": "CI=true pnpm -r --filter=!root --filter=!typescriptlang-org --filter=!glossary --filter=!tsconfig-reference --no-sort run test",
     "update-test-snapshots": "CI=true pnpm run --filter=@typescript/twoslash --filter=@typescript/vfs test -u"
   },
   "repository": "microsoft/TypeScript-Website",

@@ -2,15 +2,48 @@ diff --git a/CHANGELOG.md b/CHANGELOG.md
 deleted file mode 100644
 index 6036d987fc2889ec9bc230f7774013ae4f736dd9..0000000000000000000000000000000000000000
 diff --git a/src/index.js b/src/index.js
-index e16676ef50b660d520a0efc0b73b68411db349af..bb21bc500a34ac31063774ba4ba133daed2c4f14 100755
+index e16676ef50b660d520a0efc0b73b68411db349af..5c40ade16dce3f83390819e053ee12e53e770ef4 100755
 --- a/src/index.js
 +++ b/src/index.js
-@@ -4,7 +4,15 @@ const { setupForFile, remarkVisitor }  = require("remark-shiki-twoslash")
+@@ -2,9 +2,47 @@
+ const visit = require("unist-util-visit")
+ const { setupForFile, remarkVisitor }  = require("remark-shiki-twoslash")
  
++const optimizedHighlighters = new WeakMap()
++
++const optimizeHighlighter = highlighter => {
++  if (optimizedHighlighters.has(highlighter)) {
++    return optimizedHighlighters.get(highlighter)
++  }
++
++  const tokensByCode = new Map()
++  const optimized = {
++    ...highlighter,
++    codeToThemedTokens(code, lang, theme) {
++      const key = JSON.stringify([code, lang, theme])
++      let tokens = tokensByCode.get(key)
++      if (tokens === undefined) {
++        // Only TSConfig's JSON renderer inspects TextMate scopes.
++        tokens = highlighter.codeToThemedTokens(code, lang, theme, {
++          includeExplanation: !!lang && lang.startsWith("json"),
++        })
++        if (tokensByCode.size === 256) {
++          tokensByCode.delete(tokensByCode.keys().next().value)
++        }
++        tokensByCode.set(key, tokens)
++      }
++      // Twoslash's renderer splits and annotates tokens in place.
++      return structuredClone(tokens)
++    },
++  }
++  optimizedHighlighters.set(highlighter, optimized)
++  return optimized
++}
++
  const remarkShiki = async function ({ markdownAST }, userConfig) {
    const {settings, highlighters} = await setupForFile(userConfig)
 -  visit(markdownAST, "code", remarkVisitor(highlighters, settings))
-+  const orig = remarkVisitor(highlighters, settings)
++  const orig = remarkVisitor(highlighters.map(optimizeHighlighter), settings)
 +  /** @type {typeof orig} */
 +  const visitor = (node) => {
 +    orig(node)
@@ -21,4 +54,3 @@ index e16676ef50b660d520a0efc0b73b68411db349af..bb21bc500a34ac31063774ba4ba133da
  }
  
  module.exports = remarkShiki
-+
