@@ -49,6 +49,8 @@ async function handleMessage(message: InitMessage | RequestMessage) {
 }
 
 async function initialize(args: InitMessage["args"]) {
+  // The owning page supplies compiler code from our trusted compiler CDN over
+  // this dedicated worker's private channel. Evaluating that compiler is intentional.
   ts = new Function(`${args.compilerSource}\nreturn ts;`)() as TS
   version = args.version
   baseUrl = args.baseUrl

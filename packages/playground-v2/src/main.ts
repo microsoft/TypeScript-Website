@@ -943,6 +943,8 @@ async function initializeStradaCompiler(requestedVersion: string) {
       throw new Error(`Unable to load TypeScript ${version}: ${compilerResponse.status} ${compilerResponse.statusText}`)
     }
     const compilerSource = await compilerResponse.text()
+    // Only trusted maintainers can publish compiler artifacts to this HTTPS CDN.
+    // Evaluating the selected compiler is intentional; this is not user project code.
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
     DiagnosticCategory = classicTS.DiagnosticCategory
     discoverDependencies = stradaDiscovery(classicTS)
