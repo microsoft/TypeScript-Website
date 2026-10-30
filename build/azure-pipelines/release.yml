@@ -99,7 +99,9 @@ extends:
               - script: pnpm install
                 displayName: "Install dependencies"
 
-              - script: pnpm bootstrap
+              # The site's bootstrap fetches from registry.npmjs.org, which network
+              # isolation blocks, and no published package needs it.
+              - script: pnpm --filter "./packages/*" --filter "!typescriptlang-org" run bootstrap
                 displayName: "Bootstrap packages"
 
               - script: pnpm build
