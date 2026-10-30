@@ -115,7 +115,7 @@ Note: `"ESNext"` targets latest supported
 
 [`noImplicitAny`](/tsconfig#noImplicitAny) is good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. `"compileOnSave"` makes it easy to update your code in a running web app.
 
-#### _Set up NPM_
+### _Set up NPM_
 
 We need to setup NPM so that JavaScript packages can be downloaded. Right click on the project and select **New Item**. Then choose **NPM Configuration File** and use the default name of `package.json`.
 
@@ -136,7 +136,7 @@ After you should see an `npm` folder in your solution explorer
 
 ![Screenshot of VS showing npm folder](/images/tutorials/aspnet/npm.png)
 
-#### _Set up gulp_
+### _Set up gulp_
 
 Right click on the project and click **New Item**. Then choose **JavaScript File** and use the name of `gulpfile.js`
 

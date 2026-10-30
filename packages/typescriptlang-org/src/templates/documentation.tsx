@@ -157,12 +157,12 @@ const HandbookTemplate: React.FC<Props> = (props) => {
               <aside className="handbook-toc">
                 <nav className={deprecationURL ? "deprecated" : ""} aria-label="table of contents">
                   {<>
-                    <h5>{i("handb_on_this_page")}</h5>
+                    <h2>{i("handb_on_this_page")}</h2>
                     <MarkdownHeadingTree tree={headerListToTree(sidebarHeaders)} className="handbook-on-this-page-section-list" slug={slug} />
                   </>
                   }
                   <div id="like-dislike-subnav" role="status" aria-live="polite">
-                    <h5>{i("handb_like_dislike_title")}</h5>
+                    <h2>{i("handb_like_dislike_title")}</h2>
                     <div>
                       <button title="Like this page" id="like-button"><LikeUnfilledSVG /> {i("handb_like_desc")}</button>
                       <button title="Dislike this page" id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>

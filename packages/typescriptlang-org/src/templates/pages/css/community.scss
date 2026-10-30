@@ -38,10 +38,12 @@
       line-height: 1.4rem;
     }
 
-    h3 {
+    a > .community-callout-headline {
       padding: 0;
       margin: 0;
       font-size: 1rem;
+      font-weight: normal;
+      line-height: normal;
       margin-bottom: 10px;
     }
 
@@ -109,6 +111,9 @@
 
   .community-callout-headline {
     margin-top: 0;
+    margin-bottom: 1.33em;
+    font-size: 1rem;
+    font-weight: bold;
   }
 
   h3.centered-highlight {

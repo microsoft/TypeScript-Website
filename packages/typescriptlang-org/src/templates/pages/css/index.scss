@@ -118,16 +118,25 @@ $headline-foreground-bg: white;
       flex-direction: column;
     }
 
+    #m-stories .slides > .row > .small_full_width {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
     #m-stories div.illustration  {
       display: flex;
       justify-content: center;
       order: 1;
+      grid-column: 1;
+      grid-row: 1;
+      min-height: 0;
       div.bg {
         visibility: hidden;
       }
       div.fg {
         position: static;
         text-align: center;
+        margin: 0 auto;
+        max-width: 100%;
       }
     }
 
@@ -136,6 +145,9 @@ $headline-foreground-bg: white;
       position: static;
       text-align: center;
       order: 2;
+      grid-column: 1;
+      grid-row: 2;
+      max-width: calc(100% - 50px);
       a.migration-button {
         margin: 0 auto;
       }
@@ -201,6 +213,34 @@ $headline-foreground-bg: white;
 }
 
 #index-2 {
+  @media (forced-colors: active) {
+    svg:not([fill="none"]),
+    svg [fill]:not([fill="none"]):not(defs *, mask *, clipPath *) {
+      fill: CanvasText;
+    }
+
+    svg[stroke]:not([stroke="none"]),
+    svg [stroke]:not([stroke="none"]):not(defs *, mask *, clipPath *) {
+      stroke: CanvasText;
+    }
+
+    svg[aria-label="probot logo"] {
+      path[fill="#086E12"] {
+        fill: Canvas;
+      }
+
+      path[stroke="#086E12"] {
+        stroke: Canvas;
+      }
+    }
+
+    img[src$="/images/index/stack-overflow.svg"],
+    img[src$="/images/index/state-of-js.svg"] {
+      forced-color-adjust: none;
+      background-color: white;
+    }
+  }
+
   h1 {
     font-size: 2.5rem;
     line-height: 2.8rem;
@@ -432,7 +472,7 @@ $headline-foreground-bg: white;
           position: absolute;
           width: 240px;
           background-color: white;
-          color: grey;
+          color: #595959;
 
           font-family: $font-code;
           font-size: 0.8rem;
@@ -458,7 +498,7 @@ $headline-foreground-bg: white;
             padding-left: 4px;
 
             span.result-found {
-              color: #4b9edd;
+              color: #2265a5;
             }
             span.result {
               width: 100px;
@@ -552,11 +592,23 @@ $headline-foreground-bg: white;
 
     svg path {
       fill: black;
+
+      @media (forced-colors: active) {
+        fill: CanvasText;
+      }
     }
 
     @media screen and (-ms-high-contrast: active) {
       svg path {
         fill: yellow;
+      }
+    }
+
+    @media (forced-colors: active) {
+      border: 1px solid ButtonText;
+
+      svg path {
+        fill: ButtonText;
       }
     }
   }
@@ -590,6 +642,10 @@ $headline-foreground-bg: white;
       }
       svg path {
         stroke: white;
+
+        @media (forced-colors: active) {
+          stroke: CanvasText;
+        }
       }
 
       &:active {
@@ -819,6 +875,13 @@ $headline-foreground-bg: white;
     position: relative;
     min-height: 370px;
 
+    .slides > .row > .small_full_width {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+      width: 100%;
+      align-items: start;
+    }
+
     .controls a {
       background-color: #c4c4c4;
       width: 2rem;
@@ -876,7 +939,9 @@ $headline-foreground-bg: white;
     }
 
     .copy {
-      position: absolute;
+      position: relative;
+      grid-column: 1;
+      grid-row: 1;
       padding-left: 20px;
       padding-right: 30px;
       width: 260px;
@@ -909,17 +974,30 @@ $headline-foreground-bg: white;
     }
 
     .illustration {
+      grid-column: 2;
+      grid-row: 1;
+      min-width: 0;
+      min-height: 380px;
+
       .bg {
         position: absolute;
+        top: 0;
         right: 20px;
+        height: 100%;
+
+        svg {
+          height: 100%;
+        }
       }
 
       .fg {
         font-size: 1.4rem;
         line-height: 1.6rem;
         width: 370px;
-        position: absolute;
-        right: 70px;
+        max-width: calc(100% - 70px);
+        position: relative;
+        margin-left: auto;
+        margin-right: 70px;
       }
     }
   }
@@ -1265,11 +1343,13 @@ $headline-foreground-bg: white;
   }
 }
 
-.cta .cta-back a {
+.cta > .transparent-button {
   position: relative;
-  top: 20px;
-  left: 20px;
-  width: 60px;
+  top: auto;
+  left: auto;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .transparent-button {

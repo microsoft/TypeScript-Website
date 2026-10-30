@@ -106,7 +106,7 @@ let c = createLabel(Math.random() ? "hello" : 42);
 //  ^?
 ```
 
-### Conditional Type Constraints
+## Conditional Type Constraints
 
 Often, the checks in a conditional type will provide us with some new information.
 Just like narrowing with type guards can give us a more specific type, the true branch of a conditional type will further constrain generics by the type we check against.
@@ -172,7 +172,7 @@ type Num = Flatten<number>;
 When `Flatten` is given an array type, it uses an indexed access with `number` to fetch out `string[]`'s element type.
 Otherwise, it just returns the type it was given.
 
-### Inferring Within Conditional Types
+## Inferring Within Conditional Types
 
 We just found ourselves using conditional types to apply constraints and then extract out types.
 This ends up being such a common operation that conditional types make it easier.

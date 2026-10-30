@@ -13,7 +13,7 @@ Note:
 - Any tags which are not explicitly listed below (such as `@async`) are not yet supported.
 - Only documentation tags are supported in TypeScript files. The rest of the tags are only supported in JavaScript files.
 
-#### Types
+## Types
 
 - [`@type`](#type)
 - [`@import`](#import)
@@ -25,7 +25,7 @@ Note:
 - [`@satisfies`](#satisfies)
 
 
-#### Classes
+## Classes
 
 - [Property Modifiers](#property-modifiers) `@public`, `@private`, `@protected`, `@readonly`
 - [`@override`](#override)
@@ -34,7 +34,7 @@ Note:
 - [`@class`](#constructor) (or [`@constructor`](#constructor))
 - [`@this`](#this)
 
-#### Documentation
+## Documentation
 
 Documentation tags work in both TypeScript and JavaScript.
 
@@ -42,7 +42,7 @@ Documentation tags work in both TypeScript and JavaScript.
 - [`@see`](#see)
 - [`@link`](#link)
 
-#### Other
+## Other
 
 - [`@enum`](#enum)
 - [`@author`](#author)

@@ -54,6 +54,12 @@
         left: -30px;
         width: 26px;
         text-align: right;
+
+        @media (forced-colors: active) {
+          svg path {
+            fill: LinkText;
+          }
+        }
       }
     }
 

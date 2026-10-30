@@ -46,7 +46,7 @@ type FeatureOptions = OptionsFlags<Features>;
 //   ^?
 ```
 
-### Mapping Modifiers
+## Mapping Modifiers
 
 There are two additional modifiers which can be applied during mapping: `readonly` and `?` which affect mutability and optionality respectively.
 
