@@ -21,7 +21,7 @@ overrides:
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
-    hash: 619797b0d528dffad3a184ffe6c5a13eb912724a57ebcf7c98127b2013b8e784
+    hash: eacc99c5504718bb391ed39dcd9d794499c5983a42e884cf5cefc96015fa1558
     path: patches/@vscode__monaco-lsp-client@0.1.0.patch
   gatsby-remark-shiki-twoslash@3.0.38:
     hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
@@ -202,7 +202,7 @@ importers:
         version: 7.1.0-dev.20261030.1
       '@vscode/monaco-lsp-client':
         specifier: github:microsoft/monaco-editor#13f0c872dcf352815cc28d92dfff496c9839ea5c&path:/monaco-lsp-client
-        version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=619797b0d528dffad3a184ffe6c5a13eb912724a57ebcf7c98127b2013b8e784)(monaco-editor-core@0.56.0)(ws@8.19.0)
+        version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=eacc99c5504718bb391ed39dcd9d794499c5983a42e884cf5cefc96015fa1558)(monaco-editor-core@0.56.0)(ws@8.19.0)
       coi-serviceworker:
         specifier: ^0.1.7
         version: 0.1.7
@@ -13241,7 +13241,7 @@ snapshots:
 
   '@vscode/l10n@0.0.18': {}
 
-  '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=619797b0d528dffad3a184ffe6c5a13eb912724a57ebcf7c98127b2013b8e784)(monaco-editor-core@0.56.0)(ws@8.19.0)':
+  '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=eacc99c5504718bb391ed39dcd9d794499c5983a42e884cf5cefc96015fa1558)(monaco-editor-core@0.56.0)(ws@8.19.0)':
     dependencies:
       '@hediet/json-rpc': 0.5.0
       '@hediet/json-rpc-browser': 0.5.1

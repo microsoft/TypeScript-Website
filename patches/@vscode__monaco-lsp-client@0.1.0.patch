@@ -83,7 +83,7 @@ index 1c5d732..c98ec21 100644
          return store;
      }
 diff --git a/src/adapters/TextDocumentSynchronizer.ts b/src/adapters/TextDocumentSynchronizer.ts
-index c2b3620..72a1508 100644
+index c2b3620..306fbd4 100644
 --- a/src/adapters/TextDocumentSynchronizer.ts
 +++ b/src/adapters/TextDocumentSynchronizer.ts
 @@ -13,6 +13,7 @@ export class TextDocumentSynchronizer extends Disposable implements ITextModelBr
@@ -94,10 +94,25 @@ index c2b3620..72a1508 100644
      ) {
          super();
  
-@@ -54,6 +55,13 @@ export class TextDocumentSynchronizer extends Disposable implements ITextModelBr
+@@ -36,7 +37,11 @@ export class TextDocumentSynchronizer extends Disposable implements ITextModelBr
+             }
+             this._started = true;
+             this._register(monaco.editor.onDidCreateModel(m => {
+-                this._getOrCreateManagedModel(m);
++                queueMicrotask(() => {
++                    if (!m.isDisposed()) {
++                        this._getOrCreateManagedModel(m);
++                    }
++                });
+             }));
+             for (const m of monaco.editor.getModels()) {
+                 this._getOrCreateManagedModel(m);
+@@ -53,7 +58,14 @@ export class TextDocumentSynchronizer extends Disposable implements ITextModelBr
+             throw new Error('Not started');
          }
  
-         const uriStr = m.uri.toString(true).toLowerCase();
+-        const uriStr = m.uri.toString(true).toLowerCase();
++        const uriStr = m.uri.toString(true);
 +        if (!this._shouldSynchronizeModel(m)) {
 +            this._managedModelsReverse.set(uriStr, m);
 +            m.onWillDispose(() => {
@@ -108,6 +123,33 @@ index c2b3620..72a1508 100644
          let mm = this._managedModels.get(m);
          if (!mm) {
              mm = new ManagedModel(m, this._server);
+@@ -69,7 +81,7 @@ export class TextDocumentSynchronizer extends Disposable implements ITextModelBr
+     }
+ 
+     translateBack(textDocument: TextDocumentIdentifier, position: Position): { textModel: monaco.editor.ITextModel; position: monaco.Position; } {
+-        const uri = textDocument.uri.toLowerCase();
++        const uri = monaco.Uri.parse(textDocument.uri).toString(true);
+         const textModel = this._managedModelsReverse.get(uri);
+         if (!textModel) {
+             throw new Error(`No text model for uri ${uri}`);
+@@ -79,7 +91,7 @@ export class TextDocumentSynchronizer extends Disposable implements ITextModelBr
+     }
+ 
+     translateBackRange(textDocument: TextDocumentIdentifier, range: Range): { textModel: monaco.editor.ITextModel; range: monaco.Range; } {
+-        const uri = textDocument.uri.toLowerCase();
++        const uri = monaco.Uri.parse(textDocument.uri).toString(true);
+         const textModel = this._managedModelsReverse.get(uri);
+         if (!textModel) {
+             throw new Error(`No text model for uri ${uri}`);
+@@ -126,7 +138,7 @@ class ManagedModel extends Disposable {
+     ) {
+         super();
+ 
+-        const uri = _textModel.uri.toString(true).toLowerCase();
++        const uri = _textModel.uri.toString(true);
+ 
+         this._api.textDocumentDidOpen({
+             textDocument: {
 diff --git a/src/adapters/languageFeatures/LspCompletionFeature.ts b/src/adapters/languageFeatures/LspCompletionFeature.ts
 index e5a9f7f..869bb6c 100644
 --- a/src/adapters/languageFeatures/LspCompletionFeature.ts
@@ -161,7 +203,7 @@ index bf87f89..3d2257b 100644
      }
  }
 diff --git a/src/adapters/languageFeatures/LspDiagnosticsFeature.ts b/src/adapters/languageFeatures/LspDiagnosticsFeature.ts
-index 40e8cad..db11533 100644
+index 40e8cad..afeed9d 100644
 --- a/src/adapters/languageFeatures/LspDiagnosticsFeature.ts
 +++ b/src/adapters/languageFeatures/LspDiagnosticsFeature.ts
 @@ -10,6 +10,7 @@ export class LspDiagnosticsFeature extends Disposable {
@@ -196,7 +238,19 @@ index 40e8cad..db11533 100644
  		this._register(this._connection.connection.registerNotificationHandler(
  			api.client.textDocumentPublishDiagnostics,
  			(params) => this._handlePublishDiagnostics(params)
-@@ -52,11 +66,21 @@ export class LspDiagnosticsFeature extends Disposable {
+@@ -45,18 +59,32 @@ export class LspDiagnosticsFeature extends Disposable {
+ 					this._addPullDiagnosticProvider(model, capability, disposables);
+ 				}
+ 				disposables.add(monaco.editor.onDidCreateModel(model => {
+-					this._addPullDiagnosticProvider(model, capability, disposables);
++					queueMicrotask(() => {
++						if (!model.isDisposed()) {
++							this._addPullDiagnosticProvider(model, capability, disposables);
++						}
++					});
+ 				}));
+ 				return disposables;
+ 			}
  		));
  	}
  
@@ -218,7 +272,7 @@ index 40e8cad..db11533 100644
  		// Check if model matches the document selector
  		const languageId = model.getLanguageId();
  
-@@ -68,7 +92,8 @@ export class LspDiagnosticsFeature extends Disposable {
+@@ -68,7 +96,8 @@ export class LspDiagnosticsFeature extends Disposable {
  			model,
  			this._connection,
  			this._diagnosticsMarkerOwner,
@@ -228,7 +282,7 @@ index 40e8cad..db11533 100644
  		);
  
  		this._pullDiagnosticProviders.set(model, provider);
-@@ -89,6 +114,9 @@ export class LspDiagnosticsFeature extends Disposable {
+@@ -89,6 +118,9 @@ export class LspDiagnosticsFeature extends Disposable {
  			if (!model || model.isDisposed()) {
  				return;
  			}
@@ -238,7 +292,7 @@ index 40e8cad..db11533 100644
  
  			const markers = params.diagnostics.map(diagnostic =>
  				toDiagnosticMarker(diagnostic)
-@@ -108,12 +136,14 @@ export class LspDiagnosticsFeature extends Disposable {
+@@ -108,12 +140,14 @@ export class LspDiagnosticsFeature extends Disposable {
  class ModelDiagnosticProvider extends Disposable {
  	private _updateHandle: number | undefined;
  	private _previousResultId: string | undefined;
@@ -253,7 +307,7 @@ index 40e8cad..db11533 100644
  	) {
  		super();
  		this._register(this._model.onDidChangeContent(() => {
-@@ -122,7 +152,13 @@ class ModelDiagnosticProvider extends Disposable {
+@@ -122,7 +156,13 @@ class ModelDiagnosticProvider extends Disposable {
  		this._scheduleDiagnosticUpdate();
  	}
  
@@ -267,7 +321,7 @@ index 40e8cad..db11533 100644
  		if (this._updateHandle !== undefined) {
  			clearTimeout(this._updateHandle);
  		}
-@@ -137,6 +173,7 @@ class ModelDiagnosticProvider extends Disposable {
+@@ -137,6 +177,7 @@ class ModelDiagnosticProvider extends Disposable {
  		if (this._model.isDisposed()) {
  			return;
  		}
@@ -275,7 +329,7 @@ index 40e8cad..db11533 100644
  
  		try {
  			const translated = this._connection.bridge.translate(this._model, new monaco.Position(1, 1));
-@@ -147,7 +184,7 @@ class ModelDiagnosticProvider extends Disposable {
+@@ -147,7 +188,7 @@ class ModelDiagnosticProvider extends Disposable {
  				previousResultId: this._previousResultId,
  			});
  
@@ -284,7 +338,7 @@ index 40e8cad..db11533 100644
  				return;
  			}
  
-@@ -185,6 +222,9 @@ class ModelDiagnosticProvider extends Disposable {
+@@ -185,6 +226,9 @@ class ModelDiagnosticProvider extends Disposable {
  				if (!model || model.isDisposed()) {
  					continue;
  				}
@@ -294,7 +348,7 @@ index 40e8cad..db11533 100644
  
  				if (report.kind === 'full') {
  					const markers = report.items.map((diagnostic: Diagnostic) => toDiagnosticMarker(diagnostic));
-@@ -198,6 +238,7 @@ class ModelDiagnosticProvider extends Disposable {
+@@ -198,6 +242,7 @@ class ModelDiagnosticProvider extends Disposable {
  	}
  
  	override dispose(): void {
