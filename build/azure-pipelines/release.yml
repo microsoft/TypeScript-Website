@@ -1,0 +1,144 @@
+name: $(date:yyyyMMdd).$(rev:r)
+
+trigger:
+  branches:
+    include:
+      - v2
+pr: none
+
+variables:
+  TeamName: TypeScript
+  Codeql.Enabled: true
+  ReleaseOwners: "jabaile@microsoft.com"
+  ReleaseApprovers: "alexchi@microsoft.com"
+  NpmArtifactName: npm-packages
+
+parameters:
+  - name: publishStages
+    type: object
+    default:
+      - index: 0
+      - index: 1
+
+resources:
+  repositories:
+    - repository: MicroBuildTemplate
+      type: git
+      name: 1ESPipelineTemplates/MicroBuildTemplate
+      ref: refs/tags/release
+
+extends:
+  template: azure-pipelines/MicroBuild.1ES.Official.Publish.yml@MicroBuildTemplate
+  parameters:
+    pool:
+      name: AzurePipelines-EO
+      image: 1ESPT-Ubuntu22.04
+      os: linux
+    sdl:
+      sourceAnalysisPool: VSEng-MicroBuildVSStable
+      binskim:
+        scanOutputDirectoryOnly: true
+    settings:
+      networkIsolationPolicy: Permissive,CFSClean
+    stages:
+      - stage: Build
+        displayName: Build
+        jobs:
+          - job: Build
+            displayName: Build and pack changed packages
+            templateContext:
+              mb:
+                # This pipeline uses the publish template so the package publish
+                # stages can run. Do not inject publish authorization into the
+                # normal build job.
+                publish:
+                  enabled: false
+                signing:
+                  enabled: false
+              sdl:
+                codeSignValidation:
+                  enabled: false
+              outputParentDirectory: "$(Build.ArtifactStagingDirectory)"
+              outputs:
+                - output: pipelineArtifact
+                  condition: and(succeeded(), eq(variables['ShouldPublish'], 'true'))
+                  targetPath: "$(Build.ArtifactStagingDirectory)/$(NpmArtifactName)"
+                  artifactName: $(NpmArtifactName)
+            steps:
+              - checkout: self
+                fetchDepth: 2
+
+              - task: UseNode@1
+                inputs:
+                  version: "22.x"
+                displayName: "Install Node.js"
+
+              - script: |
+                  set -euo pipefail
+                  cat > .npmrc << 'EOF'
+                  registry=https://pkgs.dev.azure.com/devdiv/devdiv/_packaging/devdiv_PublicPackages/npm/registry/
+                  EOF
+                displayName: "Set up .npmrc"
+
+              - task: npmAuthenticate@0
+                inputs:
+                  workingFile: .npmrc
+                displayName: "Authenticate npm"
+
+              - script: |
+                  set -euo pipefail
+                  # Global installs ignore the project .npmrc, so point npm at it
+                  # explicitly to install from the authenticated feed.
+                  npm install -g --userconfig "$PWD/.npmrc" "$(node -p "require('./package.json').packageManager.split('+')[0]")"
+                  pnpm --version
+                displayName: "Install package manager"
+
+              - script: pnpm install
+                displayName: "Install dependencies"
+
+              - script: pnpm bootstrap
+                displayName: "Bootstrap packages"
+
+              - script: pnpm build
+                displayName: "Build packages"
+
+              - script: node build/azure-pipelines/pack-changed-packages.mjs "$(Build.ArtifactStagingDirectory)/$(NpmArtifactName)"
+                name: packChangedPackages
+                displayName: "Pack changed packages"
+
+      - stage: Publish
+        displayName: Publish to npmjs
+        dependsOn: Build
+        condition: and(succeeded(), eq(dependencies.Build.outputs['Build.packChangedPackages.ShouldPublish'], 'true'))
+        jobs:
+          - job: Publish
+            displayName: Publish npm packages
+            templateContext:
+              type: releaseJob
+              isProduction: true
+              inputs:
+                - input: pipelineArtifact
+                  artifactName: $(NpmArtifactName)
+                  targetPath: $(Pipeline.Workspace)/$(NpmArtifactName)
+            steps:
+              - checkout: none
+
+              - task: UseNode@1
+                inputs:
+                  version: "22.x"
+                displayName: "Install Node.js"
+
+              - ${{ each publishStage in parameters.publishStages }}:
+                - script: node "$(Pipeline.Workspace)/$(NpmArtifactName)/release-helper.mjs" prepare-stage ${{ publishStage.index }}
+                  displayName: "Check stage ${{ publishStage.index }} packages"
+
+                - template: MicroBuild.Publish.yml@MicroBuildTemplate
+                  parameters:
+                    condition: and(succeeded(), eq(variables['PublishStage${{ publishStage.index }}'], 'true'))
+                    intent: "PackageDistribution"
+                    contentType: "npm"
+                    contentSource: "Folder"
+                    folderLocation: "$(Pipeline.Workspace)/$(NpmArtifactName)/stage-${{ publishStage.index }}"
+                    waitForReleaseCompletion: true
+                    owners: "$(ReleaseOwners)"
+                    approvers: "$(ReleaseApprovers)"
