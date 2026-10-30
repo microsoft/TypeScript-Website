@@ -135,10 +135,10 @@ index 7d005c0ae14fff368e1808ffae3ecef5dab756b9..cabf08a27259ac62316f3459c95ecd5b
  var addIncludes = function addIncludes(map, name, code) {
 diff --git a/dist/twoslash-cache.js b/dist/twoslash-cache.js
 new file mode 100644
-index 0000000000000000000000000000000000000000..7ae5d5ad41e6284ba9eefcfbfb86235800c94a9d
+index 0000000000000000000000000000000000000000..62b8e3223a8df1f53c06cc81266b5b07276b07d5
 --- /dev/null
 +++ b/dist/twoslash-cache.js
-@@ -0,0 +1,149 @@
+@@ -0,0 +1,157 @@
 +const fs = require("fs")
 +const path = require("path")
 +const { createHash } = require("crypto")
@@ -172,8 +172,16 @@ index 0000000000000000000000000000000000000000..7ae5d5ad41e6284ba9eefcfbfb862358
 +      hash.update(filename).update(fs.readFileSync(path.join(directory, filename)))
 +    }
 +  }
-+  for (const name of ["typescript", "lz-string"]) {
++  for (const name of [
++    "typescript/package.json",
++    "typescript",
++    "lz-string",
++  ]) {
 +    hash.update(name).update(fs.readFileSync(twoslashRequire.resolve(name)))
++  }
++  const compiler = path.join(path.dirname(twoslashRequire.resolve("typescript")), "_typescript.js")
++  if (fs.existsSync(compiler)) {
++    hash.update("_typescript.js").update(fs.readFileSync(compiler))
 +  }
 +  implementation = hash.digest("hex")
 +  return implementation

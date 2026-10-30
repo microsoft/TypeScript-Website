@@ -24,7 +24,7 @@ patchedDependencies:
     hash: 3aa0dc2d9c0fd3921986acbadfef7a10df948fb30d02590f86cecab9b91800bf
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
   remark-shiki-twoslash@3.1.3:
-    hash: 5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30
+    hash: 488f8de9912e7c15b9f9e31e456cf718bee1b99a22dbbb2f0a8f73d04bedb77e
     path: patches/remark-shiki-twoslash@3.1.3.patch
 
 importers:
@@ -84,7 +84,7 @@ importers:
         version: 13.0.2
       remark-shiki-twoslash:
         specifier: ^3.1.3
-        version: 3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2)
+        version: 3.1.3(patch_hash=488f8de9912e7c15b9f9e31e456cf718bee1b99a22dbbb2f0a8f73d04bedb77e)(typescript@6.0.2)
 
   packages/ata:
     dependencies:
@@ -16343,7 +16343,7 @@ snapshots:
 
   gatsby-remark-shiki-twoslash@3.0.38(patch_hash=3aa0dc2d9c0fd3921986acbadfef7a10df948fb30d02590f86cecab9b91800bf):
     dependencies:
-      remark-shiki-twoslash: 3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2)
+      remark-shiki-twoslash: 3.1.3(patch_hash=488f8de9912e7c15b9f9e31e456cf718bee1b99a22dbbb2f0a8f73d04bedb77e)(typescript@6.0.2)
       typescript: 6.0.2
       unist-util-visit: 2.0.3
 
@@ -20184,7 +20184,7 @@ snapshots:
     dependencies:
       mdast-util-to-nlcst: 4.0.1
 
-  remark-shiki-twoslash@3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2):
+  remark-shiki-twoslash@3.1.3(patch_hash=488f8de9912e7c15b9f9e31e456cf718bee1b99a22dbbb2f0a8f73d04bedb77e)(typescript@6.0.2):
     dependencies:
       '@types/unist': 2.0.11
       '@typescript/twoslash': link:packages/ts-twoslasher
@@ -21436,7 +21436,7 @@ snapshots:
       hast-util-to-html: 7.1.3
       mdast-util-to-hast: 10.2.0
       remark: 13.0.0
-      remark-shiki-twoslash: 3.1.3(patch_hash=5bd6570cdb97b323924ced9d2e68aae4b5f7bea40b13ee9a3ca712e774883c30)(typescript@6.0.2)
+      remark-shiki-twoslash: 3.1.3(patch_hash=488f8de9912e7c15b9f9e31e456cf718bee1b99a22dbbb2f0a8f73d04bedb77e)(typescript@6.0.2)
       unist-util-visit: 3.1.0
     transitivePeerDependencies:
       - supports-color

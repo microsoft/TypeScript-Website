@@ -207,7 +207,25 @@ describe("persistent Twoslash cache", () => {
     )
   })
 
-  it.each(["runtime", "manifest"])("invalidates changed compiler %s without a version bump", kind => {
+  it.each([
+    ["Twoslash runtime", "/ts-twoslasher/dist/index.js"],
+    ["Twoslash manifest", "/ts-twoslasher/package.json"],
+    ["TypeScript entrypoint", "/typescript/lib/typescript.js"],
+    ["TypeScript implementation", "/typescript/lib/_typescript.js"],
+    ["TypeScript manifest", "/typescript/package.json"],
+  ])("invalidates changed %s without a version bump", (_, suffix) => {
+    if (suffix.endsWith("/_typescript.js")) {
+      const existsSync = fs.existsSync.getMockImplementation()
+      const readFileSync = fs.readFileSync.getMockImplementation()
+      const isCompiler = filename =>
+        typeof filename === "string" && filename.replace(/\\/g, "/").endsWith(suffix)
+      fs.existsSync.mockImplementation(filename =>
+        isCompiler(filename) || existsSync(filename)
+      )
+      fs.readFileSync.mockImplementation((filename, ...args) =>
+        isCompiler(filename) ? Buffer.from("// split compiler\n") : readFileSync(filename, ...args)
+      )
+    }
     const freshCache = () => {
       let cache
       jest.isolateModules(() => {
@@ -221,11 +239,11 @@ describe("persistent Twoslash cache", () => {
     const readFileSync = fs.readFileSync.getMockImplementation()
     fs.readFileSync.mockImplementation((filename, ...args) => {
       const contents = readFileSync(filename, ...args)
-      if (typeof filename === "string" && filename.replace(/\\/g, "/").includes("ts-twoslasher/")) {
-        if (kind === "runtime" && filename.endsWith(".js")) {
+      if (typeof filename === "string" && filename.replace(/\\/g, "/").endsWith(suffix)) {
+        if (filename.endsWith(".js")) {
           return Buffer.concat([Buffer.from(contents), Buffer.from("\n// compiler rebuild\n")])
         }
-        if (kind === "manifest" && filename.endsWith("package.json")) {
+        if (filename.endsWith("package.json")) {
           return Buffer.from(JSON.stringify({ ...JSON.parse(contents), main: "./dist/changed-compiler.js" }))
         }
       }
