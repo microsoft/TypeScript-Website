@@ -21,9 +21,8 @@ const helpIndex = resolve(packageDirectory, "vendor/help.json")
 const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
-const version = (await readFile(resolve(vendorDirectory, "version.txt"), "utf8")).trim()
 const distribution = JSON.parse(await readFile(resolve(vendorDirectory, "distribution.json"), "utf8"))
-const distributionPath = `compiler/${distribution.cacheKey}`
+const version = distribution.version
 const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
   .replaceAll("__PLAYGROUND_BASE__", playgroundBase)
   .replaceAll("__COMPILER_VERSION__", version)
@@ -37,9 +36,7 @@ await Promise.all([
   cp(releaseIndex, resolve(outputDirectory, "versions.json")),
   cp(examplesIndex, resolve(outputDirectory, "examples.json")),
   cp(helpIndex, resolve(outputDirectory, "help.json")),
-  ...(process.env.COMPILER_DISTRIBUTION_URL ? [] : ["typescript", "typescript-wasip1-wasm", "distribution.json"]).map(
-    name => cp(resolve(vendorDirectory, name), resolve(outputDirectory, distributionPath, name), { recursive: true })
-  ),
+  cp(resolve(vendorDirectory, "distribution.json"), resolve(outputDirectory, "distribution.json")),
 ])
 
 const buildContext = await context({
@@ -47,9 +44,7 @@ const buildContext = await context({
   bundle: true,
   conditions: ["browser", "default"],
   define: {
-    __COMPILER_DISTRIBUTION_URL__: JSON.stringify(
-      process.env.COMPILER_DISTRIBUTION_URL || `./${distributionPath}/distribution.json`
-    ),
+    __COMPILER_DISTRIBUTION_URL__: JSON.stringify(process.env.COMPILER_DISTRIBUTION_URL || "./distribution.json"),
     __TS_VERSION__: JSON.stringify(version),
   },
   entryNames: "[name]",

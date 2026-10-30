@@ -1,2 +1,0 @@
-export { canonicalize, CaseSensitivity, isCaseInsensitive, isCaseSensitive, pathKey, rootedDirectoryPathFromPath, rootedFilePathFromPath, rootedPathFromNormalized, toRootedDirectoryPath, toRootedFilePath, toRootedPath, tryPathKeyFromCanonical, tryRootedPathFromNormalized } from "./path.js";
-//# sourceMappingURL=typedPaths.js.map

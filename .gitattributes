@@ -1,4 +1,2 @@
 * -text
 patches/*.patch -whitespace
-packages/playground-v2/vendor/typescript/** -whitespace
-packages/playground-v2/vendor/typescript-wasip1-wasm/** -whitespace

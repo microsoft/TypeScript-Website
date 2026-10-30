@@ -6,7 +6,13 @@ import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { acquisitionOptions } from "./config"
-import { corsaDiscovery, stradaDiscovery, PackageTypeAcquirer, type AcquisitionProgress, type Dependency } from "./index"
+import {
+  corsaDiscovery,
+  stradaDiscovery,
+  PackageTypeAcquirer,
+  type AcquisitionProgress,
+  type Dependency,
+} from "./index"
 import { packageName, safePackagePath } from "./packages"
 
 const require = createRequire(import.meta.url)
@@ -57,7 +63,7 @@ function source(text: string) {
 
 test("compiler parsers agree on dependencies, references, and version comments", async () => {
   const module = await WebAssembly.compile(
-    await readFile(`${process.env.PLAYGROUND_DIR}/vendor/typescript-wasip1-wasm/lib/tsc.wasm`)
+    await readFile(new URL(import.meta.resolve("@typescript/typescript-wasip1-wasm/lib/tsc.wasm")))
   )
   const api = new API({ transport: new WasmTransport({ instance: await instantiateWasm(module), cwd: "/workspace" }) })
   try {
@@ -367,7 +373,9 @@ test("queued downloads release their permits when an acquisition is cancelled", 
   const cancelled = engine.acquire({
     ...input,
     signal: controller.signal,
-    onProgress: () => { progressCount++ },
+    onProgress: () => {
+      progressCount++
+    },
   })
   setTimeout(() => {
     controller.abort()

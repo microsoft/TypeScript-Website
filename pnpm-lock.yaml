@@ -195,11 +195,11 @@ importers:
         specifier: ^5.2.6
         version: 5.3.0
       '@typescript/typescript':
-        specifier: file:vendor/typescript
-        version: typescript@file:packages/playground-v2/vendor/typescript
+        specifier: npm:typescript@7.1.0-dev.20261030.1
+        version: typescript@7.1.0-dev.20261030.1
       '@typescript/typescript-wasip1-wasm':
-        specifier: file:vendor/typescript-wasip1-wasm
-        version: file:packages/playground-v2/vendor/typescript-wasip1-wasm
+        specifier: 7.1.0-dev.20261030.1
+        version: 7.1.0-dev.20261030.1
       '@vscode/monaco-lsp-client':
         specifier: github:microsoft/monaco-editor#13f0c872dcf352815cc28d92dfff496c9839ea5c&path:/monaco-lsp-client
         version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=619797b0d528dffad3a184ffe6c5a13eb912724a57ebcf7c98127b2013b8e784)(monaco-editor-core@0.56.0)(ws@8.19.0)
@@ -2987,8 +2987,50 @@ packages:
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@typescript/typescript-wasip1-wasm@file:packages/playground-v2/vendor/typescript-wasip1-wasm':
-    resolution: {directory: packages/playground-v2/vendor/typescript-wasip1-wasm, type: directory}
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-rTW2PpYEphzAsy9OHOe2eupDS6AM8tHdrEk0MxW9y6O+uLFOZ2lUB5vVZhtKvTnpw//bN1yjeg+WZ++TUGR3bg==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-6zrxK36LQW8hFQsjRXgqA6fbmN54NCTmNpdKEwVULLPm22x8mK99Vh7RbXhXpp4pwatHpSPysY1fvxcEsMNIgQ==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-id+Un0JOtIKn6RZ/deoyu4S9qR1w3f0omWSp5CapfyB7OXqB7dGLhFf3cvYDmpqnKp+BQD04oF6pyb6eEM0DDQ==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@typescript/typescript-linux-arm@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-Upd1yowmHih4aaEdCckNeSEAIoqRh65QZAUd4d+cEB0HD/mG4mUL8LJIbOKtbwto4mRDxs7O5CRdYfdqfdKZVw==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm]
+    os: [linux]
+
+  '@typescript/typescript-linux-x64@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-i9s3tj9tp9e7F6VHiuh9s0RAiqQl5fCieizVLeynxkmRh0FK0Kg8Pco6LRzFEUSzU3gCHx9q44n1bexkpQrI0A==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@typescript/typescript-wasip1-wasm@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-m3WKNe9Wa0EsTOJXpf1t55hB7TzArcfuiygFi5MgD6EL5xB3eUTN9xNRklv/m0yyXSoVmpqdYNgujjgroCPlNA==}
+
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-K2vICZV6aztU0NJVgc0DAvmJMqtnrA3ej5bVmRXWnjVYVKJ5mVdTAGcJQHWlNhzMxZFWD8Fv1b4ZGA3GrLaXaA==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@typescript/typescript-win32-x64@7.1.0-dev.20261030.1':
+    resolution: {integrity: sha512-lOtLps7lORzpCJ5ynge0aA9O1XMdSep/Ga03qtcVzLVUwvkCpwbBkpC4oX71gTOFQ2Gqjqd6mQIfu6vGxBotwA==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [win32]
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
@@ -9491,8 +9533,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@file:packages/playground-v2/vendor/typescript:
-    resolution: {directory: packages/playground-v2/vendor/typescript, type: directory}
+  typescript@7.1.0-dev.20261030.1:
+    resolution: {integrity: sha512-y5prFqSwq0qTd/oL+E/fKsGbigIn6CJ6sVTbg8HK70GTO7wo3BAhZdkrrtUgmNn3C93xUWwDp2nXqScbbQ5bhQ==}
     engines: {node: '>=16.20.0'}
     hasBin: true
 
@@ -13103,7 +13145,28 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@typescript/typescript-wasip1-wasm@file:packages/playground-v2/vendor/typescript-wasip1-wasm': {}
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20261030.1':
+    optional: true
+
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20261030.1':
+    optional: true
+
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20261030.1':
+    optional: true
+
+  '@typescript/typescript-linux-arm@7.1.0-dev.20261030.1':
+    optional: true
+
+  '@typescript/typescript-linux-x64@7.1.0-dev.20261030.1':
+    optional: true
+
+  '@typescript/typescript-wasip1-wasm@7.1.0-dev.20261030.1': {}
+
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20261030.1':
+    optional: true
+
+  '@typescript/typescript-win32-x64@7.1.0-dev.20261030.1':
+    optional: true
 
   '@ungap/structured-clone@1.3.0': {}
 
@@ -21703,7 +21766,15 @@ snapshots:
 
   typescript@6.0.2: {}
 
-  typescript@file:packages/playground-v2/vendor/typescript: {}
+  typescript@7.1.0-dev.20261030.1:
+    optionalDependencies:
+      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20261030.1
+      '@typescript/typescript-darwin-x64': 7.1.0-dev.20261030.1
+      '@typescript/typescript-linux-arm': 7.1.0-dev.20261030.1
+      '@typescript/typescript-linux-arm64': 7.1.0-dev.20261030.1
+      '@typescript/typescript-linux-x64': 7.1.0-dev.20261030.1
+      '@typescript/typescript-win32-arm64': 7.1.0-dev.20261030.1
+      '@typescript/typescript-win32-x64': 7.1.0-dev.20261030.1
 
   ua-parser-js@1.0.41: {}
 

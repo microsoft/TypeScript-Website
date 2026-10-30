@@ -27,14 +27,16 @@ standard libraries; its `lib/libFiles.json` index determines which library URLs
 are fetched. Schemas are fetched from the matching compiler package too.
 No compiler implementation is bundled with the website.
 
-`vendor-typescript` extracts the built npm tarballs from the committed
-TypeScript repository's `built/npm` directory, preserving their manifests and
-module graphs. The build serves those packages unchanged under a content-keyed
-`compiler/` directory as a local, non-transforming CDN simulation.
-`vendor/distribution.json` pairs their entry URLs, version, and cache identity.
-Set `COMPILER_DISTRIBUTION_URL` when building to load that distribution from
-another origin instead; that build omits the local compiler copy. The other
-origin must serve modules and assets with CORS headers.
+The compiler API and WASI artifact dependencies are pinned to the same published
+nightly. After updating both dependency versions and installing them, run
+`update-compiler` to regenerate `vendor/distribution.json` from their package
+exports. It pairs immutable UNPKG URLs with the version, revision, download
+size, and cache identity. Installed packages supply types and offline tests;
+the website build includes only the distribution metadata, not compiler assets.
+Browsers load the unchanged package modules, binary, libraries, and schemas
+directly from the CDN. UNPKG serves the WASM binary without jsDelivr's 50 MB
+file-size limit. Set `COMPILER_DISTRIBUTION_URL` when building to use
+another distribution; its modules and assets must be served with CORS headers.
 
 ## Resolution
 

@@ -23,7 +23,6 @@ try {
     target: ["es2022"],
   })
   const result = spawnSync(process.execPath, ["--test", ...testFiles], {
-    env: { ...process.env, PLAYGROUND_DIR: packageDirectory },
     stdio: "inherit",
   })
   if (result.error) throw result.error
