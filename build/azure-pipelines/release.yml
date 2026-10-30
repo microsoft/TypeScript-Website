@@ -12,9 +12,6 @@ variables:
   ReleaseOwners: "jabaile@microsoft.com"
   ReleaseApprovers: "alexchi@microsoft.com"
   NpmArtifactName: npm-packages
-  GitHubRepository: microsoft/TypeScript-Website
-  TYPESCRIPT_AUTOMATION_GITHUB_APP_CLIENT_ID: Iv23li4GolzJSEp1mzHI
-  TYPESCRIPT_AUTOMATION_GITHUB_APP_KEY_ID: https://jststeam-passwords.vault.azure.net/keys/typescript-automation
 
 parameters:
   - name: publishStages
@@ -145,40 +142,3 @@ extends:
                     waitForReleaseCompletion: true
                     owners: "$(ReleaseOwners)"
                     approvers: "$(ReleaseApprovers)"
-
-      - stage: Finalize
-        displayName: Create tags and GitHub releases
-        dependsOn:
-          - Build
-          - Publish
-        condition: and(succeeded(), eq(dependencies.Build.outputs['Build.packChangedPackages.ShouldPublish'], 'true'))
-        jobs:
-          - job: CreateGitHubReleases
-            displayName: Create tags and GitHub releases
-            templateContext:
-              type: releaseJob
-              isProduction: true
-              inputs:
-                - input: pipelineArtifact
-                  artifactName: $(NpmArtifactName)
-                  targetPath: $(Pipeline.Workspace)/$(NpmArtifactName)
-            steps:
-              - checkout: none
-
-              - task: UseNode@1
-                inputs:
-                  version: "22.x"
-                displayName: "Install Node.js"
-
-              - template: /build/azure-pipelines/steps/create-github-app-token.yml@self
-                parameters:
-                  azureSubscription: TypeScript-DevDiv-KeyVault
-                  repositories: TypeScript-Website
-                  permissions: contents:write
-                  insertSteps:
-                    - script: node "$(Pipeline.Workspace)/$(NpmArtifactName)/release-helper.mjs" finalize
-                      displayName: Create tags and GitHub releases
-                      env:
-                        GH_TOKEN: $(GH_TOKEN)
-                        GITHUB_REPOSITORY: $(GitHubRepository)
-                        RELEASE_SOURCE_COMMIT: $(Build.SourceVersion)

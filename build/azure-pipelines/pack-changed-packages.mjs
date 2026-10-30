@@ -102,21 +102,6 @@ function versionChanged(pkg) {
   return previous?.version !== pkg.packageJson.version;
 }
 
-// Match changesets/action, which uses the package's CHANGELOG.md section for
-// the version as the GitHub release body.
-function readReleaseNotes(pkg) {
-  const changelogPath = path.join(root, pkg.dir, "CHANGELOG.md");
-  if (!fs.existsSync(changelogPath)) return "";
-
-  const lines = fs.readFileSync(changelogPath, "utf8").split(/\r?\n/);
-  const start = lines.findIndex(line => line.trim() === `## ${pkg.packageJson.version}`);
-  if (start === -1) return "";
-
-  let end = lines.findIndex((line, i) => i > start && /^##?\s/.test(line));
-  if (end === -1) end = lines.length;
-  return lines.slice(start + 1, end).join("\n").trim();
-}
-
 function findChangedPackageNames() {
   const releaseBranch = `refs/heads/${readJson(path.join(root, ".changeset/config.json")).baseBranch}`;
   const sourceBranch = process.env.BUILD_SOURCEBRANCH;
@@ -174,12 +159,9 @@ for (const name of packedNames) {
     name,
     version: packedPackage.version,
     filename,
-    releaseNotes: readReleaseNotes(packages.get(name)),
   });
 }
 
-fs.writeFileSync(path.join(outDir, "publish-manifest.json"), JSON.stringify(manifest, undefined, 2) + "\n");
-fs.copyFileSync(path.join(root, "build/azure-pipelines/release-helper.mjs"), path.join(outDir, "release-helper.mjs"));
 fs.rmSync(path.join(outDir, "packed"), { recursive: true, force: true });
 
 for (let i = 0; i < maxStages; i++) {
