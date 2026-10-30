@@ -935,14 +935,20 @@ async function initializeNativeCompiler() {
 
 async function initializeStradaCompiler(requestedVersion: string) {
   try {
-    setLoadingIndeterminate("Loading TypeScript...", requestedVersion)
+    setLoadingIndeterminate("Resolving TypeScript version...", requestedVersion)
     const version = await resolveStradaVersion(requestedVersion)
     const compilerUrl = `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/typescript.js`
+    setLoadingIndeterminate("Downloading compiler...", version)
     const compilerResponse = await fetch(compilerUrl)
     if (!compilerResponse.ok) {
       throw new Error(`Unable to load TypeScript ${version}: ${compilerResponse.status} ${compilerResponse.statusText}`)
     }
-    const compilerSource = await compilerResponse.text()
+    const compilerSource = new TextDecoder().decode(
+      await readResponseBytes(compilerResponse, length =>
+        setLoadingIndeterminate("Downloading compiler...", `${version} · ${formatBytes(length)} received`)
+      )
+    )
+    setLoadingIndeterminate("Initializing compiler...", version)
     // Only trusted maintainers can publish compiler artifacts to this HTTPS CDN.
     // Evaluating the selected compiler is intentional; this is not user project code.
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
@@ -959,6 +965,18 @@ async function initializeStradaCompiler(requestedVersion: string) {
         if (acquiredTypeFiles.has(model.uri.path)) acquiredTypeModels.set(model.uri.path, model)
       },
       version,
+      onProgress(progress) {
+        if (compilerReady || compilerFailure) return
+        if (progress.phase === "initializing") {
+          setLoadingIndeterminate("Initializing compiler...", version)
+        } else {
+          setLoadingProgress(
+            progress.total ? (progress.completed / progress.total) * 100 : 0,
+            "Loading standard libraries...",
+            `${progress.completed}/${progress.total} files${progress.fileName ? ` · ${progress.fileName}` : ""}`
+          )
+        }
+      },
     })
     compileActiveProject = compileStradaProject
     compilerReady = true
@@ -2024,11 +2042,21 @@ async function downloadAsset(name: string, url: URL): Promise<Uint8Array<ArrayBu
     throw new Error(`Unable to load ${url.pathname}: ${response.status} ${response.statusText}`)
   }
   if (cache && !cachedAssets.get(name)) cacheWrite = cache.put(request, response.clone())
+  const bytes = await readResponseBytes(response, length => {
+    downloadedAssets.set(name, length)
+    updateDownloadProgress()
+  })
+  await cacheWrite
+  return bytes
+}
+
+async function readResponseBytes(
+  response: Response,
+  onProgress: (length: number) => void
+): Promise<Uint8Array<ArrayBuffer>> {
   if (!response.body) {
     const bytes = new Uint8Array(await response.arrayBuffer())
-    await cacheWrite
-    downloadedAssets.set(name, bytes.length)
-    updateDownloadProgress()
+    onProgress(bytes.length)
     return bytes
   }
 
@@ -2040,8 +2068,7 @@ async function downloadAsset(name: string, url: URL): Promise<Uint8Array<ArrayBu
     if (done) break
     chunks.push(value)
     length += value.length
-    downloadedAssets.set(name, length)
-    updateDownloadProgress()
+    onProgress(length)
   }
 
   const bytes = new Uint8Array(length)
@@ -2050,7 +2077,6 @@ async function downloadAsset(name: string, url: URL): Promise<Uint8Array<ArrayBu
     bytes.set(chunk, offset)
     offset += chunk.length
   }
-  await cacheWrite
   return bytes
 }
 
@@ -2151,13 +2177,13 @@ function updateDownloadProgress() {
 
 function setLoadingProgress(value: number, message: string, detail: string) {
   loadingProgress.value = Math.max(loadingProgress.value, value)
-  loadingMessage.textContent = message
+  if (loadingMessage.textContent !== message) loadingMessage.textContent = message
   loadingDetail.textContent = detail
 }
 
 function setLoadingIndeterminate(message: string, detail: string) {
   loadingProgress.removeAttribute("value")
-  loadingMessage.textContent = message
+  if (loadingMessage.textContent !== message) loadingMessage.textContent = message
   loadingDetail.textContent = detail
 }
 

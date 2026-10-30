@@ -7,6 +7,53 @@ import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
 import { loadCompilerDistribution, loadPublishedCompilerDistribution } from "./compiler-distribution"
 import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
+import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
+
+test("legacy library discovery downloads bounded parallel batches, deduplicates references, and reports progress", async t => {
+  const source = new Map<string, string>([
+    ["lib.root.d.ts", Array.from({ length: 12 }, (_, index) => `/// <reference lib="part${index}" />`).join("\n")],
+    ...Array.from({ length: 12 }, (_, index): [string, string] => [
+      `lib.part${index}.d.ts`,
+      '/// <reference lib="shared" />\n/// <reference path="lib.root.d.ts" />',
+    ]),
+    ["lib.shared.d.ts", "interface Shared {}"],
+  ])
+  let active = 0
+  let maximum = 0
+  const requests: string[] = []
+  t.mock.method(globalThis, "fetch", async (input: URL | RequestInfo) => {
+    const name = new URL(String(input)).pathname.split("/").at(-1)!
+    requests.push(name)
+    active++
+    maximum = Math.max(maximum, active)
+    await new Promise(resolve => setTimeout(resolve, 5))
+    active--
+    return new Response(source.get(name), { status: source.has(name) ? 200 : 404 })
+  })
+  const libraries = new Map<string, string>()
+  const progress: StradaLibraryProgress[] = []
+  await loadStradaLibraries(["root", "lib.root.d.ts"], "https://compiler.example.test/", libraries, value =>
+    progress.push(value)
+  )
+  assert.equal(maximum, 8)
+  assert.equal(requests.length, source.size)
+  assert.equal(new Set(requests).size, requests.length)
+  assert.equal(libraries.size, source.size)
+  assert.equal(progress[0].completed, 0)
+  assert.equal(progress[0].total, 1)
+  assert.equal(progress.at(-1)?.completed, source.size)
+  assert.equal(progress.at(-1)?.total, source.size)
+  await loadStradaLibraries(["root"], "https://compiler.example.test/", libraries, () => {})
+  assert.equal(requests.length, source.size)
+})
+
+test("legacy library download failures are reported", async t => {
+  t.mock.method(globalThis, "fetch", async () => new Response("", { status: 503 }))
+  await assert.rejects(
+    loadStradaLibraries(["root"], "https://compiler.example.test/", new Map(), () => {}),
+    /Could not load lib\.root\.d\.ts: 503/
+  )
+})
 
 test("native versions start at the WASM nightly and exclude the published beta", () => {
   for (const version of ["7.1.0-dev.20261030.1", "7.1.0-dev.20261031.1", "7.1.0-rc", "7.1.0", "7.2.0-beta", "8.0.0"]) {

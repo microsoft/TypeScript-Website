@@ -1,3 +1,6 @@
+import type { StradaLoadingProgress } from "./strada"
+import { loadStradaLibraries } from "./strada-libraries"
+
 type TS = typeof import("typescript")
 
 type InitMessage = {
@@ -49,6 +52,7 @@ async function handleMessage(message: InitMessage | RequestMessage) {
 }
 
 async function initialize(args: InitMessage["args"]) {
+  reportProgress({ phase: "initializing" })
   // The owning page supplies compiler code from our trusted compiler CDN over
   // this dedicated worker's private channel. Evaluating that compiler is intentional.
   ts = new Function(`${args.compilerSource}\nreturn ts;`)() as TS
@@ -57,6 +61,7 @@ async function initialize(args: InitMessage["args"]) {
   replaceFiles(args.files)
   refreshConfig()
   await loadLibraries(compilerOptions)
+  reportProgress({ phase: "initializing" })
   languageService = ts.createLanguageService(createLanguageServiceHost())
   return { version: ts.version }
 }
@@ -241,25 +246,11 @@ async function loadLibraries(options: import("typescript").CompilerOptions) {
   const roots = options.lib?.length
     ? options.lib.map(lib => (lib.toLowerCase().startsWith("lib.") ? lib : `lib.${lib}.d.ts`))
     : [ts.getDefaultLibFileName(options)]
-  for (const root of roots) await loadLibrary(root)
+  await loadStradaLibraries(roots, baseUrl, libraries, progress => reportProgress({ phase: "libraries", ...progress }))
 }
 
-async function loadLibrary(fileName: string) {
-  const normalized = fileName.startsWith("lib.") ? fileName : `lib.${fileName}.d.ts`
-  const path = `/typescript/lib/${normalized}`
-  if (libraries.has(path)) return
-  const response = await fetch(`${baseUrl}${normalized}`)
-  if (!response.ok) {
-    if (response.status === 404) return
-    throw new Error(`Could not load ${normalized}: ${response.status}`)
-  }
-  const text = await response.text()
-  libraries.set(path, text)
-  const references = [...text.matchAll(/<reference\s+(?:lib|path)="([^"]+)"/g)].map(match => {
-    const referenced = match[1]
-    return referenced.endsWith(".d.ts") ? referenced.split("/").at(-1)! : `lib.${referenced}.d.ts`
-  })
-  for (const reference of references) await loadLibrary(reference)
+function reportProgress(progress: StradaLoadingProgress) {
+  self.postMessage({ type: "progress", progress })
 }
 
 function compile() {

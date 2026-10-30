@@ -1,4 +1,5 @@
 import { monaco } from "./tsgo-lsp"
+import type { StradaLibraryProgress } from "./strada-libraries"
 
 type CompilerDiagnostic = {
   category: number
@@ -16,6 +17,12 @@ type CompileResult = {
   rootNames: string[]
 }
 
+export type StradaLoadingProgress = { phase: "initializing" } | ({ phase: "libraries" } & StradaLibraryProgress)
+
+type WorkerMessage =
+  | { id: number; result?: unknown; error?: string }
+  | { type: "progress"; progress: StradaLoadingProgress }
+
 type StradaBackendOptions = {
   compilerSource: string
   editor: monaco.editor.IStandaloneCodeEditor
@@ -23,6 +30,7 @@ type StradaBackendOptions = {
   models: Map<string, monaco.editor.ITextModel>
   onNavigate(fileName: string, range: monaco.Range): void
   onCreateExternalModel(model: monaco.editor.ITextModel): void
+  onProgress?(progress: StradaLoadingProgress): void
   version: string
   baseUrl: string
 }
@@ -46,12 +54,17 @@ export class StradaBackend {
   private constructor(options: StradaBackendOptions) {
     this.#options = options
     this.version = options.version
-    this.#worker.addEventListener("message", event => {
-      const pending = this.#pending.get(event.data.id)
+    this.#worker.addEventListener("message", (event: MessageEvent<WorkerMessage>) => {
+      const message = event.data
+      if ("type" in message) {
+        this.#options.onProgress?.(message.progress)
+        return
+      }
+      const pending = this.#pending.get(message.id)
       if (!pending) return
-      this.#pending.delete(event.data.id)
-      if (event.data.error) pending.reject(new Error(event.data.error))
-      else pending.resolve(event.data.result)
+      this.#pending.delete(message.id)
+      if (message.error) pending.reject(new Error(message.error))
+      else pending.resolve(message.result)
     })
   }
 
