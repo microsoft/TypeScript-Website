@@ -1,5 +1,6 @@
 import assert from "node:assert/strict"
 import { readFile, readdir } from "node:fs/promises"
+import { createRequire } from "node:module"
 import { test } from "node:test"
 import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
@@ -9,6 +10,47 @@ import { loadCompilerDistribution, loadPublishedCompilerDistribution } from "./c
 import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
 import { computeCompilerOverrides } from "./compiler-overrides"
+import { createStradaFileSystem } from "./strada-project"
+
+test("legacy virtual directory discovery supports compiler config inheritance and file selection", () => {
+  const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
+  const files = new Map([
+    ["/workspace/tsconfig.json", "{}"],
+    [
+      "/workspace/config/base.json",
+      JSON.stringify({
+        compilerOptions: { strict: true, target: "es2020" },
+        include: ["../src"],
+        exclude: ["../src/skip.ts"],
+      }),
+    ],
+    ["/workspace/explicit.ts", "export const explicit = 1;"],
+    ["/workspace/src/Keep.ts", "export const kept = 1;"],
+    ["/workspace/src/skip.ts", "export const skipped = 1;"],
+    ["/workspace/node_modules/package/ignore.ts", "export const ignored = 1;"],
+  ])
+  const host = createStradaFileSystem(
+    ts,
+    () => files.keys(),
+    path => files.get(path)
+  )
+  for (const include of [["src"], undefined]) {
+    const parsed = ts.parseJsonConfigFileContent(
+      { extends: "./config/base.json", files: ["./explicit.ts"], ...(include ? { include } : {}) },
+      host,
+      "/workspace",
+      undefined,
+      "/workspace/tsconfig.json"
+    )
+    assert.deepEqual(parsed.errors, [])
+    assert.deepEqual(parsed.fileNames.sort(), ["/workspace/explicit.ts", "/workspace/src/Keep.ts"])
+    assert.equal(parsed.options.strict, true)
+    assert.equal(parsed.options.target, ts.ScriptTarget.ES2020)
+  }
+  assert.deepEqual(host.getDirectories("/workspace").sort(), ["config", "node_modules", "src"])
+  assert.equal(host.fileExists("/workspace/src/../explicit.ts"), true)
+  assert.equal(host.fileExists("/workspace/src/keep.ts"), false)
+})
 
 test("native TypeScript comment directives are not project-wide compiler overrides", () => {
   const config = '{"compilerOptions":{"strict":false}}'

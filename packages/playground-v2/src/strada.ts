@@ -74,6 +74,7 @@ export class StradaBackend {
       baseUrl: options.baseUrl,
       compilerSource: options.compilerSource,
       files: options.files(),
+      sourceFiles: backend.#sourceFileNames(),
       version: options.version,
     })
     backend.#registerLanguageFeatures()
@@ -88,7 +89,14 @@ export class StradaBackend {
   async updateFiles() {
     await this.#request("updateFiles", {
       files: this.#options.files(),
+      sourceFiles: this.#sourceFileNames(),
     })
+  }
+
+  #sourceFileNames() {
+    return [...this.#options.models.values()]
+      .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+      .map(model => model.uri.path)
   }
 
   async quickInfo(fileName: string, position: number) {

@@ -1,5 +1,6 @@
 import type { StradaLoadingProgress } from "./strada"
 import { loadStradaLibraries } from "./strada-libraries"
+import { createStradaFileSystem, normalizeStradaPath as normalizePath } from "./strada-project"
 
 type TS = typeof import("typescript")
 
@@ -9,6 +10,7 @@ type InitMessage = {
   args: {
     compilerSource: string
     files: Record<string, string>
+    sourceFiles: string[]
     version: string
     baseUrl: string
   }
@@ -32,6 +34,8 @@ let compilerOptions: import("typescript").CompilerOptions = {}
 let projectVersion = 0
 const files = new Map<string, FileEntry>()
 const libraries = new Map<string, string>()
+let sourceFiles: string[] = []
+let filesystem: ReturnType<typeof createStradaFileSystem>
 let languageService: import("typescript").LanguageService
 
 self.addEventListener("message", (event: MessageEvent<InitMessage | RequestMessage>) => {
@@ -56,9 +60,10 @@ async function initialize(args: InitMessage["args"]) {
   // The owning page supplies compiler code from our trusted compiler CDN over
   // this dedicated worker's private channel. Evaluating that compiler is intentional.
   ts = new Function(`${args.compilerSource}\nreturn ts;`)() as TS
+  filesystem = createStradaFileSystem(ts, () => [...files.keys(), ...libraries.keys()], readFile)
   version = args.version
   baseUrl = args.baseUrl
-  replaceFiles(args.files)
+  replaceFiles(args.files, args.sourceFiles)
   refreshConfig()
   await loadLibraries(compilerOptions)
   reportProgress({ phase: "initializing" })
@@ -69,7 +74,7 @@ async function initialize(args: InitMessage["args"]) {
 async function dispatch(method: string, args: any) {
   switch (method) {
     case "updateFiles":
-      replaceFiles(args.files)
+      replaceFiles(args.files, args.sourceFiles)
       refreshConfig()
       await loadLibraries(compilerOptions)
       return
@@ -156,7 +161,8 @@ async function dispatch(method: string, args: any) {
   }
 }
 
-function replaceFiles(nextFiles: Record<string, string>) {
+function replaceFiles(nextFiles: Record<string, string>, nextSourceFiles: readonly string[]) {
+  sourceFiles = nextSourceFiles.map(normalizePath)
   const nextNames = new Set(Object.keys(nextFiles))
   for (const fileName of files.keys()) {
     if (!nextNames.has(fileName)) files.delete(fileName)
@@ -186,59 +192,18 @@ function parseConfig() {
   const configText = configPath ? files.get(configPath)?.text ?? "{}" : "{}"
   const configResult = ts.parseConfigFileTextToJson(configPath ?? "/workspace/tsconfig.json", configText)
   const config = configResult.config ?? {}
-  const converted = ts.convertCompilerOptionsFromJson(config.compilerOptions ?? {}, "/workspace", configPath)
-  const options: import("typescript").CompilerOptions = {
-    ...converted.options,
-    allowJs: converted.options.allowJs ?? configPath?.endsWith("/jsconfig.json") ?? false,
-    checkJs: converted.options.checkJs ?? configPath?.endsWith("/jsconfig.json") ?? false,
-  }
-  const rootNames = getRootNames(config)
+  const configFileName = normalizePath(configPath ?? "/workspace/tsconfig.json")
+  const basePath = configFileName.slice(0, configFileName.lastIndexOf("/"))
+  const parsed = ts.parseJsonConfigFileContent(config, filesystem, basePath, undefined, configFileName)
   return {
     errors: [
       ...(configResult.error ? [serializeDiagnostic(configResult.error)] : []),
-      ...converted.errors.map(serializeDiagnostic),
+      ...parsed.errors.map(serializeDiagnostic),
     ],
-    options,
-    rootNames,
+    options: parsed.options,
+    rootNames: parsed.fileNames,
+    projectReferences: parsed.projectReferences,
   }
-}
-
-function getRootNames(config: any) {
-  const sourceFiles = [...files.keys()].filter(
-    fileName => !fileName.includes("/node_modules/") && /\.[cm]?[jt]sx?$/i.test(fileName)
-  )
-  if (Array.isArray(config.files)) {
-    return config.files
-      .filter((fileName: unknown): fileName is string => typeof fileName === "string")
-      .map((fileName: string) => normalizePath(`/workspace/${fileName}`))
-      .filter((fileName: string) => files.has(fileName))
-  }
-  const includes = Array.isArray(config.include) ? config.include : ["**/*"]
-  const excludes = Array.isArray(config.exclude)
-    ? config.exclude
-    : ["node_modules", "bower_components", "jspm_packages"]
-  return sourceFiles.filter(fileName => {
-    const relative = fileName.replace(/^\/workspace\//, "")
-    return (
-      includes.some((pattern: string) => matchesGlob(relative, pattern)) &&
-      !excludes.some((pattern: string) => matchesGlob(relative, pattern))
-    )
-  })
-}
-
-function matchesGlob(fileName: string, pattern: string) {
-  const normalized = pattern.replace(/^\.\//, "")
-  const expression = normalized
-    .replaceAll("**/", "\u0000")
-    .replaceAll("**", "\u0001")
-    .replaceAll("*", "\u0002")
-    .replaceAll("?", "\u0003")
-    .replace(/[.+^${}()|[\]\\]/g, "\\$&")
-    .replaceAll("\u0000", "(?:.*/)?")
-    .replaceAll("\u0001", ".*")
-    .replaceAll("\u0002", "[^/]*")
-    .replaceAll("\u0003", ".")
-  return new RegExp(`^${expression}$`, "i").test(fileName)
 }
 
 async function loadLibraries(options: import("typescript").CompilerOptions) {
@@ -258,7 +223,12 @@ function compile() {
   compilerOptions = parsed.options
   const outputFiles: Record<string, string> = {}
   const host = createCompilerHost(outputFiles)
-  const program = ts.createProgram(parsed.rootNames, parsed.options, host)
+  const program = ts.createProgram({
+    rootNames: parsed.rootNames,
+    options: parsed.options,
+    host,
+    projectReferences: parsed.projectReferences,
+  })
   const emit = program.emit()
   const diagnostics = [
     ...parsed.errors,
@@ -275,25 +245,10 @@ function compile() {
 
 function createCompilerHost(outputFiles: Record<string, string>) {
   const host: import("typescript").CompilerHost = {
-    directoryExists: directoryName =>
-      [...files.keys(), ...libraries.keys()].some(fileName =>
-        fileName.startsWith(`${normalizePath(directoryName).replace(/\/$/, "")}/`)
-      ),
-    fileExists: fileName => readFile(fileName) !== undefined,
+    ...filesystem,
     getCanonicalFileName: fileName => fileName,
     getCurrentDirectory: () => "/workspace",
     getDefaultLibFileName: options => `/typescript/lib/${ts.getDefaultLibFileName(options)}`,
-    getDirectories: directoryName => {
-      const prefix = `${normalizePath(directoryName).replace(/\/$/, "")}/`
-      return [
-        ...new Set(
-          [...files.keys(), ...libraries.keys()]
-            .filter(fileName => fileName.startsWith(prefix))
-            .map(fileName => fileName.slice(prefix.length).split("/")[0])
-            .filter(name => name && !name.includes("."))
-        ),
-      ]
-    },
     getNewLine: () => "\n",
     getSourceFile: (fileName, languageVersion) => {
       const text = readFile(fileName)
@@ -312,7 +267,7 @@ function createCompilerHost(outputFiles: Record<string, string>) {
 
 function createLanguageServiceHost(): import("typescript").LanguageServiceHost {
   return {
-    fileExists: fileName => readFile(fileName) !== undefined,
+    ...filesystem,
     getCompilationSettings: () => ({
       ...compilerOptions,
       allowJs: true,
@@ -320,7 +275,8 @@ function createLanguageServiceHost(): import("typescript").LanguageServiceHost {
     getCurrentDirectory: () => "/workspace",
     getDefaultLibFileName: options => `/typescript/lib/${ts.getDefaultLibFileName(options)}`,
     getProjectVersion: () => String(projectVersion),
-    getScriptFileNames: () => [...files.keys(), ...libraries.keys()],
+    getScriptFileNames: () => sourceFiles.slice(),
+    getProjectReferences: () => parseConfig().projectReferences,
     getScriptKind: scriptKind,
     getScriptSnapshot: fileName => {
       const text = readFile(fileName)
@@ -328,7 +284,6 @@ function createLanguageServiceHost(): import("typescript").LanguageServiceHost {
     },
     getScriptVersion: fileName => files.get(normalizePath(fileName))?.version.toString() ?? "1",
     readFile,
-    readDirectory: () => [...files.keys()],
     useCaseSensitiveFileNames: () => true,
   }
 }
@@ -344,10 +299,6 @@ function scriptKind(fileName: string) {
   if (/\.[cm]?js$/i.test(fileName)) return ts.ScriptKind.JS
   if (/\.json$/i.test(fileName)) return ts.ScriptKind.JSON
   return ts.ScriptKind.TS
-}
-
-function normalizePath(fileName: string) {
-  return fileName.replaceAll("\\", "/").replace(/^file:\/\//, "")
 }
 
 function serializeDiagnostic(diagnostic: import("typescript").Diagnostic) {
