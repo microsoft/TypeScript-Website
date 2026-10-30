@@ -1,6 +1,8 @@
-export const playgroundPath = "/play/"
-export const compatibilityPaths = ["play/v2", "play/7", "v2"]
-export const compatibilityScript = `location.replace(${JSON.stringify(playgroundPath)} + location.search + location.hash)`
+export const playgroundPath = "/play/v2/"
+export const compatibilityPaths = ["play/7", "v2"]
+export const compatibilityScript = `location.replace(${JSON.stringify(
+  playgroundPath
+)} + location.search + location.hash)`
 
 export const compatibilityHtml = `<!doctype html>
 <meta charset="utf-8">

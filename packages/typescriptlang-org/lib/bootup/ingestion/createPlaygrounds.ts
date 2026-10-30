@@ -59,7 +59,7 @@ export const createPlaygrounds = async (
     const optionsSummary = JSON.parse(fs.readFileSync(optionsPath, "utf8"))
       .options
 
-    const pathName = lang.name === "en" ? "/oldplay" : `/${lang.name}/oldplay`
+    const pathName = lang.name === "en" ? "/play" : `/${lang.name}/play`
     addPathToSite(pathName)
 
     createPage({
@@ -73,14 +73,10 @@ export const createPlaygrounds = async (
       },
     })
 
-    const currentPath = lang.name === "en" ? "/play" : `/${lang.name}/play`
-    addPathToSite(currentPath)
-    if (lang.name !== "en") {
-      createPage({
-        path: currentPath,
-        component: path.resolve("./src/templates/playground-redirect.tsx"),
-        context: { toPath: "/play/" },
-      })
-    }
+    createPage({
+      path: lang.name === "en" ? "/oldplay" : `/${lang.name}/oldplay`,
+      component: path.resolve("./src/templates/playground-redirect.tsx"),
+      context: { toPath: `${pathName}/` },
+    })
   })
 }

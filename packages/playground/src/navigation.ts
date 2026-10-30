@@ -116,7 +116,7 @@ const updateNavWithStoryContent = (title: string, storyContent: StoryContent[], 
           a.appendChild(createStoryIcon(element.type))
         }
         a.appendChild(document.createTextNode(element.title))
-        a.href = `${document.location.pathname}${prefix}-${i}`
+        a.href = `/play#${prefix}-${i}`
 
         a.onclick = e => {
           e.preventDefault()
@@ -235,12 +235,11 @@ const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
 
   // We need to hijack internal links
   for (const a of Array.from(story.getElementsByTagName("a"))) {
-    if (!/\/(?:play|oldplay)(?:\/|$)/.test(a.pathname)) continue
+    if (!a.pathname.startsWith("/play")) continue
     // Note the header generated links also count in here
 
     // overwrite playground links
     if (a.hash.includes("#code/")) {
-      a.href = `${document.location.pathname}${a.search}${a.hash}`
       a.onclick = e => {
         const code = a.hash.replace("#code/", "").trim()
         let userCode = sandbox.lzstring.decompressFromEncodedURIComponent(code)
@@ -259,7 +258,6 @@ const setStory = (html: string | HTMLElement, sandbox: Sandbox) => {
 
     // overwrite gist/handbook links
     else if (a.hash.includes("#handbook")) {
-      a.href = `${document.location.pathname}${a.search}${a.hash}`
       a.onclick = e => {
         const index = Number(a.hash.split("-")[1])
         const nav = document.getElementById("navigation-container")

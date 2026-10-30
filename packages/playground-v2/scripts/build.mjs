@@ -8,7 +8,8 @@ const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const websiteDirectory = resolve(packageDirectory, "../..")
 const vendorDirectory = resolve(packageDirectory, "vendor")
 const outputDirectory = resolve(packageDirectory, "dist")
-const websiteStaticDirectory = resolve(websiteDirectory, "packages/typescriptlang-org/static/play")
+const websitePlayDirectory = resolve(websiteDirectory, "packages/typescriptlang-org/static/play")
+const websiteStaticDirectory = resolve(websitePlayDirectory, "v2")
 const compatibilityDirectories = compatibilityPaths.map(path =>
   resolve(websiteDirectory, "packages/typescriptlang-org/static", path)
 )
@@ -83,7 +84,7 @@ if (serve) {
   )
   if (compilerInputs.length) throw new Error(`Compiler implementation was bundled: ${compilerInputs.join(", ")}`)
   await buildContext.dispose()
-  await rm(websiteStaticDirectory, { force: true, recursive: true })
+  await rm(websitePlayDirectory, { force: true, recursive: true })
   await cp(outputDirectory, websiteStaticDirectory, { recursive: true })
   await Promise.all(
     compatibilityDirectories.map(async directory => {

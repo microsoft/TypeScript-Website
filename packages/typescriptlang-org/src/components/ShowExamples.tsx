@@ -38,7 +38,7 @@ const hrefForExample = (example: Example, lang: string) => {
   params.q = Math.floor(Math.random() * 512)
   const queryParams = Object.keys(params).map(key => key + '=' + params[key]).join('&');
   const langPrefix = lang === "en" ? "" : `/${lang}`
-  return withPrefix(`${langPrefix}/oldplay/?${prefix + queryParams}#${hash}`)
+  return withPrefix(`${langPrefix}/play/?${prefix + queryParams}#${hash}`)
 }
 
 
