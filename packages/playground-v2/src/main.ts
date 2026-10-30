@@ -286,10 +286,10 @@ let compilerReady = false
 let lspReady = false
 let lspStatus: TsgoStatus = "mounting files"
 let lspServerInfo: string | undefined
-let diagnosticCount = 0
 let compilerFailure: string | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
+let projectCheckPending = false
 let languageServer: TsgoLspController | undefined
 let stradaBackend: StradaBackend | undefined
 let nativeBackend: NativeBackend | undefined
@@ -1850,7 +1850,7 @@ function scheduleTypeAcquisition() {
   window.clearTimeout(typeAcquisitionTimer)
   typeAcquisitionProgress = undefined
   typeAcquisitionFailure = undefined
-  setStatus("Checking project...", "loading")
+  renderStatus()
   typeAcquisitionTimer = window.setTimeout(() => {
     void refreshTypeAcquisition()
   }, 900)
@@ -2171,7 +2171,8 @@ async function compileNativeProject() {
   const backend = nativeBackend
   if (!backend) return
   const compileVersion = ++nativeCompileVersion
-  setStatus("Checking project...", "loading")
+  projectCheckPending = true
+  renderStatus()
   runButton.disabled = true
 
   try {
@@ -2186,7 +2187,6 @@ async function compileNativeProject() {
     const diagnostics = deduplicateDiagnostics(
       remapCompilerOverrideDiagnostics([...result.diagnostics, ...compilerOverrideDiagnostics()])
     )
-    diagnosticCount = diagnostics.length
     setDiagnostics(diagnostics)
     emittedFiles = new Map(Object.entries(result.outputFiles))
     runButton.disabled = ![...emittedFiles.keys()].some(fileName => fileName.endsWith(".js"))
@@ -2198,12 +2198,12 @@ async function compileNativeProject() {
     completeInitialTypeQueries()
     inlayEmitter.fire()
     projectFailure = undefined
+    projectCheckPending = false
     compilerFailure = undefined
     renderStatus()
   } catch (error) {
     if (compileVersion !== nativeCompileVersion) return
     const message = error instanceof Error ? error.message : String(error)
-    diagnosticCount = 0
     emittedFiles = new Map()
     runButton.disabled = true
     setDiagnostics([])
@@ -2212,6 +2212,7 @@ async function compileNativeProject() {
     inlayEmitter.fire()
     renderEmitError(message)
     projectFailure = message
+    projectCheckPending = false
     renderStatus()
     console.error(error)
   }
@@ -2223,7 +2224,8 @@ async function compileStradaProject() {
   const backend = stradaBackend
   if (!backend) return
   const compileVersion = ++stradaCompileVersion
-  setStatus("Checking project...", "loading")
+  projectCheckPending = true
+  renderStatus()
   runButton.disabled = true
   try {
     const result = await backend.compile()
@@ -2232,7 +2234,6 @@ async function compileStradaProject() {
       ...(result.diagnostics as Diagnostic[]),
       ...compilerOverrideDiagnostics(),
     ])
-    diagnosticCount = diagnostics.length
     setDiagnostics(diagnostics)
     emittedFiles = new Map(Object.entries(result.outputFiles))
     runButton.disabled = ![...emittedFiles.keys()].some(fileName => fileName.endsWith(".js"))
@@ -2248,11 +2249,11 @@ async function compileStradaProject() {
     completeInitialTypeQueries()
     inlayEmitter.fire()
     projectFailure = undefined
+    projectCheckPending = false
     compilerFailure = undefined
     renderStatus()
   } catch (error) {
     if (compileVersion !== stradaCompileVersion) return
-    diagnosticCount = 0
     emittedFiles = new Map()
     runButton.disabled = true
     setDiagnostics([])
@@ -2262,6 +2263,7 @@ async function compileStradaProject() {
     const message = error instanceof Error ? error.message : String(error)
     renderEmitError(message)
     projectFailure = message
+    projectCheckPending = false
     renderStatus()
     console.error(error)
   }
@@ -2701,7 +2703,7 @@ function renderStatus() {
 
   loader.hidden = true
   loader.dataset.state = "ready"
-  if (projectFailure) {
+  if (projectFailure && !projectCheckPending) {
     setStatus(projectFailure, "error")
     inputEditor.layout()
     return
@@ -2718,17 +2720,19 @@ function renderStatus() {
     setStatus(`Package types: ${packages}${files}${pending}`, "loading")
     return
   }
-  const compiler = lspServerInfo ?? __TS_VERSION__
-  const diagnostics = `${diagnosticCount} diagnostic${diagnosticCount === 1 ? "" : "s"}`
+  if (projectCheckPending) {
+    setStatus("Checking project...", "loading")
+    return
+  }
   setStatus(
-    `${compiler} ready · ${diagnostics}${typeAcquisitionFailure ? ` · package types: ${typeAcquisitionFailure}` : ""}`,
+    typeAcquisitionFailure ? `Package types: ${typeAcquisitionFailure}` : "Ready",
     typeAcquisitionFailure ? "error" : "ready"
   )
   inputEditor.layout()
 }
 
 function setStatus(message: string, state: "loading" | "ready" | "error") {
-  status.textContent = message
+  if (status.textContent !== message) status.textContent = message
   status.title = message
   status.dataset.state = state
 }
@@ -2737,6 +2741,7 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
   model.onDidChangeContent(() => {
     nativeCompileVersion++
     stradaCompileVersion++
+    projectCheckPending = true
     scheduleProjectPersistence()
     refreshCompilerOverrides()
     scheduleTypeAcquisition()
