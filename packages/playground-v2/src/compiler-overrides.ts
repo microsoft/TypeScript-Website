@@ -25,7 +25,18 @@ export type CompilerOverrideState = {
   overrides: CompilerOverride[]
 }
 
-const reservedDirectives = new Set(["errors", "filename", "noerrors", "showemit", "showemittedfile", "showoutput"])
+const reservedDirectives = new Set([
+  "errors",
+  "filename",
+  "noerrors",
+  "showemit",
+  "showemittedfile",
+  "showoutput",
+  "ts-check",
+  "ts-expect-error",
+  "ts-ignore",
+  "ts-nocheck",
+])
 const directivePattern = /^(\s*\/\/\s*)@([A-Za-z][\w-]*):\s*(.*?)\s*$/
 const formattingOptions = {
   insertSpaces: true,

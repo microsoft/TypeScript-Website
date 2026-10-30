@@ -8,6 +8,33 @@ import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
 import { loadCompilerDistribution, loadPublishedCompilerDistribution } from "./compiler-distribution"
 import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
+import { computeCompilerOverrides } from "./compiler-overrides"
+
+test("native TypeScript comment directives are not project-wide compiler overrides", () => {
+  const config = '{"compilerOptions":{"strict":false}}'
+  const state = computeCompilerOverrides(
+    new Map([
+      [
+        "/workspace/src/index.ts",
+        [
+          "// @ts-expect-error: intentional type error",
+          "// @ts-ignore: compatibility",
+          "// @ts-nocheck: generated",
+          "// @ts-check:",
+          "// @strict: true",
+          'const value: number = "wrong";',
+        ].join("\n"),
+      ],
+    ]),
+    config
+  )
+  assert.deepEqual(state.diagnostics, [])
+  assert.deepEqual(
+    state.overrides.map(override => override.option),
+    ["strict"]
+  )
+  assert.deepEqual(JSON.parse(state.effectiveConfigText).compilerOptions, { strict: true })
+})
 
 test("legacy library discovery downloads bounded parallel batches, deduplicates references, and reports progress", async t => {
   const source = new Map<string, string>([
