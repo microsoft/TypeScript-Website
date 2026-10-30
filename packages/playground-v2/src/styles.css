@@ -64,6 +64,7 @@ body {
   color: white;
   background: var(--toolbar);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -126,15 +127,20 @@ body {
 }
 
 .toolbar-actions {
+  min-width: 0;
+  max-width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.75rem;
 }
 
 .version-control {
   position: relative;
+  flex: 0 0 auto;
   min-width: 7rem;
-  max-width: 12rem;
+  max-width: min(26rem, calc(100vw - 2rem));
 }
 
 .version-control summary {
@@ -158,6 +164,12 @@ body {
 
 .version-control summary::-webkit-details-marker {
   display: none;
+}
+
+#compiler-version-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .version-control summary:hover,
@@ -193,7 +205,9 @@ body {
   top: calc(100% + 0.3rem);
   left: 0;
   z-index: 60;
-  width: max(100%, 10rem);
+  width: max-content;
+  min-width: 100%;
+  max-width: calc(100vw - 2rem);
   max-height: min(30rem, calc(100dvh - 6rem));
   padding: 0.3rem 0;
   overflow-y: auto;
