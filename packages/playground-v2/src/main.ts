@@ -323,32 +323,44 @@ const settingsStorageKey = "ts7-playground-settings"
 let compilerOverrideState: CompilerOverrideState
 let playgroundSettings = loadPlaygroundSettings()
 
-const darkMode =
-  playgroundSettings.theme === "dark" ||
-  (playgroundSettings.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
-monaco.editor.defineTheme("typescript-playground", {
-  base: darkMode ? "vs-dark" : "vs",
-  inherit: true,
-  rules: [
-    { token: "comment", foreground: darkMode ? "7caf3d" : "6c6f2d" },
-    { token: "keyword", foreground: darkMode ? "7fc7ff" : "2b45c7" },
-    { token: "type", foreground: darkMode ? "4ec9b0" : "1142af" },
-    { token: "class", foreground: darkMode ? "4ec9b0" : "267f99" },
-    { token: "enum", foreground: darkMode ? "4ec9b0" : "267f99" },
-    { token: "interface", foreground: darkMode ? "4ec9b0" : "267f99" },
-    { token: "function", foreground: darkMode ? "dcdcaa" : "795e26" },
-    { token: "method", foreground: darkMode ? "dcdcaa" : "795e26" },
-    { token: "parameter", foreground: darkMode ? "9cdcfe" : "001080" },
-    { token: "property", foreground: darkMode ? "9cdcfe" : "001080" },
-    { token: "variable", foreground: darkMode ? "9cdcfe" : "001080" },
-  ],
-  colors: {
-    "editor.background": darkMode ? "#1e1e1e" : "#fafafa",
-    "editor.inactiveSelectionBackground": darkMode ? "#3a3d41" : "#e8e8e8",
-    "editor.selectionBackground": darkMode ? "#264f78" : "#dbeafe",
-    "editorInlayHint.background": darkMode ? "#333333" : "#eeeeee",
-    "editorInlayHint.foreground": darkMode ? "#d4d4d4" : "#333333",
-  },
+const systemTheme = matchMedia("(prefers-color-scheme: dark)")
+function configureEditorTheme() {
+  const darkMode = playgroundSettings.theme === "dark" || (playgroundSettings.theme === "system" && systemTheme.matches)
+  monaco.editor.defineTheme("typescript-playground", {
+    base: darkMode ? "vs-dark" : "vs",
+    inherit: true,
+    rules: [
+      { token: "comment", foreground: darkMode ? "7caf3d" : "6c6f2d" },
+      { token: "keyword", foreground: darkMode ? "7fc7ff" : "2b45c7" },
+      { token: "number", foreground: darkMode ? "b5cea8" : "087f53" },
+      { token: "type", foreground: darkMode ? "4ec9b0" : "1142af" },
+      { token: "class", foreground: darkMode ? "4ec9b0" : "267f99" },
+      { token: "enum", foreground: darkMode ? "4ec9b0" : "267f99" },
+      { token: "interface", foreground: darkMode ? "4ec9b0" : "267f99" },
+      { token: "function", foreground: darkMode ? "dcdcaa" : "795e26" },
+      { token: "method", foreground: darkMode ? "dcdcaa" : "795e26" },
+      { token: "parameter", foreground: darkMode ? "9cdcfe" : "001080" },
+      { token: "property", foreground: darkMode ? "9cdcfe" : "001080" },
+      { token: "variable", foreground: darkMode ? "9cdcfe" : "001080" },
+    ],
+    colors: {
+      "editor.background": darkMode ? "#1e1e1e" : "#fafafa",
+      "editorLineNumber.foreground": darkMode ? "#a0a0a0" : "#6a737d",
+      "editorLineNumber.dimmedForeground": darkMode ? "#a0a0a0" : "#6a737d",
+      "editorLineNumber.activeForeground": darkMode ? "#f3f3f3" : "#333333",
+      "editor.inactiveSelectionBackground": darkMode ? "#3a3d41" : "#e8e8e8",
+      "editor.selectionBackground": darkMode ? "#264f78" : "#dbeafe",
+      "editorInlayHint.background": darkMode ? "#333333" : "#eeeeee",
+      "editorInlayHint.foreground": darkMode ? "#d4d4d4" : "#333333",
+    },
+  })
+}
+configureEditorTheme()
+systemTheme.addEventListener("change", () => {
+  if (playgroundSettings.theme !== "system") return
+  configureEditorTheme()
+  monaco.editor.setTheme("typescript-playground")
+  void renderEmittedFiles()
 })
 
 registerPlaygroundLanguages()
