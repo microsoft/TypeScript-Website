@@ -39,6 +39,15 @@ body {
   overflow: hidden;
 }
 
+:where(button, a, summary, input, select, pre, [role="separator"]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.toolbar :is(button, summary, a):focus-visible {
+  outline-color: white;
+}
+
 .playground {
   width: 100%;
   height: auto;
@@ -222,6 +231,11 @@ body {
   color: var(--accent) !important;
   background: var(--selected) !important;
   font-weight: 700;
+}
+
+.version-menu .version-menu-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
 }
 
 .version-menu-item[aria-checked="true"]::after {
@@ -1089,9 +1103,9 @@ body[data-resizing] {
 }
 
 .output-section-toggle {
-  flex: 0 0 1.4rem;
-  width: 1.4rem;
-  min-height: 1.4rem;
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  min-height: 1.5rem;
   padding: 0;
   border: 0;
   color: var(--muted);

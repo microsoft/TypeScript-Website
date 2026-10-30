@@ -33,11 +33,11 @@
         </div>
         <div class="toolbar-actions">
           <details id="compiler-version" class="version-control">
-            <summary id="compiler-version-button" aria-haspopup="menu" aria-expanded="false">
+            <summary id="compiler-version-button" aria-haspopup="menu" aria-expanded="false" aria-controls="compiler-version-menu">
               <span id="compiler-version-label">__COMPILER_VERSION__</span>
               <span class="version-caret" aria-hidden="true"></span>
             </summary>
-            <div id="compiler-version-menu" class="version-menu" role="menu"></div>
+            <div id="compiler-version-menu" class="version-menu" role="menu" aria-labelledby="compiler-version-button"></div>
           </details>
           <button id="run-button" type="button" disabled>Run</button>
           <button id="reset-project-button" type="button" title="Reset the project">Reset</button>
@@ -66,6 +66,7 @@
           class="workspace-resizer file-resizer"
           role="separator"
           aria-label="Resize project files"
+          aria-controls="file-explorer"
           aria-orientation="vertical"
           tabindex="0"
         ></div>
@@ -89,10 +90,11 @@
           class="workspace-resizer output-resizer"
           role="separator"
           aria-label="Resize output"
+          aria-controls="output-panel"
           aria-orientation="vertical"
           tabindex="0"
         ></div>
-        <aside id="output-panel" class="output-panel">
+        <section id="output-panel" class="output-panel" aria-label="Compiler output">
           <div class="panel-heading">
             <div class="output-section-title">
               <button
@@ -145,7 +147,7 @@
               <p class="empty-message">Run the project to see console output.</p>
             </div>
           </section>
-        </aside>
+        </section>
       </section>
       <dialog id="new-file-dialog" class="form-dialog" aria-labelledby="new-file-title">
         <form id="new-file-form">
@@ -154,7 +156,7 @@
           </header>
           <label>
             <span>Path inside /workspace</span>
-            <input id="new-file-path" type="text" value="src/new-file.ts" autocomplete="off" spellcheck="false" />
+            <input id="new-file-path" type="text" value="src/new-file.ts" autocomplete="off" spellcheck="false" aria-describedby="new-file-error" />
           </label>
           <p id="new-file-error" class="form-error" role="alert" hidden></p>
           <footer>
@@ -252,7 +254,7 @@
           </header>
           <label>
             <span id="text-input-label">Value</span>
-            <input id="text-input-value" type="text" autocomplete="off" spellcheck="false" />
+            <input id="text-input-value" type="text" autocomplete="off" spellcheck="false" aria-describedby="text-input-error" />
           </label>
           <p id="text-input-error" class="form-error" role="alert" hidden></p>
           <footer>
@@ -296,11 +298,11 @@
           </div>
           <div id="loading-copy" class="loading-copy">
             <p id="loading-message" role="status">Downloading TypeScript...</p>
-            <progress id="loading-progress" max="100" value="0"></progress>
+            <progress id="loading-progress" max="100" value="0" aria-labelledby="loading-message"></progress>
             <small id="loading-detail">Preparing downloads</small>
           </div>
-          <section id="download-consent" class="download-consent" hidden>
-            <h2>Download TypeScript __COMPILER_VERSION__?</h2>
+          <section id="download-consent" class="download-consent" aria-labelledby="download-consent-title" hidden>
+            <h2 id="download-consent-title">Download TypeScript __COMPILER_VERSION__?</h2>
             <p>
               The first load requires approximately <strong id="download-size">53 MB</strong>. Compiler files are cached
               in this browser for future visits.

@@ -643,6 +643,7 @@ function requestTextInput(options: { initialValue?: string; label: string; submi
   textInputValue.value = options.initialValue ?? ""
   textInputError.hidden = true
   textInputError.textContent = ""
+  textInputValue.removeAttribute("aria-invalid")
   textInputSubmitButton.textContent = options.submitLabel
   textInputDialog.showModal()
   textInputValue.focus()
@@ -703,8 +704,17 @@ function applyLayoutState() {
   toggleRunOutputButton.setAttribute("aria-label", toggleRunOutputButton.title)
   toggleRunOutputButton.setAttribute("aria-expanded", String(layoutState.runVisible))
 
-  fileResizer.setAttribute("aria-valuenow", String(Math.round(layoutState.filesWidth)))
-  outputResizer.setAttribute("aria-valuenow", String(Math.round(layoutState.outputWidth)))
+  for (const [target, element] of [
+    ["files", fileResizer],
+    ["output", outputResizer],
+  ] as const) {
+    const { minimum, maximum } = panelWidthLimits(target)
+    const width = Math.round(target === "files" ? layoutState.filesWidth : layoutState.outputWidth)
+    element.setAttribute("aria-valuemin", String(minimum))
+    element.setAttribute("aria-valuemax", String(maximum))
+    element.setAttribute("aria-valuenow", String(width))
+    element.setAttribute("aria-valuetext", `${width} pixels`)
+  }
   requestAnimationFrame(() => inputEditor.layout())
 }
 
@@ -767,13 +777,18 @@ function setupWorkspaceResizer(element: HTMLElement, target: "files" | "output")
 }
 
 function clampPanelWidth(target: "files" | "output", width: number) {
+  const { minimum, maximum } = panelWidthLimits(target)
+  return Math.min(Math.max(width, minimum), maximum)
+}
+
+function panelWidthLimits(target: "files" | "output") {
   const workspaceWidth = workspace.clientWidth || innerWidth
   if (target === "files") {
     const maximum = Math.max(160, workspaceWidth - (layoutState.outputVisible ? layoutState.outputWidth : 0) - 420)
-    return Math.min(Math.max(width, 144), Math.min(360, maximum))
+    return { minimum: 144, maximum: Math.min(360, maximum) }
   }
   const maximum = Math.max(240, workspaceWidth - (layoutState.filesVisible ? layoutState.filesWidth : 0) - 480)
-  return Math.min(Math.max(width, 240), Math.min(640, maximum))
+  return { minimum: 240, maximum: Math.min(640, maximum) }
 }
 
 for (const language of ["javascript", "typescript"]) {
@@ -862,6 +877,7 @@ textInputForm.addEventListener("submit", event => {
   if (value === "") {
     textInputError.textContent = "Enter a value."
     textInputError.hidden = false
+    textInputValue.setAttribute("aria-invalid", "true")
     textInputValue.focus()
     return
   }
@@ -1038,13 +1054,24 @@ async function initializeVersionSelector() {
       versions.find(version => version.value === selectedValue)?.label ?? selectedCompiler ?? __TS_VERSION__
     compilerVersion.addEventListener("toggle", () => {
       compilerVersionButton.setAttribute("aria-expanded", String(compilerVersion.open))
+    })
+    compilerVersionButton.addEventListener("click", event => {
+      event.preventDefault()
+      setVersionMenuOpen(!compilerVersion.open)
       if (compilerVersion.open) {
-        compilerVersionMenu.querySelector<HTMLButtonElement>('[aria-checked="true"]')?.focus()
+        focusVersionMenuItem(compilerVersionMenu.querySelector<HTMLButtonElement>('[aria-checked="true"]'))
       }
+    })
+    compilerVersionButton.addEventListener("keydown", event => {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
+      event.preventDefault()
+      setVersionMenuOpen(true)
+      const items = compilerVersionMenu.querySelectorAll<HTMLButtonElement>(".version-menu-item")
+      focusVersionMenuItem(items[event.key === "ArrowDown" ? 0 : items.length - 1])
     })
     compilerVersionMenu.addEventListener("keydown", handleVersionMenuKeydown)
     document.addEventListener("pointerdown", event => {
-      if (compilerVersion.open && !compilerVersion.contains(event.target as Node)) compilerVersion.open = false
+      if (compilerVersion.open && !compilerVersion.contains(event.target as Node)) setVersionMenuOpen(false)
     })
   } catch (error) {
     console.warn("Could not initialize the compiler version selector", error)
@@ -1056,6 +1083,7 @@ async function initializeVersionSelector() {
 function createVersionMenuItem(label: string, value: string, selectedValue: string) {
   const button = document.createElement("button")
   button.type = "button"
+  button.tabIndex = value === selectedValue ? 0 : -1
   button.className = "version-menu-item"
   button.dataset.value = value
   button.setAttribute("role", "menuitemradio")
@@ -1066,7 +1094,8 @@ function createVersionMenuItem(label: string, value: string, selectedValue: stri
 }
 
 async function selectCompilerVersion(value: string) {
-  compilerVersion.open = false
+  setVersionMenuOpen(false)
+  compilerVersionButton.focus()
   persistProjectState()
   const url = new URL(location.href)
   if (value === "native") {
@@ -1088,6 +1117,18 @@ async function selectCompilerVersion(value: string) {
   location.href = url.href
 }
 
+function setVersionMenuOpen(open: boolean) {
+  compilerVersion.open = open
+  compilerVersionButton.setAttribute("aria-expanded", String(open))
+}
+
+function focusVersionMenuItem(item: HTMLButtonElement | null | undefined) {
+  for (const button of compilerVersionMenu.querySelectorAll<HTMLButtonElement>(".version-menu-item")) {
+    button.tabIndex = button === item ? 0 : -1
+  }
+  item?.focus()
+}
+
 function handleVersionMenuKeydown(event: KeyboardEvent) {
   const items = [...compilerVersionMenu.querySelectorAll<HTMLButtonElement>(".version-menu-item")]
   const current = items.indexOf(document.activeElement as HTMLButtonElement)
@@ -1096,15 +1137,19 @@ function handleVersionMenuKeydown(event: KeyboardEvent) {
   else if (event.key === "ArrowUp") next = (current - 1 + items.length) % items.length
   else if (event.key === "Home") next = 0
   else if (event.key === "End") next = items.length - 1
-  else if (event.key === "Escape") {
-    compilerVersion.open = false
+  else if (event.key === "Tab") {
+    setVersionMenuOpen(false)
+    compilerVersionButton.focus()
+    return
+  } else if (event.key === "Escape") {
+    setVersionMenuOpen(false)
     compilerVersionButton.focus()
     event.preventDefault()
     return
   } else {
     return
   }
-  items[next]?.focus()
+  focusVersionMenuItem(items[next])
   event.preventDefault()
 }
 
@@ -2572,7 +2617,10 @@ function updateActiveFile() {
     : model.uri.path.startsWith("/typescript/lib/")
     ? `${model.uri.path.slice(model.uri.path.lastIndexOf("/") + 1)} (bundled)`
     : model.uri.path
-  inputEditor.updateOptions({ readOnly: !projectModel })
+  inputEditor.updateOptions({
+    ariaLabel: `${currentFile.textContent}${projectModel ? "" : ", read-only"} editor`,
+    readOnly: !projectModel,
+  })
   editorHint.textContent =
     model.getLanguageId() === "typescript"
       ? "Type query: align ^? below an expression"
@@ -2679,6 +2727,7 @@ function createNewFile() {
   newFilePath.value = "src/new-file.ts"
   newFileError.hidden = true
   newFileError.textContent = ""
+  newFilePath.removeAttribute("aria-invalid")
   newFileDialog.showModal()
   newFilePath.focus()
   newFilePath.select()
@@ -2713,6 +2762,7 @@ function finishCreatingFile() {
 function showNewFileError(message: string) {
   newFileError.textContent = message
   newFileError.hidden = false
+  newFilePath.setAttribute("aria-invalid", "true")
   newFilePath.focus()
 }
 
