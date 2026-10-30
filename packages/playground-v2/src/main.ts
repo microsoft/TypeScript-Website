@@ -405,6 +405,14 @@ const inputEditor = monaco.editor.create(inputElement, {
   theme: "typescript-playground",
 })
 let effectiveConfigModel: monaco.editor.ITextModel | undefined
+monaco.editor.registerEditorOpener({
+  openCodeEditor(_source, resource, selection) {
+    if (resource.scheme !== "file" || !monaco.editor.getModel(resource)) return false
+    const range = selection && ("startLineNumber" in selection ? selection : monaco.Range.fromPositions(selection))
+    navigateToModel(resource.path, range)
+    return true
+  },
+})
 
 type EditorLocation = {
   selection: monaco.Selection
@@ -464,17 +472,7 @@ inputEditor.onMouseDown(event => {
   const example = exampleAtPosition(inputEditor.getModel(), position)
   if (example) {
     navigateToExample(example)
-    return
   }
-  window.setTimeout(() => {
-    inputEditor.setPosition(position)
-    if (stradaBackend) {
-      const model = inputEditor.getModel()
-      if (model) void stradaBackend.goToDefinition(model, position)
-    } else {
-      void inputEditor.getAction("editor.action.revealDefinition")?.run()
-    }
-  })
 })
 
 const inlayEmitter = new monaco.Emitter<void>()
@@ -957,10 +955,8 @@ async function initializeStradaCompiler(requestedVersion: string) {
     stradaBackend = await StradaBackend.create({
       baseUrl: `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`,
       compilerSource,
-      editor: inputEditor,
       files: compilerFileContents,
       models: projectModels,
-      onNavigate: navigateToModel,
       onCreateExternalModel(model) {
         if (acquiredTypeFiles.has(model.uri.path)) acquiredTypeModels.set(model.uri.path, model)
       },
@@ -998,7 +994,6 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
   try {
     languageServer = startTsgoLsp({
       configFileName,
-      editor: inputEditor,
       effectiveConfigText: effectiveCompilerConfigText(),
       libraries,
       models: [...projectModels.values()],
@@ -1007,7 +1002,6 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
         lspFailure = message
         renderStatus()
       },
-      onNavigate: navigateToModel,
       shouldHandleDiagnostics: model => projectModels.get(model.uri.path) === model,
       readPackageFile: fileName => acquiredTypeFiles.get(fileName),
       onPackageModel: model => acquiredTypeModels.set(model.uri.path, model),

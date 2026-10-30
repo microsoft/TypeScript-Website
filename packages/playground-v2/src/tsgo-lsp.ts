@@ -26,20 +26,13 @@ type WorkerMessage = {
   status?: TsgoStatus
 }
 
-type LspRange = {
-  start: { line: number; character: number }
-  end: { line: number; character: number }
-}
-
 type StartTsgoLspOptions = {
   configFileName: string
-  editor: monaco.editor.IStandaloneCodeEditor
   effectiveConfigText: string
   libraries: Record<string, string>
   models: readonly monaco.editor.ITextModel[]
   module: WebAssembly.Module
   onError(message: string): void
-  onNavigate(fileName: string, range: monaco.Range): void
   shouldHandleDiagnostics(model: monaco.editor.ITextModel): boolean
   readPackageFile(fileName: string): string | undefined
   onPackageModel(model: monaco.editor.ITextModel): void
@@ -286,7 +279,6 @@ class RingBufferWorker {
     ].includes(label)) {
       message.result = normalizeLibraryLocations(message?.result)
       await ensureDefinitionModels(message.result)
-      if (label === "textDocument/definition") navigateToDefinition(message.result)
     }
     if (message?.id !== undefined && !method) {
       this.#pendingRequests.delete(message.id)
@@ -306,8 +298,6 @@ class RingBufferWorker {
 }
 
 let languageRegistered = false
-let activeEditor: monaco.editor.IStandaloneCodeEditor | undefined
-let navigateToLocation: StartTsgoLspOptions["onNavigate"] | undefined
 let definitionFilesPromise: Promise<Record<string, string>> | undefined
 let readPackageFile: StartTsgoLspOptions["readPackageFile"] | undefined
 let onPackageModel: StartTsgoLspOptions["onPackageModel"] | undefined
@@ -348,8 +338,6 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     throw new Error("The TypeScript language server requires cross-origin isolation; reload once to activate it.")
   }
 
-  activeEditor = options.editor
-  navigateToLocation = options.onNavigate
   readPackageFile = options.readPackageFile
   onPackageModel = options.onPackageModel
   definitionFilesPromise = Promise.resolve(
@@ -440,40 +428,6 @@ async function ensureDefinitionModels(result: unknown) {
 function getDefinitionFiles() {
   if (!definitionFilesPromise) throw new Error("Language-server libraries are not initialized")
   return definitionFilesPromise
-}
-
-function navigateToDefinition(result: unknown) {
-  const location = Array.isArray(result) ? result[0] : result
-  if (!activeEditor || !location || typeof location !== "object") return
-
-  const target = location as {
-    uri?: string
-    targetUri?: string
-    range?: LspRange
-    targetRange?: LspRange
-    targetSelectionRange?: LspRange
-  }
-
-  const uri = target.targetUri ?? target.uri
-  const range = target.targetSelectionRange ?? target.targetRange ?? target.range
-  if (!uri || !range) return
-  const model = monaco.editor.getModel(monaco.Uri.parse(uri))
-  if (!model) return
-
-  const monacoRange = new monaco.Range(
-    range.start.line + 1,
-    range.start.character + 1,
-    range.end.line + 1,
-    range.end.character + 1
-  )
-  if (navigateToLocation) {
-    navigateToLocation(model.uri.path, monacoRange)
-    return
-  }
-  activeEditor.setModel(model)
-  activeEditor.setSelection(monacoRange)
-  activeEditor.revealRangeInCenter(monacoRange, monaco.editor.ScrollType.Immediate)
-  activeEditor.focus()
 }
 
 function languageForFile(fileName: string) {

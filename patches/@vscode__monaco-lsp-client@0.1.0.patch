@@ -169,39 +169,6 @@ index e5a9f7f..869bb6c 100644
      }
  
      const item: monaco.languages.CompletionItem = {
-diff --git a/src/adapters/languageFeatures/LspDefinitionFeature.ts b/src/adapters/languageFeatures/LspDefinitionFeature.ts
-index bf87f89..3d2257b 100644
---- a/src/adapters/languageFeatures/LspDefinitionFeature.ts
-+++ b/src/adapters/languageFeatures/LspDefinitionFeature.ts
-@@ -51,10 +51,25 @@ class LspDefinitionProvider implements monaco.languages.DefinitionProvider {
-             return null;
-         }
- 
--        if (Array.isArray(result)) {
--            return result.map(loc => toMonacoLocation(loc, this._client));
-+        const definitions = Array.isArray(result)
-+            ? result.map(loc => toMonacoLocation(loc, this._client))
-+            : [toMonacoLocation(result, this._client)];
-+        const external = definitions.find(definition => definition.uri.toString() !== model.uri.toString());
-+        if (external) {
-+            const targetModel = monaco.editor.getModel(external.uri);
-+            const editor = monaco.editor.getEditors().find(editor => editor.getModel() === model);
-+            if (targetModel && editor) {
-+                const range = 'targetSelectionRange' in external
-+                    ? external.targetSelectionRange ?? external.range
-+                    : external.range;
-+                editor.setModel(targetModel);
-+                editor.setSelection(range);
-+                editor.revealRangeInCenter(range, monaco.editor.ScrollType.Immediate);
-+                editor.focus();
-+                return null;
-+            }
-         }
- 
--        return toMonacoLocation(result, this._client);
-+        return Array.isArray(result) ? definitions : definitions[0];
-     }
- }
 diff --git a/src/adapters/languageFeatures/LspDiagnosticsFeature.ts b/src/adapters/languageFeatures/LspDiagnosticsFeature.ts
 index 40e8cad..afeed9d 100644
 --- a/src/adapters/languageFeatures/LspDiagnosticsFeature.ts

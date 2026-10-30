@@ -25,10 +25,8 @@ type WorkerMessage =
 
 type StradaBackendOptions = {
   compilerSource: string
-  editor: monaco.editor.IStandaloneCodeEditor
   files(): Record<string, string>
   models: Map<string, monaco.editor.ITextModel>
-  onNavigate(fileName: string, range: monaco.Range): void
   onCreateExternalModel(model: monaco.editor.ITextModel): void
   onProgress?(progress: StradaLoadingProgress): void
   version: string
@@ -107,19 +105,6 @@ export class StradaBackend {
     return this.#request<string | undefined>("readFile", { fileName })
   }
 
-  async goToDefinition(model: monaco.editor.ITextModel, position: monaco.Position) {
-    await this.updateFiles()
-    const result = await this.#request<any>("definitions", {
-      fileName: model.uri.path,
-      position: model.getOffsetAt(position),
-    })
-    const definition = result?.definitions?.[0]
-    if (!definition) return
-    const target = await this.#ensureModel(definition.fileName)
-    if (!target) return
-    this.#options.onNavigate(target.uri.path, spanToRange(target, definition.textSpan))
-  }
-
   async #formatOptions(model: monaco.editor.ITextModel) {
     const options = model.getOptions()
     return {
@@ -170,18 +155,6 @@ export class StradaBackend {
   }
 
   #registerLanguageFeatures() {
-    this.#disposables.push(
-      this.#options.editor.addAction({
-        id: "strada.goToDefinition",
-        label: "Go to Definition",
-        keybindings: [monaco.KeyCode.F12],
-        run: () => {
-          const model = this.#options.editor.getModel()
-          const position = this.#options.editor.getPosition()
-          if (model && position) void this.goToDefinition(model, position)
-        },
-      })
-    )
     for (const language of ["javascript", "typescript"]) {
       this.#disposables.push(
         monaco.languages.registerCompletionItemProvider(language, {
