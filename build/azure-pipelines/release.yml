@@ -118,6 +118,10 @@ extends:
         jobs:
           - job: Publish
             displayName: Publish npm packages
+            variables:
+              - ${{ each publishStage in parameters.publishStages }}:
+                - name: PublishStage${{ publishStage.index }}
+                  value: $[stageDependencies.Build.Build.outputs['packChangedPackages.PublishStage${{ publishStage.index }}']]
             templateContext:
               type: releaseJob
               isProduction: true
@@ -128,15 +132,9 @@ extends:
             steps:
               - checkout: none
 
-              - task: UseNode@1
-                inputs:
-                  version: "22.x"
-                displayName: "Install Node.js"
-
+              # ESRP succeeds for versions that are already on npm, so rerunning
+              # this job after a partial failure is safe.
               - ${{ each publishStage in parameters.publishStages }}:
-                - script: node "$(Pipeline.Workspace)/$(NpmArtifactName)/release-helper.mjs" prepare-stage ${{ publishStage.index }}
-                  displayName: "Check stage ${{ publishStage.index }} packages"
-
                 - template: MicroBuild.Publish.yml@MicroBuildTemplate
                   parameters:
                     condition: and(succeeded(), eq(variables['PublishStage${{ publishStage.index }}'], 'true'))

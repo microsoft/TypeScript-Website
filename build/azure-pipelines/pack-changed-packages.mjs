@@ -183,10 +183,8 @@ fs.copyFileSync(path.join(root, "build/azure-pipelines/release-helper.mjs"), pat
 fs.rmSync(path.join(outDir, "packed"), { recursive: true, force: true });
 
 for (let i = 0; i < maxStages; i++) {
-  if (!manifest.stages[i].length) {
-    fs.writeFileSync(path.join(outDir, `stage-${i}`, ".empty"), "");
-  }
   console.log(`Stage ${i}: ${manifest.stages[i].map(pkg => `${pkg.name}@${pkg.version}`).join(", ") || "(empty)"}`);
+  console.log(`##vso[task.setvariable variable=PublishStage${i};isOutput=true]${manifest.stages[i].length > 0}`);
 }
 
 const shouldPublish = packedNames.length > 0;
