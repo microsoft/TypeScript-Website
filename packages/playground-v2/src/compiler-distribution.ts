@@ -20,6 +20,74 @@ export async function loadCompilerDistribution(url: URL): Promise<CompilerDistri
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Could not load compiler distribution: ${response.status} ${url}`)
   const metadata: unknown = await response.json()
+  return resolveCompilerDistribution(metadata, new URL(response.url || url.href))
+}
+
+export async function loadPublishedCompilerDistribution(version: string): Promise<CompilerDistribution> {
+  const [main, artifact] = await Promise.all([
+    loadPackage("typescript", version),
+    loadPackage("@typescript/typescript-wasip1-wasm", version),
+  ])
+  if (main.revision !== artifact.revision) {
+    throw new Error(`TypeScript API and WASI artifact revisions do not match for ${version}`)
+  }
+  return resolveCompilerDistribution(
+    {
+      version,
+      revision: main.revision,
+      cacheKey: `npm-${version}`,
+      sync: packageEntry(main, "./sync"),
+      async: packageEntry(main, "./async"),
+      ast: packageEntry(main, "./ast"),
+      host: packageEntry(main, "./wasm"),
+      wasm: packageEntry(artifact, "./lib/tsc.wasm"),
+      libraryIndex: packageEntry(artifact, "./lib/libFiles.json"),
+      schema: packageEntry(main, "./schemas/tsconfig.schema.json"),
+      downloadBytes: main.unpackedSize + artifact.unpackedSize,
+    },
+    main.base
+  )
+}
+
+async function loadPackage(name: string, version: string) {
+  const url = `https://registry.npmjs.org/${encodeURIComponent(name)}/${encodeURIComponent(version)}`
+  const response = await fetch(url, { signal: AbortSignal.timeout(30_000) })
+  if (!response.ok) throw new Error(`Could not load ${name}@${version}: ${response.status}`)
+  const metadata: unknown = await response.json()
+  if (
+    !isRecord(metadata) ||
+    metadata.name !== name ||
+    metadata.version !== version ||
+    typeof metadata.gitHead !== "string" ||
+    !metadata.gitHead ||
+    !isRecord(metadata.exports) ||
+    !isRecord(metadata.dist) ||
+    typeof metadata.dist.unpackedSize !== "number" ||
+    !Number.isSafeInteger(metadata.dist.unpackedSize) ||
+    metadata.dist.unpackedSize < 1
+  ) {
+    throw new Error(`Invalid package metadata for ${name}@${version}`)
+  }
+  return {
+    base: new URL(`https://unpkg.com/${name}@${version}/`),
+    revision: metadata.gitHead,
+    exports: metadata.exports,
+    unpackedSize: metadata.dist.unpackedSize,
+  }
+}
+
+function packageEntry(packageInfo: Awaited<ReturnType<typeof loadPackage>>, subpath: string) {
+  const value = packageInfo.exports[subpath]
+  const path = isRecord(value) ? value.default : value
+  if (typeof path !== "string" || !path.startsWith("./")) throw new Error(`Missing package export: ${subpath}`)
+  return new URL(path, packageInfo.base).href
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === "object" && !Array.isArray(value)
+}
+
+async function resolveCompilerDistribution(metadata: unknown, base: URL): Promise<CompilerDistribution> {
   if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
     throw new Error("Invalid compiler distribution metadata")
   }
@@ -36,7 +104,6 @@ export async function loadCompilerDistribution(url: URL): Promise<CompilerDistri
   if (typeof downloadBytes !== "number" || !Number.isSafeInteger(downloadBytes) || downloadBytes < 1) {
     throw new Error("Invalid compiler distribution download size")
   }
-  const base = new URL(response.url || url.href)
   const libraryIndex = new URL(field("libraryIndex"), base)
   const indexResponse = await fetch(libraryIndex)
   if (!indexResponse.ok) throw new Error(`Could not load compiler library index: ${indexResponse.status}`)

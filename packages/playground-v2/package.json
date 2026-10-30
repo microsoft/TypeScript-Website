@@ -23,10 +23,12 @@
     "monaco-editor": "0.56.0",
     "monaco-editor-core": "0.56.0",
     "reflect-metadata": "^0.2.2",
+    "semver": "7.7.4",
     "vscode-json-languageservice": "^5.3.11",
     "vscode-languageserver-textdocument": "^1.0.11"
   },
   "devDependencies": {
+    "@types/semver": "^7.7.1",
     "esbuild": "^0.27.3",
     "typescript": "*"
   }

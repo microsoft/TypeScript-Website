@@ -224,6 +224,9 @@ importers:
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
+      semver:
+        specifier: 7.7.4
+        version: 7.7.4
       vscode-json-languageservice:
         specifier: ^5.3.11
         version: 5.7.2
@@ -231,6 +234,9 @@ importers:
         specifier: ^1.0.11
         version: 1.0.14
     devDependencies:
+      '@types/semver':
+        specifier: ^7.7.1
+        version: 7.7.1
       esbuild:
         specifier: ^0.27.3
         version: 0.27.3

@@ -5,7 +5,116 @@ import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
-import { loadCompilerDistribution } from "./compiler-distribution"
+import { loadCompilerDistribution, loadPublishedCompilerDistribution } from "./compiler-distribution"
+import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
+
+test("native versions start at the WASM nightly and exclude the published beta", () => {
+  for (const version of ["7.1.0-dev.20261030.1", "7.1.0-dev.20261031.1", "7.1.0-rc", "7.1.0", "7.2.0-beta", "8.0.0"]) {
+    assert.equal(isWasmCompilerVersion(version), true, version)
+  }
+  for (const version of ["7.1.0-beta", "7.1.0-dev.20261029.1", "7.0.2", "6.0.3", "next", "pr-build"]) {
+    assert.equal(isWasmCompilerVersion(version), false, version)
+  }
+})
+
+test("version choices merge published native channels with the separate legacy CDN list", () => {
+  const choices = compilerVersionChoices("7.1.0-dev.20261030.1", ["5.9.2", "6.0.2", "3.1.6", "5.9.3", "6.0.3"], {
+    versions: ["7.0.2", "7.1.0-beta", "7.1.0-dev.20261030.1", "7.1.1", "7.1.2", "7.2.0-dev.20261101.1"],
+    tags: { next: "7.2.0-dev.20261101.1", beta: "7.1.0-beta", rc: "7.0.1-rc" },
+  })
+  assert.deepEqual(choices, [
+    { version: "7.1.0-dev.20261030.1", label: "7.1.0-dev.20261030.1" },
+    { version: "7.1.2", label: "7.1.2" },
+    { version: "7.2.0-dev.20261101.1", label: "Nightly (7.2.0-dev.20261101.1)" },
+    { version: "6.0.3", label: "6.0.3" },
+    { version: "5.9.3", label: "5.9.3" },
+  ])
+  const sameNightly = compilerVersionChoices("7.1.0-dev.20261030.1", [], {
+    versions: ["7.1.0-dev.20261030.1"],
+    tags: { next: "7.1.0-dev.20261030.1" },
+  })
+  assert.deepEqual(sameNightly, [{ version: "7.1.0-dev.20261030.1", label: "Nightly (7.1.0-dev.20261030.1)" }])
+})
+
+test("published version discovery reports failed and malformed indexes", async t => {
+  const fetch = t.mock.method(globalThis, "fetch", async () =>
+    Response.json({ versions: ["7.1.0-dev.20261030.1"], tags: { next: "7.1.0-dev.20261030.1" } })
+  )
+  assert.equal((await loadPublishedCompilerVersions()).tags.next, "7.1.0-dev.20261030.1")
+  fetch.mock.mockImplementation(async () => new Response("", { status: 503 }))
+  await assert.rejects(loadPublishedCompilerVersions(), /Could not load published TypeScript versions: 503/)
+  fetch.mock.mockImplementation(async () => Response.json({ versions: [123], tags: {} }))
+  await assert.rejects(loadPublishedCompilerVersions(), /Invalid published TypeScript versions/)
+  fetch.mock.mockImplementation(async () => Response.json({ versions: ["7.1.0"], tags: { next: "not-a-version" } }))
+  await assert.rejects(loadPublishedCompilerVersions(), /Invalid published TypeScript tag: next/)
+})
+
+test("published distributions pair exact package versions, exports, libraries, and cache identity", async t => {
+  const version = "7.2.0-dev.20261101.1"
+  const main = {
+    name: "typescript",
+    version,
+    gitHead: "matching-revision",
+    dist: { unpackedSize: 100 },
+    exports: {
+      "./sync": "./dist/api/sync/api.js",
+      "./async": "./dist/api/async/api.js",
+      "./ast": "./dist/ast/index.js",
+      "./wasm": { default: "./dist/wasm/index.js" },
+      "./schemas/tsconfig.schema.json": "./schemas/tsconfig.schema.json",
+    },
+  }
+  const artifact = {
+    name: "@typescript/typescript-wasip1-wasm",
+    version,
+    gitHead: "matching-revision",
+    dist: { unpackedSize: 200 },
+    exports: { "./lib/tsc.wasm": "./lib/tsc.wasm", "./lib/libFiles.json": "./lib/libFiles.json" },
+  }
+  const requests: string[] = []
+  let missingArtifact = false
+  t.mock.method(globalThis, "fetch", async (input: URL | RequestInfo) => {
+    const url = String(input)
+    requests.push(url)
+    if (url.endsWith("libFiles.json")) return Response.json(["lib.d.ts", "lib.es5.d.ts"])
+    if (decodeURIComponent(url).includes("@typescript/typescript-wasip1-wasm")) {
+      return missingArtifact ? new Response("", { status: 404 }) : Response.json(artifact)
+    }
+    return Response.json(main)
+  })
+  const distribution = await loadPublishedCompilerDistribution(version)
+  assert.equal(distribution.version, version)
+  assert.equal(distribution.revision, main.gitHead)
+  assert.equal(distribution.cacheKey, `npm-${version}`)
+  assert.equal(distribution.host, `https://unpkg.com/typescript@${version}/dist/wasm/index.js`)
+  assert.equal(distribution.sync, `https://unpkg.com/typescript@${version}/dist/api/sync/api.js`)
+  assert.equal(distribution.wasm.href, `https://unpkg.com/@typescript/typescript-wasip1-wasm@${version}/lib/tsc.wasm`)
+  assert.equal(distribution.schema.href, `https://unpkg.com/typescript@${version}/schemas/tsconfig.schema.json`)
+  assert.equal(distribution.downloadBytes, 300)
+  assert.deepEqual(
+    distribution.libraries.map(url => url.href),
+    [
+      `https://unpkg.com/@typescript/typescript-wasip1-wasm@${version}/lib/lib.d.ts`,
+      `https://unpkg.com/@typescript/typescript-wasip1-wasm@${version}/lib/lib.es5.d.ts`,
+    ]
+  )
+  assert(requests.slice(0, 2).every(url => url.endsWith(`/${version}`)))
+  artifact.gitHead = "wrong-revision"
+  await assert.rejects(loadPublishedCompilerDistribution(version), /revisions do not match/)
+  artifact.gitHead = main.gitHead
+  main.version = "7.1.0"
+  await assert.rejects(loadPublishedCompilerDistribution(version), /Invalid package metadata/)
+  main.version = version
+  const host = main.exports["./wasm"]
+  Reflect.deleteProperty(main.exports, "./wasm")
+  await assert.rejects(loadPublishedCompilerDistribution(version), /Missing package export: \.\/wasm/)
+  main.exports["./wasm"] = host
+  missingArtifact = true
+  await assert.rejects(
+    loadPublishedCompilerDistribution(version),
+    /Could not load @typescript\/typescript-wasip1-wasm@.+: 404/
+  )
+})
 
 test("runtime compiler URLs resolve relative and absolute module and library locations", async t => {
   const metadata = {

@@ -1,5 +1,10 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
-import { loadCompilerDistribution, type CompilerDistribution } from "./compiler-distribution"
+import {
+  loadCompilerDistribution,
+  loadPublishedCompilerDistribution,
+  type CompilerDistribution,
+} from "./compiler-distribution"
+import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
 import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
 import "reflect-metadata"
@@ -1026,23 +1031,33 @@ async function initializeVersionSelector() {
     const response = await fetch(new URL("./versions.json", import.meta.url))
     if (!response.ok) throw new Error(`Could not load versions: ${response.status}`)
     const releases = (await response.json()) as { versions: string[] }
-    const unsupported = new Set(["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"])
-    const seenMinorVersions = new Set<string>()
-    const versions: Array<{ label: string; value: string }> = [{ label: __TS_VERSION__, value: "native" }]
-    for (const version of releases.versions) {
-      if (unsupported.has(version)) continue
-      const minorVersion = version.split(".").slice(0, 2).join(".")
-      if (seenMinorVersions.has(minorVersion)) continue
-      seenMinorVersions.add(minorVersion)
-      versions.push({ label: version, value: version })
+    let published: Awaited<ReturnType<typeof loadPublishedCompilerVersions>> | undefined
+    let publishedFailure: string | undefined
+    try {
+      published = await loadPublishedCompilerVersions()
+    } catch (error) {
+      publishedFailure = error instanceof Error ? error.message : String(error)
+      console.warn("Could not initialize published TypeScript versions", error)
     }
-    const selectedValue = useNativeCompiler ? "native" : normalizeRequestedVersion(selectedCompiler!)
+    const versions = compilerVersionChoices(__TS_VERSION__, releases.versions, published).map(choice => ({
+      label: choice.label,
+      value: choice.version === __TS_VERSION__ ? "native" : choice.version,
+    }))
+    const selectedValue = isDefaultNativeCompilerVersion(selectedCompiler)
+      ? "native"
+      : normalizeRequestedVersion(selectedCompiler!)
     if (!versions.some(version => version.value === selectedValue)) {
       versions.push({ label: selectedCompiler!, value: selectedValue })
     }
     compilerVersionMenu.replaceChildren()
     for (const version of versions) {
       compilerVersionMenu.appendChild(createVersionMenuItem(version.label, version.value, selectedValue))
+    }
+    if (publishedFailure) {
+      const notice = createText("p", "Published versions unavailable.", "version-menu-error")
+      notice.setAttribute("role", "presentation")
+      notice.title = publishedFailure
+      compilerVersionMenu.appendChild(notice)
     }
     const separator = document.createElement("div")
     separator.className = "version-menu-separator"
@@ -1154,6 +1169,10 @@ function handleVersionMenuKeydown(event: KeyboardEvent) {
 }
 
 function isNativeCompilerVersion(version: string | null) {
+  return isDefaultNativeCompilerVersion(version) || (version !== null && isWasmCompilerVersion(version))
+}
+
+function isDefaultNativeCompilerVersion(version: string | null) {
   return (
     version === null ||
     version === "" ||
@@ -1319,7 +1338,7 @@ function navigateToExample(example: PlaygroundExample) {
   window.clearTimeout(projectPersistTimer)
   const url = new URL(location.pathname, location.origin)
   const requestedVersion = typeof settings.ts === "string" ? settings.ts : selectedCompiler
-  if (requestedVersion && !isNativeCompilerVersion(requestedVersion)) {
+  if (requestedVersion && !isDefaultNativeCompilerVersion(requestedVersion)) {
     url.searchParams.set("ts", requestedVersion)
   }
   url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
@@ -1387,7 +1406,7 @@ function legacyExampleUrl(example: PlaygroundExample) {
   for (const [key, value] of Object.entries(example.compilerSettings ?? {})) {
     url.searchParams.set(key, String(value))
   }
-  if (!url.searchParams.has("ts") && selectedCompiler && !isNativeCompilerVersion(selectedCompiler)) {
+  if (!url.searchParams.has("ts") && selectedCompiler && !isDefaultNativeCompilerVersion(selectedCompiler)) {
     url.searchParams.set("ts", selectedCompiler)
   }
   url.hash = `example/${example.id}`
@@ -1969,7 +1988,9 @@ function applyEditorLocation(location: EditorLocation) {
 }
 
 function getCompilerDistribution() {
-  compilerDistributionPromise ??= loadCompilerDistribution(new URL(__COMPILER_DISTRIBUTION_URL__, import.meta.url))
+  compilerDistributionPromise ??= isDefaultNativeCompilerVersion(selectedCompiler)
+    ? loadCompilerDistribution(new URL(__COMPILER_DISTRIBUTION_URL__, import.meta.url))
+    : loadPublishedCompilerDistribution(selectedCompiler!)
   return compilerDistributionPromise
 }
 
@@ -2041,6 +2062,7 @@ async function confirmLargeDownloadIfNeeded() {
 
   if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
   const totalBytes = nativeDistribution.downloadBytes
+  getElement("download-consent-title").textContent = `Download TypeScript ${nativeDistribution.version}?`
   downloadSize.textContent = formatBytes(totalBytes)
   rememberDownloadConsent.checked = true
   loadingAnimation.hidden = true

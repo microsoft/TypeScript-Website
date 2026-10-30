@@ -252,6 +252,14 @@ body {
   background: var(--border);
 }
 
+.version-menu .version-menu-error {
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  color: var(--error);
+  font-size: 0.78rem;
+  opacity: 1;
+}
+
 .toolbar button,
 .run-output button {
   border: 1px solid rgb(255 255 255 / 45%);

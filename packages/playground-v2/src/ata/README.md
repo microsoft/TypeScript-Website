@@ -38,6 +38,14 @@ directly from the CDN. UNPKG serves the WASM binary without jsDelivr's 50 MB
 file-size limit. Set `COMPILER_DISTRIBUTION_URL` when building to use
 another distribution; its modules and assets must be served with CORS headers.
 
+The version menu discovers published versions from jsDelivr's npm metadata API.
+Native support starts at `7.1.0-dev.20261030.1`; the older `7.1.0-beta` is excluded
+because it has no published WASM host or artifact. The menu keeps the latest
+stable patch per minor, published native prerelease channels, and the separate
+legacy Playground CDN version list. Selecting another native version resolves
+both package manifests and uses that exact version for every module and asset.
+The initial download estimate uses the packages' unpacked sizes.
+
 ## Resolution
 
 - Node builtin imports resolve directly to `@types/node`.

@@ -16,7 +16,7 @@ const helpIndex = {
     {
       title: "Compiler versions",
       legacyIndexes: [8],
-      html: "<p>The selector offers TypeScript 7.1, the latest patch release for each previous major.minor line, and custom playground-CDN build IDs.</p><p>Changing compiler versions reloads the page while preserving the project.</p>",
+      html: "<p>The selector discovers published native TypeScript versions, including Nightly and supported prerelease channels, and offers the latest stable patch for each major.minor line. Historical JavaScript compiler versions come from the legacy Playground CDN list. Custom playground-CDN build IDs remain supported.</p><p>Native support starts at <code>7.1.0-dev.20261030.1</code>; the older <code>7.1.0-beta</code> has no supported WASM build. Native API modules, the WASM binary, libraries, and schemas all use the exact selected package version.</p><p>Changing compiler versions reloads the page while preserving the project.</p>",
     },
     {
       title: "Compiler settings",
