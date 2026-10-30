@@ -483,7 +483,7 @@ In addition, classes can [use `this is Type`](/docs/handbook/2/classes.html#this
 
 Types can also be narrowed using [Assertion functions](/docs/handbook/release-notes/typescript-3-7.html#assertion-functions).
 
-# Discriminated unions
+## Discriminated unions
 
 Most of the examples we've looked at so far have focused around narrowing single variables with simple types like `string`, `boolean`, and `number`.
 While this is common, most of the time in JavaScript we'll be dealing with slightly more complex structures.
@@ -701,12 +701,12 @@ From there, the type system was able to do the "right" thing and figure out the 
 Discriminated unions are useful for more than just talking about circles and squares.
 They're good for representing any sort of messaging scheme in JavaScript, like when sending messages over the network (client/server communication), or encoding mutations in a state management framework.
 
-# The `never` type
+## The `never` type
 
 When narrowing, you can reduce the options of a union to a point where you have removed all possibilities and have nothing left.
 In those cases, TypeScript will use a `never` type to represent a state which shouldn't exist.
 
-# Exhaustiveness checking
+## Exhaustiveness checking
 
 The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This means you can use narrowing and rely on `never` turning up to do exhaustive checking in a `switch` statement.
 

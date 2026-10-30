@@ -251,6 +251,7 @@ const Play: React.FC<Props> = (props) => {
 
   return (
     <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
+      <h1 className="playground-title">{i("head_playground_title")}</h1>
       <aside className="playground-preview">
         {i("play_new_playground_description")}{" "}
         <a

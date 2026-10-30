@@ -109,7 +109,7 @@
       margin-bottom: 1rem;
     }
 
-    h5 {
+    h2 {
       font-weight: 600;
       font-size: 16px;
       margin: 0;
@@ -142,6 +142,20 @@
 
         &.current {
           border-left: 2px solid #0078d4;
+        }
+
+        @media (forced-colors: active) {
+          border-left-color: Canvas;
+
+          &.current {
+            border-left-color: Highlight;
+            font-weight: 600;
+          }
+
+          &:focus-visible {
+            outline: 2px solid Highlight;
+            outline-offset: -2px;
+          }
         }
       }
     }

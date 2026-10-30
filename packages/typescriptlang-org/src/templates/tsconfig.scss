@@ -50,6 +50,10 @@
   }
 
   .tsconfig-quick-nav {
+    a {
+      text-decoration: underline;
+    }
+
     &.grouped {
       border-left: 1px solid var(--text-color);
       margin-bottom: 3rem;
@@ -76,6 +80,7 @@
         flex: 0 0 auto;
       }
       ol {
+        box-sizing: border-box;
         max-width: 100%;
         flex: 1 1 auto;
       }
@@ -83,9 +88,11 @@
         list-style: none;
         display: inline-block;
         margin-left: 8px;
+        max-width: calc(100% - 8px);
+        overflow-wrap: anywhere;
         a {
           color: var(--text-color);
-          text-decoration: none;
+          text-decoration: underline;
           &:hover {
             text-decoration: underline;
           }
@@ -249,6 +256,10 @@
         border-right: 1px solid gray;
         padding-right: 20px;
         word-wrap: break-word;
+
+        pre .error > span {
+          min-width: 0;
+        }
 
         @media (max-width: $screen-xs) {
           border-right: none;

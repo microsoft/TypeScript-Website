@@ -95,7 +95,7 @@ If your type definitions depend on another package:
 
 When TypeScript opens a `package.json` file to figure out which files it needs to read, it first looks at a field called `typesVersions`.
 
-#### Folder redirects (using `*`)
+### Folder redirects (using `*`)
 
 A `package.json` with a `typesVersions` field might look like this:
 
@@ -121,7 +121,7 @@ If we import from `package-name/foo`, we'll try to look for `[...]/node_modules/
 What if we're not running in TypeScript 3.1 in this example?
 Well, if none of the fields in `typesVersions` get matched, TypeScript falls back to the `types` field, so here TypeScript 3.0 and earlier will be redirected to `[...]/node_modules/package-name/index.d.ts`.
 
-#### File redirects
+### File redirects
 
 When you want to only change the resolution for a single file at a time, you can tell TypeScript the file to resolve differently by passing in the exact filenames:
 

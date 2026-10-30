@@ -19,6 +19,7 @@ const Index: React.FC<Props> = (props) => {
 
   return <Layout title="Reference Tools" description="Online tooling to help you understand TypeScript" lang={props.pageContext.lang}>
     <div className="raised main-content-block">
+      <h1>Reference Tools</h1>
       <Row>
         <Col>
           <a className="cropper" href="/play">

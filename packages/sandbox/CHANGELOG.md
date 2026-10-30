@@ -1,5 +1,12 @@
 # @typescript/sandbox
 
+## 0.1.15
+
+### Patch Changes
+
+- Updated dependencies [[`292b11f`](https://github.com/microsoft/TypeScript-Website/commit/292b11fdd04f5fb5a9657efb423c8df9153b0a26)]:
+  - @typescript/vfs@1.6.5
+
 ## 0.1.14
 
 ### Patch Changes
