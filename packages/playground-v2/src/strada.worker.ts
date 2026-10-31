@@ -211,6 +211,11 @@ async function loadLibraries(options: import("typescript").CompilerOptions) {
   const roots = options.lib?.length
     ? options.lib.map(lib => (lib.toLowerCase().startsWith("lib.") ? lib : `lib.${lib}.d.ts`))
     : [ts.getDefaultLibFileName(options)]
+  for (const { text } of files.values()) {
+    for (const reference of ts.preProcessFile(text).libReferenceDirectives ?? []) {
+      roots.push(reference.fileName.toLowerCase())
+    }
+  }
   await loadStradaLibraries(roots, baseUrl, libraries, progress => reportProgress({ phase: "libraries", ...progress }))
 }
 

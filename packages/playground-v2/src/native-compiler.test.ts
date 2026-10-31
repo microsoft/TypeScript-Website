@@ -154,6 +154,57 @@ test("legacy library download failures are reported", async t => {
   )
 })
 
+test("legacy library loading retries missing dependencies beneath cached roots", async t => {
+  const requests: string[] = []
+  t.mock.method(globalThis, "fetch", async (input: URL | RequestInfo) => {
+    const name = new URL(String(input)).pathname.split("/").at(-1)!
+    requests.push(name)
+    if (name === "lib.root.d.ts") return new Response('/// <reference lib="dependency" />')
+    return requests.length === 2 ? new Response("", { status: 503 }) : new Response("interface Dependency {}")
+  })
+  const libraries = new Map<string, string>()
+  const load = () => loadStradaLibraries(["root"], "https://compiler.example.test/", libraries, () => {})
+  await assert.rejects(load(), /Could not load lib\.dependency\.d\.ts: 503/)
+  assert(libraries.has("/typescript/lib/lib.root.d.ts"))
+  assert(!libraries.has("/typescript/lib/lib.dependency.d.ts"))
+  await load()
+  assert(libraries.has("/typescript/lib/lib.dependency.d.ts"))
+  assert.deepEqual(requests, ["lib.root.d.ts", "lib.dependency.d.ts", "lib.dependency.d.ts"])
+})
+
+test("overlapping legacy library loads wait for dependencies beneath cached roots", async t => {
+  let release!: () => void
+  let started!: () => void
+  const gate = new Promise<void>(resolve => {
+    release = resolve
+  })
+  const downloading = new Promise<void>(resolve => {
+    started = resolve
+  })
+  t.mock.method(globalThis, "fetch", async (input: URL | RequestInfo) => {
+    if (String(input).endsWith("lib.root.d.ts")) return new Response('/// <reference lib="dependency" />')
+    started()
+    await gate
+    return new Response("interface Dependency {}")
+  })
+  const libraries = new Map<string, string>()
+  const load = () => loadStradaLibraries(["root"], "https://compiler.example.test/", libraries, () => {})
+  const first = load()
+  await downloading
+  let secondFinished = false
+  const second = load().then(() => {
+    secondFinished = true
+  })
+  try {
+    await new Promise(resolve => setImmediate(resolve))
+    assert.equal(secondFinished, false)
+  } finally {
+    release()
+    await Promise.all([first, second])
+  }
+  assert(libraries.has("/typescript/lib/lib.dependency.d.ts"))
+})
+
 test("native versions start at the WASM nightly and exclude the published beta", () => {
   for (const version of ["7.1.0-dev.20261030.1", "7.1.0-dev.20261031.1", "7.1.0-rc", "7.1.0", "7.2.0-beta", "8.0.0"]) {
     assert.equal(isWasmCompilerVersion(version), true, version)
