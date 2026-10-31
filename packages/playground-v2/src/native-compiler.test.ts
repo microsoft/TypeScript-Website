@@ -479,6 +479,22 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
     input.files[configFileName] = JSON.stringify(config)
     assert.equal(compiler.compile(input).diagnostics.length, 0)
 
+    input.files[configFileName] = JSON.stringify({
+      ...config,
+      compilerOptions: { ...config.compilerOptions, noLib: true },
+    })
+    assert(
+      compiler
+        .compile(input)
+        .diagnostics.some(diagnostic => diagnostic.code === 2318 && diagnostic.text.includes("Array"))
+    )
+    input.files[configFileName] = JSON.stringify({
+      ...config,
+      compilerOptions: { ...config.compilerOptions, declaration: false, declarationMap: true },
+    })
+    assert(compiler.compile(input).diagnostics.some(diagnostic => diagnostic.code === 5069))
+    input.files[configFileName] = JSON.stringify(config)
+
     const imported = "/workspace/src/imported.ts"
     input.files[configFileName] = JSON.stringify({
       compilerOptions: config.compilerOptions,

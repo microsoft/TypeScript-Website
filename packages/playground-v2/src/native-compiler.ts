@@ -89,6 +89,8 @@ export class NativeCompiler {
       const diagnostics = [
         ...(config?.error ? [config.error] : []),
         ...parsed.errors,
+        ...program.getProgramDiagnostics(),
+        ...program.getGlobalDiagnostics(),
         ...program.getSyntacticDiagnostics(),
         ...program.getSemanticDiagnostics(),
         ...program.getConfigFileParsingDiagnostics(),
