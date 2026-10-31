@@ -169,6 +169,7 @@ export class StradaBackend {
             const word = model.getWordUntilPosition(position)
             const range = new monaco.Range(position.lineNumber, word.startColumn, position.lineNumber, word.endColumn)
             const suggestions = (result?.entries ?? []).map((entry: any) => {
+              const replacementSpan = entry.replacementSpan ?? result.optionalReplacementSpan
               const suggestion: monaco.languages.CompletionItem & {
                 strada?: {
                   data: any
@@ -183,7 +184,7 @@ export class StradaBackend {
                 insertText: entry.insertText ?? entry.name,
                 kind: completionKind(entry.kind),
                 label: entry.name,
-                range,
+                range: replacementSpan ? spanToRange(model, replacementSpan) : range,
                 sortText: entry.sortText,
               }
               suggestion.strada = {

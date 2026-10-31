@@ -84,8 +84,22 @@ async function dispatch(method: string, args: any) {
       return compile()
     case "quickInfo":
       return service.getQuickInfoAtPosition(args.fileName, args.position)
-    case "completions":
-      return service.getCompletionsAtPosition(args.fileName, args.position, args.options)
+    case "completions": {
+      const result = service.getCompletionsAtPosition(args.fileName, args.position, args.options)
+      if (
+        !result ||
+        result.optionalReplacementSpan ||
+        !result.entries.some(entry => entry.kind === ts.ScriptElementKind.string)
+      ) {
+        return result
+      }
+      // Older compilers omit the replacement span for string-literal completions.
+      const source = service.getProgram()?.getSourceFile(normalizePath(args.fileName))
+      return {
+        ...result,
+        optionalReplacementSpan: source && stringLiteralSpan(source, args.position),
+      }
+    }
     case "completionDetails":
       return service.getCompletionEntryDetails(args.fileName, args.position, args.name, {}, args.source, {}, args.data)
     case "definitions":
@@ -267,6 +281,20 @@ function languageServiceForFile(fileName: string) {
   if (languageService.getProgram()?.getSourceFile(normalizePath(fileName))) return languageService
   inferredLanguageService ??= ts.createLanguageService(createLanguageServiceHost(true))
   return inferredLanguageService
+}
+
+function stringLiteralSpan(source: import("typescript").SourceFile, position: number) {
+  function visit(node: import("typescript").Node): import("typescript").TextSpan | undefined {
+    if (position < node.getFullStart() || position > node.getEnd()) return undefined
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+      const start = node.getStart(source) + 1
+      const end = node.getEnd()
+      if (position < start) return undefined
+      return { start, length: end - start - (node.isUnterminated ? 0 : 1) }
+    }
+    return ts.forEachChild(node, visit)
+  }
+  return visit(source)
 }
 
 function createLanguageServiceHost(inferred = false): import("typescript").LanguageServiceHost {
