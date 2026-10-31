@@ -3,10 +3,31 @@ import type * as Ast from "@typescript/typescript/ast"
 import type { Node } from "@typescript/typescript/ast"
 import type { Dependency, DiscoverDependencies, SourceFile } from "./types"
 
-function dependency(specifier: string, kind: Dependency["kind"], text: string, end: number): Dependency {
-  const lineEnd = text.slice(end).split(/\r?\n/, 1)[0]
-  const version = /\/\/\s*types:\s*(\S+)/.exec(lineEnd)?.[1]
+type TrailingComments = (text: string, position: number) => readonly { pos: number; end: number }[] | undefined
+
+function dependency(
+  specifier: string,
+  kind: Dependency["kind"],
+  text: string,
+  end: number,
+  comments?: TrailingComments
+): Dependency {
+  const tails = comments
+    ? (comments(text, end) ?? []).map(range => text.slice(range.pos, range.end))
+    : [
+        text
+          .slice(end)
+          .split(/[\r\n\u2028\u2029]/, 1)[0]
+          .replace(/^["']?\s*\/>\s*/, ""),
+      ]
+  const pattern = /^\/\/\s*types:\s*(\S+)/
+  const version = tails.map(tail => pattern.exec(tail)?.[1]).find(value => value !== undefined)
   return { kind, specifier, ...(version ? { version } : {}) }
+}
+
+function statementEnd<T extends { end: number; parent?: T }>(node: T, isStatement: (node: T) => boolean) {
+  while (!isStatement(node) && node.parent) node = node.parent
+  return node.end
 }
 
 function unique(dependencies: readonly Dependency[]) {
@@ -15,7 +36,7 @@ function unique(dependencies: readonly Dependency[]) {
 
 export function corsaDiscovery(
   api: API,
-  { isCallExpression, isIdentifier, isStringLiteral }: typeof Ast
+  { getTrailingCommentRanges, isCallExpression, isIdentifier, isStatement, isStringLiteral }: typeof Ast
 ): (file: SourceFile) => readonly Dependency[] {
   return file => {
     const retained = api.createSourceFile(file.path, file.text)
@@ -25,7 +46,11 @@ export function corsaDiscovery(
         dependency(reference.fileName, "types", file.text, reference.end)
       )
       for (const node of source.imports) {
-        if (isStringLiteral(node)) dependencies.push(dependency(node.text, "import", file.text, node.end))
+        if (isStringLiteral(node)) {
+          dependencies.push(
+            dependency(node.text, "import", file.text, statementEnd<Node>(node, isStatement), getTrailingCommentRanges)
+          )
+        }
       }
       const visit = (node: Node): void => {
         if (
@@ -35,7 +60,15 @@ export function corsaDiscovery(
           node.arguments.length === 1 &&
           isStringLiteral(node.arguments[0])
         ) {
-          dependencies.push(dependency(node.arguments[0].text, "import", file.text, node.arguments[0].end))
+          dependencies.push(
+            dependency(
+              node.arguments[0].text,
+              "import",
+              file.text,
+              statementEnd<Node>(node, isStatement),
+              getTrailingCommentRanges
+            )
+          )
         }
         node.forEachChild(visit)
       }
@@ -55,7 +88,15 @@ export function stradaDiscovery(ts: typeof import("typescript")): DiscoverDepend
     )
     const add = (node: import("typescript").Node | undefined) => {
       if (node?.kind === ts.SyntaxKind.StringLiteral) {
-        dependencies.push(dependency((node as import("typescript").StringLiteral).text, "import", file.text, node.end))
+        dependencies.push(
+          dependency(
+            (node as import("typescript").StringLiteral).text,
+            "import",
+            file.text,
+            statementEnd(node, ts.isStatement),
+            ts.getTrailingCommentRanges
+          )
+        )
       }
     }
     const visit = (node: import("typescript").Node): void => {

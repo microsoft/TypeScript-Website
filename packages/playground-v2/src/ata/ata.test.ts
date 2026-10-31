@@ -70,9 +70,17 @@ test("compiler parsers agree on dependencies, references, and version comments",
     const file = {
       path: "/workspace/input.ts",
       text: `/// <reference types="node" />
+/// <reference types="annotated-reference" /> // types: 5.0.0
+/// <reference types="cr-reference" />\rconst refNote = "// types: 9.9.9";
 /// <reference lib="dom" />
 /// <reference path="./local.d.ts" />
 import { x } from "pkg"; // types: 1.2.3
+import "string-note"; const note = "// types: 1.2.3";
+import "other-statement"; const unrelated = 1; // types: 9.9.9
+import "block-note"; /* // types: 1.2.3 */
+import "versioned-after-block"; /* note */ // types: 2.0.0
+type Versioned = import("versioned-type").Value; // types: 3.0.0
+const versionedRequire = require("versioned-require"); // types: 4.0.0
 import "hereby";
 import "node:url";
 export { y } from "exports";
@@ -89,7 +97,15 @@ declare module "ambient" {}
     const sort = (items: readonly Dependency[]) => [...items].sort((a, b) => a.specifier.localeCompare(b.specifier))
     const expected: Dependency[] = [
       { kind: "types", specifier: "node" },
+      { kind: "types", specifier: "annotated-reference", version: "5.0.0" },
+      { kind: "types", specifier: "cr-reference" },
       { kind: "import", specifier: "pkg", version: "1.2.3" },
+      { kind: "import", specifier: "versioned-after-block", version: "2.0.0" },
+      { kind: "import", specifier: "versioned-type", version: "3.0.0" },
+      { kind: "import", specifier: "versioned-require", version: "4.0.0" },
+      ...["string-note", "other-statement", "block-note"].map(
+        (specifier): Dependency => ({ kind: "import", specifier })
+      ),
       ...["hereby", "node:url", "exports", "import-equals", "dynamic", "type-import", "required"].map(
         (specifier): Dependency => ({
           kind: "import",
