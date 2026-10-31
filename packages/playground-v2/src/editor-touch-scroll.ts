@@ -8,6 +8,7 @@ export function configureEditorTouchScroll(editor: monaco.editor.IStandaloneCode
   const options = { capture: true, passive: true, signal: listeners.signal }
   let pointerType = ""
   let chainGesture = false
+  let scrollPage = false
 
   element.addEventListener(
     "pointerdown",
@@ -19,6 +20,7 @@ export function configureEditorTouchScroll(editor: monaco.editor.IStandaloneCode
   element.addEventListener(
     "touchstart",
     event => {
+      scrollPage = false
       chainGesture =
         event.touches.length === 1 &&
         pointerType !== "pen" &&
@@ -41,6 +43,15 @@ export function configureEditorTouchScroll(editor: monaco.editor.IStandaloneCode
       )
         return
       const delta = -event.translationY
+      if (!scrollPage) {
+        const bounds = element.getBoundingClientRect()
+        scrollPage = (delta < 0 && bounds.top < 0) || (delta > 0 && bounds.bottom > window.innerHeight)
+      }
+      if (scrollPage) {
+        event.stopPropagation()
+        window.scrollBy(0, delta)
+        return
+      }
       const top = editor.getScrollTop()
       const maximum = Math.max(0, editor.getScrollHeight() - editor.getLayoutInfo().height)
       const consumed = Math.min(maximum, Math.max(0, top + delta)) - top
