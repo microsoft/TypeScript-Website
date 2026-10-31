@@ -18,6 +18,7 @@ import {
   type CompilerOverrideState,
 } from "./compiler-overrides"
 import { registerConfigSchema } from "./config-schema"
+import { configureEditorTouchScroll } from "./editor-touch-scroll"
 import { StradaBackend } from "./strada"
 import { NativeBackend } from "./native"
 import {
@@ -422,6 +423,7 @@ type EditorLocation = {
 let projectReturnLocation: EditorLocation | undefined
 let trackedEditorLocation: EditorLocation | undefined
 const mobileLayout = matchMedia("(max-width: 700px), (max-width: 900px) and (max-height: 600px)")
+configureEditorTouchScroll(inputEditor, mobileLayout)
 const layoutState = loadLayoutState()
 applyLayoutState()
 setupWorkspaceResizer(fileResizer, "files")
