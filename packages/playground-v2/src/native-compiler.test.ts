@@ -78,6 +78,36 @@ test("native TypeScript comment directives are not project-wide compiler overrid
   assert.deepEqual(JSON.parse(state.effectiveConfigText).compilerOptions, { strict: true })
 })
 
+test("compiler list directives accept comma-separated values and JSON arrays without splitting scalar options", () => {
+  const state = computeCompilerOverrides(
+    new Map([
+      [
+        "/workspace/src/index.ts",
+        [
+          "// @types: node, jquery",
+          "// @lib: es2020, dom",
+          '// @rootDirs: ["src", "generated"]',
+          "// @moduleSuffixes: .native, ",
+          "// @customConditions: browser, development",
+          "// @typeRoots: ./types, ./vendor/types",
+          "// @outDir: build,output",
+        ].join("\n"),
+      ],
+    ]),
+    "{}"
+  )
+  assert.deepEqual(state.diagnostics, [])
+  assert.deepEqual(JSON.parse(state.effectiveConfigText).compilerOptions, {
+    types: ["node", "jquery"],
+    lib: ["es2020", "dom"],
+    rootDirs: ["src", "generated"],
+    moduleSuffixes: [".native", ""],
+    customConditions: ["browser", "development"],
+    typeRoots: ["./types", "./vendor/types"],
+    outDir: "build,output",
+  })
+})
+
 test("legacy library discovery downloads bounded parallel batches, deduplicates references, and reports progress", async t => {
   const source = new Map<string, string>([
     ["lib.root.d.ts", Array.from({ length: 12 }, (_, index) => `/// <reference lib="part${index}" />`).join("\n")],

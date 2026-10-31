@@ -38,6 +38,7 @@ const reservedDirectives = new Set([
   "ts-nocheck",
 ])
 const directivePattern = /^(\s*\/\/\s*)@([A-Za-z][\w-]*):\s*(.*?)\s*$/
+const stringListOptions = new Set(["lib", "rootDirs", "typeRoots", "types", "moduleSuffixes", "customConditions"])
 const formattingOptions = {
   insertSpaces: true,
   tabSize: 2,
@@ -85,7 +86,7 @@ export function computeCompilerOverrides(
               rawValue,
               start: offset,
               tsconfigValue: compilerOptions[option],
-              value: parseDirectiveValue(rawValue),
+              value: parseDirectiveValue(option, rawValue),
             })
           }
         }
@@ -154,7 +155,7 @@ export function compilerOptionsNode(configText: string): Node | undefined {
   return tree ? findNodeAtLocation(tree, ["compilerOptions"]) : undefined
 }
 
-function parseDirectiveValue(rawValue: string) {
+function parseDirectiveValue(option: string, rawValue: string) {
   if (/^(?:true|false|null|-?\d+(?:\.\d+)?)$/.test(rawValue) || /^["[{]/.test(rawValue)) {
     try {
       return JSON.parse(rawValue)
@@ -162,5 +163,6 @@ function parseDirectiveValue(rawValue: string) {
       // Treat invalid JSON-like values as compiler option strings so the selected compiler reports them.
     }
   }
+  if (stringListOptions.has(option)) return rawValue.split(",").map(value => value.trim())
   return rawValue
 }
