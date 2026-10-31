@@ -30,13 +30,14 @@ type FileEntry = {
 let ts: TS
 let version = ""
 let baseUrl = ""
-let compilerOptions: import("typescript").CompilerOptions = {}
+let parsedConfig: ReturnType<typeof parseConfig>
 let projectVersion = 0
 const files = new Map<string, FileEntry>()
 const libraries = new Map<string, string>()
 let sourceFiles: string[] = []
 let filesystem: ReturnType<typeof createStradaFileSystem>
 let languageService: import("typescript").LanguageService
+let inferredLanguageService: import("typescript").LanguageService | undefined
 
 self.addEventListener("message", (event: MessageEvent<InitMessage | RequestMessage>) => {
   void handleMessage(event.data)
@@ -65,49 +66,42 @@ async function initialize(args: InitMessage["args"]) {
   baseUrl = args.baseUrl
   replaceFiles(args.files, args.sourceFiles)
   refreshConfig()
-  await loadLibraries(compilerOptions)
+  await loadLibraries(parsedConfig.options)
   reportProgress({ phase: "initializing" })
   languageService = ts.createLanguageService(createLanguageServiceHost())
   return { version: ts.version }
 }
 
 async function dispatch(method: string, args: any) {
+  const service = args.fileName && method !== "readFile" ? languageServiceForFile(args.fileName) : languageService
   switch (method) {
     case "updateFiles":
       replaceFiles(args.files, args.sourceFiles)
       refreshConfig()
-      await loadLibraries(compilerOptions)
+      await loadLibraries(parsedConfig.options)
       return
     case "compile":
       return compile()
     case "quickInfo":
-      return languageService.getQuickInfoAtPosition(args.fileName, args.position)
+      return service.getQuickInfoAtPosition(args.fileName, args.position)
     case "completions":
-      return languageService.getCompletionsAtPosition(args.fileName, args.position, args.options)
+      return service.getCompletionsAtPosition(args.fileName, args.position, args.options)
     case "completionDetails":
-      return languageService.getCompletionEntryDetails(
-        args.fileName,
-        args.position,
-        args.name,
-        {},
-        args.source,
-        {},
-        args.data
-      )
+      return service.getCompletionEntryDetails(args.fileName, args.position, args.name, {}, args.source, {}, args.data)
     case "definitions":
-      return languageService.getDefinitionAndBoundSpan
-        ? languageService.getDefinitionAndBoundSpan(args.fileName, args.position)
+      return service.getDefinitionAndBoundSpan
+        ? service.getDefinitionAndBoundSpan(args.fileName, args.position)
         : {
-            definitions: languageService.getDefinitionAtPosition(args.fileName, args.position),
+            definitions: service.getDefinitionAtPosition(args.fileName, args.position),
           }
     case "references":
-      return languageService.getReferencesAtPosition(args.fileName, args.position)
+      return service.getReferencesAtPosition(args.fileName, args.position)
     case "occurrences": {
-      const service = languageService as import("typescript").LanguageService & {
+      const serviceWithOccurrences = service as import("typescript").LanguageService & {
         getOccurrencesAtPosition?(fileName: string, position: number): readonly any[] | undefined
       }
-      if (service.getOccurrencesAtPosition) {
-        return service.getOccurrencesAtPosition(args.fileName, args.position)
+      if (serviceWithOccurrences.getOccurrencesAtPosition) {
+        return serviceWithOccurrences.getOccurrencesAtPosition(args.fileName, args.position)
       }
       const highlights = service.getDocumentHighlights(args.fileName, args.position, [...files.keys()])
       return (
@@ -120,23 +114,23 @@ async function dispatch(method: string, args: any) {
       )
     }
     case "signatureHelp":
-      return languageService.getSignatureHelpItems(args.fileName, args.position, args.options)
+      return service.getSignatureHelpItems(args.fileName, args.position, args.options)
     case "renameInfo":
-      return languageService.getRenameInfo(args.fileName, args.position, {
+      return service.getRenameInfo(args.fileName, args.position, {
         allowRenameOfImportPath: true,
       })
     case "renameLocations":
-      return languageService.findRenameLocations(args.fileName, args.position, false, false, true)
+      return service.findRenameLocations(args.fileName, args.position, false, false, true)
     case "navigationBarItems":
-      return languageService.getNavigationBarItems(args.fileName)
+      return service.getNavigationBarItems(args.fileName)
     case "formatDocument":
-      return languageService.getFormattingEditsForDocument(args.fileName, args.options)
+      return service.getFormattingEditsForDocument(args.fileName, args.options)
     case "formatRange":
-      return languageService.getFormattingEditsForRange(args.fileName, args.start, args.end, args.options)
+      return service.getFormattingEditsForRange(args.fileName, args.start, args.end, args.options)
     case "formatOnType":
-      return languageService.getFormattingEditsAfterKeystroke(args.fileName, args.position, args.key, args.options)
+      return service.getFormattingEditsAfterKeystroke(args.fileName, args.position, args.key, args.options)
     case "codeFixes":
-      return languageService.getCodeFixesAtPosition(
+      return service.getCodeFixesAtPosition(
         args.fileName,
         args.start,
         args.end,
@@ -145,14 +139,14 @@ async function dispatch(method: string, args: any) {
         args.preferences
       )
     case "inlayHints": {
-      const service = languageService as import("typescript").LanguageService & {
+      const serviceWithHints = service as import("typescript").LanguageService & {
         provideInlayHints?(
           fileName: string,
           span: import("typescript").TextSpan,
           preferences: import("typescript").UserPreferences
         ): readonly any[]
       }
-      return service.provideInlayHints?.(args.fileName, args.span, args.preferences) ?? []
+      return serviceWithHints.provideInlayHints?.(args.fileName, args.span, args.preferences) ?? []
     }
     case "readFile":
       return readFile(args.fileName)
@@ -180,8 +174,7 @@ function replaceFiles(nextFiles: Record<string, string>, nextSourceFiles: readon
 }
 
 function refreshConfig() {
-  const parsed = parseConfig()
-  compilerOptions = parsed.options
+  parsedConfig = parseConfig()
   projectVersion++
 }
 
@@ -225,7 +218,7 @@ function reportProgress(progress: StradaLoadingProgress) {
 
 function compile() {
   const parsed = parseConfig()
-  compilerOptions = parsed.options
+  parsedConfig = parsed
   const outputFiles: Record<string, string> = {}
   const host = createCompilerHost(outputFiles)
   const program = ts.createProgram({
@@ -270,18 +263,28 @@ function createCompilerHost(outputFiles: Record<string, string>) {
   return host
 }
 
-function createLanguageServiceHost(): import("typescript").LanguageServiceHost {
+function languageServiceForFile(fileName: string) {
+  if (languageService.getProgram()?.getSourceFile(normalizePath(fileName))) return languageService
+  inferredLanguageService ??= ts.createLanguageService(createLanguageServiceHost(true))
+  return inferredLanguageService
+}
+
+function createLanguageServiceHost(inferred = false): import("typescript").LanguageServiceHost {
   return {
     ...filesystem,
     getCompilationSettings: () => ({
-      ...compilerOptions,
-      allowJs: true,
+      ...parsedConfig.options,
+      ...(inferred ? { allowJs: true } : {}),
     }),
     getCurrentDirectory: () => "/workspace",
     getDefaultLibFileName: options => `/typescript/lib/${ts.getDefaultLibFileName(options)}`,
     getProjectVersion: () => String(projectVersion),
-    getScriptFileNames: () => sourceFiles.slice(),
-    getProjectReferences: () => parseConfig().projectReferences,
+    getScriptFileNames: () => {
+      if (!inferred) return parsedConfig.rootNames.slice()
+      const configuredProgram = languageService.getProgram()
+      return sourceFiles.filter(fileName => !configuredProgram?.getSourceFile(fileName))
+    },
+    getProjectReferences: () => (inferred ? undefined : parsedConfig.projectReferences),
     getScriptKind: scriptKind,
     getScriptSnapshot: fileName => {
       const text = readFile(fileName)
