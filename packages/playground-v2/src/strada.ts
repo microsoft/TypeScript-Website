@@ -549,6 +549,8 @@ export class StradaBackend {
     const existing = monaco.editor.getModel(monaco.Uri.file(normalized))
     if (existing) return existing
     const text = await this.readFile(normalized)
+    const resolved = monaco.editor.getModel(monaco.Uri.file(normalized))
+    if (resolved) return resolved
     if (text === undefined) return undefined
     const model = monaco.editor.createModel(text, languageForFile(normalized), monaco.Uri.file(normalized))
     this.#options.onCreateExternalModel(model)
