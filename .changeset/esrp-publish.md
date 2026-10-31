@@ -2,4 +2,4 @@
 "@typescript/vfs": patch
 ---
 
-Publish through ESRP in Azure Pipelines.
+Switch to new release pipeline
