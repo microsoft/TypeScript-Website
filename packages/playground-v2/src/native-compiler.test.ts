@@ -428,6 +428,23 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
     input.files[configFileName] = JSON.stringify(config)
     assert.equal(compiler.compile(input).diagnostics.length, 0)
 
+    const imported = "/workspace/src/imported.ts"
+    input.files[configFileName] = JSON.stringify({
+      compilerOptions: config.compilerOptions,
+      files: ["./src/index.ts"],
+    })
+    input.files[source] = 'import "./imported";\ndeclare global { const configuredGlobal: "configured"; }\n'
+    input.files[imported] = "const answer = configuredGlobal;\n//    ^?\nexport {};\n"
+    input.sourceFiles = [source, imported]
+    const configuredImport = compiler.compile(input)
+    assert.equal(configuredImport.diagnostics.length, 0)
+    assert(configuredImport.typeQueries[imported].some(query => query.label === '"configured"'))
+    assert.equal(syntheticPrograms, 0)
+    delete input.files[imported]
+    input.sourceFiles = [source]
+    input.files[source] = "const answer = 1;"
+    input.files[configFileName] = JSON.stringify(config)
+
     assert.equal(configReads, 0)
     assert.equal(configParses, 0)
     const orphan = "/workspace/orphan.ts"

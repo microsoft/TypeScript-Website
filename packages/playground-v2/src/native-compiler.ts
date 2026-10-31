@@ -78,10 +78,12 @@ export class NativeCompiler {
       project?.parsedCommandLine ??
       this.api.parseJsonConfigFileContent(config?.config, { configFileName: input.configFileName })
     const configuredProgram = project && next.getProgram(project.id)
-    const program = configuredProgram ?? this.api.createProgram(parsed.fileNames, parsed.options, {
-      projectReferences: parsed.projectReferences,
-      configFileParsingDiagnostics: parsed.errors,
-    })
+    const program =
+      configuredProgram ??
+      this.api.createProgram(parsed.fileNames, parsed.options, {
+        projectReferences: parsed.projectReferences,
+        configFileParsingDiagnostics: parsed.errors,
+      })
     try {
       const emit = program.emitToString()
       const diagnostics = [
@@ -93,9 +95,10 @@ export class NativeCompiler {
         ...emit.diagnostics,
       ]
       const typeQueries: Record<string, NativeTypeQuery[]> = {}
-      this.collectTypeQueries(program, parsed.fileNames, input.files, typeQueries)
-      const configuredFiles = new Set<string>(parsed.fileNames)
-      const orphanFiles = input.sourceFiles.filter(fileName => !configuredFiles.has(fileName))
+      const configuredFiles = input.sourceFiles.filter(fileName => program.getSourceFile(fileName) !== undefined)
+      this.collectTypeQueries(program, configuredFiles, input.files, typeQueries)
+      const configuredFileNames = new Set(configuredFiles)
+      const orphanFiles = input.sourceFiles.filter(fileName => !configuredFileNames.has(fileName))
       if (orphanFiles.some(fileName => hasTypeQuery(input.files[fileName]))) {
         const inferred = this.api.createProgram(orphanFiles, { ...parsed.options, allowJs: true })
         try {
