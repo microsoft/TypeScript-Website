@@ -25,6 +25,7 @@ type RequestMessage = {
 type FileEntry = {
   text: string
   version: number
+  libReferences: string[]
 }
 
 let ts: TS
@@ -64,7 +65,7 @@ async function initialize(args: InitMessage["args"]) {
   filesystem = createStradaFileSystem(ts, () => [...files.keys(), ...libraries.keys()], readFile)
   version = args.version
   baseUrl = args.baseUrl
-  replaceFiles(args.files, args.sourceFiles)
+  updateFiles(args.files, [], args.sourceFiles)
   refreshConfig()
   await loadLibraries(parsedConfig.options)
   reportProgress({ phase: "initializing" })
@@ -76,9 +77,9 @@ async function dispatch(method: string, args: any) {
   const service = args.fileName && method !== "readFile" ? languageServiceForFile(args.fileName) : languageService
   switch (method) {
     case "updateFiles":
-      replaceFiles(args.files, args.sourceFiles)
-      refreshConfig()
+      if (updateFiles(args.files, args.deleted, args.sourceFiles)) refreshConfig()
       await loadLibraries(parsedConfig.options)
+      projectVersion++
       return
     case "compile":
       return compile()
@@ -169,22 +170,33 @@ async function dispatch(method: string, args: any) {
   }
 }
 
-function replaceFiles(nextFiles: Record<string, string>, nextSourceFiles: readonly string[]) {
+function updateFiles(
+  nextFiles: Record<string, string>,
+  deleted: readonly string[],
+  nextSourceFiles: readonly string[]
+) {
+  let changed =
+    sourceFiles.length !== nextSourceFiles.length ||
+    sourceFiles.some((fileName, index) => fileName !== nextSourceFiles[index])
   sourceFiles = nextSourceFiles.map(normalizePath)
-  const nextNames = new Set(Object.keys(nextFiles))
-  for (const fileName of files.keys()) {
-    if (!nextNames.has(fileName)) files.delete(fileName)
+  for (const fileName of deleted) {
+    if (files.delete(fileName)) changed = true
   }
   for (const [fileName, text] of Object.entries(nextFiles)) {
     const current = files.get(fileName)
     if (!current || current.text !== text) {
       files.set(fileName, {
         text,
-        version: (current?.version ?? 0) + 1,
+        version: projectVersion + 1,
+        libReferences: /\.[cm]?[jt]sx?$/i.test(fileName)
+          ? (ts.preProcessFile(text).libReferenceDirectives ?? []).map(reference => reference.fileName.toLowerCase())
+          : [],
       })
+      changed = true
     }
   }
-  projectVersion++
+  if (changed) projectVersion++
+  return changed
 }
 
 function refreshConfig() {
@@ -218,10 +230,8 @@ async function loadLibraries(options: import("typescript").CompilerOptions) {
   const roots = options.lib?.length
     ? options.lib.map(lib => (lib.toLowerCase().startsWith("lib.") ? lib : `lib.${lib}.d.ts`))
     : [ts.getDefaultLibFileName(options)]
-  for (const { text } of files.values()) {
-    for (const reference of ts.preProcessFile(text).libReferenceDirectives ?? []) {
-      roots.push(reference.fileName.toLowerCase())
-    }
+  for (const { libReferences } of files.values()) {
+    roots.push(...libReferences)
   }
   await loadStradaLibraries(roots, baseUrl, libraries, progress => reportProgress({ phase: "libraries", ...progress }))
 }
@@ -231,8 +241,7 @@ function reportProgress(progress: StradaLoadingProgress) {
 }
 
 function compile() {
-  const parsed = parseConfig()
-  parsedConfig = parsed
+  const parsed = parsedConfig
   const outputFiles: Record<string, string> = {}
   const host = createCompilerHost(outputFiles)
   const program = ts.createProgram({

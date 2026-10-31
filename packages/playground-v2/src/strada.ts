@@ -49,6 +49,9 @@ export class StradaBackend {
   readonly #options: StradaBackendOptions
   #nextId = 1
   #failure: Error | undefined
+  #files = new Map<string, string>()
+  #sourceFiles: string[] = []
+  #synchronization = Promise.resolve()
 
   private constructor(options: StradaBackendOptions) {
     this.#options = options
@@ -77,13 +80,17 @@ export class StradaBackend {
   static async create(options: StradaBackendOptions) {
     const backend = new StradaBackend(options)
     try {
+      const files = { ...options.files() }
+      const sourceFiles = backend.#sourceFileNames()
       await backend.#request("init", {
         baseUrl: options.baseUrl,
         compilerSource: options.compilerSource,
-        files: options.files(),
-        sourceFiles: backend.#sourceFileNames(),
+        files,
+        sourceFiles,
         version: options.version,
       })
+      backend.#files = new Map(Object.entries(files))
+      backend.#sourceFiles = sourceFiles
       backend.#registerLanguageFeatures()
       return backend
     } catch (error) {
@@ -97,11 +104,34 @@ export class StradaBackend {
     return this.#request<CompileResult>("compile", {})
   }
 
-  async updateFiles() {
-    await this.#request("updateFiles", {
-      files: this.#options.files(),
-      sourceFiles: this.#sourceFileNames(),
-    })
+  updateFiles() {
+    const synchronize = () => this.#synchronizeFiles()
+    this.#synchronization = this.#synchronization.then(synchronize, synchronize)
+    return this.#synchronization
+  }
+
+  async #synchronizeFiles() {
+    if (this.#failure) throw this.#failure
+    const nextFiles = { ...this.#options.files() }
+    const sourceFiles = this.#sourceFileNames()
+    const files: Record<string, string> = {}
+    const deleted: string[] = []
+    for (const [fileName, text] of Object.entries(nextFiles)) {
+      if (this.#files.get(fileName) !== text) files[fileName] = text
+    }
+    for (const fileName of this.#files.keys()) {
+      if (!(fileName in nextFiles)) deleted.push(fileName)
+    }
+    if (
+      Object.keys(files).length === 0 &&
+      deleted.length === 0 &&
+      sourceFiles.length === this.#sourceFiles.length &&
+      sourceFiles.every((fileName, index) => fileName === this.#sourceFiles[index])
+    )
+      return
+    await this.#request("updateFiles", { files, deleted, sourceFiles })
+    this.#files = new Map(Object.entries(nextFiles))
+    this.#sourceFiles = sourceFiles
   }
 
   #sourceFileNames() {
