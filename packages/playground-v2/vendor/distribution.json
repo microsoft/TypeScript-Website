@@ -1,0 +1,13 @@
+{
+  "version": "7.1.0-dev.20261030.1",
+  "revision": "0b0aeb31e416c280bcbef7d7734aa21e7d999cdd",
+  "cacheKey": "86e66b28730a5b30",
+  "sync": "https://unpkg.com/typescript@7.1.0-dev.20261030.1/dist/api/sync/api.js",
+  "async": "https://unpkg.com/typescript@7.1.0-dev.20261030.1/dist/api/async/api.js",
+  "ast": "https://unpkg.com/typescript@7.1.0-dev.20261030.1/dist/ast/index.js",
+  "host": "https://unpkg.com/typescript@7.1.0-dev.20261030.1/dist/wasm/index.js",
+  "wasm": "https://unpkg.com/@typescript/typescript-wasip1-wasm@7.1.0-dev.20261030.1/lib/tsc.wasm",
+  "libraryIndex": "https://unpkg.com/@typescript/typescript-wasip1-wasm@7.1.0-dev.20261030.1/lib/libFiles.json",
+  "schema": "https://unpkg.com/typescript@7.1.0-dev.20261030.1/schemas/tsconfig.schema.json",
+  "downloadBytes": 56609483
+}

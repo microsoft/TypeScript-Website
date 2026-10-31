@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import ReactDOM from "react-dom"
 import { Layout } from "../components/layout"
 import { withPrefix } from "gatsby"
@@ -34,8 +34,30 @@ type Props = {
 
 const Play: React.FC<Props> = (props) => {
   const i = createInternational<typeof headCopy & typeof playCopy>(useIntl())
+  const sandboxRef = useRef<import("@typescript/sandbox").Sandbox>()
+
+  const updateNewPlaygroundLink = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
+    const sandbox = sandboxRef.current
+    const query = sandbox
+      ? sandbox.createURLQueryWithCompilerOptions(sandbox)
+      : location.search + location.hash
+    event.currentTarget.href = withPrefix("/play/v2/") + query
+  }
 
   useEffect(() => {
+    const redirectProject = () => {
+      if (!location.hash.startsWith("#code/v2/")) return false
+      location.replace(withPrefix("/play/v2/") + location.search + location.hash)
+      return true
+    }
+    if (redirectProject()) return
+
+    const controller = navigator.serviceWorker?.controller
+    if (controller && new URL(controller.scriptURL).pathname === withPrefix("/play/coi-serviceworker.min.js")) {
+      controller.postMessage({ type: "deregister" })
+      return
+    }
+
     if (!document.getElementById("monaco-editor-embed")) return
     if (document.getElementById("monaco-editor-embed")!.childElementCount > 0) {
       return console.log("Playground already loaded")
@@ -45,7 +67,7 @@ const Play: React.FC<Props> = (props) => {
     // a page reload to ensure the playground is full set up
     let leftPlayground = false
     window.addEventListener('popstate', (event) => {
-      const onPlayground = document.location.pathname.endsWith("/play/") || document.location.pathname.endsWith("/play")
+      const onPlayground = /\/play\/?$/.test(document.location.pathname)
       if (leftPlayground && onPlayground) {
         document.location.reload()
       } else if (!leftPlayground && !onPlayground) {
@@ -118,11 +140,11 @@ const Play: React.FC<Props> = (props) => {
         em.textContent = `(${tsVersion})`
 
         const latestReleaseLink = document.createElement('a');
-        latestReleaseLink.href = `/play?ts=${latestRelease}${document.location.hash}`;
+        latestReleaseLink.href = `${document.location.pathname}?ts=${latestRelease}${document.location.hash}`;
         latestReleaseLink.textContent = latestRelease;
 
         const nightlyLink = document.createElement('a');
-        nightlyLink.href = `/play?ts=next${document.location.hash}`;
+        nightlyLink.href = `${document.location.pathname}?ts=next${document.location.hash}`;
         nightlyLink.textContent = 'Nightly';
 
         loadingMessage.appendChild(document.createTextNode("This version of TypeScript "))
@@ -207,6 +229,7 @@ const Play: React.FC<Props> = (props) => {
           supportCustomPlugins: true
         }
 
+        sandboxRef.current = sandboxEnv
         playground.setupPlayground(sandboxEnv, main, playgroundConfig, i as any, React)
 
         // Dark mode faff
@@ -221,12 +244,27 @@ const Play: React.FC<Props> = (props) => {
     }
 
     document.body.appendChild(getLoaderScript);
+    window.addEventListener("hashchange", redirectProject)
+    return () => window.removeEventListener("hashchange", redirectProject)
   }, [])
 
 
   return (
     <Layout title={i("head_playground_title")} description={i("head_playground_description")} lang={props.pageContext.lang}>
       <h1 className="playground-title">{i("head_playground_title")}</h1>
+      <aside className="playground-preview">
+        {i("play_new_playground_description")}{" "}
+        <a
+          href={withPrefix("/play/v2/")}
+          id="new-playground-link"
+          onPointerDown={updateNewPlaygroundLink}
+          onFocus={updateNewPlaygroundLink}
+          onClick={updateNewPlaygroundLink}
+          onContextMenu={updateNewPlaygroundLink}
+        >
+          {i("play_new_playground_link")}
+        </a>
+      </aside>
       {/** This is the top nav, which is outside of the editor  */}
       <nav className="navbar-sub">
         <ul className="nav">

@@ -1,0 +1,64 @@
+diff --git a/esm/vs/base/browser/touch.js b/esm/vs/base/browser/touch.js
+--- a/esm/vs/base/browser/touch.js
++++ b/esm/vs/base/browser/touch.js
+@@ -90,11 +90,12 @@ export class Gesture extends Disposable {
+                 id: touch.identifier,
+                 initialTarget: touch.target,
+                 initialTimeStamp: timestamp,
++                // Store viewport coordinates so page scrolling does not alter gestures.
+-                initialPageX: touch.pageX,
+-                initialPageY: touch.pageY,
++                initialPageX: touch.clientX,
++                initialPageY: touch.clientY,
+                 rollingTimestamps: [timestamp],
+-                rollingPageX: [touch.pageX],
+-                rollingPageY: [touch.pageY]
++                rollingPageX: [touch.clientX],
++                rollingPageY: [touch.clientY]
+             };
+             const evt = this.newGestureEvent(EventType.Start, touch.target);
+             evt.pageX = touch.pageX;
+@@ -120,8 +121,8 @@ export class Gesture extends Disposable {
+                 && Math.abs(data.initialPageX - data.rollingPageX.at(-1)) < 30
+                 && Math.abs(data.initialPageY - data.rollingPageY.at(-1)) < 30) {
+                 const evt = this.newGestureEvent(EventType.Tap, data.initialTarget);
+-                evt.pageX = data.rollingPageX.at(-1);
+-                evt.pageY = data.rollingPageY.at(-1);
++                evt.pageX = data.rollingPageX.at(-1) + targetWindow.scrollX;
++                evt.pageY = data.rollingPageY.at(-1) + targetWindow.scrollY;
+                 this.dispatchEvent(evt);
+             }
+             else if (holdTime >= Gesture.HOLD_DELAY
+@@ -129,8 +130,8 @@ export class Gesture extends Disposable {
+                 && Math.abs(data.initialPageX - data.rollingPageX.at(-1)) < 30
+                 && Math.abs(data.initialPageY - data.rollingPageY.at(-1)) < 30) {
+                 const evt = this.newGestureEvent(EventType.Contextmenu, data.initialTarget);
+-                evt.pageX = data.rollingPageX.at(-1);
+-                evt.pageY = data.rollingPageY.at(-1);
++                evt.pageX = data.rollingPageX.at(-1) + targetWindow.scrollX;
++                evt.pageY = data.rollingPageY.at(-1) + targetWindow.scrollY;
+                 this.dispatchEvent(evt);
+             }
+             else if (activeTouchCount === 1) {
+@@ -243,8 +244,8 @@ export class Gesture extends Disposable {
+             }
+             const data = this.activeTouches[touch.identifier];
+             const evt = this.newGestureEvent(EventType.Change, data.initialTarget);
+-            evt.translationX = touch.pageX - data.rollingPageX.at(-1);
+-            evt.translationY = touch.pageY - data.rollingPageY.at(-1);
++            evt.translationX = touch.clientX - data.rollingPageX.at(-1);
++            evt.translationY = touch.clientY - data.rollingPageY.at(-1);
+             evt.pageX = touch.pageX;
+             evt.pageY = touch.pageY;
+             this.dispatchEvent(evt);
+@@ -256,8 +257,8 @@ export class Gesture extends Disposable {
+                 data.rollingPageY.shift();
+                 data.rollingTimestamps.shift();
+             }
+-            data.rollingPageX.push(touch.pageX);
+-            data.rollingPageY.push(touch.pageY);
++            data.rollingPageX.push(touch.clientX);
++            data.rollingPageY.push(touch.clientY);
+             data.rollingTimestamps.push(timestamp);
+         }
+         if (this.dispatched) {

@@ -36,7 +36,7 @@ export const createPlaygrounds = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(lang => {
-    if (!isMultiLingual && lang !== "en") return
+    if (!isMultiLingual && lang.name !== "en") return
 
     const appRoot = path.join(__dirname, "..", "..", "..", "..")
 
@@ -71,6 +71,12 @@ export const createPlaygrounds = async (
         optionsSummary,
         playgroundHandbookTOC
       },
+    })
+
+    createPage({
+      path: lang.name === "en" ? "/oldplay" : `/${lang.name}/oldplay`,
+      component: path.resolve("./src/templates/playground-redirect.tsx"),
+      context: { toPath: `${pathName}/` },
     })
   })
 }
