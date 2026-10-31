@@ -48,11 +48,13 @@ export class StradaBackend {
   readonly #disposables: monaco.IDisposable[] = []
   readonly #options: StradaBackendOptions
   #nextId = 1
+  #failure: Error | undefined
 
   private constructor(options: StradaBackendOptions) {
     this.#options = options
     this.version = options.version
     this.#worker.addEventListener("message", (event: MessageEvent<WorkerMessage>) => {
+      if (this.#failure) return
       const message = event.data
       if ("type" in message) {
         this.#options.onProgress?.(message.progress)
@@ -61,22 +63,33 @@ export class StradaBackend {
       const pending = this.#pending.get(message.id)
       if (!pending) return
       this.#pending.delete(message.id)
-      if (message.error) pending.reject(new Error(message.error))
+      if (message.error !== undefined) pending.reject(new Error(message.error))
       else pending.resolve(message.result)
+    })
+    this.#worker.addEventListener("error", event => {
+      this.#fail(new Error(event.message || "Legacy compiler worker failed"))
+    })
+    this.#worker.addEventListener("messageerror", () => {
+      this.#fail(new Error("Could not decode the legacy compiler worker response"))
     })
   }
 
   static async create(options: StradaBackendOptions) {
     const backend = new StradaBackend(options)
-    await backend.#request("init", {
-      baseUrl: options.baseUrl,
-      compilerSource: options.compilerSource,
-      files: options.files(),
-      sourceFiles: backend.#sourceFileNames(),
-      version: options.version,
-    })
-    backend.#registerLanguageFeatures()
-    return backend
+    try {
+      await backend.#request("init", {
+        baseUrl: options.baseUrl,
+        compilerSource: options.compilerSource,
+        files: options.files(),
+        sourceFiles: backend.#sourceFileNames(),
+        version: options.version,
+      })
+      backend.#registerLanguageFeatures()
+      return backend
+    } catch (error) {
+      backend.dispose()
+      throw error
+    }
   }
 
   async compile() {
@@ -150,8 +163,15 @@ export class StradaBackend {
   }
 
   dispose() {
+    this.#fail(new Error("Legacy compiler worker was disposed"))
     this.#disposables.forEach(disposable => disposable.dispose())
     this.#worker.terminate()
+  }
+
+  #fail(error: Error) {
+    this.#failure ??= error
+    for (const pending of this.#pending.values()) pending.reject(this.#failure)
+    this.#pending.clear()
   }
 
   #registerLanguageFeatures() {
@@ -536,10 +556,16 @@ export class StradaBackend {
   }
 
   #request<T = void>(method: string, args: any): Promise<T> {
+    if (this.#failure) return Promise.reject(this.#failure)
     const id = this.#nextId++
     return new Promise((resolve, reject) => {
       this.#pending.set(id, { resolve, reject })
-      this.#worker.postMessage({ id, method, args })
+      try {
+        this.#worker.postMessage({ id, method, args })
+      } catch (error) {
+        this.#pending.delete(id)
+        reject(error)
+      }
     })
   }
 }
