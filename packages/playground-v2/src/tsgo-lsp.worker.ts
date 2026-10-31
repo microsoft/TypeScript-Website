@@ -65,10 +65,10 @@ class BlockingStdin extends Fd {
       writePos = Atomics.load(this.#state, writePosition)
     }
     while (readPos !== writePos) {
-      const available = writePos - readPos
+      const available = (writePos - readPos) >>> 0
       const length = Math.min(64 * 1024, available)
       const result = new Uint8Array(length)
-      const start = readPos % this.#data.length
+      const start = (readPos >>> 0) % this.#data.length
       const first = Math.min(length, this.#data.length - start)
       result.set(this.#data.subarray(start, start + first))
       if (first < length) {

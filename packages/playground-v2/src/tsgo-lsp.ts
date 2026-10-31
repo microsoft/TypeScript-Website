@@ -241,9 +241,9 @@ class RingBufferWorker {
 
   #flush() {
     while (this.#queue.length > 0) {
-      const readPos = Atomics.load(this.#state, readPosition)
-      const writePos = Atomics.load(this.#state, writePosition)
-      const free = this.#data.length - (writePos - readPos)
+      const readPos = Atomics.load(this.#state, readPosition) >>> 0
+      const writePos = Atomics.load(this.#state, writePosition) >>> 0
+      const free = this.#data.length - ((writePos - readPos) >>> 0)
       if (free <= 0) return
 
       const current = this.#queue[0]
