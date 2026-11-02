@@ -10,7 +10,8 @@ type CompilerWithFileMatcher = Compiler & {
     currentDirectory: string,
     depth: number | undefined,
     getFileSystemEntries: (path: string) => { files: string[]; directories: string[] },
-    realpath: (path: string) => string
+    realpath: (path: string) => string,
+    directoryExists: (path: string) => boolean
   ): string[]
 }
 
@@ -50,6 +51,10 @@ export function createStradaFileSystem(
     }
     return { files: [...files].sort(), directories: [...directories].sort() }
   }
+  function directoryExists(directory: string) {
+    const result = entries(directory)
+    return result.files.length > 0 || result.directories.length > 0
+  }
   const readDirectory = (
     directory: string,
     extensions?: readonly string[],
@@ -66,17 +71,15 @@ export function createStradaFileSystem(
       "/workspace",
       depth,
       entries,
-      normalizeStradaPath
+      normalizeStradaPath,
+      directoryExists
     )
   return {
     useCaseSensitiveFileNames: true,
     fileExists: (fileName: string) => readFile(normalizeStradaPath(fileName)) !== undefined,
     readFile: (fileName: string) => readFile(normalizeStradaPath(fileName)),
     readDirectory,
-    directoryExists(directory: string) {
-      const result = entries(directory)
-      return result.files.length > 0 || result.directories.length > 0
-    },
+    directoryExists,
     getDirectories: (directory: string) => entries(directory).directories,
     realpath: normalizeStradaPath,
   }
