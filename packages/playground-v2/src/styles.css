@@ -299,20 +299,13 @@ body {
 }
 
 .status {
+  background: #a1260d;
   padding: 0.35rem 0.65rem;
   border: 1px solid rgb(255 255 255 / 35%);
   border-radius: 0.25rem;
   font-family: Hack, monospace;
   font-size: 0.75rem;
   white-space: nowrap;
-}
-
-.status[data-state="ready"] {
-  background: rgb(0 0 0 / 12%);
-}
-
-.status[data-state="error"] {
-  background: #a1260d;
 }
 
 .resources-dialog {
@@ -1919,7 +1912,7 @@ code {
     color: CanvasText;
   }
 
-  .status[data-state="error"] {
+  .status {
     color: CanvasText;
     background: Canvas;
   }

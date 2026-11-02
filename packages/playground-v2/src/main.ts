@@ -27,7 +27,6 @@ import {
   PackageTypeAcquirer,
   stradaDiscovery,
   type AcquisitionResult,
-  type AcquisitionProgress,
   type DiscoverDependencies,
 } from "./ata"
 import { acquisitionOptions } from "./ata/config"
@@ -291,7 +290,6 @@ let lspServerInfo: string | undefined
 let compilerFailure: string | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
-let projectCheckPending = false
 let languageServer: TsgoLspController | undefined
 let stradaBackend: StradaBackend | undefined
 let nativeBackend: NativeBackend | undefined
@@ -309,7 +307,6 @@ let emittedFiles = new Map<string, string>()
 let emitRenderVersion = 0
 let hasShownDiagnostics = false
 let typeAcquisitionFailure: string | undefined
-let typeAcquisitionProgress: AcquisitionProgress | undefined
 const typeAcquirer = new PackageTypeAcquirer()
 let discoverDependencies: DiscoverDependencies | undefined
 let typeAcquisitionController: AbortController | undefined
@@ -1894,7 +1891,6 @@ function scheduleTypeAcquisition() {
   if (!compilerReady || !discoverDependencies) return
   typeAcquisitionController?.abort()
   window.clearTimeout(typeAcquisitionTimer)
-  typeAcquisitionProgress = undefined
   typeAcquisitionFailure = undefined
   renderStatus()
   typeAcquisitionTimer = window.setTimeout(() => {
@@ -1909,7 +1905,6 @@ async function refreshTypeAcquisition() {
   const controller = new AbortController()
   typeAcquisitionController = controller
   typeAcquisitionFailure = undefined
-  typeAcquisitionProgress = { downloaded: 0, total: 0, completedPackages: 0, totalPackages: 0, pendingPackages: [] }
   renderStatus()
   try {
     const result = await typeAcquirer.acquire({
@@ -1922,11 +1917,6 @@ async function refreshTypeAcquisition() {
         playgroundSettings.automaticTypeAcquisition
       ),
       signal: controller.signal,
-      onProgress(progress) {
-        if (controller.signal.aborted) return
-        typeAcquisitionProgress = progress
-        renderStatus()
-      },
     })
     controller.signal.throwIfAborted()
     const changed = (
@@ -1938,7 +1928,6 @@ async function refreshTypeAcquisition() {
     if (changed) applyAcquiredTypes(result)
     await synchronizeAcquiredTypes()
     controller.signal.throwIfAborted()
-    typeAcquisitionProgress = undefined
     typeAcquisitionFailure = result.errors.length
       ? result.errors.map(error => `${error.packageName}: ${error.message}`).join("; ")
       : undefined
@@ -1952,7 +1941,6 @@ async function refreshTypeAcquisition() {
     renderStatus()
   } catch (error) {
     if (controller.signal.aborted) return
-    typeAcquisitionProgress = undefined
     typeAcquisitionFailure = error instanceof Error ? error.message : String(error)
     console.error("Could not acquire package types", error)
     renderStatus()
@@ -2250,8 +2238,6 @@ async function compileNativeProject() {
   const backend = nativeBackend
   if (!backend) return
   const compileVersion = ++nativeCompileVersion
-  projectCheckPending = true
-  renderStatus()
   runButton.disabled = true
 
   try {
@@ -2277,7 +2263,6 @@ async function compileNativeProject() {
     completeInitialTypeQueries()
     inlayEmitter.fire()
     projectFailure = undefined
-    projectCheckPending = false
     compilerFailure = undefined
     renderStatus()
   } catch (error) {
@@ -2291,7 +2276,6 @@ async function compileNativeProject() {
     inlayEmitter.fire()
     renderEmitError(message)
     projectFailure = message
-    projectCheckPending = false
     renderStatus()
     console.error(error)
   }
@@ -2303,8 +2287,6 @@ async function compileStradaProject() {
   const backend = stradaBackend
   if (!backend) return
   const compileVersion = ++stradaCompileVersion
-  projectCheckPending = true
-  renderStatus()
   runButton.disabled = true
   try {
     const result = await backend.compile()
@@ -2328,7 +2310,6 @@ async function compileStradaProject() {
     completeInitialTypeQueries()
     inlayEmitter.fire()
     projectFailure = undefined
-    projectCheckPending = false
     compilerFailure = undefined
     renderStatus()
   } catch (error) {
@@ -2342,7 +2323,6 @@ async function compileStradaProject() {
     const message = error instanceof Error ? error.message : String(error)
     renderEmitError(message)
     projectFailure = message
-    projectCheckPending = false
     renderStatus()
     console.error(error)
   }
@@ -2762,65 +2742,35 @@ function restoreProjectSelection(state: ProjectState) {
 
 function renderStatus() {
   const failure = compilerFailure ?? lspFailure
+  const error = failure ?? projectFailure ?? (typeAcquisitionFailure ? `Package types: ${typeAcquisitionFailure}` : "")
+  status.hidden = !error
+  if (status.textContent !== error) status.textContent = error
+  status.title = error
   if (failure) {
     loader.hidden = false
     loader.dataset.state = "error"
     loadingMessage.textContent = failure
-    setStatus(failure, "error")
     return
   }
   if (!compilerReady) {
     loadingMessage.textContent = "Downloading TypeScript..."
-    setStatus("Loading compiler...", "loading")
     return
   }
   if (!lspReady) {
     loadingMessage.textContent = `Starting language server: ${lspStatus}`
-    setStatus(`LSP: ${lspStatus}`, "loading")
     return
   }
 
+  const wasLoading = !loader.hidden
   loader.hidden = true
   loader.dataset.state = "ready"
-  if (projectFailure && !projectCheckPending) {
-    setStatus(projectFailure, "error")
-    inputEditor.layout()
-    return
-  }
-  if (typeAcquisitionProgress) {
-    const { completedPackages, totalPackages, pendingPackages, downloaded, total } = typeAcquisitionProgress
-    if (totalPackages === 0) {
-      setStatus("Checking package imports...", "loading")
-      return
-    }
-    const packages = `${completedPackages}/${totalPackages} packages`
-    const files = total ? ` · ${downloaded}/${total} files` : ""
-    const pending = pendingPackages.length ? ` · ${pendingPackages.join(", ")}` : ""
-    setStatus(`Package types: ${packages}${files}${pending}`, "loading")
-    return
-  }
-  if (projectCheckPending) {
-    setStatus("Checking project...", "loading")
-    return
-  }
-  setStatus(
-    typeAcquisitionFailure ? `Package types: ${typeAcquisitionFailure}` : "Ready",
-    typeAcquisitionFailure ? "error" : "ready"
-  )
-  inputEditor.layout()
-}
-
-function setStatus(message: string, state: "loading" | "ready" | "error") {
-  if (status.textContent !== message) status.textContent = message
-  status.title = message
-  status.dataset.state = state
+  if (wasLoading) inputEditor.layout()
 }
 
 function registerProjectModel(model: monaco.editor.ITextModel) {
   model.onDidChangeContent(() => {
     nativeCompileVersion++
     stradaCompileVersion++
-    projectCheckPending = true
     scheduleProjectPersistence()
     refreshCompilerOverrides()
     scheduleTypeAcquisition()
