@@ -6,7 +6,7 @@ declare module "*.json" {
 declare module "monaco-editor/editor/contrib/links/browser/links.js"
 
 declare module "monaco-editor-core/esm/vs/base/browser/touch.js" {
-  export const EventType: { Change: string }
+  export const EventType: { Change: string; Tap: string }
 }
 
 declare module "monaco-editor/languages/definitions/javascript/javascript.js" {

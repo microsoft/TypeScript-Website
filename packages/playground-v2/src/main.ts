@@ -423,6 +423,22 @@ type EditorLocation = {
 let projectReturnLocation: EditorLocation | undefined
 let trackedEditorLocation: EditorLocation | undefined
 const mobileLayout = matchMedia("(max-width: 700px), (max-width: 900px) and (max-height: 600px)")
+const touchPrimary = matchMedia("(pointer: coarse)")
+let lastInputWasTouch = false
+document.addEventListener(
+  "pointerdown",
+  event => {
+    lastInputWasTouch = event.pointerType === "touch"
+  },
+  { capture: true, passive: true }
+)
+document.addEventListener(
+  "keydown",
+  () => {
+    lastInputWasTouch = false
+  },
+  { capture: true }
+)
 configureEditorTouchScroll(inputEditor, mobileLayout)
 const layoutState = loadLayoutState()
 applyLayoutState()
@@ -923,7 +939,7 @@ async function initializeNativeCompiler() {
     startLanguageServer(module, libFiles)
     await compileNativeProject()
     void refreshTypeAcquisition()
-    inputEditor.focus()
+    if (!touchPrimary.matches && !lastInputWasTouch) inputEditor.focus()
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     compilerFailure = message
@@ -983,7 +999,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
     await compileStradaProject()
     void refreshTypeAcquisition()
     renderStatus()
-    inputEditor.focus()
+    if (!touchPrimary.matches && !lastInputWasTouch) inputEditor.focus()
   } catch (error) {
     compilerFailure = error instanceof Error ? error.message : String(error)
     completeInitialTypeQueries()
@@ -1233,7 +1249,7 @@ async function openExamples() {
   helpView.hidden = true
   resourcesDialog.showModal()
   await renderExamples()
-  examplesSearch.focus()
+  if (!lastInputWasTouch) examplesSearch.focus()
 }
 
 async function renderExamples() {
@@ -1547,7 +1563,7 @@ function registerCompilerOverrideFeatures() {
     const uri = monaco.Uri.parse("playground:///effective-tsconfig.json")
     effectiveConfigModel ??= monaco.editor.createModel(effectiveCompilerConfigText(), "json", uri)
     inputEditor.setModel(effectiveConfigModel)
-    inputEditor.focus()
+    focusEditorAfterNavigation()
   })
   monaco.editor.registerCommand(
     "playground.goToCompilerOverride",
@@ -1957,7 +1973,7 @@ function navigateToModel(fileName: string, range?: monaco.IRange) {
   const model = monaco.editor.getModel(monaco.Uri.file(fileName))
   if (!model) return
   if (inputEditor.getModel() === model && !range) {
-    inputEditor.focus()
+    focusEditorAfterNavigation()
     return
   }
   const current = getEditorLocation()
@@ -1969,7 +1985,16 @@ function navigateToModel(fileName: string, range?: monaco.IRange) {
   }
   trackedEditorLocation = getEditorLocation()
   updateNavigationButtons()
-  inputEditor.focus()
+  focusEditorAfterNavigation()
+}
+
+function focusEditorAfterNavigation() {
+  if (!lastInputWasTouch) {
+    inputEditor.focus()
+    return
+  }
+  const active = document.activeElement
+  if (active instanceof HTMLElement && inputElement.contains(active)) active.blur()
 }
 
 function getEditorLocation(): EditorLocation | undefined {
@@ -2000,7 +2025,7 @@ function applyEditorLocation(location: EditorLocation) {
   inputEditor.revealRangeInCenter(location.selection, monaco.editor.ScrollType.Immediate)
   trackedEditorLocation = getEditorLocation()
   updateNavigationButtons()
-  inputEditor.focus()
+  focusEditorAfterNavigation()
 }
 
 function getCompilerDistribution() {

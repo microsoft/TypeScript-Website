@@ -9,6 +9,12 @@ export function configureEditorTouchScroll(editor: monaco.editor.IStandaloneCode
   let pointerType = ""
   let chainGesture = false
   let scrollPage = false
+  let dragged = false
+  let startX = 0
+  let startY = 0
+  const recordDrag = (touch: Touch) => {
+    if (Math.hypot(touch.clientX - startX, touch.clientY - startY) >= 8) dragged = true
+  }
 
   element.addEventListener(
     "pointerdown",
@@ -21,12 +27,38 @@ export function configureEditorTouchScroll(editor: monaco.editor.IStandaloneCode
     "touchstart",
     event => {
       scrollPage = false
+      dragged = false
+      startX = event.touches[0].clientX
+      startY = event.touches[0].clientY
       chainGesture =
         event.touches.length === 1 &&
         pointerType !== "pen" &&
         event.target instanceof Element &&
         event.target.closest(".lines-content") !== null &&
         event.target.closest(".contentWidgets, .view-zones") === null
+    },
+    options
+  )
+  element.addEventListener(
+    "touchmove",
+    event => {
+      if (!chainGesture || event.touches.length !== 1) return
+      recordDrag(event.touches[0])
+    },
+    options
+  )
+  element.addEventListener(
+    "touchend",
+    event => {
+      if (chainGesture && event.changedTouches.length === 1) recordDrag(event.changedTouches[0])
+    },
+    options
+  )
+  element.addEventListener(
+    EventType.Tap,
+    event => {
+      // Monaco treats movements under 30px as taps, even after scrolling.
+      if (chainGesture && dragged) event.stopPropagation()
     },
     options
   )
