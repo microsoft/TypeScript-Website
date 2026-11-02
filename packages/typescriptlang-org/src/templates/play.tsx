@@ -39,7 +39,9 @@ const Play: React.FC<Props> = (props) => {
   const updateNewPlaygroundLink = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
     const sandbox = sandboxRef.current
     const query = sandbox
-      ? sandbox.createURLQueryWithCompilerOptions(sandbox)
+      ? sandbox.createURLQueryWithCompilerOptions(sandbox, {
+          ts: new URLSearchParams(location.search).get("ts"),
+        })
       : location.search + location.hash
     event.currentTarget.href = withPrefix("/play/v2/") + query
   }
