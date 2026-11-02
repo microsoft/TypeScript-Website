@@ -6,8 +6,9 @@ import {
 } from "./compiler-distribution"
 import {
   compilerVersionChoices,
+  isDefaultNativeCompilerVersion,
+  isNativeCompilerVersion,
   isUnsupportedNativeCompilerVersion,
-  isWasmCompilerVersion,
   loadPublishedCompilerVersions,
   loadLegacyCompilerVersions,
   publishedNativeCompilerSelection,
@@ -27,12 +28,7 @@ import { registerConfigSchema } from "./config-schema"
 import { configureEditorTouchScroll } from "./editor-touch-scroll"
 import { StradaBackend } from "./strada"
 import { NativeBackend } from "./native"
-import {
-  PackageTypeAcquirer,
-  stradaDiscovery,
-  type AcquisitionResult,
-  type DiscoverDependencies,
-} from "./ata"
+import { PackageTypeAcquirer, stradaDiscovery, type AcquisitionResult, type DiscoverDependencies } from "./ata"
 import { acquisitionOptions } from "./ata/config"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
@@ -1219,27 +1215,6 @@ function handleVersionMenuKeydown(event: KeyboardEvent) {
   }
   focusVersionMenuItem(items[next])
   event.preventDefault()
-}
-
-function isNativeCompilerVersion(version: string | null) {
-  return (
-    isDefaultNativeCompilerVersion(version) ||
-    (version !== null &&
-      (normalizeRequestedVersion(version) === "next" ||
-        isWasmCompilerVersion(version) ||
-        isUnsupportedNativeCompilerVersion(version)))
-  )
-}
-
-function isDefaultNativeCompilerVersion(version: string | null) {
-  return (
-    version === null ||
-    version === "" ||
-    version === "native" ||
-    version === "latest" ||
-    version === "7" ||
-    version === "7.1"
-  )
 }
 
 function normalizeRequestedVersion(version: string) {
@@ -3044,13 +3019,14 @@ function normalizeSelection(value: unknown): ProjectState["selection"] {
 }
 
 function createLegacyProjectState(code: string, fileType = getLegacyFileType()): ProjectState {
+  const configText = new URLSearchParams(location.search).get("tsconfig") ?? createLegacyConfig(fileType)
   const fileNamePattern = /^\s*\/\/\s*@filename:\s*(.+)$/i
   if (!code.split(/\r\n?|\n/g).some(line => fileNamePattern.test(line))) {
     const fileName = `${projectRoot}/src/index.${fileType}`
     return {
       activeFile: fileName,
       files: {
-        [configFileName]: defaultFiles[0].text,
+        [configFileName]: configText,
         [fileName]: code,
       },
       useDefaults: false,
@@ -3059,7 +3035,7 @@ function createLegacyProjectState(code: string, fileType = getLegacyFileType()):
 
   const fourSlashStyle = /^\s*\/\/\s*@Filename:/m.test(code)
   const files: Record<string, string> = {
-    [configFileName]: defaultFiles[0].text,
+    [configFileName]: configText,
   }
   let currentFile = `src/index.${fileType}`
   let currentLines: string[] = []
@@ -3090,6 +3066,35 @@ function createLegacyProjectState(code: string, fileType = getLegacyFileType()):
   }
 }
 
+function createLegacyConfig(fileType: string) {
+  if (useNativeCompiler) return defaultFiles[0].text
+  const [major, minor] = (selectedCompiler ?? "").split(".").map(Number)
+  const javascript = fileType === "js" || fileType === "jsx"
+  return (
+    JSON.stringify(
+      {
+        compilerOptions: {
+          strict: true,
+          noImplicitReturns: true,
+          allowUnreachableCode: false,
+          allowUnusedLabels: false,
+          esModuleInterop: true,
+          declaration: true,
+          module: "esnext",
+          moduleResolution: "node",
+          target: "es2017",
+          jsx: "react",
+          ...(major > 3 || (major === 3 && minor >= 7) ? { useDefineForClassFields: false } : {}),
+          ...(major < 5 ? { experimentalDecorators: true, emitDecoratorMetadata: true } : {}),
+          ...(javascript ? { allowJs: true, checkJs: true, strictNullChecks: false } : {}),
+        },
+      },
+      undefined,
+      2
+    ) + "\n"
+  )
+}
+
 function sanitizeLegacyPath(fileName: string) {
   const parts = fileName.replaceAll("\\", "/").replace(/^\/+/, "").split("/")
   return parts.filter(part => part !== "" && part !== "." && part !== "..").join("/")
@@ -3104,16 +3109,30 @@ function getLegacyFileType() {
 
 function applyLegacyCompilerOptions(files: Record<string, string>) {
   const params = new URLSearchParams(location.search)
-  const reserved = new Set(["example", "filetype", "pc", "pln", "ssc", "ssl", "ts", "useJavaScript"])
+  const hasSnapshot = params.has("tsconfig")
+  const reserved = new Set(["example", "filetype", "pc", "pln", "ssc", "ssl", "ts", "tsconfig", "useJavaScript"])
   let config: any
   try {
     config = JSON.parse(files[configFileName] ?? defaultFiles[0].text)
   } catch {
+    if (hasSnapshot) return
     config = JSON.parse(defaultFiles[0].text)
   }
+  if (
+    hasSnapshot &&
+    (!config ||
+      typeof config !== "object" ||
+      Array.isArray(config) ||
+      (config.compilerOptions !== undefined &&
+        (!config.compilerOptions ||
+          typeof config.compilerOptions !== "object" ||
+          Array.isArray(config.compilerOptions))))
+  )
+    return
   config.compilerOptions ??= {}
   for (const [key, rawValue] of params) {
     if (reserved.has(key)) continue
+    if (hasSnapshot && Object.prototype.hasOwnProperty.call(config.compilerOptions, key)) continue
     const value = parseLegacyCompilerOption(key, rawValue)
     if (value !== undefined) config.compilerOptions[key] = value
   }

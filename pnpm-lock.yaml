@@ -409,6 +409,9 @@ importers:
       '@typescript/playground':
         specifier: workspace:*
         version: link:../playground
+      '@typescript/playground-v2':
+        specifier: workspace:*
+        version: link:../playground-v2
       '@typescript/sandbox':
         specifier: workspace:*
         version: link:../sandbox

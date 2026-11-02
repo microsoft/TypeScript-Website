@@ -18,6 +18,51 @@ import {
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
 import { computeCompilerOverrides } from "./compiler-overrides"
 import { createStradaFileSystem } from "./strada-project"
+import { createPlaygroundV2Query } from "../../typescriptlang-org/src/lib/createPlaygroundV2Query"
+
+test("the legacy handoff serializes effective options with its own compiler and retains the requested channel", () => {
+  const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
+  let overrides: Record<string, unknown> | undefined
+  const sandbox = {
+    ts,
+    getCompilerOptions: () => ({
+      strict: false,
+      strictNullChecks: true,
+      exactOptionalPropertyTypes: true,
+      module: 99,
+      target: 4,
+      jsx: 4,
+      lib: ["lib.es2017.d.ts", "lib.dom.d.ts"],
+      paths: { alias: ["./types/alias"] },
+    }),
+    createURLQueryWithCompilerOptions(_sandbox: unknown, params: Record<string, unknown>) {
+      overrides = params
+      return "fixture-query"
+    },
+  }
+  for (const version of ["4.4.2", "6.0.2", "custom-build"]) {
+    assert.equal(createPlaygroundV2Query(sandbox, version ? `?ts=${version}` : ""), "fixture-query")
+    assert.equal(overrides?.ts, version)
+    const config = JSON.parse(String(overrides?.tsconfig))
+    const expected = {
+      strict: false,
+      strictNullChecks: true,
+      exactOptionalPropertyTypes: true,
+      module: "esnext",
+      target: "es2017",
+      jsx: "react-jsx",
+      lib: ["es2017", "dom"],
+      paths: { alias: ["./types/alias"] },
+    }
+    for (const [option, value] of Object.entries(expected)) {
+      assert.deepEqual(config.compilerOptions[option], value)
+    }
+  }
+  for (const version of ["next", "Nightly", "native", "7", "7.1", "7.1.0", undefined]) {
+    assert.equal(createPlaygroundV2Query(sandbox, version ? `?ts=${version}` : ""), "fixture-query")
+    assert.deepEqual(overrides, { ts: version ?? null })
+  }
+})
 
 test("legacy virtual directory discovery supports compiler config inheritance and file selection", () => {
   const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")

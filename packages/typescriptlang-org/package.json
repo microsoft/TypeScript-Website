@@ -23,6 +23,7 @@
     "@babel/core": "^7.29.0",
     "@types/react-helmet": "^6.1.11",
     "@typescript/playground": "workspace:*",
+    "@typescript/playground-v2": "workspace:*",
     "@typescript/sandbox": "workspace:*",
     "@typescript/twoslash": "workspace:*",
     "@typescript/vfs": "workspace:*",

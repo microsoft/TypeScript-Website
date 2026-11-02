@@ -18,6 +18,28 @@ export function isUnsupportedNativeCompilerVersion(version: string) {
   return valid(version) !== null && gte(version, "7.0.0-0") && !isWasmCompilerVersion(version)
 }
 
+export function isDefaultNativeCompilerVersion(version: string | null) {
+  return (
+    version === null ||
+    version === "" ||
+    version === "native" ||
+    version === "latest" ||
+    version === "7" ||
+    version === "7.1"
+  )
+}
+
+export function isNativeCompilerVersion(version: string | null) {
+  return (
+    isDefaultNativeCompilerVersion(version) ||
+    (version !== null &&
+      (version === "next" ||
+        version === "Nightly" ||
+        isWasmCompilerVersion(version) ||
+        isUnsupportedNativeCompilerVersion(version)))
+  )
+}
+
 export async function loadPublishedCompilerVersions(): Promise<PublishedCompilerVersions> {
   const response = await fetch("https://data.jsdelivr.com/v1/package/npm/typescript", {
     cache: "no-cache",
