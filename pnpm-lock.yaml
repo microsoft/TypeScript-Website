@@ -197,12 +197,6 @@ importers:
       '@fontsource/nunito-sans':
         specifier: ^5.2.6
         version: 5.3.0
-      '@typescript/typescript':
-        specifier: npm:typescript@7.1.0-dev.20261030.1
-        version: typescript@7.1.0-dev.20261030.1
-      '@typescript/typescript-wasip1-wasm':
-        specifier: 7.1.0-dev.20261030.1
-        version: 7.1.0-dev.20261030.1
       '@vscode/monaco-lsp-client':
         specifier: github:microsoft/monaco-editor#13f0c872dcf352815cc28d92dfff496c9839ea5c&path:/monaco-lsp-client
         version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=04b97525751ed7730facf7adbebb07b15c04ab9454c048eea064b062fe058113))(ws@8.19.0)
@@ -240,6 +234,12 @@ importers:
       '@types/semver':
         specifier: ^7.7.1
         version: 7.7.1
+      '@typescript/typescript':
+        specifier: npm:typescript@7.1.0-dev.20261030.1
+        version: typescript@7.1.0-dev.20261030.1
+      '@typescript/typescript-wasip1-wasm':
+        specifier: 7.1.0-dev.20261030.1
+        version: 7.1.0-dev.20261030.1
       esbuild:
         specifier: ^0.27.3
         version: 0.27.3

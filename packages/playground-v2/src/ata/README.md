@@ -27,23 +27,20 @@ standard libraries; its `lib/libFiles.json` index determines which library URLs
 are fetched. Schemas are fetched from the matching compiler package too.
 No compiler implementation is bundled with the website.
 
-The compiler API and WASI artifact dependencies are pinned to the same published
-nightly. After updating both dependency versions and installing them, run
-`update-compiler` to regenerate `vendor/distribution.json` from their package
-exports. It pairs immutable UNPKG URLs with the version, revision, download
-size, and cache identity. Installed packages supply types and offline tests;
-the website build includes only the distribution metadata, not compiler assets.
-Browsers load the unchanged package modules, binary, libraries, and schemas
-directly from the CDN. UNPKG serves the WASM binary without jsDelivr's 50 MB
-file-size limit. Set `COMPILER_DISTRIBUTION_URL` when building to use
-another distribution; its modules and assets must be served with CORS headers.
+The installed compiler API and WASI artifact are development dependencies for
+types and offline tests only. Their matching versions do not select the runtime
+compiler. Browsers resolve the selected version's npm package manifests, check
+that API and WASI revisions agree, and load immutable UNPKG URLs directly.
+There is no checked-in distribution manifest, compiler update script, or copied
+compiler payload. UNPKG serves the WASM binary without jsDelivr's 50 MB limit.
 
 The version menu discovers published versions from jsDelivr's npm metadata API.
 Native support starts at `7.1.0-dev.20261030.1`; the older `7.1.0-beta` is excluded
 because it has no published WASM host or artifact. The menu keeps the latest
 stable patch per minor, published native prerelease channels, and the separate
-legacy Playground CDN version list. Selecting another native version resolves
-both package manifests and uses that exact version for every module and asset.
+legacy Playground CDN version list, fetched directly at runtime. New visits
+follow the latest supported stable release, or Nightly until one is available.
+Selecting an exact version keeps it fixed for every module and asset.
 The initial download estimate uses the packages' unpacked sizes.
 
 ## Resolution

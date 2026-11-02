@@ -6,7 +6,6 @@ import { compatibilityHtml, compatibilityPaths, playgroundPath } from "./routes.
 
 const packageDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const websiteDirectory = resolve(packageDirectory, "../..")
-const vendorDirectory = resolve(packageDirectory, "vendor")
 const outputDirectory = resolve(packageDirectory, "dist")
 const websitePlayDirectory = resolve(websiteDirectory, "packages/typescriptlang-org/static/play")
 const websiteStaticDirectory = resolve(websitePlayDirectory, "v2")
@@ -16,38 +15,29 @@ const compatibilityDirectories = compatibilityPaths.map(path =>
 const serve = process.argv.includes("--serve")
 const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? playgroundPath
 
-const releaseIndex = resolve(packageDirectory, "vendor/versions.json")
 const examplesIndex = resolve(packageDirectory, "vendor/examples.json")
 const helpIndex = resolve(packageDirectory, "vendor/help.json")
 const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
-const distribution = JSON.parse(await readFile(resolve(vendorDirectory, "distribution.json"), "utf8"))
-const version = distribution.version
-const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8"))
-  .replaceAll("__PLAYGROUND_BASE__", playgroundBase)
-  .replaceAll("__COMPILER_VERSION__", version)
-  .replace("<title>", `<title data-typescript-version="${version}">`)
+const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8")).replaceAll(
+  "__PLAYGROUND_BASE__",
+  playgroundBase
+)
 
 await rm(outputDirectory, { force: true, recursive: true })
 await mkdir(outputDirectory, { recursive: true })
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
-  cp(releaseIndex, resolve(outputDirectory, "versions.json")),
   cp(examplesIndex, resolve(outputDirectory, "examples.json")),
   cp(helpIndex, resolve(outputDirectory, "help.json")),
-  cp(resolve(vendorDirectory, "distribution.json"), resolve(outputDirectory, "distribution.json")),
 ])
 
 const buildContext = await context({
   absWorkingDir: packageDirectory,
   bundle: true,
   conditions: ["browser", "default"],
-  define: {
-    __COMPILER_DISTRIBUTION_URL__: JSON.stringify(process.env.COMPILER_DISTRIBUTION_URL || "./distribution.json"),
-    __TS_VERSION__: JSON.stringify(version),
-  },
   entryNames: "[name]",
   entryPoints: {
     main: resolve(packageDirectory, "src/main.ts"),
@@ -80,7 +70,7 @@ if (serve) {
 } else {
   const result = await buildContext.rebuild()
   const compilerInputs = Object.keys(result.metafile.inputs).filter(path =>
-    /(?:vendor|node_modules)\/(?:@typescript\/)?typescript(?:-wasip1-wasm)?\//.test(path)
+    /node_modules\/(?:@typescript\/)?typescript(?:-wasip1-wasm)?\//.test(path)
   )
   if (compilerInputs.length) throw new Error(`Compiler implementation was bundled: ${compilerInputs.join(", ")}`)
   await buildContext.dispose()
@@ -92,5 +82,5 @@ if (serve) {
       await writeFile(resolve(directory, "index.html"), compatibilityHtml)
     })
   )
-  console.log(`Built TypeScript ${version} playground in ${outputDirectory}`)
+  console.log(`Built Playground v2 in ${outputDirectory}`)
 }

@@ -1,14 +1,11 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
-import {
-  loadCompilerDistribution,
-  loadPublishedCompilerDistribution,
-  type CompilerDistribution,
-} from "./compiler-distribution"
+import { loadPublishedCompilerDistribution, type CompilerDistribution } from "./compiler-distribution"
 import {
   compilerVersionChoices,
   isUnsupportedNativeCompilerVersion,
   isWasmCompilerVersion,
   loadPublishedCompilerVersions,
+  loadLegacyCompilerVersions,
   publishedNativeCompilerSelection,
 } from "./compiler-versions"
 import "monaco-editor/editor/contrib/links/browser/links.js"
@@ -37,9 +34,6 @@ import {
 import { acquisitionOptions } from "./ata/config"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
-
-declare const __TS_VERSION__: string
-declare const __COMPILER_DISTRIBUTION_URL__: string
 
 type Diagnostic = Omit<CompilerDiagnostic, "fileName"> & { fileName?: string }
 
@@ -1057,7 +1051,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
         setLoadingProgress(
           progress,
           nextStatus === "ready" ? "TypeScript is ready" : `Starting language server: ${nextStatus}`,
-          nextStatus === "ready" ? lspServerInfo ?? nativeDistribution?.version ?? __TS_VERSION__ : ""
+          nextStatus === "ready" ? lspServerInfo ?? nativeDistribution?.version ?? "" : ""
         )
         renderStatus()
       },
@@ -1071,16 +1065,18 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
 async function initializeVersionSelector() {
   compilerVersionButton.setAttribute("aria-disabled", "true")
   try {
-    const response = await fetch(new URL("./versions.json", import.meta.url))
-    if (!response.ok) throw new Error(`Could not load versions: ${response.status}`)
-    const releases = (await response.json()) as { versions: string[] }
-    let published: Awaited<ReturnType<typeof loadPublishedCompilerVersions>> | undefined
-    let publishedFailure: string | undefined
-    try {
-      published = await getPublishedCompilerVersions()
-    } catch (error) {
-      publishedFailure = error instanceof Error ? error.message : String(error)
-      console.warn("Could not initialize published TypeScript versions", error)
+    const [legacyResult, publishedResult] = await Promise.allSettled([
+      loadLegacyCompilerVersions(),
+      getPublishedCompilerVersions(),
+    ])
+    const legacyVersions = legacyResult.status === "fulfilled" ? legacyResult.value : []
+    const published = publishedResult.status === "fulfilled" ? publishedResult.value : undefined
+    const failures: string[] = []
+    for (const result of [legacyResult, publishedResult]) {
+      if (result.status === "rejected") {
+        failures.push(result.reason instanceof Error ? result.reason.message : String(result.reason))
+        console.warn("Could not initialize TypeScript versions", result.reason)
+      }
     }
     const nightly = selectedCompiler !== null && normalizeRequestedVersion(selectedCompiler) === "next"
     const floating = isDefaultNativeCompilerVersion(selectedCompiler) || nightly
@@ -1093,24 +1089,21 @@ async function initializeVersionSelector() {
         )
         selectedValue = selection.channel === "nightly" ? "next" : selection.version
       } catch (error) {
-        publishedFailure = error instanceof Error ? error.message : String(error)
+        failures.push(error instanceof Error ? error.message : String(error))
         console.warn("Could not resolve the default TypeScript version", error)
       }
     }
-    const versions = compilerVersionChoices(__TS_VERSION__, releases.versions, published, selectedValue).map(
-      choice => ({
-        label: choice.label,
-        value: choice.version,
-      })
-    )
+    const versions = compilerVersionChoices(legacyVersions, published, selectedValue).map(choice => ({
+      label: choice.label,
+      value: choice.version,
+    }))
     compilerVersionMenu.replaceChildren()
     for (const version of versions) {
       compilerVersionMenu.appendChild(createVersionMenuItem(version.label, version.value, selectedValue))
     }
-    if (publishedFailure) {
-      const notice = createText("p", "Published versions unavailable.", "version-menu-error")
+    for (const failure of failures) {
+      const notice = createText("p", failure, "version-menu-error")
       notice.setAttribute("role", "presentation")
-      notice.title = publishedFailure
       compilerVersionMenu.appendChild(notice)
     }
     const separator = document.createElement("div")
@@ -2058,11 +2051,7 @@ function applyEditorLocation(location: EditorLocation) {
 }
 
 function getCompilerDistribution() {
-  compilerDistributionPromise ??= resolveNativeCompilerVersion().then(version =>
-    version === __TS_VERSION__
-      ? loadCompilerDistribution(new URL(__COMPILER_DISTRIBUTION_URL__, import.meta.url))
-      : loadPublishedCompilerDistribution(version)
-  )
+  compilerDistributionPromise ??= resolveNativeCompilerVersion().then(loadPublishedCompilerDistribution)
   return compilerDistributionPromise
 }
 
@@ -2217,7 +2206,7 @@ async function compilerAssetsAreCached() {
 async function openAssetCache() {
   if (!("caches" in globalThis)) return undefined
   if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
-  const cacheName = `${assetCachePrefix}${nativeDistribution.cacheKey}`
+  const cacheName = `${assetCachePrefix}npm-${nativeDistribution.version}`
   try {
     const cacheNames = await caches.keys()
     await Promise.all(

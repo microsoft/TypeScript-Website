@@ -50,6 +50,24 @@ export async function loadPublishedCompilerVersions(): Promise<PublishedCompiler
   return { versions, tags: { latest: tag("latest"), next: tag("next"), beta: tag("beta"), rc: tag("rc") } }
 }
 
+export async function loadLegacyCompilerVersions(): Promise<string[]> {
+  const response = await fetch("https://playgroundcdn.typescriptlang.org/indexes/releases.json", {
+    cache: "no-cache",
+    signal: AbortSignal.timeout(15_000),
+  })
+  if (!response.ok) throw new Error(`Could not load historical TypeScript versions: ${response.status}`)
+  const metadata: unknown = await response.json()
+  const versions: unknown = metadata && typeof metadata === "object" ? Reflect.get(metadata, "versions") : undefined
+  if (
+    !Array.isArray(versions) ||
+    versions.length === 0 ||
+    !versions.every((version: unknown): version is string => typeof version === "string" && valid(version) !== null)
+  ) {
+    throw new Error("Invalid historical TypeScript versions")
+  }
+  return versions
+}
+
 export function publishedNativeCompilerSelection(published: PublishedCompilerVersions, channel: "default" | "nightly") {
   const stable = published.tags.latest
   const useStable = channel === "default" && stable && isWasmCompilerVersion(stable) && !prerelease(stable)
@@ -61,7 +79,6 @@ export function publishedNativeCompilerSelection(published: PublishedCompilerVer
 }
 
 export function compilerVersionChoices(
-  pinnedVersion: string,
   legacyVersions: readonly string[],
   published?: PublishedCompilerVersions,
   selectedVersion?: string
@@ -123,8 +140,6 @@ export function compilerVersionChoices(
   const nightly = published?.tags.next
   if (nightly && isWasmCompilerVersion(nightly) && published?.versions.includes(nightly)) {
     add("next", `Nightly (${nightly})`)
-  } else if (!published) {
-    add(pinnedVersion, `${pinnedVersion} (pinned)`)
   }
   return [...versions.values()]
 }
