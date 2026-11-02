@@ -7,7 +7,13 @@ import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
 import { loadCompilerDistribution, loadPublishedCompilerDistribution } from "./compiler-distribution"
-import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
+import {
+  compilerVersionChoices,
+  isUnsupportedNativeCompilerVersion,
+  isWasmCompilerVersion,
+  loadPublishedCompilerVersions,
+  publishedNativeCompilerSelection,
+} from "./compiler-versions"
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
 import { computeCompilerOverrides } from "./compiler-overrides"
 import { createStradaFileSystem } from "./strada-project"
@@ -214,29 +220,93 @@ test("native versions start at the WASM nightly and exclude the published beta",
   }
 })
 
-test("version choices merge published native channels with the separate legacy CDN list", () => {
-  const choices = compilerVersionChoices("7.1.0-dev.20261030.1", ["5.9.2", "6.0.2", "3.1.6", "5.9.3", "6.0.3"], {
-    versions: ["7.0.2", "7.1.0-beta", "7.1.0-dev.20261030.1", "7.1.1", "7.1.2", "7.2.0-dev.20261101.1"],
-    tags: { next: "7.2.0-dev.20261101.1", beta: "7.1.0-beta", rc: "7.0.1-rc" },
+test("the native default follows Nightly until a supported stable release is published", () => {
+  const published = {
+    versions: ["7.0.2", "7.1.0-dev.20261030.1", "7.1.0-dev.20261031.1", "7.1.0", "7.2.0-dev.20261101.1"],
+    tags: { latest: "7.0.2", next: "7.1.0-dev.20261031.1" },
+  }
+  assert.deepEqual(publishedNativeCompilerSelection(published, "default"), {
+    version: "7.1.0-dev.20261031.1",
+    channel: "nightly",
   })
+  published.tags.next = "7.2.0-dev.20261101.1"
+  assert.equal(publishedNativeCompilerSelection(published, "default").version, "7.2.0-dev.20261101.1")
+  published.tags.latest = "7.1.0"
+  assert.deepEqual(publishedNativeCompilerSelection(published, "default"), { version: "7.1.0", channel: "stable" })
+  assert.deepEqual(publishedNativeCompilerSelection(published, "nightly"), {
+    version: "7.2.0-dev.20261101.1",
+    channel: "nightly",
+  })
+})
+
+test("native channel resolution rejects missing, incompatible and unlisted versions", () => {
+  for (const tags of [{}, { next: "7.1.0-beta" }, { next: "7.1.0-dev.20261031.1" }]) {
+    assert.throws(
+      () => publishedNativeCompilerSelection({ versions: ["7.0.2"], tags }, "default"),
+      /No published TypeScript version supports/
+    )
+  }
+  assert.throws(
+    () => publishedNativeCompilerSelection({ versions: ["7.1.0"], tags: { latest: "7.1.0" } }, "nightly"),
+    /No published TypeScript version supports/
+  )
+})
+
+test("version choices combine supported stable releases before prereleases and Nightly", () => {
+  const choices = compilerVersionChoices(
+    "7.1.0-dev.20261030.1",
+    ["7.0.2", "5.9.2", "6.0.2", "3.1.6", "5.9.3", "6.0.3"],
+    {
+      versions: ["7.0.2", "7.1.0-beta", "7.1.0-dev.20261030.1", "7.1.1", "7.1.2", "7.2.0-dev.20261101.1"],
+      tags: { next: "7.2.0-dev.20261101.1", beta: "7.1.0-beta", rc: "7.0.1-rc" },
+    }
+  )
   assert.deepEqual(choices, [
-    { version: "7.1.0-dev.20261030.1", label: "7.1.0-dev.20261030.1" },
     { version: "7.1.2", label: "7.1.2" },
-    { version: "7.2.0-dev.20261101.1", label: "Nightly (7.2.0-dev.20261101.1)" },
     { version: "6.0.3", label: "6.0.3" },
     { version: "5.9.3", label: "5.9.3" },
+    { version: "next", label: "Nightly (7.2.0-dev.20261101.1)" },
   ])
   const sameNightly = compilerVersionChoices("7.1.0-dev.20261030.1", [], {
     versions: ["7.1.0-dev.20261030.1"],
     tags: { next: "7.1.0-dev.20261030.1" },
   })
-  assert.deepEqual(sameNightly, [{ version: "7.1.0-dev.20261030.1", label: "Nightly (7.1.0-dev.20261030.1)" }])
+  assert.deepEqual(sameNightly, [{ version: "next", label: "Nightly (7.1.0-dev.20261030.1)" }])
+})
+
+test("version choices offer the applicable beta or RC without unsupported or superseded candidates", () => {
+  const published = {
+    versions: ["7.0.2", "7.1.0-beta", "7.1.0", "7.2.0-beta", "7.2.0-rc", "7.3.0-dev.20261101.1"],
+    tags: { latest: "7.1.0", beta: "7.2.0-beta", rc: "7.2.0-rc", next: "7.3.0-dev.20261101.1" },
+  }
+  assert.deepEqual(compilerVersionChoices("7.1.0-dev.20261030.1", ["7.0.2", "6.0.3"], published), [
+    { version: "7.1.0", label: "7.1.0" },
+    { version: "6.0.3", label: "6.0.3" },
+    { version: "7.2.0-rc", label: "RC (7.2.0-rc)" },
+    { version: "next", label: "Nightly (7.3.0-dev.20261101.1)" },
+  ])
+  assert.deepEqual(
+    compilerVersionChoices("7.1.0-dev.20261030.1", ["6.0.3", "5.9.3"], published, "5.9.2").map(
+      choice => choice.version
+    ),
+    ["7.1.0", "6.0.3", "5.9.3", "5.9.2", "7.2.0-rc", "next"]
+  )
+  published.versions.push("7.2.0")
+  published.tags.latest = "7.2.0"
+  assert(!compilerVersionChoices("7.1.0-dev.20261030.1", [], published).some(choice => /Beta|RC/.test(choice.label)))
+  for (const version of ["7.0.2", "7.0.1-rc", "7.1.0-beta", "7.1.0-dev.20261029.1"]) {
+    assert.equal(isUnsupportedNativeCompilerVersion(version), true)
+  }
+  for (const version of ["6.0.3", "7.1.0-dev.20261031.1", "7.1.0", "7.2.0-beta"]) {
+    assert.equal(isUnsupportedNativeCompilerVersion(version), false)
+  }
 })
 
 test("published version discovery reports failed and malformed indexes", async t => {
   const fetch = t.mock.method(globalThis, "fetch", async () =>
-    Response.json({ versions: ["7.1.0-dev.20261030.1"], tags: { next: "7.1.0-dev.20261030.1" } })
+    Response.json({ versions: ["7.1.0-dev.20261030.1"], tags: { latest: "7.0.2", next: "7.1.0-dev.20261030.1" } })
   )
+  assert.equal((await loadPublishedCompilerVersions()).tags.latest, "7.0.2")
   assert.equal((await loadPublishedCompilerVersions()).tags.next, "7.1.0-dev.20261030.1")
   fetch.mock.mockImplementation(async () => new Response("", { status: 503 }))
   await assert.rejects(loadPublishedCompilerVersions(), /Could not load published TypeScript versions: 503/)

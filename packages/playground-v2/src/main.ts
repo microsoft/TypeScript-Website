@@ -4,7 +4,13 @@ import {
   loadPublishedCompilerDistribution,
   type CompilerDistribution,
 } from "./compiler-distribution"
-import { compilerVersionChoices, isWasmCompilerVersion, loadPublishedCompilerVersions } from "./compiler-versions"
+import {
+  compilerVersionChoices,
+  isUnsupportedNativeCompilerVersion,
+  isWasmCompilerVersion,
+  loadPublishedCompilerVersions,
+  publishedNativeCompilerSelection,
+} from "./compiler-versions"
 import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
 import "reflect-metadata"
@@ -297,6 +303,7 @@ let nativeBackend: NativeBackend | undefined
 let nativeCompileVersion = 0
 let DiagnosticCategory: typeof import("@typescript/typescript/sync").DiagnosticCategory
 let compilerDistributionPromise: Promise<CompilerDistribution> | undefined
+let publishedCompilerVersionsPromise: ReturnType<typeof loadPublishedCompilerVersions> | undefined
 let nativeDistribution: CompilerDistribution | undefined
 let projectPersistTimer = 0
 let projectPersistenceEnabled = true
@@ -915,8 +922,12 @@ void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(
 
 async function initializeNativeCompiler() {
   try {
+    if (isDefaultNativeCompilerVersion(selectedCompiler)) compilerVersionLabel.textContent = "Default"
+    else if (normalizeRequestedVersion(selectedCompiler!) === "next") compilerVersionLabel.textContent = "Nightly"
     const distribution = await getCompilerDistribution()
     nativeDistribution = distribution
+    compilerVersionLabel.textContent =
+      compilerVersionMenu.querySelector('[aria-checked="true"]')?.textContent ?? distribution.version
     await confirmLargeDownloadIfNeeded()
     setLoadingProgress(0, "Downloading TypeScript...", "Preparing downloads")
     const [wasmBytes, libFiles, configSchemaBytes] = await Promise.all([
@@ -1046,7 +1057,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
         setLoadingProgress(
           progress,
           nextStatus === "ready" ? "TypeScript is ready" : `Starting language server: ${nextStatus}`,
-          nextStatus === "ready" ? lspServerInfo ?? __TS_VERSION__ : ""
+          nextStatus === "ready" ? lspServerInfo ?? nativeDistribution?.version ?? __TS_VERSION__ : ""
         )
         renderStatus()
       },
@@ -1066,21 +1077,32 @@ async function initializeVersionSelector() {
     let published: Awaited<ReturnType<typeof loadPublishedCompilerVersions>> | undefined
     let publishedFailure: string | undefined
     try {
-      published = await loadPublishedCompilerVersions()
+      published = await getPublishedCompilerVersions()
     } catch (error) {
       publishedFailure = error instanceof Error ? error.message : String(error)
       console.warn("Could not initialize published TypeScript versions", error)
     }
-    const versions = compilerVersionChoices(__TS_VERSION__, releases.versions, published).map(choice => ({
-      label: choice.label,
-      value: choice.version === __TS_VERSION__ ? "native" : choice.version,
-    }))
-    const selectedValue = isDefaultNativeCompilerVersion(selectedCompiler)
-      ? "native"
-      : normalizeRequestedVersion(selectedCompiler!)
-    if (!versions.some(version => version.value === selectedValue)) {
-      versions.push({ label: selectedCompiler!, value: selectedValue })
+    const nightly = selectedCompiler !== null && normalizeRequestedVersion(selectedCompiler) === "next"
+    const floating = isDefaultNativeCompilerVersion(selectedCompiler) || nightly
+    let selectedValue = floating ? "" : normalizeRequestedVersion(selectedCompiler!)
+    if (floating && published) {
+      try {
+        const selection = publishedNativeCompilerSelection(
+          published,
+          isDefaultNativeCompilerVersion(selectedCompiler) ? "default" : "nightly"
+        )
+        selectedValue = selection.channel === "nightly" ? "next" : selection.version
+      } catch (error) {
+        publishedFailure = error instanceof Error ? error.message : String(error)
+        console.warn("Could not resolve the default TypeScript version", error)
+      }
     }
+    const versions = compilerVersionChoices(__TS_VERSION__, releases.versions, published, selectedValue).map(
+      choice => ({
+        label: choice.label,
+        value: choice.version,
+      })
+    )
     compilerVersionMenu.replaceChildren()
     for (const version of versions) {
       compilerVersionMenu.appendChild(createVersionMenuItem(version.label, version.value, selectedValue))
@@ -1098,7 +1120,8 @@ async function initializeVersionSelector() {
     compilerVersionMenu.appendChild(createVersionMenuItem("Custom / PR build…", "__custom__", selectedValue))
 
     compilerVersionLabel.textContent =
-      versions.find(version => version.value === selectedValue)?.label ?? selectedCompiler ?? __TS_VERSION__
+      versions.find(version => version.value === selectedValue)?.label ??
+      (floating ? (nightly ? "Nightly" : "Default") : selectedCompiler!)
     compilerVersion.addEventListener("toggle", () => {
       compilerVersionButton.setAttribute("aria-expanded", String(compilerVersion.open))
     })
@@ -1201,7 +1224,13 @@ function handleVersionMenuKeydown(event: KeyboardEvent) {
 }
 
 function isNativeCompilerVersion(version: string | null) {
-  return isDefaultNativeCompilerVersion(version) || (version !== null && isWasmCompilerVersion(version))
+  return (
+    isDefaultNativeCompilerVersion(version) ||
+    (version !== null &&
+      (normalizeRequestedVersion(version) === "next" ||
+        isWasmCompilerVersion(version) ||
+        isUnsupportedNativeCompilerVersion(version)))
+  )
 }
 
 function isDefaultNativeCompilerVersion(version: string | null) {
@@ -1209,9 +1238,9 @@ function isDefaultNativeCompilerVersion(version: string | null) {
     version === null ||
     version === "" ||
     version === "native" ||
+    version === "latest" ||
     version === "7" ||
-    version === "7.1" ||
-    version === __TS_VERSION__
+    version === "7.1"
   )
 }
 
@@ -2029,10 +2058,30 @@ function applyEditorLocation(location: EditorLocation) {
 }
 
 function getCompilerDistribution() {
-  compilerDistributionPromise ??= isDefaultNativeCompilerVersion(selectedCompiler)
-    ? loadCompilerDistribution(new URL(__COMPILER_DISTRIBUTION_URL__, import.meta.url))
-    : loadPublishedCompilerDistribution(selectedCompiler!)
+  compilerDistributionPromise ??= resolveNativeCompilerVersion().then(version =>
+    version === __TS_VERSION__
+      ? loadCompilerDistribution(new URL(__COMPILER_DISTRIBUTION_URL__, import.meta.url))
+      : loadPublishedCompilerDistribution(version)
+  )
   return compilerDistributionPromise
+}
+
+function getPublishedCompilerVersions() {
+  publishedCompilerVersionsPromise ??= loadPublishedCompilerVersions()
+  return publishedCompilerVersionsPromise
+}
+
+async function resolveNativeCompilerVersion() {
+  if (isDefaultNativeCompilerVersion(selectedCompiler)) {
+    return publishedNativeCompilerSelection(await getPublishedCompilerVersions(), "default").version
+  }
+  if (normalizeRequestedVersion(selectedCompiler!) === "next") {
+    return publishedNativeCompilerSelection(await getPublishedCompilerVersions(), "nightly").version
+  }
+  if (selectedCompiler && isUnsupportedNativeCompilerVersion(selectedCompiler)) {
+    throw new Error(`TypeScript ${selectedCompiler} is not supported by this Playground. Choose an available version.`)
+  }
+  return selectedCompiler!
 }
 
 async function downloadLibraries(distribution: CompilerDistribution) {

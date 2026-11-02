@@ -2,7 +2,7 @@ import { gte, prerelease, rcompare, valid } from "semver"
 
 export type PublishedCompilerVersions = {
   versions: string[]
-  tags: { next?: string; beta?: string; rc?: string }
+  tags: { latest?: string; next?: string; beta?: string; rc?: string }
 }
 
 export type CompilerVersionChoice = {
@@ -14,8 +14,13 @@ export function isWasmCompilerVersion(version: string) {
   return valid(version) !== null && gte(version, "7.1.0-dev.20261030.1")
 }
 
+export function isUnsupportedNativeCompilerVersion(version: string) {
+  return valid(version) !== null && gte(version, "7.0.0-0") && !isWasmCompilerVersion(version)
+}
+
 export async function loadPublishedCompilerVersions(): Promise<PublishedCompilerVersions> {
   const response = await fetch("https://data.jsdelivr.com/v1/package/npm/typescript", {
+    cache: "no-cache",
     signal: AbortSignal.timeout(15_000),
   })
   if (!response.ok) throw new Error(`Could not load published TypeScript versions: ${response.status}`)
@@ -34,7 +39,7 @@ export async function loadPublishedCompilerVersions(): Promise<PublishedCompiler
     throw new Error("Invalid published TypeScript versions")
   }
   const indexTags = tags
-  function tag(name: "next" | "beta" | "rc") {
+  function tag(name: "latest" | "next" | "beta" | "rc") {
     const value: unknown = Reflect.get(indexTags, name)
     if (value === undefined) return undefined
     if (typeof value !== "string" || valid(value) === null) {
@@ -42,35 +47,84 @@ export async function loadPublishedCompilerVersions(): Promise<PublishedCompiler
     }
     return value
   }
-  return { versions, tags: { next: tag("next"), beta: tag("beta"), rc: tag("rc") } }
+  return { versions, tags: { latest: tag("latest"), next: tag("next"), beta: tag("beta"), rc: tag("rc") } }
+}
+
+export function publishedNativeCompilerSelection(published: PublishedCompilerVersions, channel: "default" | "nightly") {
+  const stable = published.tags.latest
+  const useStable = channel === "default" && stable && isWasmCompilerVersion(stable) && !prerelease(stable)
+  const version = useStable ? stable : published.tags.next
+  if (!version || !isWasmCompilerVersion(version) || !published.versions.includes(version)) {
+    throw new Error(`No published TypeScript version supports the native ${channel} channel`)
+  }
+  return { version, channel: useStable ? ("stable" as const) : ("nightly" as const) }
 }
 
 export function compilerVersionChoices(
-  defaultVersion: string,
+  pinnedVersion: string,
   legacyVersions: readonly string[],
-  published?: PublishedCompilerVersions
+  published?: PublishedCompilerVersions,
+  selectedVersion?: string
 ): CompilerVersionChoice[] {
   const versions = new Map<string, CompilerVersionChoice>()
   function add(version: string, label = version) {
     versions.set(version, { version, label })
   }
-  add(defaultVersion)
+  const unsupported = new Set(["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"])
+  const legacyReleases = legacyVersions.filter(
+    version =>
+      valid(version) !== null &&
+      !prerelease(version) &&
+      !isUnsupportedNativeCompilerVersion(version) &&
+      !unsupported.has(version)
+  )
   const nativeReleases =
     published?.versions.filter(version => isWasmCompilerVersion(version) && !prerelease(version)) ?? []
-  for (const version of latestMinorVersions(nativeReleases)) add(version)
+  const releases = latestMinorVersions([...nativeReleases, ...legacyReleases])
+  const stableChoices = new Set(releases)
+  if (
+    selectedVersion &&
+    valid(selectedVersion) !== null &&
+    !prerelease(selectedVersion) &&
+    !isUnsupportedNativeCompilerVersion(selectedVersion) &&
+    !unsupported.has(selectedVersion)
+  ) {
+    stableChoices.add(selectedVersion)
+  }
+  for (const version of [...stableChoices].sort(rcompare)) add(version)
+  const candidates: CompilerVersionChoice[] = []
   for (const [tag, label] of [
-    ["next", "Nightly"],
-    ["beta", "Beta"],
     ["rc", "RC"],
+    ["beta", "Beta"],
   ] as const) {
     const version = published?.tags[tag]
-    if (version && isWasmCompilerVersion(version) && published?.versions.includes(version)) {
-      add(version, `${label} (${version})`)
+    if (
+      version &&
+      valid(version) !== null &&
+      !isUnsupportedNativeCompilerVersion(version) &&
+      prerelease(version) &&
+      published?.versions.includes(version) &&
+      (!releases[0] || rcompare(version, releases[0]) < 0)
+    ) {
+      candidates.push({ version, label: `${label} (${version})` })
     }
   }
-  const unsupported = new Set(["3.1.6", "3.0.1", "2.8.1", "2.7.2", "2.4.1"])
-  for (const version of latestMinorVersions(legacyVersions.filter(version => !unsupported.has(version)))) {
-    if (!versions.has(version)) add(version)
+  const candidate = candidates.sort((a, b) => rcompare(a.version, b.version))[0]
+  if (candidate) add(candidate.version, candidate.label)
+  if (
+    selectedVersion &&
+    selectedVersion !== "next" &&
+    !isUnsupportedNativeCompilerVersion(selectedVersion) &&
+    !unsupported.has(selectedVersion) &&
+    !versions.has(selectedVersion)
+  ) {
+    add(selectedVersion)
+  }
+  const nightly = published?.tags.next
+  if (nightly && isWasmCompilerVersion(nightly) && published?.versions.includes(nightly)) {
+    add("next", `Nightly (${nightly})`)
+  } else if (!published) {
+    add(pinnedVersion, `${pinnedVersion} (pinned)`)
   }
   return [...versions.values()]
 }
