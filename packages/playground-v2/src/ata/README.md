@@ -21,37 +21,6 @@ path references, and standard-library references. Literal dynamic imports,
 import types, re-exports, and import-equals are supported. Existing
 `// types: VERSION` annotations are preserved.
 
-The native API, AST helpers, and reactor host are dynamically imported by URL
-inside the worker. The matching WASI artifact package supplies the binary and
-standard libraries; its `lib/libFiles.json` index determines which library URLs
-are fetched. Schemas are fetched from the matching compiler package too.
-No compiler implementation is bundled with the website.
-
-The installed compiler API and WASI artifact are development dependencies for
-types and offline tests only. Their matching versions do not select the runtime
-compiler. Browsers resolve the selected version's npm package manifests, check
-that API and WASI revisions agree, and load immutable UNPKG URLs directly.
-There is no checked-in distribution manifest, compiler update script, or copied
-compiler payload. UNPKG serves the WASM binary without jsDelivr's 50 MB limit.
-
-The version menu discovers published versions from jsDelivr's npm metadata API.
-Native support starts at `7.1.0-dev.20261030.1`; the older `7.1.0-beta` is excluded
-because it has no published WASM host or artifact. The menu keeps the latest
-stable patch per minor, published native prerelease channels, and the separate
-legacy Playground CDN version list, fetched directly at runtime. New visits
-follow the latest supported stable release, or Nightly until one is available.
-Selecting an exact version keeps it fixed for every module and asset.
-The initial download estimate uses the packages' unpacked sizes.
-
-Published historical JavaScript compilers and their standard libraries also
-load from exact UNPKG package URLs. The legacy Playground CDN provides the
-release list and custom/PR builds, not the contents of published releases.
-The host verifies a published compiler's own version before starting it.
-
-The website build composes examples from `playground-examples`' generated
-English index and canonical source files after the normal repository bootstrap.
-Help is handwritten source in `src/help.json`. Neither needs a vendoring step.
-
 ## Resolution
 
 - Node builtin imports resolve directly to `@types/node`.
@@ -88,19 +57,9 @@ Downloads use a shared concurrency limit, validate virtual paths, and enforce
 package/file/response/project byte limits.
 
 Compiler startup and initial emit do not wait for acquisition.
-Native emit, diagnostics, type queries, and dependency discovery run in a
-dedicated worker, separate from the language-server worker. No native compiler
-instance or `window.ts` API is created on the page. Strada keeps its parser
-internal for dependency discovery. Native snapshots are updated across edits,
-pending compile requests are coalesced, and stale responses cannot replace
-current results.
-Whole-project diagnostics remain independent of Monaco's per-document reports.
-Compilation reuses the snapshot's parsed configuration, and files outside the
-configured project only need an extra program when they contain type queries.
 Diagnostics may initially report missing package types; the host recompiles
-after applying the current acquisition snapshot. Emit still follows compiler
-options, including `noEmitOnError`. The host also refreshes LSP diagnostics
-after package files or effective options change, so initial missing-package
+after applying the current acquisition snapshot. The host also refreshes LSP
+diagnostics after package files or effective options change, so initial missing-package
 markers disappear without editing the source. Progress includes pending
 package names and completed/total package counts during metadata resolution,
 as well as downloaded/total declaration and metadata file counts.
