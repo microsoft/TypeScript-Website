@@ -8,7 +8,7 @@
     {
       "title": "Compiler versions",
       "legacyIndexes": [8],
-      "html": "<p>The selector offers the latest stable patch for each supported major.minor line, the applicable beta or RC, and Nightly. New visits use the latest supported stable release, or Nightly until one is available. Exact version links remain fixed.</p><p>Native support starts at <code>7.1.0-dev.20261030.1</code>; older 7.x builds, including <code>7.1.0-beta</code>, are unsupported. Native API modules, the WASM binary, libraries, and schemas load directly from UNPKG using the exact selected package version. Historical JavaScript compiler versions come from the legacy Playground CDN. Custom playground-CDN build IDs remain supported.</p><p>Changing compiler versions reloads the page while preserving the project.</p>"
+      "html": "<p>The selector offers the latest stable patch for each supported major.minor line, the applicable beta or RC, and Nightly. New visits use the latest supported stable release, or Nightly until one is available. Exact version links remain fixed.</p><p>Native support starts at <code>7.1.0-dev.20261030.1</code>; older 7.x builds, including <code>7.1.0-beta</code>, are unsupported. Published compilers and their matching assets load directly from UNPKG using the exact selected package version. The legacy Playground CDN supplies the historical version list and custom or PR builds.</p><p>Changing compiler versions reloads the page while preserving the project.</p>"
     },
     {
       "title": "Compiler settings",

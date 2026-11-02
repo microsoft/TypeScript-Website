@@ -6,7 +6,7 @@ import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
-import { loadPublishedCompilerDistribution } from "./compiler-distribution"
+import { legacyCompilerBaseUrl, loadPublishedCompilerDistribution } from "./compiler-distribution"
 import {
   compilerVersionChoices,
   isUnsupportedNativeCompilerVersion,
@@ -57,6 +57,20 @@ test("legacy virtual directory discovery supports compiler config inheritance an
   assert.deepEqual(host.getDirectories("/workspace").sort(), ["config", "node_modules", "src"])
   assert.equal(host.fileExists("/workspace/src/../explicit.ts"), true)
   assert.equal(host.fileExists("/workspace/src/keep.ts"), false)
+})
+
+test("historical compilers and libraries use exact npm URLs while custom builds keep their CDN", () => {
+  for (const version of ["3.3.3", "4.4.2", "5.9.3", "6.0.2", "6.1.0-beta", "6.1.1-rc", "6.1.0-dev.20261030"]) {
+    const base = legacyCompilerBaseUrl(version)
+    assert.equal(new URL("typescript.js", base).href, `https://unpkg.com/typescript@${version}/lib/typescript.js`)
+    assert.equal(new URL("lib.es5.d.ts", base).href, `https://unpkg.com/typescript@${version}/lib/lib.es5.d.ts`)
+  }
+  for (const version of ["custom-build", "4.4.0-pr-12345-1"]) {
+    assert.equal(
+      legacyCompilerBaseUrl(version).href,
+      `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`
+    )
+  }
 })
 
 test("native TypeScript comment directives are not project-wide compiler overrides", () => {

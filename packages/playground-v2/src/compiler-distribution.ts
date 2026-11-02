@@ -1,3 +1,5 @@
+import { prerelease, valid } from "semver"
+
 export type CompilerModules = {
   sync: string
   async: string
@@ -81,4 +83,14 @@ function packageEntry(packageInfo: Awaited<ReturnType<typeof loadPackage>>, subp
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value)
+}
+export function legacyCompilerBaseUrl(version: string) {
+  const channel = valid(version) ? prerelease(version)?.[0] : undefined
+  const published =
+    valid(version) !== null && (channel === undefined || ["dev", "beta", "rc"].includes(String(channel)))
+  return new URL(
+    published
+      ? `https://unpkg.com/typescript@${version}/lib/`
+      : `https://playgroundcdn.typescriptlang.org/cdn/${encodeURIComponent(version)}/typescript/lib/`
+  )
 }

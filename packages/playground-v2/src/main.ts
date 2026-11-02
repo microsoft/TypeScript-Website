@@ -1,5 +1,9 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
-import { loadPublishedCompilerDistribution, type CompilerDistribution } from "./compiler-distribution"
+import {
+  legacyCompilerBaseUrl,
+  loadPublishedCompilerDistribution,
+  type CompilerDistribution,
+} from "./compiler-distribution"
 import {
   compilerVersionChoices,
   isUnsupportedNativeCompilerVersion,
@@ -955,7 +959,8 @@ async function initializeStradaCompiler(requestedVersion: string) {
   try {
     setLoadingIndeterminate("Resolving TypeScript version...", requestedVersion)
     const version = await resolveStradaVersion(requestedVersion)
-    const compilerUrl = `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/typescript.js`
+    const baseUrl = legacyCompilerBaseUrl(version)
+    const compilerUrl = new URL("typescript.js", baseUrl)
     setLoadingIndeterminate("Downloading compiler...", version)
     const compilerResponse = await fetch(compilerUrl)
     if (!compilerResponse.ok) {
@@ -967,13 +972,16 @@ async function initializeStradaCompiler(requestedVersion: string) {
       )
     )
     setLoadingIndeterminate("Initializing compiler...", version)
-    // Only trusted maintainers can publish compiler artifacts to this HTTPS CDN.
+    // The TypeScript package and custom compiler CDN are published by trusted maintainers.
     // Evaluating the selected compiler is intentional; this is not user project code.
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
+    if (baseUrl.hostname === "unpkg.com" && classicTS.version !== version) {
+      throw new Error(`Requested TypeScript ${version}, but the downloaded compiler is ${classicTS.version}`)
+    }
     DiagnosticCategory = classicTS.DiagnosticCategory
     discoverDependencies = stradaDiscovery(classicTS)
     stradaBackend = await StradaBackend.create({
-      baseUrl: `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`,
+      baseUrl: baseUrl.href,
       compilerSource,
       files: compilerFileContents,
       models: projectModels,
