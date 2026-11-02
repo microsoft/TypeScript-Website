@@ -3086,6 +3086,7 @@ function createLegacyConfig(fileType: string) {
           jsx: "react",
           ...(major > 3 || (major === 3 && minor >= 7) ? { useDefineForClassFields: false } : {}),
           ...(major < 5 ? { experimentalDecorators: true, emitDecoratorMetadata: true } : {}),
+          ...(major >= 6 ? { ignoreDeprecations: "6.0" } : {}),
           ...(javascript ? { allowJs: true, checkJs: true, strictNullChecks: false } : {}),
         },
       },
