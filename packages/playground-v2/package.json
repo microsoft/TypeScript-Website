@@ -6,8 +6,7 @@
     "build": "node scripts/build.mjs",
     "dev": "node scripts/build.mjs --serve",
     "test": "node scripts/test-ata.mjs && node scripts/smoke-test.mjs",
-    "typecheck": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/typescript/bin/tsc -p tsconfig.test.json",
-    "vendor-resources": "node scripts/vendor-resources.mjs"
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/typescript/bin/tsc -p tsconfig.test.json"
   },
   "dependencies": {
     "@bjorn3/browser_wasi_shim": "^0.4.2",
@@ -29,6 +28,7 @@
     "@typescript/typescript-wasip1-wasm": "7.1.0-dev.20261030.1",
     "@types/semver": "^7.7.1",
     "esbuild": "^0.27.3",
+    "playground-examples": "workspace:*",
     "typescript": "*"
   }
 }

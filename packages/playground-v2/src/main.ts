@@ -11,7 +11,6 @@ import {
 import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
 import "reflect-metadata"
-import examplesCatalog from "../vendor/examples.json"
 import {
   compilerOptionsNode,
   computeCompilerOverrides,
@@ -34,6 +33,8 @@ import {
 import { acquisitionOptions } from "./ata/config"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController, type TsgoStatus } from "./tsgo-lsp"
 import "./styles.css"
+
+declare const __PLAYGROUND_EXAMPLES__: PlaygroundExamples
 
 type Diagnostic = Omit<CompilerDiagnostic, "fileName"> & { fileName?: string }
 
@@ -158,7 +159,7 @@ const pendingReloadKey = "ts7-playground-pending-reload"
 const projectHashPrefix = "#code/v2/"
 const legacyCodeHashPrefix = "#code/"
 const projectStateVersion = 2
-const bundledExamples = examplesCatalog as PlaygroundExamples
+const bundledExamples = __PLAYGROUND_EXAMPLES__
 const initialHash = location.hash
 const initialLegacyExample = legacyExampleFromHash(initialHash)
 if (initialLegacyExample?.compilerSettings?.ts && !new URLSearchParams(location.search).has("ts")) {
@@ -316,7 +317,6 @@ let typeAcquisitionTimer = 0
 const acquiredTypeFiles = new Map<string, string>()
 const acquiredTypePackages = new Set<string>()
 const acquiredTypeModels = new Map<string, monaco.editor.ITextModel>()
-let examplesPromise: Promise<PlaygroundExamples> | undefined
 let helpPromise: Promise<PlaygroundHelp> | undefined
 let confirmationResolver: ((value: boolean) => void) | undefined
 let textInputResolver: ((value: string | null) => void) | undefined
@@ -1276,9 +1276,8 @@ async function openExamples() {
 
 async function renderExamples() {
   try {
-    const examples = await getExamples()
     const query = examplesSearch.value.trim().toLowerCase()
-    const filtered = examples.examples
+    const filtered = bundledExamples.examples
       .filter(example => {
         const searchText = `${example.title} ${example.path.join(" ")}`.toLowerCase()
         return query === "" || searchText.includes(query)
@@ -1404,11 +1403,6 @@ function exampleFileType(example: PlaygroundExample, settings: PlaygroundExample
   if (settings?.useJavaScript === true) return example.name.endsWith("x") ? "jsx" : "js"
   const match = /(\.d\.[cm]?ts|\.d\.ts|\.tsx|\.ts|\.jsx|\.js)$/i.exec(example.name)
   return match?.[1].replace(/^\./, "") ?? "ts"
-}
-
-function getExamples() {
-  examplesPromise ??= Promise.resolve(bundledExamples)
-  return examplesPromise
 }
 
 function getHelp() {

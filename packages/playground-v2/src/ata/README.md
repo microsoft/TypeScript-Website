@@ -43,6 +43,10 @@ follow the latest supported stable release, or Nightly until one is available.
 Selecting an exact version keeps it fixed for every module and asset.
 The initial download estimate uses the packages' unpacked sizes.
 
+The website build composes examples from `playground-examples`' generated
+English index and canonical source files after the normal repository bootstrap.
+Help is handwritten source in `src/help.json`. Neither needs a vendoring step.
+
 ## Resolution
 
 - Node builtin imports resolve directly to `@types/node`.

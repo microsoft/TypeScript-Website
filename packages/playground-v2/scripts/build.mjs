@@ -15,8 +15,15 @@ const compatibilityDirectories = compatibilityPaths.map(path =>
 const serve = process.argv.includes("--serve")
 const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? playgroundPath
 
-const examplesIndex = resolve(packageDirectory, "vendor/examples.json")
-const helpIndex = resolve(packageDirectory, "vendor/help.json")
+const examplesDirectory = resolve(packageDirectory, "../playground-examples")
+const examplesIndex = JSON.parse(await readFile(resolve(examplesDirectory, "generated/en.json"), "utf8"))
+const examples = await Promise.all(
+  examplesIndex.examples.map(async example => {
+    let code = await readFile(resolve(examplesDirectory, "copy", example.lang, ...example.path, example.name), "utf8")
+    if (code.startsWith("//// {")) code = code.split(/\r?\n/).slice(1).join("\n").trim()
+    return { ...example, code }
+  })
+)
 const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
@@ -30,14 +37,16 @@ await mkdir(outputDirectory, { recursive: true })
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
-  cp(examplesIndex, resolve(outputDirectory, "examples.json")),
-  cp(helpIndex, resolve(outputDirectory, "help.json")),
+  cp(resolve(packageDirectory, "src/help.json"), resolve(outputDirectory, "help.json")),
 ])
 
 const buildContext = await context({
   absWorkingDir: packageDirectory,
   bundle: true,
   conditions: ["browser", "default"],
+  define: {
+    __PLAYGROUND_EXAMPLES__: JSON.stringify({ examples }),
+  },
   entryNames: "[name]",
   entryPoints: {
     main: resolve(packageDirectory, "src/main.ts"),
