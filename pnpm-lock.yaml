@@ -243,9 +243,6 @@ importers:
       esbuild:
         specifier: ^0.27.3
         version: 0.27.3
-      playground-examples:
-        specifier: workspace:*
-        version: link:../playground-examples
       typescript:
         specifier: 6.0.2
         version: 6.0.2

@@ -41,7 +41,6 @@
           </details>
           <button id="run-button" type="button" disabled>Run</button>
           <button id="reset-project-button" type="button" title="Reset the project">Reset</button>
-          <button id="examples-button" type="button">Examples</button>
           <button id="help-button" type="button">Help</button>
           <button id="settings-button" type="button">Settings</button>
           <output id="status" class="status" hidden></output>
@@ -264,19 +263,10 @@
       </dialog>
       <dialog id="resources-dialog" class="resources-dialog" aria-labelledby="resources-title">
         <header>
-          <h2 id="resources-title">Examples</h2>
+          <h2 id="resources-title">Playground help</h2>
           <button id="resources-close-button" type="button" aria-label="Close">Close</button>
         </header>
-        <section id="examples-view" class="resources-view">
-          <label class="resource-search">
-            <span>Find an example</span>
-            <input id="examples-search" type="search" autocomplete="off" placeholder="Search examples" />
-          </label>
-          <div id="examples-list" class="resource-list">
-            <p class="empty-message">Loading examples...</p>
-          </div>
-        </section>
-        <section id="help-view" class="resources-view" hidden>
+        <section class="resources-view">
           <div id="help-list" class="resource-list">
             <p class="empty-message">Loading help...</p>
           </div>

@@ -33,8 +33,6 @@ import { acquisitionOptions } from "./ata/config"
 import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController } from "./tsgo-lsp"
 import "./styles.css"
 
-declare const __PLAYGROUND_EXAMPLES__: PlaygroundExamples
-
 type Diagnostic = Omit<CompilerDiagnostic, "fileName"> & { fileName?: string }
 
 function remapCompilerOverrideDiagnostics(diagnostics: readonly Diagnostic[]) {
@@ -92,19 +90,6 @@ type VersionedProjectState = ProjectState & {
   version: 2
 }
 
-type PlaygroundExample = {
-  code: string
-  compilerSettings?: Record<string, boolean | number | string>
-  id: string
-  name: string
-  path: string[]
-  title: string
-}
-
-type PlaygroundExamples = {
-  examples: PlaygroundExample[]
-}
-
 type PlaygroundHelp = {
   docs: Array<{ html: string; legacyIndexes?: number[]; title: string }>
 }
@@ -158,14 +143,7 @@ const pendingReloadKey = "ts7-playground-pending-reload"
 const projectHashPrefix = "#code/v2/"
 const legacyCodeHashPrefix = "#code/"
 const projectStateVersion = 2
-const bundledExamples = __PLAYGROUND_EXAMPLES__
 const initialHash = location.hash
-const initialLegacyExample = legacyExampleFromHash(initialHash)
-if (initialLegacyExample?.compilerSettings?.ts && !new URLSearchParams(location.search).has("ts")) {
-  const url = new URL(location.href)
-  url.searchParams.set("ts", String(initialLegacyExample.compilerSettings.ts))
-  history.replaceState({}, "", url)
-}
 const selectedCompiler = new URLSearchParams(location.search).get("ts")
 const useNativeCompiler = isNativeCompilerVersion(selectedCompiler)
 const defaultFiles: ProjectFile[] = [
@@ -226,7 +204,6 @@ const diagnosticsPanel = getElement<HTMLDetailsElement>("diagnostics-panel")
 const diagnosticsSummary = getElement("diagnostics-summary")
 const diagnosticsList = getElement("diagnostics-list")
 const runButton = getElement<HTMLButtonElement>("run-button")
-const examplesButton = getElement<HTMLButtonElement>("examples-button")
 const helpButton = getElement<HTMLButtonElement>("help-button")
 const settingsButton = getElement<HTMLButtonElement>("settings-button")
 const settingsDialog = getElement<HTMLDialogElement>("settings-dialog")
@@ -256,17 +233,12 @@ const textInputError = getElement("text-input-error")
 const textInputCancelButton = getElement<HTMLButtonElement>("text-input-cancel-button")
 const textInputSubmitButton = getElement<HTMLButtonElement>("text-input-submit-button")
 const resourcesDialog = getElement<HTMLDialogElement>("resources-dialog")
-const resourcesTitle = getElement("resources-title")
 const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-button")
 const newFileDialog = getElement<HTMLDialogElement>("new-file-dialog")
 const newFileForm = getElement<HTMLFormElement>("new-file-form")
 const newFilePath = getElement<HTMLInputElement>("new-file-path")
 const newFileError = getElement("new-file-error")
 const newFileCancelButton = getElement<HTMLButtonElement>("new-file-cancel-button")
-const examplesView = getElement("examples-view")
-const examplesSearch = getElement<HTMLInputElement>("examples-search")
-const examplesList = getElement("examples-list")
-const helpView = getElement("help-view")
 const helpList = getElement("help-list")
 const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
 const runOutput = getElement("run-output")
@@ -366,7 +338,6 @@ systemTheme.addEventListener("change", () => {
 })
 
 registerPlaygroundLanguages()
-registerExampleLinks()
 const initialState = loadProjectState()
 const initialFiles =
   initialState.useDefaults === false
@@ -480,17 +451,6 @@ inputEditor.addAction({
   keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
   run: runProject,
 })
-inputEditor.onMouseDown(event => {
-  if (!event.target.position || (!event.event.ctrlKey && !event.event.metaKey)) {
-    return
-  }
-  const position = event.target.position
-  const example = exampleAtPosition(inputEditor.getModel(), position)
-  if (example) {
-    navigateToExample(example)
-  }
-})
-
 const inlayEmitter = new monaco.Emitter<void>()
 const typeQueries = new Map<string, TypeQuery[]>()
 // Monaco subscribes to refresh events only after its first hint request completes.
@@ -868,7 +828,6 @@ toggleRunOutputButton.addEventListener("click", () => {
 })
 navigateBackButton.addEventListener("click", navigateBack)
 runButton.addEventListener("click", runProject)
-examplesButton.addEventListener("click", () => void openExamples())
 helpButton.addEventListener("click", () => void openHelp())
 settingsButton.addEventListener("click", openSettings)
 settingsCancelButton.addEventListener("click", () => settingsDialog.close())
@@ -878,7 +837,6 @@ settingsForm.addEventListener("submit", event => {
   saveSettings()
 })
 resourcesCloseButton.addEventListener("click", () => resourcesDialog.close())
-examplesSearch.addEventListener("input", () => void renderExamples())
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 confirmationCancelButton.addEventListener("click", () => finishConfirmation(false))
 confirmationForm.addEventListener("submit", event => {
@@ -1238,51 +1196,7 @@ function compareVersions(left: string, right: string) {
   return 0
 }
 
-async function openExamples() {
-  resourcesTitle.textContent = "Examples"
-  examplesView.hidden = false
-  helpView.hidden = true
-  resourcesDialog.showModal()
-  await renderExamples()
-  if (!lastInputWasTouch) examplesSearch.focus()
-}
-
-async function renderExamples() {
-  try {
-    const query = examplesSearch.value.trim().toLowerCase()
-    const filtered = bundledExamples.examples
-      .filter(example => {
-        const searchText = `${example.title} ${example.path.join(" ")}`.toLowerCase()
-        return query === "" || searchText.includes(query)
-      })
-      .sort(
-        (left, right) =>
-          left.path.join("/").localeCompare(right.path.join("/")) || left.title.localeCompare(right.title)
-      )
-    examplesList.replaceChildren()
-    if (filtered.length === 0) {
-      examplesList.appendChild(createText("p", "No matching examples.", "empty-message"))
-      return
-    }
-    for (const example of filtered) {
-      const button = document.createElement("button")
-      button.type = "button"
-      button.appendChild(createText("strong", example.title))
-      button.appendChild(createText("small", example.path.join(" / ")))
-      button.addEventListener("click", () => void loadExample(example))
-      examplesList.appendChild(button)
-    }
-  } catch (error) {
-    examplesList.replaceChildren(
-      createText("p", error instanceof Error ? error.message : String(error), "resource-error")
-    )
-  }
-}
-
 async function openHelp() {
-  resourcesTitle.textContent = "Playground help"
-  examplesView.hidden = true
-  helpView.hidden = false
   resourcesDialog.showModal()
   try {
     const help = await getHelp()
@@ -1303,10 +1217,6 @@ async function openHelp() {
 }
 
 async function openLegacyResourceRoute(hash: string) {
-  if (hash === "#show-examples") {
-    await openExamples()
-    return
-  }
   const handbook = /^#handbook(?:-(\d+))?$/.exec(hash)
   if (!handbook) return
   await openHelp()
@@ -1325,113 +1235,12 @@ function showHelpDocument(topic: PlaygroundHelp["docs"][number]) {
   details.scrollIntoView({ block: "nearest" })
 }
 
-async function loadExample(example: PlaygroundExample) {
-  const confirmed = await requestConfirmation({
-    confirmLabel: "Replace project",
-    danger: true,
-    message: `Replace the current project with “${example.title}”? Unsaved project files will be replaced.`,
-    title: "Open example",
-  })
-  if (!confirmed) return
-  navigateToExample(example)
-}
-
-function createExampleProjectState(example: PlaygroundExample) {
-  const settings = example.compilerSettings ?? {}
-  const fileType = exampleFileType(example, settings)
-  const state = createLegacyProjectState(example.code, fileType)
-  const config = JSON.parse(state.files[configFileName] ?? defaultFiles[0].text)
-  config.compilerOptions ??= {}
-  for (const [originalKey, value] of Object.entries(settings)) {
-    if (originalKey === "ts" || originalKey === "useJavaScript" || originalKey === "filetype") continue
-    const key = originalKey === "checkJS" ? "checkJs" : originalKey
-    config.compilerOptions[key] = parseLegacyCompilerOption(key, String(value))
-  }
-  if (fileType === "js" || fileType === "jsx") {
-    config.compilerOptions.allowJs = true
-    config.compilerOptions.checkJs ??= true
-  }
-  state.files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
-  return state
-}
-
-function navigateToExample(example: PlaygroundExample) {
-  const settings = example.compilerSettings ?? {}
-  const state = createExampleProjectState(example)
-  const serialized = serializeProjectState(state)
-  localStorage.setItem(storageKey, serialized)
-  projectPersistenceEnabled = false
-  window.clearTimeout(projectPersistTimer)
-  const url = new URL(location.pathname, location.origin)
-  const requestedVersion = typeof settings.ts === "string" ? settings.ts : selectedCompiler
-  if (requestedVersion && !isDefaultNativeCompilerVersion(requestedVersion)) {
-    url.searchParams.set("ts", requestedVersion)
-  }
-  url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
-  history.replaceState({}, "", url)
-  location.reload()
-}
-
-function exampleFileType(example: PlaygroundExample, settings: PlaygroundExample["compilerSettings"]) {
-  if (settings?.useJavaScript === true) return example.name.endsWith("x") ? "jsx" : "js"
-  const match = /(\.d\.[cm]?ts|\.d\.ts|\.tsx|\.ts|\.jsx|\.js)$/i.exec(example.name)
-  return match?.[1].replace(/^\./, "") ?? "ts"
-}
-
 function getHelp() {
   helpPromise ??= fetch(new URL("./help.json", import.meta.url)).then(async response => {
     if (!response.ok) throw new Error(`Could not load help: ${response.status} ${response.statusText}`)
     return response.json() as Promise<PlaygroundHelp>
   })
   return helpPromise
-}
-
-function registerExampleLinks() {
-  const examplesById = new Map(bundledExamples.examples.map(example => [example.id, example]))
-  for (const language of ["javascript", "typescript"]) {
-    monaco.languages.registerLinkProvider(language, {
-      provideLinks(model) {
-        const links: monaco.languages.ILink[] = []
-        for (let lineNumber = 1; lineNumber <= model.getLineCount(); lineNumber++) {
-          const line = model.getLineContent(lineNumber)
-          const match = /\/\/\s*example:\s*([\w-]+)/i.exec(line)
-          if (!match) continue
-          const example = examplesById.get(match[1])
-          if (!example) continue
-          const startColumn = match.index + match[0].lastIndexOf(match[1]) + 1
-          const url = legacyExampleUrl(example)
-          links.push({
-            range: new monaco.Range(lineNumber, startColumn, lineNumber, startColumn + match[1].length),
-            tooltip: `Open example: ${example.title}`,
-            url: monaco.Uri.parse(url.href),
-          })
-        }
-        return { links }
-      },
-    })
-  }
-}
-
-function exampleAtPosition(model: monaco.editor.ITextModel | null, position: monaco.Position) {
-  if (!model) return undefined
-  const line = model.getLineContent(position.lineNumber)
-  const match = /\/\/\s*example:\s*([\w-]+)/i.exec(line)
-  if (!match) return undefined
-  const startColumn = match.index + match[0].lastIndexOf(match[1]) + 1
-  if (position.column < startColumn || position.column > startColumn + match[1].length) return undefined
-  return bundledExamples.examples.find(example => example.id === match[1])
-}
-
-function legacyExampleUrl(example: PlaygroundExample) {
-  const url = new URL(location.pathname, location.origin)
-  for (const [key, value] of Object.entries(example.compilerSettings ?? {})) {
-    url.searchParams.set(key, String(value))
-  }
-  if (!url.searchParams.has("ts") && selectedCompiler && !isDefaultNativeCompilerVersion(selectedCompiler)) {
-    url.searchParams.set("ts", selectedCompiler)
-  }
-  url.hash = `example/${example.id}`
-  return url
 }
 
 function projectFileContents() {
@@ -1891,12 +1700,11 @@ async function refreshTypeAcquisition() {
       signal: controller.signal,
     })
     controller.signal.throwIfAborted()
-    const changed = (
+    const changed =
       result.files.size !== acquiredTypeFiles.size ||
       [...result.files].some(([path, text]) => acquiredTypeFiles.get(path) !== text) ||
       result.ambientTypes.length !== acquiredTypePackages.size ||
       result.ambientTypes.some(name => !acquiredTypePackages.has(name))
-    )
     if (changed) applyAcquiredTypes(result)
     await synchronizeAcquiredTypes()
     controller.signal.throwIfAborted()
@@ -2857,10 +2665,6 @@ function loadProjectState(): ProjectState {
   } catch (error) {
     console.warn("Could not restore pending playground edits after reload", error)
   }
-  if (initialLegacyExample) {
-    return createExampleProjectState(initialLegacyExample)
-  }
-
   if (location.hash.startsWith(projectHashPrefix)) {
     const decoded = decodeCompressedHash(location.hash.slice(projectHashPrefix.length))
     if (decoded) {
@@ -2900,12 +2704,6 @@ function loadProjectState(): ProjectState {
     console.warn("Could not restore the TypeScript Playground v2 project", error)
     return { files: {}, useDefaults: true }
   }
-}
-
-function legacyExampleFromHash(hash: string) {
-  if (!hash.startsWith("#example/")) return undefined
-  const id = decodeURIComponent(hash.slice("#example/".length))
-  return bundledExamples.examples.find(example => example.id === id)
 }
 
 function decodeCompressedHash(encoded: string) {

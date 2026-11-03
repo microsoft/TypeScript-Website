@@ -31,11 +31,6 @@
       "html": "<p>View generated JavaScript and declarations under Emit. <strong>Run</strong> executes your project and shows console output; it requires CommonJS-compatible output.</p>"
     },
     {
-      "title": "Examples",
-      "legacyIndexes": [1],
-      "html": "<p>Choose an example from <strong>Examples</strong> to replace the current project. You will be asked to confirm first.</p>"
-    },
-    {
       "title": "Saving and sharing",
       "legacyIndexes": [9, 10],
       "html": "<p>Your project is saved in this browser automatically. Copy the page URL to share it when automatic URL updates are enabled in Settings.</p>"
