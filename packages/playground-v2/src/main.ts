@@ -440,7 +440,9 @@ const layoutState = loadLayoutState()
 applyLayoutState()
 setupWorkspaceResizer(fileResizer, "files")
 setupWorkspaceResizer(outputResizer, "output")
-window.addEventListener("resize", applyLayoutState)
+window.addEventListener("resize", () => {
+  if (!mobileLayout.matches) applyLayoutState()
+})
 updateResponsiveEditorOptions()
 mobileLayout.addEventListener("change", updateResponsiveEditorOptions)
 

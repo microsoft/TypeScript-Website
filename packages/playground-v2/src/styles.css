@@ -1522,7 +1522,7 @@ code {
 
   .playground {
     height: auto;
-    min-height: calc(100dvh - 2.4rem);
+    min-height: calc(100svh - 2.4rem);
     grid-template-rows: auto auto;
   }
 
@@ -1635,11 +1635,11 @@ code {
   .workspace {
     min-height: 0;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(28rem, 70dvh) auto;
+    grid-template-rows: auto minmax(28rem, 70svh) auto;
   }
 
   .file-explorer {
-    max-height: min(16rem, 40dvh);
+    max-height: min(16rem, 40svh);
     grid-column: 1;
     grid-row: 1;
     overflow: auto;
@@ -1687,7 +1687,7 @@ code {
   }
 
   .output-panel {
-    min-height: max(32rem, 70dvh);
+    min-height: max(32rem, 70svh);
     grid-column: 1;
     grid-row: 3;
     border-top: 0;
