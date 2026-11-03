@@ -65,7 +65,7 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         // Skip handbook v2 from appearing in search
-        excludes: [`*/glossary`, `*/vo/*`, `/oldplay`, `/*/oldplay`],
+        excludes: [`*/glossary`, `*/vo/*`],
         // The new playground is static HTML rather than a Gatsby page.
         resolvePages: ({ allSitePage }) => [...allSitePage.nodes, { path: "/play/v2/" }],
       },

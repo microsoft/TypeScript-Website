@@ -72,11 +72,5 @@ export const createPlaygrounds = async (
         playgroundHandbookTOC
       },
     })
-
-    createPage({
-      path: lang.name === "en" ? "/oldplay" : `/${lang.name}/oldplay`,
-      component: path.resolve("./src/templates/playground-redirect.tsx"),
-      context: { toPath: `${pathName}/` },
-    })
   })
 }
