@@ -36,7 +36,16 @@ function unique(dependencies: readonly Dependency[]) {
 
 export function corsaDiscovery(
   api: API,
-  { getTrailingCommentRanges, isCallExpression, isIdentifier, isStatement, isStringLiteral }: typeof Ast
+  {
+    getTrailingCommentRanges,
+    isCallExpression,
+    isIdentifier,
+    isJsxElement,
+    isJsxFragment,
+    isJsxSelfClosingElement,
+    isStatement,
+    isStringLiteral,
+  }: typeof Ast
 ): (file: SourceFile) => readonly Dependency[] {
   return file => {
     const retained = api.createSourceFile(file.path, file.text)
@@ -53,6 +62,9 @@ export function corsaDiscovery(
         }
       }
       const visit = (node: Node): void => {
+        if (file.jsxRuntime && (isJsxElement(node) || isJsxFragment(node) || isJsxSelfClosingElement(node))) {
+          dependencies.push({ kind: "import", specifier: file.jsxRuntime })
+        }
         if (
           isCallExpression(node) &&
           isIdentifier(node.expression) &&
@@ -100,6 +112,14 @@ export function stradaDiscovery(ts: typeof import("typescript")): DiscoverDepend
       }
     }
     const visit = (node: import("typescript").Node): void => {
+      if (
+        file.jsxRuntime &&
+        (node.kind === ts.SyntaxKind.JsxElement ||
+          node.kind === ts.SyntaxKind.JsxFragment ||
+          node.kind === ts.SyntaxKind.JsxSelfClosingElement)
+      ) {
+        dependencies.push({ kind: "import", specifier: file.jsxRuntime })
+      }
       switch (node.kind) {
         case ts.SyntaxKind.ImportDeclaration:
         case ts.SyntaxKind.ExportDeclaration:

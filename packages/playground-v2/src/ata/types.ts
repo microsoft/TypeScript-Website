@@ -1,6 +1,7 @@
 export type SourceFile = {
   path: string
   text: string
+  jsxRuntime?: string
 }
 
 export type Dependency = {

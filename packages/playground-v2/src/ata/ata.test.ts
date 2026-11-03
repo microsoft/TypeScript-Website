@@ -115,6 +115,22 @@ declare module "ambient" {}
     ]
     assert.deepEqual(sort(await discover(file)), sort(expected))
     assert.deepEqual(sort(await corsaDiscovery(api, ast)(file)), sort(expected))
+    for (const path of ["/workspace/component.tsx", "/workspace/component.jsx"]) {
+      const jsxFile = {
+        path,
+        text: 'export const element = <><div>{require("inside-jsx")}</div></>;',
+        jsxRuntime: "preact/jsx-runtime",
+      }
+      const jsxExpected: Dependency[] = [
+        { kind: "import", specifier: "inside-jsx" },
+        { kind: "import", specifier: "preact/jsx-runtime" },
+      ]
+      assert.deepEqual(sort(await discover(jsxFile)), sort(jsxExpected))
+      assert.deepEqual(sort(await corsaDiscovery(api, ast)(jsxFile)), sort(jsxExpected))
+      const plainFile = { ...jsxFile, text: 'export const text = "<div />";' }
+      assert.deepEqual(await discover(plainFile), [])
+      assert.deepEqual(await corsaDiscovery(api, ast)(plainFile), [])
+    }
   } finally {
     api.close()
   }

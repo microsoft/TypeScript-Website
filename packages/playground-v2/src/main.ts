@@ -1688,12 +1688,21 @@ async function refreshTypeAcquisition() {
   typeAcquisitionController = controller
   typeAcquisitionFailure = undefined
   renderStatus()
+  const configText = compilerOverrideState.effectiveConfigText
+  const jsx = configOptionNode(configText, "jsx")?.value
+  const importSource = configOptionNode(configText, "jsxImportSource")?.value
+  const jsxRuntime =
+    typeof jsx === "string" &&
+    /^react-jsx(?:dev)?$/i.test(jsx) &&
+    (importSource === undefined || typeof importSource === "string")
+      ? `${importSource ?? "react"}/${jsx.toLowerCase() === "react-jsxdev" ? "jsx-dev-runtime" : "jsx-runtime"}`
+      : undefined
   try {
     const result = await typeAcquirer.acquire({
       discover,
       files: [...projectModels.values()]
         .filter(model => isSourceLanguage(model.getLanguageId()))
-        .map(model => ({ path: model.uri.path, text: model.getValue() })),
+        .map(model => ({ path: model.uri.path, text: model.getValue(), jsxRuntime })),
       options: acquisitionOptions(
         compilerOverrideState.effectiveConfigText,
         playgroundSettings.automaticTypeAcquisition
