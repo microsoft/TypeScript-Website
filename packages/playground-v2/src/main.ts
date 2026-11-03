@@ -188,7 +188,7 @@ const compilerVersionButton = getElement("compiler-version-button")
 const compilerVersionLabel = getElement("compiler-version-label")
 const compilerVersionMenu = getElement("compiler-version-menu")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
-const resetProjectButton = getElement<HTMLButtonElement>("reset-project-button")
+const clearProjectButton = getElement<HTMLButtonElement>("clear-project-button")
 const applyCompilerOverridesButton = getElement<HTMLButtonElement>("apply-compiler-overrides-button")
 const toggleFilesButton = getElement<HTMLButtonElement>("toggle-files-button")
 const toggleOutputButton = getElement<HTMLButtonElement>("toggle-output-button")
@@ -817,7 +817,7 @@ newFileForm.addEventListener("submit", event => {
   event.preventDefault()
   finishCreatingFile()
 })
-resetProjectButton.addEventListener("click", () => void resetProject())
+clearProjectButton.addEventListener("click", () => void clearProject())
 applyCompilerOverridesButton.addEventListener("click", applyCompilerOverridesToConfig)
 toggleFilesButton.addEventListener("click", () => toggleWorkspacePanel("files"))
 showFilesButton.addEventListener("click", () => toggleWorkspacePanel("files"))
@@ -2653,20 +2653,31 @@ async function deleteProjectFile(fileName: string) {
   location.reload()
 }
 
-async function resetProject() {
+async function clearProject() {
   const confirmed = await requestConfirmation({
-    confirmLabel: "Reset project",
+    confirmLabel: "Clear project",
     danger: true,
-    message: "Reset the project to the TypeScript Playground v2 defaults? All current project files will be replaced.",
-    title: "Reset project",
+    message: "Remove all project files and start with an empty index.ts and the default compiler settings?",
+    title: "Clear project",
   })
   if (!confirmed) return
+  const state: ProjectState = {
+    activeFile: entryFileName,
+    files: Object.fromEntries(defaultFiles.map(file => [file.path, file.path === entryFileName ? "" : file.text])),
+  }
+  try {
+    localStorage.setItem(storageKey, serializeProjectState(state))
+    sessionStorage.removeItem(pendingReloadKey)
+  } catch (error) {
+    projectFailure = `Could not clear the project: ${error instanceof Error ? error.message : String(error)}`
+    console.error(error)
+    renderStatus()
+    return
+  }
   projectPersistenceEnabled = false
   window.clearTimeout(projectPersistTimer)
-  localStorage.removeItem(storageKey)
-  const url = new URL(location.href)
-  url.hash = ""
-  location.replace(url)
+  history.replaceState({}, "", new URL(document.baseURI))
+  location.reload()
 }
 
 function loadProjectState(): ProjectState {
