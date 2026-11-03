@@ -26,6 +26,7 @@ import {
 } from "./compiler-overrides"
 import { registerConfigSchema } from "./config-schema"
 import { configureEditorTouchScroll } from "./editor-touch-scroll"
+import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { StradaBackend } from "./strada"
 import { NativeBackend } from "./native"
 import { PackageTypeAcquirer, stradaDiscovery, type AcquisitionResult, type DiscoverDependencies } from "./ata"
@@ -70,7 +71,7 @@ type TypeQuery = {
 
 type ProjectFile = {
   path: string
-  language: "javascript" | "json" | "typescript"
+  language: ReturnType<typeof languageForFile>
   text: string
 }
 
@@ -770,7 +771,7 @@ function panelWidthLimits(target: "files" | "output") {
   return { minimum: 240, maximum: Math.min(640, maximum) }
 }
 
-for (const language of ["javascript", "typescript"]) {
+for (const language of sourceLanguages) {
   monaco.languages.registerInlayHintsProvider(language, {
     onDidChangeInlayHints: inlayEmitter.event,
     async provideInlayHints(model) {
@@ -1378,7 +1379,7 @@ function registerCompilerOverrideFeatures() {
     const range = node ? spanRange(model, node.offset, node.offset + node.length) : model.getFullModelRange()
     navigateToModel(configFileName, range)
   })
-  for (const language of ["javascript", "typescript"]) {
+  for (const language of sourceLanguages) {
     monaco.languages.registerHoverProvider(language, {
       provideHover(model, position) {
         const override = compilerOverrideAt(model, model.getOffsetAt(position))
@@ -1691,7 +1692,7 @@ async function refreshTypeAcquisition() {
     const result = await typeAcquirer.acquire({
       discover,
       files: [...projectModels.values()]
-        .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+        .filter(model => isSourceLanguage(model.getLanguageId()))
         .map(model => ({ path: model.uri.path, text: model.getValue() })),
       options: acquisitionOptions(
         compilerOverrideState.effectiveConfigText,
@@ -2024,7 +2025,7 @@ async function compileNativeProject() {
       files: compilerFileContents(),
       configFileName,
       sourceFiles: [...projectModels]
-        .filter(([, model]) => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+        .filter(([, model]) => isSourceLanguage(model.getLanguageId()))
         .map(([fileName]) => fileName),
     })
     if (compileVersion !== nativeCompileVersion) return
@@ -2082,7 +2083,7 @@ async function compileStradaProject() {
     typeQueries.clear()
     await Promise.all(
       [...projectModels.values()]
-        .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+        .filter(model => isSourceLanguage(model.getLanguageId()))
         .map(model => collectStradaTypeQueries(backend, model))
     )
     if (compileVersion !== stradaCompileVersion) return
@@ -3034,15 +3035,9 @@ function persistProjectState() {
   }
 }
 
-function languageForFile(fileName: string): ProjectFile["language"] {
-  if (fileName.endsWith(".json")) return "json"
-  if (/\.[cm]?jsx?$/i.test(fileName)) return "javascript"
-  return "typescript"
-}
-
 function fileKind(fileName: string) {
   const language = languageForFile(fileName)
-  return language === "json" ? "{}" : language === "javascript" ? "JS" : "TS"
+  return language === "json" ? "{}" : language.startsWith("javascript") ? "JS" : "TS"
 }
 
 function relativeProjectPath(fileName: string) {

@@ -9,6 +9,7 @@ import {
   language as typescriptLanguage,
 } from "monaco-editor/languages/definitions/typescript/typescript.js"
 import { frameFileSystemUpdate } from "./lsp-filesystem"
+import { languageForFile } from "./editor-languages"
 
 const headerWords = 4
 const readPosition = 0
@@ -270,13 +271,16 @@ class RingBufferWorker {
     const method = message?.method
     const label = method ?? this.#pendingRequests.get(message?.id)
     if (method === "textDocument/publishDiagnostics") return
-    if (label && [
-      "textDocument/definition",
-      "textDocument/declaration",
-      "textDocument/typeDefinition",
-      "textDocument/implementation",
-      "textDocument/references",
-    ].includes(label)) {
+    if (
+      label &&
+      [
+        "textDocument/definition",
+        "textDocument/declaration",
+        "textDocument/typeDefinition",
+        "textDocument/implementation",
+        "textDocument/references",
+      ].includes(label)
+    ) {
       message.result = normalizeLibraryLocations(message?.result)
       await ensureDefinitionModels(message.result)
     }
@@ -305,12 +309,17 @@ let onPackageModel: StartTsgoLspOptions["onPackageModel"] | undefined
 export function registerPlaygroundLanguages() {
   if (languageRegistered) return
   languageRegistered = true
-  monaco.languages.register({ id: "typescript", extensions: [".ts", ".tsx", ".mts", ".cts"] })
-  monaco.languages.setLanguageConfiguration("typescript", typescriptConfiguration)
-  monaco.languages.setMonarchTokensProvider("typescript", typescriptLanguage)
-  monaco.languages.register({ id: "javascript", extensions: [".js", ".jsx", ".mjs", ".cjs"] })
-  monaco.languages.setLanguageConfiguration("javascript", javascriptConfiguration)
-  monaco.languages.setMonarchTokensProvider("javascript", javascriptLanguage)
+  for (const [id, extensions] of [
+    ["typescript", [".ts", ".mts", ".cts"]],
+    ["typescriptreact", [".tsx"]],
+    ["javascript", [".js", ".mjs", ".cjs"]],
+    ["javascriptreact", [".jsx"]],
+  ] as const) {
+    const javascript = id.startsWith("javascript")
+    monaco.languages.register({ id, extensions: [...extensions] })
+    monaco.languages.setLanguageConfiguration(id, javascript ? javascriptConfiguration : typescriptConfiguration)
+    monaco.languages.setMonarchTokensProvider(id, javascript ? javascriptLanguage : typescriptLanguage)
+  }
   monaco.languages.register({ id: "json", extensions: [".json"] })
   monaco.languages.setLanguageConfiguration("json", {
     brackets: [
@@ -428,12 +437,6 @@ async function ensureDefinitionModels(result: unknown) {
 function getDefinitionFiles() {
   if (!definitionFilesPromise) throw new Error("Language-server libraries are not initialized")
   return definitionFilesPromise
-}
-
-function languageForFile(fileName: string) {
-  if (/\.json$/i.test(fileName)) return "json"
-  if (/\.[cm]?jsx?$/i.test(fileName)) return "javascript"
-  return "typescript"
 }
 
 export { monaco }

@@ -1,5 +1,6 @@
 import { monaco } from "./tsgo-lsp"
 import type { StradaLibraryProgress } from "./strada-libraries"
+import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 
 type CompilerDiagnostic = {
   category: number
@@ -136,7 +137,7 @@ export class StradaBackend {
 
   #sourceFileNames() {
     return [...this.#options.models.values()]
-      .filter(model => model.getLanguageId() === "javascript" || model.getLanguageId() === "typescript")
+      .filter(model => isSourceLanguage(model.getLanguageId()))
       .map(model => model.uri.path)
   }
 
@@ -205,7 +206,7 @@ export class StradaBackend {
   }
 
   #registerLanguageFeatures() {
-    for (const language of ["javascript", "typescript"]) {
+    for (const language of sourceLanguages) {
       this.#disposables.push(
         monaco.languages.registerCompletionItemProvider(language, {
           triggerCharacters: [".", '"', "'", "/", "@", "<", "#"],
@@ -677,12 +678,6 @@ function completionKind(kind: string | undefined) {
     default:
       return monaco.languages.CompletionItemKind.Text
   }
-}
-
-function languageForFile(fileName: string) {
-  if (/\.json$/i.test(fileName)) return "json"
-  if (/\.[cm]?jsx?$/i.test(fileName)) return "javascript"
-  return "typescript"
 }
 
 function normalizePath(fileName: string) {
