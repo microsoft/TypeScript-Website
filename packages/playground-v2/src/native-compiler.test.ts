@@ -382,8 +382,8 @@ test("historical version discovery reads the CDN index and reports unavailable o
     await assert.rejects(loadLegacyCompilerVersions(), /Invalid historical TypeScript versions/)
   }
   assert.deepEqual(compilerVersionChoices(["6.0.3"], undefined, "7.1.0-dev.20261030.1"), [
-    { version: "6.0.3", label: "6.0.3" },
     { version: "7.1.0-dev.20261030.1", label: "7.1.0-dev.20261030.1" },
+    { version: "6.0.3", label: "6.0.3" },
   ])
 })
 
