@@ -1,4 +1,5 @@
-import { Directory, File, Inode, PreopenDirectory } from "@bjorn3/browser_wasi_shim"
+import { Directory, File, Inode, OpenDirectory, wasi } from "@bjorn3/browser_wasi_shim"
+import { normalizeVirtualPath, resolveSymlinks, type Symlinks } from "./symlinks"
 
 export type FileSystemUpdate = {
   id: number
@@ -10,6 +11,8 @@ const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 const maxRecordBytes = 48 * 1024 * 1024
 const filesHeader = "Playground-Files-Length"
+// The shim does not export WASI's lookupflags.SYMLINK_FOLLOW constant.
+const symlinkFollow = 1
 
 export function frameFileSystemUpdate(update: FileSystemUpdate) {
   const body = encoder.encode(JSON.stringify(update))
@@ -47,7 +50,8 @@ export class LspStdinRecords {
           this.header[length - 3] !== 10 ||
           this.header[length - 2] !== 13 ||
           this.header[length - 1] !== 10
-        ) continue
+        )
+          continue
         const header = new Uint8Array(this.header)
         const match = /^(Content-Length|Playground-Files-Length): (\d+)\r\n\r\n$/i.exec(decoder.decode(header))
         if (!match) throw new Error("Invalid playground stdin record")
@@ -101,29 +105,57 @@ export class LspStdinRecords {
 }
 
 export class LspFileSystem {
-  readonly preopen = new PreopenDirectory("/", new Map<string, Inode>([
-    ["workspace", new Directory(new Map())],
-    ["tmp", new Directory(new Map())],
-    ["typescript", new Directory(new Map([["lib", new Directory(new Map())]]))],
-  ]))
+  readonly preopen: OpenDirectory
+  private readonly aliases = new Map<string, Set<string>>()
 
-  constructor(files: Record<string, string>) {
+  constructor(files: Record<string, string>, private readonly symlinks: Symlinks = {}) {
+    this.preopen = new LspOpenDirectory(new Directory(new Map()), this, "/")
+    for (const parts of [["workspace"], ["tmp"], ["typescript", "lib"]]) this.directory(parts, true)
     this.update(files, [])
+    for (const [path, target] of Object.entries(symlinks)) {
+      const parts = this.parts(path)
+      this.directory(parts.slice(0, -1), true)!.contents.set(parts.at(-1)!, new Symlink(target))
+    }
+  }
+
+  lookup(path: string, followFinal: boolean): { ret: number; inode_obj: Inode | null } {
+    const resolved = resolveSymlinks(path, this.symlinks, followFinal)
+    if (resolved === undefined) return { ret: wasi.ERRNO_LOOP, inode_obj: null }
+    const original = normalizeVirtualPath(path)
+    if (original !== resolved) {
+      let aliases = this.aliases.get(resolved)
+      if (!aliases) this.aliases.set(resolved, (aliases = new Set()))
+      aliases.add(original)
+    }
+    let inode: Inode = this.preopen.dir
+    for (const part of resolved.split("/").filter(Boolean)) {
+      if (!(inode instanceof Directory)) return { ret: wasi.ERRNO_NOTDIR, inode_obj: null }
+      const child = inode.contents.get(part)
+      if (!child) return { ret: wasi.ERRNO_NOENT, inode_obj: null }
+      inode = child
+    }
+    return { ret: wasi.ERRNO_SUCCESS, inode_obj: inode }
   }
 
   update(files: Record<string, string>, deleted: readonly string[]) {
+    const aliases: Array<{ path: string; type: number }> = []
     const entries = Object.entries(files).map(([path, text]) => ({ parts: this.parts(path), text }))
     const removed = deleted.map(path => this.parts(path))
     for (const { parts, text } of entries) {
       const parent = this.directory(parts.slice(0, -1), true)!
       const name = parts.at(-1)!
       const file = parent.contents.get(name)
+      for (const path of this.aliases.get(`/${parts.join("/")}`) ?? []) {
+        aliases.push({ path, type: file instanceof File ? 2 : 1 })
+      }
       if (file instanceof File) file.data = encoder.encode(text)
       else parent.contents.set(name, new File(encoder.encode(text)))
     }
     for (const parts of removed) {
       this.directory(parts.slice(0, -1), false)?.contents.delete(parts.at(-1)!)
+      for (const path of this.aliases.get(`/${parts.join("/")}`) ?? []) aliases.push({ path, type: 3 })
     }
+    return aliases
   }
 
   private parts(path: string) {
@@ -147,5 +179,74 @@ export class LspFileSystem {
       current = child
     }
     return current
+  }
+}
+
+class Symlink extends Inode {
+  constructor(readonly target: string) {
+    super()
+  }
+
+  path_open() {
+    return { ret: wasi.ERRNO_LOOP, fd_obj: null }
+  }
+
+  stat() {
+    return new wasi.Filestat(this.ino, wasi.FILETYPE_SYMBOLIC_LINK, BigInt(encoder.encode(this.target).length))
+  }
+}
+
+class LspOpenDirectory extends OpenDirectory {
+  constructor(dir: Directory, private readonly filesystem: LspFileSystem, private readonly path: string) {
+    super(dir)
+  }
+
+  override fd_prestat_get() {
+    return this.path === "/" ? { ret: wasi.ERRNO_SUCCESS, prestat: wasi.Prestat.dir("/") } : super.fd_prestat_get()
+  }
+
+  override path_lookup(path: string, flags: number) {
+    return this.filesystem.lookup(`${this.path}/${path}`, (flags & symlinkFollow) !== 0)
+  }
+
+  override path_filestat_get(flags: number, path: string) {
+    const result = this.path_lookup(path, flags)
+    return { ret: result.ret, filestat: result.inode_obj?.stat() ?? null }
+  }
+
+  override path_readlink(path: string) {
+    const result = this.path_lookup(path, 0)
+    if (!result.inode_obj) return { ret: result.ret, data: null }
+    return result.inode_obj instanceof Symlink
+      ? { ret: wasi.ERRNO_SUCCESS, data: result.inode_obj.target }
+      : { ret: wasi.ERRNO_INVAL, data: null }
+  }
+
+  override path_open(
+    flags: number,
+    path: string,
+    oflags: number,
+    rights: bigint,
+    inheritedRights: bigint,
+    fdflags: number
+  ) {
+    const result = this.path_lookup(path, flags)
+    if (!result.inode_obj) {
+      if (result.ret === wasi.ERRNO_NOENT && (oflags & wasi.OFLAGS_CREAT) !== 0) {
+        return super.path_open(flags, path, oflags, rights, inheritedRights, fdflags)
+      }
+      return { ret: result.ret, fd_obj: null }
+    }
+    if ((oflags & wasi.OFLAGS_EXCL) !== 0) return { ret: wasi.ERRNO_EXIST, fd_obj: null }
+    if ((oflags & wasi.OFLAGS_DIRECTORY) !== 0 && !(result.inode_obj instanceof Directory)) {
+      return { ret: wasi.ERRNO_NOTDIR, fd_obj: null }
+    }
+    if (result.inode_obj instanceof Directory) {
+      return {
+        ret: wasi.ERRNO_SUCCESS,
+        fd_obj: new LspOpenDirectory(result.inode_obj, this.filesystem, `${this.path}/${path}`),
+      }
+    }
+    return result.inode_obj.path_open(oflags, rights, fdflags)
   }
 }

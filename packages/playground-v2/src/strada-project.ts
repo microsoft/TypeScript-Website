@@ -1,3 +1,5 @@
+import { normalizeVirtualPath, resolveSymlinks, type Symlinks } from "./symlinks"
+
 type Compiler = typeof import("typescript")
 
 type CompilerWithFileMatcher = Compiler & {
@@ -19,41 +21,37 @@ function hasFileMatcher(compiler: Compiler): compiler is CompilerWithFileMatcher
   return "matchFiles" in compiler && typeof compiler.matchFiles === "function"
 }
 
-export function normalizeStradaPath(fileName: string) {
-  let path = fileName.replaceAll("\\", "/").replace(/^file:\/\//, "")
-  if (!path.startsWith("/")) path = `/workspace/${path}`
-  const parts: string[] = []
-  for (const part of path.split("/")) {
-    if (part === "..") parts.pop()
-    else if (part && part !== ".") parts.push(part)
-  }
-  return `/${parts.join("/")}`
-}
+export const normalizeStradaPath = normalizeVirtualPath
 
 export function createStradaFileSystem(
   compiler: Compiler,
   fileNames: () => Iterable<string>,
-  readFile: (fileName: string) => string | undefined
+  readFile: (fileName: string) => string | undefined,
+  symlinks: Symlinks = {}
 ) {
   if (!hasFileMatcher(compiler)) throw new Error("The selected compiler does not provide directory matching")
   const matchFiles = compiler.matchFiles
+  const realpath = (path: string) => resolveSymlinks(path, symlinks) ?? normalizeVirtualPath(path)
+  function directoryExists(directory: string) {
+    const resolved = resolveSymlinks(directory, symlinks)
+    if (!resolved) return false
+    const prefix = `${resolved.replace(/\/$/, "")}/`
+    return [...fileNames(), ...Object.keys(symlinks)].some(path => path.startsWith(prefix))
+  }
   function entries(directory: string) {
-    const prefix = `${normalizeStradaPath(directory).replace(/\/$/, "")}/`
+    const prefix = `${realpath(directory).replace(/\/$/, "")}/`
     const files = new Set<string>()
     const directories = new Set<string>()
-    for (const name of fileNames()) {
+    for (const name of [...fileNames(), ...Object.keys(symlinks)]) {
       const path = normalizeStradaPath(name)
       if (!path.startsWith(prefix)) continue
       const relative = path.slice(prefix.length)
       const slash = relative.indexOf("/")
-      if (slash < 0) files.add(relative)
+      if (slash < 0 && symlinks[path] !== undefined && directoryExists(path)) directories.add(relative)
+      else if (slash < 0) files.add(relative)
       else directories.add(relative.slice(0, slash))
     }
     return { files: [...files].sort(), directories: [...directories].sort() }
-  }
-  function directoryExists(directory: string) {
-    const result = entries(directory)
-    return result.files.length > 0 || result.directories.length > 0
   }
   const readDirectory = (
     directory: string,
@@ -71,16 +69,22 @@ export function createStradaFileSystem(
       "/workspace",
       depth,
       entries,
-      normalizeStradaPath,
+      realpath,
       directoryExists
     )
   return {
     useCaseSensitiveFileNames: true,
-    fileExists: (fileName: string) => readFile(normalizeStradaPath(fileName)) !== undefined,
-    readFile: (fileName: string) => readFile(normalizeStradaPath(fileName)),
+    fileExists: (fileName: string) => {
+      const path = resolveSymlinks(fileName, symlinks)
+      return path !== undefined && readFile(path) !== undefined
+    },
+    readFile: (fileName: string) => {
+      const path = resolveSymlinks(fileName, symlinks)
+      return path === undefined ? undefined : readFile(path)
+    },
     readDirectory,
     directoryExists,
     getDirectories: (directory: string) => entries(directory).directories,
-    realpath: normalizeStradaPath,
+    realpath,
   }
 }

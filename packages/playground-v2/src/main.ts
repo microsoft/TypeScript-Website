@@ -26,6 +26,7 @@ import {
 } from "./compiler-overrides"
 import { registerConfigSchema } from "./config-schema"
 import { configureEditorTouchScroll } from "./editor-touch-scroll"
+import { resolveSymlinks, validateProjectSymlinks, type Symlinks } from "./symlinks"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { StradaBackend } from "./strada"
 import { NativeBackend } from "./native"
@@ -85,6 +86,7 @@ type ProjectState = {
     selectionStartLineNumber: number
   }
   useDefaults?: boolean
+  symlinks?: Symlinks
 }
 
 type VersionedProjectState = ProjectState & {
@@ -188,6 +190,7 @@ const compilerVersionButton = getElement("compiler-version-button")
 const compilerVersionLabel = getElement("compiler-version-label")
 const compilerVersionMenu = getElement("compiler-version-menu")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
+const newSymlinkButton = getElement<HTMLButtonElement>("new-symlink-button")
 const clearProjectButton = getElement<HTMLButtonElement>("clear-project-button")
 const applyCompilerOverridesButton = getElement<HTMLButtonElement>("apply-compiler-overrides-button")
 const toggleFilesButton = getElement<HTMLButtonElement>("toggle-files-button")
@@ -238,6 +241,10 @@ const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-butt
 const newFileDialog = getElement<HTMLDialogElement>("new-file-dialog")
 const newFileForm = getElement<HTMLFormElement>("new-file-form")
 const newFilePath = getElement<HTMLInputElement>("new-file-path")
+const newFileTitle = getElement("new-file-title")
+const newSymlinkTargetLabel = getElement("new-symlink-target-label")
+const newSymlinkTarget = getElement<HTMLInputElement>("new-symlink-target")
+let creatingSymlink = false
 const newFileError = getElement("new-file-error")
 const newFileCancelButton = getElement<HTMLButtonElement>("new-file-cancel-button")
 const helpList = getElement("help-list")
@@ -340,6 +347,7 @@ systemTheme.addEventListener("change", () => {
 
 registerPlaygroundLanguages()
 const initialState = loadProjectState()
+const projectSymlinks: Record<string, string> = { ...initialState.symlinks }
 const initialFiles =
   initialState.useDefaults === false
     ? { ...initialState.files }
@@ -354,11 +362,9 @@ const projectModels = new Map(
     return [fileName, model] as const
   })
 )
-compilerOverrideState = computeCompilerOverrides(
-  projectTextMap(),
-  projectModels.get(configFileName)?.getValue() ?? "{}"
-)
+compilerOverrideState = computeCompilerOverrides(projectTextMap(), projectConfigModel()?.getValue() ?? "{}")
 const fileButtons = new Map<string, HTMLButtonElement>()
+const directoryButtons = new Map<string, HTMLElement>()
 const inputEditor = monaco.editor.create(inputElement, {
   automaticLayout: true,
   fontFamily: "Hack, monospace",
@@ -442,7 +448,10 @@ inputEditor.onDidChangeCursorSelection(() => {
   trackedEditorLocation = getEditorLocation()
   scheduleProjectPersistence()
 })
-window.addEventListener("pagehide", persistProjectState)
+window.addEventListener("pagehide", () => {
+  if (playgroundSettings.saveToUrl) persistProjectState()
+  else flushProjectBeforeUnload()
+})
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") persistProjectState()
 })
@@ -711,9 +720,14 @@ function toggleWorkspacePanel(panel: "files" | "output") {
   else layoutState.outputVisible = !layoutState.outputVisible
   applyLayoutState()
   persistLayoutState()
-  const button = panel === "files"
-    ? (layoutState.filesVisible ? toggleFilesButton : showFilesButton)
-    : (layoutState.outputVisible ? toggleOutputButton : showOutputButton)
+  const button =
+    panel === "files"
+      ? layoutState.filesVisible
+        ? toggleFilesButton
+        : showFilesButton
+      : layoutState.outputVisible
+      ? toggleOutputButton
+      : showOutputButton
   button.focus()
 }
 
@@ -811,7 +825,8 @@ let updateTimer = 0
 for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
-newFileButton.addEventListener("click", createNewFile)
+newFileButton.addEventListener("click", () => createNewFile(false))
+newSymlinkButton.addEventListener("click", () => createNewFile(true))
 newFileCancelButton.addEventListener("click", () => newFileDialog.close())
 newFileForm.addEventListener("submit", event => {
   event.preventDefault()
@@ -946,6 +961,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
       compilerSource,
       files: compilerFileContents,
       models: projectModels,
+      symlinks: projectSymlinks,
       onCreateExternalModel(model) {
         if (acquiredTypeFiles.has(model.uri.path)) acquiredTypeModels.set(model.uri.path, model)
       },
@@ -986,6 +1002,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
       libraries,
       models: [...projectModels.values()],
       module,
+      symlinks: projectSymlinks,
       onError(message) {
         lspFailure = message
         renderStatus()
@@ -996,7 +1013,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
       onStatus(nextStatus) {
         lspReady = nextStatus === "ready"
         if (lspReady) {
-          void synchronizeAcquiredTypes().then(
+          void synchronizeLanguageServerFiles().then(
             () => languageServer?.refreshDiagnostics(),
             error => {
               lspFailure = error instanceof Error ? error.message : String(error)
@@ -1234,8 +1251,9 @@ async function openLegacyResourceRoute(hash: string) {
 }
 
 function showHelpDocument(topic: PlaygroundHelp["docs"][number]) {
-  const details = [...helpList.querySelectorAll<HTMLDetailsElement>(".help-topic")]
-    .find(element => element.dataset.title === topic.title)
+  const details = [...helpList.querySelectorAll<HTMLDetailsElement>(".help-topic")].find(
+    element => element.dataset.title === topic.title
+  )
   if (!details) return
   details.open = true
   details.querySelector("summary")?.focus()
@@ -1254,6 +1272,11 @@ function projectFileContents() {
   return Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
 }
 
+function projectConfigModel() {
+  const path = resolveSymlinks(configFileName, projectSymlinks)
+  return path === undefined ? undefined : projectModels.get(path)
+}
+
 function projectTextMap() {
   return new Map([...projectModels].map(([fileName, model]) => [fileName, model.getValue()]))
 }
@@ -1263,7 +1286,7 @@ function compilerFileContents() {
     ...Object.fromEntries(acquiredTypeFiles),
     ...projectFileContents(),
   }
-  files[configFileName] = effectiveCompilerConfigText()
+  files[resolveSymlinks(configFileName, projectSymlinks) ?? configFileName] = effectiveCompilerConfigText()
   return files
 }
 
@@ -1283,7 +1306,7 @@ function implicitTypePackages() {
 function refreshCompilerOverrides() {
   compilerOverrideState = computeCompilerOverrides(
     projectTextMap(),
-    projectModels.get(configFileName)?.getValue() ?? defaultFiles[0].text
+    projectConfigModel()?.getValue() ?? defaultFiles[0].text
   )
   languageServer?.updateEffectiveConfig(effectiveCompilerConfigText())
   renderCompilerOverrides()
@@ -1379,11 +1402,11 @@ function registerCompilerOverrideFeatures() {
     }
   )
   monaco.editor.registerCommand("playground.goToConfigOption", (_accessor, option: string) => {
-    const model = projectModels.get(configFileName)
+    const model = projectConfigModel()
     if (!model) return
     const node = configOptionNode(model.getValue(), option) ?? compilerOptionsNode(model.getValue())
     const range = node ? spanRange(model, node.offset, node.offset + node.length) : model.getFullModelRange()
-    navigateToModel(configFileName, range)
+    navigateToModel(model.uri.path, range)
   })
   for (const language of sourceLanguages) {
     monaco.languages.registerHoverProvider(language, {
@@ -1450,7 +1473,7 @@ function registerCompilerOverrideFeatures() {
           },
         ]
         if (override.applied) {
-          const configModel = projectModels.get(configFileName)
+          const configModel = projectConfigModel()
           if (configModel) {
             actions.unshift({
               edit: {
@@ -1624,7 +1647,7 @@ function removeOverrideEdit(model: monaco.editor.ITextModel, override: CompilerO
 
 function applyCompilerOverridesToConfig() {
   const overrides = compilerOverrideState.overrides.filter(override => override.applied)
-  const configModel = projectModels.get(configFileName)
+  const configModel = projectConfigModel()
   if (overrides.length === 0 || !configModel) return
 
   let configText = configModel.getValue()
@@ -1704,17 +1727,23 @@ async function refreshTypeAcquisition() {
       ? `${importSource ?? "react"}/${jsx.toLowerCase() === "react-jsxdev" ? "jsx-dev-runtime" : "jsx-runtime"}`
       : undefined
   try {
-    const result = await typeAcquirer.acquire({
+    const options = acquisitionOptions(configText, playgroundSettings.automaticTypeAcquisition)
+    const localPackages = Object.keys(projectSymlinks).flatMap(path => {
+      const match = /^\/workspace\/node_modules\/((?:@[^/]+\/)?[^/]+)$/.exec(path)
+      return match ? [match[1]] : []
+    })
+    const acquired = await typeAcquirer.acquire({
       discover,
       files: [...projectModels.values()]
         .filter(model => isSourceLanguage(model.getLanguageId()))
         .map(model => ({ path: model.uri.path, text: model.getValue(), jsxRuntime })),
-      options: acquisitionOptions(
-        compilerOverrideState.effectiveConfigText,
-        playgroundSettings.automaticTypeAcquisition
-      ),
+      options: { ...options, exclude: [...(options.exclude ?? []), ...localPackages] },
       signal: controller.signal,
     })
+    const result = {
+      ...acquired,
+      files: new Map([...acquired.files].map(([path, text]) => [resolveSymlinks(path, projectSymlinks) ?? path, text])),
+    }
     controller.signal.throwIfAborted()
     const changed =
       result.files.size !== acquiredTypeFiles.size ||
@@ -1722,7 +1751,7 @@ async function refreshTypeAcquisition() {
       result.ambientTypes.length !== acquiredTypePackages.size ||
       result.ambientTypes.some(name => !acquiredTypePackages.has(name))
     if (changed) applyAcquiredTypes(result)
-    await synchronizeAcquiredTypes()
+    await synchronizeLanguageServerFiles()
     controller.signal.throwIfAborted()
     typeAcquisitionFailure = result.errors.length
       ? result.errors.map(error => `${error.packageName}: ${error.message}`).join("; ")
@@ -1764,9 +1793,24 @@ function applyAcquiredTypes(result: AcquisitionResult) {
   }
 }
 
-function synchronizeAcquiredTypes() {
+function synchronizeLanguageServerFiles() {
   if (!lspReady) return Promise.resolve()
-  return languageServer?.updatePackageFiles(acquiredTypeFiles) ?? Promise.resolve()
+  const files = Object.keys(projectSymlinks).length
+    ? new Map(Object.entries(compilerFileContents()))
+    : acquiredTypeFiles
+  return languageServer?.updateFiles(files) ?? Promise.resolve()
+}
+
+function synchronizeLinkedProjectFiles() {
+  if (!Object.keys(projectSymlinks).length) return
+  void synchronizeLanguageServerFiles().then(
+    () => languageServer?.refreshDiagnostics(),
+    error => {
+      lspFailure = error instanceof Error ? error.message : String(error)
+      console.error("Could not synchronize linked project files", error)
+      renderStatus()
+    }
+  )
 }
 
 function navigateToModel(fileName: string, range?: monaco.IRange) {
@@ -1969,14 +2013,8 @@ function downloadWarningSuppressed() {
 async function compilerAssetsAreCached() {
   const cache = await getAssetCache()
   if (!cache || !nativeDistribution) return false
-  const urls = [
-    nativeDistribution.wasm,
-    nativeDistribution.schema,
-    ...nativeDistribution.libraries,
-  ]
-  const matches = await Promise.all(
-    urls.map(url => cache.match(url))
-  )
+  const urls = [nativeDistribution.wasm, nativeDistribution.schema, ...nativeDistribution.libraries]
+  const matches = await Promise.all(urls.map(url => cache.match(url)))
   return matches.every(response => response !== undefined)
 }
 
@@ -2039,6 +2077,7 @@ async function compileNativeProject() {
     const result = await backend.compile({
       files: compilerFileContents(),
       configFileName,
+      symlinks: projectSymlinks,
       sourceFiles: [...projectModels]
         .filter(([, model]) => isSourceLanguage(model.getLanguageId()))
         .map(([fileName]) => fileName),
@@ -2166,7 +2205,9 @@ function deduplicateDiagnostics(diagnostics: readonly Diagnostic[]) {
 function setDiagnostics(diagnostics: readonly Diagnostic[]) {
   for (const [fileName, model] of projectModels) {
     const markers = diagnostics
-      .filter(diagnostic => diagnostic.fileName === fileName && (!useNativeCompiler || diagnostic.source === "Playground"))
+      .filter(
+        diagnostic => diagnostic.fileName === fileName && (!useNativeCompiler || diagnostic.source === "Playground")
+      )
       .map(diagnostic => {
         const start = model.getPositionAt(Math.max(0, diagnostic.pos))
         const end = model.getPositionAt(Math.max(diagnostic.pos + 1, diagnostic.end))
@@ -2423,7 +2464,7 @@ function renderFileList() {
   }
 
   const root: Tree = { directories: new Map(), files: [] }
-  for (const fileName of [...projectModels.keys()].sort()) {
+  for (const fileName of [...projectModels.keys(), ...Object.keys(projectSymlinks)].sort()) {
     const parts = relativeProjectPath(fileName).split("/")
     const basename = parts.pop()!
     let tree = root
@@ -2439,6 +2480,7 @@ function renderFileList() {
   }
 
   fileButtons.clear()
+  directoryButtons.clear()
   fileList.replaceChildren(renderTree(root, ""))
   updateActiveFile()
 
@@ -2449,7 +2491,9 @@ function renderFileList() {
       const item = document.createElement("li")
       const details = document.createElement("details")
       details.open = true
-      details.appendChild(createText("summary", directory, "file-tree-folder"))
+      const summary = createText("summary", directory, "file-tree-folder")
+      directoryButtons.set(`${projectRoot}/${parentPath}${directory}`, summary)
+      details.appendChild(summary)
       details.appendChild(renderTree(child, `${parentPath}${directory}/`))
       item.appendChild(details)
       list.appendChild(item)
@@ -2460,9 +2504,18 @@ function renderFileList() {
       const button = document.createElement("button")
       button.type = "button"
       button.className = "file-tree-file-button"
-      button.dataset.kind = fileKind(fileName)
-      button.textContent = basename
+      const target = projectSymlinks[fileName]
+      button.dataset.kind = target === undefined ? fileKind(fileName) : "->"
+      button.textContent = target === undefined ? basename : `${basename} -> ${target}`
+      if (target !== undefined) {
+        button.title = `Symbolic link: ${relativePath} -> ${target}`
+        button.setAttribute("aria-label", button.title)
+      }
       button.addEventListener("click", () => {
+        if (target !== undefined) {
+          void openSymlinkTarget(fileName)
+          return
+        }
         navigateToModel(fileName)
         if (mobileLayout.matches) {
           layoutState.filesVisible = false
@@ -2486,6 +2539,37 @@ function renderFileList() {
     }
     return list
   }
+}
+
+async function openSymlinkTarget(fileName: string) {
+  const target = resolveSymlinks(fileName, projectSymlinks)
+  if (target === projectRoot) {
+    fileExplorer.tabIndex = -1
+    fileExplorer.scrollIntoView({ block: "nearest" })
+    fileExplorer.focus()
+    return
+  }
+  if (target && projectModels.has(target)) {
+    navigateToModel(target)
+    return
+  }
+  const directory = target && directoryButtons.get(target)
+  if (directory) {
+    let parent = directory.closest("details")
+    while (parent) {
+      parent.open = true
+      parent = parent.parentElement?.closest("details") ?? null
+    }
+    directory.scrollIntoView({ block: "nearest" })
+    directory.focus()
+    return
+  }
+  await requestConfirmation({
+    cancelLabel: null,
+    confirmLabel: "OK",
+    message: `The target of ${relativeProjectPath(fileName)} does not exist in this project.`,
+    title: "Target not found",
+  })
 }
 
 function updateActiveFile() {
@@ -2561,6 +2645,7 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
     stradaCompileVersion++
     scheduleProjectPersistence()
     refreshCompilerOverrides()
+    synchronizeLinkedProjectFiles()
     scheduleTypeAcquisition()
     window.clearTimeout(updateTimer)
     updateTimer = window.setTimeout(() => {
@@ -2569,8 +2654,13 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
   })
 }
 
-function createNewFile() {
-  newFilePath.value = "src/new-file.ts"
+function createNewFile(symlink: boolean) {
+  creatingSymlink = symlink
+  newFileTitle.textContent = symlink ? "Create symbolic link" : "Create file"
+  newFilePath.value = symlink ? "node_modules/example" : "src/new-file.ts"
+  newSymlinkTargetLabel.hidden = !symlink
+  newSymlinkTarget.value = ""
+  newSymlinkTarget.required = symlink
   newFileError.hidden = true
   newFileError.textContent = ""
   newFilePath.removeAttribute("aria-invalid")
@@ -2588,8 +2678,23 @@ function finishCreatingFile() {
   }
 
   const fileName = `${projectRoot}/${relativePath}`
-  if (projectModels.has(fileName)) {
+  if (projectModels.has(fileName) || projectSymlinks[fileName] !== undefined) {
     showNewFileError(`${relativePath} already exists.`)
+    return
+  }
+
+  try {
+    if (creatingSymlink) {
+      const target = newSymlinkTarget.value.trim().replaceAll("\\", "/")
+      validateProjectSymlinks(projectFileContents(), { ...projectSymlinks, [fileName]: target })
+      projectSymlinks[fileName] = target
+      newFileDialog.close()
+      reloadProject()
+      return
+    }
+    validateProjectSymlinks({ ...projectFileContents(), [fileName]: "" }, projectSymlinks)
+  } catch (error) {
+    showNewFileError(error instanceof Error ? error.message : String(error))
     return
   }
 
@@ -2598,6 +2703,7 @@ function finishCreatingFile() {
   projectModels.set(fileName, model)
   registerProjectModel(model)
   refreshCompilerOverrides()
+  synchronizeLinkedProjectFiles()
   renderFileList()
   inputEditor.setModel(model)
   inputEditor.focus()
@@ -2613,6 +2719,20 @@ function showNewFileError(message: string) {
 }
 
 async function deleteProjectFile(fileName: string) {
+  if (projectSymlinks[fileName] !== undefined) {
+    if (
+      !(await requestConfirmation({
+        confirmLabel: "Delete link",
+        danger: true,
+        message: `Delete the symbolic link ${relativeProjectPath(fileName)}? Its target will not be deleted.`,
+        title: "Delete symbolic link",
+      }))
+    )
+      return
+    delete projectSymlinks[fileName]
+    reloadProject()
+    return
+  }
   const model = projectModels.get(fileName)
   if (!model) return
   if (projectModels.size === 1) {
@@ -2649,7 +2769,23 @@ async function deleteProjectFile(fileName: string) {
   if (projectReturnLocation?.uri === deletedUri) projectReturnLocation = undefined
   trackedEditorLocation = getEditorLocation()
   renderFileList()
-  persistProjectState()
+  reloadProject()
+}
+
+function reloadProject() {
+  try {
+    localStorage.setItem(storageKey, serializeProjectState(currentProjectState()))
+    sessionStorage.setItem(pendingReloadKey, location.href)
+  } catch (error) {
+    projectFailure = `Could not save the project before reloading: ${
+      error instanceof Error ? error.message : String(error)
+    }`
+    console.error(error)
+    renderStatus()
+    return
+  }
+  projectPersistenceEnabled = false
+  window.clearTimeout(projectPersistTimer)
   location.reload()
 }
 
@@ -2749,6 +2885,7 @@ function serializeProjectState(state: ProjectState) {
     files: state.files,
     selection: state.selection,
     version: projectStateVersion,
+    symlinks: state.symlinks,
   }
   return JSON.stringify(versioned)
 }
@@ -2762,7 +2899,13 @@ function normalizeVersionedProjectState(value: unknown) {
 
 function normalizeProjectState(value: unknown): ProjectState {
   if (!value || typeof value !== "object") return { files: {}, useDefaults: true }
-  const candidate = value as { activeFile?: unknown; files?: unknown; selection?: unknown; version?: unknown }
+  const candidate = value as {
+    activeFile?: unknown
+    files?: unknown
+    selection?: unknown
+    version?: unknown
+    symlinks?: unknown
+  }
   if (candidate.version !== undefined && candidate.version !== projectStateVersion) {
     console.warn(`Ignoring unsupported playground project version: ${String(candidate.version)}`)
     return { files: {}, useDefaults: true }
@@ -2803,11 +2946,23 @@ function normalizeProjectState(value: unknown): ProjectState {
   const requestedActiveFile =
     typeof candidate.activeFile === "string" ? migrations.get(candidate.activeFile) ?? candidate.activeFile : undefined
   const selection = normalizeSelection(candidate.selection)
+  const symlinks: Record<string, string> = {}
+  if (candidate.symlinks !== undefined) {
+    if (!candidate.symlinks || typeof candidate.symlinks !== "object" || Array.isArray(candidate.symlinks)) {
+      throw new Error("Invalid project symbolic links")
+    }
+    for (const [path, target] of Object.entries(candidate.symlinks)) {
+      if (typeof target !== "string") throw new Error(`Invalid symbolic link target: ${path}`)
+      symlinks[path] = target
+    }
+    validateProjectSymlinks(files, symlinks)
+  }
   return {
     activeFile: requestedActiveFile?.startsWith(`${projectRoot}/`) ? requestedActiveFile : undefined,
     files,
     selection,
     useDefaults: false,
+    symlinks,
   }
 }
 
@@ -3026,15 +3181,13 @@ function flushProjectBeforeUnload() {
   }
 }
 
-function persistProjectState() {
-  window.clearTimeout(projectPersistTimer)
-  window.removeEventListener("beforeunload", flushProjectBeforeUnload)
-  if (!projectPersistenceEnabled) return
+function currentProjectState(): ProjectState {
   const activeModel = inputEditor.getModel()
   const selection = activeModel && projectModels.has(activeModel.uri.path) ? inputEditor.getSelection() : undefined
-  const state: ProjectState = {
+  return {
     activeFile: activeModel && projectModels.has(activeModel.uri.path) ? activeModel.uri.path : entryFileName,
     files: Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()])),
+    symlinks: Object.keys(projectSymlinks).length ? projectSymlinks : undefined,
     selection: selection
       ? {
           positionColumn: selection.positionColumn,
@@ -3044,8 +3197,14 @@ function persistProjectState() {
         }
       : undefined,
   }
+}
+
+function persistProjectState() {
+  window.clearTimeout(projectPersistTimer)
+  window.removeEventListener("beforeunload", flushProjectBeforeUnload)
+  if (!projectPersistenceEnabled) return
   try {
-    const serialized = serializeProjectState(state)
+    const serialized = serializeProjectState(currentProjectState())
     if (serialized !== lastStoredProject) {
       localStorage.setItem(storageKey, serialized)
       lastStoredProject = serialized

@@ -116,6 +116,42 @@ test("historical compilers and libraries use exact npm URLs while custom builds 
   }
 })
 
+test("legacy compilers resolve linked files and package identity using preserveSymlinks", () => {
+  const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
+  const files = new Map([
+    [
+      "/workspace/src/index.ts",
+      'import { value } from "./value"; import { Token as Direct } from "../packages/pkg"; import { Token as Linked } from "pkg"; const token: Direct = new Linked(); const result: number = value;',
+    ],
+    ["/workspace/shared/value.ts", "export const value = 42;"],
+    ["/workspace/packages/pkg/index.ts", "export class Token { private brand = 1; }"],
+    ["/workspace/packages/pkg/package.json", '{"name":"pkg","types":"index.ts"}'],
+  ])
+  const links = { "/workspace/src/value.ts": "../shared/value.ts", "/workspace/node_modules/pkg": "../packages/pkg" }
+  const filesystem = createStradaFileSystem(
+    ts,
+    () => files.keys(),
+    path => files.get(path),
+    links
+  )
+  for (const preserveSymlinks of [false, true]) {
+    const options = { module: ts.ModuleKind.NodeNext, target: ts.ScriptTarget.ESNext, noLib: true, preserveSymlinks }
+    const program = ts.createProgram(["/workspace/src/index.ts"], options, {
+      ...ts.createCompilerHost(options),
+      ...filesystem,
+      getCurrentDirectory: () => "/workspace",
+      useCaseSensitiveFileNames: () => true,
+      getSourceFile: (path, target) => {
+        const text = filesystem.readFile(path)
+        return text === undefined ? undefined : ts.createSourceFile(path, text, target, true)
+      },
+    })
+    const diagnostics = program.getSemanticDiagnostics()
+    if (preserveSymlinks) assert(diagnostics.some(diagnostic => diagnostic.code === 2322))
+    else assert.deepEqual(diagnostics, [])
+  }
+})
+
 test("native TypeScript comment directives are not project-wide compiler overrides", () => {
   const config = '{"compilerOptions":{"strict":false}}'
   const state = computeCompilerOverrides(
@@ -518,7 +554,44 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
     input.sourceFiles = [source, orphan, orphanHelper]
     input.files[orphan] = "const orphanValue = orphanSource;\n//    ^?\n"
     assert(compiler.compile(input).typeQueries[orphan].some(query => query.label.includes("true")))
-    assert.equal(syntheticPrograms, 1)
+    assert.equal(syntheticPrograms, 0)
+
+    const linked: NativeCompileInput = {
+      configFileName,
+      sourceFiles: [source],
+      files: {
+        [configFileName]: JSON.stringify({
+          compilerOptions: { ...config.compilerOptions, module: "nodenext" },
+          files: ["src/index.ts"],
+        }),
+        [source]:
+          'import { value } from "./value"; import { Token as Direct } from "../packages/pkg"; import { Token as Linked } from "pkg"; const token: Direct = new Linked(); const result: number = value;',
+        "/workspace/shared/value.ts": "export const value = 42;",
+        "/workspace/packages/pkg/index.ts": "export class Token { private brand = 1; }",
+        "/workspace/packages/pkg/package.json": '{"name":"pkg","types":"index.ts"}',
+      },
+      symlinks: { "/workspace/src/value.ts": "../shared/value.ts", "/workspace/node_modules/pkg": "../packages/pkg" },
+    }
+    assert.deepEqual(compiler.compile(linked).diagnostics, [])
+    linked.files["/workspace/shared/value.ts"] = 'export const value = "changed";'
+    assert(
+      compiler.compile(linked).diagnostics.some(diagnostic => diagnostic.code === 2322),
+      "Edits to linked targets must update their importers"
+    )
+    linked.files["/workspace/shared/value.ts"] = "export const value = 42;"
+    linked.files[configFileName] = JSON.stringify({
+      compilerOptions: { ...config.compilerOptions, module: "nodenext", preserveSymlinks: true },
+      files: ["src/index.ts"],
+    })
+    assert(
+      compiler.compile(linked).diagnostics.some(diagnostic => diagnostic.code === 2322),
+      "Changing preserveSymlinks must update linked package identity"
+    )
+    linked.sourceFiles = [source, orphan]
+    linked.files[orphan] = 'import { Token } from "pkg";\nconst linkedToken = new Token();\n//    ^?\n'
+    assert(compiler.compile(linked).typeQueries[orphan].some(query => query.label === "Token"))
+    linked.symlinks = { "/workspace/src/value.ts": "../shared/value.ts" }
+    assert(compiler.compile(linked).diagnostics.some(diagnostic => diagnostic.code === 2307))
   } finally {
     compiler.close()
   }

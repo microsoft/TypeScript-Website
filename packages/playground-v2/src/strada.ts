@@ -1,6 +1,7 @@
 import { monaco } from "./tsgo-lsp"
 import type { StradaLibraryProgress } from "./strada-libraries"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
+import { resolveSymlinks, type Symlinks } from "./symlinks"
 
 type CompilerDiagnostic = {
   category: number
@@ -32,6 +33,7 @@ type StradaBackendOptions = {
   onProgress?(progress: StradaLoadingProgress): void
   version: string
   baseUrl: string
+  symlinks?: Symlinks
 }
 
 export class StradaBackend {
@@ -89,6 +91,7 @@ export class StradaBackend {
         files,
         sourceFiles,
         version: options.version,
+        symlinks: options.symlinks,
       })
       backend.#files = new Map(Object.entries(files))
       backend.#sourceFiles = sourceFiles
@@ -576,7 +579,8 @@ export class StradaBackend {
   }
 
   async #ensureModel(fileName: string) {
-    const normalized = normalizePath(fileName)
+    const normalized = resolveSymlinks(normalizePath(fileName), this.#options.symlinks ?? {})
+    if (normalized === undefined) return undefined
     const existing = monaco.editor.getModel(monaco.Uri.file(normalized))
     if (existing) return existing
     const text = await this.readFile(normalized)

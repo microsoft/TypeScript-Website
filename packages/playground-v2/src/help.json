@@ -3,7 +3,7 @@
     {
       "title": "Projects and files",
       "legacyIndexes": [6, 7],
-      "html": "<p>Select a file in the project tree to edit it. Use <strong>+ File</strong> to add a file and its delete button to remove it.</p>"
+      "html": "<p>Select a file in the project tree to edit it. Use <strong>+ File</strong> to add a file or <strong>+ Link</strong> to create a symbolic link to a file or directory. Link targets are relative to the link's directory. Deleting a link does not delete its target.</p>"
     },
     {
       "title": "Compiler versions",

@@ -1,6 +1,7 @@
 import type { StradaLoadingProgress } from "./strada"
 import { loadStradaLibraries } from "./strada-libraries"
 import { createStradaFileSystem, normalizeStradaPath as normalizePath } from "./strada-project"
+import { resolveSymlinks, type Symlinks } from "./symlinks"
 
 type TS = typeof import("typescript")
 
@@ -13,6 +14,7 @@ type InitMessage = {
     sourceFiles: string[]
     version: string
     baseUrl: string
+    symlinks?: Symlinks
   }
 }
 
@@ -36,6 +38,7 @@ let projectVersion = 0
 const files = new Map<string, FileEntry>()
 const libraries = new Map<string, string>()
 let sourceFiles: string[] = []
+let symlinks: Symlinks = {}
 let filesystem: ReturnType<typeof createStradaFileSystem>
 let languageService: import("typescript").LanguageService
 let inferredLanguageService: import("typescript").LanguageService | undefined
@@ -62,7 +65,8 @@ async function initialize(args: InitMessage["args"]) {
   // The owning page supplies compiler code from our trusted compiler CDN over
   // this dedicated worker's private channel. Evaluating that compiler is intentional.
   ts = new Function(`${args.compilerSource}\nreturn ts;`)() as TS
-  filesystem = createStradaFileSystem(ts, () => [...files.keys(), ...libraries.keys()], readFile)
+  symlinks = args.symlinks ?? {}
+  filesystem = createStradaFileSystem(ts, () => [...files.keys(), ...libraries.keys()], readFile, symlinks)
   version = args.version
   baseUrl = args.baseUrl
   updateFiles(args.files, [], args.sourceFiles)
@@ -327,14 +331,15 @@ function createLanguageServiceHost(inferred = false): import("typescript").Langu
       const text = readFile(fileName)
       return text === undefined ? undefined : ts.ScriptSnapshot.fromString(text)
     },
-    getScriptVersion: fileName => files.get(normalizePath(fileName))?.version.toString() ?? "1",
+    getScriptVersion: fileName => files.get(filesystem.realpath(fileName))?.version.toString() ?? "1",
     readFile,
     useCaseSensitiveFileNames: () => true,
   }
 }
 
 function readFile(fileName: string) {
-  const normalized = normalizePath(fileName)
+  const normalized = resolveSymlinks(fileName, symlinks)
+  if (normalized === undefined) return undefined
   return files.get(normalized)?.text ?? libraries.get(normalized)
 }
 

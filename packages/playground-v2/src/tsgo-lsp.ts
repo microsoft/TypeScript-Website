@@ -10,6 +10,7 @@ import {
 } from "monaco-editor/languages/definitions/typescript/typescript.js"
 import { frameFileSystemUpdate } from "./lsp-filesystem"
 import { languageForFile } from "./editor-languages"
+import { resolveSymlinks, type Symlinks } from "./symlinks"
 
 const headerWords = 4
 const readPosition = 0
@@ -25,6 +26,7 @@ type WorkerMessage = {
   id?: number
   message?: any
   status?: TsgoStatus
+  aliases?: Array<{ path: string; type: number }>
 }
 
 type StartTsgoLspOptions = {
@@ -38,12 +40,13 @@ type StartTsgoLspOptions = {
   readPackageFile(fileName: string): string | undefined
   onPackageModel(model: monaco.editor.ITextModel): void
   onStatus(status: TsgoStatus, serverInfo?: string): void
+  symlinks?: Symlinks
 }
 
 export type TsgoLspController = {
   updateEffectiveConfig(text: string): void
   refreshDiagnostics(): void
-  updatePackageFiles(files: ReadonlyMap<string, string>): Promise<void>
+  updateFiles(files: ReadonlyMap<string, string>): Promise<void>
 }
 
 class RingBufferWorker {
@@ -56,7 +59,7 @@ class RingBufferWorker {
   readonly #listeners = new Map<EventListenerOrEventListenerObject, EventListener>()
   readonly #pendingRequests = new Map<string | number, string>()
   readonly #configFileName: string
-  readonly #packageFiles = new Map<string, string>()
+  readonly #mountedFiles = new Map<string, string>()
   readonly #fileUpdates = new Map<number, { resolve(): void; reject(error: Error): void }>()
   #nextFileUpdateId = 0
   #lastFileUpdate = Promise.resolve()
@@ -85,6 +88,16 @@ class RingBufferWorker {
         this.#fileUpdates.clear()
         this.onError?.(event.data.message)
       } else if (event.data.type === "filesystem" && event.data.id !== undefined) {
+        // A watcher on a symlink observes target changes under the link's path.
+        if (event.data.aliases?.length) {
+          this.postMessage({
+            jsonrpc: "2.0",
+            method: "workspace/didChangeWatchedFiles",
+            params: {
+              changes: event.data.aliases.map(({ path, type }) => ({ uri: monaco.Uri.file(path).toString(), type })),
+            },
+          })
+        }
         this.#fileUpdates.get(event.data.id)?.resolve()
         this.#fileUpdates.delete(event.data.id)
       } else if (event.data.type === "stderr") {
@@ -106,14 +119,19 @@ class RingBufferWorker {
     stdin: SharedArrayBuffer,
     module: WebAssembly.Module,
     libraries: Record<string, string>,
-    files: Record<string, string>
+    files: Record<string, string>,
+    symlinks: Symlinks
   ) {
+    if (Object.keys(symlinks).length) {
+      for (const [path, text] of Object.entries(files)) this.#mountedFiles.set(path, text)
+    }
     this.#worker.postMessage({
       type: "init",
       stdin,
       libraries,
       module,
       files,
+      symlinks,
     })
   }
 
@@ -157,17 +175,17 @@ class RingBufferWorker {
     return true
   }
 
-  updatePackageFiles(files: ReadonlyMap<string, string>) {
+  updateFiles(files: ReadonlyMap<string, string>) {
     if (this.#failure) return Promise.reject(this.#failure)
     const changed: Record<string, string> = {}
     const deleted: string[] = []
     const changes: Array<{ uri: string; type: number }> = []
     for (const [path, text] of files) {
-      if (this.#packageFiles.get(path) === text) continue
+      if (this.#mountedFiles.get(path) === text) continue
       changed[path] = text
-      changes.push({ uri: monaco.Uri.file(path).toString(), type: this.#packageFiles.has(path) ? 2 : 1 })
+      changes.push({ uri: monaco.Uri.file(path).toString(), type: this.#mountedFiles.has(path) ? 2 : 1 })
     }
-    for (const path of this.#packageFiles.keys()) {
+    for (const path of this.#mountedFiles.keys()) {
       if (files.has(path)) continue
       deleted.push(path)
       changes.push({ uri: monaco.Uri.file(path).toString(), type: 3 })
@@ -182,8 +200,8 @@ class RingBufferWorker {
     })
     const completed = new Promise<void>((resolve, reject) => this.#fileUpdates.set(id, { resolve, reject }))
     this.#lastFileUpdate = completed
-    this.#packageFiles.clear()
-    for (const [path, text] of files) this.#packageFiles.set(path, text)
+    this.#mountedFiles.clear()
+    for (const [path, text] of files) this.#mountedFiles.set(path, text)
     this.#queue.push(record, notification)
     this.#flush()
     return completed
@@ -305,6 +323,7 @@ let languageRegistered = false
 let definitionFilesPromise: Promise<Record<string, string>> | undefined
 let readPackageFile: StartTsgoLspOptions["readPackageFile"] | undefined
 let onPackageModel: StartTsgoLspOptions["onPackageModel"] | undefined
+let definitionSymlinks: Symlinks = {}
 
 export function registerPlaygroundLanguages() {
   if (languageRegistered) return
@@ -349,6 +368,7 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
 
   readPackageFile = options.readPackageFile
   onPackageModel = options.onPackageModel
+  definitionSymlinks = options.symlinks ?? {}
   definitionFilesPromise = Promise.resolve(
     Object.fromEntries(
       Object.entries(options.libraries).map(([fileName, text]) => [
@@ -366,10 +386,17 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
   }
   worker.onError = options.onError
   // Package files are mounted in batches; only project files are open LSP documents.
-  worker.start(stdin, options.module, options.libraries, {
-    ...Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()])),
-    [options.configFileName]: options.effectiveConfigText,
-  })
+  worker.start(
+    stdin,
+    options.module,
+    options.libraries,
+    {
+      ...Object.fromEntries(options.models.map(model => [model.uri.path, model.getValue()])),
+      [resolveSymlinks(options.configFileName, options.symlinks ?? {}) ?? options.configFileName]:
+        options.effectiveConfigText,
+    },
+    options.symlinks ?? {}
+  )
 
   const transport = createTransportToWorker(worker as unknown as Worker)
   const client = new MonacoLspClient(transport, {
@@ -383,8 +410,8 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     refreshDiagnostics() {
       client.refreshDiagnostics()
     },
-    updatePackageFiles(files: ReadonlyMap<string, string>) {
-      return worker.updatePackageFiles(files)
+    updateFiles(files: ReadonlyMap<string, string>) {
+      return worker.updateFiles(files)
     },
   } satisfies TsgoLspController
 }
@@ -406,6 +433,10 @@ function normalizeLibraryLocations(result: unknown): unknown {
 
 function normalizeLibraryUri(uri: string) {
   const parsed = monaco.Uri.parse(uri)
+  if (parsed.scheme === "file") {
+    const resolved = resolveSymlinks(parsed.path, definitionSymlinks)
+    return resolved === undefined || resolved === parsed.path ? uri : parsed.with({ path: resolved }).toString()
+  }
   if (parsed.scheme !== "bundled" || !/^\/libs\/lib(?:\..*)?\.d\.ts$/i.test(parsed.path)) {
     return uri
   }

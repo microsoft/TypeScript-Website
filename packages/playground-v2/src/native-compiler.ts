@@ -4,11 +4,13 @@ import type { Node } from "@typescript/typescript/ast"
 import type { WasmTransport } from "@typescript/typescript/wasm"
 import { TextDocument } from "vscode-languageserver-textdocument"
 import { corsaDiscovery, type Dependency, type SourceFile } from "./ata"
+import type { Symlinks } from "./symlinks"
 
 export type NativeCompileInput = {
   files: Record<string, string>
   configFileName: string
   sourceFiles: readonly string[]
+  symlinks?: Symlinks
 }
 
 export type NativeTypeQuery = {
@@ -26,6 +28,7 @@ export type NativeCompileResult = {
 export class NativeCompiler {
   private snapshot: Snapshot | undefined
   private readonly files = new Map<string, string>()
+  private symlinkKey = ""
   private readonly discoverDependencies: ReturnType<typeof corsaDiscovery>
 
   constructor(private readonly api: API, private readonly transport: WasmTransport, ast: typeof Ast) {
@@ -37,6 +40,15 @@ export class NativeCompiler {
   }
 
   compile(input: NativeCompileInput): NativeCompileResult {
+    const symlinkKey = JSON.stringify(input.symlinks ?? {})
+    if (this.snapshot && this.symlinkKey !== symlinkKey) {
+      this.snapshot.dispose()
+      this.snapshot = undefined
+    }
+    this.symlinkKey = symlinkKey
+    const symlinks = Object.fromEntries(
+      Object.entries(input.symlinks ?? {}).map(([path, target]) => [path, { target }])
+    )
     const changed: string[] = []
     const created: string[] = []
     const deleted: string[] = []
@@ -64,7 +76,7 @@ export class NativeCompiler {
         })
       : this.api.createSnapshot({
           openProjects: [input.configFileName],
-          fileSystem: { kind: "layer", files: input.files },
+          fileSystem: { kind: "layer", files: input.files, symlinks },
         })
     const previous = this.snapshot
     this.snapshot = next
@@ -102,9 +114,11 @@ export class NativeCompiler {
       const configuredFileNames = new Set(configuredFiles)
       const orphanFiles = input.sourceFiles.filter(fileName => !configuredFileNames.has(fileName))
       if (orphanFiles.some(fileName => hasTypeQuery(input.files[fileName]))) {
-        const inferred = this.api.createProgram(orphanFiles, { ...parsed.options, allowJs: true })
+        const inferred = next.update({
+          createPrograms: [{ rootFiles: orphanFiles, compilerOptions: { ...parsed.options, allowJs: true } }],
+        })
         try {
-          this.collectTypeQueries(inferred, orphanFiles, input.files, typeQueries)
+          this.collectTypeQueries(inferred.operation.createdPrograms[0], orphanFiles, input.files, typeQueries)
         } finally {
           inferred.dispose()
         }

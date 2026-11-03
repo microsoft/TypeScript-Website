@@ -1,5 +1,6 @@
 import { Fd, Inode, WASI, wasi, WASIProcExit } from "@bjorn3/browser_wasi_shim"
 import { LspFileSystem, LspStdinRecords } from "./lsp-filesystem"
+import type { Symlinks } from "./symlinks"
 
 const headerWords = 4
 const readPosition = 0
@@ -15,6 +16,7 @@ type InitMessage = {
   libraries: Record<string, string>
   module: WebAssembly.Module
   files: Record<string, string>
+  symlinks: Symlinks
 }
 
 class BlockingStdin extends Fd {
@@ -27,8 +29,8 @@ class BlockingStdin extends Fd {
     this.#state = new Int32Array(buffer, 0, headerWords)
     this.#data = new Uint8Array(buffer, headerWords * Int32Array.BYTES_PER_ELEMENT)
     this.#records = new LspStdinRecords(update => {
-      filesystem.update(update.files, update.deleted)
-      self.postMessage({ type: "filesystem", id: update.id })
+      const aliases = filesystem.update(update.files, update.deleted)
+      self.postMessage({ type: "filesystem", id: update.id, aliases })
     })
   }
 
@@ -245,7 +247,7 @@ async function start(message: InitMessage) {
     files[`/typescript/lib/${filename}`] = contents
   }
 
-  const filesystem = new LspFileSystem(files)
+  const filesystem = new LspFileSystem(files, message.symlinks)
   const stdin = new BlockingStdin(message.stdin, filesystem)
   const fds = [stdin, new LspStdout(), new Stderr(), filesystem.preopen]
   const wasiRuntime = new WASI(["tsc", "--lsp", "--stdio"], ["HOME=/workspace", "TMPDIR=/tmp"], fds, { debug: false })

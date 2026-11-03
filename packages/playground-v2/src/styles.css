@@ -360,6 +360,10 @@ body {
   font-weight: 600;
 }
 
+.form-dialog label[hidden] {
+  display: none;
+}
+
 .form-dialog input {
   width: 100%;
   min-height: 2.5rem;
@@ -629,6 +633,7 @@ body {
 .file-explorer-heading {
   padding: 0.5rem 0.75rem;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
