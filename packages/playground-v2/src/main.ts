@@ -2100,9 +2100,8 @@ async function confirmLargeDownloadIfNeeded() {
   if (downloadWarningSuppressed() || (await compilerAssetsAreCached())) return
 
   if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
-  const totalBytes = nativeDistribution.downloadBytes
   getElement("download-consent-title").textContent = `Download TypeScript ${nativeDistribution.version}?`
-  downloadSize.textContent = formatBytes(totalBytes)
+  downloadSize.textContent = `${Math.ceil(nativeDistribution.estimatedDownloadBytes / (1024 * 1024))} MiB`
   rememberDownloadConsent.checked = true
   loadingAnimation.hidden = true
   loadingCopy.hidden = true
@@ -2176,13 +2175,13 @@ async function openAssetCache() {
 function updateDownloadProgress() {
   if (compilerFailure) return
   if (!nativeDistribution) throw new Error("Compiler distribution is not loaded")
-  const totalBytes = nativeDistribution.downloadBytes
+  const totalBytes = nativeDistribution.assetBytes
   const downloadedBytes = [...downloadedAssets.values()].reduce((total, value) => total + value, 0)
   const loadingFromNetwork = [...cachedAssets.values()].some(cached => !cached)
   setLoadingProgress(
     Math.min(70, (downloadedBytes / totalBytes) * 70),
     loadingFromNetwork ? "Downloading TypeScript..." : "Loading cached TypeScript...",
-    `${formatBytes(downloadedBytes)} of ${formatBytes(totalBytes)}`
+    `${Math.min(100, Math.round((downloadedBytes / totalBytes) * 100))}% loaded`
   )
 }
 
