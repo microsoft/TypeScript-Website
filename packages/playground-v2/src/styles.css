@@ -143,6 +143,34 @@ body {
   max-width: min(26rem, calc(100vw - 2rem));
 }
 
+.export-control {
+  min-width: 0;
+}
+
+.export-control .version-menu {
+  left: auto;
+  right: 0;
+}
+
+.export-control .version-menu-item {
+  text-align: left;
+}
+
+.form-dialog.export-dialog {
+  width: min(56rem, calc(100vw - 2rem));
+}
+
+.export-dialog textarea {
+  width: 100%;
+  height: min(60svh, 32rem);
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  color: inherit;
+  background: var(--panel);
+  font: 0.8rem Hack, monospace;
+  resize: vertical;
+}
+
 .version-control summary {
   min-height: 2.15rem;
   padding: 0.4rem 0.65rem;

@@ -17,6 +17,7 @@ import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-librar
 import { computeCompilerOverrides } from "./compiler-overrides"
 import { createStradaFileSystem } from "./strada-project"
 import { createPlaygroundV2Query } from "../../typescriptlang-org/src/lib/createPlaygroundV2Query"
+import { projectExportFiles, projectMarkdown, type ExportProject } from "./exporter"
 
 test("the legacy handoff serializes effective options with its own compiler and retains the requested channel", () => {
   const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
@@ -150,6 +151,42 @@ test("legacy compilers resolve linked files and package identity using preserveS
     if (preserveSymlinks) assert(diagnostics.some(diagnostic => diagnostic.code === 2322))
     else assert.deepEqual(diagnostics, [])
   }
+})
+
+test("exports retain all files, effective configuration and the selected compiler instead of package defaults", () => {
+  const project: ExportProject = {
+    activeFile: "src/index.ts",
+    compilerVersion: "7.1.0-dev.20261030.1",
+    files: {
+      "src/index.ts": "import './other';",
+      "src/other.ts": "export const value = `backticks ``` stay in the code`;",
+      "tsconfig.json": '{"compilerOptions":{"strict":true},"files":["src/index.ts"]}',
+      "package.json":
+        '{"name":"existing","dependencies":{"pkg":"^2"},"devDependencies":{"typescript":"6.0.2"},"scripts":{"start":"node src/index.js"}}',
+    },
+    outputFiles: { "src/index.js": "require('./other');" },
+    packages: { "@types/pkg": "2.0.1" },
+    symlinks: {},
+    url: "https://example.test/play/v2/#project",
+  }
+  const files = projectExportFiles(project)
+  assert.equal(files["src/other.ts"], project.files["src/other.ts"])
+  assert.equal(files["tsconfig.json"], project.files["tsconfig.json"])
+  const metadata = JSON.parse(files["package.json"])
+  assert.equal(metadata.name, "existing")
+  assert.equal(metadata.dependencies.typescript, project.compilerVersion)
+  assert.equal(metadata.devDependencies.typescript, project.compilerVersion)
+  assert.equal(metadata.dependencies.pkg, "^2")
+  assert.equal(metadata.dependencies["@types/pkg"], "2.0.1")
+  assert.equal(metadata.scripts.start, "node src/index.js")
+  project.symlinks = { "node_modules/pkg": "../packages/pkg" }
+  const markdown = projectMarkdown(project)
+  assert(markdown.includes(project.files["src/other.ts"]))
+  assert(markdown.includes("````ts\n"))
+  assert(markdown.includes('"node_modules/pkg": "../packages/pkg"'))
+  assert(markdown.includes(project.url))
+  assert(markdown.includes("require('./other');"))
+  assert.throws(() => projectExportFiles(project), /Symbolic links/)
 })
 
 test("native TypeScript comment directives are not project-wide compiler overrides", () => {

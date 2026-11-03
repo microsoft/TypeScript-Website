@@ -26,6 +26,7 @@ import {
 } from "./compiler-overrides"
 import { registerConfigSchema } from "./config-schema"
 import { configureEditorTouchScroll } from "./editor-touch-scroll"
+import { configureExports } from "./exporter"
 import { resolveSymlinks, validateProjectSymlinks, type Symlinks } from "./symlinks"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { StradaBackend } from "./strada"
@@ -293,6 +294,7 @@ let typeAcquisitionController: AbortController | undefined
 let typeAcquisitionTimer = 0
 const acquiredTypeFiles = new Map<string, string>()
 const acquiredTypePackages = new Set<string>()
+const acquiredPackages = new Map<string, string>()
 const acquiredTypeModels = new Map<string, monaco.editor.ITextModel>()
 let helpPromise: Promise<PlaygroundHelp> | undefined
 let confirmationResolver: ((value: boolean) => void) | undefined
@@ -830,6 +832,35 @@ monaco.languages.registerInlayHintsProvider("json", {
 })
 
 let updateTimer = 0
+configureExports({
+  compile: () => compileActiveProject?.(),
+  project() {
+    const state = currentProjectState()
+    const url = new URL(location.href)
+    url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serializeProjectState(state))}`
+    return {
+      activeFile: relativeProjectPath(
+        state.activeFile && state.files[state.activeFile] !== undefined
+          ? state.activeFile
+          : Object.keys(state.files).find(path => /\.[cm]?[jt]sx?$/i.test(path)) ?? Object.keys(state.files)[0]
+      ),
+      compilerVersion: nativeDistribution?.version ?? stradaBackend?.version,
+      files: Object.fromEntries(
+        Object.entries({
+          ...state.files,
+          [resolveSymlinks(configFileName, projectSymlinks) ?? configFileName]:
+            compilerOverrideState.effectiveConfigText,
+        }).map(([path, text]) => [relativeProjectPath(path), text])
+      ),
+      outputFiles: Object.fromEntries([...emittedFiles].map(([path, text]) => [relativeProjectPath(path), text])),
+      packages: Object.fromEntries(acquiredPackages),
+      symlinks: Object.fromEntries(
+        Object.entries(projectSymlinks).map(([path, target]) => [relativeProjectPath(path), target])
+      ),
+      url: url.href,
+    }
+  },
+})
 for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
@@ -1792,6 +1823,8 @@ function applyAcquiredTypes(result: AcquisitionResult) {
   }
   acquiredTypeFiles.clear()
   acquiredTypePackages.clear()
+  acquiredPackages.clear()
+  for (const pkg of result.packages) acquiredPackages.set(pkg.name, pkg.version)
   for (const name of result.ambientTypes) acquiredTypePackages.add(name)
   for (const [fileName, text] of result.files) {
     if (projectModels.has(fileName)) continue

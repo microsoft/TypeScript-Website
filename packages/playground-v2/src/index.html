@@ -40,6 +40,25 @@
             <div id="compiler-version-menu" class="version-menu" role="menu" aria-labelledby="compiler-version-button"></div>
           </details>
           <button id="run-button" type="button" disabled>Run</button>
+          <details id="exports" class="version-control export-control">
+            <summary id="exports-button" aria-haspopup="menu" aria-expanded="false" aria-controls="exports-menu">
+              Export <span class="version-caret" aria-hidden="true"></span>
+            </summary>
+            <div id="exports-menu" class="version-menu" role="menu" aria-labelledby="exports-button">
+              <button type="button" class="version-menu-item" role="menuitem" data-export="link">Copy Playground link</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="issue">Copy as Markdown Issue</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="markdown-link">Copy as Markdown Link</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="preview">Copy as Markdown Link with Preview</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="tweet">Tweet link to Playground</button>
+              <div class="version-menu-separator" role="separator"></div>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="ast">Open active file in TypeScript AST Viewer</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="workbench">Open active file in Bug Workbench</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="vscode">Open active file in VS Code TS Playground</button>
+              <div class="version-menu-separator" role="separator"></div>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="codesandbox">Open in CodeSandbox</button>
+              <button type="button" class="version-menu-item" role="menuitem" data-export="stackblitz">Open in StackBlitz</button>
+            </div>
+          </details>
           <button id="clear-project-button" type="button" title="Start with an empty project">Clear</button>
           <button id="help-button" type="button">Help</button>
           <button id="settings-button" type="button">Settings</button>
@@ -265,6 +284,15 @@
             <button id="text-input-submit-button" type="submit">Continue</button>
           </footer>
         </form>
+      </dialog>
+      <dialog id="export-dialog" class="form-dialog export-dialog" aria-labelledby="export-title">
+        <header><h2 id="export-title">Export</h2></header>
+        <textarea id="export-text" aria-label="Exported text" readonly spellcheck="false"></textarea>
+        <p id="export-error" class="form-error" role="alert" hidden></p>
+        <footer>
+          <button id="export-close-button" type="button">Close</button>
+          <button id="export-copy-button" type="button">Copy</button>
+        </footer>
       </dialog>
       <dialog id="resources-dialog" class="resources-dialog" aria-labelledby="resources-title">
         <header>

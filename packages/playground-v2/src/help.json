@@ -33,7 +33,7 @@
     {
       "title": "Saving and sharing",
       "legacyIndexes": [9, 10],
-      "html": "<p>Your project is saved in this browser automatically. Copy the page URL to share it when automatic URL updates are enabled in Settings.</p>"
+      "html": "<p>Your project is saved in this browser automatically. Use <strong>Export</strong> to copy a share link or Markdown, or open your files in another editor. Markdown Issues include all files and symbolic links. <strong>Clear</strong> starts over with an empty index.ts and the default compiler settings.</p>"
     },
     {
       "title": "Settings",
