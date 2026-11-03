@@ -273,6 +273,7 @@ let lspFailure: string | undefined
 let projectFailure: string | undefined
 let languageServer: TsgoLspController | undefined
 let stradaBackend: StradaBackend | undefined
+let loadedLegacyCompilerVersion: string | undefined
 let nativeBackend: NativeBackend | undefined
 let nativeCompileVersion = 0
 let DiagnosticCategory: typeof import("@typescript/typescript/sync").DiagnosticCategory
@@ -1000,6 +1001,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
     if ((baseUrl.hostname === "unpkg.com" || mirroredVersions.includes(version)) && classicTS.version !== version) {
       throw new Error(`Requested TypeScript ${version}, but the downloaded compiler is ${classicTS.version}`)
     }
+    loadedLegacyCompilerVersion = classicTS.version
     DiagnosticCategory = classicTS.DiagnosticCategory
     discoverDependencies = stradaDiscovery(classicTS)
     stradaBackend = await StradaBackend.create({
@@ -2846,13 +2848,16 @@ async function clearProject() {
   const confirmed = await requestConfirmation({
     confirmLabel: "Clear project",
     danger: true,
-    message: "Remove all project files and start with an empty index.ts and the default compiler settings?",
+    message: "Remove all project files and start with an empty index.ts? The selected compiler version will be kept.",
     title: "Clear project",
   })
   if (!confirmed) return
   const state: ProjectState = {
     activeFile: entryFileName,
-    files: Object.fromEntries(defaultFiles.map(file => [file.path, file.path === entryFileName ? "" : file.text])),
+    files: {
+      [configFileName]: createLegacyConfig("ts"),
+      [entryFileName]: "",
+    },
   }
   try {
     localStorage.setItem(storageKey, serializeProjectState(state))
@@ -2865,7 +2870,9 @@ async function clearProject() {
   }
   projectPersistenceEnabled = false
   window.clearTimeout(projectPersistTimer)
-  history.replaceState({}, "", new URL(document.baseURI))
+  const url = new URL(document.baseURI)
+  if (selectedCompiler !== null) url.searchParams.set("ts", selectedCompiler)
+  history.replaceState({}, "", url)
   location.reload()
 }
 
@@ -3086,7 +3093,7 @@ function createLegacyProjectState(code: string, fileType = getLegacyFileType()):
 
 function createLegacyConfig(fileType: string) {
   if (useNativeCompiler) return defaultFiles[0].text
-  const [major, minor] = (selectedCompiler ?? "").split(".").map(Number)
+  const [major, minor] = (loadedLegacyCompilerVersion ?? selectedCompiler ?? "").split(".").map(Number)
   const javascript = fileType === "js" || fileType === "jsx"
   return (
     JSON.stringify(
