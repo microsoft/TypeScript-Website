@@ -312,16 +312,16 @@ test("native channel resolution rejects missing, incompatible and unlisted versi
   )
 })
 
-test("version choices combine supported stable releases before prereleases and Nightly", () => {
+test("version choices sort supported releases and the resolved Nightly by descending semver", () => {
   const choices = compilerVersionChoices(["7.0.2", "5.9.2", "6.0.2", "3.1.6", "5.9.3", "6.0.3"], {
     versions: ["7.0.2", "7.1.0-beta", "7.1.0-dev.20261030.1", "7.1.1", "7.1.2", "7.2.0-dev.20261101.1"],
     tags: { next: "7.2.0-dev.20261101.1", beta: "7.1.0-beta", rc: "7.0.1-rc" },
   })
   assert.deepEqual(choices, [
+    { version: "next", label: "Nightly (7.2.0-dev.20261101.1)" },
     { version: "7.1.2", label: "7.1.2" },
     { version: "6.0.3", label: "6.0.3" },
     { version: "5.9.3", label: "5.9.3" },
-    { version: "next", label: "Nightly (7.2.0-dev.20261101.1)" },
   ])
   const sameNightly = compilerVersionChoices([], {
     versions: ["7.1.0-dev.20261030.1"],
@@ -336,14 +336,14 @@ test("version choices offer the applicable beta or RC without unsupported or sup
     tags: { latest: "7.1.0", beta: "7.2.0-beta", rc: "7.2.0-rc", next: "7.3.0-dev.20261101.1" },
   }
   assert.deepEqual(compilerVersionChoices(["7.0.2", "6.0.3"], published), [
+    { version: "next", label: "Nightly (7.3.0-dev.20261101.1)" },
+    { version: "7.2.0-rc", label: "RC (7.2.0-rc)" },
     { version: "7.1.0", label: "7.1.0" },
     { version: "6.0.3", label: "6.0.3" },
-    { version: "7.2.0-rc", label: "RC (7.2.0-rc)" },
-    { version: "next", label: "Nightly (7.3.0-dev.20261101.1)" },
   ])
   assert.deepEqual(
     compilerVersionChoices(["6.0.3", "5.9.3"], published, "5.9.2").map(choice => choice.version),
-    ["7.1.0", "6.0.3", "5.9.3", "5.9.2", "7.2.0-rc", "next"]
+    ["next", "7.2.0-rc", "7.1.0", "6.0.3", "5.9.3", "5.9.2"]
   )
   published.versions.push("7.2.0")
   published.tags.latest = "7.2.0"
@@ -354,6 +354,21 @@ test("version choices offer the applicable beta or RC without unsupported or sup
   for (const version of ["6.0.3", "7.1.0-dev.20261031.1", "7.1.0", "7.2.0-beta"]) {
     assert.equal(isUnsupportedNativeCompilerVersion(version), false)
   }
+})
+
+test("version ordering follows semver even when a release is newer than the Nightly tag", () => {
+  const choices = compilerVersionChoices(
+    ["6.0.3", "5.10.1", "5.9.3"],
+    {
+      versions: ["7.1.0", "7.1.0-dev.20261030.1"],
+      tags: { latest: "7.1.0", next: "7.1.0-dev.20261030.1" },
+    },
+    "custom-build"
+  )
+  assert.deepEqual(
+    choices.map(choice => choice.version),
+    ["7.1.0", "next", "6.0.3", "5.10.1", "5.9.3", "custom-build"]
+  )
 })
 
 test("historical version discovery reads the CDN index and reports unavailable or invalid data", async t => {

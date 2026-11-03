@@ -163,7 +163,13 @@ export function compilerVersionChoices(
   if (nightly && isWasmCompilerVersion(nightly) && published?.versions.includes(nightly)) {
     add("next", `Nightly (${nightly})`)
   }
-  return [...versions.values()]
+  return [...versions.values()].sort((left, right) => {
+    const leftVersion = valid(left.version === "next" ? nightly : left.version)
+    const rightVersion = valid(right.version === "next" ? nightly : right.version)
+    if (!leftVersion) return rightVersion ? 1 : 0
+    if (!rightVersion) return -1
+    return rcompare(leftVersion, rightVersion)
+  })
 }
 
 function latestMinorVersions(versions: readonly string[]) {
