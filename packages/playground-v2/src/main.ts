@@ -763,12 +763,18 @@ function clampPanelWidth(target: "files" | "output", width: number) {
 
 function panelWidthLimits(target: "files" | "output") {
   const workspaceWidth = workspace.clientWidth || innerWidth
-  if (target === "files") {
-    const maximum = Math.max(160, workspaceWidth - (layoutState.outputVisible ? layoutState.outputWidth : 0) - 420)
-    return { minimum: 144, maximum: Math.min(360, maximum) }
-  }
-  const maximum = Math.max(240, workspaceWidth - (layoutState.filesVisible ? layoutState.filesWidth : 0) - 480)
-  return { minimum: 240, maximum: Math.min(640, maximum) }
+  const minimum = target === "files" ? 144 : 240
+  const otherWidth =
+    target === "files"
+      ? layoutState.outputVisible
+        ? layoutState.outputWidth
+        : 0
+      : layoutState.filesVisible
+      ? layoutState.filesWidth
+      : 0
+  const editorMinimum = 24 * parseFloat(getComputedStyle(document.documentElement).fontSize)
+  const handles = fileResizer.offsetWidth + outputResizer.offsetWidth
+  return { minimum, maximum: Math.max(minimum, workspaceWidth - otherWidth - editorMinimum - handles) }
 }
 
 for (const language of sourceLanguages) {
