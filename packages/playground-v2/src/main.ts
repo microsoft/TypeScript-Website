@@ -37,8 +37,10 @@ import "./styles.css"
 
 type Diagnostic = Omit<CompilerDiagnostic, "fileName"> & { fileName?: string }
 
-function remapCompilerOverrideDiagnostics(diagnostics: readonly Diagnostic[]) {
+function remapProjectDiagnostics(diagnostics: readonly Diagnostic[]) {
   return diagnostics.map(diagnostic => {
+    const fileName = diagnostic.fileName && resolveSymlinks(diagnostic.fileName, projectSymlinks)
+    if (fileName) diagnostic = { ...diagnostic, fileName }
     const text = diagnostic.text.toLowerCase()
     const matchingOverride = compilerOverrideState.overrides.find(override => {
       if (!override.applied) return false
@@ -49,7 +51,7 @@ function remapCompilerOverrideDiagnostics(diagnostics: readonly Diagnostic[]) {
       ) {
         return true
       }
-      if (diagnostic.fileName !== configFileName) return false
+      if (diagnostic.fileName !== (resolveSymlinks(configFileName, projectSymlinks) ?? configFileName)) return false
       const node = configOptionNode(compilerOverrideState.effectiveConfigText, override.option)
       return node !== undefined && diagnostic.pos <= node.offset + node.length && diagnostic.end >= node.offset
     })
@@ -372,7 +374,11 @@ const inputEditor = monaco.editor.create(inputElement, {
   fontSize: playgroundSettings.fontSize,
   inlayHints: { enabled: "on" },
   minimap: { enabled: playgroundSettings.minimap },
-  model: projectModels.get(initialState.activeFile ?? entryFileName) ?? projectModels.get(entryFileName),
+  model:
+    projectModels.get(initialState.activeFile ?? entryFileName) ??
+    projectModels.get(entryFileName) ??
+    [...projectModels.values()].find(model => isSourceLanguage(model.getLanguageId())) ??
+    [...projectModels.values()][0],
   padding: { top: 10 },
   scrollBeyondLastLine: false,
   "semanticHighlighting.enabled": true,
@@ -382,9 +388,11 @@ const inputEditor = monaco.editor.create(inputElement, {
 let effectiveConfigModel: monaco.editor.ITextModel | undefined
 monaco.editor.registerEditorOpener({
   openCodeEditor(_source, resource, selection) {
-    if (resource.scheme !== "file" || !monaco.editor.getModel(resource)) return false
+    if (resource.scheme !== "file") return false
+    const fileName = resolveSymlinks(resource.path, projectSymlinks)
+    if (!fileName || !monaco.editor.getModel(monaco.Uri.file(fileName))) return false
     const range = selection && ("startLineNumber" in selection ? selection : monaco.Range.fromPositions(selection))
-    navigateToModel(resource.path, range)
+    navigateToModel(fileName, range)
     return true
   },
 })
@@ -2084,7 +2092,7 @@ async function compileNativeProject() {
     })
     if (compileVersion !== nativeCompileVersion) return
     const diagnostics = deduplicateDiagnostics(
-      remapCompilerOverrideDiagnostics([...result.diagnostics, ...compilerOverrideDiagnostics()])
+      remapProjectDiagnostics([...result.diagnostics, ...compilerOverrideDiagnostics()])
     )
     setDiagnostics(diagnostics)
     emittedFiles = new Map(Object.entries(result.outputFiles))
@@ -2125,7 +2133,7 @@ async function compileStradaProject() {
   try {
     const result = await backend.compile()
     if (compileVersion !== stradaCompileVersion) return
-    const diagnostics = remapCompilerOverrideDiagnostics([
+    const diagnostics = remapProjectDiagnostics([
       ...(result.diagnostics as Diagnostic[]),
       ...compilerOverrideDiagnostics(),
     ])
@@ -2916,10 +2924,14 @@ function normalizeProjectState(value: unknown): ProjectState {
       (entry): entry is [string, string] => entry[0].startsWith(`${projectRoot}/`) && typeof entry[1] === "string"
     )
   )
-  const migrations = new Map([
-    [`${projectRoot}/index.ts`, entryFileName],
-    [`${projectRoot}/greet.ts`, `${projectRoot}/src/greet.ts`],
-  ])
+  const migrations = new Map<string, string>(
+    candidate.version === undefined
+      ? [
+          [`${projectRoot}/index.ts`, entryFileName],
+          [`${projectRoot}/greet.ts`, `${projectRoot}/src/greet.ts`],
+        ]
+      : []
+  )
   const hasLegacyRootFiles = [...migrations.keys()].some(fileName => files[fileName] !== undefined)
   for (const [oldPath, newPath] of migrations) {
     if (files[oldPath] !== undefined && files[newPath] === undefined) {
