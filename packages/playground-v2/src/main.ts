@@ -30,7 +30,7 @@ import { StradaBackend } from "./strada"
 import { NativeBackend } from "./native"
 import { PackageTypeAcquirer, stradaDiscovery, type AcquisitionResult, type DiscoverDependencies } from "./ata"
 import { acquisitionOptions } from "./ata/config"
-import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController, type TsgoStatus } from "./tsgo-lsp"
+import { monaco, registerPlaygroundLanguages, startTsgoLsp, type TsgoLspController } from "./tsgo-lsp"
 import "./styles.css"
 
 declare const __PLAYGROUND_EXAMPLES__: PlaygroundExamples
@@ -285,8 +285,6 @@ const confirmDownloadButton = getElement<HTMLButtonElement>("confirm-download-bu
 
 let compilerReady = false
 let lspReady = false
-let lspStatus: TsgoStatus = "mounting files"
-let lspServerInfo: string | undefined
 let compilerFailure: string | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
@@ -920,16 +918,16 @@ async function initializeNativeCompiler() {
     compilerVersionLabel.textContent =
       compilerVersionMenu.querySelector('[aria-checked="true"]')?.textContent ?? distribution.version
     await confirmLargeDownloadIfNeeded()
-    setLoadingProgress(0, "Downloading TypeScript...", "Preparing downloads")
+    setLoadingProgress(0, "Downloading TypeScript...", "")
     const [wasmBytes, libFiles, configSchemaBytes] = await Promise.all([
       downloadAsset("wasm", distribution.wasm),
       downloadLibraries(distribution),
       downloadAsset("schema", distribution.schema),
     ])
 
-    setLoadingIndeterminate("Compiling TypeScript...", "")
+    setLoadingIndeterminate("Starting TypeScript...", "")
     const module = await WebAssembly.compile(wasmBytes)
-    setLoadingProgress(78, "Starting compiler worker...", "Preparing WebAssembly")
+    setLoadingProgress(78, "Starting TypeScript...", "")
     const configSchema = JSON.parse(new TextDecoder().decode(configSchemaBytes))
     registerConfigSchema(configSchema)
     nativeBackend = await NativeBackend.create(module, libFiles, distribution)
@@ -953,21 +951,21 @@ async function initializeNativeCompiler() {
 
 async function initializeStradaCompiler(requestedVersion: string) {
   try {
-    setLoadingIndeterminate("Resolving TypeScript version...", requestedVersion)
+    setLoadingIndeterminate("Loading TypeScript...", "")
     const version = await resolveStradaVersion(requestedVersion)
     const baseUrl = legacyCompilerBaseUrl(version)
     const compilerUrl = new URL("typescript.js", baseUrl)
-    setLoadingIndeterminate("Downloading compiler...", version)
+    setLoadingIndeterminate("Downloading TypeScript...", "")
     const compilerResponse = await fetch(compilerUrl)
     if (!compilerResponse.ok) {
       throw new Error(`Unable to load TypeScript ${version}: ${compilerResponse.status} ${compilerResponse.statusText}`)
     }
     const compilerSource = new TextDecoder().decode(
       await readResponseBytes(compilerResponse, length =>
-        setLoadingIndeterminate("Downloading compiler...", `${version} · ${formatBytes(length)} received`)
+        setLoadingIndeterminate("Downloading TypeScript...", `${formatBytes(length)} received`)
       )
     )
-    setLoadingIndeterminate("Initializing compiler...", version)
+    setLoadingIndeterminate("Starting TypeScript...", "")
     // The TypeScript package and custom compiler CDN are published by trusted maintainers.
     // Evaluating the selected compiler is intentional; this is not user project code.
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
@@ -988,12 +986,12 @@ async function initializeStradaCompiler(requestedVersion: string) {
       onProgress(progress) {
         if (compilerReady || compilerFailure) return
         if (progress.phase === "initializing") {
-          setLoadingIndeterminate("Initializing compiler...", version)
+          setLoadingIndeterminate("Starting TypeScript...", "")
         } else {
           setLoadingProgress(
             progress.total ? (progress.completed / progress.total) * 100 : 0,
             "Loading standard libraries...",
-            `${progress.completed}/${progress.total} files${progress.fileName ? ` · ${progress.fileName}` : ""}`
+            `${progress.completed}/${progress.total} files`
           )
         }
       },
@@ -1001,7 +999,6 @@ async function initializeStradaCompiler(requestedVersion: string) {
     compileActiveProject = compileStradaProject
     compilerReady = true
     lspReady = true
-    lspServerInfo = `TypeScript ${version}`
     await compileStradaProject()
     void refreshTypeAcquisition()
     renderStatus()
@@ -1029,8 +1026,7 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
       shouldHandleDiagnostics: model => projectModels.get(model.uri.path) === model,
       readPackageFile: fileName => acquiredTypeFiles.get(fileName),
       onPackageModel: model => acquiredTypeModels.set(model.uri.path, model),
-      onStatus(nextStatus, serverInfo) {
-        lspStatus = nextStatus
+      onStatus(nextStatus) {
         lspReady = nextStatus === "ready"
         if (lspReady) {
           void synchronizeAcquiredTypes().then(
@@ -1042,18 +1038,13 @@ function startLanguageServer(module: WebAssembly.Module, libraries: Record<strin
             }
           )
         }
-        lspServerInfo = serverInfo ?? lspServerInfo
         const progress = {
           "mounting files": 92,
           "starting tsc.wasm": 95,
           "initializing LSP": 98,
           ready: 100,
         }[nextStatus]
-        setLoadingProgress(
-          progress,
-          nextStatus === "ready" ? "TypeScript is ready" : `Starting language server: ${nextStatus}`,
-          nextStatus === "ready" ? lspServerInfo ?? nativeDistribution?.version ?? "" : ""
-        )
+        setLoadingProgress(progress, "Starting TypeScript...", "")
         renderStatus()
       },
     })
@@ -1166,7 +1157,7 @@ async function selectCompilerVersion(value: string) {
     url.searchParams.delete("ts")
   } else if (value === "__custom__") {
     const custom = await requestTextInput({
-      label: "Playground CDN build ID",
+      label: "Build ID",
       submitLabel: "Load build",
       title: "Custom TypeScript build",
     })
@@ -1704,7 +1695,7 @@ function registerCompilerOverrideFeatures() {
         lenses.push({
           command: {
             id: "playground.showSettings",
-            title: "Automatic package types disabled in Playground settings · Settings",
+            title: "Automatic package types disabled · Settings",
           },
           range,
         })
@@ -1713,9 +1704,7 @@ function registerCompilerOverrideFeatures() {
         lenses.push({
           command: {
             id: "playground.showEffectiveConfig",
-            title: `${active.length} inline compiler override${
-              active.length === 1 ? "" : "s"
-            } active · View effective config`,
+            title: `${active.length} inline override${active.length === 1 ? "" : "s"} · View effective config`,
           },
           range,
         })
@@ -1724,9 +1713,7 @@ function registerCompilerOverrideFeatures() {
         lenses.push({
           command: {
             id: "playground.showEffectiveConfig",
-            title: `Automatic package types add compilerOptions.types: ${typePackages.join(
-              ", "
-            )} · View effective config`,
+            title: `Package types: ${typePackages.join(", ")} · View effective config`,
           },
           range,
         })
@@ -2680,21 +2667,14 @@ function updateActiveFile() {
   const model = inputEditor.getModel()
   if (!model) return
   const projectModel = projectModels.has(model.uri.path)
-  currentFile.textContent = projectModel
-    ? relativeProjectPath(model.uri.path)
-    : model.uri.path.startsWith("/typescript/lib/")
-    ? `${model.uri.path.slice(model.uri.path.lastIndexOf("/") + 1)} (bundled)`
-    : model.uri.path
+  currentFile.textContent = model.uri.path.startsWith("/typescript/lib/")
+    ? model.uri.path.slice(model.uri.path.lastIndexOf("/") + 1)
+    : relativeProjectPath(model.uri.path)
   inputEditor.updateOptions({
     ariaLabel: `${currentFile.textContent}${projectModel ? "" : ", read-only"} editor`,
     readOnly: !projectModel,
   })
-  editorHint.textContent =
-    model.getLanguageId() === "typescript"
-      ? "Type query: align ^? below an expression"
-      : model.getLanguageId() === "json"
-      ? "Edit compiler options directly"
-      : "Read-only library file"
+  editorHint.hidden = projectModel
   for (const [fileName, button] of fileButtons) {
     if (fileName === model.uri.path) button.setAttribute("aria-current", "page")
     else button.removeAttribute("aria-current")
@@ -2736,11 +2716,11 @@ function renderStatus() {
     return
   }
   if (!compilerReady) {
-    loadingMessage.textContent = "Downloading TypeScript..."
+    loadingMessage.textContent = "Loading TypeScript..."
     return
   }
   if (!lspReady) {
-    loadingMessage.textContent = `Starting language server: ${lspStatus}`
+    loadingMessage.textContent = "Starting TypeScript..."
     return
   }
 
@@ -2778,7 +2758,7 @@ function finishCreatingFile() {
   const relativePath = newFilePath.value.trim().replaceAll("\\", "/").replace(/^\/+/, "")
   const parts = relativePath.split("/")
   if (relativePath === "" || parts.some(part => part === "" || part === "." || part === "..")) {
-    showNewFileError("Enter a file path inside /workspace.")
+    showNewFileError("Enter a project-relative file path, such as src/example.ts.")
     return
   }
 

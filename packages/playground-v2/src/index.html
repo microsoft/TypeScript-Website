@@ -52,7 +52,6 @@
           <div class="file-explorer-heading">
             <div>
               <h2>Project</h2>
-              <span>/workspace</span>
             </div>
             <div class="file-explorer-actions">
               <button id="new-file-button" type="button" title="Create a new file">+ File</button>
@@ -78,7 +77,7 @@
               <h2 id="current-file">index.ts</h2>
             </div>
             <div class="editor-heading-actions">
-              <span id="editor-hint">Type query: align <code>^?</code> below an expression</span>
+              <span id="editor-hint" hidden>Read-only</span>
               <button id="apply-compiler-overrides-button" type="button" hidden>Apply overrides</button>
               <button id="show-output-button" class="pane-toggle" type="button" aria-label="Show output" title="Show output" aria-controls="output-panel" hidden>⇤</button>
             </div>
@@ -155,7 +154,7 @@
             <h2 id="new-file-title">Create file</h2>
           </header>
           <label>
-            <span>Path inside /workspace</span>
+            <span>File path</span>
             <input id="new-file-path" type="text" value="src/new-file.ts" autocomplete="off" spellcheck="false" aria-describedby="new-file-error" />
           </label>
           <p id="new-file-error" class="form-error" role="alert" hidden></p>
@@ -176,14 +175,14 @@
               <input id="setting-ata" type="checkbox" />
               <span>
                 <strong>Automatic package types</strong>
-                <small>Download declarations for imported npm packages.</small>
+                <small>Download types for imported packages.</small>
               </span>
             </label>
             <label class="checkbox-setting">
               <input id="setting-save-url" type="checkbox" />
               <span>
                 <strong>Update the URL while typing</strong>
-                <small>Keep the versioned project link synchronized with edits.</small>
+                <small>Keep the share link up to date.</small>
               </span>
             </label>
           </fieldset>
@@ -297,14 +296,14 @@
             <div></div>
           </div>
           <div id="loading-copy" class="loading-copy">
-            <p id="loading-message" role="status">Downloading TypeScript...</p>
+            <p id="loading-message" role="status">Loading TypeScript...</p>
             <progress id="loading-progress" max="100" value="0" aria-labelledby="loading-message"></progress>
-            <small id="loading-detail">Preparing downloads</small>
+            <small id="loading-detail"></small>
           </div>
           <section id="download-consent" class="download-consent" aria-labelledby="download-consent-title" hidden>
             <h2 id="download-consent-title">Download TypeScript?</h2>
             <p>
-              The first load requires approximately <strong id="download-size">53 MB</strong>. Compiler files are cached
+              The first load requires approximately <strong id="download-size"></strong>. Compiler files are cached
               in this browser for future visits.
             </p>
             <label>

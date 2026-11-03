@@ -689,24 +689,12 @@ body {
   gap: 0.5rem;
 }
 
-.file-explorer-heading h2,
-.file-explorer-heading span {
-  margin: 0;
-}
-
 .file-explorer-heading h2 {
+  margin: 0;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.file-explorer-heading span {
-  display: block;
-  margin-top: 0.1rem;
-  color: var(--muted);
-  font-family: Hack, monospace;
-  font-size: 0.65rem;
 }
 
 .file-explorer-actions {
