@@ -391,7 +391,7 @@ export class PackageTypeAcquirer {
       throw new Error(`Could not resolve ${name}@${selector} to an exact version`)
     }
     const version = resolved.version
-    const base = `https://cdn.jsdelivr.net/npm/${name}@${version}`
+    const base = `https://unpkg.com/${name}@${version}`
     const tree = await this.json(`https://data.jsdelivr.com/v1/package/npm/${name}@${version}/flat`, signal)
     if (!record(tree) || !Array.isArray(tree.files)) throw new Error(`Invalid file index for ${name}@${version}`)
     const paths = tree.files

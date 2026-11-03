@@ -37,7 +37,7 @@ function registry(fixtures: Record<string, Fixture>) {
       if (failures.delete(url)) return new Response("", { status: 503 })
       const resolve = /^https:\/\/data\.jsdelivr\.com\/v1\/package\/resolve\/npm\/(.+)@([^/]+)$/.exec(url)
       const tree = /^https:\/\/data\.jsdelivr\.com\/v1\/package\/npm\/(.+)@1\.0\.0\/flat$/.exec(url)
-      const file = /^https:\/\/cdn\.jsdelivr\.net\/npm\/(.+)@1\.0\.0(\/.+)$/.exec(url)
+      const file = /^https:\/\/unpkg\.com\/(.+)@1\.0\.0(\/.+)$/.exec(url)
       const name = resolve?.[1] ?? tree?.[1] ?? file?.[1]
       const fixture = name ? fixtures[name] : undefined
       if (!fixture) return new Response("", { status: 404 })
@@ -359,7 +359,7 @@ test("isolates package errors, caches successes, and retries failures", async ()
     good: { files: { "/index.d.ts": "export {}" } },
     retry: { files: { "/index.d.ts": "export {}" } },
   })
-  mock.failures.add("https://cdn.jsdelivr.net/npm/retry@1.0.0/index.d.ts")
+  mock.failures.add("https://unpkg.com/retry@1.0.0/index.d.ts")
   const engine = new PackageTypeAcquirer({ fetcher: mock.fetcher })
   const progress: AcquisitionProgress[] = []
   const input = {

@@ -65,7 +65,8 @@ export async function loadPublishedCompilerDistribution(version: string): Promis
 }
 
 async function loadPackage(name: string, version: string) {
-  const url = `https://registry.npmjs.org/${encodeURIComponent(name)}/${encodeURIComponent(version)}`
+  const base = new URL(`https://unpkg.com/${name}@${version}/`)
+  const url = new URL("package.json", base)
   const response = await fetch(url, { signal: AbortSignal.timeout(30_000) })
   if (!response.ok) throw new Error(`Could not load ${name}@${version}: ${response.status}`)
   const metadata: unknown = await response.json()
@@ -80,7 +81,7 @@ async function loadPackage(name: string, version: string) {
     throw new Error(`Invalid package metadata for ${name}@${version}`)
   }
   return {
-    base: new URL(`https://unpkg.com/${name}@${version}/`),
+    base,
     revision: metadata.gitHead,
     exports: metadata.exports,
   }
