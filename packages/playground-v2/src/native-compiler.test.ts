@@ -6,13 +6,11 @@ import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
-import { legacyCompilerBaseUrl, loadPublishedCompilerDistribution } from "./compiler-distribution"
+import { legacyCompilerBaseUrl } from "./compiler-distribution"
 import {
   compilerVersionChoices,
   isUnsupportedNativeCompilerVersion,
   isWasmCompilerVersion,
-  loadLegacyCompilerVersions,
-  loadPublishedCompilerVersions,
   publishedNativeCompilerSelection,
 } from "./compiler-versions"
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
@@ -369,113 +367,10 @@ test("version ordering follows semver even when a release is newer than the Nigh
     choices.map(choice => choice.version),
     ["7.1.0", "next", "6.0.3", "5.10.1", "5.9.3", "custom-build"]
   )
-})
-
-test("historical version discovery reads the CDN index and reports unavailable or invalid data", async t => {
-  const fetch = t.mock.method(globalThis, "fetch", async () => Response.json({ versions: ["6.0.3", "5.9.3"] }))
-  assert.deepEqual(await loadLegacyCompilerVersions(), ["6.0.3", "5.9.3"])
-  assert.equal(fetch.mock.calls[0].arguments[0], "https://playgroundcdn.typescriptlang.org/indexes/releases.json")
-  fetch.mock.mockImplementation(async () => new Response("", { status: 503 }))
-  await assert.rejects(loadLegacyCompilerVersions(), /Could not load historical TypeScript versions: 503/)
-  for (const metadata of [null, {}, { versions: [] }, { versions: ["invalid"] }, { versions: [1] }]) {
-    fetch.mock.mockImplementation(async () => Response.json(metadata))
-    await assert.rejects(loadLegacyCompilerVersions(), /Invalid historical TypeScript versions/)
-  }
   assert.deepEqual(compilerVersionChoices(["6.0.3"], undefined, "7.1.0-dev.20261030.1"), [
     { version: "7.1.0-dev.20261030.1", label: "7.1.0-dev.20261030.1" },
     { version: "6.0.3", label: "6.0.3" },
   ])
-})
-
-test("published version discovery reports failed and malformed indexes", async t => {
-  const fetch = t.mock.method(globalThis, "fetch", async () =>
-    Response.json({ versions: ["7.1.0-dev.20261030.1"], tags: { latest: "7.0.2", next: "7.1.0-dev.20261030.1" } })
-  )
-  assert.equal((await loadPublishedCompilerVersions()).tags.latest, "7.0.2")
-  assert.equal((await loadPublishedCompilerVersions()).tags.next, "7.1.0-dev.20261030.1")
-  fetch.mock.mockImplementation(async () => new Response("", { status: 503 }))
-  await assert.rejects(loadPublishedCompilerVersions(), /Could not load published TypeScript versions: 503/)
-  fetch.mock.mockImplementation(async () => Response.json({ versions: [123], tags: {} }))
-  await assert.rejects(loadPublishedCompilerVersions(), /Invalid published TypeScript versions/)
-  fetch.mock.mockImplementation(async () => Response.json({ versions: ["7.1.0"], tags: { next: "not-a-version" } }))
-  await assert.rejects(loadPublishedCompilerVersions(), /Invalid published TypeScript tag: next/)
-})
-
-test("published distributions pair exact package versions, exports, and libraries", async t => {
-  const version = "7.2.0-dev.20261101.1"
-  const main = {
-    name: "typescript",
-    version,
-    gitHead: "matching-revision",
-    dist: { unpackedSize: 100 },
-    exports: {
-      "./sync": "./dist/api/sync/api.js",
-      "./async": "./dist/api/async/api.js",
-      "./ast": "./dist/ast/index.js",
-      "./wasm": { default: "./dist/wasm/index.js" },
-      "./schemas/tsconfig.schema.json": "./schemas/tsconfig.schema.json",
-    },
-  }
-  const artifact = {
-    name: "@typescript/typescript-wasip1-wasm",
-    version,
-    gitHead: "matching-revision",
-    dist: { unpackedSize: 200 },
-    exports: { "./lib/tsc.wasm": "./lib/tsc.wasm", "./lib/libFiles.json": "./lib/libFiles.json" },
-  }
-  const requests: string[] = []
-  let missingArtifact = false
-  let invalidLibrary = false
-  let missingLibraryIndex = false
-  t.mock.method(globalThis, "fetch", async (input: URL | RequestInfo) => {
-    const url = String(input)
-    requests.push(url)
-    if (url.endsWith("libFiles.json")) {
-      return missingLibraryIndex
-        ? new Response("", { status: 503 })
-        : Response.json(invalidLibrary ? ["../outside.d.ts"] : ["lib.d.ts", "lib.es5.d.ts"])
-    }
-    if (decodeURIComponent(url).includes("@typescript/typescript-wasip1-wasm")) {
-      return missingArtifact ? new Response("", { status: 404 }) : Response.json(artifact)
-    }
-    return Response.json(main)
-  })
-  const distribution = await loadPublishedCompilerDistribution(version)
-  assert.equal(distribution.version, version)
-  assert.equal(distribution.host, `https://unpkg.com/typescript@${version}/dist/wasm/index.js`)
-  assert.equal(distribution.sync, `https://unpkg.com/typescript@${version}/dist/api/sync/api.js`)
-  assert.equal(distribution.wasm.href, `https://unpkg.com/@typescript/typescript-wasip1-wasm@${version}/lib/tsc.wasm`)
-  assert.equal(distribution.schema.href, `https://unpkg.com/typescript@${version}/schemas/tsconfig.schema.json`)
-  assert.equal(distribution.downloadBytes, 300)
-  assert.deepEqual(
-    distribution.libraries.map(url => url.href),
-    [
-      `https://unpkg.com/@typescript/typescript-wasip1-wasm@${version}/lib/lib.d.ts`,
-      `https://unpkg.com/@typescript/typescript-wasip1-wasm@${version}/lib/lib.es5.d.ts`,
-    ]
-  )
-  assert(requests.slice(0, 2).every(url => url.endsWith(`/${version}`)))
-  artifact.gitHead = "wrong-revision"
-  await assert.rejects(loadPublishedCompilerDistribution(version), /revisions do not match/)
-  artifact.gitHead = main.gitHead
-  main.version = "7.1.0"
-  await assert.rejects(loadPublishedCompilerDistribution(version), /Invalid package metadata/)
-  main.version = version
-  const host = main.exports["./wasm"]
-  Reflect.deleteProperty(main.exports, "./wasm")
-  await assert.rejects(loadPublishedCompilerDistribution(version), /Missing package export: \.\/wasm/)
-  main.exports["./wasm"] = host
-  invalidLibrary = true
-  await assert.rejects(loadPublishedCompilerDistribution(version), /Invalid compiler library index/)
-  invalidLibrary = false
-  missingLibraryIndex = true
-  await assert.rejects(loadPublishedCompilerDistribution(version), /Could not load compiler library index: 503/)
-  missingLibraryIndex = false
-  missingArtifact = true
-  await assert.rejects(
-    loadPublishedCompilerDistribution(version),
-    /Could not load @typescript\/typescript-wasip1-wasm@.+: 404/
-  )
 })
 
 test("native compiler reuses snapshots across edits, types, and configuration changes", async () => {
