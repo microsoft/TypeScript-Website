@@ -278,6 +278,7 @@ let nativeCompileVersion = 0
 let DiagnosticCategory: typeof import("@typescript/typescript/sync").DiagnosticCategory
 let compilerDistributionPromise: Promise<CompilerDistribution> | undefined
 let publishedCompilerVersionsPromise: ReturnType<typeof loadPublishedCompilerVersions> | undefined
+let legacyCompilerVersionsPromise: ReturnType<typeof loadLegacyCompilerVersions> | undefined
 let nativeDistribution: CompilerDistribution | undefined
 let projectPersistTimer = 0
 let projectPersistenceEnabled = true
@@ -974,7 +975,13 @@ async function initializeStradaCompiler(requestedVersion: string) {
   try {
     setLoadingIndeterminate("Loading TypeScript...", "")
     const version = await resolveStradaVersion(requestedVersion)
-    const baseUrl = legacyCompilerBaseUrl(version)
+    let mirroredVersions: string[] = []
+    try {
+      mirroredVersions = await getLegacyCompilerVersions()
+    } catch (error) {
+      console.warn("Could not look up mirrored TypeScript releases; using exact npm packages", error)
+    }
+    const baseUrl = legacyCompilerBaseUrl(version, mirroredVersions)
     const compilerUrl = new URL("typescript.js", baseUrl)
     setLoadingIndeterminate("Downloading TypeScript...", "")
     const compilerResponse = await fetch(compilerUrl)
@@ -990,7 +997,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
     // The TypeScript package and custom compiler CDN are published by trusted maintainers.
     // Evaluating the selected compiler is intentional; this is not user project code.
     const classicTS = new Function(`${compilerSource}\nreturn ts;`)()
-    if (baseUrl.hostname === "unpkg.com" && classicTS.version !== version) {
+    if ((baseUrl.hostname === "unpkg.com" || mirroredVersions.includes(version)) && classicTS.version !== version) {
       throw new Error(`Requested TypeScript ${version}, but the downloaded compiler is ${classicTS.version}`)
     }
     DiagnosticCategory = classicTS.DiagnosticCategory
@@ -1081,7 +1088,7 @@ async function initializeVersionSelector() {
   compilerVersionButton.setAttribute("aria-disabled", "true")
   try {
     const [legacyResult, publishedResult] = await Promise.allSettled([
-      loadLegacyCompilerVersions(),
+      getLegacyCompilerVersions(),
       getPublishedCompilerVersions(),
     ])
     const legacyVersions = legacyResult.status === "fulfilled" ? legacyResult.value : []
@@ -1921,6 +1928,11 @@ function getCompilerDistribution() {
 function getPublishedCompilerVersions() {
   publishedCompilerVersionsPromise ??= loadPublishedCompilerVersions()
   return publishedCompilerVersionsPromise
+}
+
+function getLegacyCompilerVersions() {
+  legacyCompilerVersionsPromise ??= loadLegacyCompilerVersions()
+  return legacyCompilerVersionsPromise
 }
 
 async function resolveNativeCompilerVersion() {

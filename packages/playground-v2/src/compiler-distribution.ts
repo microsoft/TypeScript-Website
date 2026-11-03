@@ -118,12 +118,27 @@ function packageEntry(packageInfo: Awaited<ReturnType<typeof loadPackage>>, subp
 function isRecord(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value)
 }
-export function legacyCompilerBaseUrl(version: string) {
+// These fixed CDN releases contain a different compiler than their URL claims.
+const incorrectLegacyReleases = new Set([
+  "4.0.2",
+  "4.1.5",
+  "4.2.2",
+  "4.2.3",
+  "4.3.2",
+  "4.3.3",
+  "4.3.4",
+  "4.3.5",
+  "4.4.2",
+  "4.4.3",
+  "4.4.4",
+])
+
+export function legacyCompilerBaseUrl(version: string, mirroredVersions: readonly string[] = []) {
   const channel = valid(version) ? prerelease(version)?.[0] : undefined
   const published =
     valid(version) !== null && (channel === undefined || ["dev", "beta", "rc"].includes(String(channel)))
   return new URL(
-    published
+    published && (!mirroredVersions.includes(version) || incorrectLegacyReleases.has(version))
       ? `https://unpkg.com/typescript@${version}/lib/`
       : `https://playgroundcdn.typescriptlang.org/cdn/${encodeURIComponent(version)}/typescript/lib/`
   )

@@ -103,11 +103,32 @@ test("legacy virtual directory discovery supports compiler config inheritance an
   assert.equal(host.fileExists("/workspace/src/keep.ts"), false)
 })
 
-test("historical compilers and libraries use exact npm URLs while custom builds keep their CDN", () => {
+test("historical compilers use the Playground CDN except for incorrect or unmirrored builds", () => {
   for (const version of ["3.3.3", "4.4.2", "5.9.3", "6.0.2", "6.1.0-beta", "6.1.1-rc", "6.1.0-dev.20261030"]) {
     const base = legacyCompilerBaseUrl(version)
     assert.equal(new URL("typescript.js", base).href, `https://unpkg.com/typescript@${version}/lib/typescript.js`)
     assert.equal(new URL("lib.es5.d.ts", base).href, `https://unpkg.com/typescript@${version}/lib/lib.es5.d.ts`)
+  }
+  for (const version of ["3.3.3", "5.9.3", "6.0.2"]) {
+    assert.equal(
+      legacyCompilerBaseUrl(version, [version]).href,
+      `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`
+    )
+  }
+  for (const version of [
+    "4.0.2",
+    "4.1.5",
+    "4.2.2",
+    "4.2.3",
+    "4.3.2",
+    "4.3.3",
+    "4.3.4",
+    "4.3.5",
+    "4.4.2",
+    "4.4.3",
+    "4.4.4",
+  ]) {
+    assert.equal(legacyCompilerBaseUrl(version, [version]).href, `https://unpkg.com/typescript@${version}/lib/`)
   }
   for (const version of ["custom-build", "4.4.0-pr-12345-1"]) {
     assert.equal(
