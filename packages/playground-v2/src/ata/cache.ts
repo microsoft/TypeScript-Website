@@ -1,3 +1,5 @@
+import { valid } from "semver"
+
 const cacheName = "playground-v2-package-types-v2"
 
 export class PackageTypeCache {
@@ -17,7 +19,8 @@ export class PackageTypeCache {
   }
 
   private immutable(url: string) {
-    return !url.includes("/resolve/") && /@[^/]+\//.test(new URL(url).pathname)
+    const version = /@(\d[^/]*)\//.exec(new URL(url).pathname)?.[1]
+    return version !== undefined && valid(version) !== null
   }
 
   async read(url: string, signal: AbortSignal) {

@@ -41,35 +41,32 @@ export function isNativeCompilerVersion(version: string | null) {
 }
 
 export async function loadPublishedCompilerVersions(): Promise<PublishedCompilerVersions> {
-  const response = await fetch("https://data.jsdelivr.com/v1/package/npm/typescript", {
-    cache: "no-cache",
-    signal: AbortSignal.timeout(15_000),
-  })
-  if (!response.ok) throw new Error(`Could not load published TypeScript versions: ${response.status}`)
-  const metadata: unknown = await response.json()
-  if (!metadata || typeof metadata !== "object") throw new Error("Invalid published TypeScript versions")
-  const versions: unknown = Reflect.get(metadata, "versions")
-  const tags: unknown = Reflect.get(metadata, "tags")
-  if (
-    !Array.isArray(versions) ||
-    versions.length === 0 ||
-    !versions.every((version: unknown): version is string => typeof version === "string" && valid(version) !== null) ||
-    !tags ||
-    typeof tags !== "object" ||
-    Array.isArray(tags)
-  ) {
-    throw new Error("Invalid published TypeScript versions")
+  const entries = await Promise.all(
+    (["latest", "next", "beta", "rc"] as const).map(async tag => {
+      const response = await fetch(`https://unpkg.com/typescript@${tag}/package.json`, {
+        cache: "no-cache",
+        signal: AbortSignal.timeout(15_000),
+      })
+      if (response.status === 404) return [tag, undefined] as const
+      if (!response.ok) throw new Error(`Could not resolve TypeScript ${tag}: ${response.status}`)
+      const metadata: unknown = await response.json()
+      const version: unknown = metadata && typeof metadata === "object" ? Reflect.get(metadata, "version") : undefined
+      if (
+        !metadata ||
+        typeof metadata !== "object" ||
+        Reflect.get(metadata, "name") !== "typescript" ||
+        typeof version !== "string" ||
+        valid(version) === null
+      ) {
+        throw new Error(`Invalid TypeScript ${tag} package metadata`)
+      }
+      return [tag, version] as const
+    })
+  )
+  return {
+    versions: [...new Set(entries.flatMap(([, version]) => (version === undefined ? [] : [version])))],
+    tags: Object.fromEntries(entries),
   }
-  const indexTags = tags
-  function tag(name: "latest" | "next" | "beta" | "rc") {
-    const value: unknown = Reflect.get(indexTags, name)
-    if (value === undefined) return undefined
-    if (typeof value !== "string" || valid(value) === null) {
-      throw new Error(`Invalid published TypeScript tag: ${name}`)
-    }
-    return value
-  }
-  return { versions, tags: { latest: tag("latest"), next: tag("next"), beta: tag("beta"), rc: tag("rc") } }
 }
 
 export async function loadLegacyCompilerVersions(): Promise<string[]> {

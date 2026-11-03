@@ -6,6 +6,7 @@ import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { acquisitionOptions } from "./config"
+import { PackageTypeCache } from "./cache"
 import {
   corsaDiscovery,
   stradaDiscovery,
@@ -35,15 +36,17 @@ function registry(fixtures: Record<string, Fixture>) {
       await new Promise(resolve => setTimeout(resolve, 1))
       init?.signal?.throwIfAborted()
       if (failures.delete(url)) return new Response("", { status: 503 })
-      const resolve = /^https:\/\/data\.jsdelivr\.com\/v1\/package\/resolve\/npm\/(.+)@([^/]+)$/.exec(url)
-      const tree = /^https:\/\/data\.jsdelivr\.com\/v1\/package\/npm\/(.+)@1\.0\.0\/flat$/.exec(url)
+      const tree = /^https:\/\/unpkg\.com\/(.+)@([^/]+)\/\?meta$/.exec(url)
       const file = /^https:\/\/unpkg\.com\/(.+)@1\.0\.0(\/.+)$/.exec(url)
-      const name = resolve?.[1] ?? tree?.[1] ?? file?.[1]
+      const name = tree?.[1] ?? file?.[1]
       const fixture = name ? fixtures[name] : undefined
       if (!fixture) return new Response("", { status: 404 })
-      if (resolve) return Response.json({ version: "1.0.0" })
       if (tree) {
-        return Response.json({ files: ["/package.json", ...Object.keys(fixture.files)].map(name => ({ name })) })
+        return Response.json({
+          package: name,
+          version: "1.0.0",
+          files: ["/package.json", ...Object.keys(fixture.files)].map(path => ({ path })),
+        })
       }
       if (file?.[2] === "/package.json") {
         return Response.json({ name, version: "1.0.0", types: "./index.d.ts", dependencies: fixture.dependencies })
@@ -170,7 +173,7 @@ test("reports pending metadata, declaration downloads, and cached package comple
   })
   const engine = new PackageTypeAcquirer({
     fetcher: async (input, init) => {
-      if (String(input).includes("/resolve/npm/")) {
+      if (String(input).endsWith("/?meta")) {
         started()
         await gate
       }
@@ -299,7 +302,36 @@ test("Node requests go directly to @types/node and do not recurse into builtins"
   })
   assert.deepEqual(result.ambientTypes, ["node"])
   assert.equal(result.packages.length, 1)
-  assert(!mock.calls.some(url => /\/npm\/(?:node|readline|stream)@/.test(url)))
+  assert(!mock.calls.some(url => /^https:\/\/unpkg\.com\/(?:node|readline|stream)@/.test(url)))
+})
+
+test("persistent package caching never pins mutable tags or ranges, including scoped packages", async () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, "caches")
+  const stored = new Map<string, Response>()
+  Object.defineProperty(globalThis, "caches", {
+    configurable: true,
+    value: {
+      open: async () => ({
+        match: async (url: string) => stored.get(url)?.clone(),
+        put: async (url: string, response: Response) => {
+          stored.set(url, response)
+        },
+      }),
+    },
+  })
+  try {
+    const cache = new PackageTypeCache()
+    const signal = new AbortController().signal
+    for (const selector of ["latest", "next", "22", "%5E22", "1.2.3", "1.2.3-beta.1"]) {
+      const url = `https://unpkg.com/@types/pkg@${selector}/?meta`
+      await cache.write(url, selector, signal)
+      assert.equal(await cache.read(url, signal), selector.startsWith("1.2.3") ? selector : undefined)
+    }
+    assert.equal(stored.size, 2)
+  } finally {
+    if (original) Object.defineProperty(globalThis, "caches", original)
+    else Reflect.deleteProperty(globalThis, "caches")
+  }
 })
 
 test("honors include, exclude, and enable with complete snapshots", async () => {

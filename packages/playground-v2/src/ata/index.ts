@@ -372,34 +372,31 @@ export class PackageTypeAcquirer {
     onFiles: (count: number) => void,
     onFile: () => void
   ): Promise<PackageData | undefined> {
-    let resolved: unknown
+    let tree: unknown
     try {
-      resolved = await this.json(
-        `https://data.jsdelivr.com/v1/package/resolve/npm/${name}@${encodeURIComponent(selector)}`,
-        signal
-      )
+      tree = await this.json(`https://unpkg.com/${name}@${encodeURIComponent(selector)}/?meta`, signal)
     } catch (error) {
       signal.throwIfAborted()
       if (error instanceof HttpError && error.status === 404 && !name.startsWith("@types/")) return undefined
       throw error
     }
     if (
-      !record(resolved) ||
-      typeof resolved.version !== "string" ||
-      !/^\d+\.\d+\.\d+[-+\w.]*$/.test(resolved.version)
+      !record(tree) ||
+      tree.package !== name ||
+      typeof tree.version !== "string" ||
+      !/^\d+\.\d+\.\d+[-+\w.]*$/.test(tree.version)
     ) {
       throw new Error(`Could not resolve ${name}@${selector} to an exact version`)
     }
-    const version = resolved.version
+    const version = tree.version
     const base = `https://unpkg.com/${name}@${version}`
-    const tree = await this.json(`https://data.jsdelivr.com/v1/package/npm/${name}@${version}/flat`, signal)
-    if (!record(tree) || !Array.isArray(tree.files)) throw new Error(`Invalid file index for ${name}@${version}`)
+    if (!Array.isArray(tree.files)) throw new Error(`Invalid file index for ${name}@${version}`)
     const paths = tree.files
       .map(entry => {
-        if (!record(entry) || typeof entry.name !== "string" || !safePackagePath(entry.name)) {
+        if (!record(entry) || typeof entry.path !== "string" || !safePackagePath(entry.path)) {
           throw new Error(`Invalid file path in ${name}@${version}`)
         }
-        return entry.name
+        return entry.path
       })
       .filter(path => !path.includes("/node_modules/"))
     if (!paths.some(isDeclaration)) return undefined
