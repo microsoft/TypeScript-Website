@@ -12,7 +12,9 @@ export type ExportProject = {
 }
 
 function codeBlock(text: string, language = "") {
-  const fence = "`".repeat(Math.max(2, ...[...text.matchAll(/`+/g)].map(match => match[0].length)) + 1)
+  let length = 3
+  for (const match of text.matchAll(/`+/g)) length = Math.max(length, match[0].length + 1)
+  const fence = "`".repeat(length)
   return `${fence}${language}\n${text}\n${fence}\n`
 }
 
