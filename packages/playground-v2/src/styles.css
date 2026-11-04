@@ -246,6 +246,20 @@ body {
   box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 28%);
 }
 
+.version-menu.add-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: max-content;
+  min-width: 9rem;
+}
+
+.add-menu .version-menu-item {
+  min-height: 2.75rem;
+  padding-right: 0.7rem !important;
+  text-align: left;
+}
+
 .version-menu-item {
   width: 100%;
   min-height: 2.4rem;

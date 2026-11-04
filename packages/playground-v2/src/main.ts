@@ -189,6 +189,8 @@ const compilerVersionLabel = getElement("compiler-version-label")
 const compilerVersionMenu = getElement("compiler-version-menu")
 const newFileButton = getElement<HTMLButtonElement>("new-file-button")
 const newSymlinkButton = getElement<HTMLButtonElement>("new-symlink-button")
+const addButton = getElement<HTMLButtonElement>("add-button")
+const addMenu = getElement("add-menu")
 const clearProjectButton = getElement<HTMLButtonElement>("clear-project-button")
 const applyCompilerOverridesButton = getElement<HTMLButtonElement>("apply-compiler-overrides-button")
 const toggleFilesButton = getElement<HTMLButtonElement>("toggle-files-button")
@@ -853,8 +855,7 @@ configureExports({
 for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
-newFileButton.addEventListener("click", () => createNewFile(false))
-newSymlinkButton.addEventListener("click", () => createNewFile(true))
+configureAddMenu()
 newFileCancelButton.addEventListener("click", () => newFileDialog.close())
 newFileForm.addEventListener("submit", event => {
   event.preventDefault()
@@ -2641,6 +2642,63 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
       void compileActiveProject?.()
     }, 220)
   })
+}
+
+function configureAddMenu() {
+  const items = [newFileButton, newSymlinkButton]
+  const isOpen = () => addMenu.matches(":popover-open")
+  const close = () => {
+    addMenu.hidePopover()
+    addButton.focus()
+  }
+  const focusItem = (index: number) => {
+    items.forEach((item, current) => (item.tabIndex = current === index ? 0 : -1))
+    items[index].focus()
+  }
+  const position = () => {
+    if (!isOpen()) return
+    const bounds = addButton.getBoundingClientRect()
+    const menuBounds = addMenu.getBoundingClientRect()
+    addMenu.style.left = `${Math.max(8, Math.min(bounds.left, innerWidth - menuBounds.width - 8))}px`
+    addMenu.style.top = `${Math.max(8, Math.min(bounds.bottom + 4, innerHeight - menuBounds.height - 8))}px`
+  }
+  const open = (index: number) => {
+    addMenu.showPopover()
+    position()
+    focusItem(index)
+  }
+  items.forEach(item => (item.tabIndex = -1))
+  addMenu.addEventListener("beforetoggle", event => {
+    addButton.setAttribute("aria-expanded", String(event.newState === "open"))
+  })
+  addButton.addEventListener("click", event => {
+    event.preventDefault()
+    if (isOpen()) close()
+    else open(0)
+  })
+  addButton.addEventListener("keydown", event => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
+    event.preventDefault()
+    open(event.key === "ArrowDown" ? 0 : items.length - 1)
+  })
+  addMenu.addEventListener("keydown", event => {
+    const index = items.indexOf(document.activeElement as HTMLButtonElement)
+    if (event.key === "Escape" || event.key === "Tab") {
+      if (event.key === "Escape") event.preventDefault()
+      close()
+    } else if (index >= 0 && ["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+      event.preventDefault()
+      focusItem(event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : (index + 1) % items.length)
+    }
+  })
+  items.forEach((item, index) =>
+    item.addEventListener("click", () => {
+      close()
+      createNewFile(index === 1)
+    })
+  )
+  window.addEventListener("resize", position)
+  document.addEventListener("scroll", position, { capture: true, passive: true })
 }
 
 function createNewFile(symlink: boolean) {
