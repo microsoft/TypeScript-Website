@@ -42,6 +42,7 @@ let symlinks: Symlinks = {}
 let filesystem: ReturnType<typeof createStradaFileSystem>
 let languageService: import("typescript").LanguageService
 let inferredLanguageService: import("typescript").LanguageService | undefined
+const requestedInferredFiles = new Set<string>()
 
 self.addEventListener("message", (event: MessageEvent<InitMessage | RequestMessage>) => {
   void handleMessage(event.data)
@@ -78,7 +79,12 @@ async function initialize(args: InitMessage["args"]) {
 }
 
 async function dispatch(method: string, args: any) {
-  const service = args.fileName && method !== "readFile" ? languageServiceForFile(args.fileName) : languageService
+  let service = languageService
+  if (args.fileName && method !== "readFile") {
+    const target = languageServiceForFile(args.fileName)
+    service = target.service
+    args = { ...args, fileName: target.fileName }
+  }
   switch (method) {
     case "updateFiles":
       if (updateFiles(args.files, args.deleted, args.sourceFiles)) refreshConfig()
@@ -278,9 +284,17 @@ function createCompilerHost(outputFiles: Record<string, string>) {
 }
 
 function languageServiceForFile(fileName: string) {
-  if (languageService.getProgram()?.getSourceFile(normalizePath(fileName))) return languageService
+  const program = languageService.getProgram()
+  const source =
+    program?.getSourceFile(normalizePath(fileName)) ??
+    program?.getSourceFiles().find(source => filesystem.realpath(source.fileName) === filesystem.realpath(fileName))
+  if (source) return { service: languageService, fileName: source.fileName }
+  if (!requestedInferredFiles.has(fileName)) {
+    requestedInferredFiles.add(fileName)
+    projectVersion++
+  }
   inferredLanguageService ??= ts.createLanguageService(createLanguageServiceHost(true))
-  return inferredLanguageService
+  return { service: inferredLanguageService, fileName }
 }
 
 function stringLiteralSpan(source: import("typescript").SourceFile, position: number) {
@@ -310,7 +324,9 @@ function createLanguageServiceHost(inferred = false): import("typescript").Langu
     getScriptFileNames: () => {
       if (!inferred) return parsedConfig.rootNames.slice()
       const configuredProgram = languageService.getProgram()
-      return sourceFiles.filter(fileName => !configuredProgram?.getSourceFile(fileName))
+      return [...new Set([...sourceFiles, ...requestedInferredFiles])].filter(
+        fileName => readFile(fileName) !== undefined && !configuredProgram?.getSourceFile(fileName)
+      )
     },
     getProjectReferences: () => (inferred ? undefined : parsedConfig.projectReferences),
     getScriptKind: scriptKind,
@@ -345,6 +361,8 @@ function serializeDiagnostic(diagnostic: import("typescript").Diagnostic) {
     end: (diagnostic.start ?? 0) + (diagnostic.length ?? 1),
     fileName: diagnostic.file?.fileName,
     pos: diagnostic.start ?? 0,
+    startPosition: diagnostic.file?.getLineAndCharacterOfPosition(diagnostic.start ?? 0),
+    endPosition: diagnostic.file?.getLineAndCharacterOfPosition((diagnostic.start ?? 0) + (diagnostic.length ?? 0)),
     text: ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
   }
 }

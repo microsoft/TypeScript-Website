@@ -47,6 +47,7 @@ export type TsgoLspController = {
   updateEffectiveConfig(text: string): void
   refreshDiagnostics(): void
   updateFiles(files: ReadonlyMap<string, string>): Promise<void>
+  readFile(fileName: string): Promise<string | undefined>
 }
 
 class RingBufferWorker {
@@ -413,6 +414,14 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     },
     updateFiles(files: ReadonlyMap<string, string>) {
       return worker.updateFiles(files)
+    },
+    async readFile(fileName: string) {
+      const libraries = await getDefinitionFiles()
+      return (
+        readPackageFile?.(fileName) ??
+        libraries[fileName] ??
+        (/^\/lib(?:\.[\w.]+)?\.d\.ts$/.test(fileName) ? libraries[`/typescript/lib${fileName}`] : undefined)
+      )
     },
   } satisfies TsgoLspController
 }

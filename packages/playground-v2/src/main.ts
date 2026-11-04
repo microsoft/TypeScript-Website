@@ -45,20 +45,11 @@ function remapProjectDiagnostics(diagnostics: readonly Diagnostic[]) {
   return diagnostics.map(diagnostic => {
     const fileName = diagnostic.fileName && resolveSymlinks(diagnostic.fileName, projectSymlinks)
     if (fileName) diagnostic = { ...diagnostic, fileName }
-    const text = diagnostic.text.toLowerCase()
-    const matchingOverride = compilerOverrideState.overrides.find(override => {
-      if (!override.applied) return false
-      if (
-        text.includes(`'${override.option.toLowerCase()}'`) ||
-        text.includes(`"--${override.option.toLowerCase()}"`) ||
-        text.includes(`'--${override.option.toLowerCase()}'`)
-      ) {
-        return true
-      }
-      if (diagnostic.fileName !== (resolveSymlinks(configFileName, projectSymlinks) ?? configFileName)) return false
-      const node = configOptionNode(compilerOverrideState.effectiveConfigText, override.option)
-      return node !== undefined && diagnostic.pos <= node.offset + node.length && diagnostic.end >= node.offset
-    })
+    const matchingOverride = compilerOverrideForDiagnostic(
+      compilerOverrideState,
+      diagnostic,
+      resolveSymlinks(configFileName, projectSymlinks) ?? configFileName
+    )
     if (!matchingOverride) return diagnostic
     return {
       ...diagnostic,
@@ -1304,7 +1295,9 @@ function compilerFileContents() {
 function effectiveCompilerConfigText() {
   const configText = compilerOverrideState.effectiveConfigText
   const typePackages = implicitTypePackages()
-  return typePackages.length === 0 ? configText : setCompilerOption(configText, "types", typePackages)
+  return typePackages.length === 0 || !canSetCompilerOptions(configText)
+    ? configText
+    : setCompilerOption(configText, "types", typePackages)
 }
 
 function implicitTypePackages() {
@@ -2253,13 +2246,11 @@ function renderDiagnostics(diagnostics: readonly Diagnostic[]) {
   }
 
   for (const diagnostic of sorted) {
-    const fileName =
-      diagnostic.fileName && projectModels.has(diagnostic.fileName) ? diagnostic.fileName : configFileName
-    const model = projectModels.get(fileName)
-    const start = model?.getPositionAt(Math.max(0, diagnostic.pos)) ?? new monaco.Position(1, 1)
-    const end =
-      model?.getPositionAt(Math.max(diagnostic.pos + 1, diagnostic.end)) ??
-      new monaco.Position(start.lineNumber, start.column + 1)
+    const fileName = diagnostic.fileName ?? configFileName
+    const model = monaco.editor.getModel(monaco.Uri.file(fileName))
+    const start =
+      model?.getPositionAt(Math.max(0, diagnostic.pos)) ??
+      new monaco.Position((diagnostic.startPosition?.line ?? 0) + 1, (diagnostic.startPosition?.character ?? 0) + 1)
     const button = document.createElement("button")
     button.type = "button"
     button.className = `diagnostic diagnostic-${diagnosticCategoryName(diagnostic.category)}`
@@ -2271,10 +2262,30 @@ function renderDiagnostics(diagnostics: readonly Diagnostic[]) {
     button.addEventListener("click", () => {
       const selection = getSelection()
       if (selection && !selection.isCollapsed && button.contains(selection.anchorNode)) return
-      navigateToModel(fileName, new monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column))
+      void openDiagnostic(diagnostic, fileName).catch(error => {
+        projectFailure = error instanceof Error ? error.message : String(error)
+        console.error("Could not open diagnostic", error)
+        renderStatus()
+      })
     })
     diagnosticsList.appendChild(button)
   }
+}
+
+async function openDiagnostic(diagnostic: Diagnostic, fileName: string) {
+  const uri = monaco.Uri.file(fileName)
+  let model = monaco.editor.getModel(uri)
+  if (!model) {
+    const text =
+      acquiredTypeFiles.get(fileName) ??
+      (await (stradaBackend?.readFile(fileName) ?? languageServer?.readFile(fileName)))
+    if (text === undefined) throw new Error(`Could not read diagnostic file: ${fileName}`)
+    model = monaco.editor.getModel(uri) ?? monaco.editor.createModel(text, languageForFile(fileName), uri)
+    if (acquiredTypeFiles.has(fileName)) acquiredTypeModels.set(fileName, model)
+  }
+  const start = model.getPositionAt(Math.max(0, diagnostic.pos))
+  const end = model.getPositionAt(Math.max(diagnostic.pos + 1, diagnostic.end))
+  navigateToModel(fileName, new monaco.Range(start.lineNumber, start.column, end.lineNumber, end.column))
 }
 
 function diagnosticSortOrder(category: number) {
