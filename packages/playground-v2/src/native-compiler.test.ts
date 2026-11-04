@@ -145,7 +145,7 @@ test("historical compilers use the Playground CDN except for incorrect or unmirr
 
 test("legacy URL ingestion preserves JSONC and accepts only known options with compiler enum values", () => {
   const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
-  const names = ["strict", "jsx", "lib", "paths", "noImplicitAny"]
+  const names = ["strict", "jsx", "module", "lib", "paths", "noImplicitAny"]
   const config = '{\n  // keep this comment\n  "compilerOptions": { "strict": true, },\n}'
   const converted = applyLegacyCompilerOptions(
     config,
@@ -167,6 +167,12 @@ test("legacy URL ingestion preserves JSONC and accepts only known options with c
     [5, "react-jsxdev"],
   ] as const) {
     assert.equal(JSON.parse(applyLegacyCompilerOptions("{}", `?jsx=${value}`, names)).compilerOptions.jsx, expected)
+  }
+  for (const module of [ts.ModuleKind.Node18, ts.ModuleKind.Node20]) {
+    const config = JSON.parse(applyLegacyCompilerOptions("{}", `?module=${module}`, names))
+    const converted = ts.convertCompilerOptionsFromJson(config.compilerOptions, "/workspace")
+    assert.deepEqual(converted.errors, [])
+    assert.equal(converted.options.module, module)
   }
   assert.equal(
     JSON.parse(applyLegacyCompilerOptions('{"compilerOptions":{"jsx":"react"}}', "?jsx=0", names)).compilerOptions.jsx,

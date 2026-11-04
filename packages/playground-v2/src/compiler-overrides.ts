@@ -228,6 +228,8 @@ function parseLegacyCompilerOption(key: string, rawValue: string): unknown {
       7: "es2022",
       99: "esnext",
       100: "node16",
+      101: "node18",
+      102: "node20",
       199: "nodenext",
       200: "preserve",
     },
