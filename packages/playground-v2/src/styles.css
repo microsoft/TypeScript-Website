@@ -129,10 +129,9 @@ body {
 .toolbar-actions {
   min-width: 0;
   max-width: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) repeat(4, max-content);
   align-items: center;
-  justify-content: flex-end;
   gap: 0.75rem;
 }
 
@@ -274,6 +273,7 @@ body {
   font-size: 0.78rem !important;
   text-align: center;
   text-overflow: ellipsis;
+  text-decoration: none;
   white-space: nowrap;
 }
 
@@ -341,13 +341,15 @@ body {
 }
 
 .status {
+  grid-column: 1 / -1;
   background: #a1260d;
   padding: 0.35rem 0.65rem;
   border: 1px solid rgb(255 255 255 / 35%);
   border-radius: 0.25rem;
   font-family: Hack, monospace;
   font-size: 0.75rem;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .form-dialog {
@@ -530,6 +532,7 @@ body {
   --files-width: 13rem;
   --output-handle-width: 0.3rem;
   --output-width: 27.5rem;
+  min-width: 0;
   min-height: 0;
   display: grid;
   grid-template-columns:
@@ -1351,14 +1354,13 @@ code {
 @media (max-width: 1000px) {
   .toolbar {
     min-height: 0;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
   }
 
   .toolbar-actions {
-    min-width: 0;
-    flex: 1 1 34rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    width: 100%;
   }
 
   .workspace {
