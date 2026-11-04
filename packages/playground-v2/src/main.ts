@@ -187,10 +187,7 @@ const compilerVersion = getElement<HTMLDetailsElement>("compiler-version")
 const compilerVersionButton = getElement("compiler-version-button")
 const compilerVersionLabel = getElement("compiler-version-label")
 const compilerVersionMenu = getElement("compiler-version-menu")
-const newFileButton = getElement<HTMLButtonElement>("new-file-button")
-const newSymlinkButton = getElement<HTMLButtonElement>("new-symlink-button")
 const addButton = getElement<HTMLButtonElement>("add-button")
-const addMenu = getElement("add-menu")
 const clearProjectButton = getElement<HTMLButtonElement>("clear-project-button")
 const applyCompilerOverridesButton = getElement<HTMLButtonElement>("apply-compiler-overrides-button")
 const toggleFilesButton = getElement<HTMLButtonElement>("toggle-files-button")
@@ -238,10 +235,10 @@ const textInputSubmitButton = getElement<HTMLButtonElement>("text-input-submit-b
 const newFileDialog = getElement<HTMLDialogElement>("new-file-dialog")
 const newFileForm = getElement<HTMLFormElement>("new-file-form")
 const newFilePath = getElement<HTMLInputElement>("new-file-path")
-const newFileTitle = getElement("new-file-title")
+const newFileKindFile = getElement<HTMLInputElement>("new-file-kind-file")
+const newFileKindSymlink = getElement<HTMLInputElement>("new-file-kind-symlink")
 const newSymlinkTargetLabel = getElement("new-symlink-target-label")
 const newSymlinkTarget = getElement<HTMLInputElement>("new-symlink-target")
-let creatingSymlink = false
 const newFileError = getElement("new-file-error")
 const newFileCancelButton = getElement<HTMLButtonElement>("new-file-cancel-button")
 const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
@@ -855,7 +852,9 @@ configureExports({
 for (const model of projectModels.values()) {
   registerProjectModel(model)
 }
-configureAddMenu()
+addButton.addEventListener("click", createNewFile)
+newFileKindFile.addEventListener("change", updateNewFileKind)
+newFileKindSymlink.addEventListener("change", updateNewFileKind)
 newFileCancelButton.addEventListener("click", () => newFileDialog.close())
 newFileForm.addEventListener("submit", event => {
   event.preventDefault()
@@ -2644,76 +2643,27 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
   })
 }
 
-function configureAddMenu() {
-  const items = [newFileButton, newSymlinkButton]
-  const isOpen = () => addMenu.matches(":popover-open")
-  const close = () => {
-    addMenu.hidePopover()
-    addButton.focus()
-  }
-  const focusItem = (index: number) => {
-    items.forEach((item, current) => (item.tabIndex = current === index ? 0 : -1))
-    items[index].focus()
-  }
-  const position = () => {
-    if (!isOpen()) return
-    const bounds = addButton.getBoundingClientRect()
-    const menuBounds = addMenu.getBoundingClientRect()
-    addMenu.style.left = `${Math.max(8, Math.min(bounds.left, innerWidth - menuBounds.width - 8))}px`
-    addMenu.style.top = `${Math.max(8, Math.min(bounds.bottom + 4, innerHeight - menuBounds.height - 8))}px`
-  }
-  const open = (index: number) => {
-    addMenu.showPopover()
-    position()
-    focusItem(index)
-  }
-  items.forEach(item => (item.tabIndex = -1))
-  addMenu.addEventListener("beforetoggle", event => {
-    addButton.setAttribute("aria-expanded", String(event.newState === "open"))
-  })
-  addButton.addEventListener("click", event => {
-    event.preventDefault()
-    if (isOpen()) close()
-    else open(0)
-  })
-  addButton.addEventListener("keydown", event => {
-    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
-    event.preventDefault()
-    open(event.key === "ArrowDown" ? 0 : items.length - 1)
-  })
-  addMenu.addEventListener("keydown", event => {
-    const index = items.indexOf(document.activeElement as HTMLButtonElement)
-    if (event.key === "Escape" || event.key === "Tab") {
-      if (event.key === "Escape") event.preventDefault()
-      close()
-    } else if (index >= 0 && ["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
-      event.preventDefault()
-      focusItem(event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : (index + 1) % items.length)
-    }
-  })
-  items.forEach((item, index) =>
-    item.addEventListener("click", () => {
-      close()
-      createNewFile(index === 1)
-    })
-  )
-  window.addEventListener("resize", position)
-  document.addEventListener("scroll", position, { capture: true, passive: true })
+function createNewFile() {
+  newFileKindFile.checked = true
+  newFilePath.value = "src/new-file.ts"
+  newSymlinkTarget.value = ""
+  updateNewFileKind()
+  newFileDialog.showModal()
+  newFilePath.focus()
+  newFilePath.select()
 }
 
-function createNewFile(symlink: boolean) {
-  creatingSymlink = symlink
-  newFileTitle.textContent = symlink ? "Create symbolic link" : "Create file"
-  newFilePath.value = symlink ? "node_modules/example" : "src/new-file.ts"
+function updateNewFileKind() {
+  const symlink = newFileKindSymlink.checked
+  if (newFilePath.value === (symlink ? "src/new-file.ts" : "node_modules/example")) {
+    newFilePath.value = symlink ? "node_modules/example" : "src/new-file.ts"
+  }
   newSymlinkTargetLabel.hidden = !symlink
-  newSymlinkTarget.value = ""
+  newSymlinkTarget.disabled = !symlink
   newSymlinkTarget.required = symlink
   newFileError.hidden = true
   newFileError.textContent = ""
   newFilePath.removeAttribute("aria-invalid")
-  newFileDialog.showModal()
-  newFilePath.focus()
-  newFilePath.select()
 }
 
 function finishCreatingFile() {
@@ -2731,7 +2681,7 @@ function finishCreatingFile() {
   }
 
   try {
-    if (creatingSymlink) {
+    if (newFileKindSymlink.checked) {
       const target = newSymlinkTarget.value.trim().replaceAll("\\", "/")
       validateProjectSymlinks(projectFileContents(), { ...projectSymlinks, [fileName]: target })
       projectSymlinks[fileName] = target
