@@ -157,8 +157,23 @@ test("accepts asynchronous compiler discovery adapters", async () => {
     files: source('import "pkg"'),
     discover: async file => discover(file),
   })
+
   assert.equal(result.packages.length, 1)
   assert.equal(result.errors.length, 0)
+})
+
+test("project aliases do not abort acquisition for unrelated package imports", async () => {
+  const mock = registry({ pkg: { files: { "/index.d.ts": "export const value: number;" } } })
+  const result = await new PackageTypeAcquirer({ fetcher: mock.fetcher }).acquire({
+    files: source('import "@/components/B"; import "~/utils"; import "$lib/x"; import "pkg";'),
+    discover,
+  })
+  assert.deepEqual(result.errors, [])
+  assert.deepEqual(
+    result.packages.map(pkg => pkg.name),
+    ["pkg"]
+  )
+  assert(!mock.calls.some(url => url.includes("components") || url.includes("utils") || url.includes("$lib")))
 })
 
 test("reports pending metadata, declaration downloads, and cached package completion", async () => {

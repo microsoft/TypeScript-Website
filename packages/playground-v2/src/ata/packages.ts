@@ -50,7 +50,7 @@ export function packageName(specifier: string): string | undefined {
   const parts = specifier.split("/")
   const name = specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0]
   if (!/^(?:@[a-z\d._-]+\/)?[a-z\d_][a-z\d._-]*$/i.test(name)) {
-    throw new Error(`Invalid package specifier: ${specifier}`)
+    return undefined
   }
   return name
 }
