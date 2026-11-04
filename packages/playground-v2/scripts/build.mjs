@@ -28,7 +28,6 @@ await mkdir(outputDirectory, { recursive: true })
 await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
-  cp(resolve(packageDirectory, "src/help.json"), resolve(outputDirectory, "help.json")),
 ])
 
 const buildContext = await context({

@@ -96,10 +96,6 @@ type VersionedProjectState = ProjectState & {
   version: 2
 }
 
-type PlaygroundHelp = {
-  docs: Array<{ html: string; legacyIndexes?: number[]; title: string }>
-}
-
 type LayoutState = {
   emitVisible: boolean
   filesVisible: boolean
@@ -149,7 +145,6 @@ const pendingReloadKey = "ts7-playground-pending-reload"
 const projectHashPrefix = "#code/v2/"
 const legacyCodeHashPrefix = "#code/"
 const projectStateVersion = 2
-const initialHash = location.hash
 const selectedCompiler = new URLSearchParams(location.search).get("ts")
 const useNativeCompiler = isNativeCompilerVersion(selectedCompiler)
 const defaultFiles: ProjectFile[] = [
@@ -211,7 +206,6 @@ const diagnosticsPanel = getElement<HTMLDetailsElement>("diagnostics-panel")
 const diagnosticsSummary = getElement("diagnostics-summary")
 const diagnosticsList = getElement("diagnostics-list")
 const runButton = getElement<HTMLButtonElement>("run-button")
-const helpButton = getElement<HTMLButtonElement>("help-button")
 const settingsButton = getElement<HTMLButtonElement>("settings-button")
 const settingsDialog = getElement<HTMLDialogElement>("settings-dialog")
 const settingsForm = getElement<HTMLFormElement>("settings-form")
@@ -239,8 +233,6 @@ const textInputValue = getElement<HTMLInputElement>("text-input-value")
 const textInputError = getElement("text-input-error")
 const textInputCancelButton = getElement<HTMLButtonElement>("text-input-cancel-button")
 const textInputSubmitButton = getElement<HTMLButtonElement>("text-input-submit-button")
-const resourcesDialog = getElement<HTMLDialogElement>("resources-dialog")
-const resourcesCloseButton = getElement<HTMLButtonElement>("resources-close-button")
 const newFileDialog = getElement<HTMLDialogElement>("new-file-dialog")
 const newFileForm = getElement<HTMLFormElement>("new-file-form")
 const newFilePath = getElement<HTMLInputElement>("new-file-path")
@@ -250,7 +242,6 @@ const newSymlinkTarget = getElement<HTMLInputElement>("new-symlink-target")
 let creatingSymlink = false
 const newFileError = getElement("new-file-error")
 const newFileCancelButton = getElement<HTMLButtonElement>("new-file-cancel-button")
-const helpList = getElement("help-list")
 const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
 const runOutput = getElement("run-output")
 const runLog = getElement("run-log")
@@ -297,7 +288,6 @@ let typeAcquisitionTimer = 0
 const acquiredTypeFiles = new Map<string, string>()
 const acquiredTypePackages = new Set<string>()
 const acquiredTypeModels = new Map<string, monaco.editor.ITextModel>()
-let helpPromise: Promise<PlaygroundHelp> | undefined
 let confirmationResolver: ((value: boolean) => void) | undefined
 let textInputResolver: ((value: string | null) => void) | undefined
 const downloadedAssets = new Map<string, number>()
@@ -888,7 +878,6 @@ toggleRunOutputButton.addEventListener("click", () => {
 })
 navigateBackButton.addEventListener("click", navigateBack)
 runButton.addEventListener("click", runProject)
-helpButton.addEventListener("click", () => void openHelp())
 settingsButton.addEventListener("click", openSettings)
 settingsCancelButton.addEventListener("click", () => settingsDialog.close())
 settingsResetButton.addEventListener("click", () => populateSettingsForm(defaultPlaygroundSettings()))
@@ -896,7 +885,6 @@ settingsForm.addEventListener("submit", event => {
   event.preventDefault()
   saveSettings()
 })
-resourcesCloseButton.addEventListener("click", () => resourcesDialog.close())
 clearRunOutput.addEventListener("click", () => renderRunLogs([]))
 confirmationCancelButton.addEventListener("click", () => finishConfirmation(false))
 confirmationForm.addEventListener("submit", event => {
@@ -925,7 +913,6 @@ textInputDialog.addEventListener("cancel", event => {
   finishTextInput(null)
 })
 
-void openLegacyResourceRoute(initialHash)
 void initializeVersionSelector()
 void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(selectedCompiler!))
 
@@ -1263,54 +1250,6 @@ function compareVersions(left: string, right: string) {
     if (difference !== 0) return difference
   }
   return 0
-}
-
-async function openHelp() {
-  resourcesDialog.showModal()
-  try {
-    const help = await getHelp()
-    helpList.replaceChildren()
-    for (const topic of help.docs) {
-      const details = document.createElement("details")
-      details.className = "help-topic"
-      details.dataset.title = topic.title
-      details.appendChild(createText("summary", topic.title))
-      const content = document.createElement("article")
-      content.innerHTML = topic.html
-      details.appendChild(content)
-      helpList.appendChild(details)
-    }
-  } catch (error) {
-    helpList.replaceChildren(createText("p", error instanceof Error ? error.message : String(error), "resource-error"))
-  }
-}
-
-async function openLegacyResourceRoute(hash: string) {
-  const handbook = /^#handbook(?:-(\d+))?$/.exec(hash)
-  if (!handbook) return
-  await openHelp()
-  const index = Number(handbook[1] ?? 0)
-  const help = await getHelp()
-  const topic = help.docs.find(candidate => candidate.legacyIndexes?.includes(index))
-  if (topic) showHelpDocument(topic)
-}
-
-function showHelpDocument(topic: PlaygroundHelp["docs"][number]) {
-  const details = [...helpList.querySelectorAll<HTMLDetailsElement>(".help-topic")].find(
-    element => element.dataset.title === topic.title
-  )
-  if (!details) return
-  details.open = true
-  details.querySelector("summary")?.focus()
-  details.scrollIntoView({ block: "nearest" })
-}
-
-function getHelp() {
-  helpPromise ??= fetch(new URL("./help.json", import.meta.url)).then(async response => {
-    if (!response.ok) throw new Error(`Could not load help: ${response.status} ${response.statusText}`)
-    return response.json() as Promise<PlaygroundHelp>
-  })
-  return helpPromise
 }
 
 function projectFileContents() {

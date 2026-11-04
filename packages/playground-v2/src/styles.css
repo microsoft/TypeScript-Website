@@ -336,18 +336,6 @@ body {
   white-space: nowrap;
 }
 
-.resources-dialog {
-  width: min(48rem, calc(100vw - 2rem));
-  height: min(42rem, calc(100dvh - 2rem));
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 0.4rem;
-  color: inherit;
-  background: var(--panel);
-  box-shadow: 0 1rem 3rem rgb(0 0 0 / 35%);
-}
-
 .form-dialog {
   width: min(28rem, calc(100vw - 2rem));
   padding: 0;
@@ -521,95 +509,6 @@ body {
   padding: 0.2rem 0.9rem 0.4rem;
   color: var(--muted);
   line-height: 1.5;
-}
-
-.resources-dialog::backdrop {
-  background: rgb(0 0 0 / 45%);
-}
-
-.resources-dialog > header {
-  min-height: 3.25rem;
-  padding: 0.65rem 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--sidebar);
-}
-
-.resources-dialog h2 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.resources-dialog button,
-.resources-dialog a {
-  color: inherit;
-  font: inherit;
-}
-
-.resources-dialog > header button {
-  min-height: 2rem;
-  padding: 0 0.55rem;
-  border: 1px solid var(--border);
-  border-radius: 0.25rem;
-  background: var(--panel);
-  cursor: pointer;
-}
-
-.resources-view {
-  height: calc(100% - 3.25rem);
-  min-height: 0;
-}
-
-.resource-list {
-  height: 100%;
-  padding: 0.4rem;
-  overflow: auto;
-}
-
-.resource-list > .empty-message,
-.resource-error {
-  padding: 0.75rem;
-}
-
-.resource-error {
-  color: var(--error);
-}
-
-.help-topic {
-  border-bottom: 1px solid var(--border);
-}
-
-.help-topic summary {
-  padding: 0.75rem;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.help-topic summary:hover {
-  background: var(--hover);
-}
-
-.help-topic article {
-  padding: 0.25rem 0.75rem 0.75rem;
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
-
-.help-topic article p {
-  max-width: 42rem;
-  margin: 0 0 1rem;
-}
-
-.help-topic article code,
-.help-topic article kbd {
-  padding: 0.1rem 0.25rem;
-  border-radius: 0.2rem;
-  background: var(--sidebar);
-  font-family: Hack, monospace;
-  font-size: 0.82em;
 }
 
 .workspace {
@@ -1565,15 +1464,6 @@ code {
     white-space: normal;
   }
 
-  .resources-dialog {
-    width: 100vw;
-    max-width: none;
-    height: 100dvh;
-    max-height: none;
-    border: 0;
-    border-radius: 0;
-  }
-
   .form-dialog {
     width: calc(100vw - 1.5rem);
   }
@@ -1588,11 +1478,6 @@ code {
   }
 
   .download-consent button {
-    min-height: 2.75rem;
-  }
-
-  .resources-dialog > header button,
-  .help-topic summary {
     min-height: 2.75rem;
   }
 
