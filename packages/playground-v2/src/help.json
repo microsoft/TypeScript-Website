@@ -33,7 +33,7 @@
     {
       "title": "Saving and sharing",
       "legacyIndexes": [9, 10],
-      "html": "<p>Your project is saved in this browser automatically. Use <strong>Export</strong> to copy a share link or Markdown, or open your files in another editor. Markdown Issues include all files and symbolic links. <strong>Clear</strong> starts over with an empty index.ts and default compiler options, keeping the selected TypeScript version.</p>"
+      "html": "<p>Your project is saved in this browser automatically. Use <strong>Export</strong> to copy a share link or Markdown, or open the active file in TypeScript AST Viewer. Markdown Issues include all files and symbolic links. <strong>Clear</strong> starts over with an empty index.ts and default compiler options, keeping the selected TypeScript version.</p>"
     },
     {
       "title": "Settings",
