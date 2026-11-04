@@ -36,7 +36,7 @@ export function projectMarkdown(project: ExportProject) {
 export function configureExports(options: { project(): ExportProject; compile(): Promise<void> | void }) {
   const menu = element<HTMLDetailsElement>("exports")
   const summary = element<HTMLElement>("exports-button")
-  const items = [...menu.querySelectorAll<HTMLButtonElement>("[data-export]")]
+  const items = [...menu.querySelectorAll<HTMLButtonElement | HTMLAnchorElement>("[data-export]")]
   const dialog = element<HTMLDialogElement>("export-dialog")
   const title = element<HTMLElement>("export-title")
   const text = element<HTMLTextAreaElement>("export-text")
@@ -73,7 +73,7 @@ export function configureExports(options: { project(): ExportProject; compile():
     focusItem(event.key === "ArrowDown" ? 0 : items.length - 1)
   })
   menu.addEventListener("keydown", event => {
-    const index = items.indexOf(document.activeElement as HTMLButtonElement)
+    const index = items.indexOf(document.activeElement as HTMLButtonElement | HTMLAnchorElement)
     if (event.key === "Escape") {
       event.preventDefault()
       closeMenu()
@@ -96,9 +96,26 @@ export function configureExports(options: { project(): ExportProject; compile():
     if (event.target instanceof Node && !menu.contains(event.target)) closeMenu()
   })
   for (const item of items) {
+    if (item instanceof HTMLAnchorElement) {
+      const updateLink = () => {
+        const project = options.project()
+        const source = project.files[project.activeFile] ?? ""
+        item.href = `https://ts-ast-viewer.com/#code/${LZString.compressToEncodedURIComponent(source)}`
+      }
+      item.addEventListener("pointerdown", updateLink)
+      item.addEventListener("focus", updateLink)
+      item.addEventListener("contextmenu", updateLink)
+      item.addEventListener("click", updateLink)
+      item.addEventListener("keydown", event => {
+        if (event.key !== " ") return
+        event.preventDefault()
+        item.click()
+      })
+    }
     item.addEventListener("click", () => {
       closeMenu()
       summary.focus()
+      if (item instanceof HTMLAnchorElement) return
       void perform(item.dataset.export!).catch(cause =>
         showText("Export failed", cause instanceof Error ? cause.message : String(cause))
       )
@@ -125,7 +142,6 @@ export function configureExports(options: { project(): ExportProject; compile():
     const source = project.files[project.activeFile] ?? ""
     const language = /\.(jsx?|tsx?)$/i.exec(project.activeFile)?.[1] ?? ""
     const link = `[Playground Link](${project.url})`
-    const legacyHash = `#code/${LZString.compressToEncodedURIComponent(source)}`
     switch (action) {
       case "link":
         return showText("Playground link", project.url)
@@ -138,8 +154,6 @@ export function configureExports(options: { project(): ExportProject; compile():
           "Markdown Link with Preview",
           `${codeBlock(source.length > 200 ? `${source.slice(0, 200)}...` : source, language)}\n${link}`
         )
-      case "ast":
-        return location.assign(`https://ts-ast-viewer.com/${legacyHash}`)
       default:
         throw new Error(`Unknown export: ${action}`)
     }
