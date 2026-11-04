@@ -9,6 +9,14 @@ export type ExportProject = {
   url: string
 }
 
+export function decodeCompressedHash(encoded: string) {
+  try {
+    return LZString.decompressFromEncodedURIComponent(decodeURIComponent(encoded))
+  } catch {
+    return null
+  }
+}
+
 function codeBlock(text: string, language = "") {
   let length = 3
   for (const match of text.matchAll(/`+/g)) length = Math.max(length, match[0].length + 1)

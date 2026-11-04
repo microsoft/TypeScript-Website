@@ -29,7 +29,7 @@ import {
 } from "./compiler-overrides"
 import { registerConfigSchema } from "./config-schema"
 import { configureEditorTouchScroll } from "./editor-touch-scroll"
-import { configureExports } from "./exporter"
+import { configureExports, decodeCompressedHash } from "./exporter"
 import { resolveSymlinks, validateProjectSymlinks, type Symlinks } from "./symlinks"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { StradaBackend } from "./strada"
@@ -2896,16 +2896,6 @@ function loadProjectState(): ProjectState {
   } catch (error) {
     console.warn("Could not restore the TypeScript Playground v2 project", error)
     return { files: {}, useDefaults: true }
-  }
-}
-
-function decodeCompressedHash(encoded: string) {
-  const decoded = LZString.decompressFromEncodedURIComponent(encoded)
-  if (decoded !== null) return decoded
-  try {
-    return LZString.decompressFromEncodedURIComponent(decodeURIComponent(encoded))
-  } catch {
-    return null
   }
 }
 

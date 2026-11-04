@@ -22,7 +22,7 @@ import {
 } from "./compiler-overrides"
 import { createStradaFileSystem, parseStradaConfig } from "./strada-project"
 import { createPlaygroundV2Query } from "../../typescriptlang-org/src/lib/createPlaygroundV2Query"
-import { projectMarkdown, type ExportProject } from "./exporter"
+import { decodeCompressedHash, projectMarkdown, type ExportProject } from "./exporter"
 
 test("the legacy handoff serializes effective options with its own compiler and retains the requested channel", () => {
   const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
@@ -278,6 +278,18 @@ test("legacy compilers resolve linked files and package identity using preserveS
     if (preserveSymlinks) assert(diagnostics.some(diagnostic => diagnostic.code === 2322))
     else assert.deepEqual(diagnostics, [])
   }
+})
+
+test("compressed share links decode percent escapes and preserve empty legacy sources", () => {
+  const raw =
+    "N4IgbgpgTgzglgewHYgFwCYA0IBmcA2EMaoA9AO4JQDWMADgIYDGEpMUTpcSAJhAB4A6AC7FUIJshjCABPwDMMgLwz5AbhmlSMgCQyA1DOkBXHDhkatug0eGnzl7XsMmzFzU5uvzIAL6+gA"
+  const expected =
+    '{"version":2,"files":{"/workspace/src/index.ts":"const x3 = 3; // $ + stuff ; // $ + stuff ; // $ + stuff ; // $ + stuff "}}'
+  assert.equal(decodeCompressedHash(raw), expected)
+  assert.equal(decodeCompressedHash(encodeURIComponent(raw)), expected)
+  assert.equal(decodeCompressedHash("Q"), "")
+  assert.equal(decodeCompressedHash("%51"), "")
+  assert.equal(decodeCompressedHash("%invalid"), null)
 })
 
 test("Markdown exports retain project files, configuration, symbolic links and output", () => {
