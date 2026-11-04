@@ -1,11 +1,33 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
 import { Directory, File, OpenDirectory, wasi } from "@bjorn3/browser_wasi_shim"
-import { frameFileSystemUpdate, LspFileSystem, LspStdinRecords, type FileSystemUpdate } from "./lsp-filesystem"
+import {
+  frameFileSystemUpdate,
+  LspFileSystem,
+  LspStdinRecords,
+  normalizeWorkspaceEditUris,
+  type FileSystemUpdate,
+} from "./lsp-filesystem"
 import { resolveSymlinks, validateProjectSymlinks } from "./symlinks"
 
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
+
+test("workspace edits resolve alias URIs and merge duplicate edits without changing the source response", () => {
+  const alias = "file:///workspace/src/value.ts"
+  const target = "file:///workspace/shared/value.ts"
+  const edit = { range: { start: { line: 0, character: 13 }, end: { line: 0, character: 18 } }, newText: "renamed" }
+  const original = {
+    changes: { [alias]: [edit], [target]: [edit] },
+    documentChanges: [{ textDocument: { uri: alias, version: null }, edits: [edit] }],
+  }
+  const normalized = normalizeWorkspaceEditUris(original, uri => (uri === alias ? target : uri))
+  assert.deepEqual(normalized, {
+    changes: { [target]: [edit] },
+    documentChanges: [{ textDocument: { uri: target, version: null }, edits: [edit] }],
+  })
+  assert.equal(original.documentChanges[0].textDocument.uri, alias)
+})
 
 test("stdin forwards LSP frames and applies split filesystem records before the next message", () => {
   const updates: FileSystemUpdate[] = []

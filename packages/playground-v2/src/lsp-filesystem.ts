@@ -7,6 +7,36 @@ export type FileSystemUpdate = {
   deleted: string[]
 }
 
+export function normalizeWorkspaceEditUris(value: unknown, normalize: (uri: string) => string): unknown {
+  if (!value || typeof value !== "object") return value
+  const edit = value as { changes?: Record<string, unknown[]>; documentChanges?: unknown[] }
+  const changes: Record<string, unknown[]> = {}
+  if (edit.changes) {
+    for (const [uri, edits] of Object.entries(edit.changes)) {
+      const target = normalize(uri)
+      const existing = (changes[target] ??= [])
+      for (const item of edits) {
+        if (!existing.some(previous => JSON.stringify(previous) === JSON.stringify(item))) existing.push(item)
+      }
+    }
+  }
+  return {
+    ...edit,
+    ...(edit.changes ? { changes } : {}),
+    ...(edit.documentChanges
+      ? {
+          documentChanges: edit.documentChanges.map(change => {
+            if (!change || typeof change !== "object" || !("textDocument" in change)) return change
+            const document = change.textDocument
+            if (!document || typeof document !== "object" || !("uri" in document) || typeof document.uri !== "string")
+              return change
+            return { ...change, textDocument: { ...document, uri: normalize(document.uri) } }
+          }),
+        }
+      : {}),
+  }
+}
+
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 const maxRecordBytes = 48 * 1024 * 1024

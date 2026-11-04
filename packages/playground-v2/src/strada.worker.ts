@@ -142,7 +142,8 @@ async function dispatch(method: string, args: any) {
       return service.getSignatureHelpItems(args.fileName, args.position, args.options)
     case "renameInfo":
       return service.getRenameInfo(args.fileName, args.position, {
-        allowRenameOfImportPath: true,
+        allowRenameOfImportPath: false,
+        providePrefixAndSuffixTextForRename: true,
       })
     case "renameLocations":
       return service.findRenameLocations(args.fileName, args.position, false, false, true)

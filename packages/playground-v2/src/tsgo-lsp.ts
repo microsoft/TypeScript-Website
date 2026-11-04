@@ -8,7 +8,7 @@ import {
   conf as typescriptConfiguration,
   language as typescriptLanguage,
 } from "monaco-editor/languages/definitions/typescript/typescript.js"
-import { frameFileSystemUpdate } from "./lsp-filesystem"
+import { frameFileSystemUpdate, normalizeWorkspaceEditUris } from "./lsp-filesystem"
 import { languageForFile } from "./editor-languages"
 import { resolveSymlinks, type Symlinks } from "./symlinks"
 
@@ -290,6 +290,19 @@ class RingBufferWorker {
     const method = message?.method
     const label = method ?? this.#pendingRequests.get(message?.id)
     if (method === "textDocument/publishDiagnostics") return
+    if (method === "workspace/applyEdit" && message.params?.edit) {
+      message.params.edit = normalizeWorkspaceEditUris(message.params.edit, normalizeLibraryUri)
+    }
+    if (label === "textDocument/rename") {
+      message.result = normalizeWorkspaceEditUris(message.result, normalizeLibraryUri)
+    } else if (label === "textDocument/codeAction") {
+      message.result = message.result?.map((action: { edit?: unknown }) => ({
+        ...action,
+        ...(action.edit ? { edit: normalizeWorkspaceEditUris(action.edit, normalizeLibraryUri) } : {}),
+      }))
+    } else if (label === "codeAction/resolve" && message.result?.edit) {
+      message.result.edit = normalizeWorkspaceEditUris(message.result.edit, normalizeLibraryUri)
+    }
     if (
       label &&
       [
