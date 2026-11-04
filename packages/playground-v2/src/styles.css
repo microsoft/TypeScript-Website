@@ -256,6 +256,8 @@ body {
   border-radius: 0 !important;
   color: inherit !important;
   background: transparent !important;
+  font: inherit;
+  font-weight: 600;
   font-size: 0.78rem !important;
   text-align: center;
   text-overflow: ellipsis;
@@ -302,28 +304,38 @@ body {
   opacity: 1;
 }
 
-.toolbar button,
-.run-output button {
-  border: 1px solid rgb(255 255 255 / 45%);
+.action-button {
+  min-height: 2.25rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
   color: inherit;
-  background: rgb(0 0 0 / 12%);
+  background: var(--panel);
   cursor: pointer;
   font: inherit;
   font-weight: 600;
 }
 
-.toolbar button {
-  padding: 0.4rem 0.8rem;
+.action-button:hover:not(:disabled) {
+  background: var(--hover);
 }
 
-.toolbar button:hover:not(:disabled) {
+.action-button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.toolbar .action-button {
+  border-color: rgb(255 255 255 / 45%);
+  background: rgb(0 0 0 / 12%);
+}
+
+.toolbar .action-button:hover:not(:disabled) {
   background: rgb(0 0 0 / 22%);
 }
 
-.toolbar button:disabled {
+.toolbar .action-button:disabled {
   cursor: wait;
-  opacity: 0.5;
 }
 
 .status {
@@ -613,23 +625,6 @@ body {
 .file-explorer-actions {
   display: flex;
   gap: 0.25rem;
-}
-
-.file-explorer-actions button {
-  height: 1.7rem;
-  padding: 0 0.4rem;
-  border: 1px solid var(--border);
-  border-radius: 0.2rem;
-  color: inherit;
-  background: var(--panel);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.68rem;
-  line-height: 1;
-}
-
-.file-explorer-actions button:hover {
-  background: var(--hover);
 }
 
 .file-list {
@@ -958,43 +953,12 @@ body[data-resizing] {
   gap: 0.55rem;
 }
 
-.editor-heading-title button,
-.editor-heading-actions button,
-.output-heading-actions button {
-  min-height: 1.8rem;
-  padding: 0 0.45rem;
-  border: 1px solid var(--border);
-  border-radius: 0.2rem;
-  color: inherit;
-  background: var(--panel);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.72rem;
-  line-height: 1;
-}
-
-.file-explorer-actions .pane-toggle,
-.editor-heading-title .pane-toggle,
-.editor-heading-actions .pane-toggle,
-.output-heading-actions .pane-toggle {
+.pane-toggle,
+.output-section-toggle {
   flex: 0 0 auto;
-  width: 1.8rem;
-  min-height: 1.8rem;
-  padding: 0;
-  font-size: 1rem;
-}
-
-.editor-heading-title button:hover:not(:disabled),
-.editor-heading-actions button:hover:not(:disabled),
-.output-heading-actions button:hover:not(:disabled) {
-  background: var(--hover);
-}
-
-.editor-heading-title button:disabled,
-.editor-heading-actions button:disabled,
-.output-heading-actions button:disabled {
-  cursor: default;
-  opacity: 0.45;
+  width: 2.3rem;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .panel-heading span {
@@ -1016,25 +980,6 @@ body[data-resizing] {
 .output-section-title {
   justify-content: flex-start;
   gap: 0.35rem;
-}
-
-.output-section-toggle {
-  flex: 0 0 1.5rem;
-  width: 1.5rem;
-  min-height: 1.5rem;
-  padding: 0;
-  border: 0;
-  color: var(--muted);
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.85rem;
-  line-height: 1;
-}
-
-.output-section-toggle:hover {
-  color: inherit;
-  background: var(--hover);
 }
 
 code {
@@ -1129,24 +1074,6 @@ code {
   margin: 0;
   font-size: 0.8rem;
   font-weight: 600;
-}
-
-.run-output button {
-  padding: 0.2rem 0.45rem;
-  border-color: var(--border);
-  color: inherit;
-  background: var(--panel);
-  font-size: 0.7rem;
-}
-
-.run-output .output-section-toggle {
-  width: 1.4rem;
-  min-height: 1.4rem;
-  padding: 0;
-  border: 0;
-  color: var(--muted);
-  background: transparent;
-  font-size: 0.85rem;
 }
 
 .run-log {
@@ -1486,9 +1413,14 @@ code {
     width: 100%;
   }
 
-  .toolbar button {
-    min-width: 0;
+  .action-button,
+  .version-menu-item,
+  .form-dialog .file-kind-options label {
     min-height: 2.75rem;
+  }
+
+  .action-button {
+    min-width: 0;
   }
 
   .status {
@@ -1537,12 +1469,6 @@ code {
     z-index: 2;
     min-height: 2.75rem;
     background: var(--sidebar);
-  }
-
-  .file-explorer-actions button {
-    min-width: 2.75rem;
-    height: 2.75rem;
-    padding: 0 0.55rem;
   }
 
   .file-tree-folder {
@@ -1597,13 +1523,11 @@ code {
     flex: 0 1 auto;
   }
 
-  .editor-heading-title button,
-  .editor-heading-actions button,
-  .output-heading-actions button,
+  .pane-toggle,
   .output-section-toggle,
-  .run-output .output-section-toggle {
+  #add-button,
+  #clear-run-output {
     min-width: 2.75rem;
-    min-height: 2.75rem;
   }
 
   .diagnostics-panel summary {
@@ -1637,11 +1561,6 @@ code {
     overflow-wrap: anywhere;
   }
 
-  .run-output button {
-    min-width: 2.75rem;
-    min-height: 2.75rem;
-  }
-
   .loading-overlay {
     position: fixed;
     top: 50%;
@@ -1663,12 +1582,6 @@ code {
 
   .file-explorer-actions {
     gap: 0.15rem;
-  }
-
-  .file-explorer-actions button {
-    min-width: 0;
-    padding-right: 0.4rem;
-    padding-left: 0.4rem;
   }
 
   .editor-panel .panel-heading span {
@@ -1701,6 +1614,16 @@ code {
   select,
   summary {
     touch-action: manipulation;
+  }
+
+  .action-button,
+  .version-menu-item,
+  .form-dialog .file-kind-options label {
+    min-height: 2.75rem;
+  }
+
+  .action-button {
+    min-width: 2.75rem;
   }
 
   .file-tree-delete {
@@ -1790,6 +1713,8 @@ code {
   }
 
   .version-control summary,
+  .action-button,
+  .toolbar .action-button,
   .form-dialog button[type="submit"],
   .form-dialog button.danger,
   .download-consent button {

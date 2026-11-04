@@ -52,9 +52,9 @@
               <a class="version-menu-item" role="menuitem" data-export="ast" href="https://ts-ast-viewer.com/" target="_blank" rel="noopener noreferrer">Open active file in TypeScript AST Viewer</a>
             </div>
           </details>
-          <button id="run-button" type="button" disabled>Run</button>
-          <button id="clear-project-button" type="button" title="Start with an empty project">Clear</button>
-          <button id="settings-button" type="button">Settings</button>
+          <button id="run-button" class="action-button" type="button" disabled>Run</button>
+          <button id="clear-project-button" class="action-button" type="button" title="Start with an empty project">Clear</button>
+          <button id="settings-button" class="action-button" type="button">Settings</button>
           <output id="status" class="status" hidden></output>
         </div>
       </header>
@@ -65,8 +65,8 @@
               <h2>Project</h2>
             </div>
             <div class="file-explorer-actions">
-              <button id="add-button" type="button" aria-haspopup="dialog" aria-controls="new-file-dialog">Add</button>
-              <button id="toggle-files-button" class="pane-toggle" type="button" aria-label="Hide files" title="Hide files" aria-controls="file-explorer">⇤</button>
+              <button id="add-button" class="action-button" type="button" aria-haspopup="dialog" aria-controls="new-file-dialog">Add</button>
+              <button id="toggle-files-button" class="action-button pane-toggle" type="button" aria-label="Hide files" title="Hide files" aria-controls="file-explorer">⇤</button>
             </div>
           </div>
           <div id="file-list" class="file-list"></div>
@@ -83,14 +83,14 @@
         <div class="editor-panel">
           <div class="panel-heading">
             <div class="editor-heading-title">
-              <button id="show-files-button" class="pane-toggle" type="button" aria-label="Show files" title="Show files" aria-controls="file-explorer" hidden>⇥</button>
-              <button id="navigate-back-button" class="pane-toggle" type="button" title="Return to project" aria-label="Return to project" hidden>←</button>
+              <button id="show-files-button" class="action-button pane-toggle" type="button" aria-label="Show files" title="Show files" aria-controls="file-explorer" hidden>⇥</button>
+              <button id="navigate-back-button" class="action-button pane-toggle" type="button" title="Return to project" aria-label="Return to project" hidden>←</button>
               <h2 id="current-file">index.ts</h2>
             </div>
             <div class="editor-heading-actions">
               <span id="editor-hint" hidden>Read-only</span>
-              <button id="apply-compiler-overrides-button" type="button" hidden>Apply overrides</button>
-              <button id="show-output-button" class="pane-toggle" type="button" aria-label="Show output" title="Show output" aria-controls="output-panel" hidden>⇤</button>
+              <button id="apply-compiler-overrides-button" class="action-button" type="button" hidden>Apply overrides</button>
+              <button id="show-output-button" class="action-button pane-toggle" type="button" aria-label="Show output" title="Show output" aria-controls="output-panel" hidden>⇤</button>
             </div>
           </div>
           <div id="input-editor" class="editor"></div>
@@ -109,7 +109,7 @@
             <div class="output-section-title">
               <button
                 id="toggle-emit-button"
-                class="output-section-toggle"
+                class="action-button output-section-toggle"
                 type="button"
                 aria-label="Collapse Emit"
                 aria-controls="emit-output"
@@ -121,7 +121,7 @@
             </div>
             <div class="output-heading-actions">
               <span id="emit-summary">Waiting for the compiler</span>
-              <button id="toggle-output-button" class="pane-toggle" type="button" aria-label="Hide output" title="Hide output" aria-controls="output-panel">⇥</button>
+              <button id="toggle-output-button" class="action-button pane-toggle" type="button" aria-label="Hide output" title="Hide output" aria-controls="output-panel">⇥</button>
             </div>
           </div>
           <div id="emit-output" class="emit-output"></div>
@@ -139,7 +139,7 @@
               <div class="output-section-title">
                 <button
                   id="toggle-run-output-button"
-                  class="output-section-toggle"
+                  class="action-button output-section-toggle"
                   type="button"
                   aria-label="Collapse Run output"
                   aria-controls="run-log"
@@ -150,7 +150,7 @@
                 <h2>Run output</h2>
               </div>
               <div>
-                <button id="clear-run-output" type="button">Clear</button>
+                <button id="clear-run-output" class="action-button" type="button">Clear</button>
               </div>
             </header>
             <div id="run-log" class="run-log">
