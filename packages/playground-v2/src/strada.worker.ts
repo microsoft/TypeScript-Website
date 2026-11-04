@@ -1,6 +1,6 @@
 import type { StradaLoadingProgress } from "./strada"
 import { loadStradaLibraries } from "./strada-libraries"
-import { createStradaFileSystem, normalizeStradaPath as normalizePath } from "./strada-project"
+import { createStradaFileSystem, normalizeStradaPath as normalizePath, parseStradaConfig } from "./strada-project"
 import { resolveSymlinks, type Symlinks } from "./symlinks"
 
 type TS = typeof import("typescript")
@@ -209,23 +209,10 @@ function refreshConfig() {
 }
 
 function parseConfig() {
-  const configPath =
-    [...files.keys()].find(fileName => /\/tsconfig\.json$/i.test(fileName)) ??
-    [...files.keys()].find(fileName => /\/jsconfig\.json$/i.test(fileName))
-  const configText = configPath ? files.get(configPath)?.text ?? "{}" : "{}"
-  const configResult = ts.parseConfigFileTextToJson(configPath ?? "/workspace/tsconfig.json", configText)
-  const config = configResult.config ?? {}
-  const configFileName = normalizePath(configPath ?? "/workspace/tsconfig.json")
-  const basePath = configFileName.slice(0, configFileName.lastIndexOf("/"))
-  const parsed = ts.parseJsonConfigFileContent(config, filesystem, basePath, undefined, configFileName)
+  const parsed = parseStradaConfig(ts, filesystem)
   return {
-    errors: [
-      ...(configResult.error ? [serializeDiagnostic(configResult.error)] : []),
-      ...parsed.errors.map(serializeDiagnostic),
-    ],
-    options: parsed.options,
-    rootNames: parsed.fileNames,
-    projectReferences: parsed.projectReferences,
+    ...parsed,
+    errors: parsed.errors.map(serializeDiagnostic),
   }
 }
 

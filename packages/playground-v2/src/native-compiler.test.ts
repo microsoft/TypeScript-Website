@@ -14,8 +14,13 @@ import {
   publishedNativeCompilerSelection,
 } from "./compiler-versions"
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
-import { computeCompilerOverrides } from "./compiler-overrides"
-import { createStradaFileSystem } from "./strada-project"
+import {
+  applyLegacyCompilerOptions,
+  canSetCompilerOptions,
+  compilerOverrideForDiagnostic,
+  computeCompilerOverrides,
+} from "./compiler-overrides"
+import { createStradaFileSystem, parseStradaConfig } from "./strada-project"
 import { createPlaygroundV2Query } from "../../typescriptlang-org/src/lib/createPlaygroundV2Query"
 import { projectMarkdown, type ExportProject } from "./exporter"
 
@@ -136,6 +141,101 @@ test("historical compilers use the Playground CDN except for incorrect or unmirr
       `https://playgroundcdn.typescriptlang.org/cdn/${version}/typescript/lib/`
     )
   }
+})
+
+test("legacy URL ingestion preserves JSONC and accepts only known options with compiler enum values", () => {
+  const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
+  const names = ["strict", "jsx", "lib", "paths", "noImplicitAny"]
+  const config = '{\n  // keep this comment\n  "compilerOptions": { "strict": true, },\n}'
+  const converted = applyLegacyCompilerOptions(
+    config,
+    "?strict=false&q=42&install-plugin=x&lib=es2017,dom&noImplicitAny",
+    names
+  )
+  assert(converted.includes("// keep this comment"))
+  assert(converted.includes('"strict": false'))
+  assert(!converted.includes('"q"'))
+  assert(!converted.includes("install-plugin"))
+  const parsed = ts.parseConfigFileTextToJson("tsconfig.json", converted).config
+  assert.deepEqual(parsed.compilerOptions.lib, ["es2017", "dom"])
+  assert.equal(parsed.compilerOptions.noImplicitAny, true)
+  for (const [value, expected] of [
+    [1, "preserve"],
+    [2, "react"],
+    [3, "react-native"],
+    [4, "react-jsx"],
+    [5, "react-jsxdev"],
+  ] as const) {
+    assert.equal(JSON.parse(applyLegacyCompilerOptions("{}", `?jsx=${value}`, names)).compilerOptions.jsx, expected)
+  }
+  assert.equal(
+    JSON.parse(applyLegacyCompilerOptions('{"compilerOptions":{"jsx":"react"}}', "?jsx=0", names)).compilerOptions.jsx,
+    undefined
+  )
+  assert.equal(
+    ts.parseConfigFileTextToJson(
+      "tsconfig.json",
+      applyLegacyCompilerOptions(config, "?tsconfig=snapshot&strict=false", names)
+    ).config.compilerOptions.strict,
+    true
+  )
+  for (const invalid of ["[]", '{"compilerOptions":null}', '{"compilerOptions":[]}', '{"compilerOptions":']) {
+    assert.equal(canSetCompilerOptions(invalid), false)
+    assert.equal(applyLegacyCompilerOptions(invalid, "?strict=true", names), invalid)
+  }
+})
+
+test("historical root config selection ignores insertion order and follows config symlinks", () => {
+  const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
+  const files = new Map([
+    ["/workspace/nested/tsconfig.json", '{"compilerOptions":{"strict":false},"files":["nested.ts"]}'],
+    ["/workspace/config/base.json", '{"compilerOptions":{"strict":true},"files":["src/index.ts"]}'],
+    ["/workspace/nested/nested.ts", "export const nested = 1;"],
+    ["/workspace/src/index.ts", "export const root = 1;"],
+  ])
+  const links = { "/workspace/tsconfig.json": "config/base.json" }
+  const filesystem = createStradaFileSystem(
+    ts,
+    () => files.keys(),
+    path => files.get(path),
+    links
+  )
+  const parsed = parseStradaConfig(ts, filesystem)
+  assert.deepEqual(parsed.errors, [])
+  assert.equal(parsed.options.strict, true)
+  assert.deepEqual(parsed.rootNames, ["/workspace/src/index.ts"])
+})
+
+test("compiler overrides remap option errors but not source errors that mention an option", () => {
+  const state = computeCompilerOverrides(
+    new Map([["/workspace/src/index.ts", "// @module: nodenext\nmodule.exports = 1;"]]),
+    "{}"
+  )
+  assert.equal(
+    compilerOverrideForDiagnostic(
+      state,
+      {
+        fileName: "/workspace/src/index.ts",
+        pos: 21,
+        end: 27,
+        text: "Cannot find name 'module'.",
+      },
+      "/workspace/tsconfig.json"
+    ),
+    undefined
+  )
+  assert.equal(
+    compilerOverrideForDiagnostic(
+      state,
+      {
+        pos: 0,
+        end: 0,
+        text: "Option 'module' must be set to 'NodeNext'.",
+      },
+      "/workspace/tsconfig.json"
+    ),
+    state.overrides[0]
+  )
 })
 
 test("legacy compilers resolve linked files and package identity using preserveSymlinks", () => {

@@ -155,6 +155,105 @@ export function compilerOptionsNode(configText: string): Node | undefined {
   return tree ? findNodeAtLocation(tree, ["compilerOptions"]) : undefined
 }
 
+export function compilerOverrideForDiagnostic(
+  state: CompilerOverrideState,
+  diagnostic: { fileName?: string; pos: number; end: number; text: string },
+  configFileName: string
+) {
+  if (diagnostic.fileName !== undefined && diagnostic.fileName !== configFileName) return undefined
+  return state.overrides.find(override => {
+    if (!override.applied) return false
+    const node = configOptionNode(state.effectiveConfigText, override.option)
+    if (
+      diagnostic.fileName === configFileName &&
+      node &&
+      diagnostic.pos <= node.offset + node.length &&
+      diagnostic.end >= node.offset
+    )
+      return true
+    if (!/^(?:compiler )?option\b|^unknown compiler option\b|^argument for\b/i.test(diagnostic.text)) return false
+    return (
+      diagnostic.text.toLowerCase().includes(`'${override.option.toLowerCase()}'`) ||
+      diagnostic.text.toLowerCase().includes(`'--${override.option.toLowerCase()}'`) ||
+      diagnostic.text.toLowerCase().includes(`"--${override.option.toLowerCase()}"`)
+    )
+  })
+}
+export function canSetCompilerOptions(configText: string) {
+  const errors: ParseError[] = []
+  const root = parseTree(configText, errors, { allowTrailingComma: true, disallowComments: false })
+  const options = root && findNodeAtLocation(root, ["compilerOptions"])
+  return errors.length === 0 && root?.type === "object" && (!options || options.type === "object")
+}
+
+export function applyLegacyCompilerOptions(configText: string, search: string, optionNames: Iterable<string>) {
+  if (!canSetCompilerOptions(configText)) return configText
+  const params = new URLSearchParams(search)
+  const allowed = new Set(optionNames)
+  const snapshot = params.has("tsconfig")
+  for (const [key, rawValue] of params) {
+    if (!allowed.has(key) || (snapshot && configOptionNode(configText, key))) continue
+    configText = setCompilerOption(configText, key, parseLegacyCompilerOption(key, rawValue))
+  }
+  if (params.has("useJavaScript") || params.get("filetype")?.startsWith("js")) {
+    configText = setCompilerOption(configText, "allowJs", true)
+    configText = setCompilerOption(configText, "checkJs", true)
+  }
+  return configText
+}
+
+function parseLegacyCompilerOption(key: string, rawValue: string): unknown {
+  if (rawValue === "") return true
+  if (rawValue === "true") return true
+  if (rawValue === "false") return false
+  if (stringListOptions.has(key) || /^[{[]/.test(rawValue)) return parseDirectiveValue(key, rawValue)
+  const number = Number(rawValue)
+  if (!Number.isFinite(number)) return rawValue
+  const enumMaps: Record<string, Record<number, string>> = {
+    jsx: {
+      1: "preserve",
+      2: "react",
+      3: "react-native",
+      4: "react-jsx",
+      5: "react-jsxdev",
+    },
+    module: {
+      0: "none",
+      1: "commonjs",
+      2: "amd",
+      3: "umd",
+      4: "system",
+      5: "es2015",
+      6: "es2020",
+      7: "es2022",
+      99: "esnext",
+      100: "node16",
+      199: "nodenext",
+      200: "preserve",
+    },
+    moduleResolution: { 1: "classic", 2: "node", 3: "node16", 99: "nodenext", 100: "bundler" },
+    newLine: { 0: "crlf", 1: "lf" },
+    target: {
+      0: "es3",
+      1: "es5",
+      2: "es2015",
+      3: "es2016",
+      4: "es2017",
+      5: "es2018",
+      6: "es2019",
+      7: "es2020",
+      8: "es2021",
+      9: "es2022",
+      10: "es2023",
+      11: "es2024",
+      12: "es2025",
+      99: "esnext",
+    },
+  }
+  if (key === "jsx" && number === 0) return undefined
+  return enumMaps[key]?.[number] ?? number
+}
+
 function parseDirectiveValue(option: string, rawValue: string) {
   if (/^(?:true|false|null|-?\d+(?:\.\d+)?)$/.test(rawValue) || /^["[{]/.test(rawValue)) {
     try {

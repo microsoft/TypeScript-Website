@@ -17,6 +17,9 @@ import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
 import "reflect-metadata"
 import {
+  applyLegacyCompilerOptions,
+  canSetCompilerOptions,
+  compilerOverrideForDiagnostic,
   compilerOptionsNode,
   computeCompilerOverrides,
   configOptionNode,
@@ -90,6 +93,7 @@ type ProjectState = {
   }
   useDefaults?: boolean
   symlinks?: Symlinks
+  legacyQuery?: string
 }
 
 type VersionedProjectState = ProjectState & {
@@ -341,6 +345,8 @@ systemTheme.addEventListener("change", () => {
 
 registerPlaygroundLanguages()
 const initialState = loadProjectState()
+let legacyQuery =
+  initialState.legacyQuery ?? (initialState.useDefaults !== false && location.search ? location.search : undefined)
 const projectSymlinks: Record<string, string> = { ...initialState.symlinks }
 const initialFiles =
   initialState.useDefaults === false
@@ -349,7 +355,6 @@ const initialFiles =
         ...Object.fromEntries(defaultFiles.map(file => [file.path, file.text])),
         ...initialState.files,
       }
-applyLegacyCompilerOptions(initialFiles)
 const projectModels = new Map(
   Object.entries(initialFiles).map(([fileName, text]) => {
     const model = monaco.editor.createModel(text, languageForFile(fileName), monaco.Uri.parse(`file://${fileName}`))
@@ -426,7 +431,6 @@ mobileLayout.addEventListener("change", updateResponsiveEditorOptions)
 
 renderFileList()
 restoreProjectSelection(initialState)
-restoreLegacySelection()
 updateActiveFile()
 trackedEditorLocation = getEditorLocation()
 updateNavigationButtons()
@@ -937,6 +941,18 @@ async function initializeNativeCompiler() {
     setLoadingProgress(78, "Starting TypeScript...", "")
     const configSchema = JSON.parse(new TextDecoder().decode(configSchemaBytes))
     registerConfigSchema(configSchema)
+    const optionProperties =
+      configSchema.definitions?.compilerOptions?.properties ??
+      configSchema.definitions?.compilerOptionsDefinition?.properties?.compilerOptions?.properties
+    if (!optionProperties) throw new Error("Compiler option metadata is missing from the TSConfig schema")
+    const metadata = new Map<string, { description: string }>(
+      Object.entries(optionProperties).map(([name, value]: [string, any]) => [
+        name,
+        { description: value.markdownDescription ?? value.description ?? "" },
+      ])
+    )
+    compilerOptionMetadataPromise = Promise.resolve(metadata)
+    consumeLegacyCompilerOptions(metadata.keys())
     nativeBackend = await NativeBackend.create(module, libFiles, distribution)
     const backend = nativeBackend
     DiagnosticCategory = backend.diagnosticCategories
@@ -986,6 +1002,16 @@ async function initializeStradaCompiler(requestedVersion: string) {
       throw new Error(`Requested TypeScript ${version}, but the downloaded compiler is ${classicTS.version}`)
     }
     loadedLegacyCompilerVersion = classicTS.version
+    const declarations: readonly { name: string; isCommandLineOnly?: boolean; description?: { message: string } }[] =
+      classicTS.optionDeclarations
+    if (!Array.isArray(declarations)) throw new Error("The selected compiler does not provide compiler options")
+    const metadata = new Map(
+      declarations
+        .filter(option => !option.isCommandLineOnly)
+        .map(option => [option.name, { description: option.description?.message ?? "" }])
+    )
+    compilerOptionMetadataPromise = Promise.resolve(metadata)
+    consumeLegacyCompilerOptions(metadata.keys())
     DiagnosticCategory = classicTS.DiagnosticCategory
     discoverDependencies = stradaDiscovery(classicTS)
     stradaBackend = await StradaBackend.create({
@@ -1167,11 +1193,7 @@ function createVersionMenuItem(label: string, value: string, selectedValue: stri
 async function selectCompilerVersion(value: string) {
   setVersionMenuOpen(false)
   compilerVersionButton.focus()
-  persistProjectState()
-  const url = new URL(location.href)
-  if (value === "native") {
-    url.searchParams.delete("ts")
-  } else if (value === "__custom__") {
+  if (value === "__custom__") {
     const custom = await requestTextInput({
       label: "Build ID",
       submitLabel: "Load build",
@@ -1181,10 +1203,15 @@ async function selectCompilerVersion(value: string) {
       compilerVersionButton.focus()
       return
     }
-    url.searchParams.set("ts", custom)
-  } else {
-    url.searchParams.set("ts", value)
+    value = custom
   }
+  persistProjectState()
+  const url = new URL(location.href)
+  url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(
+    serializeProjectState(currentProjectState())
+  )}`
+  if (value === "native") url.searchParams.delete("ts")
+  else url.searchParams.set("ts", value)
   location.href = url.href
 }
 
@@ -1416,7 +1443,7 @@ function registerCompilerOverrideFeatures() {
       async provideCompletionItems(model, position) {
         const line = model.getLineContent(position.lineNumber).slice(0, position.column - 1)
         const match = /\/\/\s*@([\w-]*)$/.exec(line)
-        if (!match) return { suggestions: [] }
+        if (!match || !compilerReady) return { suggestions: [] }
         const metadata = await getCompilerOptionMetadata()
         const range = new monaco.Range(
           position.lineNumber,
@@ -1591,19 +1618,7 @@ function registerCompilerOverrideFeatures() {
 let compilerOptionMetadataPromise: Promise<Map<string, { description: string }>> | undefined
 
 function getCompilerOptionMetadata() {
-  compilerOptionMetadataPromise ??= getCompilerDistribution()
-    .then(distribution => fetch(distribution.schema))
-    .then(async response => {
-      if (!response.ok) throw new Error(`Could not load TSConfig options: ${response.status}`)
-      const schema = await response.json()
-      const properties = schema.definitions?.compilerOptionsDefinition?.properties?.compilerOptions?.properties ?? {}
-      return new Map(
-        Object.entries(properties).map(([name, value]: [string, any]) => [
-          name,
-          { description: value.markdownDescription ?? value.description ?? "" },
-        ])
-      )
-    })
+  if (!compilerOptionMetadataPromise) throw new Error("Compiler option metadata is not initialized")
   return compilerOptionMetadataPromise
 }
 
@@ -2580,13 +2595,6 @@ function updateActiveFile() {
   if (projectModel) persistProjectState()
 }
 
-function restoreLegacySelection() {
-  const params = new URLSearchParams(location.search)
-  const values = ["ssl", "ssc", "pln", "pc"].map(key => Number(params.get(key)))
-  if (values.some(value => !Number.isInteger(value) || value <= 0)) return
-  inputEditor.setSelection(new monaco.Selection(values[0], values[1], values[2], values[3]))
-}
-
 function restoreProjectSelection(state: ProjectState) {
   const selection = state.selection
   if (!selection) return
@@ -2832,7 +2840,7 @@ function loadProjectState(): ProjectState {
   }
   if (location.hash.startsWith(projectHashPrefix)) {
     const decoded = decodeCompressedHash(location.hash.slice(projectHashPrefix.length))
-    if (decoded) {
+    if (decoded !== null) {
       try {
         return normalizeVersionedProjectState(JSON.parse(decoded))
       } catch (error) {
@@ -2852,12 +2860,21 @@ function loadProjectState(): ProjectState {
 
   if (location.hash.startsWith(legacyCodeHashPrefix)) {
     const decoded = decodeCompressedHash(location.hash.slice(legacyCodeHashPrefix.length))
-    if (decoded) {
+    if (decoded !== null) {
       try {
-        return normalizeProjectState(JSON.parse(decoded))
+        const state: unknown = JSON.parse(decoded)
+        if (
+          state &&
+          typeof state === "object" &&
+          !Array.isArray(state) &&
+          ("files" in state || Object.keys(state).some(path => path.startsWith(`${projectRoot}/`)))
+        ) {
+          return normalizeProjectState(state)
+        }
       } catch {
-        return createLegacyProjectState(decoded)
+        // Legacy source is usually not a serialized project.
       }
+      return createLegacyProjectState(decoded)
     }
   }
 
@@ -2873,7 +2890,7 @@ function loadProjectState(): ProjectState {
 
 function decodeCompressedHash(encoded: string) {
   const decoded = LZString.decompressFromEncodedURIComponent(encoded)
-  if (decoded) return decoded
+  if (decoded !== null) return decoded
   try {
     return LZString.decompressFromEncodedURIComponent(decodeURIComponent(encoded))
   } catch {
@@ -2888,6 +2905,7 @@ function serializeProjectState(state: ProjectState) {
     selection: state.selection,
     version: projectStateVersion,
     symlinks: state.symlinks,
+    legacyQuery: state.legacyQuery,
   }
   return JSON.stringify(versioned)
 }
@@ -2907,6 +2925,7 @@ function normalizeProjectState(value: unknown): ProjectState {
     selection?: unknown
     version?: unknown
     symlinks?: unknown
+    legacyQuery?: unknown
   }
   if (candidate.version !== undefined && candidate.version !== projectStateVersion) {
     console.warn(`Ignoring unsupported playground project version: ${String(candidate.version)}`)
@@ -2969,6 +2988,7 @@ function normalizeProjectState(value: unknown): ProjectState {
     selection,
     useDefaults: false,
     symlinks,
+    legacyQuery: typeof candidate.legacyQuery === "string" ? candidate.legacyQuery : undefined,
   }
 }
 
@@ -2986,7 +3006,14 @@ function normalizeSelection(value: unknown): ProjectState["selection"] {
 }
 
 function createLegacyProjectState(code: string, fileType = getLegacyFileType()): ProjectState {
-  const configText = new URLSearchParams(location.search).get("tsconfig") ?? createLegacyConfig(fileType)
+  const params = new URLSearchParams(location.search)
+  const configText = params.get("tsconfig") ?? createLegacyConfig(fileType)
+  const selection = normalizeSelection({
+    selectionStartLineNumber: Number(params.get("ssl")),
+    selectionStartColumn: Number(params.get("ssc")),
+    positionLineNumber: Number(params.get("pln")),
+    positionColumn: Number(params.get("pc")),
+  })
   const fileNamePattern = /^\s*\/\/\s*@filename:\s*(.+)$/i
   if (!code.split(/\r\n?|\n/g).some(line => fileNamePattern.test(line))) {
     const fileName = `${projectRoot}/src/index.${fileType}`
@@ -2997,6 +3024,8 @@ function createLegacyProjectState(code: string, fileType = getLegacyFileType()):
         [fileName]: code,
       },
       useDefaults: false,
+      legacyQuery: location.search,
+      selection,
     }
   }
 
@@ -3030,6 +3059,8 @@ function createLegacyProjectState(code: string, fileType = getLegacyFileType()):
     activeFile: sourceFiles[0] ?? entryFileName,
     files,
     useDefaults: false,
+    legacyQuery: location.search,
+    selection,
   }
 }
 
@@ -3075,98 +3106,21 @@ function getLegacyFileType() {
   return fileType && (fileType === "d.ts" || /^[cm]?[jt]sx?$/.test(fileType)) ? fileType : "ts"
 }
 
-function applyLegacyCompilerOptions(files: Record<string, string>) {
-  const params = new URLSearchParams(location.search)
-  const hasSnapshot = params.has("tsconfig")
-  const reserved = new Set(["example", "filetype", "pc", "pln", "ssc", "ssl", "ts", "tsconfig", "useJavaScript"])
-  let config: any
-  try {
-    config = JSON.parse(files[configFileName] ?? defaultFiles[0].text)
-  } catch {
-    if (hasSnapshot) return
-    config = JSON.parse(defaultFiles[0].text)
+function consumeLegacyCompilerOptions(optionNames: Iterable<string>) {
+  if (legacyQuery === undefined) return
+  const model = projectConfigModel()
+  if (model) {
+    const text = applyLegacyCompilerOptions(model.getValue(), legacyQuery, optionNames)
+    if (text !== model.getValue()) model.setValue(text)
   }
-  if (
-    hasSnapshot &&
-    (!config ||
-      typeof config !== "object" ||
-      Array.isArray(config) ||
-      (config.compilerOptions !== undefined &&
-        (!config.compilerOptions ||
-          typeof config.compilerOptions !== "object" ||
-          Array.isArray(config.compilerOptions))))
-  )
-    return
-  config.compilerOptions ??= {}
-  for (const [key, rawValue] of params) {
-    if (reserved.has(key)) continue
-    if (hasSnapshot && Object.prototype.hasOwnProperty.call(config.compilerOptions, key)) continue
-    const value = parseLegacyCompilerOption(key, rawValue)
-    if (value !== undefined) config.compilerOptions[key] = value
-  }
-  if (params.has("useJavaScript") || params.get("filetype")?.startsWith("js")) {
-    config.compilerOptions.allowJs = true
-    config.compilerOptions.checkJs = true
-  }
-  files[configFileName] = `${JSON.stringify(config, undefined, 2)}\n`
-}
-
-function parseLegacyCompilerOption(key: string, rawValue: string) {
-  if (rawValue === "true") return true
-  if (rawValue === "false") return false
-  const number = Number(rawValue)
-  if (!Number.isFinite(number)) return rawValue
-  const enumMaps: Record<string, Record<number, string>> = {
-    jsx: {
-      0: "preserve",
-      1: "react",
-      2: "react-native",
-      3: "react-jsx",
-      4: "react-jsxdev",
-    },
-    module: {
-      0: "none",
-      1: "commonjs",
-      2: "amd",
-      3: "umd",
-      4: "system",
-      5: "es2015",
-      6: "es2020",
-      7: "es2022",
-      99: "esnext",
-      100: "node16",
-      199: "nodenext",
-      200: "preserve",
-    },
-    moduleResolution: {
-      1: "classic",
-      2: "node",
-      3: "node16",
-      99: "nodenext",
-      100: "bundler",
-    },
-    newLine: {
-      0: "crlf",
-      1: "lf",
-    },
-    target: {
-      0: "es3",
-      1: "es5",
-      2: "es2015",
-      3: "es2016",
-      4: "es2017",
-      5: "es2018",
-      6: "es2019",
-      7: "es2020",
-      8: "es2021",
-      9: "es2022",
-      10: "es2023",
-      11: "es2024",
-      12: "es2025",
-      99: "esnext",
-    },
-  }
-  return enumMaps[key]?.[number] ?? number
+  legacyQuery = undefined
+  persistProjectState()
+  const url = new URL(document.baseURI)
+  if (selectedCompiler !== null) url.searchParams.set("ts", selectedCompiler)
+  url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(
+    serializeProjectState(currentProjectState())
+  )}`
+  history.replaceState({}, "", url)
 }
 
 function scheduleProjectPersistence() {
@@ -3194,6 +3148,7 @@ function currentProjectState(): ProjectState {
     activeFile: activeModel && projectModels.has(activeModel.uri.path) ? activeModel.uri.path : entryFileName,
     files: Object.fromEntries([...projectModels].map(([fileName, model]) => [fileName, model.getValue()])),
     symlinks: Object.keys(projectSymlinks).length ? projectSymlinks : undefined,
+    legacyQuery,
     selection: selection
       ? {
           positionColumn: selection.positionColumn,
@@ -3215,7 +3170,7 @@ function persistProjectState() {
       localStorage.setItem(storageKey, serialized)
       lastStoredProject = serialized
     }
-    if (!playgroundSettings.saveToUrl) return
+    if (!playgroundSettings.saveToUrl || legacyQuery !== undefined) return
     if (serialized === lastUrlProject) return
     const url = new URL(location.href)
     url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`

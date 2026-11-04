@@ -378,7 +378,8 @@ export function startTsgoLsp(options: StartTsgoLspOptions) {
     )
   )
   const stdin = new SharedArrayBuffer(headerWords * Int32Array.BYTES_PER_ELEMENT + bufferSize)
-  const worker = new RingBufferWorker(stdin, options.configFileName, options.effectiveConfigText)
+  const configModelPath = resolveSymlinks(options.configFileName, options.symlinks ?? {}) ?? options.configFileName
+  const worker = new RingBufferWorker(stdin, configModelPath, options.effectiveConfigText)
   let serverInfo: string | undefined
   worker.onStatus = status => options.onStatus(status, serverInfo)
   worker.onServerInfo = info => {

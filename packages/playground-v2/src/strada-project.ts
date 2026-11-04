@@ -23,6 +23,27 @@ function hasFileMatcher(compiler: Compiler): compiler is CompilerWithFileMatcher
 
 export const normalizeStradaPath = normalizeVirtualPath
 
+export function parseStradaConfig(
+  compiler: Compiler,
+  filesystem: ReturnType<typeof createStradaFileSystem>,
+  configFileName = "/workspace/tsconfig.json"
+) {
+  const config = compiler.parseConfigFileTextToJson(configFileName, filesystem.readFile(configFileName) ?? "{}")
+  const parsed = compiler.parseJsonConfigFileContent(
+    config.config ?? {},
+    filesystem,
+    configFileName.slice(0, configFileName.lastIndexOf("/")),
+    undefined,
+    configFileName
+  )
+  return {
+    errors: [...(config.error ? [config.error] : []), ...parsed.errors],
+    options: parsed.options,
+    rootNames: parsed.fileNames,
+    projectReferences: parsed.projectReferences,
+  }
+}
+
 export function createStradaFileSystem(
   compiler: Compiler,
   fileNames: () => Iterable<string>,
