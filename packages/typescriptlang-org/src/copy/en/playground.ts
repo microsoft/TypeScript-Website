@@ -1,5 +1,8 @@
 export const playCopy = {
   play_subnav_title: "Playground",
+  play_new_playground_description:
+    "TypeScript 7 and multi-file projects are now available.",
+  play_new_playground_link: "Try the new Playground!",
   play_subnav_config: "TS Config",
   play_config_language_blurb: "Which language should be used in the editor",
   play_subnav_handbook: "Help",

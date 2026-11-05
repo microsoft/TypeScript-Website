@@ -97,8 +97,9 @@ const hrefForExample = (
     .map(key => key + "=" + params[key])
     .join("&")
 
-  const langURL = lang === "en" ? "" : lang
-  return `${langURL}/play/?${prefix + queryParams}#${hash}`
+  const query = [prefix, queryParams].filter(Boolean).join("&")
+  const langPrefix = lang === "en" ? "" : `/${lang}`
+  return `${langPrefix}/play/?${query}#${hash}`
 }
 
 const getCompilerDetailsFromCode = (contents: string) => {
