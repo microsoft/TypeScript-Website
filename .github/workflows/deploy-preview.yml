@@ -26,8 +26,8 @@ jobs:
       name: azure-preview
       deployment: false
     env:
-      AZURE_STATIC_WEB_APP_NAME: typescriptlang-org-preview
-      AZURE_RESOURCE_GROUP: typescriptlang-org-preview
+      AZURE_STATIC_WEB_APP_NAME: ${{ vars.AZURE_STATIC_WEB_APP_NAME }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
     steps:
       - name: Get PR/workflow run info
         id: get-info
@@ -167,6 +167,8 @@ jobs:
           PR_NUMBER: ${{ fromJson(steps.get-info.outputs.result).pr }}
         run: |
           set -euo pipefail
+          : "${AZURE_STATIC_WEB_APP_NAME:?Missing AZURE_STATIC_WEB_APP_NAME environment variable}"
+          : "${AZURE_RESOURCE_GROUP:?Missing AZURE_RESOURCE_GROUP environment variable}"
           if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
             echo "::error::Invalid preview PR number"
             exit 1

@@ -20,8 +20,8 @@ jobs:
       name: azure-preview
       deployment: false
     env:
-      AZURE_STATIC_WEB_APP_NAME: typescriptlang-org-preview
-      AZURE_RESOURCE_GROUP: typescriptlang-org-preview
+      AZURE_STATIC_WEB_APP_NAME: ${{ vars.AZURE_STATIC_WEB_APP_NAME }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
     steps:
       - name: Log in to Azure
         uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
@@ -35,6 +35,8 @@ jobs:
           PR_NUMBER: ${{ inputs.pr || github.event.pull_request.number }}
         run: |
           set -euo pipefail
+          : "${AZURE_STATIC_WEB_APP_NAME:?Missing AZURE_STATIC_WEB_APP_NAME environment variable}"
+          : "${AZURE_RESOURCE_GROUP:?Missing AZURE_RESOURCE_GROUP environment variable}"
           if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
             echo "::error::Invalid preview PR number"
             exit 1
