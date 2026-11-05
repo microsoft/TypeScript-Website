@@ -186,7 +186,12 @@ jobs:
           # Keep CLI configuration outside the untrusted artifact.
           printf '{"configurations":{"preview":{}}}\n' > "$RUNNER_TEMP/swa-cli.config.json"
           runtime_config_dir="$(mktemp -d "$RUNNER_TEMP/swa-runtime-config.XXXXXX")"
-          cp "$GITHUB_WORKSPACE/site/staticwebapp.config.json" "$runtime_config_dir/"
+          if [[ -e "$GITHUB_WORKSPACE/site/staticwebapp.config.json" ]]; then
+            cp "$GITHUB_WORKSPACE/site/staticwebapp.config.json" "$runtime_config_dir/"
+          else
+            echo "No root Static Web Apps config; using an empty runtime configuration"
+            printf '{}\n' > "$runtime_config_dir/staticwebapp.config.json"
+          fi
           SWA_CLI_DEPLOYMENT_TOKEN="$deployment_token" \
             npx --yes --package=@azure/static-web-apps-cli@2.1.0 swa \
               --config "$RUNNER_TEMP/swa-cli.config.json" deploy \
