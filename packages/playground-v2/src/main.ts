@@ -1,5 +1,6 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
 import { downloadCompilerAsset, fetchCompilerResource, readResponseBytes } from "./compiler-assets"
+import { ensureCrossOriginIsolation, retryStartup } from "./isolation"
 import {
   legacyCompilerBaseUrl,
   loadPublishedCompilerDistribution,
@@ -251,6 +252,7 @@ const downloadConsent = getElement("download-consent")
 const downloadSize = getElement("download-size")
 const rememberDownloadConsent = getElement<HTMLInputElement>("remember-download-consent")
 const confirmDownloadButton = getElement<HTMLButtonElement>("confirm-download-button")
+const retryStartupButton = getElement<HTMLButtonElement>("retry-startup-button")
 
 let compilerReady = false
 let lspReady = false
@@ -874,6 +876,7 @@ toggleRunOutputButton.addEventListener("click", () => {
 })
 navigateBackButton.addEventListener("click", navigateBack)
 runButton.addEventListener("click", runProject)
+retryStartupButton.addEventListener("click", retryStartup)
 settingsButton.addEventListener("click", openSettings)
 settingsCancelButton.addEventListener("click", () => settingsDialog.close())
 settingsResetButton.addEventListener("click", () => populateSettingsForm(defaultPlaygroundSettings()))
@@ -914,6 +917,8 @@ void (useNativeCompiler ? initializeNativeCompiler() : initializeStradaCompiler(
 
 async function initializeNativeCompiler() {
   try {
+    setLoadingIndeterminate("Preparing TypeScript...", "")
+    await ensureCrossOriginIsolation()
     if (isDefaultNativeCompilerVersion(selectedCompiler)) compilerVersionLabel.textContent = "Default"
     else if (normalizeRequestedVersion(selectedCompiler!) === "next") compilerVersionLabel.textContent = "Nightly"
     const distribution = await getCompilerDistribution()
@@ -2598,6 +2603,9 @@ function renderStatus() {
     loader.hidden = false
     loader.dataset.state = "error"
     loadingMessage.textContent = failure
+    loadingProgress.hidden = true
+    loadingDetail.textContent = ""
+    retryStartupButton.hidden = false
     return
   }
   if (!compilerReady) {

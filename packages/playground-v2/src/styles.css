@@ -1203,8 +1203,13 @@ code {
   accent-color: #3178c6;
 }
 
-.loading-overlay[data-state="error"] progress {
-  accent-color: #c63131;
+.loading-overlay[data-state="error"] .loading-card {
+  pointer-events: auto;
+}
+
+.loading-overlay[data-state="error"] progress,
+.loading-overlay[data-state="error"] .lds-grid {
+  display: none;
 }
 
 .loading-overlay small {
