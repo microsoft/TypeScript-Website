@@ -8,6 +8,7 @@ In the editor toolbar, the one which is not visible because you're reading this 
 
 - Take the code in the editor and convert it to JS
 - Remove references to `"reflect-metadata"` if you are using decorators
+- Add guards to loops so that code which blocks the page for more than a second exits its loops instead of freezing the tab (can be turned off via "Disable Loop Protection" in Settings)
 - Run that code within the context of your current browser session
 - Capture any `console.log`, `.error`, `.warn` and `.debug` calls and show them in the sidebar "Logs" tab.
 
