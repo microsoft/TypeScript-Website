@@ -377,7 +377,9 @@ export function registerPlaygroundLanguages() {
 
 export function startTsgoLsp(options: StartTsgoLspOptions) {
   if (!crossOriginIsolated) {
-    throw new Error("The TypeScript language server requires cross-origin isolation; reload once to activate it.")
+    throw new Error(
+      "This browser cannot enable the TypeScript language service. Open this page in your system browser, or choose TypeScript 6."
+    )
   }
 
   readPackageFile = options.readPackageFile

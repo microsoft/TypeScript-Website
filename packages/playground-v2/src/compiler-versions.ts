@@ -1,4 +1,5 @@
 import { gte, prerelease, rcompare, valid } from "semver"
+import { CompilerDownloadError, fetchCompilerResource } from "./compiler-assets"
 
 export type PublishedCompilerVersions = {
   versions: string[]
@@ -43,13 +44,17 @@ export function isNativeCompilerVersion(version: string | null) {
 export async function loadPublishedCompilerVersions(): Promise<PublishedCompilerVersions> {
   const entries = await Promise.all(
     (["latest", "next", "beta", "rc"] as const).map(async tag => {
-      const response = await fetch(`https://unpkg.com/typescript@${tag}/package.json`, {
-        cache: "no-cache",
-        signal: AbortSignal.timeout(15_000),
-      })
-      if (response.status === 404) return [tag, undefined] as const
-      if (!response.ok) throw new Error(`Could not resolve TypeScript ${tag}: ${response.status}`)
-      const metadata: unknown = await response.json()
+      let metadata: unknown
+      try {
+        metadata = await fetchCompilerResource(
+          new URL(`https://unpkg.com/typescript@${tag}/package.json`),
+          response => response.json(),
+          { cache: "no-cache", timeout: 15_000 }
+        )
+      } catch (error) {
+        if (error instanceof CompilerDownloadError && error.status === 404) return [tag, undefined] as const
+        throw error
+      }
       const version: unknown = metadata && typeof metadata === "object" ? Reflect.get(metadata, "version") : undefined
       if (
         !metadata ||
@@ -70,12 +75,11 @@ export async function loadPublishedCompilerVersions(): Promise<PublishedCompiler
 }
 
 export async function loadLegacyCompilerVersions(): Promise<string[]> {
-  const response = await fetch("https://playgroundcdn.typescriptlang.org/indexes/releases.json", {
-    cache: "no-cache",
-    signal: AbortSignal.timeout(15_000),
-  })
-  if (!response.ok) throw new Error(`Could not load historical TypeScript versions: ${response.status}`)
-  const metadata: unknown = await response.json()
+  const metadata: unknown = await fetchCompilerResource(
+    new URL("https://playgroundcdn.typescriptlang.org/indexes/releases.json"),
+    response => response.json(),
+    { cache: "no-cache", timeout: 15_000 }
+  )
   const versions: unknown = metadata && typeof metadata === "object" ? Reflect.get(metadata, "versions") : undefined
   if (
     !Array.isArray(versions) ||

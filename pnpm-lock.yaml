@@ -23,6 +23,9 @@ patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
     hash: 2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0
     path: patches/@vscode__monaco-lsp-client@0.1.0.patch
+  coi-serviceworker@0.1.7:
+    hash: 714b4adc6ff6ecd02825ea3646eae7d2f84ef6ea33d2023e8e03d1d236243e2f
+    path: patches/coi-serviceworker@0.1.7.patch
   gatsby-remark-shiki-twoslash@3.0.38:
     hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
@@ -202,7 +205,7 @@ importers:
         version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78))(ws@8.19.0)
       coi-serviceworker:
         specifier: ^0.1.7
-        version: 0.1.7
+        version: 0.1.7(patch_hash=714b4adc6ff6ecd02825ea3646eae7d2f84ef6ea33d2023e8e03d1d236243e2f)
       hack-font:
         specifier: ^3.3.0
         version: 3.3.0
@@ -14443,7 +14446,7 @@ snapshots:
 
   co@4.6.0: {}
 
-  coi-serviceworker@0.1.7: {}
+  coi-serviceworker@0.1.7(patch_hash=714b4adc6ff6ecd02825ea3646eae7d2f84ef6ea33d2023e8e03d1d236243e2f): {}
 
   collect-v8-coverage@1.0.3: {}
 

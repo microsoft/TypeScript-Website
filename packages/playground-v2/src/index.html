@@ -10,7 +10,6 @@
         location.replace(url)
       }
     </script>
-    <script src="./coi-serviceworker.min.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
     <meta name="color-scheme" content="light dark" />
@@ -314,6 +313,7 @@
             <p id="loading-message" role="status">Loading TypeScript...</p>
             <progress id="loading-progress" max="100" value="0" aria-labelledby="loading-message"></progress>
             <small id="loading-detail"></small>
+            <button id="retry-startup-button" class="action-button" type="button" hidden>Retry</button>
           </div>
           <section id="download-consent" class="download-consent" aria-labelledby="download-consent-title" hidden>
             <h2 id="download-consent-title">Download TypeScript?</h2>
