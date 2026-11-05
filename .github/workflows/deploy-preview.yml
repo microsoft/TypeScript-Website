@@ -185,12 +185,14 @@ jobs:
           echo "::add-mask::$deployment_token"
           # Keep CLI configuration outside the untrusted artifact.
           printf '{"configurations":{"preview":{}}}\n' > "$RUNNER_TEMP/swa-cli.config.json"
+          runtime_config_dir="$(mktemp -d "$RUNNER_TEMP/swa-runtime-config.XXXXXX")"
+          cp "$GITHUB_WORKSPACE/site/staticwebapp.config.json" "$runtime_config_dir/"
           SWA_CLI_DEPLOYMENT_TOKEN="$deployment_token" \
             npx --yes --package=@azure/static-web-apps-cli@2.1.0 swa \
               --config "$RUNNER_TEMP/swa-cli.config.json" deploy \
               --app-location "$GITHUB_WORKSPACE" \
               --output-location "$GITHUB_WORKSPACE/site" \
-              --swa-config-location "$GITHUB_WORKSPACE/site" \
+              --swa-config-location "$runtime_config_dir" \
               --env "$PR_NUMBER"
 
           hostname="$(az staticwebapp environment show \
