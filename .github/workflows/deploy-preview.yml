@@ -211,7 +211,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prefix = "Azure Static Web Apps: Your stage site is ready!";
+            const prefix = "Azure Static Web Apps: Your preview site is ready!";
+            const legacyPrefix = "Azure Static Web Apps: Your stage site is ready!";
             const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -220,7 +221,8 @@ jobs:
             });
 
             for (const comment of comments) {
-              if (comment.user?.login === "github-actions[bot]" && comment.body?.startsWith(prefix)) {
+              if (comment.user?.login === "github-actions[bot]" &&
+                  (comment.body?.startsWith(prefix) || comment.body?.startsWith(legacyPrefix))) {
                 console.log(`Deleting comment ${comment.id}`);
                 await github.rest.issues.deleteComment({
                   owner: context.repo.owner,
