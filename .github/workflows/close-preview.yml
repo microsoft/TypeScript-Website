@@ -42,17 +42,32 @@ jobs:
             exit 1
           fi
 
-          environment="$(az staticwebapp environment list \
-            --name "$AZURE_STATIC_WEB_APP_NAME" \
-            --resource-group "$AZURE_RESOURCE_GROUP" \
-            --query "[?name=='$PR_NUMBER'].name" --output tsv)"
+          get_preview_environment() {
+            az staticwebapp environment list \
+              --name "$AZURE_STATIC_WEB_APP_NAME" \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --query "[?name=='$PR_NUMBER'].name" --output tsv
+          }
+
+          environment="$(get_preview_environment)"
           if [[ -z "$environment" ]]; then
             echo "No preview environment exists for PR $PR_NUMBER"
             exit 0
           fi
 
-          az staticwebapp environment delete \
-            --name "$AZURE_STATIC_WEB_APP_NAME" \
-            --resource-group "$AZURE_RESOURCE_GROUP" \
-            --environment-name "$PR_NUMBER" \
-            --yes
+          # Avoid Azure CLI's subscription-scoped long-running-operation polling.
+          resource_id="/subscriptions/{subscriptionId}/resourceGroups/$AZURE_RESOURCE_GROUP"
+          resource_id+="/providers/Microsoft.Web/staticSites/$AZURE_STATIC_WEB_APP_NAME"
+          az rest --method delete --url "$resource_id/builds/$PR_NUMBER?api-version=2024-11-01"
+
+          for _ in {1..30}; do
+            environment="$(get_preview_environment)"
+            if [[ -z "$environment" ]]; then
+              echo "Deleted preview environment for PR $PR_NUMBER"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo "::error::Timed out waiting for preview $PR_NUMBER to be deleted"
+          exit 1
