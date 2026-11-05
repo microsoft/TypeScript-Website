@@ -36,7 +36,7 @@ export const createPlaygrounds = async (
   const docs = anyData.allFile.nodes
 
   docs.forEach(lang => {
-    if (!isMultiLingual && lang !== "en") return
+    if (!isMultiLingual && lang.name !== "en") return
 
     const appRoot = path.join(__dirname, "..", "..", "..", "..")
 

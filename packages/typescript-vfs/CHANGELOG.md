@@ -1,5 +1,11 @@
 # @typescript/vfs
 
+## 1.6.6
+
+### Patch Changes
+
+- [#3687](https://github.com/microsoft/TypeScript-Website/pull/3687) [`b1c247f`](https://github.com/microsoft/TypeScript-Website/commit/b1c247f2250efb6cdd5c08dc63883f9ce9852cd0) Thanks [@jakebailey](https://github.com/jakebailey)! - Switch to new release pipeline
+
 ## 1.6.5
 
 ### Patch Changes

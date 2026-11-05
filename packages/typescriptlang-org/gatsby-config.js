@@ -66,6 +66,8 @@ module.exports = {
       options: {
         // Skip handbook v2 from appearing in search
         excludes: [`*/glossary`, `*/vo/*`],
+        // The new playground is static HTML rather than a Gatsby page.
+        resolvePages: ({ allSitePage }) => [...allSitePage.nodes, { path: "/play/v2/" }],
       },
     },
     // Lets you edit the head from inside a react tree
