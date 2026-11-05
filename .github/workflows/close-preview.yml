@@ -9,15 +9,48 @@ on:
   pull_request_target:
     types: [closed]
 
-permissions: {}
+permissions:
+  id-token: write
 
 jobs:
   close:
     runs-on: ubuntu-latest
     if: github.repository == 'microsoft/TypeScript-Website'
+    environment:
+      name: azure-preview
+      deployment: false
+    env:
+      AZURE_STATIC_WEB_APP_NAME: typescriptlang-org-preview
+      AZURE_RESOURCE_GROUP: typescriptlang-org-preview
     steps:
-      - uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
+      - name: Log in to Azure
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
-          action: close
-          app_location: /dev/null
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Close preview environment
+        env:
+          PR_NUMBER: ${{ inputs.pr || github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::Invalid preview PR number"
+            exit 1
+          fi
+
+          environment="$(az staticwebapp environment list \
+            --name "$AZURE_STATIC_WEB_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query "[?name=='$PR_NUMBER'].name" --output tsv)"
+          if [[ -z "$environment" ]]; then
+            echo "No preview environment exists for PR $PR_NUMBER"
+            exit 0
+          fi
+
+          az staticwebapp environment delete \
+            --name "$AZURE_STATIC_WEB_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --environment-name "$PR_NUMBER" \
+            --yes

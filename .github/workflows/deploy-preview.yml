@@ -16,11 +16,18 @@ permissions:
   contents: read
   pull-requests: write
   actions: read
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     if: github.repository == 'microsoft/TypeScript-Website'
+    environment:
+      name: azure-preview
+      deployment: false
+    env:
+      AZURE_STATIC_WEB_APP_NAME: typescriptlang-org-preview
+      AZURE_RESOURCE_GROUP: typescriptlang-org-preview
     steps:
       - name: Get PR/workflow run info
         id: get-info
@@ -139,19 +146,61 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ fromJson(steps.get-info.outputs.result).runId }}
 
+      - name: Set up Node.js
+        if: ${{ steps.get-info.outputs.result != 'null' }}
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.x"
+
+      - name: Log in to Azure
+        if: ${{ steps.get-info.outputs.result != 'null' }}
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
       - name: Deploy
         id: deploy
         if: ${{ steps.get-info.outputs.result != 'null' }}
-        uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
-          # Unsetting the repo token so we can control commenting ourselves.
-          # repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "site"
-          skip_app_build: true
-          production_branch: v2
-          deployment_environment: ${{ fromJson(steps.get-info.outputs.result).pr }}
+        env:
+          PR_NUMBER: ${{ fromJson(steps.get-info.outputs.result).pr }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::Invalid preview PR number"
+            exit 1
+          fi
+
+          deployment_token="$(az staticwebapp secrets list \
+            --name "$AZURE_STATIC_WEB_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --query properties.apiKey --output tsv)"
+          if [[ -z "$deployment_token" ]]; then
+            echo "::error::Azure returned no preview deployment token"
+            exit 1
+          fi
+          echo "::add-mask::$deployment_token"
+          # Keep CLI configuration outside the untrusted artifact.
+          printf '{"configurations":{"preview":{}}}\n' > "$RUNNER_TEMP/swa-cli.config.json"
+          SWA_CLI_DEPLOYMENT_TOKEN="$deployment_token" \
+            npx --yes --package=@azure/static-web-apps-cli@2.1.0 swa \
+              --config "$RUNNER_TEMP/swa-cli.config.json" deploy \
+              --app-location "$GITHUB_WORKSPACE" \
+              --output-location "$GITHUB_WORKSPACE/site" \
+              --swa-config-location "$GITHUB_WORKSPACE/site" \
+              --env "$PR_NUMBER"
+
+          hostname="$(az staticwebapp environment show \
+            --name "$AZURE_STATIC_WEB_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --environment-name "$PR_NUMBER" \
+            --query hostname --output tsv)"
+          if [[ ! "$hostname" =~ ^[A-Za-z0-9.-]+\.azurestaticapps\.net$ ]]; then
+            echo "::error::Azure returned an invalid hostname for preview $PR_NUMBER"
+            exit 1
+          fi
+          printf 'static_web_app_url=https://%s\n' "$hostname" >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
         if: ${{ steps.get-info.outputs.result != 'null' }}
