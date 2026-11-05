@@ -1,4 +1,5 @@
 import { prerelease, valid } from "semver"
+import { fetchCompilerResource, type CompilerAssetMetadata } from "./compiler-assets"
 
 export type CompilerModules = {
   sync: string
@@ -14,6 +15,7 @@ export type CompilerDistribution = CompilerModules & {
   libraries: URL[]
   assetBytes: number
   estimatedDownloadBytes: number
+  assets: ReadonlyMap<string, CompilerAssetMetadata>
 }
 
 export async function loadPublishedCompilerDistribution(version: string): Promise<CompilerDistribution> {
@@ -28,11 +30,11 @@ export async function loadPublishedCompilerDistribution(version: string): Promis
   const schema = packageEntry(main, "./schemas/tsconfig.schema.json")
   const libraryDirectory = new URL("./", wasm)
   const [mainFiles, artifactFiles] = await Promise.all([
-    loadFileSizes(main.base),
-    loadFileSizes(artifact.base, libraryDirectory),
+    loadFileMetadata(main.base),
+    loadFileMetadata(artifact.base, libraryDirectory),
   ])
-  function size(files: ReadonlyMap<string, number>, url: URL) {
-    const bytes = files.get(url.href)
+  function size(files: ReadonlyMap<string, CompilerAssetMetadata>, url: URL) {
+    const bytes = files.get(url.href)?.size
     if (bytes === undefined) throw new Error(`Missing compiler file size: ${url.pathname}`)
     return bytes
   }
@@ -47,7 +49,7 @@ export async function loadPublishedCompilerDistribution(version: string): Promis
   const wasmBytes = size(artifactFiles, wasm)
   const libraryBytes = libraries.reduce((sum, url) => sum + size(artifactFiles, url), 0)
   const schemaBytes = size(mainFiles, schema)
-  const moduleBytes = [...mainFiles].reduce((sum, [url, bytes]) => sum + (url.endsWith(".js") ? bytes : 0), 0)
+  const moduleBytes = [...mainFiles].reduce((sum, [url, file]) => sum + (url.endsWith(".js") ? file.size : 0), 0)
   // CDN samples: WASM ~25%, JavaScript ~12%, JSON ~10%; declarations are uncompressed.
   const estimatedDownloadBytes = Math.ceil(wasmBytes * 0.25 + moduleBytes * 0.12 + schemaBytes * 0.1 + libraryBytes)
   return {
@@ -61,15 +63,14 @@ export async function loadPublishedCompilerDistribution(version: string): Promis
     libraries,
     assetBytes: wasmBytes + schemaBytes + libraryBytes,
     estimatedDownloadBytes,
+    assets: new Map([...mainFiles, ...artifactFiles]),
   }
 }
 
 async function loadPackage(name: string, version: string) {
   const base = new URL(`https://unpkg.com/${name}@${version}/`)
   const url = new URL("package.json", base)
-  const response = await fetch(url, { signal: AbortSignal.timeout(30_000) })
-  if (!response.ok) throw new Error(`Could not load ${name}@${version}: ${response.status}`)
-  const metadata: unknown = await response.json()
+  const metadata: unknown = await fetchCompilerResource(url, response => response.json())
   if (
     !isRecord(metadata) ||
     metadata.name !== name ||
@@ -87,23 +88,23 @@ async function loadPackage(name: string, version: string) {
   }
 }
 
-async function loadFileSizes(base: URL, directory = base): Promise<ReadonlyMap<string, number>> {
-  const response = await fetch(new URL("?meta", directory), { signal: AbortSignal.timeout(30_000) })
-  if (!response.ok) throw new Error(`Could not load compiler file sizes: ${response.status}`)
-  const metadata: unknown = await response.json()
+async function loadFileMetadata(base: URL, directory = base): Promise<ReadonlyMap<string, CompilerAssetMetadata>> {
+  const metadata: unknown = await fetchCompilerResource(new URL("?meta", directory), response => response.json())
   if (!isRecord(metadata) || !Array.isArray(metadata.files)) throw new Error("Invalid compiler file sizes")
-  const files = new Map<string, number>()
+  const files = new Map<string, CompilerAssetMetadata>()
   for (const file of metadata.files) {
     if (
       !isRecord(file) ||
       typeof file.path !== "string" ||
       typeof file.size !== "number" ||
       !Number.isSafeInteger(file.size) ||
-      file.size < 0
+      file.size < 0 ||
+      typeof file.integrity !== "string" ||
+      !/^sha256-[A-Za-z0-9+/]{43}=$/.test(file.integrity)
     ) {
       throw new Error("Invalid compiler file size")
     }
-    files.set(new URL(file.path.replace(/^\//, ""), base).href, file.size)
+    files.set(new URL(file.path.replace(/^\//, ""), base).href, { size: file.size, integrity: file.integrity })
   }
   return files
 }

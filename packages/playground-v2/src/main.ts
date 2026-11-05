@@ -1,4 +1,5 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
+import { downloadCompilerAsset, fetchCompilerResource, readResponseBytes } from "./compiler-assets"
 import {
   legacyCompilerBaseUrl,
   loadPublishedCompilerDistribution,
@@ -976,13 +977,11 @@ async function initializeStradaCompiler(requestedVersion: string) {
     const baseUrl = legacyCompilerBaseUrl(version, mirroredVersions)
     const compilerUrl = new URL("typescript.js", baseUrl)
     setLoadingIndeterminate("Downloading TypeScript...", "")
-    const compilerResponse = await fetch(compilerUrl)
-    if (!compilerResponse.ok) {
-      throw new Error(`Unable to load TypeScript ${version}: ${compilerResponse.status} ${compilerResponse.statusText}`)
-    }
     const compilerSource = new TextDecoder().decode(
-      await readResponseBytes(compilerResponse, length =>
-        setLoadingIndeterminate("Downloading TypeScript...", `${formatBytes(length)} received`)
+      await fetchCompilerResource(compilerUrl, response =>
+        readResponseBytes(response, length =>
+          setLoadingIndeterminate("Downloading TypeScript...", `${formatBytes(length)} received`)
+        )
       )
     )
     setLoadingIndeterminate("Starting TypeScript...", "")
@@ -1908,54 +1907,23 @@ async function downloadLibraries(distribution: CompilerDistribution) {
 }
 
 async function downloadAsset(name: string, url: URL): Promise<Uint8Array<ArrayBuffer>> {
-  const request = new Request(url)
   const cache = await getAssetCache()
-  let response = await cache?.match(url)
-  cachedAssets.set(name, response !== undefined)
-  let cacheWrite: Promise<void> | undefined
-  if (!response) {
-    response = await fetch(request)
-  }
-  if (!response.ok) {
-    throw new Error(`Unable to load ${url.pathname}: ${response.status} ${response.statusText}`)
-  }
-  if (cache && !cachedAssets.get(name)) cacheWrite = cache.put(request, response.clone())
-  const bytes = await readResponseBytes(response, length => {
-    downloadedAssets.set(name, length)
-    updateDownloadProgress()
+  const metadata = nativeDistribution?.assets.get(url.href)
+  if (!metadata) throw new Error(`Compiler asset metadata is missing: ${url.pathname}`)
+  return downloadCompilerAsset(url, metadata, {
+    cache,
+    onSource(cached) {
+      cachedAssets.set(name, cached)
+    },
+    onRetry() {
+      downloadedAssets.delete(name)
+      setLoadingIndeterminate("Retrying TypeScript download...", "")
+    },
+    onProgress(length) {
+      downloadedAssets.set(name, length)
+      updateDownloadProgress()
+    },
   })
-  await cacheWrite
-  return bytes
-}
-
-async function readResponseBytes(
-  response: Response,
-  onProgress: (length: number) => void
-): Promise<Uint8Array<ArrayBuffer>> {
-  if (!response.body) {
-    const bytes = new Uint8Array(await response.arrayBuffer())
-    onProgress(bytes.length)
-    return bytes
-  }
-
-  const chunks: Uint8Array[] = []
-  const reader = response.body.getReader()
-  let length = 0
-  for (;;) {
-    const { done, value } = await reader.read()
-    if (done) break
-    chunks.push(value)
-    length += value.length
-    onProgress(length)
-  }
-
-  const bytes = new Uint8Array(length)
-  let offset = 0
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset)
-    offset += chunk.length
-  }
-  return bytes
 }
 
 function getAssetCache() {

@@ -23,6 +23,95 @@ import {
 import { createStradaFileSystem, parseStradaConfig } from "./strada-project"
 import { createPlaygroundV2Query } from "../../typescriptlang-org/src/lib/createPlaygroundV2Query"
 import { decodeCompressedHash, projectMarkdown, type ExportProject } from "./exporter"
+import { downloadCompilerAsset } from "./compiler-assets"
+
+test("compiler downloads discard corrupt cached bytes and retry interrupted or incomplete responses", async () => {
+  const url = new URL("https://example.test/tsc.wasm")
+  const bytes = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0])
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))
+  const metadata = { size: bytes.length, integrity: `sha256-${Buffer.from(digest).toString("base64")}` }
+  const originalFetch = globalThis.fetch
+  const requests: RequestCache[] = []
+  const writes: Response[] = []
+  let deleted = 0
+  let retries = 0
+  const corrupt = new Response(new Uint8Array(bytes.length))
+  const cache = {
+    match: async () => corrupt,
+    delete: async () => {
+      deleted++
+      return true
+    },
+    put: async (_url: unknown, response: Response) => {
+      writes.push(response)
+    },
+  }
+  globalThis.fetch = async (_url, init) => {
+    requests.push(init?.cache ?? "default")
+    if (requests.length === 1) throw new TypeError("Connection interrupted")
+    return new Response(requests.length === 2 ? bytes.slice(0, -1) : bytes, {
+      headers: { "content-encoding": "gzip" },
+    })
+  }
+  try {
+    const result = await downloadCompilerAsset(url, metadata, {
+      cache,
+      onProgress() {},
+      onSource() {},
+      onRetry() {
+        retries++
+      },
+    })
+    assert.deepEqual(result, bytes)
+    assert.equal(deleted, 1)
+    assert.equal(retries, 2)
+    assert.deepEqual(requests, ["no-store", "no-store", "no-store"])
+    assert.equal(writes.length, 1)
+    assert.deepEqual(new Uint8Array(await writes[0].arrayBuffer()), bytes)
+    assert.equal(writes[0].headers.get("content-encoding"), null)
+  } finally {
+    globalThis.fetch = originalFetch
+  }
+})
+
+test("compiler download retries are bounded and never cache a bad transfer", async () => {
+  const originalFetch = globalThis.fetch
+  let requests = 0
+  let writes = 0
+  globalThis.fetch = async () => {
+    requests++
+    return new Response(new Uint8Array(1))
+  }
+  try {
+    await assert.rejects(
+      () =>
+        downloadCompilerAsset(
+          new URL("https://example.test/tsc.wasm"),
+          {
+            size: 2,
+            integrity: `sha256-${"A".repeat(43)}=`,
+          },
+          {
+            cache: {
+              match: async () => undefined,
+              delete: async () => false,
+              put: async () => {
+                writes++
+              },
+            },
+            onProgress() {},
+            onSource() {},
+            onRetry() {},
+          }
+        ),
+      /Incomplete compiler download/
+    )
+    assert.equal(requests, 3)
+    assert.equal(writes, 0)
+  } finally {
+    globalThis.fetch = originalFetch
+  }
+})
 
 test("the legacy handoff serializes effective options with its own compiler and retains the requested channel", () => {
   const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript")
