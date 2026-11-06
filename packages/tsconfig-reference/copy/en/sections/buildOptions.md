@@ -4,7 +4,7 @@ Type Acquisition is only important for JavaScript projects. In TypeScript projec
 
 You may not want this, in which case you can turn off type acquisition by having this `jsconfig.json` in the root of your project:
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "enable": false
@@ -14,7 +14,7 @@ You may not want this, in which case you can turn off type acquisition by having
 
 Common uses for this section of a `jsconfig.json` is to tell TypeScript to download additional definitions for your tooling experience:
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "include": ["jquery"]
