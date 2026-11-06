@@ -190,7 +190,7 @@ TypeScript doesn't hurt us here at all, but this behavior is worth noting if you
 TypeScript can often help you catch bugs early on, but if you choose to do _nothing_ with a value, there's only so much that it can do without being overly prescriptive.
 If you want, you can make sure you handle situations like these with a linter.
 
-One last word on narrowing by truthiness is that Boolean negations with `!` filter out from negated branches.
+One last word on narrowing by truthiness is that Boolean negations with `!` filter out truthy types in negated branches.
 
 ```ts twoslash
 function multiplyAll(
