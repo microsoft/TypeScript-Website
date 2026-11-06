@@ -3,7 +3,7 @@ display: "Extends"
 oneline: "Specify one or more path or node module references to base configuration files from which settings are inherited."
 ---
 
-The value of `extends` is a string which contains a path to another configuration file to inherit from.
+The value of `extends` is a string or list of strings which contains a path to another configuration file to inherit from.
 The path may use Node.js style resolution.
 
 The configuration from the base file are loaded first, then overridden by those in the inheriting config file. All relative paths found in the configuration file will be resolved relative to the configuration file they originated in.
@@ -26,12 +26,31 @@ Currently, the only top-level property that is excluded from inheritance is [`re
 }
 ```
 
+`configs/withJson.json`:
+
+```json tsconfig
+{
+  "compilerOptions": {
+    "resolveJsonModule": true
+  }
+}
+```
+
 `tsconfig.json`:
 
 ```json tsconfig
 {
   "extends": "./configs/base",
   "files": ["main.ts", "supplemental.ts"]
+}
+```
+
+`tsconfig.custom.json`:
+
+```json tsconfig
+{
+  "extends": ["./configs/base", "./configs/withJson.json"],
+  "files": ["main.ts", "package.json"]
 }
 ```
 
