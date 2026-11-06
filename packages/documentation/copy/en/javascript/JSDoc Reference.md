@@ -78,11 +78,6 @@ var win;
 
 /** @type {PromiseLike<string>} */
 var promisedString;
-
-// You can specify an HTML Element with DOM properties
-/** @type {HTMLElement} */
-var myElement = document.querySelector(selector);
-element.dataset.myData = "";
 ```
 
 `@type` can specify a union type &mdash; for example, something can be either a string or a boolean.
@@ -160,10 +155,11 @@ var star;
 var question;
 ```
 
-#### Casts
+#### Type Assertions
 
-TypeScript borrows cast syntax from Google Closure.
-This lets you cast types to other types by adding a `@type` tag before any parenthesized expression.
+TypeScript borrows cast syntax from Google Closure, using it as type assertions in JSDoc.
+
+This lets you "cast" types to other types by adding a `@type` tag before any **parenthesized** expression like `as` keyword in TypeScript.
 
 ```js twoslash
 /**
@@ -173,10 +169,28 @@ var numberOrString = Math.random() < 0.5 ? "hello" : 100;
 var typeAssertedNumber = /** @type {number} */ (numberOrString);
 ```
 
+A more practical and common use case is to assign a specific HTML element type for a element.
+
+Sometimes you will have information about the type of a value that TypeScript can’t know about.
+
+For example, if you’re using `document.getElementById`, TypeScript only knows that this will return *some* kind of `HTMLElement`, but you might know that your page will always have an `HTMLCanvasElement` with a given ID.
+
+In this situation, you can use a *type assertion* to specify a more specific type:
+
+```js twoslash
+const myCanvas = /** @type {HTMLCanvasElement} */ (document.getElementById("main_canvas"));
+```
+
 You can even cast to `const` just like TypeScript:
 
 ```js twoslash
 let one = /** @type {const} */(1);
+```
+
+The type assertions can be nested:
+
+```js twoslash
+const x = /** @type {number} */ (/** @type {unknown} */ ("hello"))
 ```
 
 #### Import types
