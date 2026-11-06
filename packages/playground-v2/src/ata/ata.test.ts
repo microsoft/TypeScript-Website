@@ -37,8 +37,11 @@ function registry(fixtures: Record<string, Fixture>) {
       init?.signal?.throwIfAborted()
       if (failures.delete(url)) return new Response("", { status: 503 })
       const tree = /^https:\/\/unpkg\.com\/(.+)@([^/]+)\/\?meta$/.exec(url)
+      // Browsers reject unpkg's redirects to exact ?meta URLs for lacking CORS headers.
+      if (tree && tree[2] !== "1.0.0") throw new TypeError("Failed to fetch")
+      const manifest = /^https:\/\/unpkg\.com\/(.+)@[^/]+\/package\.json$/.exec(url)
       const file = /^https:\/\/unpkg\.com\/(.+)@1\.0\.0(\/.+)$/.exec(url)
-      const name = tree?.[1] ?? file?.[1]
+      const name = tree?.[1] ?? manifest?.[1] ?? file?.[1]
       const fixture = name ? fixtures[name] : undefined
       if (!fixture) return new Response("", { status: 404 })
       if (tree) {
@@ -48,7 +51,7 @@ function registry(fixtures: Record<string, Fixture>) {
           files: ["/package.json", ...Object.keys(fixture.files)].map(path => ({ path })),
         })
       }
-      if (file?.[2] === "/package.json") {
+      if (manifest) {
         return Response.json({ name, version: "1.0.0", types: "./index.d.ts", dependencies: fixture.dependencies })
       }
       const text = file && fixture.files[file[2]]

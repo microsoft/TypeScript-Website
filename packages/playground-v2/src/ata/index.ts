@@ -372,25 +372,28 @@ export class PackageTypeAcquirer {
     onFiles: (count: number) => void,
     onFile: () => void
   ): Promise<PackageData | undefined> {
-    let tree: unknown
+    // unpkg's redirects from a tag or range to an exact version omit CORS
+    // headers for ?meta, but include them for package files.
+    let metadata: unknown
     try {
-      tree = await this.json(`https://unpkg.com/${name}@${encodeURIComponent(selector)}/?meta`, signal)
+      metadata = await this.json(`https://unpkg.com/${name}@${encodeURIComponent(selector)}/package.json`, signal)
     } catch (error) {
       signal.throwIfAborted()
       if (error instanceof HttpError && error.status === 404 && !name.startsWith("@types/")) return undefined
       throw error
     }
     if (
-      !record(tree) ||
-      tree.package !== name ||
-      typeof tree.version !== "string" ||
-      !/^\d+\.\d+\.\d+[-+\w.]*$/.test(tree.version)
+      !record(metadata) ||
+      metadata.name !== name ||
+      typeof metadata.version !== "string" ||
+      !/^\d+\.\d+\.\d+[-+\w.]*$/.test(metadata.version)
     ) {
       throw new Error(`Could not resolve ${name}@${selector} to an exact version`)
     }
-    const version = tree.version
+    const version = metadata.version
     const base = `https://unpkg.com/${name}@${version}`
-    if (!Array.isArray(tree.files)) throw new Error(`Invalid file index for ${name}@${version}`)
+    const tree = await this.json(`${base}/?meta`, signal)
+    if (!record(tree) || !Array.isArray(tree.files)) throw new Error(`Invalid file index for ${name}@${version}`)
     const paths = tree.files
       .map(entry => {
         if (!record(entry) || typeof entry.path !== "string" || !safePackagePath(entry.path)) {
@@ -400,8 +403,6 @@ export class PackageTypeAcquirer {
       })
       .filter(path => !path.includes("/node_modules/"))
     if (!paths.some(isDeclaration)) return undefined
-    const metadata = await this.json(`${base}/package.json`, signal)
-    if (!record(metadata)) throw new Error(`Invalid package.json for ${name}@${version}`)
     const dependencies = new Map<string, string>()
     for (const field of ["peerDependencies", "dependencies"]) {
       const entries = metadata[field]
