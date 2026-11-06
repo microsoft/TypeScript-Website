@@ -162,7 +162,7 @@ understand how every change affects the rest of the program.</p>
                                 <p>Typically, the need to ensure there are no bugs in your code can be handled by writing automated tests, then by manually verifying that the code works as you expect and finally having another person validate that it seems correct.</p>
 
                                 <p>Not many companies are the size of Microsoft, however a lot of all problems writing JavaScript in large codebases are the same. Many JavaScript apps are made up of hundreds of thousands of files. A single change
-                                to one individual file can affect the behaviour of any number of other files, like throwing a pebble into a pond
+                                to one individual file can affect the behavior of any number of other files, like throwing a pebble into a pond
 and causing ripples to spread out to the bank.</p>
 
                                 <p>Validating the connections between every part of your project can get time consuming quickly, using a type-checked language like TypeScript can handle that automatically and provide instant feedback during development.</p>
