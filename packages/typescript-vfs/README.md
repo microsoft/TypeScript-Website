@@ -106,7 +106,7 @@ interface LanguageService {
 
 It's **very** likely that you will need to set up your lib `*.d.ts` files to use this.
 
-If you are running in an environment where you have access to the `node_modules` folder, then you can can write some code like this:
+If you are running in an environment where you have access to the `node_modules` folder, then you can write some code like this:
 
 ```ts
 const getLib = (name: string) => {
@@ -137,7 +137,7 @@ const createDefaultMap2015 = () => {
 
 This list is the default set of definitions (it's important to note that different options for `target` or `lib` will affect what this list looks like) and you are grabbing the library's content from the local dependency of TypeScript.
 
-Keeping on top of this list is quite a lot of work, so this library ships functions for generating a map with with these pre-filled from a version of TypeScript available on disk.
+Keeping on top of this list is quite a lot of work, so this library ships functions for generating a map with these pre-filled from a version of TypeScript available on disk.
 
 Note: it's possible for this list to get out of sync with TypeScript over time. It was last synced with TypeScript 3.8.0-rc.
 
