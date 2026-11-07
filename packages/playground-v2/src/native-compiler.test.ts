@@ -6,7 +6,7 @@ import { API } from "@typescript/typescript/sync"
 import * as ast from "@typescript/typescript/ast"
 import { instantiateWasm, WasmTransport } from "@typescript/typescript/wasm"
 import { NativeCompiler, type NativeCompileInput } from "./native-compiler"
-import { legacyCompilerBaseUrl } from "./compiler-distribution"
+import { legacyCompilerBaseUrl, loadPublishedCompilerDistribution } from "./compiler-distribution"
 import {
   compilerVersionChoices,
   isUnsupportedNativeCompilerVersion,
@@ -560,11 +560,72 @@ test("overlapping legacy library loads wait for dependencies beneath cached root
 })
 
 test("native versions start at the WASM nightly and exclude the published beta", () => {
-  for (const version of ["7.1.0-dev.20261030.1", "7.1.0-dev.20261031.1", "7.1.0-rc", "7.1.0", "7.2.0-beta", "8.0.0"]) {
+  for (const version of [
+    "7.1.0-dev.20261030.1",
+    "7.1.0-dev.20261031.1",
+    "7.1.0-rc",
+    "7.1.0",
+    "7.2.0-beta",
+    "8.0.0",
+    "7.1.0-pr.65000.3",
+  ]) {
     assert.equal(isWasmCompilerVersion(version), true, version)
   }
-  for (const version of ["7.1.0-beta", "7.1.0-dev.20261029.1", "7.0.2", "6.0.3", "next", "pr-build"]) {
+  for (const version of [
+    "7.1.0-beta",
+    "7.1.0-dev.20261029.1",
+    "7.0.2",
+    "6.0.3",
+    "next",
+    "pr-build",
+    "4.4.0-pr-12345-1",
+  ]) {
     assert.equal(isWasmCompilerVersion(version), false, version)
+  }
+})
+
+test("pull request builds load from the @typescript-deploys/pr-build packages", async () => {
+  const version = "7.1.0-pr.65000.3"
+  const main = `https://unpkg.com/@typescript-deploys/pr-build@${version}/`
+  const wasm = `https://unpkg.com/@typescript-deploys/pr-build-wasip1-wasm@${version}/`
+  const file = (path: string) => ({ path, size: 1, integrity: `sha256-${"A".repeat(43)}=` })
+  const responses: Record<string, unknown> = {
+    [`${main}package.json`]: {
+      name: "@typescript-deploys/pr-build",
+      version,
+      gitHead: "abc",
+      exports: {
+        "./sync": "./dist/api/sync/api.js",
+        "./async": "./dist/api/async/api.js",
+        "./ast": "./dist/ast/index.js",
+        "./wasm": "./dist/wasm/index.js",
+        "./schemas/tsconfig.schema.json": "./schemas/tsconfig.schema.json",
+      },
+    },
+    [`${main}?meta`]: { files: [file("/schemas/tsconfig.schema.json")] },
+    [`${wasm}package.json`]: {
+      name: "@typescript-deploys/pr-build-wasip1-wasm",
+      version,
+      gitHead: "abc",
+      exports: { "./lib/tsc.wasm": "./lib/tsc.wasm" },
+    },
+    [`${wasm}lib/?meta`]: { files: [file("/lib/tsc.wasm"), file("/lib/lib.d.ts")] },
+  }
+  const originalFetch = globalThis.fetch
+  globalThis.fetch = async url => {
+    const body = responses[String(url)]
+    return body ? Response.json(body) : new Response(null, { status: 404 })
+  }
+  try {
+    const distribution = await loadPublishedCompilerDistribution(version)
+    assert.equal(distribution.wasm.href, `${wasm}lib/tsc.wasm`)
+    assert.equal(distribution.sync, `${main}dist/api/sync/api.js`)
+    assert.deepEqual(
+      distribution.libraries.map(url => url.href),
+      [`${wasm}lib/lib.d.ts`]
+    )
+  } finally {
+    globalThis.fetch = originalFetch
   }
 })
 
