@@ -97,6 +97,8 @@ interface Fetcher {
 }
 ```
 
+The method returns `void` because it delivers its result through the callback. The callback's `elapsedTime` parameter is non-optional because the callback is always called with that argument.
+
 ### Overloads and Callbacks
 
 ❌ **Don't** write separate overloads that differ only on callback arity:
