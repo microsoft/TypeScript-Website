@@ -1,5 +1,6 @@
 import { prerelease, valid } from "semver"
 import { fetchCompilerResource, type CompilerAssetMetadata } from "./compiler-assets"
+import { isPullRequestCompilerVersion } from "./compiler-versions"
 
 export type CompilerModules = {
   sync: string
@@ -19,10 +20,10 @@ export type CompilerDistribution = CompilerModules & {
 }
 
 export async function loadPublishedCompilerDistribution(version: string): Promise<CompilerDistribution> {
-  const [main, artifact] = await Promise.all([
-    loadPackage("typescript", version),
-    loadPackage("@typescript/typescript-wasip1-wasm", version),
-  ])
+  const [mainName, artifactName] = isPullRequestCompilerVersion(version)
+    ? ["@typescript-deploys/pr-build", "@typescript-deploys/pr-build-wasip1-wasm"]
+    : ["typescript", "@typescript/typescript-wasip1-wasm"]
+  const [main, artifact] = await Promise.all([loadPackage(mainName, version), loadPackage(artifactName, version)])
   if (main.revision !== artifact.revision) {
     throw new Error(`TypeScript API and WASI artifact revisions do not match for ${version}`)
   }

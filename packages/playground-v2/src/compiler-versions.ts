@@ -12,7 +12,12 @@ export type CompilerVersionChoice = {
 }
 
 export function isWasmCompilerVersion(version: string) {
-  return valid(version) !== null && gte(version, "7.1.0-dev.20261030.1")
+  return isPullRequestCompilerVersion(version) || (valid(version) !== null && gte(version, "7.1.0-dev.20261030.1"))
+}
+
+// Builds of microsoft/TypeScript pull requests, published as @typescript-deploys/pr-build.
+export function isPullRequestCompilerVersion(version: string) {
+  return /^\d+\.\d+\.\d+-pr\.[1-9]\d*\.[1-9]\d*$/.test(version)
 }
 
 export function isUnsupportedNativeCompilerVersion(version: string) {
