@@ -11,7 +11,7 @@ _First some ES2016 terminology:_
 
 ##### Iterators
 
-[ES2015 introduced `Iterator`](http://www.ecma-international.org/ecma-262/6.0/#sec-iteration), which is an object that exposes three methods, `next`, `return`, and `throw`, as per the following interface:
+[ES2015 introduced `Iterator`](https://www.ecma-international.org/ecma-262/6.0/#sec-iteration), which is an object that exposes three methods, `next`, `return`, and `throw`, as per the following interface:
 
 ```ts
 interface Iterator<T> {
@@ -28,7 +28,7 @@ The Iterator protocol also defines the target of some of the ES2015 features lik
 
 ##### Generators
 
-[ES2015 also introduced "Generators"](http://www.ecma-international.org/ecma-262/6.0/#sec-generatorfunction-objects), which are functions that can be used to yield partial computation results via the `Iterator` interface and the `yield` keyword.
+[ES2015 also introduced "Generators"](https://www.ecma-international.org/ecma-262/6.0/#sec-generatorfunction-objects), which are functions that can be used to yield partial computation results via the `Iterator` interface and the `yield` keyword.
 Generators can also internally delegate calls to another iterable through `yield *`. For example:
 
 ```ts

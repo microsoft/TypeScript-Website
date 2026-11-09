@@ -631,7 +631,7 @@ As an example, in the following video, you can see two side-by-side editors with
 When restarting both editors on a particularly large codebase, the one with TypeScript 3.9 can't provide completions or quick info at all.
 On the other hand, the editor with TypeScript 4.0 can _immediately_ give us a rich experience in the current file we're editing, despite loading the full project in the background.
 
-Currently the only editor that supports this mode is [Visual Studio Code](http://code.visualstudio.com/) which has some UX improvements coming up in [Visual Studio Code Insiders](http://code.visualstudio.com/insiders).
+Currently the only editor that supports this mode is [Visual Studio Code](https://code.visualstudio.com/) which has some UX improvements coming up in [Visual Studio Code Insiders](https://code.visualstudio.com/insiders).
 We recognize that this experience may still have room for polish in UX and functionality, and we have [a list of improvements](https://github.com/microsoft/TypeScript/issues/39035) in mind.
 We're looking for more feedback on what you think might be useful.
 
