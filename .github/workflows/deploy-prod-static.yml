@@ -31,25 +31,36 @@ jobs:
         with:
           # Fetch the full history, to build attribution.json
           fetch-depth: 0
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "20.x"
+          cache: pnpm
 
-      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      # Builds the modules, and boostraps the other modules
-      - name: Build website
-        run: |
-          pnpm install
-          pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
-          pnpm bootstrap
-          pnpm run --filter=typescriptlang-org setup-playground-cache-bust
-          pnpm build
+      - name: Pull localizations
+        run: pnpm docs-sync pull microsoft/TypeScript-Website-localizations#main 1
 
-      - name: Makes the site
-        run: |
-          pnpm build-site
-          cp -r packages/typescriptlang-org/public site
+      - name: Build packages
+        run: pnpm bootstrap
+
+      - name: Restore website build caches
+        id: website-cache
+        uses: ./.github/actions/website-cache
+
+      - name: Set up playground cache busting
+        run: pnpm run --filter=typescriptlang-org setup-playground-cache-bust
+
+      - name: Build static site
+        run: pnpm build-site
+
+      - name: Save website build caches
+        uses: ./.github/actions/website-cache/save
+        with:
+          key: ${{ steps.website-cache.outputs.key }}
 
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
@@ -57,7 +68,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v3
         with:
-          path: './site'
+          path: packages/typescriptlang-org/public
 
   deploy:
     environment:

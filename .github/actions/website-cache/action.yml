@@ -1,0 +1,25 @@
+name: Restore website build work
+description: Reuse compiled examples and Webpack work without caching generated pages
+
+outputs:
+  key:
+    description: Primary key to use when checkpointing the completed build
+    value: ${{ steps.restore.outputs.cache-primary-key }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get Node version
+      id: node
+      shell: bash
+      run: echo "version=$(node --version)" >> "$GITHUB_OUTPUT"
+
+    - uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      id: restore
+      with:
+        path: |
+          node_modules/.cache/twoslash
+          packages/typescriptlang-org/.cache/webpack
+        key: website-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.node.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+        restore-keys: |
+          website-v2-${{ runner.os }}-${{ runner.arch }}-${{ steps.node.outputs.version }}-
