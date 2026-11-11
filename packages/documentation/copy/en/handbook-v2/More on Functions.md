@@ -662,7 +662,7 @@ function f2(a: unknown) {
 }
 ```
 
-This is useful when describing function types because you can describe functions that accept any value without having `any` values in your function body.
+This is useful when describing function types because you can allow them to accept any value without having `any` values in your function body.
 
 Conversely, you can describe a function that returns a value of unknown type:
 
