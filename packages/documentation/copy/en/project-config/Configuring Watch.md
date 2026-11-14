@@ -6,7 +6,7 @@ oneline: How to configure the watch mode of TypeScript
 translatable: true
 ---
 
-As of TypeScript 3.8 and onward, the Typescript compiler exposes configuration which controls how it watches files and directories. Prior to this version, configuration required the use of environment variables which are still available.
+As of TypeScript 3.8 and onward, the TypeScript compiler exposes configuration which controls how it watches files and directories. Prior to this version, configuration required the use of environment variables which are still available.
 
 ## Background
 
@@ -50,7 +50,7 @@ The suggested method of configuring watch behavior is through the new `watchOpti
 }
 ```
 
-For further details, see [the release notes for Typescript 3.8](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
+For further details, see [the release notes for TypeScript 3.8](/docs/handbook/release-notes/typescript-3-8.html#better-directory-watching-on-linux-and-watchoptions).
 
 ## Configuring file watching using environment variable `TSC_WATCHFILE`
 
