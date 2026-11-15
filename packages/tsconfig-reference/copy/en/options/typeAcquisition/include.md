@@ -7,7 +7,7 @@ If you have a JavaScript project where TypeScript needs additional guidance to u
 
 You can use `include` to specify which types should be used from DefinitelyTyped:
 
-```json
+```json tsconfig
 {
   "typeAcquisition": {
     "include": ["jquery"]
