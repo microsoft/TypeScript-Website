@@ -10,7 +10,7 @@ Requires either [`sourceMap`](#sourceMap) or [`inlineSourceMap`](#inlineSourceMa
 
 For example, with this TypeScript:
 
-```ts twoslash
+```ts 
 const helloWorld = "hi";
 console.log(helloWorld);
 ```

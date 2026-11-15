@@ -53,7 +53,7 @@ If that type guard operates on a `const`, a `readonly` property, or an un-modifi
 Different sorts of type guard conditions are preserved - not just `typeof` checks.
 For example, checks on discriminated unions work like a charm.
 
-```ts twoslash
+```ts 
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; sideLength: number };
@@ -72,7 +72,7 @@ function area(shape: Shape): number {
 
 Analysis on discriminants in 4.4 also goes a little bit deeper - we can now extract out discriminants and TypeScript can narrow the original object.
 
-```ts twoslash
+```ts 
 type Shape =
   | { kind: "circle"; radius: number }
   | { kind: "square"; sideLength: number };
@@ -93,7 +93,7 @@ function area(shape: Shape): number {
 
 As another example, here's a function that checks whether two of its inputs have contents.
 
-```ts twoslash
+```ts 
 function doSomeChecks(
   inputA: string | undefined,
   inputB: string | undefined,
@@ -442,7 +442,7 @@ Without `static` blocks, writing the code above was possible, but often involved
 
 Note that a class can have multiple `static` blocks, and they're run in the same order in which they're written.
 
-```ts twoslash
+```ts 
 // Prints:
 //    1
 //    2

@@ -17,7 +17,7 @@ You can read more about how this pattern works in JavaScript [here](https://just
 
 To get started, we'll need a class which will have the mixins applied on top of:
 
-```ts twoslash
+```ts 
 class Sprite {
   name = "";
   x = 0;
@@ -31,7 +31,7 @@ class Sprite {
 
 Then you need a type and a factory function which returns a class expression extending the base class.
 
-```ts twoslash
+```ts 
 // To get started, we need a type which we'll use to extend
 // other classes from. The main responsibility is to declare
 // that the type being passed in is a class.
@@ -60,7 +60,7 @@ function Scale<TBase extends Constructor>(Base: TBase) {
 
 With these all set up, then you can create a class which represents the base class with mixins applied:
 
-```ts twoslash
+```ts 
 class Sprite {
   name = "";
   x = 0;
@@ -102,7 +102,7 @@ In the above form, the mixin's have no underlying knowledge of the class which c
 
 To model this, we modify the original constructor type to accept a generic argument.
 
-```ts twoslash
+```ts 
 // This was our previous constructor:
 type Constructor = new (...args: any[]) => {};
 // Now we use a generic version which can apply a constraint on
@@ -252,7 +252,7 @@ The class expression pattern creates singletons, so they can't be mapped at the 
 
 You can work around this by using functions to return your classes which differ based on a generic:
 
-```ts twoslash
+```ts 
 function base<T>() {
   class Base {
     static prop: T;

@@ -82,7 +82,7 @@ TypeScript provides a number of mechanisms to work with types in a set-theoretic
 In TypeScript, objects are _not_ of a single exact type.
 For example, if we construct an object that satisfies an interface, we can use that object where that interface is expected even though there was no declarative relationship between the two.
 
-```ts twoslash
+```ts
 interface Pointlike {
   x: number;
   y: number;
@@ -125,7 +125,7 @@ OOP programmers are often surprised by two particular aspects of structural typi
 
 The first is that the _empty type_ seems to defy expectation:
 
-```ts twoslash
+```ts
 class Empty {}
 
 function fn(arg: Empty) {
