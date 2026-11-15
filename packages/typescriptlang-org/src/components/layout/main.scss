@@ -138,6 +138,10 @@ html.font-open-dyslexic {
   a {
     color: var(--link-color);
   }
+  pre code a {
+    // Don't interfere with syntax highlighting in code blocks
+    color: inherit;
+  }
 
   h1,
   h2,
