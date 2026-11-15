@@ -417,7 +417,7 @@ const p = create(new HTMLParagraphElement());
 //    ^?
 ```
 
-A generic parameter default follows the following rules:
+A generic parameter default follows these rules:
 
 - A type parameter is deemed optional if it has a default.
 - Required type parameters must not follow optional type parameters.
