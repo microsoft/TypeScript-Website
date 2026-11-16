@@ -88,4 +88,26 @@ If absent, then "main" is used
 
 ## Tips
 
-If you'd like to write tests for your .d.ts files, try [tsd](https://github.com/SamVerschueren/tsd) or [TSTyche](https://github.com/tstyche/tstyche).
+### Keep generated declarations out of your source files
+
+Use `emitDeclarationOnly` with an `outDir` such as `dist/types` so generated declarations do not get mixed in with your JavaScript source. Add the output directory to the package's published files, or make sure your package manager does not exclude it when you publish.
+
+For example, a package can publish its generated declarations with:
+
+```json
+{
+  "files": ["dist"]
+}
+```
+
+### Point consumers to the declarations
+
+Add a `types` field to your `package.json` that points to the generated entry point. For example, if the compiler writes `dist/index.d.ts`, use `"types": "./dist/index.d.ts"`. When using the `exports` field, include a `types` condition for the package entry point so tools can find the declarations alongside the JavaScript entry point.
+
+### Check the declarations as a consumer would
+
+Declaration generation checks your JavaScript and JSDoc, but it does not guarantee that the published package exposes the API you intended. Write a small TypeScript file that imports your package and exercises its public API, then type-check it as part of your build. For dedicated declaration tests, try [tsd](https://github.com/SamVerschueren/tsd) or [TSTyche](https://github.com/tstyche/tstyche).
+
+### Keep declaration maps with the declarations
+
+If you enable `declarationMap`, publish the generated `.d.ts.map` files along with the `.d.ts` files. Editors can use these maps to navigate from a declaration back to the original JavaScript source.
