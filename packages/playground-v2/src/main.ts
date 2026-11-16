@@ -1,5 +1,10 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
-import { downloadCompilerAsset, fetchCompilerResource, readResponseBytes } from "./compiler-assets"
+import {
+  CompilerDownloadError,
+  downloadCompilerAsset,
+  fetchCompilerResource,
+  readResponseBytes,
+} from "./compiler-assets"
 import { ensureCrossOriginIsolation, retryStartup } from "./isolation"
 import {
   legacyCompilerBaseUrl,
@@ -253,10 +258,13 @@ const downloadSize = getElement("download-size")
 const rememberDownloadConsent = getElement<HTMLInputElement>("remember-download-consent")
 const confirmDownloadButton = getElement<HTMLButtonElement>("confirm-download-button")
 const retryStartupButton = getElement<HTMLButtonElement>("retry-startup-button")
+const useLatestStartupButton = getElement<HTMLButtonElement>("use-latest-startup-button")
+const useNightlyStartupButton = getElement<HTMLButtonElement>("use-nightly-startup-button")
 
 let compilerReady = false
 let lspReady = false
 let compilerFailure: string | undefined
+let versionFallbackAvailable = false
 let lspFailure: string | undefined
 let projectFailure: string | undefined
 let languageServer: TsgoLspController | undefined
@@ -877,6 +885,8 @@ toggleRunOutputButton.addEventListener("click", () => {
 navigateBackButton.addEventListener("click", navigateBack)
 runButton.addEventListener("click", runProject)
 retryStartupButton.addEventListener("click", retryStartup)
+useLatestStartupButton.addEventListener("click", () => void selectCompilerVersion("native"))
+useNightlyStartupButton.addEventListener("click", () => void selectCompilerVersion("next"))
 settingsButton.addEventListener("click", openSettings)
 settingsCancelButton.addEventListener("click", () => settingsDialog.close())
 settingsResetButton.addEventListener("click", () => populateSettingsForm(defaultPlaygroundSettings()))
@@ -963,6 +973,7 @@ async function initializeNativeCompiler() {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     compilerFailure = message
+    versionFallbackAvailable = isUnavailableCompilerVersionError(error)
     completeInitialTypeQueries()
     renderStatus()
     console.error(error)
@@ -1041,6 +1052,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
     if (!touchPrimary.matches && !lastInputWasTouch) inputEditor.focus()
   } catch (error) {
     compilerFailure = error instanceof Error ? error.message : String(error)
+    versionFallbackAvailable = isUnavailableCompilerVersionError(error)
     completeInitialTypeQueries()
     renderStatus()
     console.error(error)
@@ -1248,6 +1260,14 @@ function handleVersionMenuKeydown(event: KeyboardEvent) {
 
 function normalizeRequestedVersion(version: string) {
   return version === "Nightly" ? "next" : version
+}
+
+function isUnavailableCompilerVersionError(error: unknown) {
+  if (error instanceof CompilerDownloadError) return error.status === 404 || error.status === 410
+  if (!(error instanceof Error)) return false
+  return /(?:not supported by this Playground|API and WASI artifact revisions do not match|Invalid package metadata|Missing package export|Compiler libraries are missing|Missing compiler file size)/i.test(
+    error.message
+  )
 }
 
 async function resolveStradaVersion(requestedVersion: string) {
@@ -2606,8 +2626,13 @@ function renderStatus() {
     loadingProgress.hidden = true
     loadingDetail.textContent = ""
     retryStartupButton.hidden = false
+    const requestedVersion = normalizeRequestedVersion(selectedCompiler ?? "")
+    useLatestStartupButton.hidden = !versionFallbackAvailable || isDefaultNativeCompilerVersion(selectedCompiler)
+    useNightlyStartupButton.hidden = !versionFallbackAvailable || requestedVersion === "next"
     return
   }
+  useLatestStartupButton.hidden = true
+  useNightlyStartupButton.hidden = true
   if (!compilerReady) {
     loadingMessage.textContent = "Loading TypeScript..."
     return
