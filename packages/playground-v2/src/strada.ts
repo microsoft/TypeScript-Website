@@ -541,38 +541,6 @@ export class StradaBackend {
             if (token.isCancellationRequested || model.isDisposed() || model.getVersionId() !== version) return empty
             return { actions, dispose() {} }
           },
-        }),
-        monaco.languages.registerInlayHintsProvider(language, {
-          provideInlayHints: async (model, range) => {
-            await this.updateFiles()
-            const start = model.getOffsetAt(range.getStartPosition())
-            const end = model.getOffsetAt(range.getEndPosition())
-            const hints = await this.#request<any[]>("inlayHints", {
-              fileName: model.uri.path,
-              preferences: {
-                includeInlayEnumMemberValueHints: true,
-                includeInlayFunctionLikeReturnTypeHints: true,
-                includeInlayFunctionParameterTypeHints: true,
-                includeInlayParameterNameHints: "literals",
-                includeInlayParameterNameHintsWhenArgumentMatchesName: false,
-                includeInlayPropertyDeclarationTypeHints: true,
-                includeInlayVariableTypeHints: true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName: false,
-              },
-              span: { length: end - start, start },
-            })
-            return {
-              dispose() {},
-              hints: hints.map(hint => ({
-                kind:
-                  hint.kind === "Type" ? monaco.languages.InlayHintKind.Type : monaco.languages.InlayHintKind.Parameter,
-                label: hint.text,
-                paddingLeft: hint.whitespaceBefore,
-                paddingRight: hint.whitespaceAfter,
-                position: model.getPositionAt(hint.position),
-              })),
-            }
-          },
         })
       )
     }
