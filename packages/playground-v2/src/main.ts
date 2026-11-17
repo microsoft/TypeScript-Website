@@ -35,6 +35,7 @@ import { configureExports, decodeCompressedHash } from "./exporter"
 import { resolveSymlinks, validateProjectSymlinks, type Symlinks } from "./symlinks"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { StradaBackend } from "./strada"
+import type { AstNode } from "./ast-types"
 import { NativeBackend } from "./native"
 import { PackageTypeAcquirer, stradaDiscovery, type AcquisitionResult, type DiscoverDependencies } from "./ata"
 import { acquisitionOptions } from "./ata/config"
@@ -94,6 +95,7 @@ type VersionedProjectState = ProjectState & {
 }
 
 type LayoutState = {
+  astVisible: boolean
   emitVisible: boolean
   filesVisible: boolean
   filesWidth: number
@@ -192,6 +194,18 @@ const toggleOutputButton = getElement<HTMLButtonElement>("toggle-output-button")
 const showFilesButton = getElement<HTMLButtonElement>("show-files-button")
 const showOutputButton = getElement<HTMLButtonElement>("show-output-button")
 const toggleEmitButton = getElement<HTMLButtonElement>("toggle-emit-button")
+const toggleAstButton = getElement<HTMLButtonElement>("toggle-ast-button")
+const astPanel = getElement("ast-panel")
+const astMessage = getElement("ast-message")
+const astTree = getElement<HTMLUListElement>("ast-tree")
+let astRefreshTimer = 0
+let astCursorTimer = 0
+let astRenderVersion = 0
+let astCursorVersion = 0
+let astDecorations: string[] = []
+let astDecorationModel: monaco.editor.ITextModel | undefined
+let astRootNode: AstNode | undefined
+const astEntries = new Map<string, AstTreeEntry>()
 const toggleRunOutputButton = getElement<HTMLButtonElement>("toggle-run-output-button")
 const navigateBackButton = getElement<HTMLButtonElement>("navigate-back-button")
 const currentFile = getElement("current-file")
@@ -441,10 +455,12 @@ inputEditor.onDidChangeModel(() => {
   trackedEditorLocation = nextLocation
   updateActiveFile()
   updateNavigationButtons()
+  scheduleAstRefresh()
 })
 inputEditor.onDidChangeCursorSelection(() => {
   trackedEditorLocation = getEditorLocation()
   scheduleProjectPersistence()
+  scheduleAstCursorFollow()
 })
 window.addEventListener("pagehide", () => {
   if (playgroundSettings.saveToUrl) persistProjectState()
@@ -478,6 +494,7 @@ refreshCompilerOverrides()
 
 function loadLayoutState(): LayoutState {
   const defaults: LayoutState = {
+    astVisible: true,
     emitVisible: true,
     filesVisible: true,
     filesWidth: 208,
@@ -488,6 +505,7 @@ function loadLayoutState(): LayoutState {
   try {
     const stored = JSON.parse(localStorage.getItem(layoutStorageKey) ?? "{}")
     return {
+      astVisible: typeof stored.astVisible === "boolean" ? stored.astVisible : defaults.astVisible,
       emitVisible: typeof stored.emitVisible === "boolean" ? stored.emitVisible : defaults.emitVisible,
       filesVisible: typeof stored.filesVisible === "boolean" ? stored.filesVisible : defaults.filesVisible,
       filesWidth: typeof stored.filesWidth === "number" ? stored.filesWidth : defaults.filesWidth,
@@ -674,6 +692,7 @@ function applyLayoutState() {
   workspace.dataset.filesCollapsed = String(!layoutState.filesVisible)
   workspace.dataset.outputCollapsed = String(!layoutState.outputVisible)
   emitOutput.hidden = !layoutState.emitVisible
+  astPanel.dataset.collapsed = String(!layoutState.astVisible)
   runOutput.dataset.collapsed = String(!layoutState.runVisible)
 
   showFilesButton.hidden = layoutState.filesVisible
@@ -686,6 +705,10 @@ function applyLayoutState() {
   toggleEmitButton.title = layoutState.emitVisible ? "Collapse Emit" : "Expand Emit"
   toggleEmitButton.setAttribute("aria-label", toggleEmitButton.title)
   toggleEmitButton.setAttribute("aria-expanded", String(layoutState.emitVisible))
+  toggleAstButton.textContent = layoutState.astVisible ? "▾" : "▸"
+  toggleAstButton.title = layoutState.astVisible ? "Collapse AST" : "Expand AST"
+  toggleAstButton.setAttribute("aria-label", toggleAstButton.title)
+  toggleAstButton.setAttribute("aria-expanded", String(layoutState.astVisible))
   toggleRunOutputButton.textContent = layoutState.runVisible ? "▾" : "▸"
   toggleRunOutputButton.title = layoutState.runVisible ? "Collapse Run output" : "Expand Run output"
   toggleRunOutputButton.setAttribute("aria-label", toggleRunOutputButton.title)
@@ -864,6 +887,11 @@ toggleFilesButton.addEventListener("click", () => toggleWorkspacePanel("files"))
 showFilesButton.addEventListener("click", () => toggleWorkspacePanel("files"))
 toggleOutputButton.addEventListener("click", () => toggleWorkspacePanel("output"))
 showOutputButton.addEventListener("click", () => toggleWorkspacePanel("output"))
+toggleAstButton.addEventListener("click", () => {
+  layoutState.astVisible = !layoutState.astVisible
+  applyLayoutState()
+  persistLayoutState()
+})
 toggleEmitButton.addEventListener("click", () => {
   layoutState.emitVisible = !layoutState.emitVisible
   applyLayoutState()
@@ -956,6 +984,7 @@ async function initializeNativeCompiler() {
     discoverDependencies = file => backend.discover(file)
     compileActiveProject = compileNativeProject
     compilerReady = true
+    scheduleAstRefresh()
     startLanguageServer(module, libFiles)
     await compileNativeProject()
     void refreshTypeAcquisition()
@@ -1035,6 +1064,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
     compileActiveProject = compileStradaProject
     compilerReady = true
     lspReady = true
+    scheduleAstRefresh()
     await compileStradaProject()
     void refreshTypeAcquisition()
     renderStatus()
@@ -2300,6 +2330,215 @@ function diagnosticSeverity(category: number) {
   }
 }
 
+type AstTreeEntry = {
+  element: HTMLLIElement
+  node: AstNode
+  row: HTMLDivElement
+  toggle?: HTMLButtonElement
+}
+
+function scheduleAstRefresh() {
+  window.clearTimeout(astRefreshTimer)
+  astRefreshTimer = window.setTimeout(() => void refreshAstTree(), 180)
+}
+
+async function refreshAstTree() {
+  const version = ++astRenderVersion
+  astCursorVersion++
+  clearAstDecoration()
+  astEntries.clear()
+  astRootNode = undefined
+  astTree.replaceChildren()
+  astTree.hidden = true
+  astMessage.hidden = false
+  const model = inputEditor.getModel()
+  if (!model || !isSourceLanguage(model.getLanguageId())) {
+    astMessage.textContent = "AST view is available for TypeScript and JavaScript files."
+    return
+  }
+  if (!compilerReady) {
+    astMessage.textContent = "Waiting for the compiler."
+    return
+  }
+  astMessage.textContent = "Loading AST…"
+  try {
+    const root = await requestAstRoot(model.uri.path)
+    if (version !== astRenderVersion || inputEditor.getModel() !== model) return
+    if (!root) {
+      astMessage.textContent = "AST is unavailable for this file with the selected compiler."
+      return
+    }
+    astRootNode = root
+    astTree.hidden = false
+    astMessage.hidden = true
+    renderAstEntry(astTree, root)
+    await followAstCursor(version)
+  } catch (error) {
+    if (version !== astRenderVersion) return
+    const reason = error instanceof Error ? error.message.split("\n", 1)[0] : String(error)
+    astMessage.textContent = `AST view unavailable: ${reason}`
+  }
+}
+
+function nativeAstInput() {
+  return {
+    configFileName,
+    files: compilerFileContents(),
+    sourceFiles: [...projectModels]
+      .filter(([, model]) => isSourceLanguage(model.getLanguageId()))
+      .map(([fileName]) => fileName),
+    symlinks: projectSymlinks,
+  }
+}
+
+function requestAstRoot(fileName: string) {
+  if (useNativeCompiler) return nativeBackend?.astRoot(nativeAstInput(), fileName)
+  return stradaBackend?.astRoot(fileName)
+}
+
+function requestAstChildren(fileName: string, id: string) {
+  if (useNativeCompiler) return nativeBackend?.astChildren(fileName, id)
+  return stradaBackend?.astChildren(fileName, id)
+}
+
+function requestAstPath(fileName: string, position: number) {
+  if (useNativeCompiler) return nativeBackend?.astPath(fileName, position)
+  return stradaBackend?.astPath(fileName, position)
+}
+
+function renderAstEntry(parent: HTMLElement, node: AstNode) {
+  const element = document.createElement("li")
+  element.className = "ast-node"
+  element.setAttribute("role", "treeitem")
+  element.setAttribute("aria-level", String(node.id === "" ? 1 : node.id.split(".").length + 1))
+  if (node.hasChildren) element.setAttribute("aria-expanded", "false")
+  const row = document.createElement("div")
+  row.className = "ast-node-row"
+  const toggle = node.hasChildren ? document.createElement("button") : undefined
+  if (toggle) {
+    toggle.className = "ast-node-toggle"
+    toggle.type = "button"
+    toggle.setAttribute("aria-label", `Expand ${node.kind}`)
+    toggle.appendChild(createText("span", "▸", "ast-node-arrow"))
+    toggle.addEventListener("click", () => void toggleAstEntry(node, toggle, element))
+    toggle.addEventListener("pointerenter", () => highlightAstNode(node))
+    toggle.addEventListener("focus", () => highlightAstNode(node))
+    row.appendChild(toggle)
+  } else {
+    row.appendChild(createText("span", "", "ast-node-arrow"))
+  }
+  const select = document.createElement("button")
+  select.className = "ast-node-select"
+  select.type = "button"
+  select.title = `${node.kind}${node.detail ? ` · ${node.detail}` : ""}`
+  select.appendChild(createText("span", node.kind, "ast-node-kind"))
+  if (node.detail) select.appendChild(createText("span", node.detail, "ast-node-detail"))
+  select.addEventListener("click", () => selectAstNode(node))
+  select.addEventListener("pointerenter", () => highlightAstNode(node))
+  select.addEventListener("focus", () => highlightAstNode(node))
+  row.addEventListener("pointerleave", clearAstDecoration)
+  row.addEventListener("focusout", event => {
+    if (!row.contains(event.relatedTarget as Node | null)) clearAstDecoration()
+  })
+  row.appendChild(select)
+  element.appendChild(row)
+  parent.appendChild(element)
+  astEntries.set(node.id, { element, node, row, toggle })
+}
+
+async function toggleAstEntry(node: AstNode, toggle: HTMLButtonElement, element: HTMLLIElement) {
+  const expanded = element.getAttribute("aria-expanded") === "true"
+  const existingChildren = element.querySelector<HTMLElement>(".ast-node-children")
+  if (expanded) {
+    element.setAttribute("aria-expanded", "false")
+    toggle.setAttribute("aria-label", `Expand ${node.kind}`)
+    toggle.querySelector<HTMLElement>(".ast-node-arrow")!.textContent = "▸"
+    if (existingChildren) existingChildren.hidden = true
+    return
+  }
+  element.setAttribute("aria-expanded", "true")
+  toggle.setAttribute("aria-label", `Collapse ${node.kind}`)
+  toggle.querySelector<HTMLElement>(".ast-node-arrow")!.textContent = "▾"
+  if (existingChildren) {
+    existingChildren.hidden = false
+    return
+  }
+  const model = inputEditor.getModel()
+  if (!model) return
+  const version = astRenderVersion
+  const children = await requestAstChildren(model.uri.path, node.id)
+  if (
+    !children ||
+    version !== astRenderVersion ||
+    !element.isConnected ||
+    element.getAttribute("aria-expanded") !== "true"
+  )
+    return
+  const list = document.createElement("ul")
+  list.className = "ast-node-children"
+  list.setAttribute("role", "group")
+  for (const child of children) renderAstEntry(list, child)
+  element.appendChild(list)
+  element.dataset.loaded = "true"
+}
+
+function selectAstNode(node: AstNode) {
+  const model = inputEditor.getModel()
+  if (!model) return
+  const end = Math.min(model.getValueLength(), Math.max(node.start + 1, node.end))
+  const range = spanRange(model, node.start, end)
+  inputEditor.setSelection(range)
+  inputEditor.revealRangeInCenter(range, monaco.editor.ScrollType.Immediate)
+  inputEditor.focus()
+}
+
+function highlightAstNode(node: AstNode) {
+  const model = inputEditor.getModel()
+  if (!model || node.end <= node.start) return clearAstDecoration()
+  if (astDecorationModel && astDecorationModel !== model) clearAstDecoration()
+  const range = spanRange(model, node.start, node.end)
+  astDecorations = model.deltaDecorations(astDecorations, [
+    {
+      range,
+      options: { inlineClassName: "ast-source-highlight" },
+    },
+  ])
+  astDecorationModel = model
+}
+
+function clearAstDecoration() {
+  if (!astDecorationModel || astDecorations.length === 0) return
+  astDecorations = astDecorationModel.deltaDecorations(astDecorations, [])
+  astDecorationModel = undefined
+}
+
+function scheduleAstCursorFollow() {
+  window.clearTimeout(astCursorTimer)
+  astCursorTimer = window.setTimeout(() => void followAstCursor(astRenderVersion), 80)
+}
+
+async function followAstCursor(version: number) {
+  const cursorVersion = ++astCursorVersion
+  const model = inputEditor.getModel()
+  const position = inputEditor.getPosition()
+  if (!model || !position || !astRootNode) return
+  const path = await requestAstPath(model.uri.path, model.getOffsetAt(position))
+  if (!path || version !== astRenderVersion || cursorVersion !== astCursorVersion || inputEditor.getModel() !== model)
+    return
+  for (let index = 0; index < path.length - 1; index++) {
+    const current = astEntries.get(path[index].id)
+    if (!current) return
+    if (current.element.getAttribute("aria-expanded") !== "true" && current.toggle)
+      await toggleAstEntry(current.node, current.toggle, current.element)
+  }
+  for (const { row } of astEntries.values()) row.classList.remove("ast-node-active")
+  const active = path.length ? astEntries.get(path[path.length - 1].id) : undefined
+  if (active) {
+    active.row.classList.add("ast-node-active")
+    active.row.scrollIntoView({ block: "nearest" })
+  }
+}
+
 async function renderEmittedFiles() {
   const renderVersion = ++emitRenderVersion
   emitOutput.replaceChildren()
@@ -2577,6 +2816,7 @@ function updateActiveFile() {
     else button.removeAttribute("aria-current")
   }
   if (projectModel) persistProjectState()
+  scheduleAstRefresh()
 }
 
 function restoreProjectSelection(state: ProjectState) {
@@ -2628,6 +2868,7 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
     nativeCompileVersion++
     stradaCompileVersion++
     scheduleProjectPersistence()
+    scheduleAstRefresh()
     refreshCompilerOverrides()
     synchronizeLinkedProjectFiles()
     scheduleTypeAcquisition()

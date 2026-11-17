@@ -1040,6 +1040,132 @@ code {
   font-size: 0.8rem;
 }
 
+.ast-panel {
+  flex: 0 1 38%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.ast-panel[data-collapsed="true"] .ast-tree-container {
+  display: none;
+}
+
+.ast-panel-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--sidebar);
+}
+
+.ast-panel-header h2 {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ast-panel-header > span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.ast-tree-container {
+  min-height: 0;
+  max-height: 18rem;
+  padding: 0.35rem 0.35rem 0.5rem;
+  overflow: auto;
+}
+
+.ast-tree,
+.ast-node-children {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ast-node-children {
+  margin-left: 0.85rem;
+  padding-left: 0.3rem;
+  border-left: 1px solid var(--border);
+}
+
+.ast-node-row {
+  min-height: 1.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.ast-node-row.ast-node-active,
+.ast-node-select:hover {
+  background: var(--hover);
+}
+
+.ast-node-toggle,
+.ast-node-select {
+  min-height: 1.65rem;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.ast-node-toggle {
+  flex: 0 0 1.1rem;
+  padding: 0;
+}
+
+.ast-node-select {
+  min-width: 0;
+  padding: 0.15rem 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ast-node-toggle:focus-visible,
+.ast-node-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.ast-node-arrow {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.ast-node-kind {
+  flex: 0 0 auto;
+  font-family: Hack, monospace;
+  font-size: 0.7rem;
+}
+
+.ast-node-detail {
+  min-width: 0;
+  color: var(--muted);
+  font-family: Hack, monospace;
+  font-size: 0.65rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ast-source-highlight {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
 .run-output {
   flex: 0 0 auto;
   max-height: 12rem;

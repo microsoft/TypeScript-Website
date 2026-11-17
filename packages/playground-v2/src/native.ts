@@ -1,5 +1,6 @@
 import type { Dependency, SourceFile } from "./ata"
 import type { NativeCompileInput, NativeCompileResult } from "./native-compiler"
+import type { AstNode } from "./ast-types"
 import type { CompilerModules } from "./compiler-distribution"
 
 type PendingRequest = {
@@ -60,6 +61,18 @@ export class NativeBackend {
 
   discover(file: SourceFile): Promise<readonly Dependency[]> {
     return this.request("discover", file)
+  }
+
+  astRoot(input: NativeCompileInput, fileName: string) {
+    return this.request<AstNode | undefined>("astRoot", { input, fileName })
+  }
+
+  astChildren(fileName: string, id: string) {
+    return this.request<AstNode[]>("astChildren", { fileName, id })
+  }
+
+  astPath(fileName: string, position: number) {
+    return this.request<AstNode[]>("astPath", { fileName, position })
   }
 
   compile(input: NativeCompileInput): Promise<NativeCompileResult> {

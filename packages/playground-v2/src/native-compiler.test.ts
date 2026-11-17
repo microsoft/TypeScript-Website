@@ -782,6 +782,19 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
     assert.match(first.outputFiles["/workspace/src/index.js"], /42/)
     assert(first.typeQueries[source].some(query => query.label === "42"))
 
+    const astRoot = compiler.astRoot(input, source)
+    assert.equal(astRoot?.kind, "SourceFile")
+    assert.equal(astRoot?.hasChildren, true)
+    const declarationPath = compiler.astPath(source, input.files[source].indexOf("answer"))
+    assert.equal(declarationPath.at(-1)?.kind, "Identifier")
+    assert.equal(declarationPath.at(-1)?.detail, '"answer"')
+    const rootChildren = compiler.astChildren(source, astRoot!.id)
+    assert(rootChildren.length > 0, JSON.stringify(rootChildren))
+    const outsideSource = "/workspace/outside.ts"
+    input.files[outsideSource] = "const outside = true;"
+    assert.equal(compiler.astRoot(input, outsideSource)?.kind, "SourceFile")
+    delete input.files[outsideSource]
+
     input.files[source] = 'const answer: number = "wrong";\n//    ^?\n'
     const changed = compiler.compile(input)
     assert(changed.diagnostics.some(diagnostic => diagnostic.code === 2322))

@@ -124,6 +124,19 @@
             </div>
           </div>
           <div id="emit-output" class="emit-output"></div>
+          <section id="ast-panel" class="ast-panel" aria-label="Abstract syntax tree">
+            <header class="ast-panel-header">
+              <div class="output-section-title">
+                <button id="toggle-ast-button" class="action-button output-section-toggle" type="button" aria-label="Collapse AST" aria-controls="ast-tree-container" title="Collapse AST">▾</button>
+                <h2>AST</h2>
+              </div>
+              <span>Active file</span>
+            </header>
+            <div id="ast-tree-container" class="ast-tree-container">
+              <p id="ast-message" class="empty-message">Waiting for the compiler.</p>
+              <ul id="ast-tree" class="ast-tree" role="tree" aria-label="Active file syntax tree" hidden></ul>
+            </div>
+          </section>
           <details id="diagnostics-panel" class="diagnostics-panel">
             <summary>
               <span>Problems</span>

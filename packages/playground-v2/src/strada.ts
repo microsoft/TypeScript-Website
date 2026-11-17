@@ -1,5 +1,6 @@
 import { monaco } from "./tsgo-lsp"
 import type { StradaLibraryProgress } from "./strada-libraries"
+import type { AstNode } from "./ast-types"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { resolveSymlinks, type Symlinks } from "./symlinks"
 
@@ -150,6 +151,21 @@ export class StradaBackend {
 
   async readFile(fileName: string) {
     return this.#request<string | undefined>("readFile", { fileName })
+  }
+
+  async astRoot(fileName: string) {
+    await this.updateFiles()
+    return this.#request<AstNode | undefined>("astRoot", { fileName })
+  }
+
+  async astChildren(fileName: string, id: string) {
+    await this.updateFiles()
+    return this.#request<AstNode[]>("astChildren", { fileName, id })
+  }
+
+  async astPath(fileName: string, position: number) {
+    await this.updateFiles()
+    return this.#request<AstNode[]>("astPath", { fileName, position })
   }
 
   async #formatOptions(model: monaco.editor.ITextModel) {

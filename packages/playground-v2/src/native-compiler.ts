@@ -1,9 +1,10 @@
 import type { API, Diagnostic, FileNotifications, Snapshot } from "@typescript/typescript/sync"
 import type * as Ast from "@typescript/typescript/ast"
-import type { Node } from "@typescript/typescript/ast"
+import type { Node, SourceFile as AstSourceFile } from "@typescript/typescript/ast"
+import type { AstNode } from "./ast-types"
 import type { WasmTransport } from "@typescript/typescript/wasm"
 import { TextDocument } from "vscode-languageserver-textdocument"
-import { corsaDiscovery, type Dependency, type SourceFile } from "./ata"
+import { corsaDiscovery, type Dependency, type SourceFile as DependencySourceFile } from "./ata"
 import type { Symlinks } from "./symlinks"
 
 export type NativeCompileInput = {
@@ -29,17 +30,19 @@ export class NativeCompiler {
   private snapshot: Snapshot | undefined
   private readonly files = new Map<string, string>()
   private symlinkKey = ""
+  private lastInput: NativeCompileInput | undefined
   private readonly discoverDependencies: ReturnType<typeof corsaDiscovery>
 
-  constructor(private readonly api: API, private readonly transport: WasmTransport, ast: typeof Ast) {
+  constructor(private readonly api: API, private readonly transport: WasmTransport, private readonly ast: typeof Ast) {
     this.discoverDependencies = corsaDiscovery(api, ast)
   }
 
-  discover(file: SourceFile): readonly Dependency[] {
+  discover(file: DependencySourceFile): readonly Dependency[] {
     return this.discoverDependencies(file)
   }
 
-  compile(input: NativeCompileInput): NativeCompileResult {
+  private prepareProgram(input: NativeCompileInput) {
+    this.lastInput = input
     const symlinkKey = JSON.stringify(input.symlinks ?? {})
     if (this.snapshot && this.symlinkKey !== symlinkKey) {
       this.snapshot.dispose()
@@ -64,16 +67,19 @@ export class NativeCompiler {
       deleted.push(fileName)
     }
     const notifications: FileNotifications = { changed, created, deleted }
+    const hasChanges = changed.length > 0 || created.length > 0 || deleted.length > 0
     const next = this.snapshot
-      ? this.snapshot.update({
-          ensurePrograms: true,
-          fileNotifications: notifications,
-          fileSystem: {
-            kind: "layer",
-            files: Object.fromEntries([...changed, ...created].map(fileName => [fileName, input.files[fileName]])),
-            removedPaths: deleted,
-          },
-        })
+      ? hasChanges
+        ? this.snapshot.update({
+            ensurePrograms: true,
+            fileNotifications: notifications,
+            fileSystem: {
+              kind: "layer",
+              files: Object.fromEntries([...changed, ...created].map(fileName => [fileName, input.files[fileName]])),
+              removedPaths: deleted,
+            },
+          })
+        : this.snapshot
       : this.api.createSnapshot({
           openProjects: [input.configFileName],
           fileSystem: { kind: "layer", files: input.files, symlinks },
@@ -96,6 +102,11 @@ export class NativeCompiler {
         projectReferences: parsed.projectReferences,
         configFileParsingDiagnostics: parsed.errors,
       })
+    return { config, next, parsed, program, configuredProgram }
+  }
+
+  compile(input: NativeCompileInput): NativeCompileResult {
+    const { config, next, parsed, program, configuredProgram } = this.prepareProgram(input)
     try {
       const emit = program.emitToString()
       const diagnostics = [
@@ -129,6 +140,68 @@ export class NativeCompiler {
         typeQueries,
       }
     } finally {
+      if (!configuredProgram) program.dispose()
+    }
+  }
+
+  astRoot(input: NativeCompileInput, fileName: string): AstNode | undefined {
+    return this.withAstSource(input, fileName, sourceFile =>
+      describeAstNode(sourceFile, sourceFile, [], this.ast.SyntaxKind)
+    )
+  }
+
+  astChildren(fileName: string, id: string): AstNode[] {
+    if (!this.lastInput) return []
+    const path = parseAstPath(id)
+    return (
+      this.withAstSource(this.lastInput, fileName, sourceFile => {
+        const node = nodeAtPath(sourceFile, path)
+        return node
+          ? astChildren(node).map(({ child, index }) =>
+              describeAstNode(child, sourceFile, [...path, index], this.ast.SyntaxKind)
+            )
+          : []
+      }) ?? []
+    )
+  }
+
+  astPath(fileName: string, position: number): AstNode[] {
+    if (!this.lastInput) return []
+    return (
+      this.withAstSource(this.lastInput, fileName, sourceFile => {
+        const path: Node[] = [sourceFile]
+        let node: Node = sourceFile
+        let indices: number[] = []
+        while (true) {
+          const child = astChildren(node).find(
+            ({ child }) => position >= child.getStart(sourceFile) && position <= child.getEnd()
+          )
+          if (!child) break
+          node = child.child
+          indices = [...indices, child.index]
+          path.push(node)
+        }
+        return path.map((entry, index) =>
+          describeAstNode(entry, sourceFile, indices.slice(0, index), this.ast.SyntaxKind)
+        )
+      }) ?? []
+    )
+  }
+
+  private withAstSource<T>(input: NativeCompileInput, fileName: string, callback: (sourceFile: AstSourceFile) => T) {
+    const { next, parsed, program, configuredProgram } = this.prepareProgram(input)
+    let inferred: Snapshot | undefined
+    try {
+      let sourceFile = program.getSourceFile(fileName)
+      if (!sourceFile && input.files[fileName] !== undefined) {
+        inferred = next.update({
+          createPrograms: [{ rootFiles: [fileName], compilerOptions: { ...parsed.options, allowJs: true } }],
+        })
+        sourceFile = inferred.operation.createdPrograms?.[0]?.getSourceFile(fileName)
+      }
+      return sourceFile ? callback(sourceFile) : undefined
+    } finally {
+      inferred?.dispose()
       if (!configuredProgram) program.dispose()
     }
   }
@@ -170,6 +243,53 @@ export class NativeCompiler {
       }
       result[fileName] = queries
     }
+  }
+}
+
+function parseAstPath(id: string) {
+  return id === "" ? [] : id.split(".").map(Number)
+}
+
+function nodeAtPath(sourceFile: Node, path: number[]) {
+  let node = sourceFile
+  for (const index of path) {
+    const child = astChildren(node).find(candidate => candidate.index === index)
+    if (!child) return undefined
+    node = child.child
+  }
+  return node
+}
+
+function astChildren(node: Node) {
+  const children: Array<{ child: Node; index: number }> = []
+  node.forEachChild(child => {
+    children.push({ child, index: children.length })
+  })
+  return children
+}
+
+function describeAstNode(
+  node: Node,
+  sourceFile: AstSourceFile,
+  path: number[],
+  syntaxKind: typeof Ast.SyntaxKind
+): AstNode {
+  const properties = node as Node & { text?: string; escapedText?: string }
+  const text =
+    typeof properties.text === "string"
+      ? properties.text
+      : typeof properties.escapedText === "string"
+      ? properties.escapedText
+      : ""
+  const preview = text ? JSON.stringify(text.length > 60 ? `${text.slice(0, 57)}…` : text) : ""
+  const flags = typeof node.flags === "number" && node.flags !== 0 ? `flags=${node.flags}` : ""
+  return {
+    detail: [preview, flags].filter(Boolean).join(" · "),
+    end: node.getEnd(),
+    hasChildren: node.forEachChild(() => true) === true,
+    id: path.join("."),
+    kind: syntaxKind[node.kind] ?? String(node.kind),
+    start: node.getStart(sourceFile),
   }
 }
 
