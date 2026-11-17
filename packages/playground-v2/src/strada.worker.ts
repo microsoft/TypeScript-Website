@@ -164,16 +164,6 @@ async function dispatch(method: string, args: any) {
         args.formatOptions,
         args.preferences
       )
-    case "inlayHints": {
-      const serviceWithHints = service as import("typescript").LanguageService & {
-        provideInlayHints?(
-          fileName: string,
-          span: import("typescript").TextSpan,
-          preferences: import("typescript").UserPreferences
-        ): readonly any[]
-      }
-      return serviceWithHints.provideInlayHints?.(args.fileName, args.span, args.preferences) ?? []
-    }
     case "readFile":
       return readFile(args.fileName)
     default:
