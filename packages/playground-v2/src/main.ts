@@ -262,6 +262,7 @@ let lspReady = false
 let compilerFailure: string | undefined
 let attemptedCompilerVersion: string | undefined
 let versionRecovery: { latest: boolean; nightly: boolean } | undefined
+let versionRecoveryFailure: string | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
 let languageServer: TsgoLspController | undefined
@@ -1262,23 +1263,23 @@ function offerVersionRecovery() {
   const recovery = { latest: true, nightly: normalizeRequestedVersion(selectedCompiler ?? "") !== "next" }
   versionRecovery = recovery
   renderStatus()
-  void getPublishedCompilerVersions().then(
-    async published => {
-      try {
-        const latest = latestStableCompilerVersion(await getLegacyCompilerVersions().catch(() => []), published)
-        if (latest === attemptedCompilerVersion) recovery.latest = false
-      } catch {
-        recovery.latest = false
-      }
-      if (published.tags.next === attemptedCompilerVersion) recovery.nightly = false
-      renderStatus()
-    },
-    () => {}
-  )
+  const failedVersion = attemptedCompilerVersion
+  if (failedVersion === undefined) return
+  void (async () => {
+    const published = await getPublishedCompilerVersions()
+    if (published.tags.next === failedVersion) recovery.nightly = false
+    if (latestStableCompilerVersion(await getLegacyCompilerVersions(), published) === failedVersion) {
+      recovery.latest = false
+    }
+  })()
+    .catch(error => console.warn("Could not compare recovery versions with the failed compiler", error))
+    .finally(renderStatus)
 }
 
 async function useLatestCompilerVersion() {
   useLatestStartupButton.disabled = true
+  versionRecoveryFailure = undefined
+  renderStatus()
   try {
     let published
     try {
@@ -1293,8 +1294,10 @@ async function useLatestCompilerVersion() {
     })
     await selectCompilerVersion(latestStableCompilerVersion(legacyVersions, published))
   } catch (error) {
-    loadingDetail.textContent = error instanceof Error ? error.message : String(error)
+    versionRecoveryFailure = error instanceof Error ? error.message : String(error)
     useLatestStartupButton.disabled = false
+    renderStatus()
+    console.error(error)
   }
 }
 
@@ -2655,7 +2658,7 @@ function renderStatus() {
     loader.dataset.state = "error"
     loadingMessage.textContent = failure
     loadingProgress.hidden = true
-    loadingDetail.textContent = ""
+    loadingDetail.textContent = versionRecoveryFailure ?? ""
     retryStartupButton.hidden = false
     useLatestStartupButton.hidden = !versionRecovery?.latest
     useNightlyStartupButton.hidden = !versionRecovery?.nightly
