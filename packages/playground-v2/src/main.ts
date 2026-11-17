@@ -1,10 +1,5 @@
 import type { Diagnostic as CompilerDiagnostic } from "@typescript/typescript/sync"
-import {
-  CompilerDownloadError,
-  downloadCompilerAsset,
-  fetchCompilerResource,
-  readResponseBytes,
-} from "./compiler-assets"
+import { downloadCompilerAsset, fetchCompilerResource, readResponseBytes } from "./compiler-assets"
 import { ensureCrossOriginIsolation, retryStartup } from "./isolation"
 import {
   legacyCompilerBaseUrl,
@@ -18,6 +13,7 @@ import {
   isUnsupportedNativeCompilerVersion,
   loadPublishedCompilerVersions,
   loadLegacyCompilerVersions,
+  latestStableCompilerVersion,
   publishedNativeCompilerSelection,
 } from "./compiler-versions"
 import "monaco-editor/editor/contrib/links/browser/links.js"
@@ -264,7 +260,8 @@ const useNightlyStartupButton = getElement<HTMLButtonElement>("use-nightly-start
 let compilerReady = false
 let lspReady = false
 let compilerFailure: string | undefined
-let versionFallbackAvailable = false
+let attemptedCompilerVersion: string | undefined
+let versionRecovery: { latest: boolean; nightly: boolean } | undefined
 let lspFailure: string | undefined
 let projectFailure: string | undefined
 let languageServer: TsgoLspController | undefined
@@ -885,7 +882,7 @@ toggleRunOutputButton.addEventListener("click", () => {
 navigateBackButton.addEventListener("click", navigateBack)
 runButton.addEventListener("click", runProject)
 retryStartupButton.addEventListener("click", retryStartup)
-useLatestStartupButton.addEventListener("click", () => void selectCompilerVersion("native"))
+useLatestStartupButton.addEventListener("click", () => void useLatestCompilerVersion())
 useNightlyStartupButton.addEventListener("click", () => void selectCompilerVersion("next"))
 settingsButton.addEventListener("click", openSettings)
 settingsCancelButton.addEventListener("click", () => settingsDialog.close())
@@ -973,9 +970,8 @@ async function initializeNativeCompiler() {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     compilerFailure = message
-    versionFallbackAvailable = isUnavailableCompilerVersionError(error)
     completeInitialTypeQueries()
-    renderStatus()
+    offerVersionRecovery()
     console.error(error)
   }
 }
@@ -984,6 +980,7 @@ async function initializeStradaCompiler(requestedVersion: string) {
   try {
     setLoadingIndeterminate("Loading TypeScript...", "")
     const version = await resolveStradaVersion(requestedVersion)
+    attemptedCompilerVersion = version
     let mirroredVersions: string[] = []
     try {
       mirroredVersions = await getLegacyCompilerVersions()
@@ -1052,9 +1049,8 @@ async function initializeStradaCompiler(requestedVersion: string) {
     if (!touchPrimary.matches && !lastInputWasTouch) inputEditor.focus()
   } catch (error) {
     compilerFailure = error instanceof Error ? error.message : String(error)
-    versionFallbackAvailable = isUnavailableCompilerVersionError(error)
     completeInitialTypeQueries()
-    renderStatus()
+    offerVersionRecovery()
     console.error(error)
   }
 }
@@ -1262,12 +1258,44 @@ function normalizeRequestedVersion(version: string) {
   return version === "Nightly" ? "next" : version
 }
 
-function isUnavailableCompilerVersionError(error: unknown) {
-  if (error instanceof CompilerDownloadError) return error.status === 404 || error.status === 410
-  if (!(error instanceof Error)) return false
-  return /(?:not supported by this Playground|API and WASI artifact revisions do not match|Invalid package metadata|Missing package export|Compiler libraries are missing|Missing compiler file size)/i.test(
-    error.message
+function offerVersionRecovery() {
+  const recovery = { latest: true, nightly: normalizeRequestedVersion(selectedCompiler ?? "") !== "next" }
+  versionRecovery = recovery
+  renderStatus()
+  void getPublishedCompilerVersions().then(
+    async published => {
+      try {
+        const latest = latestStableCompilerVersion(await getLegacyCompilerVersions().catch(() => []), published)
+        if (latest === attemptedCompilerVersion) recovery.latest = false
+      } catch {
+        recovery.latest = false
+      }
+      if (published.tags.next === attemptedCompilerVersion) recovery.nightly = false
+      renderStatus()
+    },
+    () => {}
   )
+}
+
+async function useLatestCompilerVersion() {
+  useLatestStartupButton.disabled = true
+  try {
+    let published
+    try {
+      published = await getPublishedCompilerVersions()
+    } catch {
+      publishedCompilerVersionsPromise = undefined
+      published = await getPublishedCompilerVersions()
+    }
+    const legacyVersions = await getLegacyCompilerVersions().catch(() => {
+      legacyCompilerVersionsPromise = undefined
+      return getLegacyCompilerVersions().catch(() => [])
+    })
+    await selectCompilerVersion(latestStableCompilerVersion(legacyVersions, published))
+  } catch (error) {
+    loadingDetail.textContent = error instanceof Error ? error.message : String(error)
+    useLatestStartupButton.disabled = false
+  }
 }
 
 async function resolveStradaVersion(requestedVersion: string) {
@@ -1889,7 +1917,10 @@ function applyEditorLocation(location: EditorLocation) {
 }
 
 function getCompilerDistribution() {
-  compilerDistributionPromise ??= resolveNativeCompilerVersion().then(loadPublishedCompilerDistribution)
+  compilerDistributionPromise ??= resolveNativeCompilerVersion().then(version => {
+    attemptedCompilerVersion = version
+    return loadPublishedCompilerDistribution(version)
+  })
   return compilerDistributionPromise
 }
 
@@ -2626,9 +2657,8 @@ function renderStatus() {
     loadingProgress.hidden = true
     loadingDetail.textContent = ""
     retryStartupButton.hidden = false
-    const requestedVersion = normalizeRequestedVersion(selectedCompiler ?? "")
-    useLatestStartupButton.hidden = !versionFallbackAvailable || isDefaultNativeCompilerVersion(selectedCompiler)
-    useNightlyStartupButton.hidden = !versionFallbackAvailable || requestedVersion === "next"
+    useLatestStartupButton.hidden = !versionRecovery?.latest
+    useNightlyStartupButton.hidden = !versionRecovery?.nightly
     return
   }
   useLatestStartupButton.hidden = true
