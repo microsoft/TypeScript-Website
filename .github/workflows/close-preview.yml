@@ -58,7 +58,9 @@ jobs:
           # Avoid Azure CLI's subscription-scoped long-running-operation polling.
           resource_id="/subscriptions/{subscriptionId}/resourceGroups/$AZURE_RESOURCE_GROUP"
           resource_id+="/providers/Microsoft.Web/staticSites/$AZURE_STATIC_WEB_APP_NAME"
-          az rest --method delete --url "$resource_id/builds/$PR_NUMBER?api-version=2024-11-01"
+          if ! az rest --method delete --url "$resource_id/builds/$PR_NUMBER?api-version=2024-11-01"; then
+            echo "::warning::Delete returned an error; checking whether preview $PR_NUMBER was removed"
+          fi
 
           for _ in {1..30}; do
             environment="$(get_preview_environment)"
