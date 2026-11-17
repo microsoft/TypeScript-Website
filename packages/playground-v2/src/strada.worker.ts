@@ -69,7 +69,7 @@ async function initialize(args: InitMessage["args"]) {
   // The owning page supplies compiler code from our trusted compiler CDN over
   // this dedicated worker's private channel. Evaluating that compiler is intentional.
   ts = new Function(`${args.compilerSource}\nreturn ts;`)() as TS
-  syntaxKindName = syntaxKindNames(ts.SyntaxKind as unknown as Record<string, string | number>)
+  syntaxKindName = syntaxKindNames(ts.SyntaxKind)
   symlinks = args.symlinks ?? {}
   filesystem = createStradaFileSystem(ts, () => [...files.keys(), ...libraries.keys()], readFile, symlinks)
   version = args.version
@@ -194,11 +194,7 @@ async function dispatch(method: string, args: any) {
 function serializeAstRoot(fileName: string) {
   const { service, fileName: resolvedFileName } = languageServiceForFile(fileName)
   const sourceFile = service.getProgram()?.getSourceFile(resolvedFileName)
-  return astCache.store(
-    sourceFile,
-    syntaxKindName,
-    node => node.getStart(sourceFile)
-  )
+  return astCache.store(sourceFile, syntaxKindName, node => node.getStart(sourceFile))
 }
 
 function updateFiles(

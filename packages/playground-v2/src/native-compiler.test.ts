@@ -803,6 +803,9 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
     assert.equal(compiler.astChildren(ast!.revision, ast!.root.id), undefined)
     delete input.files[outsideSource]
 
+    const adjacent = compiler.astRoot({ ...input, files: { ...input.files, [source]: "a;b;" } }, source)
+    assert.equal(compiler.astPath(adjacent!.revision, 2)?.at(-1)?.detail, '"b"')
+
     input.files[source] = 'const answer: number = "wrong";\n//    ^?\n'
     const changed = compiler.compile(input)
     assert(changed.diagnostics.some(diagnostic => diagnostic.code === 2322))

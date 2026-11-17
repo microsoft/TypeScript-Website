@@ -34,9 +34,9 @@ export class NativeCompiler {
   private readonly syntaxKindName: (kind: number) => string | undefined
   private readonly discoverDependencies: ReturnType<typeof corsaDiscovery>
 
-  constructor(private readonly api: API, private readonly transport: WasmTransport, private readonly ast: typeof Ast) {
+  constructor(private readonly api: API, private readonly transport: WasmTransport, ast: typeof Ast) {
     this.discoverDependencies = corsaDiscovery(api, ast)
-    this.syntaxKindName = syntaxKindNames(ast.SyntaxKind as unknown as Record<string, string | number>)
+    this.syntaxKindName = syntaxKindNames(ast.SyntaxKind)
   }
 
   discover(file: DependencySourceFile): readonly Dependency[] {

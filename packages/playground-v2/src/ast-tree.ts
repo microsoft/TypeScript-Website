@@ -21,7 +21,7 @@ export type AstSyntaxNode = {
 
 // Enum reverse mappings resolve to the marker aliases declared last
 // (FirstStatement for VariableStatement), so keep the first declared name.
-export function syntaxKindNames(syntaxKind: Record<string, string | number>) {
+export function syntaxKindNames(syntaxKind: object) {
   const names = new Map<number, string>()
   for (const [name, value] of Object.entries(syntaxKind)) {
     if (typeof value === "number" && !names.has(value)) names.set(value, name)
@@ -74,7 +74,9 @@ export class AstCache {
     const path: AstNode[] = []
     while (node) {
       path.push(summarize(node))
-      node = node.children.find(child => position >= child.start && position <= child.end)
+      node =
+        node.children.find(child => position >= child.start && position < child.end) ??
+        node.children.find(child => position === child.end && child.end > child.start)
     }
     return path
   }
