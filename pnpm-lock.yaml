@@ -167,9 +167,6 @@ importers:
       monaco-editor:
         specifier: ^0.32.1
         version: 0.32.1
-      monaco-typescript:
-        specifier: ^4.10.0
-        version: 4.10.0
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -287,9 +284,6 @@ importers:
       monaco-editor:
         specifier: ^0.32.1
         version: 0.32.1
-      monaco-typescript:
-        specifier: ^4.10.0
-        version: 4.10.0
       ts-jest:
         specifier: ^29.4.6
         version: 29.4.6(@babel/core@7.29.0)(@jest/transform@30.2.0)(@jest/types@30.2.0)(babel-jest@29.7.0(@babel/core@7.29.0))(jest-util@30.2.0)(jest@30.2.0(@types/node@25.3.3)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.3.3)(typescript@6.0.2)))(typescript@6.0.2)
@@ -7386,9 +7380,6 @@ packages:
 
   monaco-editor@0.56.0:
     resolution: {integrity: sha512-sXboRm3BeBeLm938eaiyLMe0OxzfXIlZvbv4ir/jVgQy1zDhWjgmny0WoN45fuDKhCCQsYMbBJrv/A6jd8aCUg==}
-
-  monaco-typescript@4.10.0:
-    resolution: {integrity: sha512-vzd7IGCshZO05YW/Kv2V/aKU/Pn8N3RjioHPmSJzG+4E9odnTrCOP8c/iOgkl2IyRS72WReDJ7xDYtMtg8WrOQ==}
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -19255,8 +19246,6 @@ snapshots:
     dependencies:
       dompurify: 3.4.8
       marked: 14.0.0
-
-  monaco-typescript@4.10.0: {}
 
   mri@1.2.0: {}
 

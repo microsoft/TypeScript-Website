@@ -24,7 +24,6 @@
     "@types/react": "^18.3.28",
     "jest": "^30.2.0",
     "monaco-editor": "^0.32.1",
-    "monaco-typescript": "^4.10.0",
     "typescript": "*"
   }
 }
