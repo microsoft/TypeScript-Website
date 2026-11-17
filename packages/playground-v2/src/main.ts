@@ -35,7 +35,7 @@ import { configureExports, decodeCompressedHash } from "./exporter"
 import { resolveSymlinks, validateProjectSymlinks, type Symlinks } from "./symlinks"
 import { isSourceLanguage, languageForFile, sourceLanguages } from "./editor-languages"
 import { StradaBackend } from "./strada"
-import type { AstNode } from "./ast-types"
+import type { AstNode } from "./ast-tree"
 import { NativeBackend } from "./native"
 import { PackageTypeAcquirer, stradaDiscovery, type AcquisitionResult, type DiscoverDependencies } from "./ata"
 import { acquisitionOptions } from "./ata/config"
@@ -204,7 +204,9 @@ let astRenderVersion = 0
 let astCursorVersion = 0
 let astDecorations: string[] = []
 let astDecorationModel: monaco.editor.ITextModel | undefined
-let astRootNode: AstNode | undefined
+let astTreeState: AstTreeState | undefined
+let astSelection: { end: number; id: string; start: number } | undefined
+let astWasActive = false
 const astEntries = new Map<string, AstTreeEntry>()
 const toggleRunOutputButton = getElement<HTMLButtonElement>("toggle-run-output-button")
 const navigateBackButton = getElement<HTMLButtonElement>("navigate-back-button")
@@ -494,7 +496,7 @@ refreshCompilerOverrides()
 
 function loadLayoutState(): LayoutState {
   const defaults: LayoutState = {
-    astVisible: true,
+    astVisible: false,
     emitVisible: true,
     filesVisible: true,
     filesWidth: 208,
@@ -694,6 +696,7 @@ function applyLayoutState() {
   emitOutput.hidden = !layoutState.emitVisible
   astPanel.dataset.collapsed = String(!layoutState.astVisible)
   runOutput.dataset.collapsed = String(!layoutState.runVisible)
+  updateAstActivity()
 
   showFilesButton.hidden = layoutState.filesVisible
   showOutputButton.hidden = layoutState.outputVisible
@@ -887,6 +890,7 @@ toggleFilesButton.addEventListener("click", () => toggleWorkspacePanel("files"))
 showFilesButton.addEventListener("click", () => toggleWorkspacePanel("files"))
 toggleOutputButton.addEventListener("click", () => toggleWorkspacePanel("output"))
 showOutputButton.addEventListener("click", () => toggleWorkspacePanel("output"))
+astTree.addEventListener("keydown", handleAstTreeKeydown)
 toggleAstButton.addEventListener("click", () => {
   layoutState.astVisible = !layoutState.astVisible
   applyLayoutState()
@@ -2331,52 +2335,113 @@ function diagnosticSeverity(category: number) {
 }
 
 type AstTreeEntry = {
+  children?: HTMLUListElement
   element: HTMLLIElement
+  loading?: Promise<void>
   node: AstNode
   row: HTMLDivElement
+  select: HTMLButtonElement
   toggle?: HTMLButtonElement
 }
 
-function scheduleAstRefresh() {
-  window.clearTimeout(astRefreshTimer)
-  astRefreshTimer = window.setTimeout(() => void refreshAstTree(), 180)
+type AstTreeState = {
+  model: monaco.editor.ITextModel
+  modelVersion: number
+  revision: number
 }
 
-async function refreshAstTree() {
-  const version = ++astRenderVersion
+function isAstActive() {
+  return layoutState.astVisible && layoutState.outputVisible
+}
+
+function updateAstActivity() {
+  const active = isAstActive()
+  if (active === astWasActive) return
+  astWasActive = active
+  if (!active) {
+    astEntries.clear()
+    astTree.replaceChildren()
+    astTree.hidden = true
+  }
+  scheduleAstRefresh()
+}
+
+function invalidateAstTree() {
+  astRenderVersion++
   astCursorVersion++
+  astTreeState = undefined
+  astSelection = undefined
+  window.clearTimeout(astCursorTimer)
   clearAstDecoration()
+  astTree.inert = true
+}
+
+function scheduleAstRefresh() {
+  invalidateAstTree()
+  window.clearTimeout(astRefreshTimer)
+  if (isAstActive()) astRefreshTimer = window.setTimeout(() => void refreshAstTree(), 180)
+}
+
+function isCurrentAst(state: AstTreeState) {
+  return (
+    astTreeState === state &&
+    inputEditor.getModel() === state.model &&
+    state.model.getVersionId() === state.modelVersion
+  )
+}
+
+function showAstMessage(message: string) {
   astEntries.clear()
-  astRootNode = undefined
   astTree.replaceChildren()
   astTree.hidden = true
   astMessage.hidden = false
+  astMessage.textContent = message
+}
+
+function reportAstError(version: number, error: unknown) {
+  if (version !== astRenderVersion) return
+  console.error(error)
+  invalidateAstTree()
+  const reason = error instanceof Error ? error.message.split("\n", 1)[0] : String(error)
+  showAstMessage(`AST view unavailable: ${reason}`)
+}
+
+function runAstTask(task: () => Promise<void>) {
+  const version = astRenderVersion
+  task().catch(error => reportAstError(version, error))
+}
+
+async function refreshAstTree() {
+  const version = astRenderVersion
   const model = inputEditor.getModel()
   if (!model || !isSourceLanguage(model.getLanguageId())) {
-    astMessage.textContent = "AST view is available for TypeScript and JavaScript files."
+    showAstMessage("AST view is available for TypeScript and JavaScript files.")
     return
   }
   if (!compilerReady) {
-    astMessage.textContent = "Waiting for the compiler."
+    showAstMessage("Waiting for the compiler.")
     return
   }
-  astMessage.textContent = "Loading AST…"
+  if (astTree.hidden) showAstMessage("Loading AST…")
+  const modelVersion = model.getVersionId()
   try {
-    const root = await requestAstRoot(model.uri.path)
-    if (version !== astRenderVersion || inputEditor.getModel() !== model) return
-    if (!root) {
-      astMessage.textContent = "AST is unavailable for this file with the selected compiler."
+    const snapshot = await requestAstRoot(model.uri.path)
+    if (version !== astRenderVersion || inputEditor.getModel() !== model || model.getVersionId() !== modelVersion)
+      return
+    if (!snapshot) {
+      showAstMessage("AST is unavailable for this file with the selected compiler.")
       return
     }
-    astRootNode = root
+    astTreeState = { model, modelVersion, revision: snapshot.revision }
+    astEntries.clear()
+    astTree.replaceChildren()
     astTree.hidden = false
+    astTree.inert = false
     astMessage.hidden = true
-    renderAstEntry(astTree, root)
-    await followAstCursor(version)
+    renderAstEntry(astTree, snapshot.root)
+    await followAstCursor()
   } catch (error) {
-    if (version !== astRenderVersion) return
-    const reason = error instanceof Error ? error.message.split("\n", 1)[0] : String(error)
-    astMessage.textContent = `AST view unavailable: ${reason}`
+    reportAstError(version, error)
   }
 }
 
@@ -2396,14 +2461,14 @@ function requestAstRoot(fileName: string) {
   return stradaBackend?.astRoot(fileName)
 }
 
-function requestAstChildren(fileName: string, id: string) {
-  if (useNativeCompiler) return nativeBackend?.astChildren(fileName, id)
-  return stradaBackend?.astChildren(fileName, id)
+function requestAstChildren(revision: number, id: string) {
+  if (useNativeCompiler) return nativeBackend?.astChildren(revision, id)
+  return stradaBackend?.astChildren(revision, id)
 }
 
-function requestAstPath(fileName: string, position: number) {
-  if (useNativeCompiler) return nativeBackend?.astPath(fileName, position)
-  return stradaBackend?.astPath(fileName, position)
+function requestAstPath(revision: number, position: number) {
+  if (useNativeCompiler) return nativeBackend?.astPath(revision, position)
+  return stradaBackend?.astPath(revision, position)
 }
 
 function renderAstEntry(parent: HTMLElement, node: AstNode) {
@@ -2418,11 +2483,10 @@ function renderAstEntry(parent: HTMLElement, node: AstNode) {
   if (toggle) {
     toggle.className = "ast-node-toggle"
     toggle.type = "button"
+    toggle.tabIndex = -1
     toggle.setAttribute("aria-label", `Expand ${node.kind}`)
     toggle.appendChild(createText("span", "▸", "ast-node-arrow"))
-    toggle.addEventListener("click", () => void toggleAstEntry(node, toggle, element))
     toggle.addEventListener("pointerenter", () => highlightAstNode(node))
-    toggle.addEventListener("focus", () => highlightAstNode(node))
     row.appendChild(toggle)
   } else {
     row.appendChild(createText("span", "", "ast-node-arrow"))
@@ -2430,12 +2494,16 @@ function renderAstEntry(parent: HTMLElement, node: AstNode) {
   const select = document.createElement("button")
   select.className = "ast-node-select"
   select.type = "button"
+  select.tabIndex = astEntries.size === 0 ? 0 : -1
   select.title = `${node.kind}${node.detail ? ` · ${node.detail}` : ""}`
   select.appendChild(createText("span", node.kind, "ast-node-kind"))
   if (node.detail) select.appendChild(createText("span", node.detail, "ast-node-detail"))
   select.addEventListener("click", () => selectAstNode(node))
   select.addEventListener("pointerenter", () => highlightAstNode(node))
-  select.addEventListener("focus", () => highlightAstNode(node))
+  select.addEventListener("focus", () => {
+    for (const entry of astEntries.values()) entry.select.tabIndex = entry.select === select ? 0 : -1
+    highlightAstNode(node)
+  })
   row.addEventListener("pointerleave", clearAstDecoration)
   row.addEventListener("focusout", event => {
     if (!row.contains(event.relatedTarget as Node | null)) clearAstDecoration()
@@ -2443,58 +2511,71 @@ function renderAstEntry(parent: HTMLElement, node: AstNode) {
   row.appendChild(select)
   element.appendChild(row)
   parent.appendChild(element)
-  astEntries.set(node.id, { element, node, row, toggle })
+  const entry: AstTreeEntry = { element, node, row, select, toggle }
+  toggle?.addEventListener("click", () => runAstTask(() => toggleAstEntry(entry)))
+  astEntries.set(node.id, entry)
 }
 
-async function toggleAstEntry(node: AstNode, toggle: HTMLButtonElement, element: HTMLLIElement) {
-  const expanded = element.getAttribute("aria-expanded") === "true"
-  const existingChildren = element.querySelector<HTMLElement>(".ast-node-children")
-  if (expanded) {
-    element.setAttribute("aria-expanded", "false")
-    toggle.setAttribute("aria-label", `Expand ${node.kind}`)
-    toggle.querySelector<HTMLElement>(".ast-node-arrow")!.textContent = "▸"
-    if (existingChildren) existingChildren.hidden = true
+function setAstEntryExpanded(entry: AstTreeEntry, expanded: boolean) {
+  entry.element.setAttribute("aria-expanded", String(expanded))
+  entry.toggle?.setAttribute("aria-label", `${expanded ? "Collapse" : "Expand"} ${entry.node.kind}`)
+  const arrow = entry.toggle?.querySelector<HTMLElement>(".ast-node-arrow")
+  if (arrow) arrow.textContent = expanded ? "▾" : "▸"
+  if (entry.children) entry.children.hidden = !expanded
+}
+
+function isAstEntryExpanded(entry: AstTreeEntry) {
+  return entry.element.getAttribute("aria-expanded") === "true"
+}
+
+async function toggleAstEntry(entry: AstTreeEntry) {
+  if (isAstEntryExpanded(entry)) setAstEntryExpanded(entry, false)
+  else await expandAstEntry(entry)
+}
+
+function expandAstEntry(entry: AstTreeEntry): Promise<void> {
+  if (!entry.node.hasChildren) return Promise.resolve()
+  setAstEntryExpanded(entry, true)
+  if (entry.children) return Promise.resolve()
+  entry.loading ??= loadAstChildren(entry).finally(() => {
+    entry.loading = undefined
+  })
+  return entry.loading
+}
+
+async function loadAstChildren(entry: AstTreeEntry) {
+  const state = astTreeState
+  if (!state) return
+  const children = await requestAstChildren(state.revision, entry.node.id)
+  if (!isCurrentAst(state) || !entry.element.isConnected) return
+  if (!children) {
+    scheduleAstRefresh()
     return
   }
-  element.setAttribute("aria-expanded", "true")
-  toggle.setAttribute("aria-label", `Collapse ${node.kind}`)
-  toggle.querySelector<HTMLElement>(".ast-node-arrow")!.textContent = "▾"
-  if (existingChildren) {
-    existingChildren.hidden = false
-    return
-  }
-  const model = inputEditor.getModel()
-  if (!model) return
-  const version = astRenderVersion
-  const children = await requestAstChildren(model.uri.path, node.id)
-  if (
-    !children ||
-    version !== astRenderVersion ||
-    !element.isConnected ||
-    element.getAttribute("aria-expanded") !== "true"
-  )
-    return
   const list = document.createElement("ul")
   list.className = "ast-node-children"
   list.setAttribute("role", "group")
   for (const child of children) renderAstEntry(list, child)
-  element.appendChild(list)
-  element.dataset.loaded = "true"
+  list.hidden = !isAstEntryExpanded(entry)
+  entry.element.appendChild(list)
+  entry.children = list
 }
 
 function selectAstNode(node: AstNode) {
-  const model = inputEditor.getModel()
-  if (!model) return
+  const model = astTreeState?.model
+  if (!model || inputEditor.getModel() !== model) return
+  const start = Math.min(node.start, model.getValueLength())
   const end = Math.min(model.getValueLength(), Math.max(node.start + 1, node.end))
-  const range = spanRange(model, node.start, end)
+  astSelection = { end, id: node.id, start }
+  markActiveAstEntry(node.id)
+  const range = spanRange(model, start, end)
   inputEditor.setSelection(range)
-  inputEditor.revealRangeInCenter(range, monaco.editor.ScrollType.Immediate)
-  inputEditor.focus()
+  inputEditor.revealRangeInCenter(range, monaco.editor.ScrollType.Smooth)
 }
 
 function highlightAstNode(node: AstNode) {
-  const model = inputEditor.getModel()
-  if (!model || node.end <= node.start) return clearAstDecoration()
+  const model = astTreeState?.model
+  if (!model || inputEditor.getModel() !== model || node.end <= node.start) return clearAstDecoration()
   if (astDecorationModel && astDecorationModel !== model) clearAstDecoration()
   const range = spanRange(model, node.start, node.end)
   astDecorations = model.deltaDecorations(astDecorations, [
@@ -2514,29 +2595,90 @@ function clearAstDecoration() {
 
 function scheduleAstCursorFollow() {
   window.clearTimeout(astCursorTimer)
-  astCursorTimer = window.setTimeout(() => void followAstCursor(astRenderVersion), 80)
+  if (!astTreeState) return
+  astCursorTimer = window.setTimeout(() => runAstTask(followAstCursor), 80)
 }
 
-async function followAstCursor(version: number) {
+async function followAstCursor() {
+  const state = astTreeState
+  const selection = inputEditor.getSelection()
+  if (!state || !selection || !isCurrentAst(state)) return
   const cursorVersion = ++astCursorVersion
-  const model = inputEditor.getModel()
-  const position = inputEditor.getPosition()
-  if (!model || !position || !astRootNode) return
-  const path = await requestAstPath(model.uri.path, model.getOffsetAt(position))
-  if (!path || version !== astRenderVersion || cursorVersion !== astCursorVersion || inputEditor.getModel() !== model)
+  const selectionStart = state.model.getOffsetAt(selection.getStartPosition())
+  const selectionEnd = state.model.getOffsetAt(selection.getEndPosition())
+  if (astSelection?.start === selectionStart && astSelection.end === selectionEnd) {
+    markActiveAstEntry(astSelection.id)
     return
-  for (let index = 0; index < path.length - 1; index++) {
-    const current = astEntries.get(path[index].id)
-    if (!current) return
-    if (current.element.getAttribute("aria-expanded") !== "true" && current.toggle)
-      await toggleAstEntry(current.node, current.toggle, current.element)
   }
+  astSelection = undefined
+  const position = state.model.getOffsetAt(selection.getPosition())
+  const path = await requestAstPath(state.revision, position)
+  const isCurrent = () => isCurrentAst(state) && cursorVersion === astCursorVersion
+  if (!isCurrent()) return
+  if (!path) {
+    scheduleAstRefresh()
+    return
+  }
+  for (const node of path.slice(0, -1)) {
+    const entry = astEntries.get(node.id)
+    if (!entry) return
+    await expandAstEntry(entry)
+    if (!isCurrent()) return
+  }
+  markActiveAstEntry(path.at(-1)?.id)
+}
+
+function markActiveAstEntry(id: string | undefined) {
   for (const { row } of astEntries.values()) row.classList.remove("ast-node-active")
-  const active = path.length ? astEntries.get(path[path.length - 1].id) : undefined
-  if (active) {
-    active.row.classList.add("ast-node-active")
-    active.row.scrollIntoView({ block: "nearest" })
+  const active = id === undefined ? undefined : astEntries.get(id)
+  if (!active) return
+  active.row.classList.add("ast-node-active")
+  active.row.scrollIntoView({ block: "nearest" })
+}
+
+function visibleAstEntries() {
+  return [...astTree.querySelectorAll<HTMLButtonElement>(".ast-node-select")].filter(
+    select => select.closest("[hidden]") === null
+  )
+}
+
+function handleAstTreeKeydown(event: KeyboardEvent) {
+  const entry = [...astEntries.values()].find(({ select }) => select === document.activeElement)
+  if (!entry) return
+  const visible = visibleAstEntries()
+  const index = visible.indexOf(entry.select)
+  let target: HTMLButtonElement | undefined
+  switch (event.key) {
+    case "ArrowDown":
+      target = visible[index + 1]
+      break
+    case "ArrowUp":
+      target = visible[index - 1]
+      break
+    case "Home":
+      target = visible[0]
+      break
+    case "End":
+      target = visible.at(-1)
+      break
+    case "ArrowRight":
+      if (!entry.node.hasChildren) return
+      if (isAstEntryExpanded(entry))
+        target = entry.children?.querySelector<HTMLButtonElement>(".ast-node-select") ?? undefined
+      else runAstTask(() => expandAstEntry(entry))
+      break
+    case "ArrowLeft":
+      if (isAstEntryExpanded(entry)) setAstEntryExpanded(entry, false)
+      else
+        target =
+          entry.element.parentElement?.closest(".ast-node")?.querySelector<HTMLButtonElement>(".ast-node-select") ??
+          undefined
+      break
+    default:
+      return
   }
+  event.preventDefault()
+  target?.focus()
 }
 
 async function renderEmittedFiles() {
@@ -2868,7 +3010,7 @@ function registerProjectModel(model: monaco.editor.ITextModel) {
     nativeCompileVersion++
     stradaCompileVersion++
     scheduleProjectPersistence()
-    scheduleAstRefresh()
+    if (model === inputEditor.getModel()) scheduleAstRefresh()
     refreshCompilerOverrides()
     synchronizeLinkedProjectFiles()
     scheduleTypeAcquisition()

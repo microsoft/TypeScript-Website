@@ -13,8 +13,8 @@ type Message =
     }
   | { id: number; method: "compile"; args: NativeCompileInput }
   | { id: number; method: "astRoot"; args: { input: NativeCompileInput; fileName: string } }
-  | { id: number; method: "astChildren"; args: { fileName: string; id: string } }
-  | { id: number; method: "astPath"; args: { fileName: string; position: number } }
+  | { id: number; method: "astChildren"; args: { revision: number; id: string } }
+  | { id: number; method: "astPath"; args: { revision: number; position: number } }
   | { id: number; method: "discover"; args: SourceFile }
 
 let compiler: NativeCompiler | undefined
@@ -48,10 +48,10 @@ async function handle(message: Message) {
           result = compiler.astRoot(message.args.input, message.args.fileName)
           break
         case "astChildren":
-          result = compiler.astChildren(message.args.fileName, message.args.id)
+          result = compiler.astChildren(message.args.revision, message.args.id)
           break
         case "astPath":
-          result = compiler.astPath(message.args.fileName, message.args.position)
+          result = compiler.astPath(message.args.revision, message.args.position)
           break
         case "discover":
           result = compiler.discover(message.args)

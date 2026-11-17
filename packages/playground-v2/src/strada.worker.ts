@@ -1,5 +1,5 @@
 import type { StradaLoadingProgress } from "./strada"
-import type { AstNode } from "./ast-types"
+import { AstCache, syntaxKindNames } from "./ast-tree"
 import { loadStradaLibraries } from "./strada-libraries"
 import { createStradaFileSystem, normalizeStradaPath as normalizePath, parseStradaConfig } from "./strada-project"
 import { resolveSymlinks, type Symlinks } from "./symlinks"
@@ -44,6 +44,8 @@ let filesystem: ReturnType<typeof createStradaFileSystem>
 let languageService: import("typescript").LanguageService
 let inferredLanguageService: import("typescript").LanguageService | undefined
 const requestedInferredFiles = new Set<string>()
+const astCache = new AstCache()
+let syntaxKindName: (kind: number) => string | undefined
 
 self.addEventListener("message", (event: MessageEvent<InitMessage | RequestMessage>) => {
   void handleMessage(event.data)
@@ -67,6 +69,7 @@ async function initialize(args: InitMessage["args"]) {
   // The owning page supplies compiler code from our trusted compiler CDN over
   // this dedicated worker's private channel. Evaluating that compiler is intentional.
   ts = new Function(`${args.compilerSource}\nreturn ts;`)() as TS
+  syntaxKindName = syntaxKindNames(ts.SyntaxKind as unknown as Record<string, string | number>)
   symlinks = args.symlinks ?? {}
   filesystem = createStradaFileSystem(ts, () => [...files.keys(), ...libraries.keys()], readFile, symlinks)
   version = args.version
@@ -180,96 +183,22 @@ async function dispatch(method: string, args: any) {
     case "astRoot":
       return serializeAstRoot(args.fileName)
     case "astChildren":
-      return serializeAstChildren(args.fileName, args.id)
+      return astCache.children(args.revision, args.id)
     case "astPath":
-      return serializeAstPath(args.fileName, args.position)
+      return astCache.path(args.revision, args.position)
     default:
       throw new Error(`Unknown Strada request: ${method}`)
   }
 }
 
-function serializeAstRoot(fileName: string): AstNode | undefined {
+function serializeAstRoot(fileName: string) {
   const { service, fileName: resolvedFileName } = languageServiceForFile(fileName)
   const sourceFile = service.getProgram()?.getSourceFile(resolvedFileName)
-  return sourceFile ? describeAstNode(sourceFile, sourceFile, "") : undefined
-}
-
-function serializeAstChildren(fileName: string, id: string): AstNode[] {
-  const sourceFile = sourceFileForAst(fileName)
-  if (!sourceFile) return []
-  const path = parseAstPath(id)
-  const node = nodeAtPath(sourceFile, path)
-  return node ? astChildren(node).map(({ child, index }) => describeAstNode(child, sourceFile, [...path, index])) : []
-}
-
-function serializeAstPath(fileName: string, position: number): AstNode[] {
-  const sourceFile = sourceFileForAst(fileName)
-  if (!sourceFile) return []
-  const path: import("typescript").Node[] = [sourceFile]
-  let node: import("typescript").Node = sourceFile
-  let indices: number[] = []
-  while (true) {
-    const child = astChildren(node).find(
-      ({ child }) => position >= child.getStart(sourceFile) && position <= child.getEnd()
-    )
-    if (!child) break
-    node = child.child
-    indices = [...indices, child.index]
-    path.push(node)
-  }
-  return path.map((entry, index) => describeAstNode(entry, sourceFile, indices.slice(0, index)))
-}
-
-function sourceFileForAst(fileName: string): import("typescript").SourceFile | undefined {
-  const { service, fileName: resolvedFileName } = languageServiceForFile(fileName)
-  return service.getProgram()?.getSourceFile(resolvedFileName) as import("typescript").SourceFile | undefined
-}
-
-function parseAstPath(id: string) {
-  return id === "" ? [] : id.split(".").map(Number)
-}
-
-function nodeAtPath(sourceFile: import("typescript").SourceFile, path: number[]) {
-  let node: import("typescript").Node = sourceFile
-  for (const index of path) {
-    const child = astChildren(node).find(candidate => candidate.index === index)
-    if (!child) return undefined
-    node = child.child
-  }
-  return node
-}
-
-function astChildren(node: import("typescript").Node) {
-  const children: Array<{ child: import("typescript").Node; index: number }> = []
-  node.forEachChild(child => {
-    children.push({ child, index: children.length })
-  })
-  return children
-}
-
-function describeAstNode(
-  node: import("typescript").Node,
-  sourceFile: import("typescript").SourceFile,
-  path: number[] | ""
-): AstNode {
-  const kind = ts.SyntaxKind[node.kind] ?? String(node.kind)
-  const properties = node as import("typescript").Node & { text?: string; escapedText?: string }
-  const text =
-    typeof properties.text === "string"
-      ? properties.text
-      : typeof properties.escapedText === "string"
-      ? properties.escapedText
-      : ""
-  const preview = text ? JSON.stringify(text.length > 60 ? `${text.slice(0, 57)}…` : text) : ""
-  const flags = typeof node.flags === "number" && node.flags !== 0 ? `flags=${node.flags}` : ""
-  return {
-    detail: [preview, flags].filter(Boolean).join(" · "),
-    end: node.getEnd(),
-    hasChildren: node.forEachChild(() => true) === true,
-    id: Array.isArray(path) ? path.join(".") : path,
-    kind,
-    start: node.getStart(sourceFile),
-  }
+  return astCache.store(
+    sourceFile,
+    syntaxKindName,
+    node => node.getStart(sourceFile)
+  )
 }
 
 function updateFiles(

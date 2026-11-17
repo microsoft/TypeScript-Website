@@ -782,17 +782,25 @@ test("native compiler reuses snapshots across edits, types, and configuration ch
     assert.match(first.outputFiles["/workspace/src/index.js"], /42/)
     assert(first.typeQueries[source].some(query => query.label === "42"))
 
-    const astRoot = compiler.astRoot(input, source)
-    assert.equal(astRoot?.kind, "SourceFile")
-    assert.equal(astRoot?.hasChildren, true)
-    const declarationPath = compiler.astPath(source, input.files[source].indexOf("answer"))
-    assert.equal(declarationPath.at(-1)?.kind, "Identifier")
-    assert.equal(declarationPath.at(-1)?.detail, '"answer"')
-    const rootChildren = compiler.astChildren(source, astRoot!.id)
-    assert(rootChildren.length > 0, JSON.stringify(rootChildren))
+    const ast = compiler.astRoot(input, source)
+    assert.equal(ast?.root.kind, "SourceFile")
+    assert.equal(ast?.root.hasChildren, true)
+    const answerPosition = input.files[source].indexOf("answer")
+    const declarationPath = compiler.astPath(ast!.revision, answerPosition)
+    assert.equal(declarationPath?.at(-1)?.kind, "Identifier")
+    assert.equal(declarationPath?.at(-1)?.detail, '"answer"')
+    const rootChildren = compiler.astChildren(ast!.revision, ast!.root.id)
+    assert.equal(rootChildren?.[0]?.kind, "VariableStatement", JSON.stringify(rootChildren))
+
+    compiler.compile({ ...input, files: { ...input.files, [source]: "\n\nlet renamed = { answer: 42 };\n" } })
+    assert.deepEqual(compiler.astChildren(ast!.revision, ast!.root.id), rootChildren)
+    assert.deepEqual(compiler.astPath(ast!.revision, answerPosition), declarationPath)
+
     const outsideSource = "/workspace/outside.ts"
     input.files[outsideSource] = "const outside = true;"
-    assert.equal(compiler.astRoot(input, outsideSource)?.kind, "SourceFile")
+    const outside = compiler.astRoot(input, outsideSource)
+    assert.equal(outside?.root.kind, "SourceFile")
+    assert.equal(compiler.astChildren(ast!.revision, ast!.root.id), undefined)
     delete input.files[outsideSource]
 
     input.files[source] = 'const answer: number = "wrong";\n//    ^?\n'
