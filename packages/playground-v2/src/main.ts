@@ -465,13 +465,23 @@ document.addEventListener(
   event => {
     if (!(event.ctrlKey || event.metaKey) || event.altKey || event.key.toLowerCase() !== "s") return
     event.preventDefault()
-    persistProjectState(true)
+    if (event.repeat) return
     void (async () => {
       try {
-        await navigator.clipboard.writeText(location.href)
-        showShortcutToast("Playground link copied to clipboard.")
-      } catch {
-        await exportActions.showLink()
+        const link = projectUrl(currentProjectState())
+        history.replaceState({}, "", link)
+        persistProjectState(true)
+        try {
+          await navigator.clipboard.writeText(link)
+          showShortcutToast("Playground link copied to clipboard.")
+        } catch {
+          await exportActions.showLink()
+        }
+      } catch (error) {
+        projectFailure = `Could not save the Playground link: ${error instanceof Error ? error.message : String(error)}`
+        console.error("Could not save the TypeScript Playground link", error)
+        renderStatus()
+        showShortcutToast("Could not save the Playground link.")
       }
     })()
   },
@@ -842,8 +852,6 @@ const exportActions = configureExports({
   compile: () => compileActiveProject?.(),
   project() {
     const state = currentProjectState()
-    const url = new URL(location.href)
-    url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serializeProjectState(state))}`
     return {
       activeFile: relativeProjectPath(
         state.activeFile && state.files[state.activeFile] !== undefined
@@ -861,7 +869,7 @@ const exportActions = configureExports({
       symlinks: Object.fromEntries(
         Object.entries(projectSymlinks).map(([path, target]) => [relativeProjectPath(path), target])
       ),
-      url: url.href,
+      url: projectUrl(state),
     }
   },
 })
@@ -3163,6 +3171,12 @@ function currentProjectState(): ProjectState {
         }
       : undefined,
   }
+}
+
+function projectUrl(state: ProjectState) {
+  const url = new URL(location.href)
+  url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serializeProjectState(state))}`
+  return url.href
 }
 
 function persistProjectState(forceUrl = false) {
