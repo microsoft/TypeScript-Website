@@ -166,6 +166,8 @@ export function configureExports(options: { project(): ExportProject; compile():
         throw new Error(`Unknown export: ${action}`)
     }
   }
+
+  return { showLink: () => perform("link") }
 }
 
 function element<T extends HTMLElement>(id: string) {
