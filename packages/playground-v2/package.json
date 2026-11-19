@@ -27,7 +27,7 @@
     "@typescript/typescript": "npm:typescript@7.1.0-dev.20261030.1",
     "@typescript/typescript-wasip1-wasm": "7.1.0-dev.20261030.1",
     "@types/semver": "^7.7.1",
-    "esbuild": "^0.27.3",
+    "esbuild": "^0.28.2",
     "typescript": "*"
   }
 }
