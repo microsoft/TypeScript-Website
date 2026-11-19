@@ -22,6 +22,7 @@ overrides:
   path-to-regexp@0.1.12: 0.1.13
   lodash@<4.18.1: ^4.18.1
   immutable@<3.8.4: ^3.8.4
+  dompurify@<3.4.18: ^3.4.18
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
@@ -34,8 +35,11 @@ patchedDependencies:
     hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
   monaco-editor-core@0.56.0:
-    hash: 1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78
+    hash: 7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7
     path: patches/monaco-editor-core@0.56.0.patch
+  monaco-editor@0.56.0:
+    hash: f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b
+    path: patches/monaco-editor@0.56.0.patch
 
 importers:
 
@@ -206,7 +210,7 @@ importers:
         version: 5.3.0
       '@vscode/monaco-lsp-client':
         specifier: github:microsoft/monaco-editor#13f0c872dcf352815cc28d92dfff496c9839ea5c&path:/monaco-lsp-client
-        version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78))(ws@8.23.0)
+        version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7))(ws@8.23.0)
       coi-serviceworker:
         specifier: ^0.1.7
         version: 0.1.7(patch_hash=714b4adc6ff6ecd02825ea3646eae7d2f84ef6ea33d2023e8e03d1d236243e2f)
@@ -221,10 +225,10 @@ importers:
         version: 1.5.0
       monaco-editor:
         specifier: 0.56.0
-        version: 0.56.0
+        version: 0.56.0(patch_hash=f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b)
       monaco-editor-core:
         specifier: 0.56.0
-        version: 0.56.0(patch_hash=1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78)
+        version: 0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -296,7 +300,7 @@ importers:
         version: 4.10.0
       ts-jest:
         specifier: ^29.4.15
-        version: 29.4.15(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.13))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))(typescript@6.0.3)
+        version: 29.4.15(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@29.7.0(@babel/core@7.29.13))(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -333,7 +337,7 @@ importers:
         version: 10.29.8
       ts-jest:
         specifier: ^29.4.15
-        version: 29.4.15(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@29.7.0(@babel/core@7.29.13))(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))(typescript@6.0.3)
+        version: 29.4.15(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.13))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3)))(typescript@6.0.3)
       tslib:
         specifier: ^2.6.2
         version: 2.9.1
@@ -4581,8 +4585,8 @@ packages:
     resolution: {integrity: sha512-gYzvtM72ZtxQO0T048kd6HWSbbGCNOUwcnfQ01cqIJ4X2IYKFFHZ5mKvrQETcFXxsRObZulDaKmy//R7TPtsBg==}
     engines: {node: '>=20.19.0'}
 
-  dompurify@3.4.8:
-    resolution: {integrity: sha512-yb1cEmaOum7wFvOCSQxyfgVlv5D47Rc30iZWoMpbDIWTnJ6grDDQyu2KFJzB2k7u0pMuJcQ1zphH//fFnw2tjQ==}
+  dompurify@3.4.18:
+    resolution: {integrity: sha512-ofe3wI/uNm68HInABYFJYqQxRw1EaKAjNdrFVKqjUY+UZurvNd2L/HuQe097s/4RivWiZyP6tT7aoT8atjfhwg==}
 
   domutils@2.8.0:
     resolution: {integrity: sha512-w96Cjofp72M5IIhpjgobBimYEfoPjx1Vx0BSX9P30WBdZW2WIKU0T1Bd0kz2eNZ9ikjKgHbEyKx8BB6H1L3h3A==}
@@ -12918,12 +12922,12 @@ snapshots:
 
   '@vscode/l10n@0.0.18': {}
 
-  '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78))(ws@8.23.0)':
+  '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7))(ws@8.23.0)':
     dependencies:
       '@hediet/json-rpc': 0.5.0
       '@hediet/json-rpc-browser': 0.5.1
       '@hediet/json-rpc-websocket': 0.5.1(ws@8.23.0)
-      monaco-editor-core: 0.56.0(patch_hash=1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78)
+      monaco-editor-core: 0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7)
     transitivePeerDependencies:
       - ws
 
@@ -14644,7 +14648,7 @@ snapshots:
     dependencies:
       domelementtype: 3.0.0
 
-  dompurify@3.4.8:
+  dompurify@3.4.18:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
@@ -18642,16 +18646,16 @@ snapshots:
 
   moment@2.31.0: {}
 
-  monaco-editor-core@0.56.0(patch_hash=1c45ae6c6762c6bf4f146baa58185da1d009024dcb8c66f57801a81813073d78):
+  monaco-editor-core@0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7):
     dependencies:
-      dompurify: 3.4.8
+      dompurify: 3.4.18
       marked: 14.0.0
 
   monaco-editor@0.32.1: {}
 
-  monaco-editor@0.56.0:
+  monaco-editor@0.56.0(patch_hash=f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b):
     dependencies:
-      dompurify: 3.4.8
+      dompurify: 3.4.18
       marked: 14.0.0
 
   monaco-typescript@4.10.0: {}

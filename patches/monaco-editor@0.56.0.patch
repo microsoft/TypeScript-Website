@@ -1,0 +1,11 @@
+diff --git a/esm/vs/base/browser/domSanitize.js b/esm/vs/base/browser/domSanitize.js
+--- a/esm/vs/base/browser/domSanitize.js
++++ b/esm/vs/base/browser/domSanitize.js
+@@ -1,6 +1,6 @@
+ import { Schemas } from '../common/network.js';
+ import { reset } from './dom.js';
+-import purify from './dompurify/dompurify.js';
++import purify from 'dompurify';
+ 
+ /*---------------------------------------------------------------------------------------------
+  *  Copyright (c) Microsoft Corporation. All rights reserved.
