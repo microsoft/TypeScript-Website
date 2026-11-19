@@ -23,8 +23,8 @@
     "@types/jest": "^30.0.0",
     "cpy-cli": "^7.0.0",
     "esbuild": "^0.28.2",
-    "esbuild-jest": "^0.5.0",
-    "jest": "^30.5.2"
+    "jest": "^30.5.2",
+    "ts-jest": "^29.4.15"
   },
   "peerDependencies": {
     "typescript": ">=4.4.4"
