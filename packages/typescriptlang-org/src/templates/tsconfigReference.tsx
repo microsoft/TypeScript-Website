@@ -24,7 +24,7 @@ type Props = {
     },
     locale: string
   },
-  data: GatsbyTypes.TSConfigReferenceTemplateQuery,
+  data: Queries.TSConfigReferenceTemplateQuery,
   path: string
 }
 
