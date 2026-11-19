@@ -37,7 +37,7 @@
       "rollup-plugin-typescript2": "0.37.0",
       "typescript": "6.0.3",
       "tslib": "^2.6.2",
-      "sharp": "0.34.5",
+      "sharp": "0.35.5",
       "webpack": "^5.105.3",
       "@types/node": "^24.19.2",
       "path-to-regexp@0.1.12": "0.1.13",
