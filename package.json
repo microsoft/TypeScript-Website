@@ -52,7 +52,8 @@
       "decode-uri-component@<0.5.1": "^0.5.1",
       "file-type@<21.3.1": "^21.3.1",
       "@graphql-tools/utils@<12.0.1": "^13.2.1",
-      "webpack-dev-middleware@<7.4.5": "^7.4.5"
+      "webpack-dev-middleware@<7.4.5": "^7.4.5",
+      "glob@>=9.0.0 <14.0.2": "^14.0.2"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
