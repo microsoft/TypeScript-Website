@@ -43,7 +43,7 @@
       "path-to-regexp@0.1.12": "0.1.13",
       "lodash@<4.18.1": "^4.18.1",
       "immutable@<3.8.4": "^3.8.4",
-      "dompurify@<3.4.18": "^3.4.18"
+      "dompurify@<3.4.17": "^3.4.17"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
