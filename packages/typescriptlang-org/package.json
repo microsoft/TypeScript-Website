@@ -86,8 +86,5 @@
   },
   "bugs": {
     "url": "https://github.com//microsoft/TypeScript-Website/issues"
-  },
-  "eslintIgnore": [
-    "*.js"
-  ]
+  }
 }

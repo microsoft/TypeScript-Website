@@ -24,8 +24,7 @@
     "build": "dts build && pnpm make-for-website && pnpm make-global",
     "make-for-website": "cpy src/index.ts ../sandbox/src/vendor --flat --rename=typescript-vfs.ts",
     "make-global": "node scripts/makeGlobals.js",
-    "test": "dts test",
-    "lint": "dts lint"
+    "test": "dts test"
   },
   "jest": {
     "preset": "ts-jest",

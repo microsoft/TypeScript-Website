@@ -1,0 +1,12 @@
+diff --git a/lib/index.json b/lib/index.json
+index 2b1adb9f7d5a602eec487cfef18488efe12b0122..49cb7282e3f5b22254f641d338941453fe497df5 100644
+--- a/lib/index.json
++++ b/lib/index.json
+@@ -19,6 +19,5 @@
+   "compressors": {
+     "*": ["@parcel/compressor-raw"]
+   },
+-  "resolvers": ["@parcel/resolver-default"],
+-  "reporters": ["@parcel/reporter-dev-server"]
++  "resolvers": ["@parcel/resolver-default"]
+ }
