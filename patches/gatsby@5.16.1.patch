@@ -1,0 +1,73 @@
+diff --git a/dist/utils/webpack-utils.js b/dist/utils/webpack-utils.js
+index 6207bee06f4ee0f006a2381dd3a89d8773a7a270..56b6b172fe2e2f2831994f85c92cf8308e3a2a78 100644
+--- a/dist/utils/webpack-utils.js
++++ b/dist/utils/webpack-utils.js
+@@ -11,13 +11,11 @@ var _miniCssExtractPlugin = _interopRequireDefault(require("mini-css-extract-plu
+ var _cssMinimizerWebpackPlugin = _interopRequireDefault(require("css-minimizer-webpack-plugin"));
+ var _reactRefreshWebpackPlugin = _interopRequireDefault(require("@pmmmwh/react-refresh-webpack-plugin"));
+ var _browserslist = require("./browserslist");
+-var _eslintWebpackPlugin = _interopRequireDefault(require("eslint-webpack-plugin"));
+ var _gatsbyCoreUtils = require("gatsby-core-utils");
+ var _gatsbyWebpackStatsExtractor = require("./gatsby-webpack-stats-extractor");
+ var _getPublicPath = require("./get-public-path");
+ var _gatsbyWebpackVirtualModules = require("./gatsby-webpack-virtual-modules");
+ var _webpackPlugins = require("./webpack-plugins");
+-var _eslintConfig = require("./eslint-config");
+ var _redux = require("../redux");
+ var _constants = require("../constants");
+ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+@@ -546,24 +544,6 @@ const createWebpackUtils = (stage, program) => {
+   // TODO: remove this in v5
+   plugins.eslintGraphqlSchemaReload = () => null;
+   plugins.virtualModules = () => new _gatsbyWebpackVirtualModules.GatsbyWebpackVirtualModules();
+-  plugins.eslint = () => {
+-    const options = {
+-      extensions: [`js`, `jsx`],
+-      exclude: [`/node_modules/`, `/bower_components/`, _gatsbyWebpackVirtualModules.VIRTUAL_MODULES_BASE_PATH],
+-      ...(0, _eslintConfig.eslintConfig)(config.jsxRuntime === `automatic`)
+-    };
+-    // @ts-ignore
+-    return new _eslintWebpackPlugin.default(options);
+-  };
+-  plugins.eslintRequired = () => {
+-    const options = {
+-      extensions: [`js`, `jsx`],
+-      exclude: [`/node_modules/`, `/bower_components/`, _gatsbyWebpackVirtualModules.VIRTUAL_MODULES_BASE_PATH],
+-      ..._eslintConfig.eslintRequiredConfig
+-    };
+-    // @ts-ignore
+-    return new _eslintWebpackPlugin.default(options);
+-  };
+   return {
+     loaders,
+     rules,
+diff --git a/dist/utils/webpack.config.js b/dist/utils/webpack.config.js
+index c6701e66948924d9237e6369c3a9a04734a7f119..cb4777e15d48b29934694050fffebc7214c233e6 100644
+--- a/dist/utils/webpack.config.js
++++ b/dist/utils/webpack.config.js
+@@ -3,7 +3,6 @@
+ var _path = require("./path");
+ var _gatsbyDependents = require("./gatsby-dependents");
+ var _webpackUtils = require("./webpack-utils");
+-var _localEslintConfigFinder = require("./local-eslint-config-finder");
+ var _gatsbyWebpackVirtualModules = require("./gatsby-webpack-virtual-modules");
+ var _staticQueryMapper = require("./webpack/plugins/static-query-mapper");
+ var _forceCssHmrForEdgeCases = require("./webpack/plugins/force-css-hmr-for-edge-cases");
+@@ -220,17 +219,6 @@ module.exports = async (program, directory, suppliedStage, port, {
+           if (process.env.GATSBY_EXPERIMENTAL_DEV_SSR) {
+             configPlugins.push(plugins.extractStats());
+           }
+-          const isCustomEslint = (0, _localEslintConfigFinder.hasLocalEslint)(program.directory);
+-
+-          // if no local eslint config, then add gatsby config
+-          if (!isCustomEslint) {
+-            configPlugins.push(plugins.eslint());
+-          }
+-
+-          // Enforce fast-refresh rules even with local eslint config
+-          if (isCustomEslint) {
+-            configPlugins.push(plugins.eslintRequired());
+-          }
+           break;
+         }
+       case `build-javascript`:
