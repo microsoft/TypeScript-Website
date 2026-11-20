@@ -28,6 +28,7 @@ overrides:
   serialize-javascript@<7.1.3: ^7.1.3
   uuid@<11.1.1: ^11.1.1
   resolve-url-loader>postcss: ^8.5.32
+  decode-uri-component@<0.5.1: ^0.5.1
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
@@ -45,6 +46,9 @@ patchedDependencies:
   monaco-editor@0.56.0:
     hash: f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b
     path: patches/monaco-editor@0.56.0.patch
+  query-string@6.14.1:
+    hash: bfcb0bfa7a0ee3d431bd41af72e4e1114a358f87ddb1ac3398bbe20f2f62afac
+    path: patches/query-string@6.14.1.patch
 
 importers:
 
@@ -4425,9 +4429,9 @@ packages:
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
-  decode-uri-component@0.2.2:
-    resolution: {integrity: sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==}
-    engines: {node: '>=0.10'}
+  decode-uri-component@0.5.1:
+    resolution: {integrity: sha512-vWHQkXgg2cE3BB4rR0c+PYw9BCQzLoNIRMI7AunIkZst74tw/vpPp7VLoYtsR/cy1f55g3XDWUslfeCZjiZJyA==}
+    engines: {node: '>=14.16'}
 
   decompress-response@6.0.0:
     resolution: {integrity: sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==}
@@ -14479,7 +14483,7 @@ snapshots:
 
   decimal.js@10.6.0: {}
 
-  decode-uri-component@0.2.2: {}
+  decode-uri-component@0.5.1: {}
 
   decompress-response@6.0.0:
     dependencies:
@@ -16049,7 +16053,7 @@ snapshots:
       is-relative-url: 3.0.0
       lodash: 4.18.1
       mdast-util-definitions: 4.0.0
-      query-string: 6.14.1
+      query-string: 6.14.1(patch_hash=bfcb0bfa7a0ee3d431bd41af72e4e1114a358f87ddb1ac3398bbe20f2f62afac)
       unist-util-select: 3.0.4
       unist-util-visit-parents: 3.1.1
 
@@ -16274,7 +16278,7 @@ snapshots:
       postcss-loader: 5.3.0(postcss@8.5.32)(webpack@5.112.2(postcss@8.5.32))
       prompts: 2.4.2
       prop-types: 15.8.1
-      query-string: 6.14.1
+      query-string: 6.14.1(patch_hash=bfcb0bfa7a0ee3d431bd41af72e4e1114a358f87ddb1ac3398bbe20f2f62afac)
       raw-loader: 4.0.2(webpack@5.112.2(postcss@8.5.32))
       react: 18.3.1
       react-dev-utils: 12.0.1(eslint@7.32.0)(typescript@6.0.3)(webpack@5.112.2(postcss@8.5.32))
@@ -19484,9 +19488,9 @@ snapshots:
       es-define-property: 1.0.1
       side-channel: 1.1.1
 
-  query-string@6.14.1:
+  query-string@6.14.1(patch_hash=bfcb0bfa7a0ee3d431bd41af72e4e1114a358f87ddb1ac3398bbe20f2f62afac):
     dependencies:
-      decode-uri-component: 0.2.2
+      decode-uri-component: 0.5.1
       filter-obj: 1.1.0
       split-on-first: 1.1.0
       strict-uri-encode: 2.0.0
@@ -20354,7 +20358,7 @@ snapshots:
   source-map-resolve@0.5.3:
     dependencies:
       atob: 2.1.2
-      decode-uri-component: 0.2.2
+      decode-uri-component: 0.5.1
       resolve-url: 0.2.1
       source-map-url: 0.4.1
       urix: 0.1.0
