@@ -1,0 +1,87 @@
+diff --git a/dist/index.js b/dist/index.js
+index 5585f366c456f9ec9f36263997727cc35a12faaa..461fc5122e17419781d413a35fceca113b6f93d1 100755
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -11,7 +11,6 @@ const chalk_1 = tslib_1.__importDefault(require("chalk"));
+ const figlet_1 = tslib_1.__importDefault(require("figlet"));
+ const fs = tslib_1.__importStar(require("fs-extra"));
+ const jest = tslib_1.__importStar(require("jest"));
+-const eslint_1 = require("eslint");
+ const logError_1 = tslib_1.__importDefault(require("./logError"));
+ const path_1 = tslib_1.__importDefault(require("path"));
+ const execa_1 = tslib_1.__importDefault(require("execa"));
+@@ -22,7 +21,6 @@ const constants_1 = require("./constants");
+ const Messages = tslib_1.__importStar(require("./messages"));
+ const createBuildConfigs_1 = require("./createBuildConfigs");
+ const createJestConfig_1 = require("./createJestConfig");
+-const createEslintConfig_1 = require("./createEslintConfig");
+ const utils_1 = require("./utils");
+ const jpjs_1 = require("jpjs");
+ const getInstallCmd_1 = tslib_1.__importDefault(require("./getInstallCmd"));
+@@ -477,66 +475,6 @@ prog
+     const [, ...argsToPassToJestCli] = argv;
+     jest.run(argsToPassToJestCli);
+ });
+-prog
+-    .command('lint')
+-    .describe('Run eslint with Prettier')
+-    .example('lint src test')
+-    .option('--fix', 'Fixes fixable errors and warnings', false)
+-    .example('lint src test --fix')
+-    .option('--ignore-pattern', 'Ignore a pattern')
+-    .example('lint src test --ignore-pattern test/foobar.ts')
+-    .option('--max-warnings', 'Exits with non-zero error code if number of warnings exceed this number', Infinity)
+-    .example('lint src test --max-warnings 10')
+-    .option('--write-file', 'Write the config file locally')
+-    .example('lint --write-file')
+-    .option('--report-file', 'Write JSON report to file locally')
+-    .example('lint --report-file eslint-report.json')
+-    .action(async (opts) => {
+-    if (opts['_'].length === 0 && !opts['write-file']) {
+-        const defaultInputs = ['src', 'test'].filter(fs.existsSync);
+-        opts['_'] = defaultInputs;
+-        console.log(chalk_1.default.yellow(`Defaulting to "dts lint ${defaultInputs.join(' ')}"`, '\nYou can override this in the package.json scripts, like "lint": "dts lint src otherDir"'));
+-    }
+-    try {
+-        const config = await (0, createEslintConfig_1.createEslintConfig)({
+-            pkg: appPackageJson,
+-            rootDir: constants_1.paths.appRoot,
+-            writeFile: opts['write-file'],
+-        });
+-        const linter = new eslint_1.ESLint({
+-            cwd: constants_1.paths.appRoot,
+-            baseConfig: Object.assign(Object.assign(Object.assign({}, config), appPackageJson.eslint), { ignorePatterns: opts['ignore-pattern'] }),
+-            extensions: ['.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx'],
+-            fix: opts.fix,
+-        });
+-        const results = await linter.lintFiles(opts['_']);
+-        if (opts.fix) {
+-            await eslint_1.ESLint.outputFixes(results);
+-        }
+-        const formatter = await linter.loadFormatter('stylish');
+-        const jsonFormatter = await linter.loadFormatter('json');
+-        console.log(formatter.format(results));
+-        if (opts['report-file']) {
+-            await fs.outputFile(opts['report-file'], jsonFormatter.format(results));
+-        }
+-        let errorCount = 0;
+-        let warningCount = 0;
+-        results.forEach((result) => {
+-            errorCount += result.errorCount;
+-            warningCount += result.warningCount;
+-        });
+-        if (errorCount > 0) {
+-            process.exit(1);
+-        }
+-        if (warningCount > opts['max-warnings']) {
+-            process.exit(1);
+-        }
+-    }
+-    catch (e) {
+-        process.exitCode = 1;
+-        console.error(e);
+-    }
+-});
+ prog.parse(process.argv);
+ const defineConfig = (config) => {
+     return config;
