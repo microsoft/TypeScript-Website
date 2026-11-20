@@ -59,6 +59,7 @@ overrides:
   dts-cli>eslint-plugin-react-hooks: '-'
   dts-cli>eslint-plugin-testing-library: '-'
   react-dev-utils>fork-ts-checker-webpack-plugin: '-'
+  keyv@<5.5.3: ^5.5.3
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
@@ -2286,6 +2287,9 @@ packages:
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: ^2.6.2
+
+  '@keyv/serialize@1.1.1':
+    resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
   '@lezer/common@1.5.5':
     resolution: {integrity: sha512-Pw7PVCndruF1pb3ebCxpSVpkMHSDjwRCLcTRw+RizUKco5QbWylwq2g4lnG/RYN7yTTQDXE9F77MwtkAyphrjg==}
@@ -6127,9 +6131,6 @@ packages:
   json-alexander@0.1.14:
     resolution: {integrity: sha512-gM2u2bGDQWCAplwKEOo39ETOxZspMYKSzkQPzZ2+bX2gIqOo0im9JjesAs9yKjIE2xDuwOqa5pLEJ/M/O4Mv3g==}
 
-  json-buffer@3.0.1:
-    resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
-
   json-loader@0.5.7:
     resolution: {integrity: sha512-QLPs8Dj7lnf3e3QYS1zkCo+4ZwqOiF9d/nZnYozTISxXWCfNs9yuky5rJw4/W34s7POaNlbZmQGaB5NiXCbP4w==}
 
@@ -6164,8 +6165,8 @@ packages:
     resolution: {integrity: sha512-Qush0uP+G8ZScpGMZvHUiRfI0YBWuB3gVBYlI0v0vvOJt5FLicco+IkP0a50LqTTQhmts/m6tP5SWE+USyIvcQ==}
     engines: {node: '>=12.20'}
 
-  keyv@4.5.4:
-    resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+  keyv@5.6.0:
+    resolution: {integrity: sha512-CYDD3SOtsHtyXeEORYRx2qBtpDJFjRTGXUtmNEMGyzYOKj1TE3tycdlho7kA1Ufx9OYWZzg52QFBGALTirzDSw==}
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -11141,6 +11142,8 @@ snapshots:
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.9.1)
       tslib: 2.9.1
 
+  '@keyv/serialize@1.1.1': {}
+
   '@lezer/common@1.5.5': {}
 
   '@lezer/lr@1.4.12':
@@ -12730,7 +12733,7 @@ snapshots:
       '@types/http-cache-semantics': 4.2.0
       get-stream: 6.0.1
       http-cache-semantics: 4.3.0
-      keyv: 4.5.4
+      keyv: 5.6.0
       mimic-response: 4.0.0
       normalize-url: 8.1.1
       responselike: 3.0.0
@@ -12740,7 +12743,7 @@ snapshots:
       clone-response: 1.0.3
       get-stream: 5.2.0
       http-cache-semantics: 4.3.0
-      keyv: 4.5.4
+      keyv: 5.6.0
       lowercase-keys: 2.0.0
       normalize-url: 6.1.0
       responselike: 2.0.1
@@ -16253,8 +16256,6 @@ snapshots:
 
   json-alexander@0.1.14: {}
 
-  json-buffer@3.0.1: {}
-
   json-loader@0.5.7: {}
 
   json-parse-even-better-errors@2.3.1: {}
@@ -16283,9 +16284,9 @@ snapshots:
 
   junk@4.0.1: {}
 
-  keyv@4.5.4:
+  keyv@5.6.0:
     dependencies:
-      json-buffer: 3.0.1
+      '@keyv/serialize': 1.1.1
 
   kind-of@6.0.3: {}
 

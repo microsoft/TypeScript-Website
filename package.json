@@ -79,7 +79,8 @@
       "dts-cli>eslint-plugin-react": "-",
       "dts-cli>eslint-plugin-react-hooks": "-",
       "dts-cli>eslint-plugin-testing-library": "-",
-      "react-dev-utils>fork-ts-checker-webpack-plugin": "-"
+      "react-dev-utils>fork-ts-checker-webpack-plugin": "-",
+      "keyv@<5.5.3": "^5.5.3"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
