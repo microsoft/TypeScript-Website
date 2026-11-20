@@ -11,6 +11,7 @@ import {
   compilerVersionChoices,
   isUnsupportedNativeCompilerVersion,
   isWasmCompilerVersion,
+  latestStableCompilerVersion,
   publishedNativeCompilerSelection,
 } from "./compiler-versions"
 import { loadStradaLibraries, type StradaLibraryProgress } from "./strada-libraries"
@@ -659,6 +660,29 @@ test("native channel resolution rejects missing, incompatible and unlisted versi
     () => publishedNativeCompilerSelection({ versions: ["7.1.0"], tags: { latest: "7.1.0" } }, "nightly"),
     /No published TypeScript version supports/
   )
+})
+
+test("the latest release resolves to an exact supported stable version without falling back to Nightly", () => {
+  const next = "7.1.0-dev.20261031.1"
+  const legacy = ["5.9.3", "6.0.2", "6.0.3"]
+  assert.equal(
+    latestStableCompilerVersion(legacy, { versions: ["6.0.3", next], tags: { latest: "6.0.3", next } }),
+    "6.0.3"
+  )
+  assert.equal(
+    latestStableCompilerVersion(legacy, { versions: ["7.1.0", next], tags: { latest: "7.1.0", next } }),
+    "7.1.0"
+  )
+  assert.equal(
+    latestStableCompilerVersion(legacy, { versions: ["7.0.2", next], tags: { latest: "7.0.2", next } }),
+    "6.0.3"
+  )
+  for (const published of [
+    { versions: ["7.0.2", next], tags: { latest: "7.0.2", next } },
+    { versions: [next], tags: { next } },
+  ]) {
+    assert.throws(() => latestStableCompilerVersion([], published), /No supported TypeScript release/)
+  }
 })
 
 test("version choices sort supported releases and the resolved Nightly by descending semver", () => {

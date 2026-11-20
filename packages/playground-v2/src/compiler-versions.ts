@@ -1,4 +1,4 @@
-import { gte, prerelease, rcompare, valid } from "semver"
+import { gte, lte, prerelease, rcompare, valid } from "semver"
 import { CompilerDownloadError, fetchCompilerResource } from "./compiler-assets"
 
 export type PublishedCompilerVersions = {
@@ -104,6 +104,18 @@ export function publishedNativeCompilerSelection(published: PublishedCompilerVer
     throw new Error(`No published TypeScript version supports the native ${channel} channel`)
   }
   return { version, channel: useStable ? ("stable" as const) : ("nightly" as const) }
+}
+
+export function latestStableCompilerVersion(legacyVersions: readonly string[], published: PublishedCompilerVersions) {
+  const latest = published.tags.latest
+  if (latest && valid(latest) !== null && !prerelease(latest)) {
+    if (!isUnsupportedNativeCompilerVersion(latest) && published.versions.includes(latest)) return latest
+    const supported = compilerVersionChoices(legacyVersions, published).find(
+      ({ version }) => valid(version) !== null && !prerelease(version) && lte(version, latest)
+    )
+    if (supported) return supported.version
+  }
+  throw new Error("No supported TypeScript release is published as latest")
 }
 
 export function compilerVersionChoices(
