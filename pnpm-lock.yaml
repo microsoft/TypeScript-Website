@@ -34,6 +34,7 @@ overrides:
   webpack-dev-middleware@<7.4.5: ^7.4.5
   glob@>=9.0.0 <14.0.2: ^14.0.2
   minimatch@>=7.0.0 <11.0.1: ^11.0.1
+  gatsby-parcel-config>@parcel/reporter-dev-server: '-'
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
@@ -45,6 +46,9 @@ patchedDependencies:
   gatsby-core-utils@4.16.0:
     hash: cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0
     path: patches/gatsby-core-utils@4.16.0.patch
+  gatsby-parcel-config@1.16.0:
+    hash: 4d1bc10740408f4017c3a17d12432d1176fb4b8ba6404ceac07a00d1bcbe6f0f
+    path: patches/gatsby-parcel-config@1.16.0.patch
   gatsby-remark-shiki-twoslash@3.0.38:
     hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
@@ -2525,10 +2529,6 @@ packages:
   '@parcel/plugin@2.8.3':
     resolution: {integrity: sha512-jZ6mnsS4D9X9GaNnvrixDQwlUQJCohDX2hGyM0U0bY2NWU8Km97SjtoCpWjq+XBCx/gpC4g58+fk9VQeZq2vlw==}
     engines: {node: '>= 12.0.0'}
-
-  '@parcel/reporter-dev-server@2.8.3':
-    resolution: {integrity: sha512-Y8C8hzgzTd13IoWTj+COYXEyCkXfmVJs3//GDBsH22pbtSFMuzAZd+8J9qsCo0EWpiDow7V9f1LischvEh3FbQ==}
-    engines: {node: '>= 12.0.0', parcel: ^2.8.3}
 
   '@parcel/resolver-default@2.8.3':
     resolution: {integrity: sha512-k0B5M/PJ+3rFbNj4xZSBr6d6HVIe6DH/P3dClLcgBYSXAvElNDfXgtIimbjCyItFkW9/BfcgOVKEEIZOeySH/A==}
@@ -12378,13 +12378,6 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/reporter-dev-server@2.8.3(@parcel/core@2.8.3)':
-    dependencies:
-      '@parcel/plugin': 2.8.3(@parcel/core@2.8.3)
-      '@parcel/utils': 2.8.3
-    transitivePeerDependencies:
-      - '@parcel/core'
-
   '@parcel/resolver-default@2.8.3(@parcel/core@2.8.3)':
     dependencies:
       '@parcel/node-resolver-core': 2.8.3
@@ -16071,7 +16064,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  gatsby-parcel-config@1.16.0(@parcel/core@2.8.3):
+  gatsby-parcel-config@1.16.0(patch_hash=4d1bc10740408f4017c3a17d12432d1176fb4b8ba6404ceac07a00d1bcbe6f0f)(@parcel/core@2.8.3):
     dependencies:
       '@gatsbyjs/parcel-namer-relative-to-cwd': 2.16.0(@parcel/core@2.8.3)
       '@parcel/bundler-default': 2.8.3(@parcel/core@2.8.3)
@@ -16081,7 +16074,6 @@ snapshots:
       '@parcel/optimizer-terser': 2.8.3(@parcel/core@2.8.3)
       '@parcel/packager-js': 2.8.3(@parcel/core@2.8.3)
       '@parcel/packager-raw': 2.8.3(@parcel/core@2.8.3)
-      '@parcel/reporter-dev-server': 2.8.3(@parcel/core@2.8.3)
       '@parcel/resolver-default': 2.8.3(@parcel/core@2.8.3)
       '@parcel/runtime-js': 2.8.3(@parcel/core@2.8.3)
       '@parcel/transformer-js': 2.8.3(@parcel/core@2.8.3)
@@ -16442,7 +16434,7 @@ snapshots:
       gatsby-legacy-polyfills: 3.16.0
       gatsby-link: 5.16.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       gatsby-page-utils: 3.16.0
-      gatsby-parcel-config: 1.16.0(@parcel/core@2.8.3)
+      gatsby-parcel-config: 1.16.0(patch_hash=4d1bc10740408f4017c3a17d12432d1176fb4b8ba6404ceac07a00d1bcbe6f0f)(@parcel/core@2.8.3)
       gatsby-plugin-page-creator: 5.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0)
       gatsby-plugin-typescript: 5.16.0(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))
       gatsby-plugin-utils: 4.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0)

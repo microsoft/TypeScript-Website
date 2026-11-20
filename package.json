@@ -54,7 +54,8 @@
       "@graphql-tools/utils@<12.0.1": "^13.2.1",
       "webpack-dev-middleware@<7.4.5": "^7.4.5",
       "glob@>=9.0.0 <14.0.2": "^14.0.2",
-      "minimatch@>=7.0.0 <11.0.1": "^11.0.1"
+      "minimatch@>=7.0.0 <11.0.1": "^11.0.1",
+      "gatsby-parcel-config>@parcel/reporter-dev-server": "-"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
@@ -63,7 +64,8 @@
       "coi-serviceworker@0.1.7": "patches/coi-serviceworker@0.1.7.patch",
       "monaco-editor@0.56.0": "patches/monaco-editor@0.56.0.patch",
       "query-string@6.14.1": "patches/query-string@6.14.1.patch",
-      "gatsby-core-utils@4.16.0": "patches/gatsby-core-utils@4.16.0.patch"
+      "gatsby-core-utils@4.16.0": "patches/gatsby-core-utils@4.16.0.patch",
+      "gatsby-parcel-config@1.16.0": "patches/gatsby-parcel-config@1.16.0.patch"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher",
