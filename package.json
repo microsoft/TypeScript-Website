@@ -66,7 +66,19 @@
       "gatsby>eslint-plugin-jsx-a11y": "-",
       "gatsby>eslint-plugin-react": "-",
       "gatsby>eslint-plugin-react-hooks": "-",
-      "gatsby>eslint-webpack-plugin": "-"
+      "gatsby>eslint-webpack-plugin": "-",
+      "dts-cli>@typescript-eslint/eslint-plugin": "-",
+      "dts-cli>@typescript-eslint/parser": "-",
+      "dts-cli>eslint": "-",
+      "dts-cli>eslint-config-prettier": "-",
+      "dts-cli>eslint-plugin-flowtype": "-",
+      "dts-cli>eslint-plugin-import": "-",
+      "dts-cli>eslint-plugin-jest": "-",
+      "dts-cli>eslint-plugin-jsx-a11y": "-",
+      "dts-cli>eslint-plugin-prettier": "-",
+      "dts-cli>eslint-plugin-react": "-",
+      "dts-cli>eslint-plugin-react-hooks": "-",
+      "dts-cli>eslint-plugin-testing-library": "-"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
@@ -78,7 +90,8 @@
       "gatsby-core-utils@4.16.0": "patches/gatsby-core-utils@4.16.0.patch",
       "gatsby-parcel-config@1.16.0": "patches/gatsby-parcel-config@1.16.0.patch",
       "node-stdlib-browser@1.3.1": "patches/node-stdlib-browser@1.3.1.patch",
-      "gatsby@5.16.1": "patches/gatsby@5.16.1.patch"
+      "gatsby@5.16.1": "patches/gatsby@5.16.1.patch",
+      "dts-cli@2.0.5": "patches/dts-cli@2.0.5.patch"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher",

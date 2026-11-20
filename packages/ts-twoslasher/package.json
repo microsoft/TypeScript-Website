@@ -24,8 +24,7 @@
     "build": "dts build && pnpm readme && pnpm make-global",
     "make-global": "node scripts/makeGlobals.js",
     "readme": "pnpm md-magic README.md --config ./scripts/inline-results.js && pnpm prettier README.md --write",
-    "test": "dts test",
-    "lint": "dts lint"
+    "test": "dts test"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
