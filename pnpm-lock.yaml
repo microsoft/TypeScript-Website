@@ -29,6 +29,7 @@ overrides:
   uuid@<11.1.1: ^11.1.1
   resolve-url-loader>postcss: ^8.5.32
   decode-uri-component@<0.5.1: ^0.5.1
+  file-type@<21.3.1: ^21.3.1
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
@@ -37,6 +38,9 @@ patchedDependencies:
   coi-serviceworker@0.1.7:
     hash: 714b4adc6ff6ecd02825ea3646eae7d2f84ef6ea33d2023e8e03d1d236243e2f
     path: patches/coi-serviceworker@0.1.7.patch
+  gatsby-core-utils@4.16.0:
+    hash: cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0
+    path: patches/gatsby-core-utils@4.16.0.patch
   gatsby-remark-shiki-twoslash@3.0.38:
     hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
@@ -1299,6 +1303,9 @@ packages:
 
   '@bjorn3/browser_wasi_shim@0.4.2':
     resolution: {integrity: sha512-/iHkCVUG3VbcbmEHn5iIUpIrh7a7WPiwZ3sHy4HZKZzBdSadwdddYDZAII2zBvQYV0Lfi8naZngPCN7WPHI/hA==}
+
+  '@borewit/text-codec@0.2.3':
+    resolution: {integrity: sha512-49CycTz1aAZmvFcwkeFyhud1HUmRIB5Tabf7ALV+VA4Iu85MTfz2cUwzPagMFAdVBvrWdkCxG67I30tUwwpKsw==}
 
   '@bramus/specificity@2.4.3':
     resolution: {integrity: sha512-0GEz8qJWokkUVYQYRukmkSHIFNoBH8QTreeHrAFbvz1XFYc3Y+puhMs8PQ5x8GNugiC2l5jvDBXKLbBIByeSBw==}
@@ -2722,6 +2729,10 @@ packages:
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
     engines: {node: '>=14.16'}
 
+  '@tokenizer/inflate@0.4.1':
+    resolution: {integrity: sha512-2mAv+8pkG6GIZiF1kNg1jAjh27IDxEPKwdGul3snfztFerfPGI1LjDezZp3i7BElXompqEtPmoPx6c2wgtWsOA==}
+    engines: {node: '>=18'}
+
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
@@ -3217,10 +3228,6 @@ packages:
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
     deprecated: Use your platform's native atob() and btoa() methods instead
-
-  abort-controller@3.0.0:
-    resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
-    engines: {node: '>=6.5'}
 
   abortcontroller-polyfill@1.7.8:
     resolution: {integrity: sha512-9f1iZ2uWh92VcrU9Y8x+LdM4DLj75VE0MJB8zuF1iUnroEptStw+DQ8EQPMUdfe5k+PkB1uUfDQfWbhstH8LrQ==}
@@ -3819,9 +3826,6 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
-
-  buffer@6.0.3:
-    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
   builtin-status-codes@3.0.0:
     resolution: {integrity: sha512-HpGFw18DgFWlncDfjTa2rcQ4W88O1mC8e8yZ2AvQY5KDaktSTwo+KRf6nHK6FRI5FyRyb/5T6+TSxfP7QyGsmQ==}
@@ -5029,10 +5033,6 @@ packages:
   event-source-polyfill@1.0.31:
     resolution: {integrity: sha512-4IJSItgS/41IxN5UVAVuAyczwZF7ZIEsM1XAoUzIHA6A+xzusEZUutdXz2Nr+MQPLxfTiCvqE79/C8HT8fKFvA==}
 
-  event-target-shim@5.0.1:
-    resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
-    engines: {node: '>=6'}
-
   events-universal@1.0.1:
     resolution: {integrity: sha512-LUd5euvbMLpwOF8m6ivPCbhQeSiYVNb8Vs0fQ8QjXo0JTkEHpz8pxdQf0gStltaPpw0Cca8b39KxvK9cfKRiAw==}
 
@@ -5172,9 +5172,9 @@ packages:
     peerDependencies:
       webpack: ^5.105.3
 
-  file-type@16.5.4:
-    resolution: {integrity: sha512-/yFHK0aGjFEgDJjEKP0pWCplsPFPhwyfwevf/pVxiN0tmE4L9LmwWxWukdJSHdoCli4VgQLehjJtwQBnqmsKcw==}
-    engines: {node: '>=10'}
+  file-type@21.3.4:
+    resolution: {integrity: sha512-Ievi/yy8DS3ygGvT47PjSfdFoX+2isQueoYP1cntFW1JLYAuS4GD7NUPGg4zv2iZfV52uDyk5w5Z0TdpRS6Q1g==}
+    engines: {node: '>=20'}
 
   filename-reserved-regex@2.0.0:
     resolution: {integrity: sha512-lc1bnsSr4L4Bdif8Xb/qrtokGbq5zlsms/CYH8PP+WtCkGNF65DPiQY8vG3SakEdRn8Dlnm+gW/qWKKjS5sZzQ==}
@@ -7678,10 +7678,6 @@ packages:
     resolution: {integrity: sha512-nS4mvFgVwUrecPTRdpdseM2fwpdfnX0/HibA8DgBRQtihUAzHQYJFU2l+OlEtiXtpqkrMvCPDwyXMUnASDt6Qw==}
     engines: {node: '>= 0.10'}
 
-  peek-readable@4.1.0:
-    resolution: {integrity: sha512-ZI3LnwUv5nOGbQzD9c2iDG6toheuXSZP5esSHBjopsXH4dg19soufvpUGA3uohi5anFtGb2lhAVdHzH6R/Evvg==}
-    engines: {node: '>=8'}
-
   peek-stream@1.1.3:
     resolution: {integrity: sha512-FhJ+YbOSBb9/rIl2ZeE/QHEsWn7PqNYt8ARAY3kIgNGOk13g9FGyIY6JIl/xB/3TFRVoTv5as0l11weORrTekA==}
 
@@ -8187,14 +8183,6 @@ packages:
   readable-stream@3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
     engines: {node: '>= 6'}
-
-  readable-stream@4.8.0:
-    resolution: {integrity: sha512-2jhTTU3Eilp/2DMT71gbcoqC35eQHasMJH0RHkYxwlxIv3+FR6Y5xAFZIwEGLxKkjZYEFlsiMNIdwUqjK2lLHQ==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  readable-web-to-node-stream@3.0.4:
-    resolution: {integrity: sha512-9nX56alTf5bwXQ3ZDipHJhusu9NTQJ/CVPtb/XHAJCXihZeitfJvIRS4GqQ/mfIoOE3IelHMrpayVrosdHBuLw==}
-    engines: {node: '>=8'}
 
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
@@ -8933,9 +8921,9 @@ packages:
     resolution: {integrity: sha512-k55yxKHwaXnpYGsOzg4Vl8+tDrWylxDEpknGjhTiZB8dFRU5rTo9CAzeycivxV3s+zlTKwrs6WxMxR95n26kwg==}
     engines: {node: '>=0.10.0'}
 
-  strtok3@6.3.0:
-    resolution: {integrity: sha512-fZtbhtvI9I48xDSywd/somNqgUHl2L2cstmXCCif0itOf96jeW18MBSyrLuNicYQVkvpOxkZtkzujiTJ9LW5Jw==}
-    engines: {node: '>=10'}
+  strtok3@10.8.0:
+    resolution: {integrity: sha512-e6bW3fD6V01DPmcbLfNtn0cjsiHvTKS/hivgbzqYMfHb/nLes4QQ0H5QBxlkPQayF4xv08AvlSgptGwN86Eemw==}
+    engines: {node: '>=18'}
 
   style-loader@2.0.0:
     resolution: {integrity: sha512-Z0gYUJmzZ6ZdRUqpg1r8GsaFKypE+3xAzuFeMuoHgjc9KZv3wMyCRjQIWEbhoFSq7+7yoHXySDJyyWQaPajeiQ==}
@@ -9141,9 +9129,9 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
 
-  token-types@4.2.1:
-    resolution: {integrity: sha512-6udB24Q737UD/SDsKAHI9FCRP7Bqc9D/MQUV02ORQg5iskjtLJlZJNdN4kKtcdtwCeWIwIHDGaUsTsCCAa8sFQ==}
-    engines: {node: '>=10'}
+  token-types@6.2.0:
+    resolution: {integrity: sha512-s9euYHM//T3loJtbNUYdbAzsMlvKBeRS+XCLFy+UGosMQH19Hwjap5k19i4PPAEJJBsVIpMpVTxl4fIqCuNfUg==}
+    engines: {node: '>=14.16'}
 
   tough-cookie@4.1.4:
     resolution: {integrity: sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==}
@@ -9328,6 +9316,10 @@ packages:
     resolution: {integrity: sha512-v3Xu+yuwBXisp6QYTcH4UbH+xYJXqnq2m/LtQVWKWzYc1iehYnLixoQDN9FH6/j9/oybfd6W9Ghwkl8+UMKTKQ==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+
+  uint8array-extras@1.6.0:
+    resolution: {integrity: sha512-8iAasVS4wUx0gPLjH8Xtz2PeDzTSiy8QiLGu2DT3X5GU+egFEQhpnbtkehbAwjvDcxIERmCYcysiODFmE3Ud0Q==}
+    engines: {node: '>=18'}
 
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
@@ -10816,6 +10808,8 @@ snapshots:
 
   '@bjorn3/browser_wasi_shim@0.4.2': {}
 
+  '@borewit/text-codec@0.2.3': {}
+
   '@bramus/specificity@2.4.3':
     dependencies:
       css-tree: 3.2.1
@@ -11185,9 +11179,10 @@ snapshots:
       '@babel/runtime': 7.29.14
       '@parcel/namer-default': 2.8.3(@parcel/core@2.8.3)
       '@parcel/plugin': 2.8.3(@parcel/core@2.8.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
     transitivePeerDependencies:
       - '@parcel/core'
+      - supports-color
 
   '@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -12492,6 +12487,13 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
+  '@tokenizer/inflate@0.4.1':
+    dependencies:
+      debug: 4.4.3
+      token-types: 6.2.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@tokenizer/token@0.3.0': {}
 
   '@tootallnate/once@2.0.1': {}
@@ -13000,10 +13002,6 @@ snapshots:
 
   abab@2.0.6: {}
 
-  abort-controller@3.0.0:
-    dependencies:
-      event-target-shim: 5.0.1
-
   abortcontroller-polyfill@1.7.8: {}
 
   accepts@1.3.8:
@@ -13429,7 +13427,9 @@ snapshots:
       '@babel/runtime': 7.29.14
       '@babel/types': 7.29.14
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
+    transitivePeerDependencies:
+      - supports-color
 
   babel-plugin-syntax-trailing-function-commas@7.0.0-beta.0: {}
 
@@ -13506,7 +13506,7 @@ snapshots:
       babel-plugin-macros: 3.1.0
       babel-plugin-transform-react-remove-prop-types: 0.4.24
       core-js: 3.51.0
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-legacy-polyfills: 3.16.0
     transitivePeerDependencies:
       - supports-color
@@ -13732,11 +13732,6 @@ snapshots:
   buffer-xor@1.0.3: {}
 
   buffer@5.7.1:
-    dependencies:
-      base64-js: 1.5.1
-      ieee754: 1.2.1
-
-  buffer@6.0.3:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
@@ -15397,8 +15392,6 @@ snapshots:
 
   event-source-polyfill@1.0.31: {}
 
-  event-target-shim@5.0.1: {}
-
   events-universal@1.0.1:
     dependencies:
       bare-events: 2.9.2
@@ -15607,11 +15600,14 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 5.112.2(postcss@8.5.32)
 
-  file-type@16.5.4:
+  file-type@21.3.4:
     dependencies:
-      readable-web-to-node-stream: 3.0.4
-      strtok3: 6.3.0
-      token-types: 4.2.1
+      '@tokenizer/inflate': 0.4.1
+      strtok3: 10.8.0
+      token-types: 6.2.0
+      uint8array-extras: 1.6.0
+    transitivePeerDependencies:
+      - supports-color
 
   filename-reserved-regex@2.0.0: {}
 
@@ -15799,7 +15795,7 @@ snapshots:
       execa: 5.1.1
       fs-exists-cached: 1.0.0
       fs-extra: 11.4.1
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       hosted-git-info: 3.0.8
       is-valid-path: 0.1.1
       joi: 17.13.9
@@ -15822,13 +15818,13 @@ snapshots:
       - encoding
       - supports-color
 
-  gatsby-core-utils@4.16.0:
+  gatsby-core-utils@4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0):
     dependencies:
       '@babel/runtime': 7.29.14
       ci-info: 2.0.0
       configstore: 5.0.1
       fastq: 1.20.3
-      file-type: 16.5.4
+      file-type: 21.3.4
       fs-extra: 11.4.1
       got: 11.8.6
       hash-wasm: 4.13.0
@@ -15840,6 +15836,8 @@ snapshots:
       resolve-from: 5.0.0
       tmp: 0.2.7
       xdg-basedir: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
 
   gatsby-graphiql-explorer@3.16.0: {}
 
@@ -15856,6 +15854,8 @@ snapshots:
       prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    transitivePeerDependencies:
+      - supports-color
 
   gatsby-page-utils@3.16.0:
     dependencies:
@@ -15863,10 +15863,12 @@ snapshots:
       bluebird: 3.7.2
       chokidar: 3.6.0
       fs-exists-cached: 1.0.0
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       glob: 7.2.3
       lodash: 4.18.1
       micromatch: 4.0.8
+    transitivePeerDependencies:
+      - supports-color
 
   gatsby-parcel-config@1.16.0(@parcel/core@2.8.3):
     dependencies:
@@ -15883,6 +15885,8 @@ snapshots:
       '@parcel/runtime-js': 2.8.3(@parcel/core@2.8.3)
       '@parcel/transformer-js': 2.8.3(@parcel/core@2.8.3)
       '@parcel/transformer-json': 2.8.3(@parcel/core@2.8.3)
+    transitivePeerDependencies:
+      - supports-color
 
   gatsby-plugin-catch-links@5.16.0(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)):
     dependencies:
@@ -15905,13 +15909,14 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.29.14
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-plugin-utils: 4.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0)
       semver: 7.8.6
       sharp: 0.35.5(@types/node@24.19.2)
     transitivePeerDependencies:
       - '@types/node'
       - graphql
+      - supports-color
 
   gatsby-plugin-page-creator@5.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0):
     dependencies:
@@ -15922,7 +15927,7 @@ snapshots:
       fs-exists-cached: 1.0.0
       fs-extra: 11.4.1
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-page-utils: 3.16.0
       gatsby-plugin-utils: 4.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0)
       globby: 11.1.0
@@ -15959,7 +15964,7 @@ snapshots:
       filenamify: 4.3.0
       fs-extra: 11.4.1
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-plugin-utils: 4.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0)
       lodash: 4.18.1
       probe-image-size: 7.5.0
@@ -15999,7 +16004,7 @@ snapshots:
       fastq: 1.20.3
       fs-extra: 11.4.1
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-sharp: 1.16.0(@types/node@24.19.2)
       graphql: 16.15.0
       graphql-compose: 9.3.0(graphql@16.15.0)
@@ -16008,6 +16013,7 @@ snapshots:
       mime: 3.0.0
     transitivePeerDependencies:
       - '@types/node'
+      - supports-color
 
   gatsby-react-router-scroll@6.16.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -16048,7 +16054,7 @@ snapshots:
       chalk: 4.1.2
       cheerio: 1.0.0-rc.12
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-plugin-sharp: 5.16.0(@types/node@24.19.2)(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3))(graphql@16.15.0)
       is-relative-url: 3.0.0
       lodash: 4.18.1
@@ -16056,6 +16062,8 @@ snapshots:
       query-string: 6.14.1(patch_hash=bfcb0bfa7a0ee3d431bd41af72e4e1114a358f87ddb1ac3398bbe20f2f62afac)
       unist-util-select: 3.0.4
       unist-util-visit-parents: 3.1.1
+    transitivePeerDependencies:
+      - supports-color
 
   gatsby-remark-responsive-iframe@6.16.0(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)):
     dependencies:
@@ -16096,20 +16104,22 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.29.14
       chokidar: 3.6.0
-      file-type: 16.5.4
+      file-type: 21.3.4
       fs-extra: 11.4.1
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       mime: 3.0.0
       pretty-bytes: 5.6.0
       valid-url: 1.0.9
       xstate: 4.38.3
+    transitivePeerDependencies:
+      - supports-color
 
   gatsby-transformer-remark@6.16.0(gatsby@5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)):
     dependencies:
       '@babel/runtime': 7.29.14
       gatsby: 5.16.1(@types/node@24.19.2)(babel-eslint@10.1.0(eslint@8.57.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.41.0)(typescript@6.0.3)
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gray-matter: 4.0.3
       hast-util-raw: 6.1.0
       hast-util-to-html: 7.1.3
@@ -16226,7 +16236,7 @@ snapshots:
       fs-exists-cached: 1.0.0
       fs-extra: 11.4.1
       gatsby-cli: 5.16.0
-      gatsby-core-utils: 4.16.0
+      gatsby-core-utils: 4.16.0(patch_hash=cc41b502b75a49084b994f7ae3bba4eef7998dcba69eb260d79ed202d33656c0)
       gatsby-graphiql-explorer: 3.16.0
       gatsby-legacy-polyfills: 3.16.0
       gatsby-link: 5.16.0(@gatsbyjs/reach-router@2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -19117,8 +19127,6 @@ snapshots:
       sha.js: 2.4.12
       to-buffer: 1.2.2
 
-  peek-readable@4.1.0: {}
-
   peek-stream@1.1.3:
     dependencies:
       buffer-from: 1.1.2
@@ -19654,18 +19662,6 @@ snapshots:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
-
-  readable-stream@4.8.0:
-    dependencies:
-      abort-controller: 3.0.0
-      buffer: 6.0.3
-      events: 3.3.0
-      process: 0.11.10
-      string_decoder: 1.3.0
-
-  readable-web-to-node-stream@3.0.4:
-    dependencies:
-      readable-stream: 4.8.0
 
   readdirp@3.6.0:
     dependencies:
@@ -20579,10 +20575,9 @@ snapshots:
     dependencies:
       escape-string-regexp: 1.0.5
 
-  strtok3@6.3.0:
+  strtok3@10.8.0:
     dependencies:
       '@tokenizer/token': 0.3.0
-      peek-readable: 4.1.0
 
   style-loader@2.0.0(webpack@5.112.2(postcss@8.5.32)):
     dependencies:
@@ -20793,8 +20788,9 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-  token-types@4.2.1:
+  token-types@6.2.0:
     dependencies:
+      '@borewit/text-codec': 0.2.3
       '@tokenizer/token': 0.3.0
       ieee754: 1.2.1
 
@@ -21030,6 +21026,8 @@ snapshots:
 
   uglify-js@3.19.3:
     optional: true
+
+  uint8array-extras@1.6.0: {}
 
   unbox-primitive@1.1.0:
     dependencies:

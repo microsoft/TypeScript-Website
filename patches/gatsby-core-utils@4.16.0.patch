@@ -1,0 +1,41 @@
+diff --git a/dist/fetch-remote-file.js b/dist/fetch-remote-file.js
+index 2653211d2474e1043df96a728652c0bcc2fc6cfe..ba4b3d4e57d678c3df796d6cfd8591effefb5696 100644
+--- a/dist/fetch-remote-file.js
++++ b/dist/fetch-remote-file.js
+@@ -3,7 +3,7 @@
+ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+ exports.__esModule = true;
+ exports.fetchRemoteFile = fetchRemoteFile;
+-var _fileType = _interopRequireDefault(require("file-type"));
++var _fileType = require("file-type");
+ var _path = _interopRequireDefault(require("path"));
+ var _fsExtra = _interopRequireDefault(require("fs-extra"));
+ var _fastq = _interopRequireDefault(require("fastq"));
+@@ -172,7 +172,7 @@ async function fetchFile({
+       // If the user did not provide an extension and we couldn't get one from remote file, try and guess one
+       if (!ext) {
+         // if this is fresh response - try to guess extension and cache result for future
+-        const filetype = await _fileType.default.fromFile(tmpFilename);
++        const filetype = await _fileType.fileTypeFromFile(tmpFilename);
+         if (filetype) {
+           ext = `.${filetype.ext}`;
+           filename += ext;
+diff --git a/dist/fetch-remote-file.mjs b/dist/fetch-remote-file.mjs
+index 06ac6930ecda4e82402f69d329162bf341f6aca4..15facdb8929fd9051cd100d85928762bef1a96c7 100644
+--- a/dist/fetch-remote-file.mjs
++++ b/dist/fetch-remote-file.mjs
+@@ -1,4 +1,4 @@
+-import fileType from "file-type";
++import { fileTypeFromFile } from "file-type";
+ import path from "path";
+ import fs from "fs-extra";
+ import Queue from "fastq";
+@@ -167,7 +167,7 @@ async function fetchFile({
+       // If the user did not provide an extension and we couldn't get one from remote file, try and guess one
+       if (!ext) {
+         // if this is fresh response - try to guess extension and cache result for future
+-        const filetype = await fileType.fromFile(tmpFilename);
++        const filetype = await fileTypeFromFile(tmpFilename);
+         if (filetype) {
+           ext = `.${filetype.ext}`;
+           filename += ext;
