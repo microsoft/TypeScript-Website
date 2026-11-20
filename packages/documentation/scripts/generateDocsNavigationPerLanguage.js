@@ -123,6 +123,8 @@ const handbookPages = [
       { file: "tutorials/DOM Manipulation.md" },
       { file: "tutorials/Migrating from JavaScript.md" },
       { file: "tutorials/Babel with TypeScript.md" },
+      { file: "tutorials/React.md" },
+      { file: "tutorials/Angular.md" },
     ],
   },
   {
