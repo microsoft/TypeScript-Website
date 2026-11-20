@@ -1,0 +1,26 @@
+diff --git a/cjs/index.js b/cjs/index.js
+index 4f8c41040f5406f6204a8fc6fc6cbde5ab303038..305de0515537a7adfab417ba1decfda68cc90d68 100644
+--- a/cjs/index.js
++++ b/cjs/index.js
+@@ -53,7 +53,7 @@ const child_process = resolvePath('./mock/empty.js');
+ const cluster = resolvePath('./mock/empty.js');
+ const _console = resolvePath('console-browserify');
+ const constants = resolvePath('constants-browserify');
+-const crypto = resolvePath('crypto-browserify');
++const crypto = null;
+ const dgram = resolvePath('./mock/empty.js');
+ const dns = resolvePath('./mock/empty.js');
+ const domain = resolvePath('domain-browser');
+diff --git a/esm/index.js b/esm/index.js
+index 744e1f0ec2350dae8b2f4c3e470608e5bee6f565..9d7c34b9806d48bd242e4a2d1f8efdd6b07c3f65 100644
+--- a/esm/index.js
++++ b/esm/index.js
+@@ -46,7 +46,7 @@ const child_process = resolvePath('./mock/empty.js');
+ const cluster = resolvePath('./mock/empty.js');
+ const _console = resolvePath('console-browserify');
+ const constants = resolvePath('constants-browserify');
+-const crypto = resolvePath('crypto-browserify');
++const crypto = null;
+ const dgram = resolvePath('./mock/empty.js');
+ const dns = resolvePath('./mock/empty.js');
+ const domain = resolvePath('domain-browser');

@@ -46,6 +46,7 @@ config.onCreateWebpackConfig = ({ loaders, actions, plugins, stage }) => {
         tls: false,
         child_process: false,
         inspector: false,
+        crypto: false,
         jsdom: false,
       },
     },
