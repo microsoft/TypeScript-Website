@@ -2,21 +2,21 @@
   "private": true,
   "name": "root",
   "engines": {
-    "node": ">= 20.19"
+    "node": ">= 24"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^1.0.0",
-    "@changesets/cli": "^3.0.1",
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
     "@oss-docs/sync": "^1.1.4",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.3.3",
+    "@types/node": "^24.19.2",
     "@types/prettier": "^2.7.3",
-    "@types/react": "^18.3.28",
+    "@types/react": "^18.3.31",
     "chalk": "^4.1.2",
-    "concurrently": "^9.2.1",
+    "concurrently": "^9.2.5",
     "cross-env": "^10.1.0",
-    "fb-watchman": "^2.0.2",
-    "glob": "^13.0.6",
+    "fb-watchman": "^2.0.4",
+    "glob": "^14.0.6",
     "gray-matter": "4.0.3",
     "prettier": "^2.8.8",
     "reflect-metadata": "^0.2.2",
@@ -34,17 +34,23 @@
       "@types/estree": "0.0.46",
       "@types/eslint": "7.29.0",
       "assert": "2.0.0",
-      "rollup-plugin-typescript2": "0.36.0",
-      "typescript": "6.0.2",
+      "rollup-plugin-typescript2": "0.37.0",
+      "typescript": "6.0.3",
       "tslib": "^2.6.2",
-      "sharp": "0.34.5",
-      "webpack": "^5.105.3"
+      "sharp": "0.35.5",
+      "webpack": "^5.105.3",
+      "@types/node": "^24.19.2",
+      "path-to-regexp@0.1.12": "0.1.13",
+      "lodash@<4.18.1": "^4.18.1",
+      "immutable@<3.8.4": "^3.8.4",
+      "dompurify@<3.4.18": "^3.4.18"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
       "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch",
       "monaco-editor-core@0.56.0": "patches/monaco-editor-core@0.56.0.patch",
-      "coi-serviceworker@0.1.7": "patches/coi-serviceworker@0.1.7.patch"
+      "coi-serviceworker@0.1.7": "patches/coi-serviceworker@0.1.7.patch",
+      "monaco-editor@0.56.0": "patches/monaco-editor@0.56.0.patch"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher",

@@ -1,3 +1,15 @@
+diff --git a/esm/vs/base/browser/domSanitize.js b/esm/vs/base/browser/domSanitize.js
+--- a/esm/vs/base/browser/domSanitize.js
++++ b/esm/vs/base/browser/domSanitize.js
+@@ -5,7 +5,7 @@
+ import { Schemas } from '../common/network.js';
+ import { reset } from './dom.js';
+ // eslint-disable-next-line no-restricted-imports
+-import dompurify from './dompurify/dompurify.js';
++import dompurify from 'dompurify';
+ /**
+  * List of safe, non-input html tags.
+  */
 diff --git a/esm/vs/base/browser/touch.js b/esm/vs/base/browser/touch.js
 --- a/esm/vs/base/browser/touch.js
 +++ b/esm/vs/base/browser/touch.js

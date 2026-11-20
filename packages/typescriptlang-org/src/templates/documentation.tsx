@@ -33,7 +33,7 @@ type Props = {
     lang: string
     modifiedTime: string
   }
-  data: GatsbyTypes.GetDocumentBySlugQuery
+  data: Queries.GetDocumentBySlugQuery
   path: string
 }
 
@@ -188,7 +188,7 @@ type MarkdownHeadingTreeNode = {
   children?: MarkdownHeadingTreeNode[]
 }
 
-function headerListToTree(sidebarHeaders: GatsbyTypes.Maybe<Pick<GatsbyTypes.MarkdownHeading, "value" | "depth">>[]) {
+function headerListToTree(sidebarHeaders: Queries.Maybe<Pick<Queries.MarkdownHeading, "value" | "depth">>[]) {
   const tree: MarkdownHeadingTreeNode[] = []
   const stack: { node: MarkdownHeadingTreeNode; depth: number }[] = []
 

@@ -27,6 +27,10 @@ module.exports = {
   flags: {
     DEV_SSR: false,
   },
+  // Creates TS types for queries during `gatsby develop`
+  graphqlTypegen: {
+    typesOutputPath: "src/__generated__/gatsby-types.d.ts",
+  },
   plugins: [
     // SCSS provides inheritance for CSS and which pays the price for the dep
     {
@@ -46,15 +50,6 @@ module.exports = {
         theme_color: `#3178C6`,
         display: `standalone`,
         icon: `static/icons/ts-logo-512.png`,
-      },
-    },
-
-    // Creates TS types for queries during `gatsby dev`
-    {
-      resolve: "gatsby-plugin-typegen",
-      options: {
-        // Ensure it works in a monorepo
-        outputPath: __dirname + "/src/__generated__/gatsby-types.ts",
       },
     },
 

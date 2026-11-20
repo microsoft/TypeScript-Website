@@ -2,12 +2,9 @@ module.exports = {
   testEnvironment: "node",
   transform: {
     "^.+\\.tsx?$": [
-      "esbuild-jest",
+      "ts-jest",
       {
-        sourcemap: true,
-        loaders: {
-          ".spec.ts": "tsx",
-        },
+        tsconfig: { module: "commonjs", isolatedModules: true },
       },
     ],
   },

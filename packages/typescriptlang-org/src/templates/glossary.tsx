@@ -11,7 +11,7 @@ import { headCopy } from "../copy/en/head-seo"
 import "./markdown.scss"
 import "./glossary.scss"
 
-type Props = { pageContext: any, data: GatsbyTypes.TSConfigReferenceTemplateQuery, path: string }
+type Props = { pageContext: any, data: Queries.TSConfigReferenceTemplateQuery, path: string }
 
 const GlossaryTemplateComponent = (props) => {
   const i = createInternational<typeof headCopy>(useIntl())
