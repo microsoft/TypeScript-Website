@@ -50,7 +50,8 @@
       "uuid@<11.1.1": "^11.1.1",
       "resolve-url-loader>postcss": "^8.5.32",
       "decode-uri-component@<0.5.1": "^0.5.1",
-      "file-type@<21.3.1": "^21.3.1"
+      "file-type@<21.3.1": "^21.3.1",
+      "@graphql-tools/utils@<12.0.1": "^13.2.1"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
