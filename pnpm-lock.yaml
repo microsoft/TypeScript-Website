@@ -23,6 +23,7 @@ overrides:
   lodash@<4.18.1: ^4.18.1
   immutable@<3.8.4: ^3.8.4
   dompurify@<3.4.17: ^3.4.17
+  cookie@<0.7.0: ^0.7.2
 
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
@@ -4165,10 +4166,6 @@ packages:
 
   cookie-signature@1.0.7:
     resolution: {integrity: sha512-NXdYc3dLr47pBkpUCHtKSwIOQXLVn8dZEuywboCOJY/osA0wFSLlSawr3KN8qXJEyX66FcONTH8EIlVuK0yyFA==}
-
-  cookie@0.5.0:
-    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
-    engines: {node: '>= 0.6'}
 
   cookie@0.7.2:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
@@ -12762,6 +12759,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@6.0.3))(eslint@8.57.1)(typescript@6.0.3)':
+    dependencies:
+      '@eslint-community/regexpp': 4.12.3
+      '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@6.0.3)
+      '@typescript-eslint/scope-manager': 5.62.0
+      '@typescript-eslint/type-utils': 5.62.0(eslint@8.57.1)(typescript@6.0.3)
+      '@typescript-eslint/utils': 5.62.0(eslint@8.57.1)(typescript@6.0.3)
+      debug: 4.4.3
+      eslint: 8.57.1
+      graphemer: 1.4.0
+      ignore: 5.3.2
+      natural-compare-lite: 1.4.1
+      semver: 7.8.6
+      tsutils: 3.21.0(typescript@6.0.3)
+    optionalDependencies:
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - supports-color
+
   '@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 5.62.0
@@ -14158,8 +14174,6 @@ snapshots:
 
   cookie-signature@1.0.7: {}
 
-  cookie@0.5.0: {}
-
   cookie@0.7.2: {}
 
   copy-file@11.1.0:
@@ -14699,7 +14713,7 @@ snapshots:
       '@rollup/plugin-replace': 5.0.7(rollup@3.30.0)
       '@rollup/plugin-terser': 0.4.4(rollup@3.30.0)
       '@types/jest': 29.5.14
-      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@6.0.3))(eslint@8.57.1)(typescript@6.0.3)
+      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@6.0.3))(eslint@8.57.1)(typescript@6.0.3)
       '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@6.0.3)
       ansi-escapes: 4.3.2
       asyncro: 3.0.0
@@ -15103,6 +15117,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  eslint-module-utils@2.14.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@8.57.1):
+    dependencies:
+      debug: 3.2.7
+    optionalDependencies:
+      '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@6.0.3)
+      eslint: 8.57.1
+      eslint-import-resolver-node: 0.3.10
+    transitivePeerDependencies:
+      - supports-color
+
   eslint-plugin-flowtype@5.10.0(eslint@8.57.1):
     dependencies:
       eslint: 8.57.1
@@ -15157,7 +15181,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.14.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@8.57.1)
+      eslint-module-utils: 2.14.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@8.57.1)
       hasown: 2.0.4
       is-core-module: 2.18.0
       is-glob: 4.0.3
@@ -15180,7 +15204,7 @@ snapshots:
       '@typescript-eslint/utils': 5.62.0(eslint@8.57.1)(typescript@6.0.3)
       eslint: 8.57.1
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@6.0.3))(eslint@8.57.1)(typescript@6.0.3)
+      '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@6.0.3))(eslint@8.57.1)(typescript@6.0.3)
       jest: 29.7.0(@types/node@24.19.2)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3))
     transitivePeerDependencies:
       - supports-color
@@ -16210,7 +16234,7 @@ snapshots:
       chokidar: 3.6.0
       common-tags: 1.8.2
       compression: 1.8.2
-      cookie: 0.5.0
+      cookie: 0.7.2
       core-js: 3.51.0
       cors: 2.8.6
       css-loader: 5.2.7(webpack@5.112.2(postcss@8.5.32))
