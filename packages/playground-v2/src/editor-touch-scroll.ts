@@ -1,5 +1,5 @@
 import type * as monaco from "monaco-editor-core"
-import { EventType } from "monaco-editor-core/esm/vs/base/browser/touch.js"
+import { EventType } from "monaco-editor/base/browser/touch.js"
 
 export function configureEditorTouchScroll(editor: monaco.editor.IStandaloneCodeEditor, mobileLayout: MediaQueryList) {
   const element = editor.getDomNode()

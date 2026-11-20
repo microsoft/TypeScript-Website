@@ -16,6 +16,7 @@ const serve = process.argv.includes("--serve")
 const playgroundBase = serve ? "/" : process.env.PLAYGROUND_BASE ?? playgroundPath
 
 const editorWorker = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.worker"))
+const monacoEditorMain = fileURLToPath(import.meta.resolve("monaco-editor/editor/editor.main.js"))
 const coiServiceWorker = fileURLToPath(import.meta.resolve("coi-serviceworker/coi-serviceworker.min.js"))
 
 const indexHtml = (await readFile(resolve(packageDirectory, "src/index.html"), "utf8")).replaceAll(
@@ -29,6 +30,26 @@ await Promise.all([
   writeFile(resolve(outputDirectory, "index.html"), indexHtml),
   cp(coiServiceWorker, resolve(outputDirectory, "coi-serviceworker.min.js")),
 ])
+
+// monaco-editor-core resolves to monaco-editor's editor entry without its
+// built-in language registrations, which would compete with the tsgo LSP.
+const monacoEditorCorePlugin = {
+  name: "monaco-editor-core",
+  setup(build) {
+    build.onResolve({ filter: /^monaco-editor-core$/ }, () => ({
+      path: monacoEditorMain,
+      namespace: "monaco-editor-core",
+    }))
+    build.onLoad({ filter: /.*/, namespace: "monaco-editor-core" }, async () => ({
+      contents: (await readFile(monacoEditorMain, "utf8"))
+        .split("\n")
+        .filter(line => !/\/languages\/|monaco-lsp-client|\bas (lsp|css|html|json|typescript) \}/.test(line))
+        .join("\n"),
+      loader: "js",
+      resolveDir: dirname(monacoEditorMain),
+    }))
+  },
+}
 
 const buildContext = await context({
   absWorkingDir: packageDirectory,
@@ -51,6 +72,7 @@ const buildContext = await context({
   outdir: outputDirectory,
   metafile: true,
   platform: "browser",
+  plugins: [monacoEditorCorePlugin],
   sourcemap: true,
   target: ["es2022"],
 })
@@ -69,6 +91,12 @@ if (serve) {
     /node_modules\/(?:@typescript\/)?typescript(?:-wasip1-wasm)?\//.test(path)
   )
   if (compilerInputs.length) throw new Error(`Compiler implementation was bundled: ${compilerInputs.join(", ")}`)
+  const monacoBuiltinInputs = Object.keys(result.metafile.inputs).filter(path =>
+    /monaco-editor\/esm\/(?:vs\/languages\/features|external\/monaco-lsp-client)\//.test(path)
+  )
+  if (monacoBuiltinInputs.length) {
+    throw new Error(`Monaco built-in language services were bundled: ${monacoBuiltinInputs.join(", ")}`)
+  }
   await buildContext.dispose()
   await rm(websitePlayDirectory, { force: true, recursive: true })
   await cp(outputDirectory, websiteStaticDirectory, { recursive: true })

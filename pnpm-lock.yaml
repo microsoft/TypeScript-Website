@@ -24,6 +24,8 @@ overrides:
   immutable@<3.8.4: ^3.8.4
   dompurify@<3.4.18: ^3.4.18
 
+pnpmfileChecksum: sha256-kUrQCLTfwBk470XILvr459peb+h+rsrphOT6NIQnJs0=
+
 patchedDependencies:
   '@vscode/monaco-lsp-client@0.1.0':
     hash: 2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0
@@ -34,11 +36,8 @@ patchedDependencies:
   gatsby-remark-shiki-twoslash@3.0.38:
     hash: 5584d3c994349e1a6796ab8e22811fc912fad257e9ad818930836c458ab23640
     path: patches/gatsby-remark-shiki-twoslash@3.0.38.patch
-  monaco-editor-core@0.56.0:
-    hash: 7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7
-    path: patches/monaco-editor-core@0.56.0.patch
   monaco-editor@0.56.0:
-    hash: f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b
+    hash: dc5217366a1b239838919f71f26d3a70c8277bdd3a8185b919fef095530b67f4
     path: patches/monaco-editor@0.56.0.patch
 
 importers:
@@ -210,7 +209,7 @@ importers:
         version: 5.3.0
       '@vscode/monaco-lsp-client':
         specifier: github:microsoft/monaco-editor#13f0c872dcf352815cc28d92dfff496c9839ea5c&path:/monaco-lsp-client
-        version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7))(ws@8.23.0)
+        version: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(ws@8.23.0)
       coi-serviceworker:
         specifier: ^0.1.7
         version: 0.1.7(patch_hash=714b4adc6ff6ecd02825ea3646eae7d2f84ef6ea33d2023e8e03d1d236243e2f)
@@ -225,10 +224,7 @@ importers:
         version: 1.5.0
       monaco-editor:
         specifier: 0.56.0
-        version: 0.56.0(patch_hash=f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b)
-      monaco-editor-core:
-        specifier: 0.56.0
-        version: 0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7)
+        version: 0.56.0(patch_hash=dc5217366a1b239838919f71f26d3a70c8277bdd3a8185b919fef095530b67f4)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -3147,8 +3143,6 @@ packages:
   '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client':
     resolution: {path: /monaco-lsp-client, tarball: https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c}
     version: 0.1.0
-    peerDependencies:
-      monaco-editor-core: '*'
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -7222,9 +7216,6 @@ packages:
 
   moment@2.31.0:
     resolution: {integrity: sha512-0acOTfMiWOheYS4eoWb80yYMb/JLvVv9SHbs2PehaDzfUG0Bw855SKyk0IKTnPGa5+U2bmi3W68l1+sGLX/pvw==}
-
-  monaco-editor-core@0.56.0:
-    resolution: {integrity: sha512-zuY3UTjedTxWnEUDs84Us/6tvYH9mG89fkHMpzXuvrqTdyWgybn536GR/TG6XNyG5N5heYICRMxT1ox5hZ7rxQ==}
 
   monaco-editor@0.32.1:
     resolution: {integrity: sha512-LUt2wsUvQmEi2tfTOK+tjAPvt7eQ+K5C4rZPr6SeuyzjAuAHrIvlUloTcOiGjZW3fn3a/jFQCONrEJbNOaCqbA==}
@@ -12922,12 +12913,11 @@ snapshots:
 
   '@vscode/l10n@0.0.18': {}
 
-  '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(monaco-editor-core@0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7))(ws@8.23.0)':
+  '@vscode/monaco-lsp-client@https://codeload.github.com/microsoft/monaco-editor/tar.gz/13f0c872dcf352815cc28d92dfff496c9839ea5c#path:/monaco-lsp-client(patch_hash=2adc8bf0b3596826d330832fc1ca5385179508eab8541c404f94c460b01115a0)(ws@8.23.0)':
     dependencies:
       '@hediet/json-rpc': 0.5.0
       '@hediet/json-rpc-browser': 0.5.1
       '@hediet/json-rpc-websocket': 0.5.1(ws@8.23.0)
-      monaco-editor-core: 0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7)
     transitivePeerDependencies:
       - ws
 
@@ -18646,14 +18636,9 @@ snapshots:
 
   moment@2.31.0: {}
 
-  monaco-editor-core@0.56.0(patch_hash=7aaaaeeffb89ac7ceead19dc1485eebbe3b2a22f83d507194096fbff9b2549f7):
-    dependencies:
-      dompurify: 3.4.18
-      marked: 14.0.0
-
   monaco-editor@0.32.1: {}
 
-  monaco-editor@0.56.0(patch_hash=f2016b76fa8202ad749085be423d52abc12840f715b652ae50903f7e26a30b6b):
+  monaco-editor@0.56.0(patch_hash=dc5217366a1b239838919f71f26d3a70c8277bdd3a8185b919fef095530b67f4):
     dependencies:
       dompurify: 3.4.18
       marked: 14.0.0

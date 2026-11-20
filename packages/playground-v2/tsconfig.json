@@ -6,7 +6,10 @@
     "lib": ["DOM", "ES2022"],
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "monaco-editor-core": ["./node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts"]
+    }
   },
   "include": ["src"],
   "exclude": ["src/**/*.test.ts"]
