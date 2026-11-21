@@ -350,6 +350,19 @@ body {
   white-space: normal;
 }
 
+.shortcut-toast {
+  position: fixed;
+  z-index: 20;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  color: inherit;
+  background: var(--panel);
+  box-shadow: 0 0.25rem 1rem rgb(0 0 0 / 25%);
+}
+
 .form-dialog {
   width: min(28rem, calc(100vw - 2rem));
   padding: 0;

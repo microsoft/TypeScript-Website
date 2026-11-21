@@ -241,6 +241,7 @@ const clearRunOutput = getElement<HTMLButtonElement>("clear-run-output")
 const runOutput = getElement("run-output")
 const runLog = getElement("run-log")
 const status = getElement("status")
+const shortcutToast = getElement("shortcut-toast")
 const loader = getElement("loader")
 const loadingAnimation = getElement("loading-animation")
 const loadingCopy = getElement("loading-copy")
@@ -458,6 +459,33 @@ inputEditor.addAction({
   keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
   run: runProject,
 })
+document.addEventListener(
+  "keydown",
+  event => {
+    if (!(event.ctrlKey || event.metaKey) || event.altKey || event.key.toLowerCase() !== "s") return
+    event.preventDefault()
+    if (event.repeat) return
+    void (async () => {
+      try {
+        const link = projectUrl(currentProjectState())
+        history.replaceState({}, "", link)
+        persistProjectState(true)
+        try {
+          await navigator.clipboard.writeText(link)
+          showShortcutToast("Playground link copied to clipboard.")
+        } catch {
+          await exportActions.showLink()
+        }
+      } catch (error) {
+        projectFailure = `Could not save the Playground link: ${error instanceof Error ? error.message : String(error)}`
+        console.error("Could not save the TypeScript Playground link", error)
+        renderStatus()
+        showShortcutToast("Could not save the Playground link.")
+      }
+    })()
+  },
+  { capture: true }
+)
 const inlayEmitter = new monaco.Emitter<void>()
 const typeQueries = new Map<string, TypeQuery[]>()
 // Monaco subscribes to refresh events only after its first hint request completes.
@@ -819,12 +847,10 @@ monaco.languages.registerInlayHintsProvider("json", {
 })
 
 let updateTimer = 0
-configureExports({
+const exportActions = configureExports({
   compile: () => compileActiveProject?.(),
   project() {
     const state = currentProjectState()
-    const url = new URL(location.href)
-    url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serializeProjectState(state))}`
     return {
       activeFile: relativeProjectPath(
         state.activeFile && state.files[state.activeFile] !== undefined
@@ -842,7 +868,7 @@ configureExports({
       symlinks: Object.fromEntries(
         Object.entries(projectSymlinks).map(([path, target]) => [relativeProjectPath(path), target])
       ),
-      url: url.href,
+      url: projectUrl(state),
     }
   },
 })
@@ -2592,6 +2618,16 @@ function restoreProjectSelection(state: ProjectState) {
   inputEditor.revealRangeInCenter(inputEditor.getSelection()!, monaco.editor.ScrollType.Immediate)
 }
 
+let shortcutToastTimer = 0
+function showShortcutToast(message: string) {
+  shortcutToast.textContent = message
+  shortcutToast.hidden = false
+  window.clearTimeout(shortcutToastTimer)
+  shortcutToastTimer = window.setTimeout(() => {
+    shortcutToast.hidden = true
+  }, 2000)
+}
+
 function renderStatus() {
   const failure = compilerFailure ?? lspFailure
   const error = failure ?? projectFailure ?? (typeAcquisitionFailure ? `Package types: ${typeAcquisitionFailure}` : "")
@@ -3136,7 +3172,13 @@ function currentProjectState(): ProjectState {
   }
 }
 
-function persistProjectState() {
+function projectUrl(state: ProjectState) {
+  const url = new URL(location.href)
+  url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serializeProjectState(state))}`
+  return url.href
+}
+
+function persistProjectState(forceUrl = false) {
   window.clearTimeout(projectPersistTimer)
   window.removeEventListener("beforeunload", flushProjectBeforeUnload)
   if (!projectPersistenceEnabled) return
@@ -3146,8 +3188,8 @@ function persistProjectState() {
       localStorage.setItem(storageKey, serialized)
       lastStoredProject = serialized
     }
-    if (!playgroundSettings.saveToUrl || legacyQuery !== undefined) return
-    if (serialized === lastUrlProject) return
+    if (!forceUrl && (!playgroundSettings.saveToUrl || legacyQuery !== undefined)) return
+    if (!forceUrl && serialized === lastUrlProject) return
     const url = new URL(location.href)
     url.hash = `${projectHashPrefix.slice(1)}${LZString.compressToEncodedURIComponent(serialized)}`
     history.replaceState({}, "", url)
