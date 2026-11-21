@@ -245,3 +245,25 @@ it("moduleDetection options", async () => {
   program.emit()
   expect(fsMap.get("index.js")).toEqual(`define(["require", "exports"], function (require, exports) {\n    "use strict";\n    Object.defineProperty(exports, "__esModule", { value: true });\n    let foo = 'foo';\n});\n`)
 })
+
+it("createFile and updateFile do not parse duplicate SourceFiles outside the language service", () => {
+  const fsMap = createDefaultMapFromNodeModules({})
+  const system = createSystem(fsMap)
+  const createSourceFile = jest.fn(ts.createSourceFile)
+  const updateSourceFile = jest.fn(ts.updateSourceFile)
+  const tsProxy = { ...ts, createSourceFile, updateSourceFile }
+  const env = createVirtualTypeScriptEnvironment(system, [], tsProxy, {})
+
+  env.createFile("a.ts", "const x: number = 1")
+  expect(createSourceFile).not.toHaveBeenCalled()
+  expect(env.getSourceFile("a.ts")?.text).toBe("const x: number = 1")
+
+  env.updateFile("a.ts", "const x: number = 2")
+  expect(updateSourceFile).not.toHaveBeenCalled()
+  expect(env.getSourceFile("a.ts")?.text).toBe("const x: number = 2")
+
+  env.updateFile("a.ts", "3", ts.createTextSpan("const x: number = ".length, 1))
+  expect(updateSourceFile).not.toHaveBeenCalled()
+  expect(env.getSourceFile("a.ts")?.text).toBe("const x: number = 3")
+  expect(env.languageService.getSemanticDiagnostics("a.ts")).toHaveLength(0)
+})

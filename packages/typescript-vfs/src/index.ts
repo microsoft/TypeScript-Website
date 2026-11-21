@@ -90,7 +90,7 @@ export function createVirtualTypeScriptEnvironment(
     getSourceFile: fileName => languageService.getProgram()?.getSourceFile(fileName),
 
     createFile: (fileName, content) => {
-      updateFile(ts.createSourceFile(fileName, content, mergedCompilerOpts.target!, false))
+      updateFile({ fileName, text: content } as SourceFile)
     },
     updateFile: (fileName, content, optPrevTextSpan) => {
       const prevSourceFile = languageService.getProgram()!.getSourceFile(fileName)
@@ -105,12 +105,8 @@ export function createVirtualTypeScriptEnvironment(
         prevFullContents.slice(0, prevTextSpan.start) +
         content +
         prevFullContents.slice(prevTextSpan.start + prevTextSpan.length)
-      const newSourceFile = ts.updateSourceFile(prevSourceFile, newText, {
-        span: prevTextSpan,
-        newLength: content.length,
-      })
 
-      updateFile(newSourceFile)
+      updateFile({ fileName, text: newText } as SourceFile)
     },
     deleteFile(fileName) {
       const sourceFile = languageService.getProgram()!.getSourceFile(fileName)
@@ -681,11 +677,13 @@ export function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers
 ) {
   const fileNames = [...rootFiles]
-  const { compilerHost, updateFile, deleteFile } = createVirtualCompilerHost(sys, compilerOptions, ts)
   const fileVersions = new Map<string, string>()
   let projectVersion = 0
   const languageServiceHost: LanguageServiceHost = {
-    ...compilerHost,
+    ...sys,
+    getDefaultLibFileName: () => "/" + ts.getDefaultLibFileName(compilerOptions),
+    getNewLine: () => sys.newLine,
+    useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
     getProjectVersion: () => projectVersion.toString(),
     getCompilationSettings: () => compilerOptions,
     getCustomTransformers: () => customTransformers,
@@ -725,7 +723,7 @@ export function createVirtualLanguageServiceHost(
       if (!fileNames.includes(sourceFile.fileName)) {
         fileNames.push(sourceFile.fileName)
       }
-      updateFile(sourceFile)
+      sys.writeFile(sourceFile.fileName, sourceFile.text)
     },
     deleteFile: sourceFile => {
       projectVersion++
@@ -734,7 +732,7 @@ export function createVirtualLanguageServiceHost(
       if (index !== -1) {
         fileNames.splice(index, 1)
       }
-      deleteFile(sourceFile)
+      sys.deleteFile!(sourceFile.fileName)
     }
   }
   return lsHost
