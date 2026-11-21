@@ -80,12 +80,12 @@
       "dts-cli>eslint-plugin-react-hooks": "-",
       "dts-cli>eslint-plugin-testing-library": "-",
       "react-dev-utils>fork-ts-checker-webpack-plugin": "-",
-      "keyv@<5.5.3": "^5.5.3"
+      "keyv@<5.5.3": "^5.5.3",
+      "@vscode/monaco-lsp-client>monaco-editor-core": "-"
     },
     "patchedDependencies": {
       "@vscode/monaco-lsp-client@0.1.0": "patches/@vscode__monaco-lsp-client@0.1.0.patch",
       "gatsby-remark-shiki-twoslash@3.0.38": "patches/gatsby-remark-shiki-twoslash@3.0.38.patch",
-      "monaco-editor-core@0.56.0": "patches/monaco-editor-core@0.56.0.patch",
       "coi-serviceworker@0.1.7": "patches/coi-serviceworker@0.1.7.patch",
       "monaco-editor@0.56.0": "patches/monaco-editor@0.56.0.patch",
       "query-string@6.14.1": "patches/query-string@6.14.1.patch",

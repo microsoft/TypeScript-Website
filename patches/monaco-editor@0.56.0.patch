@@ -1,4 +1,5 @@
 diff --git a/esm/vs/base/browser/domSanitize.js b/esm/vs/base/browser/domSanitize.js
+index 95061a20c8ecd48ff3ca732dbb1848cd213f7965..4bbb061da3fc2115cfc1917759b1660959dd308f 100644
 --- a/esm/vs/base/browser/domSanitize.js
 +++ b/esm/vs/base/browser/domSanitize.js
 @@ -1,6 +1,6 @@
@@ -9,3 +10,87 @@ diff --git a/esm/vs/base/browser/domSanitize.js b/esm/vs/base/browser/domSanitiz
  
  /*---------------------------------------------------------------------------------------------
   *  Copyright (c) Microsoft Corporation. All rights reserved.
+diff --git a/esm/vs/base/browser/touch.js b/esm/vs/base/browser/touch.js
+index 0bc8accfabad3c860ee2a705418b42254ab9a03b..15fbb29e5e441ca257e3e5aef389a8b8742d1ca3 100644
+--- a/esm/vs/base/browser/touch.js
++++ b/esm/vs/base/browser/touch.js
+@@ -42,9 +42,6 @@ class Gesture extends Disposable {
+         }, { window: mainWindow, disposables: this._store }));
+     }
+     static addTarget(element) {
+-        if (!Gesture.isTouchDevice()) {
+-            return Disposable.None;
+-        }
+         if (!Gesture.INSTANCE) {
+             Gesture.INSTANCE = markAsSingleton(new Gesture());
+         }
+@@ -52,9 +49,6 @@ class Gesture extends Disposable {
+         return toDisposable(remove);
+     }
+     static ignoreTarget(element) {
+-        if (!Gesture.isTouchDevice()) {
+-            return Disposable.None;
+-        }
+         if (!Gesture.INSTANCE) {
+             Gesture.INSTANCE = markAsSingleton(new Gesture());
+         }
+@@ -88,11 +82,12 @@ class Gesture extends Disposable {
+                 id: touch.identifier,
+                 initialTarget: touch.target,
+                 initialTimeStamp: timestamp,
+-                initialPageX: touch.pageX,
+-                initialPageY: touch.pageY,
++                // Store viewport coordinates so page scrolling does not alter gestures.
++                initialPageX: touch.clientX,
++                initialPageY: touch.clientY,
+                 rollingTimestamps: [timestamp],
+-                rollingPageX: [touch.pageX],
+-                rollingPageY: [touch.pageY]
++                rollingPageX: [touch.clientX],
++                rollingPageY: [touch.clientY]
+             };
+             const evt = this.newGestureEvent(EventType.Start, touch.target);
+             evt.pageX = touch.pageX;
+@@ -119,16 +114,16 @@ class Gesture extends Disposable {
+                 && Math.abs(data.initialPageX - data.rollingPageX.at(-1)) < 30
+                 && Math.abs(data.initialPageY - data.rollingPageY.at(-1)) < 30) {
+                 const evt = this.newGestureEvent(EventType.Tap, data.initialTarget);
+-                evt.pageX = data.rollingPageX.at(-1);
+-                evt.pageY = data.rollingPageY.at(-1);
++                evt.pageX = data.rollingPageX.at(-1) + targetWindow.scrollX;
++                evt.pageY = data.rollingPageY.at(-1) + targetWindow.scrollY;
+                 this.dispatchEvent(evt);
+             }
+             else if (holdTime >= Gesture.HOLD_DELAY
+                 && Math.abs(data.initialPageX - data.rollingPageX.at(-1)) < 30
+                 && Math.abs(data.initialPageY - data.rollingPageY.at(-1)) < 30) {
+                 const evt = this.newGestureEvent(EventType.Contextmenu, data.initialTarget);
+-                evt.pageX = data.rollingPageX.at(-1);
+-                evt.pageY = data.rollingPageY.at(-1);
++                evt.pageX = data.rollingPageX.at(-1) + targetWindow.scrollX;
++                evt.pageY = data.rollingPageY.at(-1) + targetWindow.scrollY;
+                 this.dispatchEvent(evt);
+             }
+             else if (activeTouchCount === 1) {
+@@ -244,8 +239,8 @@ class Gesture extends Disposable {
+             }
+             const data = this.activeTouches[touch.identifier];
+             const evt = this.newGestureEvent(EventType.Change, data.initialTarget);
+-            evt.translationX = touch.pageX - data.rollingPageX.at(-1);
+-            evt.translationY = touch.pageY - data.rollingPageY.at(-1);
++            evt.translationX = touch.clientX - data.rollingPageX.at(-1);
++            evt.translationY = touch.clientY - data.rollingPageY.at(-1);
+             evt.pageX = touch.pageX;
+             evt.pageY = touch.pageY;
+             this.dispatchEvent(evt);
+@@ -255,8 +250,8 @@ class Gesture extends Disposable {
+                 data.rollingPageY.shift();
+                 data.rollingTimestamps.shift();
+             }
+-            data.rollingPageX.push(touch.pageX);
+-            data.rollingPageY.push(touch.pageY);
++            data.rollingPageX.push(touch.clientX);
++            data.rollingPageY.push(touch.clientY);
+             data.rollingTimestamps.push(timestamp);
+         }
+         if (this.dispatched) {

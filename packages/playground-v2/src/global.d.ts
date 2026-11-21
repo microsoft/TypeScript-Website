@@ -3,9 +3,8 @@ declare module "*.json" {
   const value: any
   export default value
 }
-declare module "monaco-editor/editor/contrib/links/browser/links.js"
 
-declare module "monaco-editor-core/esm/vs/base/browser/touch.js" {
+declare module "monaco-editor/base/browser/touch.js" {
   export const EventType: { Change: string; Tap: string }
 }
 

@@ -15,7 +15,6 @@ import {
   loadLegacyCompilerVersions,
   publishedNativeCompilerSelection,
 } from "./compiler-versions"
-import "monaco-editor/editor/contrib/links/browser/links.js"
 import LZString from "lz-string"
 import "reflect-metadata"
 import {
