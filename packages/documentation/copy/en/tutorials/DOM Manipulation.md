@@ -199,5 +199,5 @@ The best part about the _lib.dom.d.ts_ type definitions is that they are reflect
 
 Sources:
 
-- [ECMA-262 Standard](http://www.ecma-international.org/ecma-262/10.0/index.html)
+- [ECMA-262 Standard](https://www.ecma-international.org/ecma-262/10.0/index.html)
 - [Introduction to the DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction)
