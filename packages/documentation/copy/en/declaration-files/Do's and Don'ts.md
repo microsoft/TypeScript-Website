@@ -79,7 +79,7 @@ function fn(x: () => void) {
 ```ts
 /* WRONG */
 interface Fetcher {
-  getObject(done: (data: unknown, elapsedTime?: number) => void): void;
+  fetchObject(done: (data: unknown, elapsedTime?: number) => void): void;
 }
 ```
 
@@ -93,9 +93,11 @@ it's always legal to provide a callback that accepts fewer arguments.
 ```ts
 /* OK */
 interface Fetcher {
-  getObject(done: (data: unknown, elapsedTime: number) => void): void;
+  fetchObject(done: (data: unknown, elapsedTime: number) => void): void;
 }
 ```
+
+The method returns `void` because it delivers its result through the callback. The callback's `elapsedTime` parameter is non-optional because the callback is always called with that argument.
 
 ### Overloads and Callbacks
 
