@@ -16,7 +16,6 @@ permissions:
   contents: read
   pull-requests: write
   actions: read
-  id-token: write
 
 jobs:
   deploy:
@@ -25,9 +24,6 @@ jobs:
     environment:
       name: azure-preview
       deployment: false
-    env:
-      AZURE_STATIC_WEB_APP_NAME: ${{ vars.AZURE_STATIC_WEB_APP_NAME }}
-      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
     steps:
       - name: Get PR/workflow run info
         id: get-info
@@ -152,37 +148,23 @@ jobs:
         with:
           node-version: "24.x"
 
-      - name: Log in to Azure
-        if: ${{ steps.get-info.outputs.result != 'null' }}
-        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
-        with:
-          client-id: ${{ vars.AZURE_CLIENT_ID }}
-          tenant-id: ${{ vars.AZURE_TENANT_ID }}
-          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-
       - name: Deploy
         id: deploy
         if: ${{ steps.get-info.outputs.result != 'null' }}
         env:
           PR_NUMBER: ${{ fromJson(steps.get-info.outputs.result).pr }}
+          deployment_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
         run: |
           set -euo pipefail
-          : "${AZURE_STATIC_WEB_APP_NAME:?Missing AZURE_STATIC_WEB_APP_NAME environment variable}"
-          : "${AZURE_RESOURCE_GROUP:?Missing AZURE_RESOURCE_GROUP environment variable}"
           if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
             echo "::error::Invalid preview PR number"
             exit 1
           fi
 
-          deployment_token="$(az staticwebapp secrets list \
-            --name "$AZURE_STATIC_WEB_APP_NAME" \
-            --resource-group "$AZURE_RESOURCE_GROUP" \
-            --query properties.apiKey --output tsv)"
           if [[ -z "$deployment_token" ]]; then
-            echo "::error::Azure returned no preview deployment token"
+            echo "::error::Missing preview deployment token"
             exit 1
           fi
-          echo "::add-mask::$deployment_token"
           # Keep CLI configuration outside the untrusted artifact.
           printf '{"configurations":{"preview":{}}}\n' > "$RUNNER_TEMP/swa-cli.config.json"
           runtime_config_dir="$(mktemp -d "$RUNNER_TEMP/swa-runtime-config.XXXXXX")"
@@ -200,15 +182,7 @@ jobs:
               --swa-config-location "$runtime_config_dir" \
               --env "$PR_NUMBER"
 
-          hostname="$(az staticwebapp environment show \
-            --name "$AZURE_STATIC_WEB_APP_NAME" \
-            --resource-group "$AZURE_RESOURCE_GROUP" \
-            --environment-name "$PR_NUMBER" \
-            --query hostname --output tsv)"
-          if [[ ! "$hostname" =~ ^[A-Za-z0-9.-]+\.azurestaticapps\.net$ ]]; then
-            echo "::error::Azure returned an invalid hostname for preview $PR_NUMBER"
-            exit 1
-          fi
+          hostname="victorious-plant-05c166c10-$PR_NUMBER.centralus.5.azurestaticapps.net"
           printf 'static_web_app_url=https://%s\n' "$hostname" >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
