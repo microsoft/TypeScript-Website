@@ -36,7 +36,7 @@ a call-by-value lexically scoped language with lots of mutability and
 not much else.
 [R<sup>4</sup>RS Scheme](https://people.csail.mit.edu/jaffer/r4rs.pdf) is a good example.
 
-[The C++ Programming Language](http://www.stroustrup.com/4th.html) is
+[The C++ Programming Language](https://www.stroustrup.com/4th.html) is
 a good place to learn about C-style type syntax. Unlike C++,
 TypeScript uses postfix types, like so: `x: string` instead of `string x`.
 
