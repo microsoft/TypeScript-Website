@@ -1,0 +1,48 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - v2
+pr: none
+
+variables:
+  - name: TYPESCRIPT_AUTOMATION_GITHUB_APP_CLIENT_ID
+    value: Iv23li4GolzJSEp1mzHI
+  - name: TYPESCRIPT_AUTOMATION_GITHUB_APP_KEY_ID
+    value: https://jststeam-passwords.vault.azure.net/keys/typescript-automation
+
+jobs:
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/v2') }}:
+      - job: Changesets
+        displayName: Version or tag packages
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          # The changelog generator reads the commit that added each changeset.
+          - checkout: self
+            fetchDepth: 0
+            fetchFilter: blob:none
+            fetchTags: false
+
+          - task: UseNode@1
+            displayName: Use Node 24.x
+            inputs:
+              version: 24.x
+
+          - bash: |
+              set -euo pipefail
+              npm install --global "$(jq -r '.packageManager' package.json)"
+              pnpm install --frozen-lockfile
+            displayName: Install dependencies
+
+          - template: /build/azure-pipelines/steps/create-github-app-token.yml@self
+            parameters:
+              azureSubscription: typescript-automation-signing
+              repositories: TypeScript-Website
+              permissions: contents:write,pull_requests:write
+              insertSteps:
+                - bash: node build/azure-pipelines/changesets.mjs
+                  displayName: Version or tag packages
+                  env:
+                    GH_TOKEN: $(GH_TOKEN)
+                    GITHUB_REPOSITORY: microsoft/TypeScript-Website
