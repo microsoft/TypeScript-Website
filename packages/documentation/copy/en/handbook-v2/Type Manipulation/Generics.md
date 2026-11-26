@@ -53,6 +53,14 @@ This allows us to traffic that type information in one side of the function and 
 We say that this version of the `identity` function is generic, as it works over a range of types.
 Unlike using `any`, it's also just as precise (i.e., it doesn't lose any information) as the first `identity` function that used numbers for the argument and return type.
 
+You can also write a generic arrow function by putting the type parameter before the parameter list:
+
+```ts twoslash
+const identity = <Type,>(arg: Type): Type => arg;
+```
+
+In a `.tsx` file, the trailing comma distinguishes a single type parameter from a JSX opening tag.
+
 Once we've written the generic identity function, we can call it in one of two ways.
 The first way is to pass all of the arguments, including the type argument, to the function:
 
