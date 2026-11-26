@@ -31,8 +31,43 @@ For example:
 }
 ```
 
-Note that the `"typings"` field is synonymous with `types`, and could be used as well.
+The `"typings"` field is a legacy alias for `"types"`. Prefer `"types"` in new packages.
 
+### Using `exports`
+
+If your package uses the `"exports"` field in `package.json`, you should account for it when publishing declarations.
+When TypeScript resolves a package through `"exports"` (with `moduleResolution` set to `node16`, `nodenext`, or `bundler`), it follows the export map to find the package entry point. The top-level `"types"` field does not replace declaration paths in that map.
+
+If a declaration file sits next to its corresponding JavaScript file and has the matching name, TypeScript can often find it through [extension substitution](/docs/handbook/modules/reference.html#file-extension-substitution). For example, an export pointing to `"./dist/index.js"` can resolve to `"./dist/index.d.ts"` when that declaration file exists. In this case, an explicit `"types"` condition is not required.
+
+If your declarations are stored separately from the JavaScript files, add a `"types"` condition to the relevant export entry. Put the `"types"` condition before `"default"`, so TypeScript can select the declaration file before the default runtime entry is considered.
+
+For example, a package that provides separate ESM and CommonJS entry points can publish matching declaration files like this:
+
+```json
+{
+  "name": "awesome",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./types/index.d.mts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./types/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  }
+}
+```
+
+Here, TypeScript uses `"./types/index.d.mts"` for ESM imports and `"./types/index.d.cts"` for CommonJS imports. The `"types"` condition is nested inside each runtime condition so that the declaration file matches the module format of the corresponding JavaScript entry point.
+
+Use the condition name `"types"` exactly. The legacy `"typings"` alias is not recognized as an `"exports"` condition.
+
+For more details about how TypeScript resolves package exports, see the [module resolution reference](/docs/handbook/modules/reference.html#packagejson-exports) and the [TypeScript 4.7 release notes](/docs/handbook/release-notes/typescript-4-7.html#packagejson-exports-imports-and-self-referencing).
 
 ## Dependencies
 
@@ -136,7 +171,7 @@ When you want to only change the resolution for a single file at a time, you can
 }
 ```
 
-On TypeScript 4.0 and above, an import for `"package-name"` would resolve to `./index.d.ts` and for 3.9 and below `"./index.v3.d.ts`.
+On TypeScript 4.0 and above, an import for `"package-name"` would resolve to `./index.d.ts` and for 3.9 and below `"./index.v3.d.ts"`.
 
 Note that redirections only affect the _external_ API of a package; import resolution within a project is not affected by `typesVersions`. For example, a `d.ts` file in the previous example containing `import * as foo from "./index"` will still map to `index.d.ts`, not `index.v3.d.ts`, whereas another package importing `import * as foo from "package-name"` _will_ get `index.v3.d.ts`.
 
