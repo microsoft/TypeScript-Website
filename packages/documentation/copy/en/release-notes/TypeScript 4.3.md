@@ -52,7 +52,7 @@ If we really want to model APIs that convert values, previous versions of TypeSc
 
 That's why TypeScript 4.3 allows you to specify types for reading and writing to properties.
 
-```ts twoslash
+```ts 
 class Thing {
   #size = 0;
 

@@ -5,7 +5,7 @@ tags: typescript types keyword
 
 The `declare` keyword is used to inform the TypeScript [Type System](#type-system) that a variable exists even if it cannot be found in the current source code.
 
-```ts twoslash
+```ts 
 // Declare that a ghost exists, and that it has a function called "boo"
 declare const ghost: { boo: () => void };
 

@@ -17,7 +17,7 @@ In TypeScript, interfaces fill the role of naming these types, and are a powerfu
 
 The easiest way to see how interfaces work is to start with a simple example:
 
-```ts twoslash
+```ts 
 function printLabel(labeledObj: { label: string }) {
   console.log(labeledObj.label);
 }
@@ -33,7 +33,7 @@ There are some cases where TypeScript isn't as lenient, which we'll cover in a b
 
 We can write the same example again, this time using an interface to describe the requirement of having the `label` property that is a string:
 
-```ts twoslash
+```ts 
 interface LabeledValue {
   label: string;
 }
@@ -61,7 +61,7 @@ These optional properties are popular when creating patterns like "option bags" 
 
 Here's an example of this pattern:
 
-```ts twoslash
+```ts 
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -113,7 +113,7 @@ let mySquare = createSquare({ color: "black" });
 Some properties should only be modifiable when an object is first created.
 You can specify this by putting `readonly` before the name of the property:
 
-```ts twoslash
+```ts 
 interface Point {
   readonly x: number;
   readonly y: number;
@@ -150,7 +150,7 @@ a = ro; // error!
 On the last line of the snippet you can see that even assigning the entire `ReadonlyArray` back to a normal array is illegal.
 You can still override it with a type assertion, though:
 
-```ts twoslash
+```ts 
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;
 
@@ -235,7 +235,7 @@ let mySquare = createSquare({ width: 100, opacity: 0.5 } as SquareConfig);
 However, a better approach might be to add a string index signature if you're sure that the object can have some extra properties that are used in some special way.
 If `SquareConfig` can have `color` and `width` properties with the above types, but could _also_ have any number of other properties, then we could define it like so:
 
-```ts twoslash
+```ts 
 interface SquareConfig {
   color?: string;
   width?: number;
@@ -300,7 +300,7 @@ In addition to describing an object with properties, interfaces are also capable
 To describe a function type with an interface, we give the interface a call signature.
 This is like a function declaration with only the parameter list and return type given. Each parameter in the parameter list requires both name and type.
 
-```ts twoslash
+```ts 
 interface SearchFunc {
   (source: string, subString: string): boolean;
 }
@@ -378,7 +378,7 @@ Indexable types have an _index signature_ that describes the types we can use to
 
 Let's take an example:
 
-```ts twoslash
+```ts 
 interface StringArray {
   [index: number]: string;
 }
@@ -432,7 +432,7 @@ interface NumberDictionary {
 
 However, properties of different types are acceptable if the index signature is a union of the property types:
 
-```ts twoslash
+```ts 
 interface NumberOrStringDictionary {
   [index: string]: number | string;
 
@@ -487,7 +487,7 @@ function handleResponse(r: HeadersResponse) {
 
 One of the most common uses of interfaces in languages like C# and Java, that of explicitly enforcing that a class meets a particular contract, is also possible in TypeScript.
 
-```ts twoslash
+```ts 
 interface ClockInterface {
   currentTime: Date;
 }
@@ -545,7 +545,7 @@ Instead, you would need to work with the static side of the class directly.
 In this example, we define two interfaces, `ClockConstructor` for the constructor and `ClockInterface` for the instance methods.
 Then, for convenience, we define a constructor function `createClock` that creates instances of the type that is passed to it:
 
-```ts twoslash
+```ts 
 interface ClockConstructor {
   new (hour: number, minute: number): ClockInterface;
 }
@@ -611,7 +611,7 @@ clock.tick();
 Like classes, interfaces can extend each other.
 This allows you to copy the members of one interface into another, which gives you more flexibility in how you separate your interfaces into reusable components.
 
-```ts twoslash
+```ts 
 interface Shape {
   color: string;
 }
@@ -627,7 +627,7 @@ square.sideLength = 10;
 
 An interface can extend multiple interfaces, creating a combination of all of the interfaces.
 
-```ts twoslash
+```ts 
 interface Shape {
   color: string;
 }
@@ -653,7 +653,7 @@ Because of JavaScript's dynamic and flexible nature, you may occasionally encoun
 
 One such example is an object that acts as both a function and an object, with additional properties:
 
-```ts twoslash
+```ts 
 interface Counter {
   (start: number): string;
   interval: number;

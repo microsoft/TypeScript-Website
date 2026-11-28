@@ -32,7 +32,7 @@ Inside a script file variables and types are declared to be in the shared global
 
 If you have a file that doesn't currently have any `import`s or `export`s, but you want to be treated as a module, add the line:
 
-```ts twoslash
+```ts 
 export {};
 ```
 
@@ -57,7 +57,7 @@ There are three main things to consider when writing module-based code in TypeSc
 
 A file can declare a main export via `export default`:
 
-```ts twoslash
+```ts 
 // @filename: hello.ts
 export default function helloWorld() {
   console.log("Hello, world!");
@@ -185,7 +185,7 @@ In this case, the `import` does nothing. However, all of the code in `maths.ts` 
 
 Types can be exported and imported using the same syntax as JavaScript values:
 
-```ts twoslash
+```ts 
 // @filename: animal.ts
 export type Cat = { breed: string; yearOfBirth: number };
 

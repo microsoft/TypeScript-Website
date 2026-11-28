@@ -9,7 +9,7 @@ With `.d.ts` files, tools like TypeScript can provide intellisense and accurate 
 
 When `declaration` is set to `true`, running the compiler with this TypeScript code:
 
-```ts twoslash
+```ts 
 export let helloWorld = "hi";
 ```
 

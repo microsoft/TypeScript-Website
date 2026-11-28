@@ -8,7 +8,7 @@ of your application at runtime by emitting the enum value instead of a reference
 
 For example with this TypeScript:
 
-```ts twoslash
+```ts 
 const enum Album {
   JimmyEatWorldFutures = 1,
   TubRingZooHypothesis = 2,
