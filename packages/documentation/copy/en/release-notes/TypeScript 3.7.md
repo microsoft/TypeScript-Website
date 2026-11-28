@@ -109,7 +109,7 @@ function barPercentage(foo?: { bar: number }) {
 }
 ```
 
-More more details, you can [read up on the proposal](https://github.com/tc39/proposal-optional-chaining/) and [view the original pull request](https://github.com/microsoft/TypeScript/pull/33294).
+For more details, you can [read up on the proposal](https://github.com/tc39/proposal-optional-chaining/) and [view the original pull request](https://github.com/microsoft/TypeScript/pull/33294).
 
 ## Nullish Coalescing
 
