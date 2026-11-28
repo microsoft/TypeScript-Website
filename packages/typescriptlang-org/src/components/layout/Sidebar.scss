@@ -1,6 +1,7 @@
 @import "../../style/globals.scss";
 
-#small-device-button-sidebar {
+#small-device-button-sidebar,
+#sidebar-backdrop {
   display: none;
 }
 
@@ -163,6 +164,18 @@ nav#sidebar {
 }
 
 @media (max-width: $screen-sm) {
+  body.mobile-sidebar-open {
+    overflow: hidden;
+  }
+
+  #sidebar-backdrop:not([hidden]) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: $z-index-for-handbook-nav - 1;
+  }
+
   // This is a button which will scroll off and on with the nav
   button#small-device-button-sidebar {
     display: flex;
@@ -203,6 +216,7 @@ nav#sidebar {
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
+    overscroll-behavior: contain;
 
     -webkit-overflow-scrolling: touch;
 
