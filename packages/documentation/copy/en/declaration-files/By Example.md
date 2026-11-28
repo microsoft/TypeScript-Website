@@ -249,3 +249,41 @@ Use `declare function` to declare functions.
 declare function greet(greeting: string): void;
 ```
 
+## The `declare global` Statement
+
+_Documentation_
+
+> When you write a TypeScript declaration file or module (a file containing `import` or `export`), all declarations inside it are **local to that module** by default. This means any interfaces, types, or variables you declare won't be visible outside that file unless explicitly exported or globally declared.
+>
+> The `declare global` statement allows you to **augment or add declarations directly to the global scope** from within a module. This is especially useful for:
+> - Extending built-in global interfaces like `Window` or `Document`.
+> - Adding new global variables or types your project relies on.
+> - Modifying existing global libraries without modifying their source files.
+>
+> This differs from a simple top-level `declare` statement, which only creates globals if the file is treated as a global script (no `import` or `export` present). Once your file is a module, the top-level declarations are scoped locally, so `declare global` is required to reach into the global scope.
+
+---
+
+### How it works under the hood
+
+1. **Marking the file as a module**  
+  By including at least one `import` or `export` statement (like an empty `export {};`), you tell TypeScript this file is a module, not a global script.
+2. **Module scope vs. global scope**  
+  Inside modules, declarations (interfaces, types, variables) are **local to the module** and won't affect the global environment unless explicitly exported.
+3. **Using `declare global` block**  
+  Wrapping declarations inside `declare global { ... }` tells TypeScript to take those declarations and **merge them into the global scope**, as if they were declared in a global script.
+4. **Result**  
+  The global types/interfaces are augmented or extended project-wide and can be used anywhere without import, just like built-in global types.
+
+---
+
+### Example
+
+```ts
+export {}; // Mark this file as a module
+declare global {
+  interface Window {
+    myCustomProperty: string;
+  }
+}
+```
