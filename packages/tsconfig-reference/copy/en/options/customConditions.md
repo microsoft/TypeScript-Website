@@ -8,7 +8,7 @@ These conditions are added to whatever existing conditions a resolver will use b
 
 For example, when this field is set in a `tsconfig.json` as so:
 
-```jsonc
+```json tsconfig
 {
     "compilerOptions": {
         "target": "es2022",

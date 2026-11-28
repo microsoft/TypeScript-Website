@@ -6,7 +6,7 @@ oneline: "Specify a list of glob patterns that match files to be included in com
 Specifies an array of filenames or patterns to include in the program.
 These filenames are resolved relative to the directory containing the `tsconfig.json` file.
 
-```json
+```json tsconfig
 {
   "include": ["src/**/*", "tests/**/*"]
 }
