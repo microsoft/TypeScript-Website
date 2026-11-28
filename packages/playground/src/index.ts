@@ -449,7 +449,7 @@ export const setupPlayground = (
       const runPlugin = plugins.find(p => p.id === "logs")!
       activatePlugin(runPlugin, getCurrentPlugin(), sandbox, tabBar, container)
 
-      runWithCustomLogs(run, i)
+      runWithCustomLogs(run, i, sandbox.ts)
 
       const isJS = sandbox.config.filetype === "js"
       ui.flashInfo(i(isJS ? "play_run_js" : "play_run_ts"))
