@@ -443,7 +443,6 @@ export interface TwoSlashOptions {
  */
 export function twoslasher(code: string, extension: string, options: TwoSlashOptions = {}): TwoSlashReturn {
   const ts: TS = options.tsModule ?? require("typescript")
-  const lzstring: LZ = options.lzstringModule ?? require("lz-string")
 
   const originalCode = code
   const safeExtension = typesToExtension(extension)
@@ -785,9 +784,6 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     staticQuickInfos = []
   }
 
-  const zippedCode = lzstring.compressToEncodedURIComponent(originalCode)
-  const playgroundURL = `https://www.typescriptlang.org/play/#code/${zippedCode}`
-
   // Cutting happens last, and it means editing the lines and character index of all
   // the type annotations which are attached to a location
 
@@ -854,7 +850,11 @@ export function twoslasher(code: string, extension: string, options: TwoSlashOpt
     queries,
     staticQuickInfos,
     errors,
-    playgroundURL,
+    get playgroundURL() {
+      const lzstring: LZ = options.lzstringModule ?? require("lz-string")
+      const zippedCode = lzstring.compressToEncodedURIComponent(originalCode)
+      return `https://www.typescriptlang.org/play/#code/${zippedCode}`
+    },
     tags,
   }
 }
