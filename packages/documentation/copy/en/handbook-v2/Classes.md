@@ -1225,7 +1225,7 @@ if (box.hasValue()) {
 ## Parameter Properties
 
 TypeScript offers special syntax for turning a constructor parameter into a class property with the same name and value.
-These are called _parameter properties_ and are created by prefixing a constructor argument with one of the visibility modifiers `public`, `private`, `protected`, or `readonly`.
+These are called _parameter properties_ and are created by prefixing a constructor parameter with one of the modifiers `public`, `private`, `protected`, `readonly`, or `override`.
 The resulting field gets those modifier(s):
 
 ```ts twoslash
