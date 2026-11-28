@@ -3,7 +3,7 @@ display: "Exact Optional Property Types"
 oneline: "Interpret optional property types as written, rather than adding `undefined`."
 ---
 
-With exactOptionalPropertyTypes enabled, TypeScript applies stricter rules around how it handles properties on `type` or `interfaces` which have a `?` prefix.
+With exactOptionalPropertyTypes enabled, TypeScript applies stricter rules around how it handles properties on `type` or `interfaces` which have a `?` suffix.
 
 For example, this interface declares that there is a property which can be one of two strings: 'dark' or 'light' or it should not be in the object.
 
