@@ -443,4 +443,24 @@ walk(EDirection.Left);
 run(ODirection.Right);
 ```
 
+In plain JavaScript syntax:
+```js
+/**
+ * @enum {typeof Direction[keyof typeof Direction]}
+ */
+const Direction = /** @type {const} */({
+  Up: 'up',
+  Down: 'down',
+  Left: 'left',
+  Right: 'right',
+});
+
+/** @type {Direction} */
+const valid = 'up';
+
+/** @type {Direction} */
+// @ts-expect-error
+const bad = 'sideways';
+```
+
 The biggest argument in favour of this format over TypeScript's `enum` is that it keeps your codebase aligned with the state of JavaScript, and [when/if](https://github.com/rbuckton/proposal-enum) enums are added to JavaScript then you can move to the additional syntax.
