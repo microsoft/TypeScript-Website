@@ -36,9 +36,9 @@ The TSConfig reference is created by a two step process:
 You can run these commands from the root of the repo:
 
 ```sh
-pnpm run --filter=tsconfig-reference generate-json
+pnpm run --filter=tsconfig-reference generate:json
 
-pnpm run --filter=tsconfig-reference generate-markdown
+pnpm run --filter=tsconfig-reference generate:md
 ```
 
 You can validate any codeblocks which use twoslash via the script:
